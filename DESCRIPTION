@@ -1,0 +1,25 @@
+Package: qtl2
+Version: 0.1-2
+Date: 9/28/2014
+Title: Tools for analyzing high-dimensional QTL experiments
+Description: Reimplementation of the R/qtl package to better handle
+    high-dimensional data and complex cross designs.
+Author: Karl W Broman <kbroman@biostat.wisc.edu>
+Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
+Depends:
+    R (>= 3.1.0)
+Imports:
+    Rcpp (>= 0.11.2),
+    RcppEigen (>= 0.3.2)
+Suggests:
+    qtl,
+    knitr,
+    testthat,
+    devtools,
+    roxygen2,
+    microbenchmark
+License: GPL-3
+URL: http://github.com/kbroman/qtl2
+VignetteBuilder: knitr
+LinkingTo: Rcpp, RcppEigen
+LazyData: true

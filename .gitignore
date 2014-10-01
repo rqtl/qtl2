@@ -1,0 +1,5 @@
+src/*.o
+src/*.so
+inst/doc/*.html
+inst/doc/*.md
+Notes/
