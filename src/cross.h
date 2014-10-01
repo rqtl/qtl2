@@ -50,6 +50,12 @@ public:
         return x;
     }
 
+    virtual double nrec(int gen_left, int gen_right,
+                        bool is_X_chr, bool is_female,
+                        vector<int> cross_info) {
+        return 0.0;
+    }
+
     virtual double initPK(int true_gen,
                         bool is_X_chr, bool is_female,
                         vector<int>cross_info) {
@@ -68,16 +74,9 @@ public:
         return step(gen_left, gen_right, rf, is_X_chr, is_female, cross_info);
     }
 
-    virtual double nrec(int gen_left, int gen_right,
-                        bool is_X_chr, bool is_female,
-                        vector<int> cross_info) {
-        return 0.0;
-    }
-
     virtual vector<int> genoPK(bool is_X_chr, bool is_female,
                                vector<int> cross_info) {
-        vector<int> x(0);
-        return x;
+        return geno(is_X_chr, is_female, cross_info);
     }
 };
 

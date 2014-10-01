@@ -29,3 +29,11 @@ double BC::step(int gen_left, int gen_right, double rf,
     else return(log(rf));
     return(log(-1.0)); /* shouldn't get here */
 }
+
+vector<int> BC::geno(bool is_X_chr, bool is_female,
+                 vector <int>cross_info)
+{
+    int vals[] = {1,2};
+    vector<int> result(vals, vals+2);
+    return result;
+}

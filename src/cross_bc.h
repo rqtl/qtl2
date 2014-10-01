@@ -19,6 +19,8 @@ class BC : public Cross
                 bool is_X_chr, bool is_female, vector<int> cross_info);
     double step(int gen_left, int gen_right, double rf,
                 bool is_X_chr, bool is_female, vector<int> cross_info);
+    vector<int> geno(bool is_X_chr, bool is_female,
+                     vector <int>cross_info);
 };
 
 #endif // CROSS_BC_H
