@@ -12,9 +12,9 @@ class F2 : public Cross
 {
  public:
     F2(){ type="f2"; };
-    virtual ~F2(){};
+    ~F2(){};
     
-    virtual double init(int true_gen, vector<int> cross_scheme)
+    double init(int true_gen, vector<int> cross_scheme)
     {
         if(true_gen==2) return(-log(0.5)); /* ln(0.5) */
         else return(-2.0*log(0.5)); /* ln(0.25) */

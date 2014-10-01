@@ -10,9 +10,9 @@ class BC : public Cross
 {
  public:
     BC(){ type="bc"; };
-    virtual ~BC(){};
+    ~BC(){};
 
-    virtual double init(int true_gen, vector<int> cross_scheme)
+    double init(int true_gen, vector<int> cross_scheme)
     {
         return(-log(0.5)); /* ln(0.5) */
     }
