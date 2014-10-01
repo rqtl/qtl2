@@ -10,34 +10,15 @@ class BC : public Cross
  public:
     BC(){
         type = "bc";
-        n_gen=2;
     };
     ~BC(){};
 
-    double init(int true_gen, vector<int> cross_scheme)
-    {
-        return(-log(0.5)); /* ln(0.5) */
-    }
-
-    double emit(int obs_gen, int true_gen, double error_prob, vector<int> cross_scheme)
-    {
-        switch(obs_gen) {
-        case 0: return(0.0);
-        case 1: case 2:
-            if(obs_gen==true_gen) return(log(1.0-error_prob));
-            else return(log(error_prob));
-        }
-        return(0.0); /* shouldn't get here */
-    }
-
-
-    double step(int gen1, int gen2, double rf, vector<int> cross_scheme)
-    {
-        if(gen1==gen2) return(log(1.0-rf));
-        else return(log(rf));
-        return(log(-1.0)); /* shouldn't get here */
-    }
-
+    double init(int true_gen, bool is_X_chr, bool is_female,
+                vector<int> cross_info);
+    double emit(int obs_gen, int true_gen, double error_prob, 
+                bool is_X_chr, bool is_female, vector<int> cross_info);
+    double step(int gen_left, int gen_right, double rf,
+                bool is_X_chr, bool is_female, vector<int> cross_info);
 };
 
 #endif // CROSS_BC_H
