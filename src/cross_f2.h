@@ -1,4 +1,3 @@
-// definition of F2 (intercross), for hmm-related stuff
 #ifndef CROSS_F2_H
 #define CROSS_F2_H
 
@@ -11,9 +10,12 @@ using namespace std;
 class F2 : public Cross
 {
  public:
-    F2(){ type="f2"; };
+    F2(){
+        type = "f2";
+        n_gen = 3;
+    };
     ~F2(){};
-    
+
     double init(int true_gen, vector<int> cross_scheme)
     {
         if(true_gen==2) return(-log(0.5)); /* ln(0.5) */
@@ -61,7 +63,7 @@ class F2 : public Cross
         }
         return(log(-1.0)); /* shouldn't get here */
     }
-    
+
 };
 
 #endif // CROSS_F2_H

@@ -21,15 +21,22 @@ using namespace std;
 class Cross
 {
 public:
+    int n_gen;
     string type;
 
-    virtual double init(int true_gen, vector<int>cross_info) { return 0.0; }
+    virtual double init(int true_gen, vector<int>cross_info) {
+        return 0.0;
+    }
 
-    virtual double emit(int obs_gen, int true_gen, 
-                        double error_prob, vector<int>cross_scheme) { return 0.0; }
+    virtual double emit(int obs_gen, int true_gen, double error_prob,
+                        vector<int>cross_scheme) {
+        return 0.0;
+    }
 
     virtual double step(int gen1, int gen2, double rf,
-                        vector<int>cross_scheme) { return 0.0; }
+                        vector<int>cross_scheme) {
+        return 0.0;
+    }
 
     static Cross* Create(string type);
 };

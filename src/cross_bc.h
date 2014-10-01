@@ -1,4 +1,3 @@
-// definition of BC (backcross), for hmm-related stuff
 #ifndef CROSS_BC_H
 #define CROSS_BC_H
 
@@ -9,7 +8,10 @@
 class BC : public Cross
 {
  public:
-    BC(){ type="bc"; };
+    BC(){
+        type = "bc";
+        n_gen=2;
+    };
     ~BC(){};
 
     double init(int true_gen, vector<int> cross_scheme)
@@ -35,7 +37,7 @@ class BC : public Cross
         else return(log(rf));
         return(log(-1.0)); /* shouldn't get here */
     }
-    
+
 };
 
 #endif // CROSS_BC_H
