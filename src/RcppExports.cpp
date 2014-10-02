@@ -137,36 +137,6 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
-// permute_nvector
-NumericVector permute_nvector(const NumericVector x);
-RcppExport SEXP qtl2_permute_nvector(SEXP xSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP );
-        NumericVector __result = permute_nvector(x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// permute_ivector
-IntegerVector permute_ivector(const IntegerVector x);
-RcppExport SEXP qtl2_permute_ivector(SEXP xSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const IntegerVector >::type x(xSEXP );
-        IntegerVector __result = permute_ivector(x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
 // get_permutation
 IntegerVector get_permutation(const int n);
 RcppExport SEXP qtl2_get_permutation(SEXP nSEXP) {
@@ -182,16 +152,32 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
-// get_permutations
-NumericMatrix get_permutations(const int n, NumericVector x);
-RcppExport SEXP qtl2_get_permutations(SEXP nSEXP, SEXP xSEXP) {
+// permute_nvector
+NumericMatrix permute_nvector(const int n, const NumericVector x);
+RcppExport SEXP qtl2_permute_nvector(SEXP nSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< const int >::type n(nSEXP );
-        Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP );
-        NumericMatrix __result = get_permutations(n, x);
+        Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP );
+        NumericMatrix __result = permute_nvector(n, x);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// permute_ivector
+IntegerMatrix permute_ivector(const int n, const IntegerVector x);
+RcppExport SEXP qtl2_permute_ivector(SEXP nSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const int >::type n(nSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector >::type x(xSEXP );
+        IntegerMatrix __result = permute_ivector(n, x);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

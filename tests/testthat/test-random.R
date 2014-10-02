@@ -17,37 +17,31 @@ test_that("random_int looks correct", {
 test_that("permutations look correct", {
 
     set.seed(701777)
-    n.runs <- 10
+    n_runs <- 10
     size <- 100
     x <- runif(size)
     # random permutations of x
-    result1 <- replicate(n.runs, permute_nvector(x))
+    result1 <- permute_nvector(n_runs, x)
     # same stuff after sorting?
     sorted1 <- apply(result1, 2, sort)
     sortedx <- sort(x)
-    for(i in 1:n.runs)
+    for(i in 1:n_runs)
         expect_equal(sorted1[,i], sortedx)
 
     set.seed(40451392)
     x <- 1:size
     # random permutations of x
-    result2 <- replicate(n.runs, permute_ivector(x))
+    result2 <- permute_ivector(n_runs, x)
     # same stuff after sorting?
     sorted2 <- apply(result2, 2, sort)
-    for(i in 1:n.runs)
+    for(i in 1:n_runs)
         expect_equal(sorted2[,i], x)
 
     set.seed(40451392)
     # random permutations of 0:(size-1)
-    result3 <- replicate(n.runs, get_permutation(size))
+    result3 <- replicate(n_runs, get_permutation(size))
     # same stuff as result above?
-    for(i in 1:n.runs)
+    for(i in 1:n_runs)
         expect_equal(result2[,i], result3[,i]+1)
-
-    set.seed(701777)
-    x <- runif(size)
-    result4 <- get_permutations(n.runs, x)
-    for(i in 1:n.runs)
-        expect_equal(result1[,i], result4[,i])
 
 })

@@ -33,19 +33,15 @@ random_int <- function(n, low, high) {
     .Call('qtl2_random_int', PACKAGE = 'qtl2', n, low, high)
 }
 
-permute_nvector <- function(x) {
-    .Call('qtl2_permute_nvector', PACKAGE = 'qtl2', x)
-}
-
-permute_ivector <- function(x) {
-    .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', x)
-}
-
 get_permutation <- function(n) {
     .Call('qtl2_get_permutation', PACKAGE = 'qtl2', n)
 }
 
-get_permutations <- function(n, x) {
-    .Call('qtl2_get_permutations', PACKAGE = 'qtl2', n, x)
+permute_nvector <- function(n, x) {
+    .Call('qtl2_permute_nvector', PACKAGE = 'qtl2', n, x)
+}
+
+permute_ivector <- function(n, x) {
+    .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
 }
 

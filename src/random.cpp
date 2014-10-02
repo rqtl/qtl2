@@ -22,7 +22,6 @@ IntegerVector random_int(const int n, const int low, const int high)
 }
 
 // permute a vector of numbers
-// [[Rcpp::export]]
 NumericVector permute_nvector(const NumericVector x)
 {
     int n = x.size();
@@ -36,7 +35,6 @@ NumericVector permute_nvector(const NumericVector x)
 }
 
 // permute a vector of integers
-// [[Rcpp::export]]
 IntegerVector permute_ivector(const IntegerVector x)
 {
     int n = x.size();
@@ -82,7 +80,7 @@ IntegerVector get_permutation(const int n)
 
 // get a set of permutations of a vector, as columns of a matrix
 // [[Rcpp::export]]
-NumericMatrix get_permutations(const int n, NumericVector x)
+NumericMatrix permute_nvector(const int n, const NumericVector x)
 {
     int length = x.size();
 
@@ -95,3 +93,20 @@ NumericMatrix get_permutations(const int n, NumericVector x)
 
     return(result);
 }
+
+// get a set of permutations of a vector, as columns of a matrix
+// [[Rcpp::export]]
+IntegerMatrix permute_ivector(const int n, const IntegerVector x)
+{
+    int length = x.size();
+
+    IntegerMatrix result(length,n);
+
+    for(int i=0; i<n; i++) {
+        IntegerVector permx = permute_ivector(x);
+        std::copy(permx.begin(), permx.end(), result.begin()+i*length);
+    }
+
+    return(result);
+}
+

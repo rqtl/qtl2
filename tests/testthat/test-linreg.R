@@ -135,7 +135,7 @@ test_that("lin regr works for multiple columns", {
     y <- 30 + 0.5*x + rnorm(n, 0, 2.5)
 
     ncolY <- 10
-    Y <- get_permutations(10, y)
+    Y <- permute_nvector(10, y)
 
     lm.rss <- colSums(lm.fit(X, Y)$resid^2)
 
@@ -152,7 +152,7 @@ test_that("lin regr works for multiple columns, reduced-rank X", {
                      f2 = gl(3, 2, labels = letters[1:3]))[-(7:8), ]
     mm <- model.matrix(~ f1*f2, dd)
     y <- mm %*% seq_len(ncol(mm)) + rnorm(nrow(mm), sd = 0.1)
-    Y <- get_permutations(10, y)
+    Y <- permute_nvector(10, y)
 
     lm.rss <- colSums(lm.fit(mm, Y)$resid^2)
 
