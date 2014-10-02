@@ -24,6 +24,8 @@ class F2 : public Cross
     double step(int gen_left, int gen_right, double rec_frac, 
                 bool is_X_chr, bool is_female,
                 vector<int> cross_info);
+    vector<int> geno(bool is_X_chr, bool is_female,
+                     vector <int>cross_info);
 };
 
 #endif // CROSS_F2_H
