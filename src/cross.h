@@ -25,6 +25,12 @@ public:
 
     static Cross* Create(string type);
 
+    virtual bool check_geno(int gen, bool is_observed_value,
+                            bool is_X_chr, bool is_female, 
+                            vector<int> cross_info) {
+        return false;
+    }
+
     virtual double init(int true_gen,
                         bool is_X_chr, bool is_female,
                         vector<int>cross_info) {
@@ -45,6 +51,11 @@ public:
 
     virtual vector<int> geno(bool is_X_chr, bool is_female,
                              vector<int> cross_info) {
+        vector<int> x(0);
+        return x;
+    }
+
+    virtual vector<int> allgeno(bool is_X_chr) {
         vector<int> x(0);
         return x;
     }
@@ -76,6 +87,10 @@ public:
     virtual vector<int> genoPK(bool is_X_chr, bool is_female,
                                vector<int> cross_info) {
         return geno(is_X_chr, is_female, cross_info);
+    }
+
+    virtual vector<int> allgenoPK(bool is_X_chr) {
+        return allgeno(is_X_chr);
     }
 };
 
