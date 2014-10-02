@@ -45,3 +45,15 @@ permute_ivector <- function(n, x) {
     .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
 }
 
+test_init <- function(crosstype, true_geno, is_X_chr, is_female, cross_info, phase_known = FALSE) {
+    .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_geno, is_X_chr, is_female, cross_info, phase_known)
+}
+
+test_emit <- function(crosstype, obs_geno, true_geno, error_prob, is_X_chr, is_female, cross_info, phase_known = FALSE) {
+    .Call('qtl2_test_emit', PACKAGE = 'qtl2', crosstype, obs_geno, true_geno, error_prob, is_X_chr, is_female, cross_info, phase_known)
+}
+
+test_step <- function(crosstype, geno_left, geno_right, rec_frac, is_X_chr, is_female, cross_info, phase_known = FALSE) {
+    .Call('qtl2_test_step', PACKAGE = 'qtl2', crosstype, geno_left, geno_right, rec_frac, is_X_chr, is_female, cross_info, phase_known)
+}
+
