@@ -6,8 +6,8 @@
 //     - add if statement within Cross::Create function below
 //
 // to create a Cross instance using a string with cross type:
-//     Cross* cross1 = Cross::Create("f2");
-// or  Cross  cross1 = *(Cross::Create("f2"));
+//     Cross* cross = Cross::Create("f2");
+// then refer to functions like cross->init()
 
 #ifndef CROSS_H
 #define CROSS_H
