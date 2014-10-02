@@ -32,10 +32,10 @@ bool F2::check_genoPK(int gen, bool is_observed_value,
                 if(forward_direction && (gen==AA || gen==AB)) return true;
                 if(!forward_direction && (gen==AB || gen==BB)) return true;
             }
-            else if(gen==A || gen==B) return true;
+            else if(gen==AY || gen==BY) return true;
         }
         else { // autosome
-            if(gen==A || gen==H || gen==B) return true;
+            if(gen==AA || gen==AB || gen==BA || gen==BB) return true;
         }
 
     }
