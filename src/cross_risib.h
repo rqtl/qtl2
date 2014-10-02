@@ -1,17 +1,17 @@
-#ifndef CROSS_BC_H
-#define CROSS_BC_H
+#ifndef CROSS_RISIB_H
+#define CROSS_RISIB_H
 
 #include <vector>
 #include <math.h>
 #include "cross.h"
 
-class BC : public Cross
+class RIsib : public Cross
 {
  public:
-    BC(){
-        type = "bc";
+    RIsib(){
+        type = "risib";
     };
-    ~BC(){};
+    ~RIsib(){};
 
     double init(int true_gen, bool is_X_chr, bool is_female,
                 vector<int> cross_info);
@@ -23,4 +23,4 @@ class BC : public Cross
                      vector <int>cross_info);
 };
 
-#endif // CROSS_BC_H
+#endif // CROSS_RISIB_H

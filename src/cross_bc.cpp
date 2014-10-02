@@ -1,4 +1,5 @@
 #include <math.h>
+#include <Rcpp.h>
 #include "cross.h"
 
 double BC::init(int true_gen, bool is_X_chr, bool is_female,
@@ -17,16 +18,18 @@ double BC::emit(int obs_gen, int true_gen, double error_prob,
         if(obs_gen==true_gen) return(log(1.0-error_prob));
         else return(log(error_prob));
     }
+    Rcpp::exception("invalid obs_gen or true_gen");
     return(0.0); /* shouldn't get here */
 }
 
 
-double BC::step(int gen_left, int gen_right, double rf, 
+double BC::step(int gen_left, int gen_right, double rec_frac, 
                 bool is_X_chr, bool is_female,
                 vector<int> cross_info)
 {
-    if(gen_left==gen_right) return(log(1.0-rf));
-    else return(log(rf));
+    if(gen_left==gen_right) return(log(1.0-rec_frac));
+    else return(log(rec_frac));
+    Rcpp::exception("invalid genotypes");
     return(log(-1.0)); /* shouldn't get here */
 }
 

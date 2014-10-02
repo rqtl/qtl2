@@ -21,7 +21,7 @@ class F2 : public Cross
     double emit(int obs_gen, int true_gen, double error_prob, 
                 bool is_X_chr, bool is_female,
                 vector<int> cross_info);
-    double step(int gen_left, int gen_right, double rf, 
+    double step(int gen_left, int gen_right, double rec_frac, 
                 bool is_X_chr, bool is_female,
                 vector<int> cross_info);
 };

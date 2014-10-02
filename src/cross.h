@@ -15,7 +15,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Rcpp.h"
 
 using namespace std;
 
@@ -38,7 +37,7 @@ public:
         return 0.0;
     }
 
-    virtual double step(int gen_left, int gen_right, double rf,
+    virtual double step(int gen_left, int gen_right, double rec_frac,
                         bool is_X_chr, bool is_female,
                         vector<int> cross_info) {
         return 0.0;
@@ -68,10 +67,10 @@ public:
         return emit(obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info);
     }
 
-    virtual double stepPK(int gen_left, int gen_right, double rf,
+    virtual double stepPK(int gen_left, int gen_right, double rec_frac,
                         bool is_X_chr, bool is_female,
                         vector<int> cross_info) {
-        return step(gen_left, gen_right, rf, is_X_chr, is_female, cross_info);
+        return step(gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info);
     }
 
     virtual vector<int> genoPK(bool is_X_chr, bool is_female,
@@ -82,5 +81,7 @@ public:
 
 #include "cross_f2.h"
 #include "cross_bc.h"
+#include "cross_risib.h"
+#include "cross_riself.h"
 
 #endif // CROSS.H

@@ -1,4 +1,5 @@
 #include <math.h>
+#include <Rcpp.h>
 #include "cross.h"
 
 double F2::init(int true_gen, 
@@ -6,7 +7,10 @@ double F2::init(int true_gen,
                 vector<int> cross_info)
 {
     if(true_gen==2) return(-log(0.5)); /* ln(0.5) */
-    else return(-2.0*log(0.5)); /* ln(0.25) */
+    if(true_gen==1 || true_gen==3) return(-2.0*log(0.5)); /* ln(0.25) */
+
+    Rcpp::exception("invalid genotype");
+    return(0.0); /* can't get here */
 }
 
 double F2::emit(int obs_gen, int true_gen, double error_prob, 
@@ -25,32 +29,34 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
         if(true_gen != 1) return(log(1.0-error_prob/2.0));
         else return(log(error_prob));
     }
+    Rcpp::exception("invalid obs_gen or true_gen");
     return(0.0); /* shouldn't get here */
 }
 
 
-double F2::step(int gen_left, int gen_right, double rf, 
+double F2::step(int gen_left, int gen_right, double rec_frac, 
                 bool is_X_chr, bool is_female,
                 vector<int> cross_info)
 {
     switch(gen_left) {
     case 1:
         switch(gen_right) {
-        case 1: return(2.0*log(1.0-rf));
-        case 2: return(log(0.5)+log(1.0-rf)+log(rf));
-        case 3: return(2.0*log(rf));
+        case 1: return(2.0*log(1.0-rec_frac));
+        case 2: return(log(0.5)+log(1.0-rec_frac)+log(rec_frac));
+        case 3: return(2.0*log(rec_frac));
         }
     case 2:
         switch(gen_right) {
-        case 1: case 3: return(log(rf)+log(1.0-rf));
-        case 2: return(log((1.0-rf)*(1.0-rf)+rf*rf));
+        case 1: case 3: return(log(rec_frac)+log(1.0-rec_frac));
+        case 2: return(log((1.0-rec_frac)*(1.0-rec_frac)+rec_frac*rec_frac));
         }
     case 3:
         switch(gen_right) {
-        case 1: return(2.0*log(rf));
-        case 2: return(log(0.5)+log(1.0-rf)+log(rf));
-        case 3: return(2.0*log(1.0-rf));
+        case 1: return(2.0*log(rec_frac));
+        case 2: return(log(0.5)+log(1.0-rec_frac)+log(rec_frac));
+        case 3: return(2.0*log(1.0-rec_frac));
         }
     }
+    Rcpp::exception("invalid genotypes.");
     return(log(-1.0)); /* shouldn't get here */
 }
