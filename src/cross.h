@@ -49,15 +49,14 @@ public:
         return 0.0;
     }
 
-    virtual vector<int> geno(bool is_X_chr, bool is_female,
-                             vector<int> cross_info) {
+    virtual vector<int> allgeno(bool is_X_chr) {
         vector<int> x(0);
         return x;
     }
 
-    virtual vector<int> allgeno(bool is_X_chr) {
-        vector<int> x(0);
-        return x;
+    virtual vector<int> geno(bool is_X_chr, bool is_female,
+                             vector<int> cross_info) {
+        return allgeno(is_X_chr);
     }
 
     virtual double nrec(int gen_left, int gen_right,
@@ -86,7 +85,7 @@ public:
 
     virtual vector<int> genoPK(bool is_X_chr, bool is_female,
                                vector<int> cross_info) {
-        return geno(is_X_chr, is_female, cross_info);
+        return allgeno(is_X_chr);
     }
 
     virtual vector<int> allgenoPK(bool is_X_chr) {
