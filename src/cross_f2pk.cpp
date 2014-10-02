@@ -40,7 +40,7 @@ bool F2::check_genoPK(int gen, bool is_observed_value,
 
     }
 
-    Rcpp::exception("Invalid genotype");
+    throw std::range_error("Invalid genotype");
     return false; // can't get here
 }
 
@@ -123,7 +123,7 @@ double F2::emitPK(int obs_gen, int true_gen, double error_prob,
         }
     }
 
-    Rcpp::exception("invalid obs_gen or true_gen");
+    throw std::range_error("invalid obs_gen or true_gen");
     return NA_REAL; // can't get here
 }
 
@@ -162,7 +162,7 @@ double F2::stepPK(int gen_left, int gen_right, double rec_frac,
         }
     }
 
-    Rcpp::exception("invalid genotypes.");
+    throw std::range_error("invalid genotypes.");
     return NA_REAL; // can't get here
 }
 
@@ -237,6 +237,6 @@ double F2::nrec(int gen_left, int gen_right,
         }
     }
 
-    Rcpp::exception("invalid genotypes.");
+    throw std::range_error("invalid genotypes.");
     return NA_REAL; // can't get here
 }

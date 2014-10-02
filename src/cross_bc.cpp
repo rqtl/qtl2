@@ -13,17 +13,17 @@ bool BC::check_geno(int gen, bool is_observed_value,
 
     if(!is_X_chr || (is_X_chr && is_female)) {
         if(gen != AA && gen != AB)
-            Rcpp::exception("genotype value not allowed");
+            throw std::range_error("genotype value not allowed");
     }
     else { // male X chr
         if(gen != AY && gen != BY)
-            Rcpp::exception("genotype value not allowed");
+            throw std::range_error("genotype value not allowed");
     }
 
     return true;
-}                     
+}
 
-double BC::init(int true_gen, 
+double BC::init(int true_gen,
                 bool is_X_chr, bool is_female, vector<int> cross_info)
 {
     check_geno(true_gen, true, is_X_chr, is_female, cross_info);

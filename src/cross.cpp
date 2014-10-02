@@ -8,6 +8,6 @@ Cross* Cross::Create(string type)
     if(type=="risib") return new RIsib();
     if(type=="riself") return new RIself();
 
-    Rcpp::exception("cross type not yet supported."); 
+    throw std::range_error("cross type not yet supported."); 
     return NULL;
 }

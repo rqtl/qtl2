@@ -14,7 +14,7 @@ bool RIself::check_geno(int gen, bool is_observed_value,
 
     if(gen==AA || gen==BB) return(true);
 
-    Rcpp::exception("invalid genotype");
+    throw std::range_error("invalid genotype");
     return false; // can't get here
 }
 

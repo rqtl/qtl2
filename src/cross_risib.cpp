@@ -13,7 +13,7 @@ bool RIsib::check_geno(int gen, bool is_observed_value,
     if(is_observed_value && gen==NA) return true;
 
     if(gen != AA && gen != BB)
-        Rcpp::exception("genotype not allowed.");
+        throw std::range_error("genotype not allowed.");
 
     return true;
 }
