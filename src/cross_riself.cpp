@@ -15,7 +15,7 @@ bool RIself::check_geno(int gen, bool is_observed_value,
     if(gen==AA || gen==BB) return(true);
 
     Rcpp::exception("invalid genotype");
-    return NA_LOGICAL;
+    return false; // can't get here
 }
 
 double RIself::init(int true_gen, bool ignored1, bool ignored2,
