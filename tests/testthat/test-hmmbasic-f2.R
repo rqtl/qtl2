@@ -254,60 +254,167 @@ test_that("intercross emit works", {
     eps <- 0.01
     for(i in 1:3)
         expect_equal(test_emit("f2", 0, i, eps, FALSE, FALSE, 0), 0)
+
     expect_equal(test_emit("f2", 1, 1, eps, FALSE, FALSE, 0), log(1-eps))
     expect_equal(test_emit("f2", 2, 1, eps, FALSE, FALSE, 0), log(eps/2))
     expect_equal(test_emit("f2", 3, 1, eps, FALSE, FALSE, 0), log(eps/2))
     expect_equal(test_emit("f2", 4, 1, eps, FALSE, FALSE, 0), log(1-eps/2))
     expect_equal(test_emit("f2", 5, 1, eps, FALSE, FALSE, 0), log(eps))
+
     expect_equal(test_emit("f2", 1, 2, eps, FALSE, FALSE, 0), log(eps/2))
     expect_equal(test_emit("f2", 2, 2, eps, FALSE, FALSE, 0), log(1-eps))
     expect_equal(test_emit("f2", 3, 2, eps, FALSE, FALSE, 0), log(eps/2))
     expect_equal(test_emit("f2", 4, 2, eps, FALSE, FALSE, 0), log(1-eps/2))
     expect_equal(test_emit("f2", 5, 2, eps, FALSE, FALSE, 0), log(1-eps/2))
+
     expect_equal(test_emit("f2", 1, 3, eps, FALSE, FALSE, 0), log(eps/2))
     expect_equal(test_emit("f2", 2, 3, eps, FALSE, FALSE, 0), log(eps/2))
     expect_equal(test_emit("f2", 3, 3, eps, FALSE, FALSE, 0), log(1-eps))
     expect_equal(test_emit("f2", 4, 3, eps, FALSE, FALSE, 0), log(eps))
     expect_equal(test_emit("f2", 5, 3, eps, FALSE, FALSE, 0), log(1-eps/2))
+
     # X female forward
     for(i in 1:2)
         expect_equal(test_emit("f2", 0, i, eps, TRUE, TRUE, 0), 0)
+
     expect_equal(test_emit("f2", 1, 1, eps, TRUE, TRUE, 0), log(1-eps))
     expect_equal(test_emit("f2", 2, 1, eps, TRUE, TRUE, 0), log(eps))
-    expect_error(test_emit("f2", 3, 1, eps, TRUE, TRUE, 0))
+    expect_equal(test_emit("f2", 3, 1, eps, TRUE, TRUE, 0), 0)
     expect_equal(test_emit("f2", 4, 1, eps, TRUE, TRUE, 0), 0)
     expect_equal(test_emit("f2", 5, 1, eps, TRUE, TRUE, 0), log(eps))
+
     expect_equal(test_emit("f2", 1, 2, eps, TRUE, TRUE, 0), log(eps))
     expect_equal(test_emit("f2", 2, 2, eps, TRUE, TRUE, 0), log(1-eps))
-    expect_error(test_emit("f2", 3, 2, eps, TRUE, TRUE, 0))
-    expect_equal(test_emit("f2", 4, 2, eps, TRUE, TRUE, 0), log(eps))
-    expect_equal(test_emit("f2", 5, 2, eps, TRUE, TRUE, 0), 0)
+    expect_equal(test_emit("f2", 3, 2, eps, TRUE, TRUE, 0), 0)
+    expect_equal(test_emit("f2", 4, 2, eps, TRUE, TRUE, 0), 0)
+    expect_equal(test_emit("f2", 5, 2, eps, TRUE, TRUE, 0), log(1-eps))
+
     # X female reverse
     for(i in 2:3)
-        expect_equal(test_emit("f2", 0, i, eps, TRUE, TRUE, 0), 0)
-    expect_error(test_emit("f2", 1, 3, eps, TRUE, TRUE, 0))
-    expect_equal(test_emit("f2", 2, 3, eps, TRUE, TRUE, 0), log(eps))
-    expect_equal(test_emit("f2", 3, 3, eps, TRUE, TRUE, 0), log(1-eps))
-    expect_equal(test_emit("f2", 4, 3, eps, TRUE, TRUE, 0), 0)
-    expect_equal(test_emit("f2", 5, 3, eps, TRUE, TRUE, 0), log(eps))
-    expect_equal(test_emit("f2", 1, 2, eps, TRUE, TRUE, 0), log(eps))
-    expect_equal(test_emit("f2", 2, 2, eps, TRUE, TRUE, 0), log(1-eps))
-    expect_error(test_emit("f2", 3, 2, eps, TRUE, TRUE, 0))
-    expect_equal(test_emit("f2", 4, 2, eps, TRUE, TRUE, 0), log(eps))
-    expect_equal(test_emit("f2", 5, 2, eps, TRUE, TRUE, 0), 0)
+        expect_equal(test_emit("f2", 0, i, eps, TRUE, TRUE, 1), 0)
+    expect_equal(test_emit("f2", 1, 3, eps, TRUE, TRUE, 1), 0)
+    expect_equal(test_emit("f2", 2, 3, eps, TRUE, TRUE, 1), log(eps))
+    expect_equal(test_emit("f2", 3, 3, eps, TRUE, TRUE, 1), log(1-eps))
+    expect_equal(test_emit("f2", 4, 3, eps, TRUE, TRUE, 1), log(eps))
+    expect_equal(test_emit("f2", 5, 3, eps, TRUE, TRUE, 1), 0)
+    expect_equal(test_emit("f2", 1, 2, eps, TRUE, TRUE, 1), 0)
+    expect_equal(test_emit("f2", 2, 2, eps, TRUE, TRUE, 1), log(1-eps))
+    expect_equal(test_emit("f2", 3, 2, eps, TRUE, TRUE, 1), log(eps))
+    expect_equal(test_emit("f2", 4, 2, eps, TRUE, TRUE, 1), log(1-eps))
+    expect_equal(test_emit("f2", 5, 2, eps, TRUE, TRUE, 1), 0)
+
     # X male
     for(i in c(1,3))
         expect_equal(test_emit("f2", 0, i, eps, TRUE, FALSE, 0), 0)
     expect_equal(test_emit("f2", 1, 1, eps, TRUE, FALSE, 0), log(1-eps))
-    expect_error(test_emit("f2", 2, 1, eps, TRUE, FALSE, 0))
+    expect_equal(test_emit("f2", 2, 1, eps, TRUE, FALSE, 0), 0)
     expect_equal(test_emit("f2", 3, 1, eps, TRUE, FALSE, 0), log(eps))
     expect_equal(test_emit("f2", 4, 1, eps, TRUE, FALSE, 0), log(1-eps))
     expect_equal(test_emit("f2", 5, 1, eps, TRUE, FALSE, 0), log(eps))
     expect_equal(test_emit("f2", 1, 3, eps, TRUE, FALSE, 0), log(eps))
-    expect_error(test_emit("f2", 2, 3, eps, TRUE, FALSE, 0))
+    expect_equal(test_emit("f2", 2, 3, eps, TRUE, FALSE, 0), 0)
     expect_equal(test_emit("f2", 3, 3, eps, TRUE, FALSE, 0), log(1-eps))
     expect_equal(test_emit("f2", 4, 3, eps, TRUE, FALSE, 0), log(eps))
     expect_equal(test_emit("f2", 5, 3, eps, TRUE, FALSE, 0), log(1-eps))
+
+    # X male reverse
+    for(i in c(1,3))
+        expect_equal(test_emit("f2", 0, i, eps, TRUE, FALSE, 1), 0)
+    expect_equal(test_emit("f2", 1, 1, eps, TRUE, FALSE, 1), log(1-eps))
+    expect_equal(test_emit("f2", 2, 1, eps, TRUE, FALSE, 1), 0)
+    expect_equal(test_emit("f2", 3, 1, eps, TRUE, FALSE, 1), log(eps))
+    expect_equal(test_emit("f2", 4, 1, eps, TRUE, FALSE, 1), log(1-eps))
+    expect_equal(test_emit("f2", 5, 1, eps, TRUE, FALSE, 1), log(eps))
+    expect_equal(test_emit("f2", 1, 3, eps, TRUE, FALSE, 1), log(eps))
+    expect_equal(test_emit("f2", 2, 3, eps, TRUE, FALSE, 1), 0)
+    expect_equal(test_emit("f2", 3, 3, eps, TRUE, FALSE, 1), log(1-eps))
+    expect_equal(test_emit("f2", 4, 3, eps, TRUE, FALSE, 1), log(eps))
+    expect_equal(test_emit("f2", 5, 3, eps, TRUE, FALSE, 1), log(1-eps))
+
+    # phase-known
+    # autosome
+    eps <- 0.02
+    for(i in 1:4)
+        expect_equal(test_emit("f2", 0, i, eps, FALSE, FALSE, 0, TRUE), 0)
+
+    expect_equal(test_emit("f2", 1, 1, eps, FALSE, FALSE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 2, 1, eps, FALSE, FALSE, 0, TRUE), log(eps/2))
+    expect_equal(test_emit("f2", 3, 1, eps, FALSE, FALSE, 0, TRUE), log(eps/2))
+    expect_equal(test_emit("f2", 4, 1, eps, FALSE, FALSE, 0, TRUE), log(1-eps/2))
+    expect_equal(test_emit("f2", 5, 1, eps, FALSE, FALSE, 0, TRUE), log(eps))
+
+    for(i in 2:3) {
+        expect_equal(test_emit("f2", 1, i, eps, FALSE, FALSE, 0, TRUE), log(eps/2))
+        expect_equal(test_emit("f2", 2, i, eps, FALSE, FALSE, 0, TRUE), log(1-eps))
+        expect_equal(test_emit("f2", 3, i, eps, FALSE, FALSE, 0, TRUE), log(eps/2))
+        expect_equal(test_emit("f2", 4, i, eps, FALSE, FALSE, 0, TRUE), log(1-eps/2))
+        expect_equal(test_emit("f2", 5, i, eps, FALSE, FALSE, 0, TRUE), log(1-eps/2))
+    }
+
+    expect_equal(test_emit("f2", 1, 4, eps, FALSE, FALSE, 0, TRUE), log(eps/2))
+    expect_equal(test_emit("f2", 2, 4, eps, FALSE, FALSE, 0, TRUE), log(eps/2))
+    expect_equal(test_emit("f2", 3, 4, eps, FALSE, FALSE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 4, 4, eps, FALSE, FALSE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 5, 4, eps, FALSE, FALSE, 0, TRUE), log(1-eps/2))
+
+    # X female forward
+    for(i in 1:2)
+        expect_equal(test_emit("f2", 0, i, eps, TRUE, TRUE, 0, TRUE), 0)
+
+    expect_equal(test_emit("f2", 1, 1, eps, TRUE, TRUE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 2, 1, eps, TRUE, TRUE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 3, 1, eps, TRUE, TRUE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 4, 1, eps, TRUE, TRUE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 5, 1, eps, TRUE, TRUE, 0, TRUE), log(eps))
+
+    expect_equal(test_emit("f2", 1, 2, eps, TRUE, TRUE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 2, 2, eps, TRUE, TRUE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 3, 2, eps, TRUE, TRUE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 4, 2, eps, TRUE, TRUE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 5, 2, eps, TRUE, TRUE, 0, TRUE), log(1-eps))
+
+    # X female reverse
+    for(i in 3:4)
+        expect_equal(test_emit("f2", 0, i, eps, TRUE, TRUE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 1, 4, eps, TRUE, TRUE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 2, 4, eps, TRUE, TRUE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 3, 4, eps, TRUE, TRUE, 1, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 4, 4, eps, TRUE, TRUE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 5, 4, eps, TRUE, TRUE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 1, 3, eps, TRUE, TRUE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 2, 3, eps, TRUE, TRUE, 1, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 3, 3, eps, TRUE, TRUE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 4, 3, eps, TRUE, TRUE, 1, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 5, 3, eps, TRUE, TRUE, 1, TRUE), 0)
+
+    # X male
+    for(i in c(1,4))
+        expect_equal(test_emit("f2", 0, i, eps, TRUE, FALSE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 1, 1, eps, TRUE, FALSE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 2, 1, eps, TRUE, FALSE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 3, 1, eps, TRUE, FALSE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 4, 1, eps, TRUE, FALSE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 5, 1, eps, TRUE, FALSE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 1, 4, eps, TRUE, FALSE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 2, 4, eps, TRUE, FALSE, 0, TRUE), 0)
+    expect_equal(test_emit("f2", 3, 4, eps, TRUE, FALSE, 0, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 4, 4, eps, TRUE, FALSE, 0, TRUE), log(eps))
+    expect_equal(test_emit("f2", 5, 4, eps, TRUE, FALSE, 0, TRUE), log(1-eps))
+
+    # X male reverse
+    for(i in c(1,4))
+        expect_equal(test_emit("f2", 0, i, eps, TRUE, FALSE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 1, 1, eps, TRUE, FALSE, 1, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 2, 1, eps, TRUE, FALSE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 3, 1, eps, TRUE, FALSE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 4, 1, eps, TRUE, FALSE, 1, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 5, 1, eps, TRUE, FALSE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 1, 4, eps, TRUE, FALSE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 2, 4, eps, TRUE, FALSE, 1, TRUE), 0)
+    expect_equal(test_emit("f2", 3, 4, eps, TRUE, FALSE, 1, TRUE), log(1-eps))
+    expect_equal(test_emit("f2", 4, 4, eps, TRUE, FALSE, 1, TRUE), log(eps))
+    expect_equal(test_emit("f2", 5, 4, eps, TRUE, FALSE, 1, TRUE), log(1-eps))
+
 
 ######################################################################
 # finished here, but still some problems above
@@ -316,55 +423,6 @@ test_that("intercross emit works", {
 # genotype for either sex or direction, but treat invalid ones as NA
 # (no need to throw error)
 ######################################################################
-
-    # phase-known
-    eps <- 0.001
-    expect_equal(test_emit("f2", 0, 1, eps, FALSE, FALSE, 0, TRUE), 0)
-    expect_equal(test_emit("f2", 0, 2, eps, FALSE, FALSE, 0, TRUE), 0)
-    expect_equal(test_emit("f2", 1, 1, eps, FALSE, FALSE, 0, TRUE), log(1-eps))
-    expect_equal(test_emit("f2", 1, 2, eps, FALSE, FALSE, 0, TRUE), log(eps))
-    expect_equal(test_emit("f2", 2, 1, eps, FALSE, FALSE, 0, TRUE), log(eps))
-    expect_equal(test_emit("f2", 2, 2, eps, FALSE, FALSE, 0, TRUE), log(1-eps))
-    # X female
-    expect_equal(test_emit("f2", 0, 1, eps, TRUE, TRUE, 0, TRUE), 0)
-    expect_equal(test_emit("f2", 0, 2, eps, TRUE, TRUE, 0, TRUE), 0)
-    expect_equal(test_emit("f2", 1, 1, eps, TRUE, TRUE, 0, TRUE), log(1-eps))
-    expect_equal(test_emit("f2", 1, 2, eps, TRUE, TRUE, 0, TRUE), log(eps))
-    expect_equal(test_emit("f2", 2, 1, eps, TRUE, TRUE, 0, TRUE), log(eps))
-    expect_equal(test_emit("f2", 2, 2, eps, TRUE, TRUE, 0, TRUE), log(1-eps))
-    # X male
-    expect_equal(test_emit("f2", 0, 1, eps, TRUE, FALSE, 0, TRUE), 0)
-    expect_equal(test_emit("f2", 0, 3, eps, TRUE, FALSE, 0, TRUE), 0)
-    expect_equal(test_emit("f2", 1, 1, eps, TRUE, FALSE, 0, TRUE), log(1-eps))
-    expect_equal(test_emit("f2", 1, 3, eps, TRUE, FALSE, 0, TRUE), log(eps))
-    expect_equal(test_emit("f2", 3, 1, eps, TRUE, FALSE, 0, TRUE), log(eps))
-    expect_equal(test_emit("f2", 3, 3, eps, TRUE, FALSE, 0, TRUE), log(1-eps))
-
-    # errors
-    expect_error(test_emit("f2", 0, 0, eps, FALSE, FALSE, 0))
-    expect_error(test_emit("f2", 0, 3, eps, FALSE, FALSE, 0))
-    expect_error(test_emit("f2", 3, 1, eps, FALSE, FALSE, 0))
-    # X female
-    expect_error(test_emit("f2", 0, 0, eps, TRUE, TRUE, 0))
-    expect_error(test_emit("f2", 0, 3, eps, TRUE, TRUE, 0))
-    expect_error(test_emit("f2", 3, 1, eps, TRUE, TRUE, 0))
-    # X male
-    expect_error(test_emit("f2", 0, 0, eps, TRUE, FALSE, 0))
-    expect_error(test_emit("f2", 0, 2, eps, TRUE, FALSE, 0))
-    expect_error(test_emit("f2", 2, 1, eps, TRUE, FALSE, 0))
-
-    # errors
-    expect_error(test_emit("f2", 0, 0, eps, FALSE, FALSE, 0, TRUE))
-    expect_error(test_emit("f2", 0, 3, eps, FALSE, FALSE, 0, TRUE))
-    expect_error(test_emit("f2", 3, 1, eps, FALSE, FALSE, 0, TRUE))
-    # X female
-    expect_error(test_emit("f2", 0, 0, eps, TRUE, TRUE, 0, TRUE))
-    expect_error(test_emit("f2", 0, 3, eps, TRUE, TRUE, 0, TRUE))
-    expect_error(test_emit("f2", 3, 1, eps, TRUE, TRUE, 0, TRUE))
-    # X male
-    expect_error(test_emit("f2", 0, 0, eps, TRUE, FALSE, 0, TRUE))
-    expect_error(test_emit("f2", 0, 2, eps, TRUE, FALSE, 0, TRUE))
-    expect_error(test_emit("f2", 2, 1, eps, TRUE, FALSE, 0, TRUE))
 
 })
 

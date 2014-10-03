@@ -59,24 +59,24 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
                 if(true_gen==AA) {
                     if(obs_gen==AA) return log(1.0-error_prob);
                     if(obs_gen==AB || obs_gen==notA) return log(error_prob);
-                    if(obs_gen==notB) return 0.0; // same as NA
+                    return 0.0; // treat everything else as NA
                 }
-                else { // AB
+                if(true_gen==AB) {
                     if(obs_gen==AB || obs_gen==notA) return log(1.0-error_prob);
                     if(obs_gen==AA) return log(error_prob);
-                    if(obs_gen==notB) return 0.0; // same as NA
+                    return 0.0; // treat everything else as NA
                 }
             }
             else {
                 if(true_gen==AB) {
                     if(obs_gen==AB || obs_gen==notB) return log(1.0-error_prob);
                     if(obs_gen==BB) return log(error_prob);
-                    if(obs_gen==notA) return 0.0; // same as NA
+                    return 0.0; // treat everything else as NA
                 }
-                else { // BB
+                if(true_gen==BB) {
                     if(obs_gen==BB) return log(1.0-error_prob);
                     if(obs_gen==AB || obs_gen==notB) return log(error_prob);
-                    if(obs_gen==notA) return 0.0; // same as NA
+                    return 0.0; // treat everything else as NA
                 }
             }
         }
@@ -84,10 +84,12 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
             if(true_gen==AY) {
                 if(obs_gen==AY || obs_gen==notB) return log(1.0-error_prob);
                 if(obs_gen==BY || obs_gen==notA) return log(error_prob);
+                return 0.0; // treat everything else as NA
             }
-            else { // BY
+            if(true_gen==BY) {
                 if(obs_gen==BY || obs_gen==notA) return log(1.0-error_prob);
                 if(obs_gen==AY || obs_gen==notB) return log(error_prob);
+                return 0.0; // treat everything else as NA
             }
         }
     }
@@ -98,12 +100,12 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
             if(obs_gen==notB) return log(1.0-error_prob/2.0);
             if(obs_gen==notA) return log(error_prob);
         }
-        else if(true_gen == AB) {
+        if(true_gen==AB) {
             if(obs_gen==AB) return log(1.0-error_prob);
             if(obs_gen==AA || obs_gen==BB) return log(error_prob/2.0);
             if(obs_gen==notB || obs_gen==notA) return log(1.0-error_prob/2.0);
         }
-        else { // BB
+        if(true_gen==BB) {
             if(obs_gen==BB) return log(1.0-error_prob);
             if(obs_gen==AB || obs_gen==AA) return log(error_prob/2.0);
             if(obs_gen==notA) return log(1.0-error_prob/2.0);
