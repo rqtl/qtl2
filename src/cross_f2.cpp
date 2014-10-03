@@ -4,7 +4,7 @@
 #include <Rcpp.h>
 #include "cross.h"
 
-enum gen {NA=0, AA=1, AB=2, BB=3, notB=4, notA=5, AY=1, BY=3};
+enum gen {NA=0, AA=1, AB=2, BB=3, notA=5, notB=4, AY=1, BY=3};
 
 bool F2::check_geno(int gen, bool is_observed_value,
                     bool is_X_chr, bool is_female, vector<int> cross_info)
