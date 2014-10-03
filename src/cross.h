@@ -91,7 +91,7 @@ public:
 
     virtual vector<int> genoPK(bool is_X_chr, bool is_female,
                                vector<int> cross_info) {
-        return allgeno(is_X_chr);
+        return geno(is_X_chr, is_female, cross_info);
     }
 
     virtual vector<int> allgenoPK(bool is_X_chr) {
