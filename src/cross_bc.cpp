@@ -26,7 +26,7 @@ bool BC::check_geno(int gen, bool is_observed_value,
 double BC::init(int true_gen,
                 bool is_X_chr, bool is_female, vector<int> cross_info)
 {
-    check_geno(true_gen, true, is_X_chr, is_female, cross_info);
+    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
     return log(0.5);
 }
