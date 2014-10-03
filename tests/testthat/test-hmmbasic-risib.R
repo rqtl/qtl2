@@ -215,7 +215,7 @@ test_that("risib step works", {
     expect_equal(test_step("risib", 1, 2, rf, FALSE, FALSE, 0), log(RF))
     expect_equal(test_step("risib", 2, 1, rf, FALSE, FALSE, 0), log(RF))
     expect_equal(test_step("risib", 2, 2, rf, FALSE, FALSE, 0), log(1-RF))
-    # X chr
+    # X chr (see table 3 in Broman, Genetics 169:1133-1146, 2005)
     t11 <- (1+2*rf)/(1+4*rf)
     t12 <- 2*rf/(1+4*rf)
     t21 <- 4*rf/(1+4*rf)
