@@ -1,5 +1,10 @@
 ## ToDo list for qtl2
 
+- how to initialize a numericmatrix with 0's?
+- have forward/backward equations just create the appropriate part of
+  the alphas/betas; deal with incomplete no. genotypes only in
+  calc_genoprob/est_map
+
 - read data (in "tidy" CSV format)
   - control file
   - genotypes
