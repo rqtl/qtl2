@@ -20,7 +20,7 @@ test_that("riself n_geno works", {
 
 test_that("riself geno_index works", {
 
-    expect_equal(test_possible_gen("riself", FALSE, FALSE, numeric(0)), 0:1)
+    expect_equal(test_possible_gen("riself", FALSE, FALSE, numeric(0)), 1:2)
 
 })
 

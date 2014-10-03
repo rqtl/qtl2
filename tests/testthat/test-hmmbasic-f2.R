@@ -65,15 +65,15 @@ test_that("intercross n_geno works", {
 test_that("intercross geno_index works", {
 
     # autosome
-    expect_equal(test_possible_gen("f2", FALSE, FALSE, 0), 0:2)
+    expect_equal(test_possible_gen("f2", FALSE, FALSE, 0), 1:3)
     # X female forward
-    expect_equal(test_possible_gen("f2", TRUE, TRUE, 0), 0:1)
+    expect_equal(test_possible_gen("f2", TRUE, TRUE, 0), 1:2)
     # X female reverse
-    expect_equal(test_possible_gen("f2", TRUE, TRUE, 1), 1:2)
+    expect_equal(test_possible_gen("f2", TRUE, TRUE, 1), 2:3)
     # X male
-    expect_equal(test_possible_gen("f2", TRUE, FALSE, 0), c(0,2))
+    expect_equal(test_possible_gen("f2", TRUE, FALSE, 0), c(1,3))
     # X male reverse
-    expect_equal(test_possible_gen("f2", TRUE, FALSE, 1), c(0,2))
+    expect_equal(test_possible_gen("f2", TRUE, FALSE, 1), c(1,3))
 
 })
 

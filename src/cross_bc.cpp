@@ -59,12 +59,12 @@ IntegerVector BC::possible_gen(bool is_X_chr, bool is_female,
                                IntegerVector cross_info)
 {
     if(!is_X_chr || (is_X_chr && is_female)) {
-        int vals[] = {AA-1,AB-1};
+        int vals[] = {AA,AB};
         IntegerVector result(vals, vals+2);
         return result;
     }
     else {
-        int vals[] = {AY-1,BY-1};
+        int vals[] = {AY,BY};
         IntegerVector result(vals, vals+2);
         return result;
     }

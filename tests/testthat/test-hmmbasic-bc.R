@@ -47,11 +47,11 @@ test_that("backcross n_geno works", {
 test_that("backcross geno_index works", {
 
     # autosome
-    expect_equal(test_possible_gen("bc", FALSE, FALSE, numeric(0)), 0:1)
+    expect_equal(test_possible_gen("bc", FALSE, FALSE, numeric(0)), 1:2)
     # X female
-    expect_equal(test_possible_gen("bc", TRUE, TRUE, numeric(0)), 0:1)
+    expect_equal(test_possible_gen("bc", TRUE, TRUE, numeric(0)), 1:2)
     # X male
-    expect_equal(test_possible_gen("bc", TRUE, FALSE, numeric(0)), c(0,2))
+    expect_equal(test_possible_gen("bc", TRUE, FALSE, numeric(0)), c(1,3))
 
 })
 

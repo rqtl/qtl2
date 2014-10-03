@@ -45,11 +45,11 @@ test_that("risib n_geno works", {
 test_that("risib geno_index works", {
 
     # autosome
-    expect_equal(test_possible_gen("risib", FALSE, FALSE, 0), 0:1)
+    expect_equal(test_possible_gen("risib", FALSE, FALSE, 0), 1:2)
     # X chr
-    expect_equal(test_possible_gen("risib", TRUE, TRUE, 0), 0:1)
+    expect_equal(test_possible_gen("risib", TRUE, TRUE, 0), 1:2)
     # X chr reverse
-    expect_equal(test_possible_gen("risib", TRUE, TRUE, 1), 0:1)
+    expect_equal(test_possible_gen("risib", TRUE, TRUE, 1), 1:2)
 
 })
 

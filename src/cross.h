@@ -59,7 +59,7 @@ public:
                                        IntegerVector cross_info) {
         int ng = ngen(is_X_chr);
         IntegerVector x(ng);
-        for(int i=0; i<ng; i++) x[i] = i;
+        for(int i=0; i<ng; i++) x[i] = i+1;
         return x;
     }
 

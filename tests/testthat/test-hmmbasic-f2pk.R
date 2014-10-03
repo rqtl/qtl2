@@ -64,11 +64,11 @@ test_that("p-k intercross n_geno works", {
 
 test_that("p-k intercross geno_index works", {
 
-    expect_equal(test_possible_gen("f2pk", FALSE, FALSE, 0), 0:3)
-    expect_equal(test_possible_gen("f2pk", TRUE, TRUE, 0), 0:1)
-    expect_equal(test_possible_gen("f2pk", TRUE, TRUE, 1), 2:3)
-    expect_equal(test_possible_gen("f2pk", TRUE, FALSE, 0), c(0,3))
-    expect_equal(test_possible_gen("f2pk", TRUE, FALSE, 1), c(0,3))
+    expect_equal(test_possible_gen("f2pk", FALSE, FALSE, 0), 1:4)
+    expect_equal(test_possible_gen("f2pk", TRUE, TRUE, 0), 1:2)
+    expect_equal(test_possible_gen("f2pk", TRUE, TRUE, 1), 3:4)
+    expect_equal(test_possible_gen("f2pk", TRUE, FALSE, 0), c(1,4))
+    expect_equal(test_possible_gen("f2pk", TRUE, FALSE, 1), c(1,4))
 })
 
 

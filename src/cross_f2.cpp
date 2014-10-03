@@ -160,24 +160,24 @@ IntegerVector F2::possible_gen(bool is_X_chr, bool is_female,
         bool is_forward_direction = (cross_info[0]==0);
         if(is_female) {
             if(is_forward_direction) {
-                int vals[] = {AA-1,AB-1};
+                int vals[] = {AA,AB};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
             else {
-                int vals[] = {AB-1,BB-1};
+                int vals[] = {AB,BB};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
         }
         else { // male
-            int vals[] = {AA-1,BB-1};
+            int vals[] = {AA,BB};
             IntegerVector result(vals, vals+2);
             return result;
         }
     }
     else { // autosome
-        int vals[] = {AA-1,AB-1,BB-1};
+        int vals[] = {AA,AB,BB};
         IntegerVector result(vals, vals+3);
         return result;
     }
