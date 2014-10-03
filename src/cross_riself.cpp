@@ -47,7 +47,7 @@ double RIself::step(int gen_left, int gen_right, double rec_frac,
     else return log(R);
 }
 
-int RIself::n_geno(bool ignored1)
+int RIself::ngen(bool ignored1)
 {
     return 2;
 }

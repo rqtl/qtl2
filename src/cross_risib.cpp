@@ -102,7 +102,7 @@ double RIsib::step(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-int RIsib::n_geno(bool is_X_chr)
+int RIsib::ngen(bool is_X_chr)
 {
     return 2;
 }

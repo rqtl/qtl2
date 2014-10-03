@@ -6,6 +6,22 @@
 
 using namespace Rcpp;
 
+// addlog
+double addlog(const double a, const double b);
+RcppExport SEXP qtl2_addlog(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const double >::type a(aSEXP );
+        Rcpp::traits::input_parameter< const double >::type b(bSEXP );
+        double __result = addlog(a, b);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix X, const NumericVector y);
 RcppExport SEXP qtl2_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
@@ -265,9 +281,9 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
-// test_geno_index
-IntegerVector test_geno_index(String crosstype, bool is_X_chr, bool is_female, IntegerVector cross_info);
-RcppExport SEXP qtl2_test_geno_index(SEXP crosstypeSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+// test_possible_gen
+IntegerVector test_possible_gen(String crosstype, bool is_X_chr, bool is_female, IntegerVector cross_info);
+RcppExport SEXP qtl2_test_possible_gen(SEXP crosstypeSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -276,23 +292,23 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
         Rcpp::traits::input_parameter< bool >::type is_female(is_femaleSEXP );
         Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP );
-        IntegerVector __result = test_geno_index(crosstype, is_X_chr, is_female, cross_info);
+        IntegerVector __result = test_possible_gen(crosstype, is_X_chr, is_female, cross_info);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
     return __sexp_result;
 END_RCPP
 }
-// test_n_geno
-int test_n_geno(String crosstype, bool is_X_chr);
-RcppExport SEXP qtl2_test_n_geno(SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
+// test_ngen
+int test_ngen(String crosstype, bool is_X_chr);
+RcppExport SEXP qtl2_test_ngen(SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
         Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
-        int __result = test_n_geno(crosstype, is_X_chr);
+        int __result = test_ngen(crosstype, is_X_chr);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

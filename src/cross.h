@@ -51,13 +51,13 @@ public:
         return 0.0;
     }
 
-    virtual int n_geno(bool is_X_chr) {
+    virtual int ngen(bool is_X_chr) {
         return 0;
     }
 
-    virtual IntegerVector geno_index(bool is_X_chr, bool is_female,
-                             IntegerVector cross_info) {
-        int ng = n_geno(is_X_chr);
+    virtual IntegerVector possible_gen(bool is_X_chr, bool is_female,
+                                       IntegerVector cross_info) {
+        int ng = ngen(is_X_chr);
         IntegerVector x(ng);
         for(int i=0; i<ng; i++) x[i] = i;
         return x;

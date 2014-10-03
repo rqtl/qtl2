@@ -164,8 +164,8 @@ double F2PK::step(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-IntegerVector F2PK::geno_index(bool is_X_chr, bool is_female,
-                               IntegerVector cross_info)
+IntegerVector F2PK::possible_gen(bool is_X_chr, bool is_female,
+                                 IntegerVector cross_info)
 {
     if(is_X_chr) {
         bool is_forward_direction = (cross_info[0]==0);
@@ -194,7 +194,7 @@ IntegerVector F2PK::geno_index(bool is_X_chr, bool is_female,
     }
 }
 
-int F2PK::n_geno(bool is_X_chr)
+int F2PK::ngen(bool is_X_chr)
 {
     return 4;
 }

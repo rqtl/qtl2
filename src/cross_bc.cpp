@@ -55,8 +55,8 @@ double BC::step(int gen_left, int gen_right, double rec_frac,
     else return log(rec_frac);
 }
 
-IntegerVector BC::geno_index(bool is_X_chr, bool is_female,
-                       IntegerVector cross_info)
+IntegerVector BC::possible_gen(bool is_X_chr, bool is_female,
+                               IntegerVector cross_info)
 {
     if(!is_X_chr || (is_X_chr && is_female)) {
         int vals[] = {AA-1,AB-1};
@@ -70,7 +70,7 @@ IntegerVector BC::geno_index(bool is_X_chr, bool is_female,
     }
 }
 
-int BC::n_geno(bool is_X_chr)
+int BC::ngen(bool is_X_chr)
 {
     if(is_X_chr) return 3;
     return 2;

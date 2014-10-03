@@ -15,12 +15,12 @@ test_that("riself check_geno works", {
 })
 
 test_that("riself n_geno works", {
-    expect_equal(test_n_geno("riself", FALSE), 2)
+    expect_equal(test_ngen("riself", FALSE), 2)
 })
 
 test_that("riself geno_index works", {
 
-    expect_equal(test_geno_index("riself", FALSE, FALSE, numeric(0)), 0:1)
+    expect_equal(test_possible_gen("riself", FALSE, FALSE, numeric(0)), 0:1)
 
 })
 

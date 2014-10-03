@@ -49,20 +49,20 @@ bool test_check_geno(String crosstype, int gen, bool is_observed_value,
 }
 
 // [[Rcpp::export]]
-IntegerVector test_geno_index(String crosstype,
-                              bool is_X_chr, bool is_female, IntegerVector cross_info)
+IntegerVector test_possible_gen(String crosstype,
+                                bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     Cross* cross = Cross::Create(crosstype);
 
-    return wrap(cross->geno_index(is_X_chr, is_female, cross_info));
+    return wrap(cross->possible_gen(is_X_chr, is_female, cross_info));
 }
 
 // [[Rcpp::export]]
-int test_n_geno(String crosstype, bool is_X_chr)
+int test_ngen(String crosstype, bool is_X_chr)
 {
     Cross* cross = Cross::Create(crosstype);
 
-    return cross->n_geno(is_X_chr);
+    return cross->ngen(is_X_chr);
 }
 
 // [[Rcpp::export]]

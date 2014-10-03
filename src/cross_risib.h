@@ -20,7 +20,7 @@ class RIsib : public Cross
     double step(int gen_left, int gen_right, double rec_frac,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
 
-    int n_geno(bool is_X_chr);
+    int ngen(bool is_X_chr);
 
     double nrec(int gen_left, int gen_right,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);

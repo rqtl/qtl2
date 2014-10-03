@@ -153,8 +153,8 @@ double F2::step(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-IntegerVector F2::geno_index(bool is_X_chr, bool is_female,
-                       IntegerVector cross_info)
+IntegerVector F2::possible_gen(bool is_X_chr, bool is_female,
+                               IntegerVector cross_info)
 {
     if(is_X_chr) {
         bool is_forward_direction = (cross_info[0]==0);
@@ -183,7 +183,7 @@ IntegerVector F2::geno_index(bool is_X_chr, bool is_female,
     }
 }
 
-int F2::n_geno(bool is_X_chr)
+int F2::ngen(bool is_X_chr)
 {
     return 3;
 }
