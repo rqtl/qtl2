@@ -94,8 +94,8 @@ IntegerVector test_allgeno(String crosstype, bool is_X_chr, bool phase_known=fal
 }
 
 // [[Rcpp::export]]
-IntegerVector test_nrec(String crosstype, int gen_left, int gen_right,
-                        bool is_X_chr, bool is_female, IntegerVector cross_info)
+double test_nrec(String crosstype, int gen_left, int gen_right,
+                 bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     Cross* cross = Cross::Create(crosstype);
 

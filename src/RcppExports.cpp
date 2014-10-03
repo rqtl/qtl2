@@ -306,7 +306,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_nrec
-IntegerVector test_nrec(String crosstype, int gen_left, int gen_right, bool is_X_chr, bool is_female, IntegerVector cross_info);
+double test_nrec(String crosstype, int gen_left, int gen_right, bool is_X_chr, bool is_female, IntegerVector cross_info);
 RcppExport SEXP qtl2_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
@@ -318,7 +318,7 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
         Rcpp::traits::input_parameter< bool >::type is_female(is_femaleSEXP );
         Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP );
-        IntegerVector __result = test_nrec(crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info);
+        double __result = test_nrec(crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
