@@ -57,3 +57,19 @@ test_step <- function(crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_fem
     .Call('qtl2_test_step', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info, phase_known)
 }
 
+test_check_geno <- function(crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info, phase_known = FALSE) {
+    .Call('qtl2_test_check_geno', PACKAGE = 'qtl2', crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info, phase_known)
+}
+
+test_geno <- function(crosstype, is_X_chr, is_female, cross_info, phase_known = FALSE) {
+    .Call('qtl2_test_geno', PACKAGE = 'qtl2', crosstype, is_X_chr, is_female, cross_info, phase_known)
+}
+
+test_allgeno <- function(crosstype, is_X_chr, phase_known = FALSE) {
+    .Call('qtl2_test_allgeno', PACKAGE = 'qtl2', crosstype, is_X_chr, phase_known)
+}
+
+test_nrec <- function(crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info) {
+    .Call('qtl2_test_nrec', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info)
+}
+

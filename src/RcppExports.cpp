@@ -248,3 +248,80 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// test_check_geno
+bool test_check_geno(String crosstype, int gen, bool is_observed_value, bool is_X_chr, bool is_female, IntegerVector cross_info, bool phase_known = false);
+RcppExport SEXP qtl2_test_check_geno(SEXP crosstypeSEXP, SEXP genSEXP, SEXP is_observed_valueSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP phase_knownSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< int >::type gen(genSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_observed_value(is_observed_valueSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< bool >::type phase_known(phase_knownSEXP );
+        bool __result = test_check_geno(crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info, phase_known);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// test_geno
+IntegerVector test_geno(String crosstype, bool is_X_chr, bool is_female, IntegerVector cross_info, bool phase_known = false);
+RcppExport SEXP qtl2_test_geno(SEXP crosstypeSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP phase_knownSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< bool >::type phase_known(phase_knownSEXP );
+        IntegerVector __result = test_geno(crosstype, is_X_chr, is_female, cross_info, phase_known);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// test_allgeno
+IntegerVector test_allgeno(String crosstype, bool is_X_chr, bool phase_known = false);
+RcppExport SEXP qtl2_test_allgeno(SEXP crosstypeSEXP, SEXP is_X_chrSEXP, SEXP phase_knownSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< bool >::type phase_known(phase_knownSEXP );
+        IntegerVector __result = test_allgeno(crosstype, is_X_chr, phase_known);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// test_nrec
+IntegerVector test_nrec(String crosstype, int gen_left, int gen_right, bool is_X_chr, bool is_female, IntegerVector cross_info);
+RcppExport SEXP qtl2_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< int >::type gen_left(gen_leftSEXP );
+        Rcpp::traits::input_parameter< int >::type gen_right(gen_rightSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP );
+        IntegerVector __result = test_nrec(crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
