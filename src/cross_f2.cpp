@@ -134,7 +134,7 @@ double F2::step(int gen_left, int gen_right, double rec_frac,
         case AA:
             switch(gen_right) {
             case AA: return 2.0*log(1.0-rec_frac);
-            case AB: return log(0.5)+log(1.0-rec_frac)+log(rec_frac);
+            case AB: return log(2.0)+log(1.0-rec_frac)+log(rec_frac);
             case BB: return 2.0*log(rec_frac);
             }
         case AB:
@@ -145,7 +145,7 @@ double F2::step(int gen_left, int gen_right, double rec_frac,
         case BB:
             switch(gen_right) {
             case AA: return 2.0*log(rec_frac);
-            case AB: return log(0.5)+log(1.0-rec_frac)+log(rec_frac);
+            case AB: return log(2.0)+log(1.0-rec_frac)+log(rec_frac);
             case BB: return 2.0*log(1.0-rec_frac);
             }
         }
