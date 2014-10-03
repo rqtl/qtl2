@@ -11,33 +11,23 @@ enum gen {NA=0, AA=1, AB=2, BA=3, BB=4,
 bool F2::check_genoPK(int gen, bool is_observed_value,
                       bool is_X_chr, bool is_female, vector<int> cross_info)
 {
+    // allow any value 0-5 or observed
     if(is_observed_value) {
-        if(gen==NA || gen==notA || gen==notB) return true;
-        if(is_X_chr) {
-            bool forward_direction = (cross_info[0]==0);
-            if(is_female) {
-                if(forward_direction && (gen==A || gen==H)) return true;
-                if(!forward_direction && (gen==H || gen==B)) return true;
-            }
-            else if(gen==A || gen==B) return true;
-        }
-        else { // autosome
-            if(gen==A || gen==H || gen==B) return true;
-        }
+        if(gen==NA || gen==A || gen==H || gen==B ||
+           gen==notA || gen==notB) return true;
+        throw std::range_error("Invalid observed genotype");
     }
-    else {
-        if(is_X_chr) {
-            bool forward_direction = (cross_info[0]==0);
-            if(is_female) {
-                if(forward_direction && (gen==AA || gen==AB)) return true;
-                if(!forward_direction && (gen==BA || gen==BB)) return true;
-            }
-            else if(gen==AY || gen==BY) return true;
-        }
-        else { // autosome
-            if(gen==AA || gen==AB || gen==BA || gen==BB) return true;
-        }
 
+    if(is_X_chr) {
+        bool forward_direction = (cross_info[0]==0);
+        if(is_female) {
+            if(forward_direction && (gen==AA || gen==AB)) return true;
+            if(!forward_direction && (gen==BA || gen==BB)) return true;
+        }
+        else if(gen==AY || gen==BY) return true;
+    }
+    else { // autosome
+        if(gen==AA || gen==AB || gen==BA || gen==BB) return true;
     }
 
     throw std::range_error("Invalid genotype");

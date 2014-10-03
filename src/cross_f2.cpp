@@ -9,7 +9,12 @@ enum gen {NA=0, AA=1, AB=2, BB=3, notA=5, notB=4, AY=1, BY=3};
 bool F2::check_geno(int gen, bool is_observed_value,
                     bool is_X_chr, bool is_female, vector<int> cross_info)
 {
-    if(is_observed_value && (gen==NA || gen==notA || gen==notB)) return true;
+    // allow any value 0-5 for observed
+    if(is_observed_value) {
+        if(gen==NA || gen==AA || gen==AB || gen==BB || 
+           gen==notA || gen==notB) return true;
+        throw std::range_error("Invalid observed genotype");
+    }
 
     if(is_X_chr) {
         bool forward_direction = (cross_info[0]==0);
