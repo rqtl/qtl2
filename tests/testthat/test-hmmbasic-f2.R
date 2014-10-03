@@ -415,83 +415,131 @@ test_that("intercross emit works", {
     expect_equal(test_emit("f2", 4, 4, eps, TRUE, FALSE, 1, TRUE), log(eps))
     expect_equal(test_emit("f2", 5, 4, eps, TRUE, FALSE, 1, TRUE), log(1-eps))
 
-
-######################################################################
-# finished here, but still some problems above
-#
-# for X chromosome in intercross, I think we could allow any observed
-# genotype for either sex or direction, but treat invalid ones as NA
-# (no need to throw error)
-######################################################################
-
 })
 
 test_that("intercross step works", {
 
     # autosome
     rf <- 0.01
-    expect_equal(test_step("f2", 1, 1, rf, FALSE, FALSE, 0), log(1-rf))
-    expect_equal(test_step("f2", 1, 2, rf, FALSE, FALSE, 0), log(rf))
-    expect_equal(test_step("f2", 2, 1, rf, FALSE, FALSE, 0), log(rf))
-    expect_equal(test_step("f2", 2, 2, rf, FALSE, FALSE, 0), log(1-rf))
+    expect_equal(test_step("f2", 1, 1, rf, FALSE, FALSE, 0), log((1-rf)^2))
+    expect_equal(test_step("f2", 1, 2, rf, FALSE, FALSE, 0), log(2*rf*(1-rf)))
+    expect_equal(test_step("f2", 1, 3, rf, FALSE, FALSE, 0), log(rf^2))
+    expect_equal(test_step("f2", 2, 1, rf, FALSE, FALSE, 0), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 2, 2, rf, FALSE, FALSE, 0), log((1-rf)^2+rf^2))
+    expect_equal(test_step("f2", 2, 3, rf, FALSE, FALSE, 0), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 3, 1, rf, FALSE, FALSE, 0), log(rf^2))
+    expect_equal(test_step("f2", 3, 2, rf, FALSE, FALSE, 0), log(2*rf*(1-rf)))
+    expect_equal(test_step("f2", 3, 3, rf, FALSE, FALSE, 0), log((1-rf)^2))
     # X female
     expect_equal(test_step("f2", 1, 1, rf, TRUE, TRUE, 0), log(1-rf))
     expect_equal(test_step("f2", 1, 2, rf, TRUE, TRUE, 0), log(rf))
     expect_equal(test_step("f2", 2, 1, rf, TRUE, TRUE, 0), log(rf))
     expect_equal(test_step("f2", 2, 2, rf, TRUE, TRUE, 0), log(1-rf))
+    # X female reverse
+    expect_equal(test_step("f2", 3, 3, rf, TRUE, TRUE, 1), log(1-rf))
+    expect_equal(test_step("f2", 3, 2, rf, TRUE, TRUE, 1), log(rf))
+    expect_equal(test_step("f2", 2, 3, rf, TRUE, TRUE, 1), log(rf))
+    expect_equal(test_step("f2", 2, 2, rf, TRUE, TRUE, 1), log(1-rf))
     # X male
     expect_equal(test_step("f2", 1, 1, rf, TRUE, FALSE, 0), log(1-rf))
     expect_equal(test_step("f2", 1, 3, rf, TRUE, FALSE, 0), log(rf))
     expect_equal(test_step("f2", 3, 1, rf, TRUE, FALSE, 0), log(rf))
     expect_equal(test_step("f2", 3, 3, rf, TRUE, FALSE, 0), log(1-rf))
+    # X male reverse
+    expect_equal(test_step("f2", 1, 1, rf, TRUE, FALSE, 1), log(1-rf))
+    expect_equal(test_step("f2", 1, 3, rf, TRUE, FALSE, 1), log(rf))
+    expect_equal(test_step("f2", 3, 1, rf, TRUE, FALSE, 1), log(rf))
+    expect_equal(test_step("f2", 3, 3, rf, TRUE, FALSE, 1), log(1-rf))
 
     # phase-known
     rf <- 0.15
-    expect_equal(test_step("f2", 1, 1, rf, FALSE, FALSE, 0, TRUE), log(1-rf))
-    expect_equal(test_step("f2", 1, 2, rf, FALSE, FALSE, 0, TRUE), log(rf))
-    expect_equal(test_step("f2", 2, 1, rf, FALSE, FALSE, 0, TRUE), log(rf))
-    expect_equal(test_step("f2", 2, 2, rf, FALSE, FALSE, 0, TRUE), log(1-rf))
+    expect_equal(test_step("f2", 1, 1, rf, FALSE, FALSE, 0, TRUE), log((1-rf)^2))
+    expect_equal(test_step("f2", 1, 2, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 1, 3, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 1, 4, rf, FALSE, FALSE, 0, TRUE), log(rf^2))
+    expect_equal(test_step("f2", 2, 1, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 2, 2, rf, FALSE, FALSE, 0, TRUE), log((1-rf)^2))
+    expect_equal(test_step("f2", 2, 3, rf, FALSE, FALSE, 0, TRUE), log(rf^2))
+    expect_equal(test_step("f2", 2, 4, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 3, 1, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 3, 2, rf, FALSE, FALSE, 0, TRUE), log(rf^2))
+    expect_equal(test_step("f2", 3, 3, rf, FALSE, FALSE, 0, TRUE), log((1-rf)^2))
+    expect_equal(test_step("f2", 3, 4, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 4, 1, rf, FALSE, FALSE, 0, TRUE), log(rf^2))
+    expect_equal(test_step("f2", 4, 2, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 4, 3, rf, FALSE, FALSE, 0, TRUE), log(rf*(1-rf)))
+    expect_equal(test_step("f2", 4, 4, rf, FALSE, FALSE, 0, TRUE), log((1-rf)^2))
     # X female
     expect_equal(test_step("f2", 1, 1, rf, TRUE, TRUE, 0, TRUE), log(1-rf))
     expect_equal(test_step("f2", 1, 2, rf, TRUE, TRUE, 0, TRUE), log(rf))
     expect_equal(test_step("f2", 2, 1, rf, TRUE, TRUE, 0, TRUE), log(rf))
     expect_equal(test_step("f2", 2, 2, rf, TRUE, TRUE, 0, TRUE), log(1-rf))
+    # X female reverse
+    expect_equal(test_step("f2", 3, 3, rf, TRUE, TRUE, 1, TRUE), log(1-rf))
+    expect_equal(test_step("f2", 3, 4, rf, TRUE, TRUE, 1, TRUE), log(rf))
+    expect_equal(test_step("f2", 4, 3, rf, TRUE, TRUE, 1, TRUE), log(rf))
+    expect_equal(test_step("f2", 4, 4, rf, TRUE, TRUE, 1, TRUE), log(1-rf))
     # X male
     expect_equal(test_step("f2", 1, 1, rf, TRUE, FALSE, 0, TRUE), log(1-rf))
-    expect_equal(test_step("f2", 1, 3, rf, TRUE, FALSE, 0, TRUE), log(rf))
-    expect_equal(test_step("f2", 3, 1, rf, TRUE, FALSE, 0, TRUE), log(rf))
-    expect_equal(test_step("f2", 3, 3, rf, TRUE, FALSE, 0, TRUE), log(1-rf))
+    expect_equal(test_step("f2", 1, 4, rf, TRUE, FALSE, 0, TRUE), log(rf))
+    expect_equal(test_step("f2", 4, 1, rf, TRUE, FALSE, 0, TRUE), log(rf))
+    expect_equal(test_step("f2", 4, 4, rf, TRUE, FALSE, 0, TRUE), log(1-rf))
+    # X male reverse
+    expect_equal(test_step("f2", 1, 1, rf, TRUE, FALSE, 1, TRUE), log(1-rf))
+    expect_equal(test_step("f2", 1, 4, rf, TRUE, FALSE, 1, TRUE), log(rf))
+    expect_equal(test_step("f2", 4, 1, rf, TRUE, FALSE, 1, TRUE), log(rf))
+    expect_equal(test_step("f2", 4, 4, rf, TRUE, FALSE, 1, TRUE), log(1-rf))
 
     # errors
     expect_error(test_step("f2", 0, 1, rf, FALSE, FALSE, 0))
     expect_error(test_step("f2", 1, 0, rf, FALSE, FALSE, 0))
-    expect_error(test_step("f2", 3, 1, rf, FALSE, FALSE, 0))
-    expect_error(test_step("f2", 2, 3, rf, FALSE, FALSE, 0))
+    expect_error(test_step("f2", 4, 1, rf, FALSE, FALSE, 0))
+    expect_error(test_step("f2", 2, 4, rf, FALSE, FALSE, 0))
     # X female
     expect_error(test_step("f2", 0, 1, rf, TRUE, TRUE, 0))
     expect_error(test_step("f2", 1, 0, rf, TRUE, TRUE, 0))
     expect_error(test_step("f2", 3, 1, rf, TRUE, TRUE, 0))
     expect_error(test_step("f2", 2, 3, rf, TRUE, TRUE, 0))
+    # X female reverse
+    expect_error(test_step("f2", 0, 1, rf, TRUE, TRUE, 1))
+    expect_error(test_step("f2", 1, 0, rf, TRUE, TRUE, 1))
+    expect_error(test_step("f2", 1, 1, rf, TRUE, TRUE, 1))
+    expect_error(test_step("f2", 2, 1, rf, TRUE, TRUE, 1))
     # X male
     expect_error(test_step("f2", 0, 1, rf, TRUE, FALSE, 0))
     expect_error(test_step("f2", 1, 0, rf, TRUE, FALSE, 0))
     expect_error(test_step("f2", 2, 1, rf, TRUE, FALSE, 0))
-    expect_error(test_step("f2", 3, 2, rf, TRUE, FALSE, 0))
+    expect_error(test_step("f2", 4, 2, rf, TRUE, FALSE, 0))
+    # X male reverse
+    expect_error(test_step("f2", 0, 1, rf, TRUE, FALSE, 1))
+    expect_error(test_step("f2", 1, 0, rf, TRUE, FALSE, 1))
+    expect_error(test_step("f2", 2, 1, rf, TRUE, FALSE, 1))
+    expect_error(test_step("f2", 4, 2, rf, TRUE, FALSE, 1))
 
-    # phase-known
+    # errors
     expect_error(test_step("f2", 0, 1, rf, FALSE, FALSE, 0, TRUE))
     expect_error(test_step("f2", 1, 0, rf, FALSE, FALSE, 0, TRUE))
-    expect_error(test_step("f2", 3, 1, rf, FALSE, FALSE, 0, TRUE))
-    expect_error(test_step("f2", 2, 3, rf, FALSE, FALSE, 0, TRUE))
+    expect_error(test_step("f2", 5, 1, rf, FALSE, FALSE, 0, TRUE))
+    expect_error(test_step("f2", 2, 5, rf, FALSE, FALSE, 0, TRUE))
     # X female
     expect_error(test_step("f2", 0, 1, rf, TRUE, TRUE, 0, TRUE))
     expect_error(test_step("f2", 1, 0, rf, TRUE, TRUE, 0, TRUE))
     expect_error(test_step("f2", 3, 1, rf, TRUE, TRUE, 0, TRUE))
     expect_error(test_step("f2", 2, 3, rf, TRUE, TRUE, 0, TRUE))
+    # X female reverse
+    expect_error(test_step("f2", 0, 1, rf, TRUE, TRUE, 1, TRUE))
+    expect_error(test_step("f2", 1, 0, rf, TRUE, TRUE, 1, TRUE))
+    expect_error(test_step("f2", 1, 1, rf, TRUE, TRUE, 1, TRUE))
+    expect_error(test_step("f2", 2, 2, rf, TRUE, TRUE, 1, TRUE))
     # X male
     expect_error(test_step("f2", 0, 1, rf, TRUE, FALSE, 0, TRUE))
     expect_error(test_step("f2", 1, 0, rf, TRUE, FALSE, 0, TRUE))
     expect_error(test_step("f2", 2, 1, rf, TRUE, FALSE, 0, TRUE))
-    expect_error(test_step("f2", 3, 2, rf, TRUE, FALSE, 0, TRUE))
+    expect_error(test_step("f2", 4, 2, rf, TRUE, FALSE, 0, TRUE))
+    # X male reverse
+    expect_error(test_step("f2", 0, 1, rf, TRUE, FALSE, 1, TRUE))
+    expect_error(test_step("f2", 1, 0, rf, TRUE, FALSE, 1, TRUE))
+    expect_error(test_step("f2", 2, 1, rf, TRUE, FALSE, 1, TRUE))
+    expect_error(test_step("f2", 4, 2, rf, TRUE, FALSE, 1, TRUE))
 
 })
