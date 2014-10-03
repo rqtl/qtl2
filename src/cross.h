@@ -23,6 +23,8 @@ class Cross
 public:
     String type;
 
+    String phase_known_type;
+
     static Cross* Create(String type);
 
     virtual bool check_geno(int gen, bool is_observed_value,
@@ -49,14 +51,16 @@ public:
         return 0.0;
     }
 
-    virtual IntegerVector allgeno(bool is_X_chr) {
-        IntegerVector x(0);
-        return x;
+    virtual int n_geno(bool is_X_chr) {
+        return 0;
     }
 
-    virtual IntegerVector geno(bool is_X_chr, bool is_female,
+    virtual IntegerVector geno_index(bool is_X_chr, bool is_female,
                              IntegerVector cross_info) {
-        return allgeno(is_X_chr);
+        int ng = n_geno(is_X_chr);
+        IntegerVector x(ng);
+        for(int i=0; i<ng; i++) x[i] = i;
+        return x;
     }
 
     virtual double nrec(int gen_left, int gen_right,
@@ -65,41 +69,10 @@ public:
         return 0.0;
     }
 
-    virtual bool check_genoPK(int gen, bool is_observed_value,
-                              bool is_X_chr, bool is_female,
-                              IntegerVector cross_info) {
-        return false;
-    }
-
-    virtual double initPK(int true_gen,
-                        bool is_X_chr, bool is_female,
-                        IntegerVector cross_info) {
-        return init(true_gen, is_X_chr, is_female, cross_info);
-    }
-
-    virtual double emitPK(int obs_gen, int true_gen, double error_prob,
-                        bool is_X_chr, bool is_female,
-                        IntegerVector cross_info) {
-        return emit(obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info);
-    }
-
-    virtual double stepPK(int gen_left, int gen_right, double rec_frac,
-                        bool is_X_chr, bool is_female,
-                        IntegerVector cross_info) {
-        return step(gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info);
-    }
-
-    virtual IntegerVector genoPK(bool is_X_chr, bool is_female,
-                               IntegerVector cross_info) {
-        return geno(is_X_chr, is_female, cross_info);
-    }
-
-    virtual IntegerVector allgenoPK(bool is_X_chr) {
-        return allgeno(is_X_chr);
-    }
 };
 
 #include "cross_f2.h"
+#include "cross_f2pk.h"
 #include "cross_bc.h"
 #include "cross_risib.h"
 #include "cross_riself.h"

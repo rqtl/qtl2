@@ -6,6 +6,7 @@ class RIself : public Cross
  public:
     RIself(){
         type = "riself";
+        phase_known_type = "riself";
     };
     ~RIself(){};
 
@@ -19,7 +20,7 @@ class RIself : public Cross
     double step(int gen_left, int gen_right, double rec_frac,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
 
-    IntegerVector allgeno(bool ignored1);
+    int n_geno(bool ignored1);
 
     double nrec(int gen_left, int gen_right,
                 bool ignored1, bool ignored2, IntegerVector ignored3);

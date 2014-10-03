@@ -47,11 +47,9 @@ double RIself::step(int gen_left, int gen_right, double rec_frac,
     else return log(R);
 }
 
-IntegerVector RIself::allgeno(bool ignored1)
+int RIself::n_geno(bool ignored1)
 {
-    int vals[] = {AA,BB};
-    IntegerVector result(vals, vals+2);
-    return result;
+    return 2;
 }
 
 double RIself::nrec(int gen_left, int gen_right,

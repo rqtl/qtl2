@@ -102,11 +102,9 @@ double RIsib::step(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-IntegerVector RIsib::allgeno(bool is_X_chr)
+int RIsib::n_geno(bool is_X_chr)
 {
-    int vals[] = {AA,BB};
-    IntegerVector result(vals, vals+2);
-    return result;
+    return 2;
 }
 
 double RIsib::nrec(int gen_left, int gen_right,

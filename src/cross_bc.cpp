@@ -55,33 +55,25 @@ double BC::step(int gen_left, int gen_right, double rec_frac,
     else return log(rec_frac);
 }
 
-IntegerVector BC::geno(bool is_X_chr, bool is_female,
+IntegerVector BC::geno_index(bool is_X_chr, bool is_female,
                        IntegerVector cross_info)
 {
     if(!is_X_chr || (is_X_chr && is_female)) {
-        int vals[] = {AA,AB};
+        int vals[] = {AA-1,AB-1};
         IntegerVector result(vals, vals+2);
         return result;
     }
     else {
-        int vals[] = {AY,BY};
+        int vals[] = {AY-1,BY-1};
         IntegerVector result(vals, vals+2);
         return result;
     }
 }
 
-IntegerVector BC::allgeno(bool is_X_chr)
+int BC::n_geno(bool is_X_chr)
 {
-    if(is_X_chr) {
-        int vals[] = {AA,AB,BY};
-        IntegerVector result(vals, vals+3);
-        return result;
-    }
-    else {
-        int vals[] = {AA,AB};
-        IntegerVector result(vals, vals+2);
-        return result;
-    }
+    if(is_X_chr) return 3;
+    return 2;
 }
 
 

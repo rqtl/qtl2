@@ -1,17 +1,17 @@
-#ifndef CROSS_RISIB_H
-#define CROSS_RISIB_H
+#ifndef CROSS_F2PK_H
+#define CROSS_F2PK_H
 
-class RIsib : public Cross
+class F2PK : public Cross
 {
  public:
-    RIsib(){
-        type = "risib";
-        phase_known_type = "risib";
+    F2PK(){
+        type = "f2pk";
+        phase_known_type = "f2pk";
     };
-    ~RIsib(){};
+    ~F2PK(){};
 
     bool check_geno(int gen, bool is_observed_value,
-                    bool is_X_chr, bool is_female, IntegerVector cross_info);
+                bool is_X_chr, bool is_female, IntegerVector cross_info);
 
     double init(int true_gen,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
@@ -20,10 +20,13 @@ class RIsib : public Cross
     double step(int gen_left, int gen_right, double rec_frac,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
 
+    IntegerVector geno_index(bool is_X_chr, bool is_female, IntegerVector cross_info);
+
     int n_geno(bool is_X_chr);
 
     double nrec(int gen_left, int gen_right,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
+
 };
 
-#endif // CROSS_RISIB_H
+#endif // CROSS_F2PK_H

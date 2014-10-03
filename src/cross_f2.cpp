@@ -153,39 +153,37 @@ double F2::step(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-IntegerVector F2::geno(bool is_X_chr, bool is_female,
+IntegerVector F2::geno_index(bool is_X_chr, bool is_female,
                        IntegerVector cross_info)
 {
     if(is_X_chr) {
         bool is_forward_direction = (cross_info[0]==0);
         if(is_female) {
             if(is_forward_direction) {
-                int vals[] = {AA,AB};
+                int vals[] = {AA-1,AB-1};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
             else {
-                int vals[] = {AB,BB};
+                int vals[] = {AB-1,BB-1};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
         }
         else { // male
-            int vals[] = {AA,BB};
+            int vals[] = {AA-1,BB-1};
             IntegerVector result(vals, vals+2);
             return result;
         }
     }
     else { // autosome
-        int vals[] = {AA,AB,BB};
+        int vals[] = {AA-1,AB-1,BB-1};
         IntegerVector result(vals, vals+3);
         return result;
     }
 }
 
-IntegerVector F2::allgeno(bool is_X_chr)
+int F2::n_geno(bool is_X_chr)
 {
-    int vals[] = {AA,AB,BB};
-    IntegerVector result(vals, vals+3);
-    return result;
+    return 3;
 }

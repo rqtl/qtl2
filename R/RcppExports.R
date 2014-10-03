@@ -45,28 +45,28 @@ permute_ivector <- function(n, x) {
     .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
 }
 
-test_init <- function(crosstype, true_gen, is_X_chr, is_female, cross_info, phase_known = FALSE) {
-    .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_gen, is_X_chr, is_female, cross_info, phase_known)
+test_init <- function(crosstype, true_gen, is_X_chr, is_female, cross_info) {
+    .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_gen, is_X_chr, is_female, cross_info)
 }
 
-test_emit <- function(crosstype, obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info, phase_known = FALSE) {
-    .Call('qtl2_test_emit', PACKAGE = 'qtl2', crosstype, obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info, phase_known)
+test_emit <- function(crosstype, obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info) {
+    .Call('qtl2_test_emit', PACKAGE = 'qtl2', crosstype, obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info)
 }
 
-test_step <- function(crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info, phase_known = FALSE) {
-    .Call('qtl2_test_step', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info, phase_known)
+test_step <- function(crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info) {
+    .Call('qtl2_test_step', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info)
 }
 
-test_check_geno <- function(crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info, phase_known = FALSE) {
-    .Call('qtl2_test_check_geno', PACKAGE = 'qtl2', crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info, phase_known)
+test_check_geno <- function(crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info) {
+    .Call('qtl2_test_check_geno', PACKAGE = 'qtl2', crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info)
 }
 
-test_geno <- function(crosstype, is_X_chr, is_female, cross_info, phase_known = FALSE) {
-    .Call('qtl2_test_geno', PACKAGE = 'qtl2', crosstype, is_X_chr, is_female, cross_info, phase_known)
+test_geno_index <- function(crosstype, is_X_chr, is_female, cross_info) {
+    .Call('qtl2_test_geno_index', PACKAGE = 'qtl2', crosstype, is_X_chr, is_female, cross_info)
 }
 
-test_allgeno <- function(crosstype, is_X_chr, phase_known = FALSE) {
-    .Call('qtl2_test_allgeno', PACKAGE = 'qtl2', crosstype, is_X_chr, phase_known)
+test_n_geno <- function(crosstype, is_X_chr) {
+    .Call('qtl2_test_n_geno', PACKAGE = 'qtl2', crosstype, is_X_chr)
 }
 
 test_nrec <- function(crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info) {

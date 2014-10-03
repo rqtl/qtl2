@@ -8,7 +8,7 @@ enum gen {GENO_NA=0, AA=1, AB=2, BA=3, BB=4,
           A=1, H=2, B=3, notB=4, notA=5,
           AY=1, BY=4};
 
-bool F2::check_genoPK(int gen, bool is_observed_value,
+bool F2PK::check_geno(int gen, bool is_observed_value,
                       bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     // allow any value 0-5 or observed
@@ -35,22 +35,22 @@ bool F2::check_genoPK(int gen, bool is_observed_value,
 }
 
 
-double F2::initPK(int true_gen,
+double F2PK::init(int true_gen,
                   bool is_X_chr, bool is_female,
                   IntegerVector cross_info)
 {
-    check_genoPK(true_gen, false, is_X_chr, is_female, cross_info);
+    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
     if(is_X_chr) return log(0.5);
     else return log(0.25);
 }
 
-double F2::emitPK(int obs_gen, int true_gen, double error_prob,
+double F2PK::emit(int obs_gen, int true_gen, double error_prob,
                   bool is_X_chr, bool is_female,
                   IntegerVector cross_info)
 {
-    check_genoPK(obs_gen, true, is_X_chr, is_female, cross_info);
-    check_genoPK(true_gen, false, is_X_chr, is_female, cross_info);
+    check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
+    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
     if(obs_gen==GENO_NA) return 0.0; // log(1.0)
 
@@ -120,12 +120,12 @@ double F2::emitPK(int obs_gen, int true_gen, double error_prob,
 }
 
 
-double F2::stepPK(int gen_left, int gen_right, double rec_frac,
+double F2PK::step(int gen_left, int gen_right, double rec_frac,
                   bool is_X_chr, bool is_female,
                   IntegerVector cross_info)
 {
-    check_genoPK(gen_left, false, is_X_chr, is_female, cross_info);
-    check_genoPK(gen_right, false, is_X_chr, is_female, cross_info);
+    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
+    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
 
     if(is_X_chr) {
         if(gen_left == gen_right) return log(1.0-rec_frac);
@@ -164,49 +164,47 @@ double F2::stepPK(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-IntegerVector F2::genoPK(bool is_X_chr, bool is_female,
-                         IntegerVector cross_info)
+IntegerVector F2PK::geno_index(bool is_X_chr, bool is_female,
+                               IntegerVector cross_info)
 {
     if(is_X_chr) {
         bool is_forward_direction = (cross_info[0]==0);
         if(is_female) {
             if(is_forward_direction) {
-                int vals[] = {AA,AB};
+                int vals[] = {AA-1,AB-1};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
             else {
-                int vals[] = {BA,BB};
+                int vals[] = {BA-1,BB-1};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
         }
         else { // male
-            int vals[] = {AA,BB};
+            int vals[] = {AA-1,BB-1};
             IntegerVector result(vals, vals+2);
             return result;
         }
     }
     else { // autosome
-        int vals[] = {AA,AB,BA,BB};
+        int vals[] = {AA-1,AB-1,BA-1,BB-1};
         IntegerVector result(vals, vals+4);
         return result;
     }
 }
 
-IntegerVector F2::allgenoPK(bool is_X_chr)
+int F2PK::n_geno(bool is_X_chr)
 {
-    int vals[] = {AA,AB,BA,BB};
-    IntegerVector result(vals, vals+4);
-    return result;
+    return 4;
 }
 
-double F2::nrec(int gen_left, int gen_right,
+double F2PK::nrec(int gen_left, int gen_right,
                 bool is_X_chr, bool is_female,
                 IntegerVector cross_info)
 {
-    check_genoPK(gen_left, false, is_X_chr, is_female, cross_info);
-    check_genoPK(gen_right, false, is_X_chr, is_female, cross_info);
+    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
+    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
 
     if(is_X_chr) {
         if(gen_left == gen_right) return 0.0;

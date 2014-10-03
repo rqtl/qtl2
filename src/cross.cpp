@@ -3,6 +3,7 @@
 Cross* Cross::Create(String type)
 {
     if(type=="f2") return new F2();
+    if(type=="f2pk") return new F2PK();
     if(type=="bc") return new BC();
     if(type=="risib") return new RIsib();
     if(type=="riself") return new RIself();
