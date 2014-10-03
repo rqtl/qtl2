@@ -30,7 +30,7 @@ bool F2::check_genoPK(int gen, bool is_observed_value,
             bool forward_direction = (cross_info[0]==0);
             if(is_female) {
                 if(forward_direction && (gen==AA || gen==AB)) return true;
-                if(!forward_direction && (gen==AB || gen==BB)) return true;
+                if(!forward_direction && (gen==BA || gen==BB)) return true;
             }
             else if(gen==AY || gen==BY) return true;
         }
@@ -191,7 +191,7 @@ vector<int> F2::genoPK(bool is_X_chr, bool is_female,
     }
     else { // autosome
         int vals[] = {AA,AB,BA,BB};
-        vector<int> result(vals, vals+3);
+        vector<int> result(vals, vals+4);
         return result;
     }
 }
@@ -227,6 +227,12 @@ double F2::nrec(int gen_left, int gen_right,
             case AA: case BB: return 1.0;
             case AB: return 0.0;
             case BA: return 2.0;
+            }
+        case BA:
+            switch(gen_right) {
+            case AA: case BB: return 1.0;
+            case BA: return 0.0;
+            case AB: return 2.0;
             }
         case BB:
             switch(gen_right) {
