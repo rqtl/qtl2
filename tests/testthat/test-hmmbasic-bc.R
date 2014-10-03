@@ -1,5 +1,5 @@
 
-context("basic HMM functions")
+context("basic HMM functions in backcross")
 
 test_that("backcross check_geno works", {
 
