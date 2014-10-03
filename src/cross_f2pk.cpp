@@ -199,7 +199,7 @@ vector<int> F2::genoPK(bool is_X_chr, bool is_female,
 vector<int> F2::allgenoPK(bool is_X_chr)
 {
     int vals[] = {AA,AB,BA,BB};
-    vector<int> result(vals, vals+3);
+    vector<int> result(vals, vals+4);
     return result;
 }
 
