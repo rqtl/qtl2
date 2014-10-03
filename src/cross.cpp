@@ -1,7 +1,6 @@
-#include <Rcpp.h>
 #include "cross.h"
 
-Cross* Cross::Create(string type)
+Cross* Cross::Create(String type)
 {
     if(type=="f2") return new F2();
     if(type=="bc") return new BC();

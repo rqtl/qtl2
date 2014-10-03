@@ -7,7 +7,7 @@
 enum gen {NA=0, AA=1, AB=2, AY=1, BY=3};
 
 bool BC::check_geno(int gen, bool is_observed_value,
-                    bool is_X_chr, bool is_female, vector<int> cross_info)
+                    bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     if(is_observed_value && gen==0) return true;
 
@@ -24,7 +24,7 @@ bool BC::check_geno(int gen, bool is_observed_value,
 }
 
 double BC::init(int true_gen,
-                bool is_X_chr, bool is_female, vector<int> cross_info)
+                bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
@@ -32,7 +32,7 @@ double BC::init(int true_gen,
 }
 
 double BC::emit(int obs_gen, int true_gen, double error_prob,
-                bool is_X_chr, bool is_female, vector<int> cross_info)
+                bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
     check_geno(true_gen, false, is_X_chr, is_female, cross_info);
@@ -46,7 +46,7 @@ double BC::emit(int obs_gen, int true_gen, double error_prob,
 
 double BC::step(int gen_left, int gen_right, double rec_frac,
                 bool is_X_chr, bool is_female,
-                vector<int> cross_info)
+                IntegerVector cross_info)
 {
     check_geno(gen_left, false, is_X_chr, is_female, cross_info);
     check_geno(gen_right, false, is_X_chr, is_female, cross_info);
@@ -55,38 +55,38 @@ double BC::step(int gen_left, int gen_right, double rec_frac,
     else return log(rec_frac);
 }
 
-vector<int> BC::geno(bool is_X_chr, bool is_female,
-                 vector <int>cross_info)
+IntegerVector BC::geno(bool is_X_chr, bool is_female,
+                       IntegerVector cross_info)
 {
     if(!is_X_chr || (is_X_chr && is_female)) {
         int vals[] = {AA,AB};
-        vector<int> result(vals, vals+2);
+        IntegerVector result(vals, vals+2);
         return result;
     }
     else {
         int vals[] = {AY,BY};
-        vector<int> result(vals, vals+2);
+        IntegerVector result(vals, vals+2);
         return result;
     }
 }
 
-vector<int> BC::allgeno(bool is_X_chr)
+IntegerVector BC::allgeno(bool is_X_chr)
 {
     if(is_X_chr) {
         int vals[] = {AA,AB,BY};
-        vector<int> result(vals, vals+3);
+        IntegerVector result(vals, vals+3);
         return result;
     }
     else {
         int vals[] = {AA,AB};
-        vector<int> result(vals, vals+2);
+        IntegerVector result(vals, vals+2);
         return result;
     }
 }
 
 
 double BC::nrec(int gen_left, int gen_right,
-                bool is_X_chr, bool is_female, vector<int> cross_info)
+                bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     check_geno(gen_left, false, is_X_chr, is_female, cross_info);
     check_geno(gen_right, false, is_X_chr, is_female, cross_info);

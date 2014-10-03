@@ -13,10 +13,8 @@ double test_init(String crosstype,
 {
     Cross* cross = Cross::Create(crosstype);
 
-    std::vector<int> ci(as<std::vector<int> >(cross_info));
-
-    if(phase_known) return cross->initPK(true_gen, is_X_chr, is_female, ci);
-    return cross->init(true_gen, is_X_chr, is_female, ci);
+    if(phase_known) return cross->initPK(true_gen, is_X_chr, is_female, cross_info);
+    return cross->init(true_gen, is_X_chr, is_female, cross_info);
 }
 
 // test emit functions from R
@@ -28,14 +26,12 @@ double test_emit(String crosstype,
 {
     Cross* cross = Cross::Create(crosstype);
 
-    std::vector<int> ci(as<std::vector<int> >(cross_info));
-
     if(phase_known)
         return cross->emitPK(obs_gen, true_gen, error_prob,
-                             is_X_chr, is_female, ci);
+                             is_X_chr, is_female, cross_info);
 
     return cross->emit(obs_gen, true_gen, error_prob,
-                       is_X_chr, is_female, ci);
+                       is_X_chr, is_female, cross_info);
 }
 
 
@@ -48,11 +44,9 @@ double test_step(String crosstype,
 {
     Cross* cross = Cross::Create(crosstype);
 
-    std::vector<int> ci(as<std::vector<int> >(cross_info));
-
     if(phase_known)
-        return cross->stepPK(gen_left, gen_right, rec_frac, is_X_chr, is_female, ci);
-    return cross->step(gen_left, gen_right, rec_frac, is_X_chr, is_female, ci);
+        return cross->stepPK(gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info);
+    return cross->step(gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info);
 }
 
 // [[Rcpp::export]]
@@ -62,11 +56,9 @@ bool test_check_geno(String crosstype, int gen, bool is_observed_value,
 {
     Cross* cross = Cross::Create(crosstype);
 
-    std::vector<int> ci(as<std::vector<int> >(cross_info));
-
     if(phase_known)
-        return cross->check_genoPK(gen, is_observed_value, is_X_chr, is_female, ci);
-    return cross->check_geno(gen, is_observed_value, is_X_chr, is_female, ci);
+        return cross->check_genoPK(gen, is_observed_value, is_X_chr, is_female, cross_info);
+    return cross->check_geno(gen, is_observed_value, is_X_chr, is_female, cross_info);
 }
 
 // [[Rcpp::export]]
@@ -76,11 +68,9 @@ IntegerVector test_geno(String crosstype,
 {
     Cross* cross = Cross::Create(crosstype);
 
-    std::vector<int> ci(as<std::vector<int> >(cross_info));
-
     if(phase_known)
-        return wrap(cross->genoPK(is_X_chr, is_female, ci));
-    return wrap(cross->geno(is_X_chr, is_female, ci));
+        return wrap(cross->genoPK(is_X_chr, is_female, cross_info));
+    return wrap(cross->geno(is_X_chr, is_female, cross_info));
 }
 
 // [[Rcpp::export]]
@@ -99,7 +89,5 @@ double test_nrec(String crosstype, int gen_left, int gen_right,
 {
     Cross* cross = Cross::Create(crosstype);
 
-    std::vector<int> ci(as<std::vector<int> >(cross_info));
-
-    return cross->nrec(gen_left, gen_right, is_X_chr, is_female, ci);
+    return cross->nrec(gen_left, gen_right, is_X_chr, is_female, cross_info);
 }
