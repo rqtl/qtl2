@@ -1,6 +1,6 @@
 ### R/qtl2
 
-[![Build Status](https://travis-ci.org/kbroman/qtl.png?branch=master)](https://travis-ci.org/kbroman/qtl)
+[![Build Status](https://travis-ci.org/kbroman/qtl2.png?branch=master)](https://travis-ci.org/kbroman/qtl2)
 
 [Karl W Broman](http://kbroman.org)
 
