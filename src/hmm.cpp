@@ -4,9 +4,6 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "hmm.h"
-#include <RcppEigen.h>
-using namespace Eigen;
-#include "debug_util.h"
 
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,

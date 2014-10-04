@@ -5,6 +5,10 @@ calc_genoprob <- function(crosstype, genotypes, is_X_chr, is_female, cross_info,
     .Call('qtl2_calc_genoprob', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
 
+est_map <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
+    .Call('qtl2_est_map', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
+}
+
 addlog <- function(a, b) {
     .Call('qtl2_addlog', PACKAGE = 'qtl2', a, b)
 }

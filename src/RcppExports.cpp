@@ -28,6 +28,30 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// est_map
+NumericVector est_map(String crosstype, IntegerMatrix genotypes, bool is_X_chr, LogicalVector is_female, IntegerMatrix cross_info, NumericVector rec_frac, double error_prob, int max_iterations, double tol, bool verbose);
+RcppExport SEXP qtl2_est_map(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type genotypes(genotypesSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< LogicalVector >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type rec_frac(rec_fracSEXP );
+        Rcpp::traits::input_parameter< double >::type error_prob(error_probSEXP );
+        Rcpp::traits::input_parameter< int >::type max_iterations(max_iterationsSEXP );
+        Rcpp::traits::input_parameter< double >::type tol(tolSEXP );
+        Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP );
+        NumericVector __result = est_map(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // addlog
 double addlog(const double a, const double b);
 RcppExport SEXP qtl2_addlog(SEXP aSEXP, SEXP bSEXP) {
