@@ -1,6 +1,5 @@
 // main HMM functions
 
-#include <string>
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"

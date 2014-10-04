@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include <vector>
 #include "cross.h"
 
 using namespace Rcpp;

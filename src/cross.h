@@ -12,8 +12,6 @@
 #ifndef CROSS_H
 #define CROSS_H
 
-#include <iostream>
-#include <string>
 #include <Rcpp.h>
 
 using namespace Rcpp;
