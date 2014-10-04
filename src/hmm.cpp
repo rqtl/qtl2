@@ -210,7 +210,7 @@ NumericVector est_map(String crosstype,
     if(cross->type != cross->phase_known_type) // get phase-known version of cross
         cross = QTLCross::Create(cross->phase_known_type);
     
-    NumericVector cur_rec_frac(clone(rec_frac));
+    NumericVector cur_rec_frac(n_rf);
     NumericVector prev_rec_frac(clone(rec_frac));
 
     // marker index for forward/backward equations
@@ -218,6 +218,10 @@ NumericVector est_map(String crosstype,
     for(int i=0; i<n_mar; i++) marker_index[i] = i;
 
     for(int it=0; it<max_iterations; it++) {
+
+        // re-zero cur_rec_frac
+        for(int pos=0; pos < n_rf; pos++) 
+            cur_rec_frac[pos] = 0.0;
 
         for(int ind=0; ind < n_ind; ind++) {
 
@@ -323,6 +327,7 @@ NumericVector est_map(String crosstype,
         Rprintf("loglik = %.3f\n", loglik);
     }
 
+    cur_rec_frac.attr("loglik") = loglik;
     return cur_rec_frac;
 }
 

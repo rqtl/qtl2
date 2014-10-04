@@ -32,5 +32,17 @@ NumericVector calc_genoprob(String crosstype,
                             double error_prob);
 
 
+// re-estimate inter-marker recombination fractions
+NumericVector est_map(String crosstype,
+                      IntegerMatrix genotypes,
+                      bool is_X_chr,
+                      LogicalVector is_female,
+                      IntegerMatrix cross_info,
+                      NumericVector rec_frac,
+                      double error_prob,
+                      int max_iterations,
+                      double tol,
+                      bool verbose);
+
 // Calculate addlog(a,b) = log[exp(a) + exp(b)]
 double addlog(const double a, const double b);
