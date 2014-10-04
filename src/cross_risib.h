@@ -1,7 +1,7 @@
 #ifndef CROSS_RISIB_H
 #define CROSS_RISIB_H
 
-class RIsib : public Cross
+class RIsib : public QTLCross
 {
  public:
     RIsib(){

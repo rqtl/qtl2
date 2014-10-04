@@ -3,10 +3,10 @@
 // to add a new cross type:
 //     - create files similar to cross_f2.h and cross_f2.cpp
 //     - add include line below
-//     - add if statement within Cross::Create function below
+//     - add if statement within QTLCross::Create function below
 //
-// to create a Cross instance using a string with cross type:
-//     Cross* cross = Cross::Create("f2");
+// to create a QTLCross instance using a string with cross type:
+//     QTLCross* cross = QTLCross::Create("f2");
 // then refer to functions like cross->init()
 
 #ifndef CROSS_H
@@ -16,14 +16,14 @@
 
 using namespace Rcpp;
 
-class Cross
+class QTLCross
 {
 public:
     String type;
 
     String phase_known_type;
 
-    static Cross* Create(String type);
+    static QTLCross* Create(String type);
 
     virtual bool check_geno(int gen, bool is_observed_value,
                             bool is_X_chr, bool is_female,

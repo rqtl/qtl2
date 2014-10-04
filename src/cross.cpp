@@ -1,6 +1,6 @@
 #include "cross.h"
 
-Cross* Cross::Create(String type)
+QTLCross* QTLCross::Create(String type)
 {
     if(type=="f2") return new F2();
     if(type=="f2pk") return new F2PK();

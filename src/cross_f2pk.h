@@ -1,7 +1,7 @@
 #ifndef CROSS_F2PK_H
 #define CROSS_F2PK_H
 
-class F2PK : public Cross
+class F2PK : public QTLCross
 {
  public:
     F2PK(){

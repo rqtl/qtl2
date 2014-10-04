@@ -1,7 +1,7 @@
 #ifndef CROSS_RISELF_H
 #define CROSS_RISELF_H
 
-class RIself : public Cross
+class RIself : public QTLCross
 {
  public:
     RIself(){

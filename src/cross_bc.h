@@ -1,7 +1,7 @@
 #ifndef CROSS_BC_H
 #define CROSS_BC_H
 
-class BC : public Cross
+class BC : public QTLCross
 {
  public:
     BC(){

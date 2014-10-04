@@ -1,5 +1,5 @@
 // forward equations
-NumericMatrix forwardEquations(Cross* cross,
+NumericMatrix forwardEquations(QTLCross* cross,
                                IntegerVector genotypes,
                                bool is_X_chr,
                                bool is_female,
@@ -11,7 +11,7 @@ NumericMatrix forwardEquations(Cross* cross,
 
 
 // backward Equations
-NumericMatrix backwardEquations(Cross* cross,
+NumericMatrix backwardEquations(QTLCross* cross,
                                 IntegerVector genotypes,
                                 bool is_X_chr,
                                 bool is_female,
