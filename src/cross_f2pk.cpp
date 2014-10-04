@@ -215,25 +215,25 @@ double F2PK::nrec(int gen_left, int gen_right,
         case AA:
             switch(gen_right) {
             case AA: return 0.0;
-            case AB: case BA: return 1.0;
-            case BB: return 2.0;
+            case AB: case BA: return 0.5;
+            case BB: return 1.0;
             }
         case AB:
             switch(gen_right) {
-            case AA: case BB: return 1.0;
+            case AA: case BB: return 0.5;
             case AB: return 0.0;
-            case BA: return 2.0;
+            case BA: return 1.0;
             }
         case BA:
             switch(gen_right) {
-            case AA: case BB: return 1.0;
+            case AA: case BB: return 0.5;
             case BA: return 0.0;
-            case AB: return 2.0;
+            case AB: return 1.0;
             }
         case BB:
             switch(gen_right) {
-            case AA: return 2.0;
-            case AB: case BA: return 1.0;
+            case AA: return 1.0;
+            case AB: case BA: return 0.5;
             case BB: return 0.0;
             }
         }
