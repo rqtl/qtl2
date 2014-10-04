@@ -39,7 +39,7 @@ NumericMatrix forwardEquations(Cross* cross,
             alpha(ir,pos) = alpha(0, pos-1) + cross->step(poss_gen[0], poss_gen[ir], rec_frac[pos-1], 
                                                           is_X_chr, is_female, cross_info);
 
-            for(int il=0; il<n_gen; il++)
+            for(int il=1; il<n_gen; il++)
                 alpha(ir,pos) = addlog(alpha(ir,pos), alpha(il,pos-1) +
                                        cross->step(poss_gen[il], poss_gen[ir], rec_frac[pos-1],
                                                    is_X_chr, is_female, cross_info));
@@ -122,7 +122,7 @@ NumericVector calc_genoprob(String crosstype,
         throw std::range_error("length(is_female) != ncol(genotypes)");
     if(cross_info.cols() != n_ind)
         throw std::range_error("ncols(cross_info) != ncol(genotypes)");
-    if(rec_frac.size() != n_pos+1)
+    if(rec_frac.size() != n_pos-1)
         throw std::range_error("length(rec_frac) != length(marker_index)-1");
 
     if(error_prob < 0.0 || error_prob > 1.0)
