@@ -6,6 +6,28 @@
 
 using namespace Rcpp;
 
+// calc_genoprob
+NumericVector calc_genoprob(String crosstype, IntegerMatrix genotypes, bool is_X_chr, LogicalVector is_female, IntegerMatrix cross_info, NumericVector rec_frac, IntegerVector marker_index, double error_prob);
+RcppExport SEXP qtl2_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type genotypes(genotypesSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< LogicalVector >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type rec_frac(rec_fracSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type marker_index(marker_indexSEXP );
+        Rcpp::traits::input_parameter< double >::type error_prob(error_probSEXP );
+        NumericVector __result = calc_genoprob(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // addlog
 double addlog(const double a, const double b);
 RcppExport SEXP qtl2_addlog(SEXP aSEXP, SEXP bSEXP) {
