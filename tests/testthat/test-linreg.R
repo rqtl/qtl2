@@ -1,5 +1,6 @@
 
 context("linear regression")
+library(qtl)
 
 test_that("lin regr works for simple example", {
 
@@ -80,7 +81,6 @@ test_that("lin regr works for reduced-rank example", {
 
 test_that("lin regr works in a QTL situation", {
 
-    library(qtl)
     data(hyper)
     hyper <- calc.genoprob(hyper, step=1, err=0.001)
     qtl <- makeqtl(hyper, c(1,4,6,15), c(68.3, 30, 66.7, 17.5),

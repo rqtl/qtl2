@@ -1,9 +1,9 @@
 
 context("calc_genoprob")
+library(qtl)
 
 test_that("backcross autosome calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(hyper)
     hyper <- hyper[1:19,]
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", err=0.002)
@@ -29,7 +29,6 @@ test_that("backcross autosome calc_genoprob matches R/qtl", {
 
 test_that("intercross autosome calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(listeria)
     listeria <- listeria[1:19,]
     listeria <- calc.genoprob(listeria, step=1, stepwidth="max", err=0.01)
@@ -56,7 +55,6 @@ test_that("intercross autosome calc_genoprob matches R/qtl", {
 
 test_that("risib autosome calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(hyper)
     hyper <- hyper[1:19,]
     class(hyper)[1] <- "risib"
@@ -83,7 +81,6 @@ test_that("risib autosome calc_genoprob matches R/qtl", {
 
 test_that("riself autosome calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(hyper)
     hyper <- hyper[1:19,]
     class(hyper)[1] <- "riself"
@@ -110,7 +107,6 @@ test_that("riself autosome calc_genoprob matches R/qtl", {
 
 test_that("f2 X chr calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
     sexpgm <- getsex(fake.f2)
@@ -150,7 +146,6 @@ test_that("f2 X chr calc_genoprob matches R/qtl", {
 
 test_that("bc X chr calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(hyper)
     hyper <- hyper["X",]
     # make it half female, half male
@@ -188,7 +183,6 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
 
 test_that("f2 X chr all males calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
     fake.f2$pheno$sex <- 1
@@ -223,7 +217,6 @@ test_that("f2 X chr all males calc_genoprob matches R/qtl", {
 
 test_that("f2 X chr all females calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
     fake.f2$pheno$sex <- 0
@@ -259,7 +252,6 @@ test_that("f2 X chr all females calc_genoprob matches R/qtl", {
 
 test_that("f2 X chr all females forw calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
     fake.f2$pheno$sex <- 0
@@ -290,7 +282,6 @@ test_that("f2 X chr all females forw calc_genoprob matches R/qtl", {
 
 test_that("f2 X chr all females rev calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
     fake.f2$pheno$sex <- 0
@@ -330,7 +321,6 @@ test_that("f2 X chr all females rev calc_genoprob matches R/qtl", {
 
 test_that("bc X chr all males calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(hyper)
     hyper <- hyper["X",]
     sexpgm <- getsex(hyper)
@@ -365,7 +355,6 @@ test_that("bc X chr all males calc_genoprob matches R/qtl", {
 
 test_that("bc X chr all females calc_genoprob matches R/qtl", {
 
-    library(qtl)
     data(hyper)
     hyper <- hyper["X",]
     hyper$pheno$sex <- "female"
