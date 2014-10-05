@@ -3,6 +3,7 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
+#include "cross_f2.h"
 
 enum gen {GENO_NA=0, AA=1, AB=2, BB=3, notA=5, notB=4, AY=1, BY=3};
 

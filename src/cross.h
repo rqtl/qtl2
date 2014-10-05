@@ -1,13 +1,6 @@
-// general cross class + cross factory
+// general qtlcross class
 //
-// to add a new cross type:
-//     - create files similar to cross_f2.h and cross_f2.cpp
-//     - add include line below
-//     - add if statement within QTLCross::Create function below
-//
-// to create a QTLCross instance using a string with cross type:
-//     QTLCross* cross = QTLCross::Create("f2");
-// then refer to functions like cross->init()
+// see cross.cpp for info on how to add a new cross type
 
 #ifndef CROSS_H
 #define CROSS_H
@@ -72,11 +65,5 @@ public:
     }
 
 };
-
-#include "cross_f2.h"
-#include "cross_f2pk.h"
-#include "cross_bc.h"
-#include "cross_risib.h"
-#include "cross_riself.h"
 
 #endif // CROSS.H
