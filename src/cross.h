@@ -67,6 +67,10 @@ public:
         return 0.0;
     }
 
+    virtual double est_rec_frac(NumericMatrix full_gamma, bool is_X_chr) {
+        return 0.0;
+    }
+
 };
 
 #include "cross_f2.h"

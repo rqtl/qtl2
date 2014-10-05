@@ -6,7 +6,7 @@ test_that("est_map for backcross autosome matches R/qtl", {
 
     data(hyper)
     hyper <- hyper[1:19,]
-    newmap <- est.map(hyper, err=0.002)
+    newmap <- est.map(hyper, err=0.002, tol=1e-8)
 
     rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
 
@@ -19,7 +19,7 @@ test_that("est_map for backcross autosome matches R/qtl", {
 
         rf_qtl2 <- est_map("bc", t(g), FALSE, rep(FALSE, nrow(g)),
                            matrix(ncol=nrow(g), nrow=0),
-                           rf, 0.002, 10000, 1e-6, FALSE)
+                           rf, 0.002, 10000, 1e-8, FALSE)
 
         expect_equivalent(rf_qtl[[i]], rf_qtl2)
         expect_equal(attr(newmap[[i]], "loglik"), attr(rf_qtl2, "loglik"))
@@ -31,7 +31,7 @@ test_that("est_map for intercross autosome matches R/qtl", {
 
     data(listeria)
     listeria <- listeria[1:19,]
-    newmap <- est.map(listeria, err=0.01)
+    newmap <- est.map(listeria, err=0.01, tol=1e-8)
 
     rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
 
@@ -44,7 +44,7 @@ test_that("est_map for intercross autosome matches R/qtl", {
 
         rf_qtl2 <- est_map("f2", t(g), FALSE, rep(FALSE, nrow(g)),
                            matrix(ncol=nrow(g), nrow=0),
-                           rf, 0.01, 10000, 1e-6, FALSE)
+                           rf, 0.01, 10000, 1e-8, FALSE)
 
         expect_equivalent(rf_qtl[[i]], rf_qtl2)
         expect_equal(attr(newmap[[i]], "loglik"), attr(rf_qtl2, "loglik"))
@@ -143,3 +143,57 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
     expect_equal(attr(newmap[[1]], "loglik"), attr(rf_qtl2, "loglik"))
 
 })
+
+test_that("est_map for RIself matches R/qtl", {
+
+    data(hyper)
+    hyper <- hyper[1:19,]
+    class(hyper)[1] <- "riself"
+    newmap <- est.map(hyper, err=0.002, tol=1e-8)
+
+    rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
+
+    for(i in 1:19) {
+        g <- hyper$geno[[i]]$data
+        g[is.na(g)] <- 0
+        g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
+        map <- hyper$geno[[i]]$map
+        rf <- mf.h(diff(map))
+
+        rf_qtl2 <- est_map("riself", t(g), FALSE, rep(FALSE, nrow(g)),
+                           matrix(ncol=nrow(g), nrow=0),
+                           rf, 0.002, 10000, 1e-8, FALSE)
+
+        expect_equivalent(rf_qtl[[i]], rf_qtl2)
+        expect_equal(attr(newmap[[i]], "loglik"), attr(rf_qtl2, "loglik"))
+   }
+
+})
+
+
+test_that("est_map for RIsib matches R/qtl", {
+
+    data(hyper)
+    hyper <- hyper[1:19,]
+    class(hyper)[1] <- "risib"
+    newmap <- est.map(hyper, err=0.002, tol=1e-8)
+
+    rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
+
+    for(i in 1:19) {
+        g <- hyper$geno[[i]]$data
+        g[is.na(g)] <- 0
+        g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
+        map <- hyper$geno[[i]]$map
+        rf <- mf.h(diff(map))
+
+        rf_qtl2 <- est_map("risib", t(g), FALSE, rep(FALSE, nrow(g)),
+                           matrix(ncol=nrow(g), nrow=0),
+                           rf, 0.002, 10000, 1e-8, FALSE)
+
+        expect_equivalent(rf_qtl[[i]], rf_qtl2)
+        expect_equal(attr(newmap[[i]], "loglik"), attr(rf_qtl2, "loglik"))
+   }
+
+})
+

@@ -218,11 +218,15 @@ NumericVector est_map(String crosstype,
     IntegerVector marker_index(n_mar);
     for(int i=0; i<n_mar; i++) marker_index[i] = i;
 
+    // 3-d array to contain sum(gamma(il,ir)) for each interval
+    int n_gen = cross->ngen(is_X_chr);
+    int n_gen_sq = n_gen*n_gen;
+    NumericVector full_gamma(n_gen_sq*n_rf);
+
     for(int it=0; it<max_iterations; it++) {
 
-        // re-zero cur_rec_frac
-        for(int pos=0; pos < n_rf; pos++) 
-            cur_rec_frac[pos] = 0.0;
+        // zero the full_gamma array
+        for(int i=0; i<n_gen_sq*n_rf; i++) full_gamma[i] = 0.0;
 
         for(int ind=0; ind < n_ind; ind++) {
 
@@ -259,23 +263,23 @@ NumericVector est_map(String crosstype,
                     }
                 }
                 
-                // update cur_rf
+                // add to full_gamma
                 for(int il=0; il<n_poss_gen; il++) {
+                    int gl = poss_gen[il]-1;
                     for(int ir=0; ir<n_poss_gen; ir++) {
-                        cur_rec_frac[pos] += cross->nrec(poss_gen[il], poss_gen[ir], is_X_chr, is_female[ind], cross_info(_,ind)) * exp(gamma(il,ir) - sum_gamma);
+                        int gr = poss_gen[ir]-1;
+                        full_gamma[n_gen_sq*pos + gr*n_gen + gl] += exp(gamma(il,ir) - sum_gamma);
                     }
                 }
             } // loop over marker intervals
             
         } // loop over individuals
 
-        // rescale
-        for(int pos=0; pos<n_rf; pos++) {
-            cur_rec_frac[pos] /= (double)n_ind;
-            
-            // avoid boundaries
-            if(cur_rec_frac[pos] < tol/1000.0) cur_rec_frac[pos] = tol/1000.0;
-            if(cur_rec_frac[pos] > 0.5-tol/1000.0) cur_rec_frac[pos] = 0.5-tol/1000.0;
+        // re-estimate rec'n fractions
+        for(int pos=0; pos < n_rf; pos++) {
+            NumericMatrix sub_gamma(n_gen, n_gen);
+            std::copy(full_gamma.begin()+n_gen_sq*pos, full_gamma.begin()+n_gen_sq*(pos+1), sub_gamma.begin());
+            cur_rec_frac[pos] = cross->est_rec_frac(sub_gamma, is_X_chr);
         }
 
         if(verbose) {

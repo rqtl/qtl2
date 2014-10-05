@@ -242,3 +242,28 @@ double F2PK::nrec(int gen_left, int gen_right,
     throw std::range_error("invalid genotypes.");
     return NA_REAL; // can't get here
 }
+
+double F2PK::est_rec_frac(NumericMatrix gamma, bool is_X_chr)
+{
+    int n_gen = gamma.rows();
+    int n_gen_sq = n_gen*n_gen;
+
+    double denom = 0.0;
+    for(int i=0; i<n_gen_sq; i++) denom += gamma[i];
+
+    if(is_X_chr) {
+        double diagsum = 0.0;
+        for(int i=0; i<n_gen; i++) diagsum += gamma(i,i);
+
+        return(1.0 - diagsum/denom);
+    }
+
+    IntegerVector empty(0);
+
+    double numerator = 0.0;
+    for(int il=0; il<n_gen; il++)
+        for(int ir=0; ir<n_gen; ir++)
+            numerator += gamma(il,ir)*nrec(il+1, ir+1, false, false, empty);
+
+    return numerator/denom;
+}

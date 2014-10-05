@@ -24,6 +24,8 @@ class RIself : public QTLCross
 
     double nrec(int gen_left, int gen_right,
                 bool ignored1, bool ignored2, IntegerVector ignored3);
+
+    double est_rec_frac(NumericMatrix full_gamma, bool is_X_chr);
 };
 
 #endif // CROSS_RISELF_H

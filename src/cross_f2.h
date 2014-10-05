@@ -23,7 +23,6 @@ class F2 : public QTLCross
     IntegerVector possible_gen(bool is_X_chr, bool is_female, IntegerVector cross_info);
 
     int ngen(bool is_X_chr);
-
 };
 
 #endif // CROSS_F2_H

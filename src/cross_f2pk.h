@@ -27,6 +27,7 @@ class F2PK : public QTLCross
     double nrec(int gen_left, int gen_right,
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
 
+    double est_rec_frac(NumericMatrix full_gamma, bool is_X_chr);
 };
 
 #endif // CROSS_F2PK_H
