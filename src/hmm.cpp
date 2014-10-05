@@ -150,7 +150,8 @@ NumericVector calc_genoprob(String crosstype,
 
         // calculate genotype probabilities
         for(int pos=0, matindex=n_gen*ind; pos<n_pos; pos++, matindex += matsize) {
-            double sum_at_pos = genoprobs[matindex] = alpha(poss_gen[0]-1,pos) + beta(poss_gen[0]-1,pos);
+            int g = poss_gen[0]-1;
+            double sum_at_pos = genoprobs[matindex+g] = alpha(0,pos) + beta(0,pos);
             for(int i=1; i<n_poss_gen; i++) {
                 int g = poss_gen[i]-1;
                 double val = genoprobs[matindex+g] = alpha(i,pos) + beta(i,pos);
