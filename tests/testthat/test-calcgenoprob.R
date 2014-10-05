@@ -147,3 +147,42 @@ test_that("f2 X chr calc_genoprob matches R/qtl", {
     expect_equivalent(pr_qtl, pr_qtl2)
 
 })
+
+test_that("bc X chr calc_genoprob matches R/qtl", {
+
+    library(qtl)
+    data(hyper)
+    hyper <- hyper["X",]
+    # make it half female, half male
+    hyper$pheno$sex <- rep(c("female", "male"), nind(hyper)/2)
+    sexpgm <- getsex(hyper)
+
+    g <- hyper$geno[["X"]]$data
+    g[is.na(g)] <- 0 # missing -> 0
+
+    # males -> 1/3
+    gmale <- g[sexpgm$sex==1,]
+    gmale[gmale==2] <- 3
+    g[sexpgm$sex==1,] <- gmale
+
+    # R/qtl calc.genoprob
+    hyper <- calc.genoprob(hyper, step=1, stepwidth="max", error.prob=0.02)
+
+    pr <- hyper$geno[["X"]]$prob
+    map <- attr(pr, "map")
+    rf <- mf.h(diff(map))
+    map_index <- match(names(map), colnames(g))-1
+    map_index[is.na(map_index)] <- -1
+
+    pr_qtl2 <- calc_genoprob("bc", t(g), TRUE, (sexpgm$sex==0),
+                             matrix(nrow=0, ncol=nind(hyper)),
+                             rf, map_index, 0.02)
+    pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
+
+    pr_qtl <- reviseXdata("bc", "simple", sexpgm=sexpgm, prob=pr,
+                          cross.attr=attributes(hyper))
+
+    expect_equivalent(pr_qtl, pr_qtl2)
+
+})
+
