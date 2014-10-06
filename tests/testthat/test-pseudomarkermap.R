@@ -51,7 +51,7 @@ test_that("grid-based version works in more realistic case", {
                   82.0000000017, 82.0000000018, 83, 84.55, 86.1, 86.3000000019,
                   87.65, 89.2, 90.75, 92.3, 93.85, 94.000000002, 95.4, 96.95, 98.5,
                   100.05, 101.6, 103.15, 104.7, 106.25, 107.8, 109.35, 110.9, 112.45,
-                  114, 115.55, 115.8000000021, 117.1, 118.65, 120.2)
+                  114, 115.55, 115.8000000021, 117.1, 118.65)
     pmap_names <- c("loc-1", "loc1", "loc2", "D1Mit296", "loc4", "loc6", "loc7", "loc9", "loc10",
                     "loc12", "loc13", "loc15", "loc16", "loc18", "loc19", "D1Mit123",
                     "loc21", "loc23", "loc24", "loc26", "loc27", "loc29", "loc30",
@@ -66,7 +66,7 @@ test_that("grid-based version works in more realistic case", {
                     "loc91", "loc92", "loc94", "D1Mit456", "loc95", "loc97", "loc98",
                     "loc100", "loc102", "loc103", "loc105", "loc106", "loc108", "loc109",
                     "loc111", "loc112", "loc114", "loc116", "D1Mit155", "loc117",
-                    "loc119", "loc120")
+                    "loc119")
 
     expect_equivalent(pmap, expected)
     expect_equal(names(pmap), pmap_names)
@@ -76,7 +76,7 @@ test_that("grid-based version works in more realistic case", {
                         9, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 12, 0, 13, 0,
                         0, 0, 14, 0, 15, 0, 0, 0, 0, 16, 17, 18, 19, 0, 0, 0, 20, 0,
                         0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22,
-                        0, 0, 0)
+                        0, 0)
     expect_equal(attr(pmap, "index"), expected_index)
 
     expected_grid <- c(TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
@@ -88,8 +88,7 @@ test_that("grid-based version works in more realistic case", {
                        TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE,
                        FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE,
                        TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,
-                       TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE,
-                       TRUE)
+                       TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE)
     expect_equal(attr(pmap, "grid"), expected_grid)
 
 

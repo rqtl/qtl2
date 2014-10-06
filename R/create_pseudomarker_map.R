@@ -21,9 +21,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     if(tol < 0) stop("tol should be >= 0")
 
     # locations of pseudomarkers
-    # goes _at least_ off_end beyond last marker
-    npmar <- ceiling((diff(range(map))+off_end*2)/step)+1
-    pmar <- seq(min(map)-off_end, length.out=npmar, by=step)
+    pmar <- seq(min(map)-off_end, max(map)+off_end, by=step)
 
     # for each pseudomarker, distance to nearest marker
     d <- abs(outer(map, pmar, "-"))
