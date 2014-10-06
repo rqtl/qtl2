@@ -67,19 +67,91 @@ character string with the cross type:
 - `"do"` for diversity outcross
 - `"hs"` for 8-way heterogeneous stock
 
-Most of these have not yet been implemented
+Most of these have not yet been implemented.
 
 
 ### Genotype data (`"geno"`)
 
+The previous data structure had deep nesting of information; we're going
+to split that out and make things more flat. The genotype data will
+now be a simple list of matrices of integers. Each component of the
+list is a chromosome; the names are the chromosome names. Each
+chromosome has a matrix of `n_lines` x `n_markers`.
 
+For many cross types, &ldquo;lines&rdquo; are just the
+individuals. For recombinant inbred lines, the genotype data will have
+one row per line, which the phenotype data will have one row per
+individual, and there will be a separate component (`"linemap"`) for
+connecting the individuals to the lines.
 
+The column names are the marker names, and the row names are the line
+identifiers.
+
+Describe the genotype encodings. Different treatment of X chromosome
+(less effort to convert).
+
+### Chromosome type (`"chrtype"`)
+
+### Genetic map (`"gmap"`)
+
+### Physical map (`"pmap"`)
+
+### Founder genotype data (`"founder_geno"`)
+
+### Phenotype data (`"pheno"`)
+
+### Individual to line mapping (`"linemap"`)
+
+### Sex (`"sex"`)
+
+### Cross information (`"cross_info"`)
+
+### Covariate data (`"covar"`)
+
+### Phenotype covariates (`"phenocovar"`)
+
+### Alleles (`"alleles"`)
+
+### Genotype names (`"genonames"`)
+
+List with `"A"` and `"X"`.
+
+Describe genotype encodings again here.
+
+### Genotype probabilities (`"genoprob"`)
+
+Describe genotype encodings again here.
 
 ## Input data file formats
 
-
 Separate CSV files, with overall control file listing details
 (including the names of the other files)
+
+### Control file
+
+- crosstype
+- sex
+- cross direction/cross info
+- file names
+- genotype codes
+- allele names
+
+### Genotype data
+
+### Founder genotype data
+
+### Phenotype data
+
+### Covariate data
+
+### Phenotype covariates
+
+### Genetic map
+
+### Physical map
+
+### Cross_info file
+
 
 
 ## HMM details
