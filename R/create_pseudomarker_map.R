@@ -80,7 +80,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 # off_end = amount to go beyond the terminal markers
 # tol = tolerance for determining whether a marker hits a pseudomarker
 # pmar_stem = leading part of name of pseudomarkers
-create_pseudomarker_map_min <-
+create_pseudomarker_map_minimal <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(any(is.na(map))) stop("map values can't be missing")
@@ -150,7 +150,6 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     attr(map, "step") <- step
     attr(map, "off_end") <- off_end
     attr(map, "index") <- index[o]
-    attr(map, "grid") <- grid[o]
 
     map
 }
