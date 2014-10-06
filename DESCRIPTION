@@ -17,7 +17,7 @@ Suggests:
     testthat,
     devtools,
     roxygen2,
-    microbenchmark
+    yaml
 License: GPL-3
 URL: http://github.com/kbroman/qtl2
 VignetteBuilder: knitr

@@ -1,0 +1,14 @@
+# Data from Moore et al. (2013) Genetics 195:1077-1086
+# Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013b
+crosstype: riself
+genfile: grav_gen.csv
+phefile: grav_phe.csv
+phecovarfile: grav_phecovar.csv
+gmapfile: grav_map.csv
+alleles:
+- L
+- C
+genotypes:
+- LL
+- CC
+na.strings: NA
