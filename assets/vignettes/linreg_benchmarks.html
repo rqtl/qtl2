@@ -201,11 +201,6 @@ hr {
 </head>
 
 <body>
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Linear regression benchmarks}
--->
-
 <h1>R/qtl2: Benchmarks of linear regression routines</h1>
 
 <p><a href="https://github.com/kbroman/qtl2">R/qtl2</a> includes code with several
@@ -266,14 +261,14 @@ microbenchmark(lmfit =        lm.fit(X, y),
 </code></pre>
 
 <pre><code>## Unit: microseconds
-##            expr   min    lq median    uq    max neval
-##           lmfit 88.31 92.11  93.79 95.83 1563.1  1000
-##           dgels 33.28 35.24  36.20 37.22  916.8  1000
-##          dgelsy 42.29 44.40  45.39 46.51 9579.6  1000
-##    eigen_qr_rss 27.32 28.97  29.78 31.37 1556.7  1000
-##        eigen_qr 31.95 34.23  35.19 37.52 1511.7  1000
-##  eigen_chol_rss 25.11 26.97  27.94 29.79 2047.5  1000
-##      eigen_chol 30.05 31.79  32.77 34.84 1528.4  1000
+##            expr    min     lq   mean median     uq    max neval  cld
+##           lmfit 147.77 154.55 175.64 156.43 162.48 4182.8  1000    d
+##           dgels  57.26  62.39  66.14  64.54  66.78  833.4  1000 ab  
+##          dgelsy  76.09  81.31  85.48  83.57  86.31  497.9  1000   c 
+##    eigen_qr_rss  48.03  51.62  56.09  53.40  57.49  118.9  1000 a   
+##        eigen_qr  57.45  60.81  71.83  62.49  69.43 1633.0  1000  b  
+##  eigen_chol_rss  42.77  46.74  57.18  48.91  53.86 4421.3  1000 a   
+##      eigen_chol  52.25  55.48  68.46  57.19  62.79 2951.6  1000 ab
 </code></pre>
 
 <p>It&#39;s easy to beat <code>lm.fit</code>, but it&#39;s great to see considerable gains
@@ -305,12 +300,12 @@ Y &lt;- as.matrix(y)
 </code></pre>
 
 <pre><code>## Unit: microseconds
-##          expr   min    lq median    uq     max neval
-##         lmfit 59.73 66.78  68.73 71.56 1916.86  1000
-##         dgels 30.11 32.38  33.56 35.40   62.95  1000
-##        dgelsy 24.24 26.23  27.28 29.12   66.58  1000
-##  eigen_qr_rss 19.52 21.59  22.64 25.06   86.81  1000
-##      eigen_qr 23.00 25.54  26.90 29.48 2081.20  1000
+##          expr    min     lq   mean median     uq    max neval cld
+##         lmfit 101.96 115.88 121.88 118.93 127.12  227.9  1000   c
+##         dgels  53.90  58.46  62.89  61.46  65.42  175.1  1000  b 
+##        dgelsy  43.44  47.99  52.06  51.25  54.99  128.2  1000 a  
+##  eigen_qr_rss  34.06  39.24  47.33  43.42  46.75 3229.8  1000 a  
+##      eigen_qr  41.01  45.38  54.12  50.53  53.59 3225.1  1000 a
 </code></pre>
 
 <p>We skip the methods based on Cholesky decomposition, but we again see
@@ -347,14 +342,14 @@ case. But we&#39;ll just do 10 replicates.</p>
 </code></pre>
 
 <pre><code>## Unit: milliseconds
-##            expr    min     lq median     uq    max neval
-##           lmfit 156.18 156.75 157.93 158.32 225.75    10
-##           dgels 172.83 173.68 173.92 175.30 179.78    10
-##          dgelsy 178.71 178.93 179.07 179.94 185.08    10
-##    eigen_qr_rss  84.59  84.75  85.01  86.44  87.14    10
-##        eigen_qr 101.01 101.24 101.77 103.19 104.52    10
-##  eigen_chol_rss  22.50  22.53  22.80  22.98  24.65    10
-##      eigen_chol  25.25  25.31  25.89  26.16  26.53    10
+##            expr    min     lq   mean median     uq    max neval cld
+##           lmfit 236.62 237.99 267.32 239.44 239.68 382.52    10   c
+##           dgels 262.66 262.93 263.41 263.23 264.11 264.28    10   c
+##          dgelsy 274.69 275.15 276.10 275.92 276.69 278.25    10   c
+##    eigen_qr_rss 141.11 141.28 142.43 142.93 143.09 143.13    10  b 
+##        eigen_qr 171.46 171.74 172.93 173.58 173.66 174.25    10  b 
+##  eigen_chol_rss  31.90  32.15  32.58  32.24  32.37  35.86    10 a  
+##      eigen_chol  36.42  36.71  37.67  37.00  37.25  41.52    10 a
 </code></pre>
 
 <h2>Multiple phenotypes</h2>
@@ -367,7 +362,7 @@ solely on calculating the residual sum of squares for each phenotype.</p>
 x &lt;- rnorm(n, 50, 10)
 X &lt;- cbind(1, x)
 y &lt;- 30 + 0.5*x + rnorm(n, 0, 2.5)
-Y &lt;- qtl2:::get_permutations(500, y)
+Y &lt;- qtl2:::permute_nvector(500, y)
 </code></pre>
 
 <p>Now we&#39;ll get the benchmarks.</p>
@@ -381,12 +376,12 @@ Y &lt;- qtl2:::get_permutations(500, y)
 </code></pre>
 
 <pre><code>## Unit: milliseconds
-##        expr    min     lq median     uq    max neval
-##       lmfit 11.899 80.916 82.227 85.607 90.373    50
-##       dgels  3.294  3.814  4.091  4.229  4.618    50
-##      dgelsy  3.750  3.993  4.166  4.295  4.572    50
-##    eigen_qr  4.771  4.919  5.049  5.209  6.230    50
-##  eigen_chol  4.541  4.913  5.034  5.284  6.829    50
+##        expr    min      lq    mean  median      uq     max neval cld
+##       lmfit 12.654 157.651 149.354 158.305 158.395 158.707    50   b
+##       dgels  5.225   5.305   5.543   5.613   5.678   5.844    50  a 
+##      dgelsy  5.248   5.331   5.577   5.638   5.711   5.900    50  a 
+##    eigen_qr  5.098   5.313   5.699   5.553   5.733  11.982    50  a 
+##  eigen_chol  4.967   5.075   5.302   5.311   5.399   5.759    50  a
 </code></pre>
 
 <h2>Multiple phenotypes, rank-deficient matrix</h2>
@@ -397,7 +392,7 @@ Y &lt;- qtl2:::get_permutations(500, y)
                  f2 = gl(3, 2, labels = letters[1:3]))[-(7:8), ]
 mm &lt;- model.matrix(~ f1*f2, dd)
 y &lt;- mm %*% seq_len(ncol(mm)) + rnorm(nrow(mm), sd = 0.1)
-Y &lt;- qtl2:::get_permutations(500, y)
+Y &lt;- qtl2:::permute_nvector(500, y)
 </code></pre>
 
 <p>And here are the benchmarks.</p>
@@ -410,11 +405,11 @@ Y &lt;- qtl2:::get_permutations(500, y)
 </code></pre>
 
 <pre><code>## Unit: microseconds
-##      expr   min    lq median    uq    max neval
-##     lmfit 755.3 774.1  846.6 899.1 3406.3   100
-##     dgels 715.9 722.1  733.8 755.5  835.2   100
-##    dgelsy 446.8 450.3  456.5 473.0  581.2   100
-##  eigen_qr 474.1 497.7  508.6 551.6  693.5   100
+##      expr    min     lq   mean median     uq    max neval  cld
+##     lmfit 1134.8 1145.8 1317.4 1167.9 1295.9 6131.7   100    d
+##     dgels 1135.5 1139.1 1149.1 1141.9 1148.6 1276.8   100   c 
+##    dgelsy  712.3  714.9  723.3  716.5  722.2  815.9   100 a   
+##  eigen_qr  824.0  840.0  882.1  852.5  871.1 1477.1   100  b
 </code></pre>
 
 <!-- the following to make it look nicer -->
