@@ -15,7 +15,7 @@
 #' pseudomarkers to ensure that no two adjacent markers/pseudomarkers
 #' are more than \code{step} apart.
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
-#' @param pmar_step Character string to serve as the stem for naming the pseudomarkers.
+#' @param pmar_stem Character string to serve as the stem for naming the pseudomarkers.
 #'
 #' @return A vector of positions of pseudomarkers and markers: the
 #' input \code{map} vector with pseudomarker positions added. An
@@ -37,12 +37,11 @@
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{calc_genoprob}}
 #'
 #' @examples
 #' library(qtl)
 #' data(hyper)
-#' chr4map <- pullMap(hyper, chr=4)
+#' chr4map <- pull.map(hyper, chr=4)
 #' pmap <- insert_pseudomarkers(pmap, step=1, pmar_stem="c4.loc")
 insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),

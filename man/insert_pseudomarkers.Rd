@@ -23,7 +23,7 @@ are more than \code{step} apart.}
 
 \item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
 
-\item{pmar_step}{Character string to serve as the stem for naming the pseudomarkers.}
+\item{pmar_stem}{Character string to serve as the stem for naming the pseudomarkers.}
 }
 \value{
 A vector of positions of pseudomarkers and markers: the
@@ -51,11 +51,8 @@ equally-spaced pseudomarkers will be added.
 \examples{
 library(qtl)
 data(hyper)
-chr4map <- pullMap(hyper, chr=4)
+chr4map <- pull.map(hyper, chr=4)
 pmap <- insert_pseudomarkers(pmap, step=1, pmar_stem="c4.loc")
-}
-\seealso{
-\code{\link{calc_genoprob}}
 }
 \keyword{utilities}
 
