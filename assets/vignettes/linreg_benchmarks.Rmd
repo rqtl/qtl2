@@ -1,8 +1,3 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Linear regression benchmarks}
--->
-
 # R/qtl2: Benchmarks of linear regression routines
 
 [R/qtl2](https://github.com/kbroman/qtl2) includes code with several
