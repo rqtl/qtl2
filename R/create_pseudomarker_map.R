@@ -1,5 +1,58 @@
 # create_pseudomarker_map
 
+#' Create a map with pseudomarkers inserted
+#'
+#' Insert pseudomarkers into a map of genetic markers, for a single chromosome.
+#'
+#' @param map Numeric vector of marker positions, for a single
+#' chromosome.
+#' @param step Distance between pseudomarkers and markers; if
+#' \code{step=0} no pseudomarkers are inserted.
+#' @param off_end Distance beyond terminal markers in which to insert
+#' pseudomarkers.
+#' @param stepwidth Indicates whether to use a fixed grid
+#' (\code{stepwidth="fixed"}) or to use the maximal distance between
+#' pseudomarkers to ensure that no two adjacent markers/pseudomarkers
+#' are more than \code{step} apart.
+#' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
+#' @param pmar_step Character string to serve as the stem for naming the pseudomarkers.
+#'
+#' @return A vector of positions of pseudomarkers and markers: the
+#' input \code{map} vector with pseudomarker positions added. An
+#' attribute \code{"index"} is an integer vector that indicates which
+#' positions are pseudomarkers (value 0) and which are markers
+#' (positive values, indicating the marker indices). If
+#' \code{stepwidth=fixed}, a further attributed (\code{"grid"}) is a
+#' logical vector that indicates which positions correspond to the
+#' fixed grid.
+#'
+#' @details If \code{stepwidth="fixed"}, a grid of pseudomarkers is added to the marker map.
+#'
+#' If \code{stepwidth="max"}, a minimal set of pseudomarkers are
+#' added, so that the maximum distance between adjacent markers or
+#' pseudomarkers is at least \code{step}. If two adjacent markers are
+#' separated by less than \code{step}, no pseudomarkers will be added
+#' to the interval. If they are more then \code{step} apart, a set of
+#' equally-spaced pseudomarkers will be added.
+#'
+#' @export
+#' @keywords utilities
+#' @seealso \code{\link{calc_genoprob}}
+#'
+#' @examples
+#' library(qtl)
+#' data(hyper)
+#' chr4map <- pullMap(hyper, chr=4)
+#' pmap <- create_pseudomarker_map(pmap, step=1, pmar_stem="c4.loc")
+create_pseudomarker_map <-
+function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
+         tol=0.01, pmar_stem="loc")
+{
+   switch(match.arg(stepwidth),
+          fixed=create_pseudomarker_map_grid(map, step, off_end, tol, pmar_stem),
+          max=create_pseudomarker_map_minimal(map, step, off_end, tol, pmar_stem))
+}
+
 # pseudomarker map as grid, ignoring markers
 #
 # map = vector of marker positions; names = marker names
@@ -13,9 +66,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     if(any(is.na(map))) stop("map values can't be missing")
     if(step==0) {
         attr(map, "index") <- seq(along=map)
-        attr(map, "stepwidth") <- "grid"
-        attr(map, "step") <- step
-        attr(map, "off_end") <- off_end
+        map <- add_pmap_attr(map, "fixed", step, off_end)
         return(map)
     }
     if(step < 0) stop("step should be >= 0")
@@ -36,9 +87,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     if(length(pmar) == 0) {
         attr(map, "index") <- seq(along=map)
         attr(map, "grid") <- rep(TRUE, length(map))
-        attr(map, "stepwidth") <- "grid"
-        attr(map, "step") <- step
-        attr(map, "off_end") <- off_end
+        map <- add_pmap_attr(map, "fixed", step, off_end)
         return(map)
     }
 
@@ -64,11 +113,10 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     # sort the map
     o <- order(map)
     map <- map[o]
-    attr(map, "stepwidth") <- "grid"
+
     attr(map, "index") <- index[o]
     attr(map, "grid") <- grid[o]
-    attr(map, "step") <- step
-    attr(map, "off_end") <- off_end
+    map <- add_pmap_attr(map, "fixed", step, off_end)
 
     map
 }
@@ -86,9 +134,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     if(any(is.na(map))) stop("map values can't be missing")
     if(step==0) {
         attr(map, "index") <- seq(along=map)
-        attr(map, "stepwidth") <- "max"
-        attr(map, "step") <- step
-        attr(map, "off_end") <- off_end
+        map <- add_pmap_attr(map, "max", step, off_end)
         return(map)
     }
     if(step < 0) stop("step should be >= 0")
@@ -110,9 +156,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
         o <- order(map)
         map <- map[o]
         attr(map, "index") <- index[o]
-        attr(map, "stepwidth") <- "max"
-        attr(map, "step") <- step
-        attr(map, "off_end") <- off_end
+        map <- add_pmap_attr(map, "max", step, off_end)
         return(map)
     }
 
@@ -125,9 +169,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 
     if(length(pmar) == 0) {
         attr(map, "index") <- seq(along=map)
-        attr(map, "stepwidth") <- "max"
-        attr(map, "step") <- step
-        attr(map, "off_end") <- off_end
+        map <- add_pmap_attr(map, "max", step, off_end)
         return(map)
     }
 
@@ -146,10 +188,17 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     # sort the map
     o <- order(map)
     map <- map[o]
-    attr(map, "stepwidth") <- "max"
-    attr(map, "step") <- step
-    attr(map, "off_end") <- off_end
+    map <- add_pmap_attr(map, "max", step, off_end)
     attr(map, "index") <- index[o]
 
+    map
+}
+
+add_pmap_attr <-
+function(map, stepwidth, step, off_end)
+{
+    attr(map, "stepwidth") <- stepwidth
+    attr(map, "step") <- step
+    attr(map, "off_end") <- off_end
     map
 }
