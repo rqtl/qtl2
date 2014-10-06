@@ -41,7 +41,7 @@
 #' @examples
 #' library(qtl)
 #' data(hyper)
-#' chr4map <- pull.map(hyper, chr=4)
+#' chr4map <- pull.map(hyper, chr=4)[[1]]
 #' pmap <- insert_pseudomarkers(chr4map, step=1, pmar_stem="c4.loc")
 insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
