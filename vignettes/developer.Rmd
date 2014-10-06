@@ -1,0 +1,104 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{R/qtl2 Developer Guide}
+-->
+
+# R/qtl2 Developer Guide
+
+R/qtl2 (aka qtl2) is an effort to reimplement the QTL analysis software
+[R/qtl](http://www.rqtl.org), to better handle high-dimensional data
+and complex cross designs.
+
+In this document, we'll describe the technical details of interest to
+developers wishing to contribute to R/qtl2.
+
+There are three basic aspects to the software:
+
+- A hidden Markov model (HMM) to calculate QTL genotype probabilities
+  given genetic marker data, and to estimate genetic maps. This is
+  coded in C++, in a general way. Each possible cross type is a class,
+  inherited from the class `QTLCross`. We're using
+  [Rcpp](http://rcpp.org) to connect from R to C++.
+- Linear regression for QTL mapping by Haley-Knott regression. We're
+  using [RcppEigen](https://github.com/RcppCore/RcppEigen) and the
+  [Eigen linear algebra library](http://eigen.tuxfamily.org/).
+- Linear mixed models for handling varying relatedness among
+  individuals. We've not yet decided on the basic implementation;
+  likely we'll follow the [lme4 package](http://github.com/lme4/lme4).  
+
+We are redefining the basic data structures to be more general (to
+handle more complex crosses, such as the Collaborative Cross, MAGIC lines, and
+Diversity Outcross), and to incorporate more information, such as
+annotations of the phenotypes (for example, with gene expression data,
+the gene identifiers, physical locations of genes, and the tissue that
+was measured).
+
+We are also redefining the input data file formats.
+
+## QTL data structure
+
+The basic data structure in [R/qtl](http://www.rqtl.org), the
+`"cross"` class, has been redesigned.
+
+It remains a list, now of class `"cross2"`. It has many components
+(some of them optional) in unspecified order; the names of the
+components are what matter.
+
+### Cross type (`"crosstype"`)
+
+Previously, the cross type (e.g., `"bc"` for backcross and `"f2"` for
+intercross) was part of the `"class"`. This was a bad idea.
+
+Now, the data will have a component `"crosstype"` that is a single
+character string with the cross type:
+
+- `"bc"` for backcross
+- `"f2"` for intercross
+- `"riself"` for 2-way RIL by selfing
+- `"risib"` for 2-way RIL by sib-mating
+- `"dh"` for doubled haploids (like a backcross, but with genotype
+  codes AA/BB)
+- `"haploid"` for haploids (like a backcross, but with genotype codes A/B)
+- `"ail"` for 2-way advanced intercross lines
+- `"mwriself"` for 2<sup>k</sup>-way RIL by selfing
+- `"mwrisib"` for 2<sup>k</sup>-way RIL by sib-mating
+- `"preriself"` for partially-inbred 2<sup>k</sup>-way RIL by selfing
+- `"prerisib"` for partially-inbred 2<sup>k</sup>-way RIL by sib-mating
+- `"do"` for diversity outcross
+- `"hs"` for 8-way heterogeneous stock
+
+Most of these have not yet been implemented
+
+
+### Genotype data (`"geno"`)
+
+
+
+
+## Input data file formats
+
+
+Separate CSV files, with overall control file listing details
+(including the names of the other files)
+
+
+## HMM details
+
+- basic layout; what's needed in order to implement a new
+  cross type; weaknesses in the design
+- for est_map, potentially need separate phase-known class
+  (explain why, and how this is done)
+
+
+
+## Linear regression details
+
+
+## Linear mixed model details
+
+
+## Parallel processing
+
+
+<!-- the following to make it look nicer -->
+<link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>
