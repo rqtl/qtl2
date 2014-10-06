@@ -52,7 +52,7 @@ equally-spaced pseudomarkers will be added.
 library(qtl)
 data(hyper)
 chr4map <- pull.map(hyper, chr=4)
-pmap <- insert_pseudomarkers(pmap, step=1, pmar_stem="c4.loc")
+pmap <- insert_pseudomarkers(chr4map, step=1, pmar_stem="c4.loc")
 }
 \keyword{utilities}
 
