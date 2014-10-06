@@ -1,10 +1,5 @@
 ## ToDo list for qtl2
 
-- how to initialize a numericmatrix with 0's?
-- have forward/backward equations just create the appropriate part of
-  the alphas/betas; deal with incomplete no. genotypes only in
-  calc_genoprob/est_map
-
 - read data (in "tidy" CSV format)
   - control file
   - genotypes
@@ -14,8 +9,9 @@
   - genetic map
   - physical map
   
-- port HMM code: genoprob, argmax, simgeno, estmap
-  - backcross, intercross, 2-way RIL
+- data structure within R?
+
+- Implement HMM:
   - AIL
   - CC/MAGIC
   - DO/HS
