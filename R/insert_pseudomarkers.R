@@ -1,6 +1,6 @@
-# create_pseudomarker_map
+# insert_pseudomarkers
 
-#' Create a map with pseudomarkers inserted
+#' Insert pseudomarkers into a marker map
 #'
 #' Insert pseudomarkers into a map of genetic markers, for a single chromosome.
 #'
@@ -43,14 +43,14 @@
 #' library(qtl)
 #' data(hyper)
 #' chr4map <- pullMap(hyper, chr=4)
-#' pmap <- create_pseudomarker_map(pmap, step=1, pmar_stem="c4.loc")
-create_pseudomarker_map <-
+#' pmap <- insert_pseudomarkers(pmap, step=1, pmar_stem="c4.loc")
+insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
          tol=0.01, pmar_stem="loc")
 {
    switch(match.arg(stepwidth),
-          fixed=create_pseudomarker_map_grid(map, step, off_end, tol, pmar_stem),
-          max=create_pseudomarker_map_minimal(map, step, off_end, tol, pmar_stem))
+          fixed=insert_pseudomarkers_grid(map, step, off_end, tol, pmar_stem),
+          max=insert_pseudomarkers_minimal(map, step, off_end, tol, pmar_stem))
 }
 
 # pseudomarker map as grid, ignoring markers
@@ -60,7 +60,7 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
 # off_end = amount to go beyond the terminal markers
 # tol = tolerance for determining whether a marker hits a pseudomarker
 # pmar_stem = leading part of name of pseudomarkers
-create_pseudomarker_map_grid <-
+insert_pseudomarkers_grid <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(any(is.na(map))) stop("map values can't be missing")
@@ -128,7 +128,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 # off_end = amount to go beyond the terminal markers
 # tol = tolerance for determining whether a marker hits a pseudomarker
 # pmar_stem = leading part of name of pseudomarkers
-create_pseudomarker_map_minimal <-
+insert_pseudomarkers_minimal <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(any(is.na(map))) stop("map values can't be missing")

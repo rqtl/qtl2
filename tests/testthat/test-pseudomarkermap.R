@@ -8,13 +8,13 @@ test_that("grid-based version works in simple case", {
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
-    pmap <- create_pseudomarker_map(map, step=2.5, off_end=0, stepwidth="fixed")
+    pmap <- insert_pseudomarkers(map, step=2.5, off_end=0, stepwidth="fixed")
     expect_equivalent(map, pmap)
     expect_equal(attr(pmap, "index"), seq(along=map))
     expect_equal(attr(pmap, "grid"), rep(TRUE, length(map)))
 
     # step = 1
-    pmap <- create_pseudomarker_map(map, step=1, off_end=0, stepwidth="fixed")
+    pmap <- insert_pseudomarkers(map, step=1, off_end=0, stepwidth="fixed")
     pmap_qtl <- qtl::create.map(map, step=1, off.end=0)
     expect_equivalent(pmap, pmap_qtl)
 
@@ -35,12 +35,12 @@ test_that("minimal version works in simple case", {
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
-    pmap <- create_pseudomarker_map(map, step=2.5, off_end=0, stepwidth="max")
+    pmap <- insert_pseudomarkers(map, step=2.5, off_end=0, stepwidth="max")
     expect_equivalent(map, pmap)
     expect_equal(attr(pmap, "index"), seq(along=map))
 
     # step = 1
-    pmap <- create_pseudomarker_map(map, step=1, off_end=0, stepwidth="max")
+    pmap <- insert_pseudomarkers(map, step=1, off_end=0, stepwidth="max")
     expect_equivalent(pmap, seq(0, 50, by=5/6))
 
     # expected index
@@ -58,7 +58,7 @@ test_that("minimal version works in more realistic case", {
     data(hyper)
     map <- qtl::pull.map(hyper, chr=1)[[1]]
 
-    pmap <- create_pseudomarker_map(map, step=1.55, off_end=4, stepwidth="max")
+    pmap <- insert_pseudomarkers(map, step=1.55, off_end=4, stepwidth="max")
 
     expected <- c(0.2, 1.75, 3.3, 4.79090909091818, 6.28181818183636, 7.77272727275454,
                   9.26363636367273, 10.7545454545909, 12.2454545455091, 13.7363636364273,
