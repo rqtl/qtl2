@@ -38,7 +38,7 @@ write.table(phe, paste0(odir, "grav_pheno.csv"), sep=",",
 
 # phenotype covariates
 times <- as.numeric(substr(colnames(phe)[-1], 2, nchar(colnames(phe)[-1])))/60
-phecovar <- cbind(id=colnames(phe)[-1], times=as.character(times))
+phecovar <- cbind(pheno=colnames(phe)[-1], times=as.character(times))
 write.table(phecovar, paste0(odir, "grav_phenocovar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
