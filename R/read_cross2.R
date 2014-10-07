@@ -64,6 +64,7 @@ function(yaml_file)
     if("alleles" %in% names(control))
         output$alleles <- control$alleles
 
+    class(output) <- "cross2"
     output
 }
 
