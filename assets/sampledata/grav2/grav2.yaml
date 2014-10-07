@@ -1,0 +1,16 @@
+# Data from Moore et al. (2013) Genetics 195:1077-1086 (2nd RIL replicate)
+# Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013c
+crosstype: riself
+geno: grav2_geno.csv
+pheno: grav2_pheno.csv
+phenocovar: grav2_phenocovar.csv
+gmap: grav2_gmap.csv
+alleles:
+- L
+- C
+genotypes:
+  L: 1
+  C: 2
+na.strings:
+- '-'
+- NA

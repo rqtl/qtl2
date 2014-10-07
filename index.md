@@ -12,6 +12,10 @@ There's not much implemented yet; I'm testing out different methods
 for linear regression; there are some benchmarks
 [here](assets/vignettes/linreg_benchmarks.html).
 
+The internal data structure for R/qtl2 is different from that of
+[R/qtl](http://www.rqtl.org), and the input data file format has also
+changed. Sample data files are available [here](pages/sampledata.html).
+
 ---
 
 ### License
