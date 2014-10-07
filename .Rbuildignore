@@ -4,6 +4,3 @@ Makefile
 ^\.travis\.yml$
 Notes/.*
 \.Rout$
-inst/doc/.*\.Rmd
-inst/doc/.*\.html
-inst/doc/.*\.md
