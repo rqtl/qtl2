@@ -28,6 +28,13 @@ class F2PK : public QTLCross
                 bool is_X_chr, bool is_female, IntegerVector cross_info);
 
     double est_rec_frac(NumericMatrix full_gamma, bool is_X_chr);
+
+    // this is to indicate that the f2pk cross type shouldn't exist on the R side
+    // (it's strictly a device for using phase-known version for est_map)
+    bool crosstype_supported() {
+        return false;
+    }
+
 };
 
 #endif // CROSS_F2PK_H

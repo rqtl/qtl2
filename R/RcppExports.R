@@ -57,6 +57,10 @@ permute_ivector <- function(n, x) {
     .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
 }
 
+.crosstype_supported <- function(crosstype) {
+    .Call('qtl2_crosstype_supported', PACKAGE = 'qtl2', crosstype)
+}
+
 test_init <- function(crosstype, true_gen, is_X_chr, is_female, cross_info) {
     .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_gen, is_X_chr, is_female, cross_info)
 }

@@ -64,6 +64,12 @@ public:
         return 0.0;
     }
 
+    // the following is for checking with a crosstype is supported from R
+    // (some classes, like f2pk, aren't appropriate on the R side
+    virtual bool crosstype_supported() {
+        return true;
+    }
+
 };
 
 #endif // CROSS.H

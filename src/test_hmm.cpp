@@ -1,7 +1,18 @@
+// functions to test basic HMM things from R
+
 #include <Rcpp.h>
 #include "cross.h"
 
 using namespace Rcpp;
+
+// check if a cross type is supported
+// [[Rcpp::export(".crosstype_supported")]]
+bool crosstype_supported(String crosstype)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+    
+    return cross->crosstype_supported();
+}
 
 // test init functions from R
 // [[Rcpp::export]]

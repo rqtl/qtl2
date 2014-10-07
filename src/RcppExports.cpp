@@ -246,6 +246,21 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// crosstype_supported
+bool crosstype_supported(String crosstype);
+RcppExport SEXP qtl2_crosstype_supported(SEXP crosstypeSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        bool __result = crosstype_supported(crosstype);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // test_init
 double test_init(String crosstype, int true_gen, bool is_X_chr, bool is_female, IntegerVector cross_info);
 RcppExport SEXP qtl2_test_init(SEXP crosstypeSEXP, SEXP true_genSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
