@@ -66,7 +66,7 @@ write.table(phecovar, paste0(odir, "iron_phenocovar.csv"), sep=",",
 
 # control info
 genotypes <- list(SS=1L, SB=2L, BB=3L)
-iron_info <- list(crosstype = "riself",
+iron_info <- list(crosstype = "f2",
                   geno = "iron_geno.csv",
                   pheno = "iron_pheno.csv",
                   phenocovar = "iron_phenocovar.csv",
@@ -76,6 +76,7 @@ iron_info <- list(crosstype = "riself",
                   genotypes = genotypes,
                   sex = list(covar="sex", f=0L, m=1L),
                   cross_info=list(covar="cross_direction", "(SxB)x(SxB)"=0L, "(BxS)x(BxS)"=1L),
+                  x_chr = "X",
                   na.strings = c("-", "NA"))
 
 library(yaml)

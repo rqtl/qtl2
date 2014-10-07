@@ -1,7 +1,7 @@
 # Data from Grant et al. (2006) Hepatology 44:174-185
 # # Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
-crosstype: riself
+crosstype: f2
 geno: iron_geno.csv
 pheno: iron_pheno.csv
 phenocovar: iron_phenocovar.csv
@@ -22,6 +22,7 @@ cross_info:
   covar: cross_direction
   (SxB)x(SxB): 0
   (BxS)x(BxS): 1
+x_chr: X
 na.strings:
 - '-'
 - NA
