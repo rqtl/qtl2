@@ -1,14 +1,14 @@
 #ifndef CROSS_RISIB_H
 #define CROSS_RISIB_H
 
-class RIsib : public QTLCross
+class RISIB : public QTLCross
 {
  public:
-    RIsib(){
+    RISIB(){
         type = "risib";
         phase_known_type = "risib";
     };
-    ~RIsib(){};
+    ~RISIB(){};
 
     bool check_geno(int gen, bool is_observed_value,
                     bool is_X_chr, bool is_female, IntegerVector cross_info);

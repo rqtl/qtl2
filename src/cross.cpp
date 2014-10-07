@@ -21,8 +21,8 @@ QTLCross* QTLCross::Create(String type)
     if(type=="bc") return new BC();
     if(type=="f2") return new F2();
     if(type=="f2pk") return new F2PK();
-    if(type=="risib") return new RIsib();
-    if(type=="riself") return new RIself();
+    if(type=="risib") return new RISIB();
+    if(type=="riself") return new RISELF();
 
     throw std::range_error("cross type not yet supported."); 
     return NULL;

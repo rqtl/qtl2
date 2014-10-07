@@ -1,14 +1,14 @@
 #ifndef CROSS_RISELF_H
 #define CROSS_RISELF_H
 
-class RIself : public QTLCross
+class RISELF : public QTLCross
 {
  public:
-    RIself(){
+    RISELF(){
         type = "riself";
         phase_known_type = "riself";
     };
-    ~RIself(){};
+    ~RISELF(){};
 
     bool check_geno(int gen, bool is_observed_value,
                     bool ignored1, bool ignored2, IntegerVector ignored3);
