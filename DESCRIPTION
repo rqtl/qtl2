@@ -18,7 +18,8 @@ Suggests:
     knitr,
     testthat,
     devtools,
-    roxygen2
+    roxygen2,
+    utils
 License: GPL-3
 URL: http://github.com/kbroman/qtl2
 VignetteBuilder: knitr

@@ -22,8 +22,8 @@ basic parameters as well as the names of the series of data files
 to be read. Sample data files at **FIX ME (put url here)**.
 }
 \examples{
-yaml_file <- system.file("sampledata", "grav.yaml", package="qtl2")
-grav <- read_cross2(yaml_file)
+yaml_file <- system.file("sampledata", "grav2.yaml", package="qtl2")
+grav2 <- read_cross2(yaml_file)
 }
 \keyword{IO}
 
