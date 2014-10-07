@@ -257,7 +257,7 @@ double F2PK::est_rec_frac(NumericMatrix gamma, bool is_X_chr)
         double diagsum = 0.0;
         for(int i=0; i<n_gen; i++) diagsum += gamma(i,i);
 
-        return(1.0 - diagsum/denom);
+        return 1.0 - diagsum/denom;
     }
 
     IntegerVector empty(0);

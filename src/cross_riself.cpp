@@ -12,7 +12,7 @@ bool RISELF::check_geno(int gen, bool is_observed_value,
 {
     if(is_observed_value && gen==0) return true;
 
-    if(gen==AA || gen==BB) return(true);
+    if(gen==AA || gen==BB) return true;
 
     throw std::range_error("invalid genotype");
     return false; // can't get here

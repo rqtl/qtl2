@@ -18,7 +18,7 @@ IntegerVector random_int(const int n, const int low, const int high)
     for(int i=0; i<n; i++)
         result[i] = random_int(low, high);
     
-    return(result);
+    return result;
 }
 
 // permute a vector of numbers
@@ -91,7 +91,7 @@ NumericMatrix permute_nvector(const int n, const NumericVector x)
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }
 
-    return(result);
+    return result;
 }
 
 // get a set of permutations of a vector, as columns of a matrix
@@ -107,6 +107,6 @@ IntegerMatrix permute_ivector(const int n, const IntegerVector x)
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }
 
-    return(result);
+    return result;
 }
 
