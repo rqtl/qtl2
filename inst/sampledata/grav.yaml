@@ -11,4 +11,6 @@ alleles:
 genotypes:
   L: 1
   C: 2
-na.strings: NA
+na.strings:
+- '-'
+- NA

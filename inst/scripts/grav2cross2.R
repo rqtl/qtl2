@@ -51,7 +51,7 @@ grav_info <- list(crosstype = "riself",
                   gmap = "grav_gmap.csv",
                   alleles = c("L", "C"),
                   genotypes = genotypes,
-                  na.strings = "NA")
+                  na.strings = c("-", "NA"))
 
 library(yaml)
 ofile <- paste0(odir, "grav.yaml")
