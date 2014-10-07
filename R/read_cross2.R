@@ -60,6 +60,27 @@ function(yaml_file)
         }
     }
 
+    # pull out a map
+    if("gmap" %in% names(output))
+        map <- output$gmap
+    else if("pmap" %in% output)
+        map <- output$pmap
+    else stop("Need a genetic or physical marker map")
+
+    # split genotypes by chromosome
+    geno <- c("geno", "founder_geno")
+    for(section in geno) {
+        if(section %in% names(output))
+            output[[section]] <- split_geno(output[[section]], map)
+    }
+
+    # split maps by chr
+    maps <- c("gmap", "pmap")
+    for(section in maps) {
+        if(section %in% names(output))
+            output[[section]] <- split_map(output[[section]])
+    }
+
     # alleles?
     if("alleles" %in% names(control))
         output$alleles <- control$alleles
@@ -68,6 +89,9 @@ function(yaml_file)
     output
 }
 
+# convert genotype data, using genotype encodings
+# genotypes is a list with names = code in data
+#                     and values = new numeric code
 encode_geno <-
 function(geno, genotypes)
 {
@@ -102,6 +126,7 @@ function(geno, genotypes)
     newgeno
 }
 
+# convert a phenotype data.frame to a matrix of doubles
 pheno2matrix <-
 function(pheno)
 {
@@ -111,6 +136,7 @@ function(pheno)
     pheno
 }
 
+# make the first column of a data frame the row names
 firstcol2rownames <-
 function(covar, name="")
 {
@@ -127,6 +153,7 @@ function(covar, name="")
     covar
 }
 
+# check a list of IDs for duplicates
 check4duplicates <-
 function(ids, name="")
 {
@@ -137,4 +164,42 @@ function(ids, name="")
              paste0('"', unique(id[dup]), '"', collapse=", "))
     }
     TRUE
+}
+
+# split genotype data into list of chromosomes
+split_geno <-
+function(geno, map)
+{
+    gmark <- colnames(geno)
+    mmark <- rownames(map)
+
+    m <- match(gmark, mmark)
+    if(any(is.na(m)))
+        stop("Some markers in genotype data not found in map: ",
+             paste0('"', gmark[is.na(m)], '"', collapse=", "))
+
+    chr <- map[match(colnames(geno), rownames(map)), 1]
+    pos <- map[match(colnames(geno), rownames(map)), 2]
+
+    uchr <- unique(chr)
+    newgeno <- vector("list", length(uchr))
+    names(newgeno) <- uchr
+    for(i in uchr) {
+        wh <- which(chr==i)
+        o <- order(pos[chr==i])
+        newgeno[[i]] <- geno[,wh[o], drop=FALSE]
+    }
+
+    newgeno
+}
+
+# split a data frame with chr, pos (and marker names as rows)
+#   into a list of chromosomes
+split_map <-
+function(map)
+{
+    pos <- map[,2]
+    names(pos) <- rownames(map)
+
+    lapply(split(pos, z$gmap[,1]), sort)
 }
