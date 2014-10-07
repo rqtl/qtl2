@@ -52,6 +52,7 @@ function(yaml_file)
             # treat first column as rownames
             sheet <- firstcol2rownames(sheet, section)
 
+            # change genotype codes and convert phenotypes to numeric matrix
             if(section=="geno" || section=="founder_geno")
                 sheet <- encode_geno(sheet, genotypes)
             else if(section=="pheno")
@@ -68,6 +69,9 @@ function(yaml_file)
         map <- output$pmap
     else stop("Need a genetic or physical marker map")
 
+    if(!("geno" %in% names(output)))
+       stop("No genotype data found.")
+
     # split genotypes by chromosome
     geno <- c("geno", "founder_geno")
     for(section in geno) {
@@ -80,6 +84,29 @@ function(yaml_file)
     for(section in maps) {
         if(section %in% names(output))
             output[[section]] <- split_map(output[[section]])
+    }
+
+    # X chr?
+    chr <- names(output$geno)
+    output$is_x_chr <- rep(FALSE, length(chr))
+    names(output$is_x_chr) <- chr
+    if("x_chr" %in% names(control)) {
+        x_chr <- control$x_chr # name of X chromosome
+        output$is_x_chr[x_chr] <- TRUE
+    }
+
+    # sex
+    output$is_female <- convert_sex(control$sex, output$covar, control$sep, dir)
+    if(is.null(output$is_female)) { # missing; assume all FALSE
+        output$is_female <- rep(FALSE, nrow(output$geno[[1]]))
+        names(output$is_female) <- rownames(output$geno[[1]])
+    }
+
+    # cross_info
+    output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep, dir)
+    if(is.null(output$cross_info)) { # missing; make a 0-column matrix
+        output$cross_info <- matrix(ncol=0, nrow=nrow(output$geno[[1]]))
+        rownames(output$cross_info) <- rownames(output$geno[[1]])
     }
 
     # alleles?
@@ -204,3 +231,102 @@ function(map)
 
     lapply(split(pos, map[,1]), sort)
 }
+
+# grab sex information
+convert_sex <-
+function(sex_control, covar, sep, dir)
+{
+    if("covar" %in% names(sex_control)) { # sex within the covariates
+        sex <- covar[,sex_control[["covar"]], drop=FALSE]
+    }
+    else if("file" %in% names(sex_control)) { # look for file
+        sex <- data.table::fread(file.path(dir, sex_control[["file"]]))
+        sex <- firstcol2rownames(sex)
+    }
+    else return(NULL)
+
+    # convert to vector
+    id <- rownames(sex)
+    sex <- sex[,1]
+    names(sex) <- id
+
+    # missing values?
+    if(any(is.na(sex))) {
+        stop(sum(is.na(sex)), " missing sexes (sex can't be missing).")
+    }
+
+    # grab the rest of sex_control as conversion codes
+    codes <- sex_control[is.na(match(names(sex_control), c("file", "covar")))]
+    sexcode <- names(codes)
+
+    if(length(codes)==0) { # no codes, pass over as is
+        storage.mode(sex) <- "integer"
+        return(sex==0)
+    }
+
+    # any mismatches?
+    sexch <- as.character(sex)
+    mismatch <- !is.na(sexch) & is.na(match(sexch,sexcode))
+    if(any(mismatch)) {
+        stop(sum(mismatch), " sexes don't match the codes (sex can't be missing): ",
+                paste0('"', unique(sexch[mismatch]), '"', collapse=", "))
+    }
+
+    # re-code
+    newsex <- sex
+    for(code in sexcode)
+        newsex[sex==code] <- codes[[code]]
+
+    storage.mode(newsex) <- "integer"
+
+    (newsex==0)
+}
+
+# grab cross_info
+convert_cross_info <-
+function(cross_info_control, covar, sep, dir)
+{
+    if("covar" %in% names(cross_info_control)) { # cross_info within the covariates
+        cross_info <- covar[,cross_info_control[["covar"]], drop=FALSE]
+    }
+    else if("file" %in% names(cross_info_control)) { # look for file
+        cross_info <- data.table::fread(file.path(dir, cross_info_control[["file"]]))
+        if(any(is.na(cross_info)))
+            stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
+        return(firstcol2rownames(cross_info))
+    }
+    else return(NULL)
+
+    # make it a matrix
+    cross_info <- as.matrix(cross_info)
+
+    if(any(is.na(cross_info))) {
+        stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing).")
+    }
+
+    # grab the rest of cross_info_control as conversion codes
+    codes <- cross_info_control[is.na(match(names(cross_info_control), c("file", "covar")))]
+    cicode <- names(codes)
+
+    if(length(codes)==0) { # no codes, pass over as is
+        storage.mode(cross_info) <- "integer"
+        return(cross_info)
+    }
+
+    # any mismatches?
+    cich <- as.character(cross_info)
+    mismatch <- !is.na(cich) & is.na(match(cich,cicode))
+    if(any(mismatch)) {
+        stop(sum(mismatch), " cross_info vals don't match the codes (cross_info can't be missing): ",
+                paste0('"', unique(cich[mismatch]), '"', collapse=", "))
+    }
+    # re-code
+    newci <- cross_info
+    for(code in cicode)
+        newci[cross_info==code] <- codes[[code]]
+
+    storage.mode(newci) <- "integer"
+
+    newci
+}
+
