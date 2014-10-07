@@ -28,6 +28,8 @@ The following are sample input data files in the new R/qtl2 format.
       library(qtl2)
       grav2 <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml")
 
+  You can also [peruse the data at GitHub](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/grav2).
+
 - An intercross, from [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
 
   - [`iron.yaml`](../assets/sampledata/iron/iron.yaml), the control file ([YAML format](http://www.yaml.org/))
@@ -44,3 +46,5 @@ The following are sample input data files in the new R/qtl2 format.
   
       library(qtl2)
       iron <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/iron/iron.yaml")
+
+  You can also [peruse the data at GitHub](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron).
