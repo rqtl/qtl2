@@ -26,7 +26,7 @@ grav2 <- jittermap(grav2)
 
 alleles <- c("L", "C")
 
-odir <- "../sampledata/"
+odir <- "../sampledata/grav2/"
 
 # write genotypes
 g <- pull.geno(grav2)
