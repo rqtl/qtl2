@@ -15,6 +15,7 @@
 #'
 #' @export
 #' @keywords IO
+#' @seealso Sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
 #' yaml_file <- "http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 #' grav2 <- read_cross2(yaml_file)
