@@ -1,10 +1,10 @@
 # Data from Moore et al. (2013) Genetics 195:1077-1086
 # Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013b
 crosstype: riself
-geno: grav_gen.csv
-pheno: grav_phe.csv
-phenocovar: grav_phecovar.csv
-gmap: grav_map.csv
+geno: grav_geno.csv
+pheno: grav_pheno.csv
+phenocovar: grav_phenocovar.csv
+gmap: grav_gmap.csv
 alleles:
 - L
 - C

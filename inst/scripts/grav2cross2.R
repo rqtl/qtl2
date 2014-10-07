@@ -25,28 +25,29 @@ write.table(g, paste0(odir, "grav_geno.csv"), sep=",",
 map <- pull.map(grav, as.table=TRUE)
 map <- cbind(marker=rownames(map), map)
 map <- apply(map, 2, function(a) gsub(" ", "", as.character(a)))
-write.table(map, paste0(odir, "grav_map.csv"), sep=",",
+write.table(map, paste0(odir, "grav_gmap.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # write phenotypes
 phe <- as.matrix(grav$pheno)
 storage.mode(phe) <- "character"
-phe <- cbind(id=as.character(1:nrow(phe)), phe)
-write.table(phe, paste0(odir, "grav_phe.csv"), sep=",",
+phe <- cbind(as.character(1:nrow(phe)), phe)
+colnames(phe)[1] <- "id"
+write.table(phe, paste0(odir, "grav_pheno.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # phenotype covariates
-times <- as.numeric(substr(colnames(phe), 2, nchar(colnames(phe))))/60
-phecovar <- cbind(pheno=colnames(phe), times=as.character(times))
-write.table(phecovar, paste0(odir, "grav_phecovar.csv"), sep=",",
+times <- as.numeric(substr(colnames(phe)[-1], 2, nchar(colnames(phe)[-1])))/60
+phecovar <- cbind(id=colnames(phe)[-1], times=as.character(times))
+write.table(phecovar, paste0(odir, "grav_phenocovar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # control info
 grav_info <- list(crosstype = "riself",
-                  geno = "grav_gen.csv",
-                  pheno = "grav_phe.csv",
-                  phenocovar = "grav_phecovar.csv",
-                  gmap = "grav_map.csv",
+                  geno = "grav_geno.csv",
+                  pheno = "grav_pheno.csv",
+                  phenocovar = "grav_phenocovar.csv",
+                  gmap = "grav_gmap.csv",
                   alleles = c("L", "C"),
                   genotypes = c("LL", "CC"),
                   na.strings = "NA")
