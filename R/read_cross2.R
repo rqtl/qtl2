@@ -16,7 +16,7 @@
 #' @export
 #' @keywords IO
 #' @examples
-#' yaml_file <- system.file("sampledata", "grav2.yaml", package="qtl2")
+#' yaml_file <- system.file("sampledata", "grav2", "grav2.yaml", package="qtl2")
 #' grav2 <- read_cross2(yaml_file)
 read_cross2 <-
 function(yaml_file)
