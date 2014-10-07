@@ -72,8 +72,8 @@ grav2_info <- list(crosstype = "riself",
 
 library(yaml)
 ofile <- paste0(odir, "grav2.yaml")
-cat("# Data from Moore et al. (2013) Genetics 195:1077-1086",
-    "# Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013b",
+cat("# Data from Moore et al. (2013) Genetics 195:1077-1086 (2nd RIL replicate)",
+    "# Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013c",
     file=ofile, sep="\n")
 cat(as.yaml(grav2_info), file=ofile, append=TRUE)
 
