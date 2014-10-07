@@ -45,9 +45,9 @@ function(yaml_file)
     for(section in major_files) {
         if(section %in% names(control)) {
             sheet <- data.table::fread(file.path(dir, control[[section]]),
-                                     na.strings=control$na.strings,
-                                     sep=control$sep) # note that nulls just get ignored
-            class(sheet) <- "data.frame"
+                                       na.strings=control$na.strings,
+                                       sep=control$sep,                     # note that nulls just get ignored
+                                       verbose=FALSE, showProgress=FALSE, data.table=FALSE)
 
             # treat first column as rownames
             sheet <- firstcol2rownames(sheet, section)
@@ -240,7 +240,8 @@ function(sex_control, covar, sep, dir)
         sex <- covar[,sex_control[["covar"]], drop=FALSE]
     }
     else if("file" %in% names(sex_control)) { # look for file
-        sex <- data.table::fread(file.path(dir, sex_control[["file"]]))
+        sex <- data.table::fread(file.path(dir, sex_control[["file"]]),
+                                 verbose=FALSE, showProgress=FALSE, data.table=FALSE)
         sex <- firstcol2rownames(sex)
     }
     else return(NULL)
@@ -290,7 +291,8 @@ function(cross_info_control, covar, sep, dir)
         cross_info <- covar[,cross_info_control[["covar"]], drop=FALSE]
     }
     else if("file" %in% names(cross_info_control)) { # look for file
-        cross_info <- data.table::fread(file.path(dir, cross_info_control[["file"]]))
+        cross_info <- data.table::fread(file.path(dir, cross_info_control[["file"]]),
+                                 verbose=FALSE, showProgress=FALSE, data.table=FALSE)
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
         return(firstcol2rownames(cross_info))
