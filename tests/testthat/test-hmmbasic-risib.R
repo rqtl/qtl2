@@ -35,14 +35,14 @@ test_that("risib check_geno works", {
 
 })
 
-test_that("risib n_geno works", {
+test_that("risib ngen works", {
 
     expect_equal(test_ngen("risib", FALSE), 2)
     expect_equal(test_ngen("risib", TRUE), 2)
 
 })
 
-test_that("risib geno_index works", {
+test_that("risib possible_gen works", {
 
     # autosome
     expect_equal(test_possible_gen("risib", FALSE, FALSE, 0), 1:2)

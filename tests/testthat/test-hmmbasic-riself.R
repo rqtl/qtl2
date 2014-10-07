@@ -14,11 +14,11 @@ test_that("riself check_geno works", {
 
 })
 
-test_that("riself n_geno works", {
+test_that("riself ngen works", {
     expect_equal(test_ngen("riself", FALSE), 2)
 })
 
-test_that("riself geno_index works", {
+test_that("riself possible_gen works", {
 
     expect_equal(test_possible_gen("riself", FALSE, FALSE, numeric(0)), 1:2)
 
