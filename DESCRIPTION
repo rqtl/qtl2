@@ -10,14 +10,15 @@ Depends:
     R (>= 3.1.0)
 Imports:
     Rcpp (>= 0.11.2),
-    RcppEigen (>= 0.3.2)
+    RcppEigen (>= 0.3.2),
+    yaml,
+    data.table
 Suggests:
     qtl,
     knitr,
     testthat,
     devtools,
-    roxygen2,
-    yaml
+    roxygen2
 License: GPL-3
 URL: http://github.com/kbroman/qtl2
 VignetteBuilder: knitr
