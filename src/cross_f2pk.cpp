@@ -5,16 +5,16 @@
 #include "cross.h"
 #include "cross_f2pk.h"
 
-enum gen {GENO_NA=0, AA=1, AB=2, BA=3, BB=4,
+enum gen {AA=1, AB=2, BA=3, BB=4,
           A=1, H=2, B=3, notB=4, notA=5,
-          AY=1, BY=4};
+          AY=5, BY=6};
 
 bool F2PK::check_geno(int gen, bool is_observed_value,
                       bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     // allow any value 0-5 or observed
     if(is_observed_value) {
-        if(gen==GENO_NA || gen==A || gen==H || gen==B ||
+        if(gen==0 || gen==A || gen==H || gen==B ||
            gen==notA || gen==notB) return true;
         throw std::range_error("Invalid observed genotype");
     }
@@ -53,7 +53,7 @@ double F2PK::emit(int obs_gen, int true_gen, double error_prob,
     check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
     check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
-    if(obs_gen==GENO_NA) return 0.0; // log(1.0)
+    if(obs_gen==0) return 0.0; // log(1.0)
 
     if(is_X_chr) {
         if(is_female) {
@@ -183,7 +183,7 @@ IntegerVector F2PK::possible_gen(bool is_X_chr, bool is_female,
             }
         }
         else { // male
-            int vals[] = {AA,BB};
+            int vals[] = {AY,BY};
             IntegerVector result(vals, vals+2);
             return result;
         }
@@ -197,6 +197,7 @@ IntegerVector F2PK::possible_gen(bool is_X_chr, bool is_female,
 
 int F2PK::ngen(bool is_X_chr)
 {
+    if(is_X_chr) return 6;
     return 4;
 }
 

@@ -137,7 +137,7 @@ test_that("f2 X chr calc_genoprob matches R/qtl", {
                              rf, map_index, 0.01)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    pr_qtl <- reviseXdata("f2", "simple", sexpgm=sexpgm, prob=pr,
+    pr_qtl <- reviseXdata("f2", "full", sexpgm=sexpgm, prob=pr,
                           cross.attr=attributes(fake.f2))
 
     expect_equivalent(pr_qtl, pr_qtl2)
@@ -174,7 +174,7 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
                              rf, map_index, 0.02)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    pr_qtl <- reviseXdata("bc", "simple", sexpgm=sexpgm, prob=pr,
+    pr_qtl <- reviseXdata("bc", "full", sexpgm=sexpgm, prob=pr,
                           cross.attr=attributes(hyper))
 
     expect_equivalent(pr_qtl, pr_qtl2)
@@ -207,10 +207,11 @@ test_that("f2 X chr all males calc_genoprob matches R/qtl", {
                              rf, map_index, 0.01)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    # het probs all 0
-    expect_true(all(pr_qtl2[,,2] == 0))
+    # initial four probs all == 0
+    for(i in 1:4)
+        expect_true(all(pr_qtl2[,,i] == 0))
 
-    expect_equivalent(pr, pr_qtl2[,,-2])
+    expect_equivalent(pr, pr_qtl2[,,5:6])
 
 })
 
@@ -243,10 +244,14 @@ test_that("f2 X chr all females calc_genoprob matches R/qtl", {
                              rf, map_index, 0.01)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    pr_qtl <- reviseXdata("f2", "simple", sexpgm=sexpgm, prob=pr,
+    # last two probs all 0
+    for(i in 5:6)
+        expect_true(all(pr_qtl2[,,i]==0))
+
+    pr_qtl <- reviseXdata("f2", "full", sexpgm=sexpgm, prob=pr,
                           cross.attr=attributes(fake.f2))
 
-    expect_equivalent(pr_qtl, pr_qtl2)
+    expect_equivalent(pr_qtl, pr_qtl2[,,1:4])
 
 })
 
@@ -274,9 +279,11 @@ test_that("f2 X chr all females forw calc_genoprob matches R/qtl", {
                              rf, map_index, 0.01)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    expect_true(all(pr_qtl2[,,3] == 0))
+    # expect last four probs == 0
+    for(i in 3:6)
+        expect_true(all(pr_qtl2[,,i] == 0))
 
-    expect_equivalent(pr, pr_qtl2[,,-3])
+    expect_equivalent(pr, pr_qtl2[,,1:2])
 
 })
 
@@ -309,13 +316,11 @@ test_that("f2 X chr all females rev calc_genoprob matches R/qtl", {
                              rf, map_index, 0.01)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    # AA's all 0
-    expect_true(all(pr_qtl2[,,1]==0))
+    # first two and last two probs all 0
+    for(i in c(1:2, 5:6))
+        expect_true(all(pr_qtl2[,,i]==0))
 
-    pr_qtl <- reviseXdata("f2", "simple", sexpgm=sexpgm, prob=pr,
-                          cross.attr=attributes(fake.f2))
-
-    expect_equivalent(pr, pr_qtl2[,,3:2])
+    expect_equivalent(pr, pr_qtl2[,,4:3])
 
 })
 
@@ -345,10 +350,11 @@ test_that("bc X chr all males calc_genoprob matches R/qtl", {
                              rf, map_index, 0.02)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    # hets all 0
-    expect_true(all(pr_qtl2[,,2]==0))
+    # first two probs all 0
+    for(i in 1:2)
+        expect_true(all(pr_qtl2[,,i]==0))
 
-    expect_equivalent(pr, pr_qtl2[,,-2])
+    expect_equivalent(pr, pr_qtl2[,,3:4])
 
 })
 
@@ -377,9 +383,10 @@ test_that("bc X chr all females calc_genoprob matches R/qtl", {
                              rf, map_index, 0.02)
     pr_qtl2 <- aperm(pr_qtl2, c(2,3,1))
 
-    # BBs all 0
-    expect_true(all(pr_qtl2[,,3]==0))
+    # last two probs all 0
+    for(i in 3:4)
+        expect_true(all(pr_qtl2[,,i]==0))
 
-    expect_equivalent(pr, pr_qtl2[,,-3])
+    expect_equivalent(pr, pr_qtl2[,,1:2])
 
 })

@@ -5,7 +5,7 @@
 #include "cross.h"
 #include "cross_bc.h"
 
-enum gen {NA=0, AA=1, AB=2, AY=1, BY=3};
+enum gen {AA=1, AB=2, BB=3, AY=3, BY=4};
 
 bool BC::check_geno(int gen, bool is_observed_value,
                     bool is_X_chr, bool is_female, IntegerVector cross_info)
@@ -17,8 +17,14 @@ bool BC::check_geno(int gen, bool is_observed_value,
             throw std::range_error("genotype value not allowed");
     }
     else { // male X chr
-        if(gen != AY && gen != BY)
-            throw std::range_error("genotype value not allowed");
+        if(is_observed_value) {
+            if(gen != AA && gen != BB)
+                throw std::range_error("genotype value not allowed");
+        }
+        else {
+            if(gen != AY && gen != BY)
+                throw std::range_error("genotype value not allowed");
+        }
     }
 
     return true;
@@ -40,8 +46,20 @@ double BC::emit(int obs_gen, int true_gen, double error_prob,
 
     if(obs_gen==0) return 0.0; // missing value
 
-    if(obs_gen==true_gen) return log(1.0-error_prob);
-    else return log(error_prob);
+    if(is_X_chr && !is_female) { // X chr males different
+        if(obs_gen==AA) {
+            if(true_gen==AY) return log(1.0-error_prob);
+            else return log(error_prob);
+        }
+        else { // BB
+            if(true_gen==BY) return log(1.0-error_prob);
+            else return log(error_prob);
+        }
+    }
+    else { // female or autosome
+        if(obs_gen==true_gen) return log(1.0-error_prob);
+        else return log(error_prob);
+    }
 }
 
 
@@ -73,7 +91,7 @@ IntegerVector BC::possible_gen(bool is_X_chr, bool is_female,
 
 int BC::ngen(bool is_X_chr)
 {
-    if(is_X_chr) return 3;
+    if(is_X_chr) return 4;
     return 2;
 }
 

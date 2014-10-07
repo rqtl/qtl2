@@ -5,14 +5,15 @@
 #include "cross.h"
 #include "cross_f2.h"
 
-enum gen {GENO_NA=0, AA=1, AB=2, BB=3, notA=5, notB=4, AY=1, BY=3};
+enum gen {AA=1, AB=2, BB=3, notA=5, notB=4, 
+          AAX=1, ABX=2, BAX=3, BBX=4, AY=5, BY=6};
 
 bool F2::check_geno(int gen, bool is_observed_value,
                     bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
     // allow any value 0-5 for observed
     if(is_observed_value) {
-        if(gen==GENO_NA || gen==AA || gen==AB || gen==BB || 
+        if(gen==0 || gen==AA || gen==AB || gen==BB || 
            gen==notA || gen==notB) return true;
         throw std::range_error("Invalid observed genotype");
     }
@@ -20,8 +21,8 @@ bool F2::check_geno(int gen, bool is_observed_value,
     if(is_X_chr) {
         bool forward_direction = (cross_info[0]==0);
         if(is_female) {
-            if(forward_direction && (gen==AA || gen==AB)) return true;
-            if(!forward_direction && (gen==AB || gen==BB)) return true;
+            if(forward_direction && (gen==AAX || gen==ABX)) return true;
+            if(!forward_direction && (gen==BAX || gen==BBX)) return true;
         }
         else if(gen==AY || gen==BY) return true;
     }
@@ -51,30 +52,30 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
     check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
     check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
-    if(obs_gen==GENO_NA) return 0.0; // log(1.0)
+    if(obs_gen==0) return 0.0; // log(1.0)
 
     if(is_X_chr) {
         if(is_female) {
             bool is_forward_direction = (cross_info[0] == 0);
             if(is_forward_direction) {
-                if(true_gen==AA) {
+                if(true_gen==AAX) {
                     if(obs_gen==AA) return log(1.0-error_prob);
                     if(obs_gen==AB || obs_gen==notA) return log(error_prob);
                     return 0.0; // treat everything else as missing
                 }
-                if(true_gen==AB) {
+                if(true_gen==ABX) {
                     if(obs_gen==AB || obs_gen==notA) return log(1.0-error_prob);
                     if(obs_gen==AA) return log(error_prob);
                     return 0.0; // treat everything else as missing
                 }
             }
             else {
-                if(true_gen==AB) {
+                if(true_gen==BAX) {
                     if(obs_gen==AB || obs_gen==notB) return log(1.0-error_prob);
                     if(obs_gen==BB) return log(error_prob);
                     return 0.0; // treat everything else as missing
                 }
-                if(true_gen==BB) {
+                if(true_gen==BBX) {
                     if(obs_gen==BB) return log(1.0-error_prob);
                     if(obs_gen==AB || obs_gen==notB) return log(error_prob);
                     return 0.0; // treat everything else as missing
@@ -83,13 +84,13 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
         }
         else { // males
             if(true_gen==AY) {
-                if(obs_gen==AY || obs_gen==notB) return log(1.0-error_prob);
-                if(obs_gen==BY || obs_gen==notA) return log(error_prob);
+                if(obs_gen==AA || obs_gen==notB) return log(1.0-error_prob);
+                if(obs_gen==BB || obs_gen==notA) return log(error_prob);
                 return 0.0; // treat everything else as missing
             }
             if(true_gen==BY) {
-                if(obs_gen==BY || obs_gen==notA) return log(1.0-error_prob);
-                if(obs_gen==AY || obs_gen==notB) return log(error_prob);
+                if(obs_gen==BB || obs_gen==notA) return log(1.0-error_prob);
+                if(obs_gen==AA || obs_gen==notB) return log(error_prob);
                 return 0.0; // treat everything else as missing
             }
         }
@@ -163,18 +164,18 @@ IntegerVector F2::possible_gen(bool is_X_chr, bool is_female,
         bool is_forward_direction = (cross_info[0]==0);
         if(is_female) {
             if(is_forward_direction) {
-                int vals[] = {AA,AB};
+                int vals[] = {AAX,ABX};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
             else {
-                int vals[] = {AB,BB};
+                int vals[] = {BAX,BBX};
                 IntegerVector result(vals, vals+2);
                 return result;
             }
         }
         else { // male
-            int vals[] = {AA,BB};
+            int vals[] = {AY,BY};
             IntegerVector result(vals, vals+2);
             return result;
         }
@@ -188,5 +189,6 @@ IntegerVector F2::possible_gen(bool is_X_chr, bool is_female,
 
 int F2::ngen(bool is_X_chr)
 {
+    if(is_X_chr) return 6;
     return 3;
 }
