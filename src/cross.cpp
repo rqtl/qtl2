@@ -15,6 +15,8 @@
 #include "cross_f2pk.h"
 #include "cross_risib.h"
 #include "cross_riself.h"
+#include "cross_dh.h"
+#include "cross_haploid.h"
 
 QTLCross* QTLCross::Create(String type)
 {
@@ -23,6 +25,8 @@ QTLCross* QTLCross::Create(String type)
     if(type=="f2pk") return new F2PK();
     if(type=="risib") return new RISIB();
     if(type=="riself") return new RISELF();
+    if(type=="dh") return new DH();
+    if(type=="haploid") return new HAPLOID();
 
     throw std::range_error("cross type not yet supported."); 
     return NULL;

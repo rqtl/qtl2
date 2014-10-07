@@ -197,3 +197,57 @@ test_that("est_map for RIsib matches R/qtl", {
 
 })
 
+test_that("est_map for doubled haploids matches R/qtl", {
+
+    data(hyper)
+    hyper <- hyper[3,]
+    hyper$pheno <- hyper$pheno[,1,drop=FALSE]
+    class(hyper)[1] <- "dh"
+    newmap <- est.map(hyper, err=0.002, tol=1e-8)
+
+    rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
+
+    for(i in "3") {
+        g <- hyper$geno[[i]]$data
+        g[is.na(g)] <- 0
+        g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
+        map <- hyper$geno[[i]]$map
+        rf <- mf.h(diff(map))
+
+        rf_qtl2 <- est_map("dh", t(g), FALSE, rep(FALSE, nrow(g)),
+                           matrix(ncol=nrow(g), nrow=0),
+                           rf, 0.002, 10000, 1e-8, FALSE)
+
+        expect_equivalent(rf_qtl[[i]], rf_qtl2)
+        expect_equal(attr(newmap[[i]], "loglik"), attr(rf_qtl2, "loglik"))
+   }
+
+})
+
+test_that("est_map for haploids matches R/qtl", {
+
+    data(hyper)
+    hyper <- hyper[4,]
+    hyper$pheno <- hyper$pheno[,1,drop=FALSE]
+    class(hyper)[1] <- "haploid"
+    newmap <- est.map(hyper, err=0.002, tol=1e-8)
+
+    rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
+
+    for(i in "4") {
+        g <- hyper$geno[[i]]$data
+        g[is.na(g)] <- 0
+        g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
+        map <- hyper$geno[[i]]$map
+        rf <- mf.h(diff(map))
+
+        rf_qtl2 <- est_map("haploid", t(g), FALSE, rep(FALSE, nrow(g)),
+                           matrix(ncol=nrow(g), nrow=0),
+                           rf, 0.002, 10000, 1e-8, FALSE)
+
+        expect_equivalent(rf_qtl[[i]], rf_qtl2)
+        expect_equal(attr(newmap[[i]], "loglik"), attr(rf_qtl2, "loglik"))
+   }
+
+})
+
