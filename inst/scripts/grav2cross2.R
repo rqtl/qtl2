@@ -43,13 +43,14 @@ write.table(phecovar, paste0(odir, "grav_phenocovar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # control info
+genotypes <- list(LL=1L, CC=2L)
 grav_info <- list(crosstype = "riself",
                   geno = "grav_geno.csv",
                   pheno = "grav_pheno.csv",
                   phenocovar = "grav_phenocovar.csv",
                   gmap = "grav_gmap.csv",
                   alleles = c("L", "C"),
-                  genotypes = c("LL", "CC"),
+                  genotypes = genotypes,
                   na.strings = "NA")
 
 library(yaml)

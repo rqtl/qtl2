@@ -9,6 +9,6 @@ alleles:
 - L
 - C
 genotypes:
-- LL
-- CC
+  LL: 1
+  CC: 2
 na.strings: NA
