@@ -2,5 +2,6 @@ ReadMe.md
 License.md
 Makefile
 ^\.travis\.yml$
-inst/doc/*.html
-Notes/
+\.html
+Notes/*
+\.Rout
