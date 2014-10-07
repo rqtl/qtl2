@@ -161,7 +161,7 @@ function(ids, name="")
     dup <- duplicated(ids)
     if(any(dup)) {
         stop("Not all ids ", name, " are unique: ",
-             paste0('"', unique(id[dup]), '"', collapse=", "))
+             paste0('"', unique(ids[dup]), '"', collapse=", "))
     }
     TRUE
 }
@@ -201,5 +201,5 @@ function(map)
     pos <- map[,2]
     names(pos) <- rownames(map)
 
-    lapply(split(pos, z$gmap[,1]), sort)
+    lapply(split(pos, map[,1]), sort)
 }
