@@ -43,10 +43,10 @@ write.table(phecovar, paste0(odir, "grav_phecovar.csv"), sep=",",
 
 # control info
 grav_info <- list(crosstype = "riself",
-                  genfile = "grav_gen.csv",
-                  phefile = "grav_phe.csv",
-                  phecovarfile = "grav_phecovar.csv",
-                  gmapfile = "grav_map.csv",
+                  geno = "grav_gen.csv",
+                  pheno = "grav_phe.csv",
+                  phenocovar = "grav_phecovar.csv",
+                  gmap = "grav_map.csv",
                   alleles = c("L", "C"),
                   genotypes = c("LL", "CC"),
                   na.strings = "NA")
