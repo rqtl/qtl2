@@ -43,7 +43,7 @@ write.table(phecovar, paste0(odir, "grav_phenocovar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # control info
-genotypes <- list(LL=1L, CC=2L)
+genotypes <- list(L=1L, C=2L)
 grav_info <- list(crosstype = "riself",
                   geno = "grav_geno.csv",
                   pheno = "grav_pheno.csv",
