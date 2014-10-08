@@ -89,6 +89,9 @@ _compressed_ and so smaller than the combined set of CSV files.
 
 ### YAML control file
 
+(Mention here the use of `write_control_file()` for creating these
+YAML files.)
+
 ### Genotype data
 
 ### Founder genotype data
