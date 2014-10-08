@@ -20,7 +20,7 @@ Suggests:
     roxygen2,
     utils
 License: GPL-3
-URL: http://github.com/kbroman/qtl2
+URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppEigen
 LazyData: true
