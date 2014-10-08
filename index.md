@@ -8,9 +8,27 @@ R/qtl2 (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-The package is early in development.
 
 ---
+
+### Installation
+
+R/qtl2 is early in development and so is not yet available on
+[CRAN](http://cran.r-project.org).
+
+You can install R/qtl2 from its
+[GitHub repository](http://github.com/kbroman/qtl2). You first need to
+install the [devtools](https://github.com/hadley/devtools) package.
+
+    install.packages("devtools")
+
+Then install R/qtl2 using the `devtools::install_github()`.
+
+    library(devtools)
+    install_github("kbroman/qtl2")
+
+---
+
 
 ### Vignettes
 
