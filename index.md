@@ -22,7 +22,7 @@ install the [devtools](https://github.com/hadley/devtools) package.
 
     install.packages("devtools")
 
-Then install R/qtl2 using the `devtools::install_github()`.
+Then install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
     install_github("kbroman/qtl2")
