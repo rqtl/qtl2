@@ -1,6 +1,6 @@
 
-all: vignettes data external_vignettes
-.PHONY: vignettes data external_vignettes
+all: vignettes data external_vignettes extdata
+.PHONY: vignettes data external_vignettes extdata
 
 # R_OPTS: --vanilla without --no-environ
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
@@ -30,4 +30,13 @@ assets/vignettes/developer.html: ../qtl2/vignettes/developer.Rmd
 assets/vignettes/input_files.html: ../qtl2/vignettes/input_files.Rmd
 	cd $(@D);R -e 'library(knitr);knit2html("../../$<")'
 	rm $(@D)/input_files.md
+
+EXTDATA = ../qtl2/inst/extdata/grav2.zip ../qtl2/inst/extdata/iron.zip
+extdata: ${EXTDATA}
+
+../qtl2/inst/extdata/grav2.zip: assets/sampledata/grav2/grav2.yaml
+	cp $(<D)/$(@F) $@
+
+../qtl2/inst/extdata/iron.zip: assets/sampledata/iron/iron.yaml
+	cp $(<D)/$(@F) $@
 
