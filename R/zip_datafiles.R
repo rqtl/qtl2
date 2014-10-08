@@ -63,7 +63,7 @@ function(yaml_file, zip_file)
     # linemap as a file?
     if("linemap" %in% names(control)) {
         filename <- file.path(dir, control[["linemap"]])
-        if(file.exists(as_filename))
+        if(file.exists(filename))
             files <- c(files, control[["linemap"]])
     }
 
