@@ -1,0 +1,63 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{R/qtl2 input file format}
+-->
+
+# R/qtl2 input file format
+
+[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
+[R/qtl](http://www.rqtl.org), to better handle high-dimensional data
+and complex cross designs.
+
+The input data file formats for [R/qtl](http://www.rqtl.org) cannot
+handle complex crosses, and so for R/qtl2, we need to define a new
+input file format. This document describes the details.
+
+For simple cross types, we can continue to use the file formats for
+[R/qtl](http://www.rqtl.org), use `qtl::read.cross` to read in the
+data, and then use a conversion function (`qtl2::convert2cross2`) to convert
+the data into the new format.
+
+For more complex crosses, we need to define a new format. I was
+persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
+[&ldquo;tidy&rdquo; format](https://github.com/kbroman/qtl/pull/20)
+for [R/qtl](http://www.rqtl.org), with three separate CSV files, one
+for phenotypes, one for genotypes, and one for the genetic map.
+
+[Pjotr Prins](http://thebird.nl/) had another important idea, in his
+[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md), 
+that I'd like to adopt: the inclusion of metadata, such as genotype
+encodings, with the primary data. This will simplify the handling of
+multiple files and will help to avoid mistakes.
+
+And so the basic idea for the new format is to have a separate file
+for each part of the primary data (genotypes, founder genotypes,
+genetic map, physical map, phenotypes, covariates, and phenotype
+covariates), and then a control file which specifies the names of all
+of those files, the genotype encodings and missing value codes, and
+things like the name of the sex column within the covariate data (and
+the encodings for the sexes) and which chromosome is the X chromosome.
+
+### YAML control file
+
+### Genotype data
+
+### Founder genotype data
+
+### Phenotype data
+
+### Covariate data
+
+### Phenotype covariates
+
+### Genetic map
+
+### Physical map
+
+### Cross_info file
+
+## Detailed specifications for each cross type
+
+
+<!-- the following to make it look nicer -->
+<link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>

@@ -8,7 +8,7 @@ R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 doc:
 	R -e 'library(devtools);document()'
 
-vignettes: inst/doc/developer.html
+vignettes: inst/doc/developer.html inst/doc/input_files.html
 
 inst/doc/%.html: vignettes/%.Rmd
 	cd $(@D);R ${R_OPTS} -e 'library(knitr);knit2html("../../$<", "$(@F)")'
