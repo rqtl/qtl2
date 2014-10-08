@@ -31,14 +31,22 @@ function(file)
 {
     if(length(grep("\\.zip$", file)) > 0) { # zip file
         dir <- tempdir()
-        message(" - unzipping ", file, " to ", dir)
+        if(is_web_file(file)) {
+            tmpfile <- tempfile()
+            message(" - downloading ", file, "\n       to ", tmpfile)
+            download.file(file, tmpfile, quiet=TRUE)
+            file <- tmpfile
+            on.exit(unlink(tmpfile))
+        }
+
+        message(" - unzipping ", file, "\n       to ", dir)
         unzipped_files <- utils::unzip(path.expand(file), exdir=dir)
         file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
 
         on.exit({ # clean up when done
             message(" - cleaning up")
             unlink(unzipped_files)
-        })
+        }, add=TRUE)
     }
 
     # directory containing the data
@@ -397,3 +405,10 @@ function(linemap_control, covar, sep, dir)
     linemap
 }
 
+# is file on web (starts with http://, https://, or file://)
+is_web_file <-
+function(file)
+{
+    patterns <- c("^http://", "^https://", "^file://")
+    vapply(patterns, function(a,b) length(grep(a, b)), 0, file) %>% sum %>% ">"(0)
+}
