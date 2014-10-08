@@ -309,9 +309,10 @@ function(sex_control, covar, sep, dir)
 convert_sexcodes <-
 function(codes)
 {
-    result <- tolower(codes) %>%
-        substr(., 1, 1) %>%
-            match(., c("f", "m")) - 1
+    result <- codes %>%
+        tolower() %>%
+        substr(1,1) %>%
+        match(c("f", "m")) - 1
 
     names(result) <- names(codes)
     result
