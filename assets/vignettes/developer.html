@@ -489,7 +489,18 @@ of those files, the genotype encodings and missing value codes, and
 things like the name of the sex column within the covariate data (and
 the encodings for the sexes) and which chromosome is the X chromosome.</p>
 
-<p>I describe the details in a
+<p>A key advantage of the control file scheme is that it greatly
+simplifies the function for reading in the data. That function,
+<code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the
+control file.
+The large number of files is a bit cumbersome, so we&#39;ve made it
+possible to use a
+<a href="http://en.wikipedia.org/wiki/Zip_(file_format">zip file</a>) containing
+all of the data files, and read that zip file directly (with the same
+function, <code>read_cross2()</code>). The function <code>zip_datafiles()</code> can be used
+to create the zip file.</p>
+
+<p>I describe the details of the input files in a
 <a href="input_files.html">separate vignette</a>. Here I&#39;ll give a brief sketch
 of the structure of the files.</p>
 
@@ -554,6 +565,11 @@ file. <code>SS</code>, <code>SB</code>, and <code>BB</code> are the codes used, 
 represents sex as well as the codes used: the sexes in the
 <code>iron_covar.csv</code> file are coded as <code>f</code> and <code>m</code>, and we want to
 indicate which one is <code>female</code> and which is <code>male</code>.</p>
+
+<p>The format of the control file is maybe a bit technical for some
+users, so there&#39;s a function <code>write_control_file()</code> that takes the
+control parameters (including file names) as input and writes the YAML
+file in the correct form.</p>
 
 <h3>All the other files</h3>
 
