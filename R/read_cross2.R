@@ -7,11 +7,14 @@
 #' containing all of the control information.
 #'
 #' @return Object of class \code{"cross2"}. For details, see the
-#' R/qtl2 Developer Guide. **FIX ME (put the url here)**
+#' \href{http://kbroman.org/qtl2/assets/vignettes/developer.html}{R/qtl2 developer guide}.
 #'
 #' @details A control file in YAML format contains information above
 #' basic parameters as well as the names of the series of data files
-#' to be read. Sample data files at **FIX ME (put url here)**.
+#' to be read. See the
+#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files}
+#' and the
+#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
 #'
 #' @export
 #' @keywords IO
