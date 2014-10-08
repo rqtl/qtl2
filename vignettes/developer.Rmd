@@ -327,7 +327,18 @@ of those files, the genotype encodings and missing value codes, and
 things like the name of the sex column within the covariate data (and
 the encodings for the sexes) and which chromosome is the X chromosome.
 
-I describe the details in a
+A key advantage of the control file scheme is that it greatly
+simplifies the function for reading in the data. That function,
+`read_cross2()`, has a _single_ argument: the name (with path) of the
+control file.
+The large number of files is a bit cumbersome, so we've made it
+possible to use a
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
+all of the data files, and read that zip file directly (with the same
+function, `read_cross2()`). The function `zip_datafiles()` can be used
+to create the zip file.
+
+I describe the details of the input files in a
 [separate vignette](input_files.html). Here I'll give a brief sketch
 of the structure of the files.
 
@@ -394,6 +405,12 @@ represents sex as well as the codes used: the sexes in the
 `iron_covar.csv` file are coded as `f` and `m`, and we want to
 indicate which one is `female` and which is `male`.
 
+The format of the control file is maybe a bit technical for some
+users, so there's a function `write_control_file()` that takes the
+control parameters (including file names) as input and writes the YAML
+file in the correct form.
+
+
 ### All the other files
 
 Again, I don't want to get into too much detail here. All of the other
@@ -429,6 +446,7 @@ being lines, and with the first column being line IDs.
 
 For more detail, see
 [the input file format vignette](input_files.html).
+
 
 
 ## HMM details

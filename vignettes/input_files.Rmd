@@ -14,8 +14,8 @@ handle complex crosses, and so for R/qtl2, we need to define a new
 input file format. This document describes the details.
 
 For simple cross types, we can continue to use the file formats for
-[R/qtl](http://www.rqtl.org), use `qtl::read.cross` to read in the
-data, and then use a conversion function (`qtl2::convert2cross2`) to convert
+[R/qtl](http://www.rqtl.org), use `qtl::read.cross()` to read in the
+data, and then use a conversion function (`qtl2::convert2cross2()`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
@@ -37,6 +37,55 @@ covariates), and then a control file which specifies the names of all
 of those files, the genotype encodings and missing value codes, and
 things like the name of the sex column within the covariate data (and
 the encodings for the sexes) and which chromosome is the X chromosome.
+
+## Reading the data files
+
+Before discussing the boring file specifications, let's consider briefly
+how the data are read into R.
+
+A key advantage of the control file scheme is that it greatly
+simplifies the function for reading in the data. That function,
+`read_cross2()`, has a _single_ argument: the name (with path) of the
+control file. So you can read in data like this:
+
+```{r read_cross2, eval=FALSE}
+library(qtl2)
+grav2 <- read_cross2("~/my_data/grav2.yaml")
+```
+
+The large number of files is a bit cumbersome, so we've made it
+possible to use a
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
+all of the data files, and read that zip file directly. There's even a
+function for creating the zip file:
+
+```{r create_zip, eval=FALSE}
+zip_datafiles("~/my_data/grav2.yaml")
+```
+
+The `zip_datafiles()` function will read the control file to identify
+all of the relevant data files and then zip them up into a file with
+the same name and location, but with the extension `.zip` rather than
+`.yaml`.
+
+To read the data back in, we use the same `read_cross2()` function,
+providing the name (and path) of the zip file rather than the control
+file.
+
+```{r read_zip, eval=FALSE}
+grav2 <- read_cross2("~/my_data/grav2.zip")
+```
+
+This can even be done with remote files.
+
+```{r read_remote_zip, eval=FALSE}
+grav2 <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
+```
+
+Of course, the other advantage of the zip file is that it is
+_compressed_ and so smaller than the combined set of CSV files.
+
+## Format of the data files
 
 ### YAML control file
 
