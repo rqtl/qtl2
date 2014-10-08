@@ -3,11 +3,14 @@
 \alias{read_cross2}
 \title{Read QTL data from files}
 \usage{
-read_cross2(yaml_file)
+read_cross2(file)
 }
 \arguments{
-\item{yaml_file}{Character string with path to the yaml file
-containing all of the control information.}
+\item{file}{Character string with path to the
+\href{http://www.yaml.org}{YAML} file containing all of the control
+information. This could instead be a zip file containing all of the
+data files, in which case the contents are unzipped to a temporary
+directory and then read.}
 }
 \value{
 Object of class \code{"cross2"}. For details, see the

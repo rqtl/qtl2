@@ -3,8 +3,11 @@
 #'
 #' Read QTL data from a set of files
 #'
-#' @param yaml_file Character string with path to the yaml file
-#' containing all of the control information.
+#' @param file Character string with path to the
+#' \href{http://www.yaml.org}{YAML} file containing all of the control
+#' information. This could instead be a zip file containing all of the
+#' data files, in which case the contents are unzipped to a temporary
+#' directory and then read.
 #'
 #' @return Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer.html}{R/qtl2 developer guide}.
@@ -24,13 +27,25 @@
 #' yaml_file <- "http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 #' grav2 <- read_cross2(yaml_file)
 read_cross2 <-
-function(yaml_file)
+function(file)
 {
+    if(length(grep("\\.zip$", file)) > 0) { # zip file
+        dir <- tempdir()
+        message(" - unzipping ", file, " to ", dir)
+        unzipped_files <- utils::unzip(path.expand(file), exdir=dir)
+        file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
+
+        on.exit({ # clean up when done
+            message(" - cleaning up")
+            unlink(unzipped_files)
+        })
+    }
+
     # directory containing the data
-    dir <- dirname(yaml_file)
+    dir <- dirname(file)
 
     # load the control file
-    control <-  yaml::yaml.load_file(yaml_file)
+    control <-  yaml::yaml.load_file(file)
 
     # grab cross type
     if("crosstype" %in% names(control))
