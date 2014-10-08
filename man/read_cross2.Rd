@@ -17,7 +17,7 @@ Object of class \code{"cross2"}. For details, see the
 Read QTL data from a set of files
 }
 \details{
-A control file in YAML format contains information above
+A control file in \href{http://www.yaml.org}{YAML} format contains information about
 basic parameters as well as the names of the series of data files
 to be read. See the
 \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files}

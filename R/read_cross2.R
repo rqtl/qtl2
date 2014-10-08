@@ -9,7 +9,7 @@
 #' @return Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer.html}{R/qtl2 developer guide}.
 #'
-#' @details A control file in YAML format contains information above
+#' @details A control file in \href{http://www.yaml.org}{YAML} format contains information about
 #' basic parameters as well as the names of the series of data files
 #' to be read. See the
 #' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files}
@@ -45,8 +45,8 @@ function(yaml_file)
         genotypes <- list(A=1, H=2, B=3, D=4, C=5)
 
     # grab the major bits
-    major_files <- c("geno", "gmap", "pmap", "pheno", "covar", "phenocovar", "founder_geno")
-    for(section in major_files) {
+    sections <- c("geno", "gmap", "pmap", "pheno", "covar", "phenocovar", "founder_geno")
+    for(section in sections) {
         if(section %in% names(control)) {
             sheet <- data.table::fread(file.path(dir, control[[section]]),
                                        na.strings=control$na.strings,
@@ -294,9 +294,12 @@ function(sex_control, covar, sep, dir)
 convert_sexcodes <-
 function(codes)
 {
-    tolower(codes) %>%
+    result <- tolower(codes) %>%
         substr(., 1, 1) %>%
             match(., c("f", "m")) - 1
+
+    names(result) <- names(codes)
+    result
 }
 
 
