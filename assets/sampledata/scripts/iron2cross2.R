@@ -74,7 +74,7 @@ iron_info <- list(crosstype = "f2",
                   gmap = "iron_gmap.csv",
                   alleles = alleles,
                   genotypes = genotypes,
-                  sex = list(covar="sex", f=0L, m=1L),
+                  sex = list(covar="sex", f='female', m='male'),
                   cross_info=list(covar="cross_direction", "(SxB)x(SxB)"=0L, "(BxS)x(BxS)"=1L),
                   x_chr = "X",
                   na.strings = c("-", "NA"))

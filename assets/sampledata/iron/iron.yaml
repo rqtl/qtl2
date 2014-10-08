@@ -16,8 +16,8 @@ genotypes:
   BB: 3
 sex:
   covar: sex
-  f: 0
-  m: 1
+  f: female
+  m: male
 cross_info:
   covar: cross_direction
   (SxB)x(SxB): 0
