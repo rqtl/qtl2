@@ -17,6 +17,7 @@
 #' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
 #'
 #' @export
+#' @importFrom magrittr "%>%"
 #' @keywords IO
 #' @seealso Sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
@@ -264,6 +265,7 @@ function(sex_control, covar, sep, dir)
 
     # grab the rest of sex_control as conversion codes
     codes <- sex_control[is.na(match(names(sex_control), c("file", "covar")))]
+    codes <- convert_sexcodes(codes) # convert to 0 and 1
     sexcode <- names(codes)
 
     if(length(codes)==0) { # no codes, pass over as is
@@ -288,6 +290,15 @@ function(sex_control, covar, sep, dir)
 
     (newsex==0)
 }
+
+convert_sexcodes <-
+function(codes)
+{
+    tolower(codes) %>%
+        substr(., 1, 1) %>%
+            match(., c("f", "m")) - 1
+}
+
 
 # grab cross_info
 convert_cross_info <-

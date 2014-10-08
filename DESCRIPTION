@@ -11,7 +11,8 @@ Depends:
 Imports:
     Rcpp (>= 0.11.2),
     yaml,
-    data.table
+    data.table,
+    magrittr
 Suggests:
     qtl,
     knitr,

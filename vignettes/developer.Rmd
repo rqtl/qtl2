@@ -360,8 +360,8 @@ genotypes:
   BB: 3
 sex:
   covar: sex
-  f: 0
-  m: 1
+  f: female
+  m: male
 cross_info:
   covar: cross_direction
   (SxB)x(SxB): 0
@@ -391,8 +391,8 @@ file. `SS`, `SB`, and `BB` are the codes used, to be converted to `1`,
 
 `sex` contains information about the name of the covariate that
 represents sex as well as the codes used: the sexes in the
-`iron_covar.csv` file are coded as `f` and `m`, and we want to turn
-those into `0` and `1`.
+`iron_covar.csv` file are coded as `f` and `m`, and we want to
+indicate which one is `female` and which is `male`.
 
 ### All the other files
 
