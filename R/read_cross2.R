@@ -112,6 +112,9 @@ function(yaml_file)
         rownames(output$cross_info) <- rownames(output$geno[[1]])
     }
 
+    # line map (mapping of individuals to lines
+    output$linemap <- convert_linemap(control$linemap, output$covar, control$sep, dir)
+
     # alleles?
     if("alleles" %in% names(control))
         output$alleles <- control$alleles
@@ -333,5 +336,34 @@ function(cross_info_control, covar, sep, dir)
     storage.mode(newci) <- "integer"
 
     newci
+}
+
+# grab linemap information
+convert_linemap <-
+function(linemap_control, covar, sep, dir)
+{
+    if(is.null(linemap_control)) return(NULL)
+
+    # see if it's a file
+    filename <- file.path(dir, linemap_control)
+    if(file.exists(file)) {
+        linemap <- data.table::fread(file.path(dir, linemap_control[["file"]]),
+                                     verbose=FALSE, showProgress=FALSE, data.table=FALSE)
+        linemap <- firstcol2rownames(linemap)
+    }
+    else { # treat as column name in the covariate data
+        linemap <- covar[,linemap_control[["covar"]], drop=FALSE]
+    }
+
+    # convert to vector
+    id <- rownames(linemap)
+    linemap <- linemap[,1]
+    names(linemap) <- id
+
+    # missing values?
+    if(any(is.na(linemap)))
+        stop(sum(is.na(linemap)), " missing linemapes (linemap can't be missing).")
+
+    linemap
 }
 
