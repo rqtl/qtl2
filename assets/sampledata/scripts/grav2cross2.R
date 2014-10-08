@@ -26,7 +26,7 @@ grav2 <- jittermap(grav2)
 
 alleles <- c("L", "C")
 
-odir <- "../grav2/"
+odir <- "../grav2"
 
 # write genotypes
 g <- pull.geno(grav2)
@@ -35,14 +35,14 @@ g[is.na(g)] <- "-"
 g[g=="1"] <- paste(alleles[1], collapse="")
 g[g=="2"] <- paste(alleles[2], collapse="")
 g <- cbind(id=as.character(1:nrow(g)), g)
-write.table(g, paste0(odir, "grav2_geno.csv"), sep=",",
+write.table(g, file.path(odir, "grav2_geno.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # write genetic map
 map <- pull.map(grav2, as.table=TRUE)
 map <- cbind(marker=rownames(map), map)
 map <- apply(map, 2, function(a) gsub(" ", "", as.character(a)))
-write.table(map, paste0(odir, "grav2_gmap.csv"), sep=",",
+write.table(map, file.path(odir, "grav2_gmap.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # write phenotypes
@@ -50,13 +50,13 @@ phe <- as.matrix(grav2$pheno)
 storage.mode(phe) <- "character"
 phe <- cbind(as.character(1:nrow(phe)), phe)
 colnames(phe)[1] <- "id"
-write.table(phe, paste0(odir, "grav2_pheno.csv"), sep=",",
+write.table(phe, file.path(odir, "grav2_pheno.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # phenotype covariates
 times <- as.numeric(substr(colnames(phe)[-1], 2, nchar(colnames(phe)[-1])))/60
 phecovar <- cbind(pheno=colnames(phe)[-1], "time (hrs)"=as.character(times))
-write.table(phecovar, paste0(odir, "grav2_phenocovar.csv"), sep=",",
+write.table(phecovar, file.path(odir, "grav2_phenocovar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # control info
@@ -71,11 +71,12 @@ grav2_info <- list(crosstype = "riself",
                   na.strings = c("-", "NA"))
 
 library(yaml)
-ofile <- paste0(odir, "grav2.yaml")
+yaml_file <- file.path(odir, "grav2.yaml")
 cat("# Data from Moore et al. (2013) Genetics 195:1077-1086 (2nd RIL replicate)",
     "# Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013c",
-    file=ofile, sep="\n")
-cat(as.yaml(grav2_info), file=ofile, append=TRUE)
+    file=yaml_file, sep="\n")
+cat(as.yaml(grav2_info), file=yaml_file, append=TRUE)
 
-# now read it in and save it in the data/ directory
-### FIX ME ### need to get read_cross2 working properly first
+# create a version as a zip file
+library(qtl2)
+zip_datafiles(yaml_file)

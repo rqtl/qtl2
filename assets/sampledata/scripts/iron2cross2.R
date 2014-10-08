@@ -10,7 +10,7 @@ data(iron)
 
 alleles <- attr(iron, "alleles")
 
-odir <- "../iron/"
+odir <- "../iron"
 
 # grab genotypes
 g <- pull.geno(iron, chr="-X")
@@ -29,14 +29,14 @@ g[g=="3"] <- paste(rep(alleles[2], 2), collapse="")
 
 g <- cbind(id=as.character(1:nrow(g)), g)
 # write genotypes
-write.table(g, paste0(odir, "iron_geno.csv"), sep=",",
+write.table(g, file.path(odir, "iron_geno.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # write genetic map
 map <- pull.map(iron, as.table=TRUE)
 map <- cbind(marker=rownames(map), map)
 map <- apply(map, 2, function(a) gsub(" ", "", as.character(a)))
-write.table(map, paste0(odir, "iron_gmap.csv"), sep=",",
+write.table(map, file.path(odir, "iron_gmap.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # write phenotypes
@@ -44,7 +44,7 @@ phe <- as.matrix(iron$pheno[,1:2])
 storage.mode(phe) <- "character"
 phe <- cbind(as.character(1:nrow(phe)), phe)
 colnames(phe)[1] <- "id"
-write.table(phe, paste0(odir, "iron_pheno.csv"), sep=",",
+write.table(phe, file.path(odir, "iron_pheno.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # covariates
@@ -56,12 +56,12 @@ covar[covar[,2]=="1",2] <- "(BxS)x(BxS)"
 colnames(covar)[2] <- "cross_direction"
 covar <- cbind(as.character(1:nrow(covar)), covar)
 colnames(covar)[1] <- "id"
-write.table(covar, paste0(odir, "iron_covar.csv"), sep=",",
+write.table(covar, file.path(odir, "iron_covar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # phenotype covariates
 phecovar <- cbind(pheno=colnames(phe)[-1], tissue=colnames(phe)[-1])
-write.table(phecovar, paste0(odir, "iron_phenocovar.csv"), sep=",",
+write.table(phecovar, file.path(odir, "iron_phenocovar.csv"), sep=",",
             quote=FALSE, row.names=FALSE, col.names=TRUE)
 
 # control info
@@ -80,12 +80,13 @@ iron_info <- list(crosstype = "f2",
                   na.strings = c("-", "NA"))
 
 library(yaml)
-ofile <- paste0(odir, "iron.yaml")
+yaml_file <- file.path(odir, "iron.yaml")
 cat("# Data from Grant et al. (2006) Hepatology 44:174-185",
     "# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992",
     "# Available as part of R/qtl book package, https://github.com/kbroman/qtlbook",
-    file=ofile, sep="\n")
-cat(as.yaml(iron_info), file=ofile, append=TRUE)
+    file=yaml_file, sep="\n")
+cat(as.yaml(iron_info), file=yaml_file, append=TRUE)
 
-# now read it in and save it in the data/ directory
-### FIX ME ### need to get read_cross2 working properly first
+# create a version as a zip file
+library(qtl2)
+zip_datafiles(yaml_file)
