@@ -10,3 +10,5 @@ Sample input data files from
 - [`grav2_pheno.csv`](grav2_pheno.csv), phenotype data
 - [`grav2_phenocovar.csv`](grav2_phenocovar.csv), phenotype covariates
   (times, in hours, for each of the phenotype columns in [`grav2_pheno.csv`](grav2_pheno.csv))
+
+The data are also available as a zip file, [`grav2.zip`](grav2.zip).

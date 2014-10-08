@@ -11,3 +11,5 @@ Sample input data files from
 - [`iron_pheno.csv`](iron_pheno.csv), phenotype data
 - [`iron_phenocovar.csv`](iron_phenocovar.csv), phenotype covariates
   (times, in hours, for each of the phenotype columns in [`iron_pheno.csv`](iron_pheno.csv))
+
+The data are also available as a zip file, [`iron.zip`](iron.zip).
