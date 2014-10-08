@@ -12,14 +12,14 @@ Imports:
     Rcpp (>= 0.11.2),
     yaml,
     data.table,
-    magrittr
+    magrittr,
+    utils
 Suggests:
     qtl,
     knitr,
     testthat,
     devtools,
-    roxygen2,
-    utils
+    roxygen2
 License: GPL-3
 URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr

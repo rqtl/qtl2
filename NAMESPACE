@@ -3,6 +3,7 @@
 export(convert2cross2)
 export(insert_pseudomarkers)
 export(read_cross2)
+export(zip_datafiles)
 importFrom(Rcpp,sourceCpp)
 importFrom(magrittr,"%>%")
 useDynLib(qtl2)
