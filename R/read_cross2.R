@@ -22,10 +22,14 @@
 #' @export
 #' @importFrom magrittr "%>%"
 #' @keywords IO
-#' @seealso Sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' @seealso \code{\link{write_control_file}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
+#' \dontrun{
 #' yaml_file <- "http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 #' grav2 <- read_cross2(yaml_file)
+#' }
+#' zip_file <- system.file("extdata", "grav2.zip", package="qtl2")
+#' grav2 <- read_cross2(zip_file)
 read_cross2 <-
 function(file)
 {
