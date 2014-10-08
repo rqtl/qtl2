@@ -19,8 +19,23 @@ test_that("convert2cross2 works appropriately for hyper data", {
     is_x["X"] <- TRUE
     expect_equal(hyper2$is_x_chr, is_x)
 
+    # genotypes
+    for(i in seq(along=hyper$geno)) {
+        go <- hyper$geno[[i]]$data
+        if(is_x[i])
+            go <- reviseXdata("bc", "simple", getsex(hyper),
+                              geno=go, cross.attr=attributes(hyper),
+                              force=TRUE)
+        gn <- hyper2$geno[[i]]
+        expect_true(all(is.na(go) | go > 0))
+        go[is.na(go)] <- 0
+        rownames(go) <- ids
+        expect_equal(gn, go)
+    }
+
     # gmap
-    gmap <- lapply(pull.map(hyper), function(a) { class(a) <- "numeric"; a })
+    gmap <- lapply(pull.map(hyper),
+                   function(a) { class(a) <- "numeric"; a })
     expect_equal(hyper2$gmap, gmap)
 
     # sex
@@ -62,6 +77,19 @@ test_that("convert2cross2 works appropriately for fake.f2 data", {
     names(is_x) <- c(1:19, "X")
     is_x["X"] <- TRUE
     expect_equal(fake.f2.2$is_x_chr, is_x)
+
+    # genotypes
+    for(i in seq(along=fake.f2.2$geno)) {
+        go <- fake.f2$geno[[i]]$data
+        if(is_x[i])
+            go <- reviseXdata("f2", "simple", getsex(fake.f2),
+                              geno=go, cross.attr=attributes(fake.f2))
+        gn <- fake.f2.2$geno[[i]]
+        expect_true(all(is.na(go) | go > 0))
+        go[is.na(go)] <- 0
+        rownames(go) <- ids
+        expect_equal(gn, go)
+    }
 
     # gmap
     gmap <- lapply(pull.map(fake.f2), function(a) { class(a) <- "numeric"; a })

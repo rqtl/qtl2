@@ -61,6 +61,10 @@ function(cross)
         }
     }
 
+    # in genotypes, replace NAs with 0s
+    for(i in seq(along=result$geno))
+        result$geno[[i]][is.na(result$geno[[i]])] <- 0
+
     # phenotypes: pull out numeric columns and put the rest in covariates
     phe <- cross$pheno
 
