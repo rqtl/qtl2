@@ -82,7 +82,7 @@ iron_info <- list(crosstype = "f2",
 library(yaml)
 ofile <- paste0(odir, "iron.yaml")
 cat("# Data from Grant et al. (2006) Hepatology 44:174-185",
-    "# # Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992",
+    "# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992",
     "# Available as part of R/qtl book package, https://github.com/kbroman/qtlbook",
     file=ofile, sep="\n")
 cat(as.yaml(iron_info), file=ofile, append=TRUE)
