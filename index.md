@@ -4,13 +4,14 @@ title: R/qtl2
 tagline: QTL analysis for high-dimensional data and complex crosses
 ---
 
-R/qtl2 (aka qtl2) is an effort to reimplement the QTL analysis software
+R/qtl2 (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-There's not much implemented yet; I'm testing out different methods
-for linear regression; there are some benchmarks
-[here](assets/vignettes/linreg_benchmarks.html).
+The package is early in development.
+
+We're testing out different methods for linear regression; there are
+some benchmarks [here](assets/vignettes/linreg_benchmarks.html).
 
 The internal data structure for R/qtl2 is different from that of
 [R/qtl](http://www.rqtl.org), and the input data file format has also
