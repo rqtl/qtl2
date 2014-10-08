@@ -10,18 +10,20 @@ and complex cross designs.
 
 The package is early in development.
 
-We're testing out different methods for linear regression; there are
-some benchmarks [here](assets/vignettes/linreg_benchmarks.html).
+---
 
-The internal data structure for R/qtl2 is different from that of
-[R/qtl](http://www.rqtl.org), and the input data file format has also
-changed. Sample data files are available [here](pages/sampledata.html).
+### Vignettes
+
+- [linear regression benchmarks](assets/vignettes/linreg_benchmarks.html)
+- [developer guide](assets/vignettes/developer.html)
+- [input file formats](assets/vignettes/input_files.html)
+  (see also the [sample data files](pages/sampledata.html))
 
 ---
 
 ### License
 
-The R/simcross package is free software; you can redistribute it
+The R/qtl2 package is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License,
 version 3, as published by the Free Software Foundation.
 
