@@ -4,11 +4,11 @@
 \title{Insert pseudomarkers into a marker map}
 \usage{
 insert_pseudomarkers(map, step = 0, off_end = 0, stepwidth = c("fixed",
-  "max"), tol = 0.01, pmar_stem = "loc")
+  "max"), pseudomarker_map, tol = 0.01)
 }
 \arguments{
-\item{map}{Numeric vector of marker positions, for a single
-chromosome.}
+\item{map}{A list of numeric vectors; each vector gives marker
+positions for a single chromosome.}
 
 \item{step}{Distance between pseudomarkers and markers; if
 \code{step=0} no pseudomarkers are inserted.}
@@ -21,9 +21,11 @@ pseudomarkers.}
 pseudomarkers to ensure that no two adjacent markers/pseudomarkers
 are more than \code{step} apart.}
 
-\item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
+\item{pseudomarker_map}{A map of pseudomarker locations; if provided the
+\code{step}, \code{off_end}, and \code{stepwidth} arguments are
+ignored.}
 
-\item{pmar_stem}{Character string to serve as the stem for naming the pseudomarkers.}
+\item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
 }
 \value{
 A vector of positions of pseudomarkers and markers: the
@@ -31,15 +33,16 @@ input \code{map} vector with pseudomarker positions added. An
 attribute \code{"index"} is an integer vector that indicates which
 positions are pseudomarkers (value 0) and which are markers
 (positive values, indicating the marker indices). If
-\code{stepwidth=fixed}, a further attributed (\code{"grid"}) is a
-logical vector that indicates which positions correspond to the
-fixed grid.
+\code{stepwidth=fixed} (or if \code{pseudomarker_map} is provided), a
+further attribute (\code{"grid"}) is a logical vector that
+indicates which positions correspond to the fixed grid.
 }
 \description{
 Insert pseudomarkers into a map of genetic markers, for a single chromosome.
 }
 \details{
-If \code{stepwidth="fixed"}, a grid of pseudomarkers is added to the marker map.
+If \code{stepwidth="fixed"}, a grid of pseudomarkers is
+added to the marker map.
 
 If \code{stepwidth="max"}, a minimal set of pseudomarkers are
 added, so that the maximum distance between adjacent markers or
@@ -47,12 +50,16 @@ pseudomarkers is at least \code{step}. If two adjacent markers are
 separated by less than \code{step}, no pseudomarkers will be added
 to the interval. If they are more then \code{step} apart, a set of
 equally-spaced pseudomarkers will be added.
+
+If \code{pseudomarker_map} is provided, then the \code{step},
+\code{off_end}, and \code{stepwidth} arguments are ignored, and the
+input \code{pseudomarker_map} is taken to be a grid of pseudomarkers.
 }
 \examples{
 library(qtl)
 data(hyper)
-chr4map <- pull.map(hyper, chr=4)[[1]]
-pmap <- insert_pseudomarkers(chr4map, step=1, pmar_stem="c4.loc")
+map <- pull.map(hyper)
+map_w_pmar <- insert_pseudomarkers(map, step=1)
 }
 \keyword{utilities}
 
