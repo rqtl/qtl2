@@ -8,16 +8,16 @@
 enum gen {AA=1, BB=2};
 
 double RISIB::init(int true_gen,
-                   bool is_X_chr, bool ignored, IntegerVector cross_info)
+                   bool is_x_chr, bool is_female, IntegerVector cross_info)
 {
     #ifdef DEBUG
-    if(!check_geno(true_gen, false, is_X_chr, ignored, cross_info))
+    if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
 
     const bool forward_direction = (cross_info[0] == 0); // AA female x BB male
 
-    if(is_X_chr) {
+    if(is_x_chr) {
         if(forward_direction) {
             if(true_gen == AA) return log(2.0)-log(3.0);
             if(true_gen == BB) return -log(3.0);
@@ -35,15 +35,15 @@ double RISIB::init(int true_gen,
 }
 
 double RISIB::step(int gen_left, int gen_right, double rec_frac,
-                   bool is_X_chr, bool ignored, IntegerVector cross_info)
+                   bool is_x_chr, bool is_female, IntegerVector cross_info)
 {
     #ifdef DEBUG
-    if(!check_geno(gen_left, false, is_X_chr, ignored, cross_info) ||
-       !check_geno(gen_right, false, is_X_chr, ignored, cross_info))
+    if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(is_X_chr)  {
+    if(is_x_chr)  {
         const bool forward_direction = (cross_info[0] == 0); // AA female x BB male
 
         if(forward_direction) {
@@ -87,7 +87,7 @@ double RISIB::step(int gen_left, int gen_right, double rec_frac,
     return NA_REAL; // can't get here
 }
 
-double RISIB::est_rec_frac(NumericMatrix gamma, bool is_X_chr)
+double RISIB::est_rec_frac(NumericMatrix gamma, bool is_x_chr)
 {
     int n_gen = gamma.rows();
     int n_gen_sq = n_gen*n_gen;

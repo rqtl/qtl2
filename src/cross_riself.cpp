@@ -8,11 +8,11 @@
 enum gen {AA=1, BB=2};
 
 double RISELF::step(int gen_left, int gen_right, double rec_frac,
-                    bool ignored1, bool ignored2, IntegerVector ignored3)
+                    bool is_x_chr, bool is_female, IntegerVector cross_info)
 {
     #ifdef DEBUG
-    if(!check_geno(gen_left, false, ignored1, ignored2, ignored3) ||
-       !check_geno(gen_right, false, ignored1, ignored2, ignored3))
+    if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
 
@@ -22,7 +22,7 @@ double RISELF::step(int gen_left, int gen_right, double rec_frac,
     else return log(R);
 }
 
-double RISELF::est_rec_frac(NumericMatrix gamma, bool is_X_chr)
+double RISELF::est_rec_frac(NumericMatrix gamma, bool is_x_chr)
 {
     int n_gen = gamma.rows();
     int n_gen_sq = n_gen*n_gen;

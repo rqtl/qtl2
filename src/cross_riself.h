@@ -11,9 +11,9 @@ class RISELF : public QTLCross
     ~RISELF(){};
 
     double step(int gen_left, int gen_right, double rec_frac,
-                bool is_X_chr, bool is_female, IntegerVector cross_info);
+                bool is_x_chr, bool is_female, IntegerVector cross_info);
 
-    double est_rec_frac(NumericMatrix full_gamma, bool is_X_chr);
+    double est_rec_frac(NumericMatrix full_gamma, bool is_x_chr);
 };
 
 #endif // CROSS_RISELF_H

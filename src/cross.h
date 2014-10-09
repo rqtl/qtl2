@@ -20,7 +20,7 @@ public:
     static QTLCross* Create(String type);
 
     virtual bool check_geno(int gen, bool is_observed_value,
-                            bool is_X_chr, bool is_female,
+                            bool is_x_chr, bool is_female,
                             IntegerVector cross_info)
     {
         if(is_observed_value && gen==0) return true;
@@ -30,11 +30,11 @@ public:
     }
 
     virtual double init(int true_gen,
-                        bool is_X_chr, bool is_female,
+                        bool is_x_chr, bool is_female,
                         IntegerVector cross_info)
     {
         #ifdef DEBUG
-        if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
 
@@ -42,16 +42,16 @@ public:
     }
 
     virtual double emit(int obs_gen, int true_gen, double error_prob,
-                        bool is_X_chr, bool is_female,
+                        bool is_x_chr, bool is_female,
                         IntegerVector cross_info)
     {
         #ifdef DEBUG
-        if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
 
 
-        if(obs_gen==0 || !check_geno(obs_gen, true, is_X_chr, is_female, cross_info))
+        if(obs_gen==0 || !check_geno(obs_gen, true, is_x_chr, is_female, cross_info))
             return 0.0; // missing or invalid
 
         if(obs_gen == true_gen) return log(1.0 - error_prob);
@@ -60,12 +60,12 @@ public:
     }
 
     virtual double step(int gen_left, int gen_right, double rec_frac,
-                        bool is_X_chr, bool is_female,
+                        bool is_x_chr, bool is_female,
                         IntegerVector cross_info)
     {
         #ifdef DEBUG
-        if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
-           !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
+           !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
 
@@ -73,27 +73,27 @@ public:
         else return log(rec_frac);
     }
 
-    virtual int ngen(bool is_X_chr)
+    virtual int ngen(bool is_x_chr)
     {
         return 2;
     }
 
-    virtual IntegerVector possible_gen(bool is_X_chr, bool is_female,
+    virtual IntegerVector possible_gen(bool is_x_chr, bool is_female,
                                        IntegerVector cross_info)
     {
-        int ng = ngen(is_X_chr);
+        int ng = ngen(is_x_chr);
         IntegerVector x(ng);
         for(int i=0; i<ng; i++) x[i] = i+1;
         return x;
     }
 
     virtual double nrec(int gen_left, int gen_right,
-                        bool is_X_chr, bool is_female,
+                        bool is_x_chr, bool is_female,
                         IntegerVector cross_info)
     {
         #ifdef DEBUG
-        if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
-           !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
+           !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
 
@@ -101,7 +101,7 @@ public:
         else return 1.0;
     }
 
-    virtual double est_rec_frac(NumericMatrix gamma, bool is_X_chr)
+    virtual double est_rec_frac(NumericMatrix gamma, bool is_x_chr)
     {
         int n_gen = gamma.rows();
         int n_gen_sq = n_gen*n_gen;

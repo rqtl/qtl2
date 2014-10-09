@@ -11,18 +11,18 @@ class F2 : public QTLCross
     ~F2(){};
 
     bool check_geno(int gen, bool is_observed_value,
-                bool is_X_chr, bool is_female, IntegerVector cross_info);
+                bool is_x_chr, bool is_female, IntegerVector cross_info);
 
     double init(int true_gen,
-                bool is_X_chr, bool is_female, IntegerVector cross_info);
+                bool is_x_chr, bool is_female, IntegerVector cross_info);
     double emit(int obs_gen, int true_gen, double error_prob,
-                bool is_X_chr, bool is_female, IntegerVector cross_info);
+                bool is_x_chr, bool is_female, IntegerVector cross_info);
     double step(int gen_left, int gen_right, double rec_frac,
-                bool is_X_chr, bool is_female, IntegerVector cross_info);
+                bool is_x_chr, bool is_female, IntegerVector cross_info);
 
-    IntegerVector possible_gen(bool is_X_chr, bool is_female, IntegerVector cross_info);
+    IntegerVector possible_gen(bool is_x_chr, bool is_female, IntegerVector cross_info);
 
-    int ngen(bool is_X_chr);
+    int ngen(bool is_x_chr);
 };
 
 #endif // CROSS_F2_H
