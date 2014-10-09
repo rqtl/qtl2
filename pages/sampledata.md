@@ -7,7 +7,7 @@ The internal data structure for [R/qtl2](http://kbroman.org/qtl2) is
 different from that of [R/qtl](http://www.rqtl.org), and the input
 data file format has also changed. Details on the new internal data
 structure are in the
-[R/qtl2 developer guide](../assets/vignettes/developer.html).  Details
+[R/qtl2 developer guide](../assets/vignettes/developer_guide.html).  Details
 on the new data file format are described in
 [a separate vignette](../assets/vignettes/input_files.html).
 

@@ -33,7 +33,7 @@ Then install R/qtl2 using `devtools::install_github()`.
 ### Vignettes
 
 - [linear regression benchmarks](assets/vignettes/linreg_benchmarks.html)
-- [developer guide](assets/vignettes/developer.html)
+- [developer guide](assets/vignettes/developer_guide.html)
 - [input file formats](assets/vignettes/input_files.html)
   (see also the [sample data files](pages/sampledata.html))
 
