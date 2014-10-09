@@ -6,7 +6,7 @@
 #include "hmm.h"
 
 // re-estimate inter-marker recombination fractions
-// [[Rcpp::export]]
+// [[Rcpp::export(".est_map")]]
 NumericVector est_map(String crosstype,
                       IntegerMatrix genotypes,
                       bool is_X_chr,

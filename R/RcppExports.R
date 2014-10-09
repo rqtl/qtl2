@@ -9,11 +9,11 @@
     .Call('qtl2_count_invalid_genotypes', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info)
 }
 
-calc_genoprob <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
+.calc_genoprob <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
     .Call('qtl2_calc_genoprob', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
 
-est_map <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
+.est_map <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
     .Call('qtl2_est_map', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
 }
 

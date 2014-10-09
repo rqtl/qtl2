@@ -6,7 +6,7 @@
 #include "hmm.h"
 
 // calculate QTL genotype probabilities
-// [[Rcpp::export]]
+// [[Rcpp::export(".calc_genoprob")]]
 NumericVector calc_genoprob(String crosstype,
                             IntegerMatrix genotypes, // columns are individuals, rows are markers
                             bool is_X_chr,
