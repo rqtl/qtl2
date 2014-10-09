@@ -8,13 +8,13 @@ test_that("grid-based version works in simple case", {
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
-    pmap <- insert_pseudomarkers(map, step=2.5, off_end=0, stepwidth="fixed")
+    pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="fixed")[[1]]
     expect_equivalent(map, pmap)
     expect_equal(attr(pmap, "index"), seq(along=map))
     expect_equal(attr(pmap, "grid"), rep(TRUE, length(map)))
 
     # step = 1
-    pmap <- insert_pseudomarkers(map, step=1, off_end=0, stepwidth="fixed")
+    pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="fixed")[[1]]
     pmap_qtl <- qtl::create.map(map, step=1, off.end=0)
     expect_equivalent(pmap, pmap_qtl)
 
@@ -35,12 +35,12 @@ test_that("minimal version works in simple case", {
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
-    pmap <- insert_pseudomarkers(map, step=2.5, off_end=0, stepwidth="max")
+    pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="max")[[1]]
     expect_equivalent(map, pmap)
     expect_equal(attr(pmap, "index"), seq(along=map))
 
     # step = 1
-    pmap <- insert_pseudomarkers(map, step=1, off_end=0, stepwidth="max")
+    pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="max")[[1]]
     expect_equivalent(pmap, seq(0, 50, by=5/6))
 
     # expected index
@@ -56,9 +56,9 @@ test_that("minimal version works in simple case", {
 test_that("minimal version works in more realistic case", {
 
     data(hyper)
-    map <- qtl::pull.map(hyper, chr=1)[[1]]
+    map <- qtl::pull.map(hyper, chr=1)[1]
 
-    pmap <- insert_pseudomarkers(map, step=1.55, off_end=4, stepwidth="max")
+    pmap <- insert_pseudomarkers(map, step=1.55, off_end=4, stepwidth="max")[[1]]
 
     expected <- c(0.2, 1.75, 3.3, 4.79090909091818, 6.28181818183636, 7.77272727275454,
                   9.26363636367273, 10.7545454545909, 12.2454545455091, 13.7363636364273,
@@ -82,20 +82,20 @@ test_that("minimal version works in more realistic case", {
                   104.17333333538, 105.62666666872, 107.08000000206, 108.5333333354,
                   109.98666666874, 111.44000000208, 112.89333333542, 114.34666666876,
                   115.8000000021, 117.3500000021, 118.9000000021)
-    pmap_names <- c("loc0", "loc2", "D1Mit296", "loc5", "loc6", "loc8", "loc9",
-                    "loc11", "loc12", "loc14", "loc15", "loc17", "loc18", "D1Mit123",
-                    "loc21", "loc23", "loc24", "loc26", "loc27", "loc28", "loc30",
-                    "loc31", "D1Mit156", "loc34", "D1Mit178", "loc36", "D1Mit19",
-                    "loc39", "loc40", "D1Mit7", "loc43", "D1Mit46", "D1Mit132", "loc45",
-                    "loc46", "loc48", "D1Mit334", "loc51", "loc52", "loc53", "D1Mit305",
-                    "loc56", "loc57", "loc59", "loc60", "loc62", "loc63", "D1Mit26",
-                    "loc66", "loc67", "D1Mit94", "loc69", "D1Mit218", "loc71", "loc73",
-                    "D1Mit100", "D1Mit102", "loc77", "loc78", "loc79", "loc81", "D1Mit14",
-                    "D1Mit105", "D1Mit159", "D1Mit267", "loc83", "loc85", "D1Mit15",
-                    "loc88", "loc89", "loc91", "loc92", "D1Mit456", "loc95", "loc97",
-                    "loc98", "loc100", "loc101", "loc103", "loc104", "loc106", "loc107",
-                    "loc109", "loc110", "loc111", "loc113", "loc114", "D1Mit155",
-                    "loc117", "loc119")
+    pmap_names <- c("c1.loc0", "c1.loc2", "D1Mit296", "c1.loc5", "c1.loc6", "c1.loc8", "c1.loc9",
+                    "c1.loc11", "c1.loc12", "c1.loc14", "c1.loc15", "c1.loc17", "c1.loc18", "D1Mit123",
+                    "c1.loc21", "c1.loc23", "c1.loc24", "c1.loc26", "c1.loc27", "c1.loc28", "c1.loc30",
+                    "c1.loc31", "D1Mit156", "c1.loc34", "D1Mit178", "c1.loc36", "D1Mit19",
+                    "c1.loc39", "c1.loc40", "D1Mit7", "c1.loc43", "D1Mit46", "D1Mit132", "c1.loc45",
+                    "c1.loc46", "c1.loc48", "D1Mit334", "c1.loc51", "c1.loc52", "c1.loc53", "D1Mit305",
+                    "c1.loc56", "c1.loc57", "c1.loc59", "c1.loc60", "c1.loc62", "c1.loc63", "D1Mit26",
+                    "c1.loc66", "c1.loc67", "D1Mit94", "c1.loc69", "D1Mit218", "c1.loc71", "c1.loc73",
+                    "D1Mit100", "D1Mit102", "c1.loc77", "c1.loc78", "c1.loc79", "c1.loc81", "D1Mit14",
+                    "D1Mit105", "D1Mit159", "D1Mit267", "c1.loc83", "c1.loc85", "D1Mit15",
+                    "c1.loc88", "c1.loc89", "c1.loc91", "c1.loc92", "D1Mit456", "c1.loc95", "c1.loc97",
+                    "c1.loc98", "c1.loc100", "c1.loc101", "c1.loc103", "c1.loc104", "c1.loc106", "c1.loc107",
+                    "c1.loc109", "c1.loc110", "c1.loc111", "c1.loc113", "c1.loc114", "D1Mit155",
+                    "c1.loc117", "c1.loc119")
 
     expect_equivalent(pmap, expected)
     expect_equal(names(pmap), pmap_names)
