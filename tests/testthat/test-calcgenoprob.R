@@ -5,10 +5,11 @@ library(qtl)
 test_that("backcross autosome calc_genoprob matches R/qtl", {
 
     data(hyper)
-    hyper <- hyper[1:19,]
+    chr <- c(1, 3, 4, 17, 19)
+    hyper <- hyper[chr,]
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", err=0.002)
 
-    for(i in 1:19) {
+    for(i in 1:nchr(hyper)) {
        g <- hyper$geno[[i]]$data
        g[is.na(g)] <- 0
        pr <- hyper$geno[[i]]$prob
@@ -30,10 +31,11 @@ test_that("backcross autosome calc_genoprob matches R/qtl", {
 test_that("intercross autosome calc_genoprob matches R/qtl", {
 
     data(listeria)
-    listeria <- listeria[1:19,]
+    chr <- c(1, 4, 14, 18)
+    listeria <- listeria[chr,]
     listeria <- calc.genoprob(listeria, step=1, stepwidth="max", err=0.01)
 
-    for(i in 1:19) {
+    for(i in 1:nchr(listeria)) {
        g <- listeria$geno[[i]]$data
        g[is.na(g)] <- 0
        pr <- listeria$geno[[i]]$prob
@@ -56,11 +58,12 @@ test_that("intercross autosome calc_genoprob matches R/qtl", {
 test_that("risib autosome calc_genoprob matches R/qtl", {
 
     data(hyper)
-    hyper <- hyper[1:19,]
+    chr <- c(1, 3, 4, 17, 19)
+    hyper <- hyper[chr,]
     class(hyper)[1] <- "risib"
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", err=0.002)
 
-    for(i in 1:19) {
+    for(i in 1:nchr(hyper)) {
        g <- hyper$geno[[i]]$data
        g[is.na(g)] <- 0
        pr <- hyper$geno[[i]]$prob
@@ -82,11 +85,12 @@ test_that("risib autosome calc_genoprob matches R/qtl", {
 test_that("riself autosome calc_genoprob matches R/qtl", {
 
     data(hyper)
-    hyper <- hyper[1:19,]
+    chr <- c(1, 3, 4, 17, 19)
+    hyper <- hyper[chr,]
     class(hyper)[1] <- "riself"
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", err=0.002)
 
-    for(i in 1:19) {
+    for(i in 1:nchr(hyper)) {
        g <- hyper$geno[[i]]$data
        g[is.na(g)] <- 0
        pr <- hyper$geno[[i]]$prob
