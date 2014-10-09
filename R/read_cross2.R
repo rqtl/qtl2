@@ -10,7 +10,7 @@
 #' directory and then read.
 #'
 #' @return Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer.html}{R/qtl2 developer guide}.
+#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #'
 #' @details A control file in \href{http://www.yaml.org}{YAML} format contains information about
 #' basic parameters as well as the names of the series of data files
