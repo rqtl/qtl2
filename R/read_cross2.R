@@ -44,7 +44,9 @@ function(file)
         }
 
         message(" - unzipping ", file, "\n       to ", dir)
-        unzipped_files <- utils::unzip(path.expand(file), exdir=dir)
+        file <- path.expand(file)
+        stop_if_no_file(file)
+        unzipped_files <- utils::unzip(file, exdir=dir)
         file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
 
         on.exit({ # clean up when done
@@ -54,9 +56,11 @@ function(file)
     }
 
     # directory containing the data
+    file <- path.expand(file)
     dir <- dirname(file)
 
     # load the control file
+    stop_if_no_file(file)
     control <-  yaml::yaml.load_file(file)
 
     # grab cross type
@@ -75,7 +79,9 @@ function(file)
     sections <- c("geno", "gmap", "pmap", "pheno", "covar", "phenocovar", "founder_geno")
     for(section in sections) {
         if(section %in% names(control)) {
-            sheet <- data.table::fread(file.path(dir, control[[section]]),
+            file <- file.path(dir, control[[section]])
+            stop_if_no_file(file)
+            sheet <- data.table::fread(file,
                                        na.strings=control$na.strings,
                                        sep=control$sep,                     # note that nulls just get ignored
                                        verbose=FALSE, showProgress=FALSE, data.table=FALSE)
@@ -274,7 +280,9 @@ function(sex_control, covar, sep, dir)
         sex <- covar[,sex_control[["covar"]], drop=FALSE]
     }
     else if("file" %in% names(sex_control)) { # look for file
-        sex <- data.table::fread(file.path(dir, sex_control[["file"]]),
+        file <- file.path(dir, sex_control[["file"]])
+        stop_if_no_file(file)
+        sex <- data.table::fread(file,
                                  verbose=FALSE, showProgress=FALSE, data.table=FALSE)
         sex <- firstcol2rownames(sex)
     }
@@ -339,8 +347,10 @@ function(cross_info_control, covar, sep, dir)
         cross_info <- covar[,cross_info_control[["covar"]], drop=FALSE]
     }
     else if("file" %in% names(cross_info_control)) { # look for file
-        cross_info <- data.table::fread(file.path(dir, cross_info_control[["file"]]),
-                                 verbose=FALSE, showProgress=FALSE, data.table=FALSE)
+        file <- file.path(dir, cross_info_control[["file"]])
+        stop_if_no_file(file)
+        cross_info <- data.table::fread(file,
+                                        verbose=FALSE, showProgress=FALSE, data.table=FALSE)
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
         return(firstcol2rownames(cross_info))
@@ -388,8 +398,8 @@ function(linemap_control, covar, sep, dir)
 
     # see if it's a file
     filename <- file.path(dir, linemap_control)
-    if(file.exists(file)) {
-        linemap <- data.table::fread(file.path(dir, linemap_control[["file"]]),
+    if(file.exists(filename)) {
+        linemap <- data.table::fread(filename,
                                      verbose=FALSE, showProgress=FALSE, data.table=FALSE)
         linemap <- firstcol2rownames(linemap)
     }
@@ -415,4 +425,12 @@ function(file)
 {
     patterns <- c("^http://", "^https://", "^file://")
     vapply(patterns, function(a,b) length(grep(a, b)), 0, file) %>% sum %>% ">"(0)
+}
+
+stop_if_no_file <-
+function(filename)
+{
+    if(is_web_file(filename)) return(TRUE)
+    if(!file.exists(filename))
+        stop('file "', filename, '" does not exist.')
 }
