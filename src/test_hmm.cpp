@@ -5,15 +5,6 @@
 
 using namespace Rcpp;
 
-// check if a cross type is supported
-// [[Rcpp::export(".crosstype_supported")]]
-bool crosstype_supported(String crosstype)
-{
-    QTLCross* cross = QTLCross::Create(crosstype);
-    
-    return cross->crosstype_supported();
-}
-
 // test init functions from R
 // [[Rcpp::export]]
 double test_init(String crosstype,

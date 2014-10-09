@@ -6,6 +6,40 @@
 
 using namespace Rcpp;
 
+// crosstype_supported
+bool crosstype_supported(String crosstype);
+RcppExport SEXP qtl2_crosstype_supported(SEXP crosstypeSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        bool __result = crosstype_supported(crosstype);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// count_invalid_genotypes
+IntegerVector count_invalid_genotypes(String crosstype, IntegerMatrix genotypes, bool is_X_chr, LogicalVector is_female, IntegerMatrix cross_info);
+RcppExport SEXP qtl2_count_invalid_genotypes(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type genotypes(genotypesSEXP );
+        Rcpp::traits::input_parameter< bool >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< LogicalVector >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< IntegerMatrix >::type cross_info(cross_infoSEXP );
+        IntegerVector __result = count_invalid_genotypes(crosstype, genotypes, is_X_chr, is_female, cross_info);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // calc_genoprob
 NumericVector calc_genoprob(String crosstype, IntegerMatrix genotypes, bool is_X_chr, LogicalVector is_female, IntegerMatrix cross_info, NumericVector rec_frac, IntegerVector marker_index, double error_prob);
 RcppExport SEXP qtl2_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
@@ -240,21 +274,6 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< const int >::type n(nSEXP );
         Rcpp::traits::input_parameter< const IntegerVector >::type x(xSEXP );
         IntegerMatrix __result = permute_ivector(n, x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// crosstype_supported
-bool crosstype_supported(String crosstype);
-RcppExport SEXP qtl2_crosstype_supported(SEXP crosstypeSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< String >::type crosstype(crosstypeSEXP );
-        bool __result = crosstype_supported(crosstype);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
