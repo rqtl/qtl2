@@ -5,12 +5,13 @@ library(qtl)
 test_that("est_map for backcross autosome matches R/qtl", {
 
     data(hyper)
-    hyper <- hyper[1:19,]
+    chr <- c(1, 3, 4, 17, 19)
+    hyper <- hyper[chr,]
     newmap <- est.map(hyper, err=0.002, tol=1e-8)
 
     rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
 
-    for(i in 1:19) {
+    for(i in 1:nchr(hyper)) {
         g <- hyper$geno[[i]]$data
         g[is.na(g)] <- 0
         g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
@@ -30,12 +31,13 @@ test_that("est_map for backcross autosome matches R/qtl", {
 test_that("est_map for intercross autosome matches R/qtl", {
 
     data(listeria)
-    listeria <- listeria[1:19,]
+    chr <- c(1, 4, 14, 18)
+    listeria <- listeria[chr,]
     newmap <- est.map(listeria, err=0.01, tol=1e-8)
 
     rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
 
-    for(i in 1:19) {
+    for(i in 1:nchr(listeria)) {
         g <- listeria$geno[[i]]$data
         g[is.na(g)] <- 0
         g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
@@ -147,13 +149,14 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
 test_that("est_map for RIself matches R/qtl", {
 
     data(hyper)
-    hyper <- hyper[1:19,]
+    chr <- c(1, 3, 4, 17, 19)
+    hyper <- hyper[chr,]
     class(hyper)[1] <- "riself"
     newmap <- est.map(hyper, err=0.002, tol=1e-8)
 
     rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
 
-    for(i in 1:19) {
+    for(i in 1:nchr(hyper)) {
         g <- hyper$geno[[i]]$data
         g[is.na(g)] <- 0
         g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
@@ -174,13 +177,14 @@ test_that("est_map for RIself matches R/qtl", {
 test_that("est_map for RIsib matches R/qtl", {
 
     data(hyper)
-    hyper <- hyper[1:19,]
+    chr <- c(1, 3, 4, 17, 19)
+    hyper <- hyper[chr,]
     class(hyper)[1] <- "risib"
     newmap <- est.map(hyper, err=0.002, tol=1e-8)
 
     rf_qtl <- lapply(newmap, function(a) as.numeric(mf.h(diff(a))))
 
-    for(i in 1:19) {
+    for(i in 1:nchr(hyper)) {
         g <- hyper$geno[[i]]$data
         g[is.na(g)] <- 0
         g <- g[rowSums(g!=0) > 1,] # omit individuals with <2 genotypes
