@@ -8,7 +8,7 @@ R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 VIGNETTES = assets/vignettes/linreg_benchmarks.html
 vignettes: ${VIGNETTES}
 
-EXTERNAL_VIGNETTES = assets/vignettes/developer_guide.html assets/vignettes/input_files.html
+EXTERNAL_VIGNETTES = assets/vignettes/developer_guide.html assets/vignettes/input_files.html assets/vignettes/user_guide.html
 external_vignettes: ${EXTERNAL_VIGNETTES}
 
 assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
@@ -30,6 +30,10 @@ assets/vignettes/developer_guide.html: ../qtl2/vignettes/developer_guide.Rmd
 assets/vignettes/input_files.html: ../qtl2/vignettes/input_files.Rmd
 	cd $(@D);R -e 'library(knitr);knit2html("../../$<")'
 	rm $(@D)/input_files.md
+
+assets/vignettes/user_guide.html: ../qtl2/vignettes/user_guide.Rmd
+	cd $(@D);R -e 'library(knitr);knit2html("../../$<")'
+	rm $(@D)/user_guide.md
 
 EXTDATA = ../qtl2/inst/extdata/grav2.zip ../qtl2/inst/extdata/iron.zip
 extdata: ${EXTDATA}

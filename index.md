@@ -36,6 +36,7 @@ Then install R/qtl2 using `devtools::install_github()`.
 - [developer guide](assets/vignettes/developer_guide.html)
 - [input file formats](assets/vignettes/input_files.html)
   (see also the [sample data files](pages/sampledata.html))
+- [user guide](assets/vignettes/user_guide.html)
 
 ---
 
