@@ -136,7 +136,7 @@ function(file)
     # cross_info
     output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep, dir)
     if(is.null(output$cross_info)) { # missing; make a 0-column matrix
-        output$cross_info <- matrix(ncol=0, nrow=nrow(output$geno[[1]]))
+        output$cross_info <- matrix(0L, ncol=0, nrow=nrow(output$geno[[1]]))
         rownames(output$cross_info) <- rownames(output$geno[[1]])
     }
 

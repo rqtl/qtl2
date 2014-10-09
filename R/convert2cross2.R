@@ -48,7 +48,7 @@ function(cross)
     names(result$sex) <- ids
 
     if(is.null(sexpgm$pgm))
-        result$cross_info <- matrix(ncol=0, nrow=n.ind)
+        result$cross_info <- matrix(0L, ncol=0, nrow=n.ind)
     else result$cross_info <- matrix(sexpgm$pgm)
     rownames(result$cross_info) <- ids
 
