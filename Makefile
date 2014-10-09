@@ -8,8 +8,7 @@ R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 doc:
 	R -e 'library(devtools);document()'
 
-vignettes: inst/doc/developer_guide.html inst/doc/input_files.html
+vignettes: inst/doc/developer_guide.html inst/doc/input_files.html inst/doc/user_guide.html
 
 inst/doc/%.html: vignettes/%.Rmd
 	cd $(@D);R ${R_OPTS} -e 'library(knitr);knit2html("../../$<", "$(@F)")'
-#	rm $(@D)/$*.md #<- if .md file created, might want to delete it
