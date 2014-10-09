@@ -43,9 +43,9 @@ function(cross)
     # sex/pgm
     sexpgm <- qtl::getsex(cross)
     if(is.null(sexpgm$sex))
-        result$sex <- rep(FALSE, n.ind)
-    else result$sex <- sexpgm$sex
-    names(result$sex) <- ids
+        result$is_female <- rep(FALSE, n.ind)
+    else result$is_female <- (sexpgm$sex == 0)
+    names(result$is_female) <- ids
 
     if(is.null(sexpgm$pgm))
         result$cross_info <- matrix(0L, ncol=0, nrow=n.ind)
@@ -62,8 +62,10 @@ function(cross)
     }
 
     # in genotypes, replace NAs with 0s
-    for(i in seq(along=result$geno))
-        result$geno[[i]][is.na(result$geno[[i]])] <- 0
+    for(i in seq(along=result$geno)) {
+        result$geno[[i]][is.na(result$geno[[i]])] <- 0L
+        storage.mode(result$geno[[i]]) <- "integer"
+    }
 
     # phenotypes: pull out numeric columns and put the rest in covariates
     phe <- cross$pheno
