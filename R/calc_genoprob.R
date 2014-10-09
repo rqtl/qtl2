@@ -5,7 +5,8 @@
 #' true underlying genotypes given the observed multipoint marker
 #' data, with possible allowance for genotyping errors.
 #'
-#' @param cross
+#' @param cross Object of class \code{"cross2"}. For details, see the
+#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param step Distance between pseudomarkers and markers; if
 #' \code{step=0} no pseudomarkers are inserted.
 #' @param off_end Distance beyond terminal markers in which to insert
