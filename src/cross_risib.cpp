@@ -10,7 +10,10 @@ enum gen {AA=1, BB=2};
 double RISIB::init(int true_gen,
                    bool is_X_chr, bool ignored, IntegerVector cross_info)
 {
-    check_geno(true_gen, false, is_X_chr, ignored, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, ignored, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     const bool forward_direction = (cross_info[0] == 0); // AA female x BB male
 
@@ -34,8 +37,11 @@ double RISIB::init(int true_gen,
 double RISIB::step(int gen_left, int gen_right, double rec_frac,
                    bool is_X_chr, bool ignored, IntegerVector cross_info)
 {
-    check_geno(gen_left, false, is_X_chr, ignored, cross_info);
-    check_geno(gen_right, false, is_X_chr, ignored, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, is_X_chr, ignored, cross_info) ||
+       !check_geno(gen_right, false, is_X_chr, ignored, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(is_X_chr)  {
         const bool forward_direction = (cross_info[0] == 0); // AA female x BB male

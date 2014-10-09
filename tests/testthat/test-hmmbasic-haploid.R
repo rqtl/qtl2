@@ -9,9 +9,9 @@ test_that("haploids check_geno works", {
     expect_true(test_check_geno("haploid", 2, TRUE, FALSE, FALSE, numeric(0)))
     expect_true(test_check_geno("haploid", 1, FALSE, FALSE, FALSE, numeric(0)))
     expect_true(test_check_geno("haploid", 2, FALSE, FALSE, FALSE, numeric(0)))
-    expect_error(test_check_geno("haploid", 3, TRUE, FALSE, FALSE, numeric(0)))
-    expect_error(test_check_geno("haploid", 0, FALSE, FALSE, FALSE, numeric(0)))
-    expect_error(test_check_geno("haploid", 3, FALSE, FALSE, FALSE, numeric(0)))
+    expect_false(test_check_geno("haploid", 3, TRUE, FALSE, FALSE, numeric(0)))
+    expect_false(test_check_geno("haploid", 0, FALSE, FALSE, FALSE, numeric(0)))
+    expect_false(test_check_geno("haploid", 3, FALSE, FALSE, FALSE, numeric(0)))
 })
 
 test_that("haploids n_gen works", {
@@ -33,22 +33,12 @@ test_that("haploids nrec works", {
     expect_equal(test_nrec("haploid", 2, 1, FALSE, FALSE, numeric(0)), 1)
     expect_equal(test_nrec("haploid", 2, 2, FALSE, FALSE, numeric(0)), 0)
 
-    # some errors
-    expect_error(test_nrec("haploid", 0, 1, FALSE, FALSE, numeric(0)))
-    expect_error(test_nrec("haploid", 1, 0, FALSE, FALSE, numeric(0)))
-    expect_error(test_nrec("haploid", 3, 1, FALSE, FALSE, numeric(0)))
-    expect_error(test_nrec("haploid", 1, 3, FALSE, FALSE, numeric(0)))
-
 })
 
 test_that("haploids init works", {
 
     expect_equal(test_init("haploid", 1, FALSE, FALSE, numeric(0)), log(0.5))
     expect_equal(test_init("haploid", 2, FALSE, FALSE, numeric(0)), log(0.5))
-
-    # errors
-    expect_error(test_init("haploid", 0, FALSE, FALSE, numeric(0)))
-    expect_error(test_init("haploid", 3, FALSE, FALSE, numeric(0)))
 
 })
 
@@ -63,9 +53,9 @@ test_that("haploids emit works", {
     expect_equal(test_emit("haploid", 2, 2, eps, FALSE, FALSE, numeric(0)), log(1-eps))
 
     # errors
-    expect_error(test_emit("haploid", 0, 0, eps, FALSE, FALSE, numeric(0)))
-    expect_error(test_emit("haploid", 0, 3, eps, FALSE, FALSE, numeric(0)))
-    expect_error(test_emit("haploid", 3, 1, eps, FALSE, FALSE, numeric(0)))
+    expect_equal(test_emit("haploid", 0, 0, eps, FALSE, FALSE, numeric(0)), 0)
+    expect_equal(test_emit("haploid", 0, 3, eps, FALSE, FALSE, numeric(0)), 0)
+    expect_equal(test_emit("haploid", 3, 1, eps, FALSE, FALSE, numeric(0)), 0)
 
 })
 
@@ -76,11 +66,5 @@ test_that("haploids step works", {
     expect_equal(test_step("haploid", 1, 2, rf, FALSE, FALSE, numeric(0)), log(rf))
     expect_equal(test_step("haploid", 2, 1, rf, FALSE, FALSE, numeric(0)), log(rf))
     expect_equal(test_step("haploid", 2, 2, rf, FALSE, FALSE, numeric(0)), log(1-rf))
-
-    # errors
-    expect_error(test_step("haploid", 0, 1, rf, FALSE, FALSE, numeric(0)))
-    expect_error(test_step("haploid", 1, 0, rf, FALSE, FALSE, numeric(0)))
-    expect_error(test_step("haploid", 3, 1, rf, FALSE, FALSE, numeric(0)))
-    expect_error(test_step("haploid", 2, 3, rf, FALSE, FALSE, numeric(0)))
 
 })

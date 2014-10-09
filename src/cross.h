@@ -24,18 +24,19 @@ public:
                             IntegerVector cross_info)
     {
         if(is_observed_value && gen==0) return true;
-
         if(gen==1 || gen==2) return true;
 
-        throw std::range_error("invalid genotype");
-        return false; // can't get here
+        return false;
     }
 
     virtual double init(int true_gen,
                         bool is_X_chr, bool is_female,
                         IntegerVector cross_info)
     {
-        check_geno(true_gen, false, is_X_chr, is_female, cross_info);
+        #ifdef DEBUG
+        if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+            throw std::range_error("genotype value not allowed");
+        #endif
 
         return -log(2.0);
     }
@@ -44,11 +45,14 @@ public:
                         bool is_X_chr, bool is_female,
                         IntegerVector cross_info)
     {
+        #ifdef DEBUG
+        if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+            throw std::range_error("genotype value not allowed");
+        #endif
 
-        check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
-        check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
-        if(obs_gen==0) return 0.0; // missing
+        if(obs_gen==0 || !check_geno(obs_gen, true, is_X_chr, is_female, cross_info))
+            return 0.0; // missing or invalid
 
         if(obs_gen == true_gen) return log(1.0 - error_prob);
         else return log(error_prob);
@@ -59,9 +63,11 @@ public:
                         bool is_X_chr, bool is_female,
                         IntegerVector cross_info)
     {
-
-        check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-        check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+        #ifdef DEBUG
+        if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+           !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+            throw std::range_error("genotype value not allowed");
+        #endif
 
         if(gen_left == gen_right) return log(1.0-rec_frac);
         else return log(rec_frac);
@@ -85,8 +91,11 @@ public:
                         bool is_X_chr, bool is_female,
                         IntegerVector cross_info)
     {
-        check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-        check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+        #ifdef DEBUG
+        if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+           !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+            throw std::range_error("genotype value not allowed");
+        #endif
 
         if(gen_left == gen_right) return 0.0;
         else return 1.0;

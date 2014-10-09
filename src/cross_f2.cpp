@@ -5,7 +5,7 @@
 #include "cross.h"
 #include "cross_f2.h"
 
-enum gen {AA=1, AB=2, BB=3, notA=5, notB=4, 
+enum gen {AA=1, AB=2, BB=3, notA=5, notB=4,
           AAX=1, ABX=2, BAX=3, BBX=4, AY=5, BY=6};
 
 bool F2::check_geno(int gen, bool is_observed_value,
@@ -13,9 +13,9 @@ bool F2::check_geno(int gen, bool is_observed_value,
 {
     // allow any value 0-5 for observed
     if(is_observed_value) {
-        if(gen==0 || gen==AA || gen==AB || gen==BB || 
+        if(gen==0 || gen==AA || gen==AB || gen==BB ||
            gen==notA || gen==notB) return true;
-        throw std::range_error("Invalid observed genotype");
+        else return false;
     }
 
     if(is_X_chr) {
@@ -28,15 +28,17 @@ bool F2::check_geno(int gen, bool is_observed_value,
     }
     else if(gen==AA || gen==AB || gen==BB) return true;
 
-    throw std::range_error("Invalid genotype");
-    return false; // can't get here
+    return false; // otherwise a problem
 }
 
 double F2::init(int true_gen,
                 bool is_X_chr, bool is_female,
                 IntegerVector cross_info)
 {
-    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(is_X_chr) return log(0.5);
     else {
@@ -49,10 +51,13 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
                 bool is_X_chr, bool is_female,
                 IntegerVector cross_info)
 {
-    check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
-    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
-    if(obs_gen==0) return 0.0; // log(1.0)
+    if(obs_gen==0 || !check_geno(obs_gen, true, is_X_chr, is_female, cross_info))
+       return 0.0; // missing or invalid
 
     if(is_X_chr) {
         if(is_female) {
@@ -115,8 +120,7 @@ double F2::emit(int obs_gen, int true_gen, double error_prob,
         }
     }
 
-    throw std::range_error("invalid obs_gen or true_gen");
-    return NA_REAL; // can't get here
+    return NA_REAL; // shouldn't get here
 }
 
 
@@ -124,8 +128,11 @@ double F2::step(int gen_left, int gen_right, double rec_frac,
                 bool is_X_chr, bool is_female,
                 IntegerVector cross_info)
 {
-    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(is_X_chr) {
         if(gen_left == gen_right) return log(1.0-rec_frac);
@@ -153,8 +160,7 @@ double F2::step(int gen_left, int gen_right, double rec_frac,
         }
     }
 
-    throw std::range_error("invalid genotypes.");
-    return NA_REAL; // can't get here
+    return NA_REAL; // shouldn't get here
 }
 
 IntegerVector F2::possible_gen(bool is_X_chr, bool is_female,

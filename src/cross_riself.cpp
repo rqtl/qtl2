@@ -10,8 +10,11 @@ enum gen {AA=1, BB=2};
 double RISELF::step(int gen_left, int gen_right, double rec_frac,
                     bool ignored1, bool ignored2, IntegerVector ignored3)
 {
-    check_geno(gen_left, false, ignored1, ignored2, ignored3);
-    check_geno(gen_right, false, ignored1, ignored2, ignored3);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, ignored1, ignored2, ignored3) ||
+       !check_geno(gen_right, false, ignored1, ignored2, ignored3))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     const double R = 2.0*rec_frac/(1+2.0*rec_frac);
 

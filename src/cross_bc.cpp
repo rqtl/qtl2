@@ -13,17 +13,14 @@ bool BC::check_geno(int gen, bool is_observed_value,
     if(is_observed_value && gen==0) return true;
 
     if(!is_X_chr || (is_X_chr && is_female)) {
-        if(gen != AA && gen != AB)
-            throw std::range_error("genotype value not allowed");
+        if(gen != AA && gen != AB) return false;
     }
     else { // male X chr
         if(is_observed_value) {
-            if(gen != AA && gen != BB)
-                throw std::range_error("genotype value not allowed");
+            if(gen != AA && gen != BB) return false;
         }
         else {
-            if(gen != AY && gen != BY)
-                throw std::range_error("genotype value not allowed");
+            if(gen != AY && gen != BY) return false;
         }
     }
 
@@ -33,7 +30,10 @@ bool BC::check_geno(int gen, bool is_observed_value,
 double BC::init(int true_gen,
                 bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
-    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     return log(0.5);
 }
@@ -41,10 +41,13 @@ double BC::init(int true_gen,
 double BC::emit(int obs_gen, int true_gen, double error_prob,
                 bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
-    check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
-    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
-    if(obs_gen==0) return 0.0; // missing value
+    if(obs_gen==0 || !check_geno(obs_gen, true, is_X_chr, is_female, cross_info))
+        return 0.0; // missing or invalid
 
     if(is_X_chr && !is_female) { // X chr males different
         if(obs_gen==AA) {
@@ -67,8 +70,11 @@ double BC::step(int gen_left, int gen_right, double rec_frac,
                 bool is_X_chr, bool is_female,
                 IntegerVector cross_info)
 {
-    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(gen_left==gen_right) return log(1.0-rec_frac);
     else return log(rec_frac);
@@ -99,8 +105,11 @@ int BC::ngen(bool is_X_chr)
 double BC::nrec(int gen_left, int gen_right,
                 bool is_X_chr, bool is_female, IntegerVector cross_info)
 {
-    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(gen_left == gen_right) return 0.0;
     else return 1.0;

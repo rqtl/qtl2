@@ -16,7 +16,7 @@ bool F2PK::check_geno(int gen, bool is_observed_value,
     if(is_observed_value) {
         if(gen==0 || gen==A || gen==H || gen==B ||
            gen==notA || gen==notB) return true;
-        throw std::range_error("Invalid observed genotype");
+        else return false;
     }
 
     if(is_X_chr) {
@@ -31,8 +31,7 @@ bool F2PK::check_geno(int gen, bool is_observed_value,
         if(gen==AA || gen==AB || gen==BA || gen==BB) return true;
     }
 
-    throw std::range_error("Invalid genotype");
-    return false; // can't get here
+    return false; // invalid
 }
 
 
@@ -40,7 +39,10 @@ double F2PK::init(int true_gen,
                   bool is_X_chr, bool is_female,
                   IntegerVector cross_info)
 {
-    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(is_X_chr) return log(0.5);
     else return log(0.25);
@@ -50,10 +52,14 @@ double F2PK::emit(int obs_gen, int true_gen, double error_prob,
                   bool is_X_chr, bool is_female,
                   IntegerVector cross_info)
 {
-    check_geno(obs_gen, true, is_X_chr, is_female, cross_info);
-    check_geno(true_gen, false, is_X_chr, is_female, cross_info);
 
-    if(obs_gen==0) return 0.0; // log(1.0)
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+
+    if(obs_gen==0 || !check_geno(obs_gen, true, is_X_chr, is_female, cross_info))
+        return 0.0; // missing or invalid
 
     if(is_X_chr) {
         if(is_female) {
@@ -116,8 +122,7 @@ double F2PK::emit(int obs_gen, int true_gen, double error_prob,
         }
     }
 
-    throw std::range_error("invalid obs_gen or true_gen");
-    return NA_REAL; // can't get here
+    return NA_REAL; // shouldn't get here
 }
 
 
@@ -125,8 +130,11 @@ double F2PK::step(int gen_left, int gen_right, double rec_frac,
                   bool is_X_chr, bool is_female,
                   IntegerVector cross_info)
 {
-    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(is_X_chr) {
         if(gen_left == gen_right) return log(1.0-rec_frac);
@@ -161,8 +169,7 @@ double F2PK::step(int gen_left, int gen_right, double rec_frac,
         }
     }
 
-    throw std::range_error("invalid genotypes.");
-    return NA_REAL; // can't get here
+    return NA_REAL; // shouldn't get here
 }
 
 IntegerVector F2PK::possible_gen(bool is_X_chr, bool is_female,
@@ -205,8 +212,11 @@ double F2PK::nrec(int gen_left, int gen_right,
                 bool is_X_chr, bool is_female,
                 IntegerVector cross_info)
 {
-    check_geno(gen_left, false, is_X_chr, is_female, cross_info);
-    check_geno(gen_right, false, is_X_chr, is_female, cross_info);
+    #ifdef DEBUG
+    if(!check_geno(gen_left, false, is_X_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_X_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
 
     if(is_X_chr) {
         if(gen_left == gen_right) return 0.0;
@@ -241,8 +251,7 @@ double F2PK::nrec(int gen_left, int gen_right,
         }
     }
 
-    throw std::range_error("invalid genotypes.");
-    return NA_REAL; // can't get here
+    return NA_REAL; // shouldn't get here
 }
 
 double F2PK::est_rec_frac(NumericMatrix gamma, bool is_X_chr)

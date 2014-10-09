@@ -9,9 +9,9 @@ test_that("intercross check_geno works", {
     for(i in 1:3)
         expect_true(test_check_geno("f2", i, FALSE, FALSE, FALSE, 0))
     for(i in c(-1, 6))
-        expect_error(test_check_geno("f2", i, TRUE, FALSE, FALSE, 0))
+        expect_false(test_check_geno("f2", i, TRUE, FALSE, FALSE, 0))
     for(i in c(0, 4))
-        expect_error(test_check_geno("f2", i, FALSE, FALSE, FALSE, 0))
+        expect_false(test_check_geno("f2", i, FALSE, FALSE, FALSE, 0))
 
     # X chromosome female, forward cross
     for(i in 0:5)
@@ -19,9 +19,9 @@ test_that("intercross check_geno works", {
     for(i in 1:2)
         expect_true(test_check_geno("f2", i, FALSE, TRUE, TRUE, 0))
     for(i in c(-1, 6))
-        expect_error(test_check_geno("f2", i, TRUE, TRUE, TRUE, 0))
+        expect_false(test_check_geno("f2", i, TRUE, TRUE, TRUE, 0))
     for(i in c(0, 3, 4))
-        expect_error(test_check_geno("f2", i, FALSE, TRUE, TRUE, 0))
+        expect_false(test_check_geno("f2", i, FALSE, TRUE, TRUE, 0))
 
     # X chromosome female, reverse cross
     for(i in 0:5)
@@ -29,9 +29,9 @@ test_that("intercross check_geno works", {
     for(i in 3:4)
         expect_true(test_check_geno("f2", i, FALSE, TRUE, TRUE, 1))
     for(i in c(-1, 6))
-        expect_error(test_check_geno("f2", i, TRUE, TRUE, TRUE, 1))
+        expect_false(test_check_geno("f2", i, TRUE, TRUE, TRUE, 1))
     for(i in c(0, 1, 2, 5, 6))
-        expect_error(test_check_geno("f2", i, FALSE, TRUE, TRUE, 1))
+        expect_false(test_check_geno("f2", i, FALSE, TRUE, TRUE, 1))
 
     # X chromosome male
     for(i in 0:5)
@@ -39,9 +39,9 @@ test_that("intercross check_geno works", {
     for(i in c(5,6))
         expect_true(test_check_geno("f2", i, FALSE, TRUE, FALSE, 0))
     for(i in c(-1, 6))
-        expect_error(test_check_geno("f2", i, TRUE, TRUE, FALSE, 0))
+        expect_false(test_check_geno("f2", i, TRUE, TRUE, FALSE, 0))
     for(i in c(0:4, 7))
-        expect_error(test_check_geno("f2", i, FALSE, TRUE, FALSE, 0))
+        expect_false(test_check_geno("f2", i, FALSE, TRUE, FALSE, 0))
 
     # X chromosome male reverse cross
     for(i in 0:5)
@@ -49,9 +49,9 @@ test_that("intercross check_geno works", {
     for(i in c(5,6))
         expect_true(test_check_geno("f2", i, FALSE, TRUE, FALSE, 1))
     for(i in c(-1, 6))
-        expect_error(test_check_geno("f2", i, TRUE, TRUE, FALSE, 1))
+        expect_false(test_check_geno("f2", i, TRUE, TRUE, FALSE, 1))
     for(i in c(0:4, 7))
-        expect_error(test_check_geno("f2", i, FALSE, TRUE, FALSE, 1))
+        expect_false(test_check_geno("f2", i, FALSE, TRUE, FALSE, 1))
 
 })
 
@@ -216,31 +216,5 @@ test_that("intercross step works", {
     expect_equal(test_step("f2", 5, 6, rf, TRUE, FALSE, 1), log(rf))
     expect_equal(test_step("f2", 6, 5, rf, TRUE, FALSE, 1), log(rf))
     expect_equal(test_step("f2", 6, 6, rf, TRUE, FALSE, 1), log(1-rf))
-
-    # errors
-    expect_error(test_step("f2", 0, 1, rf, FALSE, FALSE, 0))
-    expect_error(test_step("f2", 1, 0, rf, FALSE, FALSE, 0))
-    expect_error(test_step("f2", 4, 1, rf, FALSE, FALSE, 0))
-    expect_error(test_step("f2", 2, 4, rf, FALSE, FALSE, 0))
-    # X female
-    expect_error(test_step("f2", 0, 1, rf, TRUE, TRUE, 0))
-    expect_error(test_step("f2", 1, 0, rf, TRUE, TRUE, 0))
-    expect_error(test_step("f2", 3, 1, rf, TRUE, TRUE, 0))
-    expect_error(test_step("f2", 2, 3, rf, TRUE, TRUE, 0))
-    # X female reverse
-    expect_error(test_step("f2", 0, 1, rf, TRUE, TRUE, 1))
-    expect_error(test_step("f2", 1, 0, rf, TRUE, TRUE, 1))
-    expect_error(test_step("f2", 1, 3, rf, TRUE, TRUE, 1))
-    expect_error(test_step("f2", 2, 1, rf, TRUE, TRUE, 1))
-    # X male
-    expect_error(test_step("f2", 0, 1, rf, TRUE, FALSE, 0))
-    expect_error(test_step("f2", 1, 0, rf, TRUE, FALSE, 0))
-    expect_error(test_step("f2", 2, 3, rf, TRUE, FALSE, 0))
-    expect_error(test_step("f2", 4, 2, rf, TRUE, FALSE, 0))
-    # X male reverse
-    expect_error(test_step("f2", 0, 1, rf, TRUE, FALSE, 1))
-    expect_error(test_step("f2", 1, 0, rf, TRUE, FALSE, 1))
-    expect_error(test_step("f2", 2, 3, rf, TRUE, FALSE, 1))
-    expect_error(test_step("f2", 4, 2, rf, TRUE, FALSE, 1))
 
 })
