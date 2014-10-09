@@ -39,12 +39,12 @@ test_that("convert2cross2 works appropriately for hyper data", {
     expect_equal(hyper2$gmap, gmap)
 
     # sex
-    sex <- rep(1, nind(hyper))
-    names(sex) <- ids
-    expect_equal(hyper2$sex, sex)
+    is_female <- rep(FALSE, nind(hyper))
+    names(is_female) <- ids
+    expect_equal(hyper2$is_female, is_female)
 
     # cross_info
-    cross_info <- matrix(ncol=0, nrow=nind(hyper))
+    cross_info <- matrix(0L, ncol=0, nrow=nind(hyper))
     rownames(cross_info) <- ids
     expect_equal(hyper2$cross_info, cross_info)
 
@@ -97,9 +97,9 @@ test_that("convert2cross2 works appropriately for fake.f2 data", {
 
     # sex
     sexpgm <- getsex(fake.f2)
-    sex <- sexpgm$sex
-    names(sex) <- ids
-    expect_equal(fake.f2.2$sex, sex)
+    is_female <- (sexpgm$sex == 0)
+    names(is_female) <- ids
+    expect_equal(fake.f2.2$is_female, is_female)
 
     # cross_info
     cross_info <- as.matrix(sexpgm$pgm)
