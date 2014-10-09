@@ -51,12 +51,10 @@ test_that("minimal version works in simple case", {
 
 })
 
-# the following are totally not working
-# ...the new routine seems better than the old one
 test_that("minimal version works in more realistic case", {
 
     data(hyper)
-    map <- qtl::pull.map(hyper, chr=1)[1]
+    map <- qtl::pull.map(hyper, chr=1)
 
     pmap <- insert_pseudomarkers(map, step=1.55, off_end=4, stepwidth="max")[[1]]
 
@@ -106,6 +104,42 @@ test_that("minimal version works in more realistic case", {
                         0, 16, 17, 18, 19, 0, 0, 20, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0)
     expect_equal(attr(pmap, "index"), expected_index)
+
+})
+
+test_that("insert_pseudomarkers works with a custom pseudomarker map", {
+
+    data(hyper)
+    map <- qtl::pull.map(hyper)
+
+    set.seed(99735998)
+    pseudomarker_map <- vector("list", length(map))
+    for(i in seq(along=map)) {
+        n.pmar <- 10
+        pseudomarker_map[[i]] <- sort(runif(n.pmar, 0, max(map[[i]])))
+        names(pseudomarker_map[[i]]) <- paste0("c", names(map)[i], ".loc", n.pmar)
+    }
+
+    combined_map <- insert_pseudomarkers(map, pseudomarker_map = pseudomarker_map)
+
+    expect_equal(sapply(map, length) + sapply(pseudomarker_map, length),
+                 sapply(combined_map, length))
+
+    for(i in seq(along=map)) {
+        combined_map_2 <- sort(c(map[[i]], pseudomarker_map[[i]]))
+        expect_equivalent(combined_map_2, combined_map[[i]])
+        expect_equal(names(combined_map_2), names(combined_map[[i]]))
+
+        grid <- attr(combined_map[[i]],"grid")
+        expect_equal(grid, names(combined_map[[i]]) %in% names(pseudomarker_map[[i]]))
+
+        index <- attr(combined_map[[i]], "index")
+        expected <- match(names(combined_map[[i]]), names(map[[i]]))
+        expected[is.na(expected)] <- 0
+        expect_equal(index, expected)
+    }
+
+    expect_equal(names(map), names(combined_map))
 
 })
 
