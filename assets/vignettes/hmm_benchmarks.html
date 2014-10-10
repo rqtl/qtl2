@@ -227,9 +227,11 @@ benchmarks on this point.</p>
 
 <h2>Genotype probabilities</h2>
 
-<p>First let&#39;s look at backcross with 500 individuals (250 males and 250
-females) and with markers at a 1 cM spacing on 20 chromosomes
-(including the X chromosome), and 5% missing data. We use
+<p>First let&#39;s look at the calculation of conditional genotype
+probabilities (given multiple genetic marker genotypes).  We&#39;ll
+consider simulated data, first of a backcross with 500 individuals
+(250 males and 250 females) and with markers at a 1 cM spacing on 20
+chromosomes (including the X chromosome), and 5% missing data. We use
 <code>qtl::sim.map()</code> and <code>qtl:sim.cross()</code> to simulate the data.</p>
 
 <pre><code class="r">set.seed(8440561)
@@ -255,24 +257,26 @@ bc2 &lt;- convert2cross2(bc)
 <p>We use the
 <a href="http://cran.r-project.org/web/packages/microbenchmark/">microbenchmark package</a>
 and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2::calc_genoprob2()</code>
-25 times, with calculations at a 0.5 cM spacing.</p>
+25 times, with calculations at a 0.5 cM spacing. Even though the data
+were simulated without genotyping errors, I&#39;m going to do the
+calculations assuming a 0.2% genotype error rate.</p>
 
 <pre><code class="r">library(microbenchmark)
-microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5),
-               qtl2 = qtl2::calc_genoprob(bc2, step=0.5),
+microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
+               qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
                times=25)
 </code></pre>
 
 <pre><code>## Unit: seconds
 ##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 1.190 1.194 1.206  1.200 1.204 1.252    25  a 
-##  qtl2 2.243 2.284 2.335  2.291 2.337 2.963    25   b
+##   qtl 1.219 1.240 1.259  1.249 1.285 1.329    25  a 
+##  qtl2 2.296 2.335 2.390  2.357 2.397 2.982    25   b
 </code></pre>
 
 <p>Let&#39;s do the same for an intercross, also including the X chromosome,
 and with crosses in both directions and with both sexes.</p>
 
-<pre><code class="r">f2 &lt;- sim.cross(map, n.ind=n, type=&quot;f2&quot;, error.prob=0.05)
+<pre><code class="r">f2 &lt;- sim.cross(map, n.ind=n, type=&quot;f2&quot;, missing.prob=0.05)
 f2$pheno$sex &lt;- rep(0:1, each=n/2)
 f2$pheno$pgm &lt;- rep(0:1, n/2)
 f2_2 &lt;- convert2cross2(f2)
@@ -281,16 +285,60 @@ f2_2 &lt;- convert2cross2(f2)
 <p>Now for the benchmarks; we&#39;ll do the calculations just 10
 times.</p>
 
-<pre><code class="r">library(microbenchmark)
-microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5),
-               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5),
+<pre><code class="r">microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
+               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
                times=10)
 </code></pre>
 
 <pre><code>## Unit: seconds
 ##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 2.702 2.710 2.737  2.712 2.717 2.914    10  a 
-##  qtl2 5.145 5.158 5.211  5.220 5.232 5.337    10   b
+##   qtl 2.681 2.707 2.718  2.713 2.737 2.771    10  a 
+##  qtl2 5.168 5.184 5.259  5.238 5.271 5.518    10   b
+</code></pre>
+
+<h2>Genetic map estimation</h2>
+
+<p>Now let&#39;s consider the estimation of inter-marker distances in the
+genetic map, with the functions <code>qtl::est.map</code> and <code>qtl2::est_map</code>.</p>
+
+<p>First the backcross; to speed things up, we&#39;ll look at just
+chromosomes 1 and X.</p>
+
+<pre><code class="r">bc &lt;- bc[c(1, &quot;X&quot;),]
+bc2 &lt;- convert2cross2(bc)
+</code></pre>
+
+<p>Now for the benchmarks. We&#39;ll just do 5 replicates.</p>
+
+<pre><code class="r">microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002,
+                                   tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(bc2, error_prob=0.002,
+                                    tol=1e-6, maxit=10000),
+               times=5)
+</code></pre>
+
+<pre><code>## Unit: seconds
+##  expr   min    lq  mean median    uq   max neval cld
+##   qtl 1.524 1.526 1.532  1.531 1.533 1.548     5  a 
+##  qtl2 8.764 8.928 9.101  9.204 9.289 9.318     5   b
+</code></pre>
+
+<p>Now to the intercross. Again, we&#39;ll look at just
+chromosomes 1 and X, and we&#39;ll perform just 5 replicates.</p>
+
+<pre><code class="r">f2 &lt;- f2[c(1, &quot;X&quot;),]
+f2_2 &lt;- convert2cross2(f2)
+microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002,
+                                   tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(f2_2, error_prob=0.002,
+                                    tol=1e-6, maxit=10000),
+               times=5)
+</code></pre>
+
+<pre><code>## Unit: seconds
+##  expr    min    lq   mean median     uq    max neval cld
+##   qtl  4.238  4.56  4.537  4.599  4.641  4.646     5  a 
+##  qtl2 14.872 14.90 15.198 15.035 15.589 15.595     5   b
 </code></pre>
 
 <h2>Session information</h2>
@@ -338,7 +386,7 @@ microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5),
 ##  plyr             1.8.1   2014-02-26 CRAN (R 3.1.0)
 ##  proto            0.3.10  2012-12-22 CRAN (R 3.1.0)
 ##  qtl            * 1.34.4  2014-10-07 local         
-##  qtl2           * 0.1.8   2014-10-10 local         
+##  qtl2           * 0.1.9   2014-10-10 local         
 ##  reshape2         1.4     2014-04-23 CRAN (R 3.1.0)
 ##  rstudioapi       0.1     2014-03-27 CRAN (R 3.1.0)
 ##  sandwich         2.3.2   2014-08-24 CRAN (R 3.1.1)

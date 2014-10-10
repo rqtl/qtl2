@@ -24,9 +24,11 @@ benchmarks on this point.
 
 ## Genotype probabilities
 
-First let's look at backcross with 500 individuals (250 males and 250
-females) and with markers at a 1 cM spacing on 20 chromosomes
-(including the X chromosome), and 5% missing data. We use
+First let's look at the calculation of conditional genotype
+probabilities (given multiple genetic marker genotypes).  We'll
+consider simulated data, first of a backcross with 500 individuals
+(250 males and 250 females) and with markers at a 1 cM spacing on 20
+chromosomes (including the X chromosome), and 5% missing data. We use
 `qtl::sim.map()` and `qtl:sim.cross()` to simulate the data.
 
 ```{r sim_backcross}
@@ -54,12 +56,14 @@ bc2 <- convert2cross2(bc)
 We use the
 [microbenchmark package](http://cran.r-project.org/web/packages/microbenchmark/)
 and run each of `qtl::calc.genoprob()` and `qtl2::calc_genoprob2()`
-25 times, with calculations at a 0.5 cM spacing.
+25 times, with calculations at a 0.5 cM spacing. Even though the data
+were simulated without genotyping errors, I'm going to do the
+calculations assuming a 0.2% genotype error rate.
 
 ```{r benchmark_calcgenoprob_bc}
 library(microbenchmark)
-microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5),
-               qtl2 = qtl2::calc_genoprob(bc2, step=0.5),
+microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
+               qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
                times=25)
 ```
 
@@ -67,7 +71,7 @@ Let's do the same for an intercross, also including the X chromosome,
 and with crosses in both directions and with both sexes.
 
 ```{r sim_intercross}
-f2 <- sim.cross(map, n.ind=n, type="f2", error.prob=0.05)
+f2 <- sim.cross(map, n.ind=n, type="f2", missing.prob=0.05)
 f2$pheno$sex <- rep(0:1, each=n/2)
 f2$pheno$pgm <- rep(0:1, n/2)
 f2_2 <- convert2cross2(f2)
@@ -77,10 +81,46 @@ Now for the benchmarks; we'll do the calculations just 10
 times.
 
 ```{r benchmark_calcgenoprob_f2}
-library(microbenchmark)
-microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5),
-               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5),
+microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
+               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
                times=10)
+```
+
+
+## Genetic map estimation
+
+Now let's consider the estimation of inter-marker distances in the
+genetic map, with the functions `qtl::est.map` and `qtl2::est_map`.
+
+First the backcross; to speed things up, we'll look at just
+chromosomes 1 and X.
+
+```{r bc_subset_chr}
+bc <- bc[c(1, "X"),]
+bc2 <- convert2cross2(bc)
+```
+
+Now for the benchmarks. We'll just do 5 replicates.
+
+```{r benchmark_estmap_bc}
+microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002,
+                                   tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(bc2, error_prob=0.002,
+                                    tol=1e-6, maxit=10000),
+               times=5)
+```
+
+Now to the intercross. Again, we'll look at just
+chromosomes 1 and X, and we'll perform just 5 replicates.
+
+```{r benchmark_estmap_f2}
+f2 <- f2[c(1, "X"),]
+f2_2 <- convert2cross2(f2)
+microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002,
+                                   tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(f2_2, error_prob=0.002,
+                                    tol=1e-6, maxit=10000),
+               times=5)
 ```
 
 
