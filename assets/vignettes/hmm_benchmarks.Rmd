@@ -1,0 +1,96 @@
+# R/qtl2: Benchmarks of HMM routines
+
+[R/qtl2](https://github.com/kbroman/qtl2) includes a reimplementation
+of the basic hidden Markov model code for the calculation of
+conditional genotype probabilities (given the available multipoint
+marker genotype data) and the estimation of genetic maps.
+
+The new HMM code can potentially handle more general cases and uses
+C++ classes to simplify the extension to new cross types. I've also
+split out the forward and backward equations as separate functions, to
+reduce code duplication. And the basic calculations are separated by
+individual, which may allow for low-level parallel processing (i.e.,
+[concurrency](http://en.wikipedia.org/wiki/Concurrency_(computer_science))).
+(I'm considered using
+[RcppParallel](http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel)
+for this.)
+
+_However_, the current code is showing pretty crappy performance
+relative to [R/qtl](http://www.rqtl.org), and may need to be
+rethought. For example, `qtl2::calc_genoprob()` is about twice as slow
+as `qtl::calc.genoprob()`, and `qtl2::est_map()` is about six times as
+slow as `qtl::est.map()`. The present document provides detailed
+benchmarks on this point.
+
+## Genotype probabilities
+
+First let's look at backcross with 500 individuals (250 males and 250
+females) and with markers at a 1 cM spacing on 20 chromosomes
+(including the X chromosome), and 5% missing data. We use
+`qtl::sim.map()` and `qtl:sim.cross()` to simulate the data.
+
+```{r sim_backcross}
+set.seed(8440561)
+library(qtl)
+data(map10)
+chrL <- round(summary(map10)$length[1:20])
+map <- sim.map(len=chrL, n.mar=chrL+1,
+               include.x=TRUE, eq.spacing=TRUE)
+n <- 500
+bc <- sim.cross(map, n.ind=n, type="bc", missing.prob=0.05)
+bc$pheno$sex <- rep(0:1, each=n/2)
+```
+
+There's a total of `r totmar(bc)` markers.
+
+We use `qtl2::convert2cross2()` to convert the data to the format for 
+[R/qtl2](http://kbroman.org/qtl2).
+
+```{r convert2cross2}
+library(qtl2)
+bc2 <- convert2cross2(bc)
+```
+
+We use the
+[microbenchmark package](http://cran.r-project.org/web/packages/microbenchmark/)
+and run each of `qtl::calc.genoprob()` and `qtl2::calc_genoprob2()`
+25 times, with calculations at a 0.5 cM spacing.
+
+```{r benchmark_calcgenoprob_bc}
+library(microbenchmark)
+microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5),
+               qtl2 = qtl2::calc_genoprob(bc2, step=0.5),
+               times=25)
+```
+
+Let's do the same for an intercross, also including the X chromosome,
+and with crosses in both directions and with both sexes.
+
+```{r sim_intercross}
+f2 <- sim.cross(map, n.ind=n, type="f2", error.prob=0.05)
+f2$pheno$sex <- rep(0:1, each=n/2)
+f2$pheno$pgm <- rep(0:1, n/2)
+f2_2 <- convert2cross2(f2)
+```
+
+Now for the benchmarks; we'll do the calculations just 10
+times.
+
+```{r benchmark_calcgenoprob_f2}
+library(microbenchmark)
+microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5),
+               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5),
+               times=10)
+```
+
+
+## Session information
+
+The following shows the R and package versions I was using.
+
+```{r sessionInfo, results="markup"}
+devtools::session_info()
+```
+
+<!-- the following to make it look nicer -->
+<link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>
