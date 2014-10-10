@@ -12,6 +12,22 @@
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
 #' @param quiet If true, don't print any messages
+#'
+#' @return A list of numeric vectors, with the estimated marker
+#' locations (in cM). The location of the initial marker on each
+#' chromosome is kept the same as in the input \code{cross}.
+#'
+#' @details
+#' The map is estimated assuming no crossover interference,
+#' but a map function (by default, Haldane's) is used to derive the genetic distances.
+#'
+#' @export
+#' @keywords utilities
+#'
+#' @examples
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+#' gmap <- est_map(grav2, error_prob=0.002)
+
 est_map <-
 function(cross, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
@@ -29,6 +45,8 @@ function(cross, error_prob=1e-4,
     names(map) <- names(cross$gmap)
 
     for(i in seq(along=cross$gmap)) {
+        if(!quiet) cat(paste0("Chr ", names(cross$geno)[i], ":\n"))
+
         gmap <- cross$gmap[[i]]
 
         # omit individuals with < 2 genotypes

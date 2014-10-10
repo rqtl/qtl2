@@ -2,6 +2,7 @@
 
 export(calc_genoprob)
 export(convert2cross2)
+export(est_map)
 export(insert_pseudomarkers)
 export(read_cross2)
 export(write_control_file)
