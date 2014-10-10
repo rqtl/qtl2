@@ -10,7 +10,7 @@ test_that("grid-based version works in simple case", {
     # step = marker distance
     pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="fixed")[[1]]
     expect_equivalent(map, pmap)
-    expect_equal(attr(pmap, "index"), seq(along=map))
+    expect_equal(attr(pmap, "index"), seq(along=map)-1)
     expect_equal(attr(pmap, "grid"), rep(TRUE, length(map)))
 
     # step = 1
@@ -21,8 +21,8 @@ test_that("grid-based version works in simple case", {
     # expected index
     index <- rep(0, length(pmap))
     mar <- names(pmap)==""
-    index[mar] <- 1:sum(mar)
-    expect_equal(attr(pmap, "index"), index)
+    index[mar] <- (1:sum(mar))
+    expect_equal(attr(pmap, "index"), index-1)
 
     # expected grid
     expect_equal(attr(pmap, "grid"), !is.na(match(pmap, seq(0, 50, by=1))))
@@ -37,7 +37,7 @@ test_that("minimal version works in simple case", {
     # step = marker distance
     pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="max")[[1]]
     expect_equivalent(map, pmap)
-    expect_equal(attr(pmap, "index"), seq(along=map))
+    expect_equal(attr(pmap, "index"), seq(along=map)-1)
 
     # step = 1
     pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="max")[[1]]
@@ -46,8 +46,8 @@ test_that("minimal version works in simple case", {
     # expected index
     index <- rep(0, length(pmap))
     mar <- names(pmap)==""
-    index[mar] <- 1:sum(mar)
-    expect_equal(attr(pmap, "index"), index)
+    index[mar] <- (1:sum(mar))
+    expect_equal(attr(pmap, "index"), index-1)
 
 })
 
@@ -102,7 +102,7 @@ test_that("minimal version works in more realistic case", {
                         0, 0, 3, 0, 4, 0, 5, 0, 0, 6, 0, 7, 8, 0, 0, 0, 9, 0, 0, 0, 10,
                         0, 0, 0, 0, 0, 0, 11, 0, 0, 12, 0, 13, 0, 0, 14, 15, 0, 0, 0,
                         0, 16, 17, 18, 19, 0, 0, 20, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0)
+                        0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0)-1
     expect_equal(attr(pmap, "index"), expected_index)
 
 })
@@ -136,6 +136,7 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
         index <- attr(combined_map[[i]], "index")
         expected <- match(names(combined_map[[i]]), names(map[[i]]))
         expected[is.na(expected)] <- 0
+        expected <- expected - 1
         expect_equal(index, expected)
     }
 

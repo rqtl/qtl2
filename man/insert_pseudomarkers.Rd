@@ -31,8 +31,8 @@ ignored.}
 A vector of positions of pseudomarkers and markers: the
 input \code{map} vector with pseudomarker positions added. An
 attribute \code{"index"} is an integer vector that indicates which
-positions are pseudomarkers (value 0) and which are markers
-(positive values, indicating the marker indices). If
+positions are pseudomarkers (value -1) and which are markers
+(positive values, indicating the marker indices, (starting at 0).) If
 \code{stepwidth=fixed} (or if \code{pseudomarker_map} is provided), a
 further attribute (\code{"grid"}) is a logical vector that
 indicates which positions correspond to the fixed grid.

@@ -22,8 +22,8 @@
 #' @return A vector of positions of pseudomarkers and markers: the
 #' input \code{map} vector with pseudomarker positions added. An
 #' attribute \code{"index"} is an integer vector that indicates which
-#' positions are pseudomarkers (value 0) and which are markers
-#' (positive values, indicating the marker indices). If
+#' positions are pseudomarkers (value -1) and which are markers
+#' (positive values, indicating the marker indices, (starting at 0).) If
 #' \code{stepwidth=fixed} (or if \code{pseudomarker_map} is provided), a
 #' further attribute (\code{"grid"}) is a logical vector that
 #' indicates which positions correspond to the fixed grid.
@@ -116,7 +116,7 @@ insert_pseudomarkers_grid <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(step==0) {
-        attr(map, "index") <- seq(along=map)
+        attr(map, "index") <- seq(along=map)-1
         map <- add_pmap_attr(map, "fixed", step, off_end)
         return(map)
     }
@@ -146,7 +146,7 @@ function(map, pmar_map, tol=0.01, pmar_stem="loc", step)
     to_omit <- (mind < tol)
     pmar_map <- pmar_map[!to_omit]
     if(length(pmar_map) == 0) {
-        attr(map, "index") <- seq(along=map)
+        attr(map, "index") <- seq(along=map)-1
         attr(map, "grid") <- rep(TRUE, length(map))
         return(map)
     }
@@ -171,7 +171,7 @@ function(map, pmar_map, tol=0.01, pmar_stem="loc", step)
     o <- order(map)
     map <- map[o]
 
-    attr(map, "index") <- index[o]
+    attr(map, "index") <- index[o]-1
     attr(map, "grid") <- grid[o]
     map
 }
@@ -198,7 +198,7 @@ insert_pseudomarkers_minimal <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(step==0) {
-        attr(map, "index") <- seq(along=map)
+        attr(map, "index") <- seq(along=map)-1
         map <- add_pmap_attr(map, "max", step, off_end)
         return(map)
     }
@@ -216,7 +216,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
         map <- c(map, pmar_map)
         o <- order(map)
         map <- map[o]
-        attr(map, "index") <- index[o]
+        attr(map, "index") <- index[o]-1
         map <- add_pmap_attr(map, "max", step, off_end)
         return(map)
     }
@@ -229,7 +229,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
         seq(map[a], map[a+1], length.out=n)[-c(1, n)] })))
 
     if(length(pmar_map) == 0) {
-        attr(map, "index") <- seq(along=map)
+        attr(map, "index") <- seq(along=map)-1
         map <- add_pmap_attr(map, "max", step, off_end)
         return(map)
     }
@@ -246,7 +246,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     o <- order(map)
     map <- map[o]
     map <- add_pmap_attr(map, "max", step, off_end)
-    attr(map, "index") <- index[o]
+    attr(map, "index") <- index[o]-1
 
     map
 }
