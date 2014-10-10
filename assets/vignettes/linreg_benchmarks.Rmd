@@ -173,5 +173,13 @@ microbenchmark(lmfit =    colSums(lm.fit(mm, Y)$resid^2),
                times=100)
 ```
 
+## Session information
+
+The following shows the R and package versions I was using.
+
+```{r sessionInfo, results="markup"}
+devtools::session_info()
+```
+
 <!-- the following to make it look nicer -->
 <link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>
