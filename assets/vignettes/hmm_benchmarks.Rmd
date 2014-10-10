@@ -116,10 +116,8 @@ chromosomes 1 and X, and we'll perform just 5 replicates.
 ```{r benchmark_estmap_f2}
 f2 <- f2[c(1, "X"),]
 f2_2 <- convert2cross2(f2)
-microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002,
-                                   tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(f2_2, error_prob=0.002,
-                                    tol=1e-6, maxit=10000),
+microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
                times=5)
 ```
 

@@ -328,10 +328,8 @@ chromosomes 1 and X, and we&#39;ll perform just 5 replicates.</p>
 
 <pre><code class="r">f2 &lt;- f2[c(1, &quot;X&quot;),]
 f2_2 &lt;- convert2cross2(f2)
-microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002,
-                                   tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(f2_2, error_prob=0.002,
-                                    tol=1e-6, maxit=10000),
+microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
                times=5)
 </code></pre>
 
