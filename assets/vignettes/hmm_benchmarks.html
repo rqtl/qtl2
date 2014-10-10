@@ -238,8 +238,7 @@ chromosomes (including the X chromosome), and 5% missing data. We use
 library(qtl)
 data(map10)
 chrL &lt;- round(summary(map10)$length[1:20])
-map &lt;- sim.map(len=chrL, n.mar=chrL+1,
-               include.x=TRUE, eq.spacing=TRUE)
+map &lt;- sim.map(len=chrL, n.mar=chrL+1, include.x=TRUE, eq.spacing=TRUE)
 n &lt;- 500
 bc &lt;- sim.cross(map, n.ind=n, type=&quot;bc&quot;, missing.prob=0.05)
 bc$pheno$sex &lt;- rep(0:1, each=n/2)
@@ -310,10 +309,8 @@ bc2 &lt;- convert2cross2(bc)
 
 <p>Now for the benchmarks. We&#39;ll just do 5 replicates.</p>
 
-<pre><code class="r">microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002,
-                                   tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(bc2, error_prob=0.002,
-                                    tol=1e-6, maxit=10000),
+<pre><code class="r">microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
+               qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
                times=5)
 </code></pre>
 
