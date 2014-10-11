@@ -206,19 +206,19 @@ function(pheno)
 
 # make the first column of a data frame the row names
 firstcol2rownames <-
-function(covar, name="")
+function(mat, name="")
 {
     # assume the first column is the ID
-    idcolumn <- covar[,1]
+    idcolumn <- mat[,1]
 
     # look for duplicates
     check4duplicates(idcolumn, name)
 
     # drop that column and make it the row names
-    covar <- covar[,-1,drop=FALSE]
-    rownames(covar) <- as.character(idcolumn)
+    mat <- mat[,-1,drop=FALSE]
+    rownames(mat) <- as.character(idcolumn)
 
-    covar
+    mat
 }
 
 # check a list of IDs for duplicates
@@ -228,7 +228,7 @@ function(ids, name="")
     if(name != "") name <- paste("in", name)
     dup <- duplicated(ids)
     if(any(dup)) {
-        stop("Not all ids ", name, " are unique: ",
+        stop("Not all ids in ", name, " are unique: ",
              paste0('"', unique(ids[dup]), '"', collapse=", "))
     }
     TRUE
@@ -267,9 +267,12 @@ split_map <-
 function(map)
 {
     pos <- map[,2]
+    chr <- map[,1]
+    uchr <- unique(chr)
+
     names(pos) <- rownames(map)
 
-    lapply(split(pos, map[,1]), sort)
+    lapply(split(pos, factor(chr, uchr)), sort)
 }
 
 # grab sex information
