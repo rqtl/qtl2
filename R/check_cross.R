@@ -73,7 +73,7 @@ function(cross2)
     #     cross_info
 
     # optional pieces
-    #     pheno (should be required?)
+    #     pheno
     #     covar
     #     phenocovar
     #     pmap
@@ -122,11 +122,7 @@ function(cross2)
 
     # pheno
     pheno <- cross2$pheno
-    if(is.null(pheno)) { # pheno required
-        result <- FALSE
-        warning("pheno is missing")
-    }
-    else {
+    if(!is.null(pheno)) { # pheno optional
         if(is.null(rownames(pheno))) {
             result <- FALSE
             warning("rownames(pheno) is NULL")
