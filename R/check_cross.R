@@ -66,7 +66,6 @@ function(cross2)
 
     # required pieces
     #     crosstype
-    #     pheno
     #     geno
     #     gmap
     #     is_female
@@ -74,6 +73,7 @@ function(cross2)
     #     cross_info
 
     # optional pieces
+    #     pheno (should be required?)
     #     covar
     #     phenocovar
     #     pmap
@@ -89,6 +89,36 @@ function(cross2)
         result <- FALSE
         warning("Crosstype ", cross2$crosstype, " is not supported")
     }
+
+    # check for required pieces
+    geno <- cross2$geno
+    if(is.null(geno)) {
+        result <- FALSE
+        warning("geno is missing")
+    }
+    gmap <- cross2$gmap
+    if(is.null(gmap)) {
+        result <- FALSE
+        warning("gmap is missing")
+    }
+    is_female <- cross2$is_female
+    if(is.null(is_female)) {
+        result <- FALSE
+        warning("is_female is missing")
+    }
+    cross_info <- cross2$cross_info
+    if(is.null(cross_info)) {
+        result <- FALSE
+        warning("cross_info is missing")
+    }
+    is_x_chr <- cross2$is_x_chr
+    if(is.null(is_x_chr)) {
+        result <- FALSE
+        warning("is_x_chr is missing")
+    }
+
+    # if any of those pieces is missing, we'll just return
+    if(!result) return(result)
 
     # pheno
     pheno <- cross2$pheno
@@ -141,145 +171,142 @@ function(cross2)
         }
     }
 
-    geno <- cross2$geno
-    gmap <- cross2$gmap
-    if(is.null(geno)) {
-        result <- FALSE
-        warning("geno is missing")
+    # check dimnames of geno
+    for(i in seq(along=geno)) {
+        if(is.null(rownames(geno[[i]]))) {
+            result <- FALSE
+            warning("missing geno rownames for chr ", names(geno)[i])
+        }
+        if(is.null(colnames(geno[[i]]))) {
+            result <- FALSE
+            warning("missing geno colnames for chr ", names(geno)[i])
+        }
+        if(nrow(geno[[i]]) != nrow(geno[[1]])) {
+            result <- FALSE
+            warning("nrow in geno for chr ", names(geno)[i],
+                    " (", nrow(geno[[i]]), ") doesn't match that for chr ",
+                    names(geno)[1], " (", nrow(geno[[1]]), ")")
+        }
     }
-    if(is.null(gmap)) {
+
+    # compare geno to gmap
+    if(length(geno) != length(gmap)) {
         result <- FALSE
-        warning("gmap is missing")
+        warning("length(geno) (", length(geno), ") != length(gmap) (", length(gmap), ")")
     }
-    if(is.null(geno)) {
-        # compare geno to gmap
-        if(!is.null(gmap)) {
-            if(length(geno) != length(gmap)) {
+    else {
+        if(is.null(names(geno))) {
+            result <- FALSE
+            warning("names(geno) is missing")
+        }
+        if(any(names(geno) != names(gmap))) {
+            result <- FALSE
+            warning("names(geno) != names(gmap)")
+        }
+        for(i in seq(along=geno)) {
+            if(ncol(geno[[i]]) != length(gmap[[i]])) {
                 result <- FALSE
-                warning("length(geno) (", length(geno), ") != length(gmap) (", length(gmap), ")")
+                warning("Mismatch between geno and gmap in no. markers on chr ", names(geno)[i])
             }
-            else {
-                if(any(names(geno) != names(gmap))) {
-                    result <- FALSE
-                    warning("names(geno) != names(gmap)")
-                }
-                for(i in seq(along=geno)) {
-                    if(length(geno[[i]]) != length(gmap[[i]])) {
-                        result <- FALSE
-                        warning("Mismatch between geno and gmap in no. markers on chr ", names(geno)[i])
-                    }
-                    else if(any(colnames(geno[[i]]) != names(gmap[[i]]))) {
-                        result <- FALSE
-                        warning("Mismatch in marker names between geno and gmap on chr ", names(geno)[i])
-                    }
-                }
+            else if(any(colnames(geno[[i]]) != names(gmap[[i]]))) {
+                result <- FALSE
+                warning("Mismatch in marker names between geno and gmap on chr ", names(geno)[i])
             }
         }
+    }
 
-        # is_female
-        is_female <- cross2$is_female
-        if(is.null(is_female)) {
+    # compare geno to is_female
+    if(nrow(geno[[1]]) != length(is_female)) {
+        result <- FALSE
+        warning("length(is_female) (", length(is_female), ") != nrow(geno[[1]]) (", nrow(geno[[1]]), ")")
+    }
+    else if(any(names(is_female) != rownames(geno[[1]]))) {
+        result <- FALSE
+        warning("names(is_female) != rownames(geno[[1]])")
+    }
+    if(!is.logical(is_female)) {
+        result <- FALSE
+        warning("is_female is not logical")
+    }
+
+    # compare geno to cross_info
+    if(nrow(geno[[1]]) != nrow(cross_info)) {
+        result <- FALSE
+        warning("nrow(cross_info) (", nrow(cross_info), ") != nrow(geno[[1]]) (", nrow(geno[[1]]), ")")
+    }
+    else if(any(rownames(cross_info) != rownames(geno[[1]]))) {
+        result <- FALSE
+        warning("rownames(cross_info) != rownames(geno[[1]])")
+    }
+    if(!is.matrix(cross_info)) {
+        result <- FALSE
+        warning("cross_info is not a matrix")
+    }
+    if(storage.mode(cross_info) != "integer") {
+        result <- FALSE
+        warning("cross_info is not stored as integers but rather ", storage.mode(cross_info))
+    }
+
+    # check is_x_chr
+    if(length(is_x_chr) != length(geno)) {
+        result <- FALSE
+        warning("length(is_x_chr) (", length(is_x_chr), ") != length(geno) (", length(geno), ")")
+    }
+    else if(any(names(is_x_chr) != names(geno))) {
+        result <- FALSE
+        warning("names(is_x_chr) != names(geno)")
+    }
+
+    # check linenamp
+    linemap <- cross2$linemap
+    if(!is.null(linemap) && !is.null(pheno)) {
+        if(length(linemap) != nrow(pheno)) {
             result <- FALSE
-            warning("is_female is missing")
+            warning("length(linemap) (", length(linemap), ") != nrow(pheno) (", nrow(pheno), ")")
         }
-        else if(nrow(geno) != length(is_female)) {
+        else if(any(names(linemap) != rownames(pheno))) {
             result <- FALSE
-            warning("nrow(geno) (", nrow(geno), ") != length(is_female) (", length(is_female), ")")
-        }
-        else if(any(rownames(geno) != names(is_female))) {
-            result <- FALSE
-            warning("rownames(geno) != names(is_female)")
-        }
-        if(!is.logical(is_female)) {
-            result <- FALSE
-            warning("is_female is not logical")
+            warning("names(linemap) != rownames(pheno)")
         }
 
-        # cross_info
-        cross_info <- cross2$cross_info
-        if(is.null(cross_info)) {
+        if(any(is.na(match(linemap, rownames(geno[[1]]))))) {
             result <- FALSE
-            warning("cross_info is missing")
+            warning("Some lines in linemap are not in rownames(geno[[1]])")
+        }
+    }
+
+    if(is.null(linemap) && !is.null(pheno) && nrow(pheno) != nrow(geno[[1]])) {
+        result <- FALSE
+        warning("linemap missing but nrow(pheno) != nrow(geno[[1]])")
+    }
+
+    # foundergeno
+    foundergeno <- cross2$foundergeno
+    if(!is.null(foundergeno)) { # foundergeno is optional
+
+        if(length(geno) != length(foundergeno)) {
+            result <- FALSE
+            warning("length(geno) (", length(geno), ") != length(foundergeno) (", length(foundergeno), ")")
         }
         else {
-            if(nrow(geno) != nrow(cross_info)) {
+            if(any(names(geno) != names(foundergeno))) {
                 result <- FALSE
-                warning("nrow(geno) (", nrow(geno), ") != nrow(cross_info) (", nrow(cross_info), ")")
+                warning("names(geno) != names(foundergeno)")
             }
-            else if(any(rownames(geno) != nrownames(cross_info))) {
-                result <- FALSE
-                warning("rownames(geno) != nrownames(cross_info)")
-            }
-            if(!is.matrix(cross_info)) {
-                result <- FALSE
-                warning("cross_info is not a matrix")
-            }
-            if(storage.mode(cross_info) != "integer") {
-                result <- FALSE
-                warning("cross_info is not stored as integers but rather ", storage.mode(cross_info))
-            }
-        }
-
-        linemap <- cross2$linemap
-        if(!is.null(linemap) && !is.null(pheno)) {
-            if(length(linemap) != nrow(pheno)) {
-                result <- FALSE
-                warning("length(linemap) (", length(linemap), ") != nrow(pheno) (", nrow(pheno), ")")
-            }
-            else if(any(names(linemap) != rownames(pheno))) {
-                result <- FALSE
-                warning("names(linemap) != rownames(pheno)")
-            }
-
-            if(any(is.na(match(linemap, rownames(geno))))) {
-                result <- FALSE
-                warning("Some lines in linemap are not in rownames(geno)")
-            }
-        }
-
-        if(is.null(linemap) && nrow(pheno) != nrow(geno)) {
-            result <- FALSE
-            warning("linemap missing but nrow(pheno) != nrow(geno)")
-        }
-
-        foundergeno <- cross2$foundergeno
-        if(!is.null(foundergeno)) { # foundergeno is optional
-
-            if(length(geno) != length(foundergeno)) {
-                result <- FALSE
-                warning("length(geno) (", length(geno), ") != length(foundergeno) (", length(foundergeno), ")")
-            }
-            else {
-                if(any(names(geno) != names(foundergeno))) {
+            for(i in seq(along=geno)) {
+                if(length(geno[[i]]) != length(foundergeno[[i]])) {
                     result <- FALSE
-                    warning("names(geno) != names(foundergeno)")
+                    warning("Mismatch between geno and foundergeno in no. markers on chr ", names(geno)[i])
                 }
-                for(i in seq(along=geno)) {
-                    if(length(geno[[i]]) != length(foundergeno[[i]])) {
-                        result <- FALSE
-                        warning("Mismatch between geno and foundergeno in no. markers on chr ", names(geno)[i])
-                    }
-                    else if(any(colnames(geno[[i]]) != names(foundergeno[[i]]))) {
-                        result <- FALSE
-                        warning("Mismatch in marker names between geno and foundergeno on chr ", names(geno)[i])
-                    }
+                else if(any(colnames(geno[[i]]) != names(foundergeno[[i]]))) {
+                    result <- FALSE
+                    warning("Mismatch in marker names between geno and foundergeno on chr ", names(geno)[i])
                 }
             }
         }
-
-    }
-    else { # geno is absent
-        if(is.null(cross2$is_female))
-            warning("is_female is missing")
-
-        if(is.null(cross2$cross_info))
-            warning("cross_info is missing")
-
-        if(is.null(cross2$is_x_chr))
-            warning("is_x_chr is missing")
     }
 
-
+    # pmap
     pmap <- cross2$pmap
     if(!is.null(pmap) && !is.null(gmap)) { # pmap is optional
         if(length(gmap) != length(pmap)) {
