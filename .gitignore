@@ -3,5 +3,4 @@ src/*.so
 inst/doc/*.html
 inst/doc/*.md
 inst/doc/*.Rmd
-Notes/
 *.Rout
