@@ -76,12 +76,12 @@ function(cross, error_prob=1e-4,
         map <- lapply(chrs, by_chr_func)
     }
     else if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        cl <- makeCluster(n_cores)
-        on.exit(stopCluster(cl))
-        map <- clusterApply(cl, chrs, by_chr_func)
+        cl <- parallel::makeCluster(n_cores)
+        on.exit(parallel::stopCluster(cl))
+        map <- parallel::clusterApply(cl, chrs, by_chr_func)
     }
     else {
-        map <- mclapply(chrs, by_chr_func, mc.cores=n_cores)
+        map <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
     }
 
     names(map) <- names(cross$gmap)
