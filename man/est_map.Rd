@@ -6,7 +6,7 @@
 \usage{
 est_map(cross, error_prob = 0.0001, map_function = c("haldane", "kosambi",
   "c-f", "morgan"), maxit = 10000, tol = 0.000001, quiet = TRUE,
-  n_cores = parallel::detectCores())
+  n_cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the

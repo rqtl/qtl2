@@ -33,7 +33,7 @@ est_map <-
 function(cross, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
          maxit=10000, tol=1e-6, quiet=TRUE,
-         n_cores=parallel::detectCores())
+         n_cores=1)
 {
     map_function <- match.arg(map_function)
     if(error_prob < 0) stop("error_prob must be >= 0")
