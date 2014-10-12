@@ -317,6 +317,35 @@ probably treat the hets as missing values).</p>
 <p>A logical vector of length <code>n_chromosomes</code> indicates which of the
 chromosomes is the X chromosome.</p>
 
+<h3>Sex (<code>&quot;is_female&quot;</code>)</h3>
+
+<p>For the treatment of the X chromosome, we need access to sex of the lines.
+(That sounds a bit strange; sex is really a feature of individuals and
+won&#39;t actually be considered for cross types where we separate
+<em>individuals</em> from <em>lines</em>.)
+We&#39;ll have a logical vector (<code>&quot;is_female&quot;</code>) indicating which
+individuals are female. I prefer the logical vector as it&#39;s less
+susceptible to confusion. (Is 0 female and 1 male, or the other way
+around?) This will have length <code>n_lines</code>, with the name
+attribute being the individual IDs.</p>
+
+<h3>Cross information (<code>&quot;cross_info&quot;</code>)</h3>
+
+<p>For many cross types, and particularly for the treatment of the X
+chromosome, we need line-level information about the nature of the
+cross. For an intercross, this is like the <code>pgm</code> (for paternal
+grandmother) in <a href="http://www.rqtl.org">R/qtl</a>. For the Collaborative
+Cross, we need the order of the founders in the set of crosses that
+led to each line. For the AIL and the Diversity Outcross, we need to
+know the number of generations of outbreeding.</p>
+
+<p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with
+<code>n_lines</code> rows, and with the number of columns depending on the cross
+type.</p>
+
+<p>This information is highly cross-type-specific. We&#39;ll leave the
+details to the discussion of the format of input files.</p>
+
 <h3>Genetic map (<code>&quot;gmap&quot;</code>)</h3>
 
 <p>The genetic map of the markers is a list of numeric vectors; each
@@ -328,8 +357,8 @@ names. The markers should be in increasing order.</p>
 
 <p>We will also allow (and perhaps expect) a physical map of the
 markers. This will have the same form as the genetic map, but with
-positions in Mbp. (<strong>Or perhaps we should use vectors of integers, with
-positions in basepairs</strong>.)</p>
+positions in Mbp. (Or perhaps we should use vectors of integers, with
+positions in basepairs.)</p>
 
 <h3>Phenotype data (<code>&quot;pheno&quot;</code>)</h3>
 
@@ -380,31 +409,9 @@ more convenient as a vector with a names attribute, which acts like an
 <a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a>
 (also known as a dictionary, map, hash, or symbol table).</p>
 
-<h3>Sex (<code>&quot;is_female&quot;</code>)</h3>
-
-<p>For the treatment of the X chromosome, we need access to individuals&#39;
-sex. We&#39;ll have a logical vector (<code>&quot;is_female&quot;</code>) indicating which
-individuals are female. I prefer the logical vector as it&#39;s less
-susceptible to confusion. (Is 0 female and 1 male, or the other way
-around?) This will have length <code>n_individuals</code>, with the name
-attribute being the individual IDs.</p>
-
-<h3>Cross information (<code>&quot;cross_info&quot;</code>)</h3>
-
-<p>For many cross types, and particularly for the treatment of the X
-chromosome, we need line-level information about the nature of the
-cross. For an intercross, this is like the <code>pgm</code> (for paternal
-grandmother) in <a href="http://www.rqtl.org">R/qtl</a>. For the Collaborative
-Cross, we need the order of the founders in the set of crosses that
-led to each line. For the AIL and the Diversity Outcross, we need to
-know the number of generations of outbreeding.</p>
-
-<p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with
-<code>n_lines</code> rows, and with the number of columns depending on the cross
-type.</p>
-
-<p>This information is highly cross-type-specific. We&#39;ll leave the
-details to the discussion of the format of input files.</p>
+<p>(We might consider having a separate object type containing just the
+<code>pheno</code>, <code>phenocovar</code>, and <code>linemap</code> objects. This may simplify the
+use of multiple sets of phenotype data.)</p>
 
 <h3>Alleles (<code>&quot;alleles&quot;</code>)</h3>
 
