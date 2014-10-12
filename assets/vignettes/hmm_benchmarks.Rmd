@@ -64,7 +64,7 @@ library(microbenchmark)
 probbc <- microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
                          qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
                          times=25)
-print(probbc)
+print(probbc, unit="s")
 ```
 
 ```{r median_ratio, include=FALSE}
@@ -93,7 +93,7 @@ times.
 probf2 <- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
                          qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
                          times=10)
-print(probf2)
+print(probf2, unit="s")
 ```
 
 For the backcross, the new code takes `r median_ratio(probbc)` times
@@ -120,7 +120,7 @@ Now for the benchmarks. We'll just do 5 replicates.
 mapbc <- microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
                         qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
                         times=5)
-print(mapbc)
+print(mapbc, unit="s")
 ```
 
 Now to the intercross. Again, we'll look at just
@@ -132,7 +132,7 @@ f2_2 <- convert2cross2(f2)
 mapf2 <- microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
                         qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
                         times=5)
-print(mapf2)
+print(mapf2, unit="s")
 ```
 
 For the backcross, the new code takes `r median_ratio(mapbc)` times
@@ -163,14 +163,18 @@ to the `step` function. However, this may reduce the generality (for
 example, that we want to allow separate transition matrices for each
 possible value of `cross_info`).
 
-We could just rely on parallel processing to speed things up. And
-maybe that's the first thing to try. Other alternatives are to have
-separate implementations for different groups of crosses, or to
-identify the set of observed `cross_info` values and pre-calculate
-emission and transition probabilities for each.
+We could just rely on parallel processing to speed things up. (I've
+implemented parallel calculations at the level of chromosomes, using
+the
+[parallel](https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf)
+package, but we could make more efficient use of
+available processors by splitting things out at a lower level.) Other
+alternatives are to have separate implementations for different groups
+of crosses, or to identify the set of observed `cross_info` values and
+pre-calculate emission and transition probabilities for each.
 
 It's also possible that some basic aspects of my code could be
-improved, even keeping fixed the overall design. I'm new to C++ and
+improved, even keeping the overall design fixed. I'm new to C++ and
 not entirely sure that I'm doing things in the best way.
   
 ## Session information
