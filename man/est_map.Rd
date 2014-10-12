@@ -5,7 +5,8 @@
 \title{Estimate genetic maps}
 \usage{
 est_map(cross, error_prob = 0.0001, map_function = c("haldane", "kosambi",
-  "c-f", "morgan"), maxit = 10000, tol = 0.000001, quiet = TRUE)
+  "c-f", "morgan"), maxit = 10000, tol = 0.000001, quiet = TRUE,
+  n_cores = parallel::detectCores())
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
@@ -20,7 +21,9 @@ use to convert genetic distances to recombination fractions.}
 
 \item{tol}{Tolerance for determining convergence}
 
-\item{quiet}{If true, don't print any messages}
+\item{quiet}{If true, don't print any messages (}
+
+\item{n_cores}{Number of CPU cores to use, for parallel calculations.}
 }
 \value{
 A list of numeric vectors, with the estimated marker
@@ -37,7 +40,7 @@ but a map function (by default, Haldane's) is used to derive the genetic distanc
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-gmap <- est_map(grav2, error_prob=0.002)
+gmap <- est_map(grav2, error_prob=0.002, n_cores=1)
 }
 \keyword{utilities}
 

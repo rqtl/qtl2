@@ -11,7 +11,8 @@
 #' use to convert genetic distances to recombination fractions.
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
-#' @param quiet If true, don't print any messages
+#' @param quiet If true, don't print any messages (
+#' @param n_cores Number of CPU cores to use, for parallel calculations.
 #'
 #' @return A list of numeric vectors, with the estimated marker
 #' locations (in cM). The location of the initial marker on each
@@ -26,12 +27,13 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-#' gmap <- est_map(grav2, error_prob=0.002)
+#' gmap <- est_map(grav2, error_prob=0.002, n_cores=1)
 
 est_map <-
 function(cross, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         maxit=10000, tol=1e-6, quiet=TRUE)
+         maxit=10000, tol=1e-6, quiet=TRUE,
+         n_cores=parallel::detectCores())
 {
     map_function <- match.arg(map_function)
     if(error_prob < 0) stop("error_prob must be >= 0")
@@ -42,28 +44,46 @@ function(cross, error_prob=1e-4,
     is_female <- cross$is_female
 
     map <- vector("list", length(cross$gmap))
-    names(map) <- names(cross$gmap)
 
-    for(i in seq(along=cross$gmap)) {
-        if(!quiet) cat(paste0("Chr ", names(cross$geno)[i], ":\n"))
+    if(n_cores > 1) quiet <- TRUE
 
-        gmap <- cross$gmap[[i]]
+    by_chr_func <- function(chr) {
+        if(!quiet) cat(paste0("Chr ", names(cross$geno)[chr], ":\n"))
+
+        gmap <- cross$gmap[[chr]]
 
         # omit individuals with < 2 genotypes
-        geno <- cross$geno[[i]]
+        geno <- cross$geno[[chr]]
         ntyped <- rowSums(geno>0)
         keep <- (ntyped >= 2)
 
-        rf <- .est_map(cross$crosstype, t(cross$geno[[i]][keep,,drop=FALSE]),
-                       cross$is_x_chr[i], cross$is_female[keep], cross_info[,keep,drop=FALSE],
+        rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
+                       cross$is_x_chr[chr], cross$is_female[keep], cross_info[,keep,drop=FALSE],
                        diff(gmap) %>% mf(map_function), # positions to inter-marker rec frac
                        error_prob, maxit, tol, !quiet)
 
         loglik <- attr(rf, "loglik")
-        map[[i]] <- imf(rf, map_function) %>% c(gmap[1], .) %>% cumsum() # rec frac to positions
-        names(map[[i]]) <- names(gmap)
-        attr(map[[i]], "loglik") <- loglik
+        map <- imf(rf, map_function) %>% c(gmap[1], .) %>% cumsum() # rec frac to positions
+
+        names(map) <- names(gmap)
+        attr(map, "loglik") <- loglik
+
+        map
     }
 
+    chrs <- seq(along=map)
+    if(n_cores<=1) { # no parallel processing
+        map <- lapply(chrs, by_chr_func)
+    }
+    else if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+        cl <- makeCluster(n_cores)
+        on.exit(stopCluster(cl))
+        map <- clusterApply(cl, chrs, by_chr_func)
+    }
+    else {
+        map <- mclapply(chrs, by_chr_func, mc.cores=n_cores)
+    }
+
+    names(map) <- names(cross$gmap)
     map
 }

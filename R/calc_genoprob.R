@@ -21,6 +21,7 @@
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
+#' @param n_cores Number of CPU cores to use, for parallel calculations.
 #'
 #' @return A list of three-dimensional arrays of probabilities,
 #' individuals x positions x genotypes
@@ -53,7 +54,8 @@
 
 calc_genoprob <-
 function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map,
-         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"))
+         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
+         n_cores=1)
 {
     # check inputs
     if(class(cross) != "cross2")
@@ -76,15 +78,29 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     rf <- lapply(map, function(m) mf(diff(m), map_function))
     cross_info <- t(cross$cross_info)
 
-    for(i in seq(along=map)) {
-        probs[[i]] <- .calc_genoprob(cross$crosstype, t(cross$geno[[i]]),
-                                     cross$is_x_chr[i], cross$is_female,
-                                     cross_info, rf[[i]], attr(map[[i]], "index"),
-                                     error_prob) %>% aperm(c(2,3,1))
+    by_chr_func <- function(chr) {
+        pr <- .calc_genoprob(cross$crosstype, t(cross$geno[[chr]]),
+                             cross$is_x_chr[chr], cross$is_female,
+                             cross_info, rf[[chr]], attr(map[[chr]], "index"),
+                             error_prob) %>% aperm(c(2,3,1))
 
-        dimnames(probs[[i]]) <- list(rownames(cross$geno),
-                                     names(map[[i]]),
-                                     NULL) # FIX_ME: need genotype names in here
+        dimnames(pr) <- list(rownames(cross$geno),
+                             names(map[[chr]]),
+                             NULL) # FIX_ME: need genotype names in here
+        pr
+    }
+
+    chrs <- seq(along=map)
+    if(n_cores<=1) { # no parallel processing
+        probs <- lapply(chrs, by_chr_func)
+    }
+    else if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+        cl <- makeCluster(n_cores)
+        on.exit(stopCluster(cl))
+        probs <- clusterApply(cl, chrs, by_chr_func)
+    }
+    else {
+        probs <- mclapply(chrs, by_chr_func, mc.cores=n_cores)
     }
 
     names(probs) <- names(cross$gmap)

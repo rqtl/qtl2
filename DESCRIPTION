@@ -1,6 +1,6 @@
 Package: qtl2
-Version: 0.1-10
-Date: 2014-10-10
+Version: 0.1-11
+Date: 2014-10-11
 Title: Tools for analyzing high-dimensional QTL experiments
 Description: Reimplementation of the R/qtl package to better handle
     high-dimensional data and complex cross designs.
@@ -13,6 +13,7 @@ Imports:
     yaml,
     data.table,
     magrittr,
+    parallel,
     utils
 Suggests:
     qtl,

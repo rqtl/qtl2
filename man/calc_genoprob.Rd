@@ -6,7 +6,7 @@
 \usage{
 calc_genoprob(cross, step = 0, off_end = 0, stepwidth = c("fixed", "max"),
   pseudomarker_map, error_prob = 0.0001, map_function = c("haldane",
-  "kosambi", "c-f", "morgan"))
+  "kosambi", "c-f", "morgan"), n_cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
@@ -31,6 +31,8 @@ ignored.}
 
 \item{map_function}{Character string indicating the map function to
 use to convert genetic distances to recombination fractions.}
+
+\item{n_cores}{Number of CPU cores to use, for parallel calculations.}
 }
 \value{
 A list of three-dimensional arrays of probabilities,
