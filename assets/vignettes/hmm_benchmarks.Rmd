@@ -61,9 +61,19 @@ calculations assuming a 0.2% genotype error rate.
 
 ```{r benchmark_calcgenoprob_bc}
 library(microbenchmark)
-microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
-               qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
-               times=25)
+probbc <- microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
+                         times=25)
+print(probbc)
+```
+
+```{r median_ratio, include=FALSE}
+library(broman)
+library(magrittr)
+# get ratio of median times
+median_ratio <-
+function(mbmout,digits=1)
+  summary(mbmout)$median %>% log %>% diff %>% exp %>% myround(., digits)
 ```
 
 Let's do the same for an intercross, also including the X chromosome,
@@ -80,10 +90,15 @@ Now for the benchmarks; we'll do the calculations just 10
 times.
 
 ```{r benchmark_calcgenoprob_f2}
-microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
-               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
-               times=10)
+probf2 <- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
+                         times=10)
+print(probf2)
 ```
+
+For the backcross, the new code takes `r median_ratio(probbc)` times
+longer; for the intercross, the new code takes 
+`r median_ratio(probf2)` times longer.
 
 
 ## Genetic map estimation
@@ -102,9 +117,10 @@ bc2 <- convert2cross2(bc)
 Now for the benchmarks. We'll just do 5 replicates.
 
 ```{r benchmark_estmap_bc}
-microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
-               times=5)
+mapbc <- microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        times=5)
+print(mapbc)
 ```
 
 Now to the intercross. Again, we'll look at just
@@ -113,12 +129,50 @@ chromosomes 1 and X, and we'll perform just 5 replicates.
 ```{r benchmark_estmap_f2}
 f2 <- f2[c(1, "X"),]
 f2_2 <- convert2cross2(f2)
-microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
-               times=5)
+mapf2 <- microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        times=5)
+print(mapf2)
 ```
 
+For the backcross, the new code takes `r median_ratio(mapbc)` times
+longer; for the intercross, the new code takes 
+`r median_ratio(mapf2)` times longer.
 
+
+## Why so slow?
+
+I made a number of changes to the HMM code between
+[R/qtl](http://www.rqtl.org) and [R/qtl2](http://kbroman.org/qtl2).
+
+- Split out the forward/backward equations as separate functions (to
+  avoid code duplication and to make the code potentially clearer).
+- Calculations are by individual, with an eye towards low-level
+  parallel processing 
+- Things are a bit more general. For example, the transition
+  probabilities in the Markov chain can be completely different for
+  each individual, depending on the `cross_info` data. Also, the
+  estimation of recombination fractions is potentially cross-specific;
+  this allows us to handle RIL with the same basic code as a backcross.
+- Using R-style matrix objects (via [Rcpp](http://rcpp.org)) rather
+  than low-level C-type arrays.
+
+I had some ideas to speed things up. For example, I could
+pre-calculate the transition matrices rather than make repeated calls
+to the `step` function. However, this may reduce the generality (for
+example, that we want to allow separate transition matrices for each
+possible value of `cross_info`).
+
+We could just rely on parallel processing to speed things up. And
+maybe that's the first thing to try. Other alternatives are to have
+separate implementations for different groups of crosses, or to
+identify the set of observed `cross_info` values and pre-calculate
+emission and transition probabilities for each.
+
+It's also possible that some basic aspects of my code could be
+improved, even keeping fixed the overall design. I'm new to C++ and
+not entirely sure that I'm doing things in the best way.
+  
 ## Session information
 
 The following shows the R and package versions I was using.

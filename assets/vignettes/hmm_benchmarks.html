@@ -261,15 +261,16 @@ were simulated without genotyping errors, I&#39;m going to do the
 calculations assuming a 0.2% genotype error rate.</p>
 
 <pre><code class="r">library(microbenchmark)
-microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
-               qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
-               times=25)
+probbc &lt;- microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(bc2, step=0.5, error_prob=0.002),
+                         times=25)
+print(probbc)
 </code></pre>
 
-<pre><code>## Unit: seconds
-##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 1.219 1.240 1.259  1.249 1.285 1.329    25  a 
-##  qtl2 2.296 2.335 2.390  2.357 2.397 2.982    25   b
+<pre><code>## Unit: milliseconds
+##  expr    min     lq   mean median     uq    max neval cld
+##   qtl  775.9  796.2  812.6  807.4  833.6  863.7    25  a 
+##  qtl2 1370.9 1400.4 1436.2 1426.1 1449.0 1753.8    25   b
 </code></pre>
 
 <p>Let&#39;s do the same for an intercross, also including the X chromosome,
@@ -284,16 +285,21 @@ f2_2 &lt;- convert2cross2(f2)
 <p>Now for the benchmarks; we&#39;ll do the calculations just 10
 times.</p>
 
-<pre><code class="r">microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
-               qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
-               times=10)
+<pre><code class="r">probf2 &lt;- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
+                         times=10)
+print(probf2)
 </code></pre>
 
 <pre><code>## Unit: seconds
 ##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 2.681 2.707 2.718  2.713 2.737 2.771    10  a 
-##  qtl2 5.168 5.184 5.259  5.238 5.271 5.518    10   b
+##   qtl 1.753 1.761 1.784  1.784 1.797 1.846    10  a 
+##  qtl2 3.089 3.140 3.173  3.169 3.209 3.265    10   b
 </code></pre>
+
+<p>For the backcross, the new code takes 1.8 times
+longer; for the intercross, the new code takes 
+1.8 times longer.</p>
 
 <h2>Genetic map estimation</h2>
 
@@ -309,15 +315,16 @@ bc2 &lt;- convert2cross2(bc)
 
 <p>Now for the benchmarks. We&#39;ll just do 5 replicates.</p>
 
-<pre><code class="r">microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
-               times=5)
+<pre><code class="r">mapbc &lt;- microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        times=5)
+print(mapbc)
 </code></pre>
 
-<pre><code>## Unit: seconds
-##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 1.524 1.526 1.532  1.531 1.533 1.548     5  a 
-##  qtl2 8.764 8.928 9.101  9.204 9.289 9.318     5   b
+<pre><code>## Unit: milliseconds
+##  expr    min     lq   mean median     uq    max neval cld
+##   qtl  954.7  964.3  963.4  964.6  966.4  966.9     5  a 
+##  qtl2 5214.5 5225.5 5251.8 5232.7 5282.8 5303.4     5   b
 </code></pre>
 
 <p>Now to the intercross. Again, we&#39;ll look at just
@@ -325,16 +332,56 @@ chromosomes 1 and X, and we&#39;ll perform just 5 replicates.</p>
 
 <pre><code class="r">f2 &lt;- f2[c(1, &quot;X&quot;),]
 f2_2 &lt;- convert2cross2(f2)
-microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
-               qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
-               times=5)
+mapf2 &lt;- microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        times=5)
+print(mapf2)
 </code></pre>
 
 <pre><code>## Unit: seconds
-##  expr    min    lq   mean median     uq    max neval cld
-##   qtl  4.238  4.56  4.537  4.599  4.641  4.646     5  a 
-##  qtl2 14.872 14.90 15.198 15.035 15.589 15.595     5   b
+##  expr   min    lq  mean median    uq   max neval cld
+##   qtl 2.778 2.798 2.820  2.806 2.848 2.872     5  a 
+##  qtl2 8.976 9.097 9.162  9.201 9.239 9.299     5   b
 </code></pre>
+
+<p>For the backcross, the new code takes 5.4 times
+longer; for the intercross, the new code takes 
+3.3 times longer.</p>
+
+<h2>Why so slow?</h2>
+
+<p>I made a number of changes to the HMM code between
+<a href="http://www.rqtl.org">R/qtl</a> and <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
+
+<ul>
+<li>Split out the forward/backward equations as separate functions (to
+avoid code duplication and to make the code potentially clearer).</li>
+<li>Calculations are by individual, with an eye towards low-level
+parallel processing </li>
+<li>Things are a bit more general. For example, the transition
+probabilities in the Markov chain can be completely different for
+each individual, depending on the <code>cross_info</code> data. Also, the
+estimation of recombination fractions is potentially cross-specific;
+this allows us to handle RIL with the same basic code as a backcross.</li>
+<li>Using R-style matrix objects (via <a href="http://rcpp.org">Rcpp</a>) rather
+than low-level C-type arrays.</li>
+</ul>
+
+<p>I had some ideas to speed things up. For example, I could
+pre-calculate the transition matrices rather than make repeated calls
+to the <code>step</code> function. However, this may reduce the generality (for
+example, that we want to allow separate transition matrices for each
+possible value of <code>cross_info</code>).</p>
+
+<p>We could just rely on parallel processing to speed things up. And
+maybe that&#39;s the first thing to try. Other alternatives are to have
+separate implementations for different groups of crosses, or to
+identify the set of observed <code>cross_info</code> values and pre-calculate
+emission and transition probabilities for each.</p>
+
+<p>It&#39;s also possible that some basic aspects of my code could be
+improved, even keeping fixed the overall design. I&#39;m new to C++ and
+not entirely sure that I&#39;m doing things in the best way.</p>
 
 <h2>Session information</h2>
 
@@ -381,7 +428,7 @@ microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
 ##  plyr             1.8.1   2014-02-26 CRAN (R 3.1.0)
 ##  proto            0.3.10  2012-12-22 CRAN (R 3.1.0)
 ##  qtl            * 1.34.4  2014-10-07 local         
-##  qtl2           * 0.1.9   2014-10-10 local         
+##  qtl2           * 0.1.10  2014-10-11 local         
 ##  reshape2         1.4     2014-04-23 CRAN (R 3.1.0)
 ##  rstudioapi       0.1     2014-03-27 CRAN (R 3.1.0)
 ##  sandwich         2.3.2   2014-08-24 CRAN (R 3.1.1)
