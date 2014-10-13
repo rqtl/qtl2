@@ -17,9 +17,9 @@ public:
 
     String phase_known_type;
 
-    static QTLCross* Create(const String& type);
+    static QTLCross* Create(const String type);
 
-    virtual const bool check_geno(const int& gen, const bool& is_observed_value,
+    virtual const bool check_geno(const int gen, const bool is_observed_value,
                                   const bool& is_x_chr, const bool& is_female,
                                   const IntegerVector& cross_info)
     {
@@ -29,7 +29,7 @@ public:
         return false;
     }
 
-    virtual const double init(const int& true_gen,
+    virtual const double init(const int true_gen,
                               const bool& is_x_chr, const bool& is_female,
                               const IntegerVector& cross_info)
     {
@@ -41,7 +41,7 @@ public:
         return -log(2.0);
     }
 
-    virtual const double emit(const int& obs_gen, const int& true_gen, const double& error_prob,
+    virtual const double emit(const int obs_gen, const int true_gen, const double error_prob,
                               const bool& is_x_chr, const bool& is_female,
                               const IntegerVector& cross_info)
     {
@@ -59,7 +59,7 @@ public:
 
     }
 
-    virtual const double step(const int& gen_left, const int& gen_right, const double& rec_frac,
+    virtual const double step(const int gen_left, const int gen_right, const double rec_frac,
                               const bool& is_x_chr, const bool& is_female,
                               const IntegerVector& cross_info)
     {
@@ -87,7 +87,7 @@ public:
         return x;
     }
 
-    virtual const double nrec(const int& gen_left, const int& gen_right,
+    virtual const double nrec(const int gen_left, const int gen_right,
                               const bool& is_x_chr, const bool& is_female,
                               const IntegerVector& cross_info)
     {

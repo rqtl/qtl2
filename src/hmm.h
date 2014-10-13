@@ -45,4 +45,4 @@ NumericVector est_map(const String& crosstype,
                       const bool& verbose);
 
 // Calculate addlog(a,b) = log[exp(a) + exp(b)]
-double addlog(const double& a, const double& b);
+double addlog(const double a, const double b);

@@ -8,7 +8,7 @@
 enum gen {AA=1, AB=2, BB=3, notA=5, notB=4,
           AAX=1, ABX=2, BAX=3, BBX=4, AY=5, BY=6};
 
-const bool F2::check_geno(const int& gen, const bool& is_observed_value,
+const bool F2::check_geno(const int gen, const bool is_observed_value,
                           const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
 {
     // allow any value 0-5 for observed
@@ -31,7 +31,7 @@ const bool F2::check_geno(const int& gen, const bool& is_observed_value,
     return false; // otherwise a problem
 }
 
-const double F2::init(const int& true_gen,
+const double F2::init(const int true_gen,
                       const bool& is_x_chr, const bool& is_female,
                       const IntegerVector& cross_info)
 {
@@ -47,7 +47,7 @@ const double F2::init(const int& true_gen,
     }
 }
 
-const double F2::emit(const int& obs_gen, const int& true_gen, const double& error_prob,
+const double F2::emit(const int obs_gen, const int true_gen, const double error_prob,
                       const bool& is_x_chr, const bool& is_female,
                       const IntegerVector& cross_info)
 {
@@ -124,7 +124,7 @@ const double F2::emit(const int& obs_gen, const int& true_gen, const double& err
 }
 
 
-const double F2::step(const int& gen_left, const int& gen_right, const double& rec_frac,
+const double F2::step(const int gen_left, const int gen_right, const double rec_frac,
                       const bool& is_x_chr, const bool& is_female,
                       const IntegerVector& cross_info)
 {

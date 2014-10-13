@@ -9,7 +9,7 @@ enum gen {AA=1, AB=2, BA=3, BB=4,
           A=1, H=2, B=3, notB=4, notA=5,
           AY=5, BY=6};
 
-const bool F2PK::check_geno(const int& gen, const bool& is_observed_value,
+const bool F2PK::check_geno(const int gen, const bool is_observed_value,
                             const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
 {
     // allow any value 0-5 or observed
@@ -35,7 +35,7 @@ const bool F2PK::check_geno(const int& gen, const bool& is_observed_value,
 }
 
 
-const double F2PK::init(const int& true_gen,
+const double F2PK::init(const int true_gen,
                         const bool& is_x_chr, const bool& is_female,
                         const IntegerVector& cross_info)
 {
@@ -48,7 +48,7 @@ const double F2PK::init(const int& true_gen,
     else return log(0.25);
 }
 
-const double F2PK::emit(const int& obs_gen, const int& true_gen, const double& error_prob,
+const double F2PK::emit(const int obs_gen, const int true_gen, const double error_prob,
                         const bool& is_x_chr, const bool& is_female,
                         const IntegerVector& cross_info)
 {
@@ -126,7 +126,7 @@ const double F2PK::emit(const int& obs_gen, const int& true_gen, const double& e
 }
 
 
-const double F2PK::step(const int& gen_left, const int& gen_right, const double& rec_frac,
+const double F2PK::step(const int gen_left, const int gen_right, const double rec_frac,
                         const bool& is_x_chr, const bool& is_female,
                         const IntegerVector& cross_info)
 {
@@ -208,7 +208,7 @@ const int F2PK::ngen(const bool& is_x_chr)
     return 4;
 }
 
-const double F2PK::nrec(const int& gen_left, const int& gen_right,
+const double F2PK::nrec(const int gen_left, const int gen_right,
                         const bool& is_x_chr, const bool& is_female,
                         const IntegerVector& cross_info)
 {

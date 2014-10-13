@@ -87,14 +87,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // addlog
-double addlog(const double& a, const double& b);
+double addlog(const double a, const double b);
 RcppExport SEXP qtl2_addlog(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const double& >::type a(aSEXP );
-        Rcpp::traits::input_parameter< const double& >::type b(bSEXP );
+        Rcpp::traits::input_parameter< const double >::type a(aSEXP );
+        Rcpp::traits::input_parameter< const double >::type b(bSEXP );
         double __result = addlog(a, b);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
