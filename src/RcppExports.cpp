@@ -41,20 +41,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_genoprob
-NumericVector calc_genoprob(const String crosstype, const IntegerMatrix genotypes, const bool is_X_chr, const LogicalVector is_female, const IntegerMatrix cross_info, const NumericVector rec_frac, const IntegerVector marker_index, const double error_prob);
+NumericVector calc_genoprob(const String& crosstype, const IntegerMatrix& genotypes, const bool& is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double& error_prob);
 RcppExport SEXP qtl2_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix >::type genotypes(genotypesSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix >::type cross_info(cross_infoSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type rec_frac(rec_fracSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector >::type marker_index(marker_indexSEXP );
-        Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP );
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type marker_index(marker_indexSEXP );
+        Rcpp::traits::input_parameter< const double& >::type error_prob(error_probSEXP );
         NumericVector __result = calc_genoprob(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
@@ -63,22 +63,22 @@ BEGIN_RCPP
 END_RCPP
 }
 // est_map
-NumericVector est_map(const String crosstype, const IntegerMatrix genotypes, const bool is_X_chr, const LogicalVector is_female, const IntegerMatrix cross_info, const NumericVector rec_frac, const double error_prob, const int max_iterations, const double tol, const bool verbose);
+NumericVector est_map(const String& crosstype, const IntegerMatrix& genotypes, const bool& is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const double& error_prob, const int& max_iterations, const double& tol, const bool& verbose);
 RcppExport SEXP qtl2_est_map(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix >::type genotypes(genotypesSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix >::type cross_info(cross_infoSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type rec_frac(rec_fracSEXP );
-        Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP );
-        Rcpp::traits::input_parameter< const int >::type max_iterations(max_iterationsSEXP );
-        Rcpp::traits::input_parameter< const double >::type tol(tolSEXP );
-        Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP );
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP );
+        Rcpp::traits::input_parameter< const double& >::type error_prob(error_probSEXP );
+        Rcpp::traits::input_parameter< const int& >::type max_iterations(max_iterationsSEXP );
+        Rcpp::traits::input_parameter< const double& >::type tol(tolSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type verbose(verboseSEXP );
         NumericVector __result = est_map(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
@@ -87,14 +87,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // addlog
-double addlog(const double a, const double b);
+double addlog(const double& a, const double& b);
 RcppExport SEXP qtl2_addlog(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const double >::type a(aSEXP );
-        Rcpp::traits::input_parameter< const double >::type b(bSEXP );
+        Rcpp::traits::input_parameter< const double& >::type a(aSEXP );
+        Rcpp::traits::input_parameter< const double& >::type b(bSEXP );
         double __result = addlog(a, b);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
