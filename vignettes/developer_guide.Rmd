@@ -40,7 +40,7 @@ We are also redefining the input data file formats.
 The basic data structure in [R/qtl](http://www.rqtl.org), the
 `"cross"` class, has been redesigned.
 
-A basic principle in the design is to have the data as close as
+A basic principle in the new design is to have the data as close as
 possible in the form in which it will be used, and to have a more-flat
 (i.e., less nested) data structure. So don't entangle the marker maps
 with the genotype data, and pull out the sex information rather than
@@ -62,7 +62,10 @@ For some cross types (e.g., recombinant inbred lines), we will
 separate &ldquo;lines&rdquo; from &ldquo;individuals.&rdquo; Genotype
 data will be on the lines, while phenotype data will be on the
 individuals. In this case we will need a mapping from individuals to
-lines, `"linemap"` (more below).
+lines, `"linemap"` (more below). (For a cross type for which the
+phenotyped individuals are also the phenotyped ones (e.g., the
+Diversity Outcross), think &ldquo;individual&rdquo; wherever we write
+&ldquo;line.&rdquo;)
 
 
 ### Cross type (`"crosstype"`)
@@ -129,7 +132,7 @@ intensities). It seems best to have separate data structures for these
 cases, perhaps named `geno_gbs` and `geno_int` (`int` for
 &ldquo;intensity&rdquo;). These could be three-dimensional arrays
 (`n_lines` &times; `n_markers` &times; `2`), with the third
-dimensional corresponding to the two alleles.
+dimension corresponding to the two alleles.
 
 ### Founder genotype data (`"founder_geno"`)
 
@@ -161,7 +164,7 @@ attribute being the individual IDs.
 
 For many cross types, and particularly for the treatment of the X
 chromosome, we need line-level information about the nature of the
-cross. For an intercross, this is like the `pgm` (for paternal
+cross. For an intercross, this is like `pgm` (for paternal
 grandmother) in [R/qtl](http://www.rqtl.org). For the Collaborative
 Cross, we need the order of the founders in the set of crosses that
 led to each line. For the AIL and the Diversity Outcross, we need to
@@ -184,9 +187,10 @@ names. The markers should be in increasing order.
 ### Physical map (`"pmap"`)
 
 We will also allow (and perhaps expect) a physical map of the
-markers. This will have the same form as the genetic map, but with
+markers. This will have the same form as the genetic map (with the
+same chromosomes, the same markers, and with markers in the same order), but with
 positions in Mbp. (Or perhaps we should use vectors of integers, with
-positions in basepairs.)
+positions in basepairs?)
 
 ### Phenotype data (`"pheno"`)
 
@@ -212,7 +216,7 @@ names.
 
 We will have a separate data frame of &ldquo;phenotype
 covariates.&rdquo; These are metadata describing the phenotypes. 
-The dimension is `n_phenotypes` &times; `n_pheno_covariates`.
+The dimension is `n_phenotypes` &times; `n_phenocovar`.
 
 For example, in the case of a phenotype measured over time, one column
 in the phenotype covariate data frame could be the time of
@@ -245,7 +249,7 @@ use of multiple sets of phenotype data.)
 ### Alleles (`"alleles"`)
 
 The last bit is a vector of single-character strings, with allele
-codes for the founders, will be used in various summaries and data
+codes for the founders, to be used in various summaries and data
 visualizations.
 
 
@@ -253,7 +257,7 @@ visualizations.
 
 A critical piece of _derived data_ is the conditional QTL genotype
 probabilities, given the observed marker data. This will be a list of
-arrays; each array corresponds to a chromosome and is of dimension
+three-dimensional arrays; each array corresponds to a chromosome and is of dimension
 `n_lines` &times; `n_positions` &times; `n_genotypes`.
 
 An important consideration is the encoding of the genotypes.
