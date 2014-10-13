@@ -10,7 +10,7 @@ enum gen {AA=1, AB=2, BA=3, BB=4,
           AY=5, BY=6};
 
 const bool F2PK::check_geno(const int gen, const bool is_observed_value,
-                            const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
+                            const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     // allow any value 0-5 or observed
     if(is_observed_value) {
@@ -36,7 +36,7 @@ const bool F2PK::check_geno(const int gen, const bool is_observed_value,
 
 
 const double F2PK::init(const int true_gen,
-                        const bool& is_x_chr, const bool& is_female,
+                        const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
     #ifdef DEBUG
@@ -49,7 +49,7 @@ const double F2PK::init(const int true_gen,
 }
 
 const double F2PK::emit(const int obs_gen, const int true_gen, const double error_prob,
-                        const bool& is_x_chr, const bool& is_female,
+                        const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
 
@@ -127,7 +127,7 @@ const double F2PK::emit(const int obs_gen, const int true_gen, const double erro
 
 
 const double F2PK::step(const int gen_left, const int gen_right, const double rec_frac,
-                        const bool& is_x_chr, const bool& is_female,
+                        const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
     #ifdef DEBUG
@@ -172,7 +172,7 @@ const double F2PK::step(const int gen_left, const int gen_right, const double re
     return NA_REAL; // shouldn't get here
 }
 
-const IntegerVector F2PK::possible_gen(const bool& is_x_chr, const bool& is_female,
+const IntegerVector F2PK::possible_gen(const bool is_x_chr, const bool is_female,
                                        const IntegerVector& cross_info)
 {
     if(is_x_chr) {
@@ -202,14 +202,14 @@ const IntegerVector F2PK::possible_gen(const bool& is_x_chr, const bool& is_fema
     }
 }
 
-const int F2PK::ngen(const bool& is_x_chr)
+const int F2PK::ngen(const bool is_x_chr)
 {
     if(is_x_chr) return 6;
     return 4;
 }
 
 const double F2PK::nrec(const int gen_left, const int gen_right,
-                        const bool& is_x_chr, const bool& is_female,
+                        const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
     #ifdef DEBUG
@@ -254,7 +254,7 @@ const double F2PK::nrec(const int gen_left, const int gen_right,
     return NA_REAL; // shouldn't get here
 }
 
-const double F2PK::est_rec_frac(const NumericMatrix& gamma, const bool& is_x_chr)
+const double F2PK::est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr)
 {
     int n_gen = gamma.rows();
     int n_gen_sq = n_gen*n_gen;

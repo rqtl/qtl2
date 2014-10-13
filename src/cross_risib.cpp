@@ -8,7 +8,7 @@
 enum gen {AA=1, BB=2};
 
 const double RISIB::init(const int true_gen,
-                         const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
+                         const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -35,7 +35,7 @@ const double RISIB::init(const int true_gen,
 }
 
 const double RISIB::step(const int gen_left, const int gen_right, const double rec_frac,
-                         const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
+                         const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -87,7 +87,7 @@ const double RISIB::step(const int gen_left, const int gen_right, const double r
     return NA_REAL; // can't get here
 }
 
-const double RISIB::est_rec_frac(const NumericMatrix& gamma, const bool& is_x_chr)
+const double RISIB::est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr)
 {
     int n_gen = gamma.rows();
     int n_gen_sq = n_gen*n_gen;

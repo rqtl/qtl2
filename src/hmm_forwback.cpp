@@ -8,12 +8,12 @@
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,
                                const IntegerVector& genotypes,
-                               const bool& is_X_chr,
-                               const bool& is_female,
+                               const bool is_X_chr,
+                               const bool is_female,
                                const IntegerVector& cross_info,
                                const NumericVector& rec_frac,
                                const IntegerVector& marker_index,
-                               const double& error_prob,
+                               const double error_prob,
                                const IntegerVector& poss_gen)
 {
     int n_pos = marker_index.size();
@@ -57,12 +57,12 @@ NumericMatrix forwardEquations(QTLCross* cross,
 // backward Equations
 NumericMatrix backwardEquations(QTLCross* cross,
                                 const IntegerVector& genotypes,
-                                const bool& is_X_chr,
-                                const bool& is_female,
+                                const bool is_X_chr,
+                                const bool is_female,
                                 const IntegerVector& cross_info,
                                 const NumericVector& rec_frac,
                                 const IntegerVector& marker_index,
-                                const double& error_prob,
+                                const double error_prob,
                                 const IntegerVector& poss_gen)
 {
     int n_pos = marker_index.size();
