@@ -24,9 +24,9 @@ persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
 for [R/qtl](http://www.rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
-[Pjotr Prins](http://thebird.nl/) had another important idea, in his
-[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md), 
-that I'd like to adopt: the inclusion of metadata, such as genotype
+An another important idea is from [Pjotr Prins](http://thebird.nl/)'s
+[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md): 
+the inclusion of metadata, such as genotype
 encodings, with the primary data. This will simplify the handling of
 multiple files and will help to avoid mistakes.
 
@@ -55,7 +55,7 @@ grav2 <- read_cross2("~/my_data/grav2.yaml")
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
 all of the data files, and to read that zip file directly. There's even a
 function for creating the zip file:
 
