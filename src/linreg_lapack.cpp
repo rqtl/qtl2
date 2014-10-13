@@ -8,7 +8,7 @@ using namespace Rcpp;
 // calculate RSS for linear regression via LAPACK
 // [[Rcpp::export]]
 NumericVector calc_rss_lapack(const NumericMatrix X, const NumericMatrix Y,
-                              bool skip_dgels=false, double tol=1e-10)
+                              const bool skip_dgels=false, const double tol=1e-10)
 {
     int nrow = X.rows();
     int ncolx = X.cols(), ncoly = Y.cols();
