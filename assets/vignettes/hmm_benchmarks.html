@@ -218,12 +218,11 @@ individual, which may allow for low-level parallel processing (i.e.,
 <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a>
 for this.)</p>
 
-<p><em>However</em>, the current code is showing pretty crappy performance
-relative to <a href="http://www.rqtl.org">R/qtl</a>, and may need to be
-rethought. For example, <code>qtl2::calc_genoprob()</code> is about twice as slow
-as <code>qtl::calc.genoprob()</code>, and <code>qtl2::est_map()</code> is about six times as
-slow as <code>qtl::est.map()</code>. The present document provides detailed
-benchmarks on this point.</p>
+<p>The new code for calculating conditional genotype probabilities is
+about the same as that in <a href="http://www.rqtl.org">R/qtl</a>.  The new code
+for estimating the genetic map, on the other hand, is considerably
+slower than that in <a href="http://www.rqtl.org">R/qtl</a>. The present document
+provides detailed benchmarks on this point.</p>
 
 <h2>Genotype probabilities</h2>
 
@@ -268,9 +267,9 @@ print(probbc, unit=&quot;s&quot;)
 </code></pre>
 
 <pre><code>## Unit: seconds
-##  expr    min     lq  mean median     uq    max neval cld
-##   qtl 0.7771 0.7883 0.798 0.7938 0.8044 0.8461    25  a 
-##  qtl2 1.3808 1.4026 1.437 1.4174 1.4402 1.7564    25   b
+##  expr    min     lq   mean median     uq    max neval cld
+##   qtl 0.7894 0.7978 0.8123 0.8039 0.8280 0.8802    25   a
+##  qtl2 0.7683 0.7797 0.8011 0.7853 0.8047 1.0678    25   a
 </code></pre>
 
 <p>Let&#39;s do the same for an intercross, also including the X chromosome,
@@ -293,13 +292,9 @@ print(probf2, unit=&quot;s&quot;)
 
 <pre><code>## Unit: seconds
 ##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 1.744 1.753 1.781  1.771 1.799 1.848    10  a 
-##  qtl2 3.047 3.052 3.112  3.084 3.141 3.315    10   b
+##   qtl 1.787 1.791 1.824  1.823 1.853 1.862    10   a
+##  qtl2 1.790 1.815 1.834  1.823 1.844 1.926    10   a
 </code></pre>
-
-<p>For the backcross, the new code takes 1.8 times
-longer; for the intercross, the new code takes 
-1.7 times longer.</p>
 
 <h2>Genetic map estimation</h2>
 
@@ -322,9 +317,9 @@ print(mapbc, unit=&quot;s&quot;)
 </code></pre>
 
 <pre><code>## Unit: seconds
-##  expr    min    lq  mean median    uq   max neval cld
-##   qtl 0.9856 0.994 1.011  1.017 1.022 1.038     5  a 
-##  qtl2 5.2573 5.285 5.317  5.308 5.353 5.382     5   b
+##  expr    min     lq   mean median     uq    max neval cld
+##   qtl 0.9553 0.9647 0.9701 0.9715 0.9776 0.9813     5  a 
+##  qtl2 4.3313 4.3383 4.3756 4.3717 4.4035 4.4332     5   b
 </code></pre>
 
 <p>Now to the intercross. Again, we&#39;ll look at just
@@ -340,13 +335,13 @@ print(mapf2, unit=&quot;s&quot;)
 
 <pre><code>## Unit: seconds
 ##  expr   min    lq  mean median    uq   max neval cld
-##   qtl 2.793 2.794 2.846  2.877 2.880 2.886     5  a 
-##  qtl2 9.089 9.378 9.382  9.425 9.502 9.513     5   b
+##   qtl 2.773 2.781 2.783  2.785 2.786 2.789     5  a 
+##  qtl2 7.611 7.677 7.682  7.685 7.712 7.726     5   b
 </code></pre>
 
-<p>For the backcross, the new code takes 5.2 times
+<p>For the backcross, the new code takes 4.5 times
 longer; for the intercross, the new code takes 
-3.3 times longer.</p>
+2.8 times longer.</p>
 
 <h2>Why so slow?</h2>
 
@@ -366,12 +361,6 @@ this allows us to handle RIL with the same basic code as a backcross.</li>
 <li>Using R-style matrix objects (via <a href="http://rcpp.org">Rcpp</a>) rather
 than low-level C-type arrays.</li>
 </ul>
-
-<p>I had some ideas to speed things up. For example, I could
-pre-calculate the transition matrices rather than make repeated calls
-to the <code>step</code> function. However, this may reduce the generality (for
-example, that we want to allow separate transition matrices for each
-possible value of <code>cross_info</code>).</p>
 
 <p>We could just rely on parallel processing to speed things up. (I&#39;ve
 implemented parallel calculations at the level of chromosomes, using
@@ -432,7 +421,7 @@ not entirely sure that I&#39;m doing things in the best way.</p>
 ##  plyr             1.8.1   2014-02-26 CRAN (R 3.1.0)
 ##  proto            0.3.10  2012-12-22 CRAN (R 3.1.0)
 ##  qtl            * 1.34.4  2014-10-07 local         
-##  qtl2           * 0.1.11  2014-10-12 local         
+##  qtl2           * 0.1.12  2014-10-13 local         
 ##  reshape2         1.4     2014-04-23 CRAN (R 3.1.0)
 ##  rstudioapi       0.1     2014-03-27 CRAN (R 3.1.0)
 ##  sandwich         2.3.2   2014-08-24 CRAN (R 3.1.1)

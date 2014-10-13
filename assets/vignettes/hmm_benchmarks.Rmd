@@ -15,12 +15,11 @@ individual, which may allow for low-level parallel processing (i.e.,
 [RcppParallel](http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel)
 for this.)
 
-_However_, the current code is showing pretty crappy performance
-relative to [R/qtl](http://www.rqtl.org), and may need to be
-rethought. For example, `qtl2::calc_genoprob()` is about twice as slow
-as `qtl::calc.genoprob()`, and `qtl2::est_map()` is about six times as
-slow as `qtl::est.map()`. The present document provides detailed
-benchmarks on this point.
+The new code for calculating conditional genotype probabilities is
+about the same as that in [R/qtl](http://www.rqtl.org).  The new code
+for estimating the genetic map, on the other hand, is considerably
+slower than that in [R/qtl](http://www.rqtl.org). The present document
+provides detailed benchmarks on this point.
 
 ## Genotype probabilities
 
@@ -96,10 +95,6 @@ probf2 <- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.00
 print(probf2, unit="s")
 ```
 
-For the backcross, the new code takes `r median_ratio(probbc)` times
-longer; for the intercross, the new code takes 
-`r median_ratio(probf2)` times longer.
-
 
 ## Genetic map estimation
 
@@ -157,12 +152,6 @@ I made a number of changes to the HMM code between
 - Using R-style matrix objects (via [Rcpp](http://rcpp.org)) rather
   than low-level C-type arrays.
 
-I had some ideas to speed things up. For example, I could
-pre-calculate the transition matrices rather than make repeated calls
-to the `step` function. However, this may reduce the generality (for
-example, that we want to allow separate transition matrices for each
-possible value of `cross_info`).
-
 We could just rely on parallel processing to speed things up. (I've
 implemented parallel calculations at the level of chromosomes, using
 the
@@ -176,6 +165,7 @@ pre-calculate emission and transition probabilities for each.
 It's also possible that some basic aspects of my code could be
 improved, even keeping the overall design fixed. I'm new to C++ and
 not entirely sure that I'm doing things in the best way.
+
   
 ## Session information
 
