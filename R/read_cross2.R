@@ -346,10 +346,12 @@ function(codes)
 convert_cross_info <-
 function(cross_info_control, covar, sep, dir)
 {
-    if("covar" %in% names(cross_info_control)) { # cross_info within the covariates
-        cross_info <- covar[,cross_info_control[["covar"]], drop=FALSE]
+    if(!is.list(cross_info_control)) { # provided file name directly?
+        if(file.exists(file.path(dir, cross_info_control)))
+            cross_info_control <- list(file=cross_info_control)
     }
-    else if("file" %in% names(cross_info_control)) { # look for file
+
+    if("file" %in% names(cross_info_control)) { # look for file
         file <- file.path(dir, cross_info_control[["file"]])
         stop_if_no_file(file)
         cross_info <- data.table::fread(file,
@@ -357,6 +359,9 @@ function(cross_info_control, covar, sep, dir)
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
         return(firstcol2rownames(cross_info))
+    }
+    else if("covar" %in% names(cross_info_control)) { # cross_info within the covariates
+        cross_info <- covar[,cross_info_control[["covar"]], drop=FALSE]
     }
     else return(NULL)
 
@@ -399,15 +404,25 @@ function(linemap_control, covar, sep, dir)
 {
     if(is.null(linemap_control)) return(NULL)
 
+    if(!is.list(linemap_control)) { # provided directly
+        if(file.exists(file.path(dir, linemap_control))) # is it a file name?
+            linemap_control <- list(file=linemap_control)
+        else # assumed to be a covariate column
+            linemap_control <- list(covar=linemap_control)
+    }
+
     # see if it's a file
-    filename <- file.path(dir, linemap_control)
-    if(file.exists(filename)) {
+    if("file" %in% names(linemap_control)) {
+        filename <- file.path(dir, linemap_control[["file"]])
         linemap <- data.table::fread(filename,
                                      verbose=FALSE, showProgress=FALSE, data.table=FALSE)
         linemap <- firstcol2rownames(linemap)
     }
-    else { # treat as column name in the covariate data
+    else if("covar" %in% names(linemap_control)) { # column name in the covariate data
         linemap <- covar[,linemap_control[["covar"]], drop=FALSE]
+    }
+    else { # can't figure it out; just ignore it
+        return(NULL)
     }
 
     # convert to vector
