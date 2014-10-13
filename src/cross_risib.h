@@ -11,13 +11,13 @@ class RISIB : public QTLCross
 
     ~RISIB(){};
 
-    double init(int true_gen,
-                bool is_x_chr, bool is_female, IntegerVector cross_info);
+    const double init(const int true_gen,
+                      const bool is_x_chr, const bool is_female, const IntegerVector cross_info);
 
-    double step(int gen_left, int gen_right, double rec_frac,
-                bool is_x_chr, bool is_female, IntegerVector cross_info);
+    const double step(const int gen_left, const int gen_right, const double rec_frac,
+                      const bool is_x_chr, const bool is_female, const IntegerVector cross_info);
 
-    double est_rec_frac(NumericMatrix full_gamma, bool is_x_chr);
+    const double est_rec_frac(NumericMatrix full_gamma, const bool is_x_chr);
 };
 
 #endif // CROSS_RISIB_H

@@ -7,16 +7,16 @@
 
 // re-estimate inter-marker recombination fractions
 // [[Rcpp::export(".est_map")]]
-NumericVector est_map(String crosstype,
-                      IntegerMatrix genotypes,
-                      bool is_X_chr,
-                      LogicalVector is_female,
-                      IntegerMatrix cross_info,
-                      NumericVector rec_frac,
-                      double error_prob,
-                      int max_iterations,
-                      double tol,
-                      bool verbose)
+NumericVector est_map(const String crosstype,
+                      const IntegerMatrix genotypes,
+                      const bool is_X_chr,
+                      const LogicalVector is_female,
+                      const IntegerMatrix cross_info,
+                      const NumericVector rec_frac,
+                      const double error_prob,
+                      const int max_iterations,
+                      const double tol,
+                      const bool verbose)
 {
     int n_ind = genotypes.cols();
     int n_mar = genotypes.rows();
@@ -87,8 +87,10 @@ NumericVector est_map(String crosstype,
                 for(int il=0; il<n_poss_gen; il++) {
                     for(int ir=0; ir<n_poss_gen; ir++) {
                         gamma(il,ir) = alpha(il,pos) + beta(ir,pos+1) +
-                            cross->emit(genotypes(pos+1,ind), poss_gen[ir], error_prob, is_X_chr, is_female[ind], cross_info(_,ind)) +
-                            cross->step(poss_gen[il], poss_gen[ir], prev_rec_frac[pos], is_X_chr, is_female[ind], cross_info(_,ind));
+                            cross->emit(genotypes(pos+1,ind), poss_gen[ir], error_prob,
+                                        is_X_chr, is_female[ind], cross_info(_,ind)) +
+                            cross->step(poss_gen[il], poss_gen[ir], prev_rec_frac[pos], 
+                                        is_X_chr, is_female[ind], cross_info(_,ind));
 
                         if(sum_gamma_undef) {
                             sum_gamma_undef = false;

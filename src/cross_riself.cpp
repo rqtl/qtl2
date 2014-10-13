@@ -7,8 +7,8 @@
 
 enum gen {AA=1, BB=2};
 
-double RISELF::step(int gen_left, int gen_right, double rec_frac,
-                    bool is_x_chr, bool is_female, IntegerVector cross_info)
+const double RISELF::step(const int gen_left, const int gen_right, const double rec_frac,
+                          const bool is_x_chr, const bool is_female, const IntegerVector cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -22,7 +22,7 @@ double RISELF::step(int gen_left, int gen_right, double rec_frac,
     else return log(R);
 }
 
-double RISELF::est_rec_frac(NumericMatrix gamma, bool is_x_chr)
+const double RISELF::est_rec_frac(const NumericMatrix gamma, const bool is_x_chr)
 {
     int n_gen = gamma.rows();
     int n_gen_sq = n_gen*n_gen;

@@ -10,10 +10,10 @@ class RISELF : public QTLCross
     };
     ~RISELF(){};
 
-    double step(int gen_left, int gen_right, double rec_frac,
-                bool is_x_chr, bool is_female, IntegerVector cross_info);
+    const double step(const int gen_left, const int gen_right, const double rec_frac,
+                      const bool is_x_chr, const bool is_female, const IntegerVector cross_info);
 
-    double est_rec_frac(NumericMatrix full_gamma, bool is_x_chr);
+    const double est_rec_frac(const NumericMatrix full_gamma, const bool is_x_chr);
 };
 
 #endif // CROSS_RISELF_H
