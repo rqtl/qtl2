@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // check if a cross type is supported
 // [[Rcpp::export(".crosstype_supported")]]
-bool crosstype_supported(const String crosstype)
+bool crosstype_supported(const String& crosstype)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
     
@@ -16,11 +16,11 @@ bool crosstype_supported(const String crosstype)
 
 // count inconsistencies in marker data
 // [[Rcpp::export(".count_invalid_genotypes")]]
-IntegerVector count_invalid_genotypes(const String crosstype,
-                                      const IntegerMatrix genotypes, // columns are individuals, rows are markers
-                                      const bool is_X_chr,
-                                      const LogicalVector is_female,
-                                      const IntegerMatrix cross_info) // columns are individuals
+IntegerVector count_invalid_genotypes(const String& crosstype,
+                                      const IntegerMatrix& genotypes, // columns are individuals, rows are markers
+                                      const bool& is_X_chr,
+                                      const LogicalVector& is_female,
+                                      const IntegerMatrix& cross_info) // columns are individuals
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 

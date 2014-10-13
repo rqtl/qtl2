@@ -7,13 +7,13 @@
 using namespace Rcpp;
 
 // crosstype_supported
-bool crosstype_supported(const String crosstype);
+bool crosstype_supported(const String& crosstype);
 RcppExport SEXP qtl2_crosstype_supported(SEXP crosstypeSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
         bool __result = crosstype_supported(crosstype);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
@@ -22,17 +22,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // count_invalid_genotypes
-IntegerVector count_invalid_genotypes(const String crosstype, const IntegerMatrix genotypes, const bool is_X_chr, const LogicalVector is_female, const IntegerMatrix cross_info);
+IntegerVector count_invalid_genotypes(const String& crosstype, const IntegerMatrix& genotypes, const bool& is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info);
 RcppExport SEXP qtl2_count_invalid_genotypes(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix >::type genotypes(genotypesSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type is_X_chr(is_X_chrSEXP );
+        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
         IntegerVector __result = count_invalid_genotypes(crosstype, genotypes, is_X_chr, is_female, cross_info);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }

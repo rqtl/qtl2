@@ -7,8 +7,8 @@
 
 enum gen {AA=1, AB=2, BB=3, AY=3, BY=4};
 
-const bool BC::check_geno(const int gen, const bool is_observed_value,
-                          const bool is_x_chr, const bool is_female, const IntegerVector cross_info)
+const bool BC::check_geno(const int& gen, const bool& is_observed_value,
+                          const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
 {
     if(is_observed_value && gen==0) return true;
 
@@ -27,8 +27,8 @@ const bool BC::check_geno(const int gen, const bool is_observed_value,
     return true;
 }
 
-const double BC::init(const int true_gen,
-                      const bool is_x_chr, const bool is_female, const IntegerVector cross_info)
+const double BC::init(const int& true_gen,
+                      const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -38,8 +38,8 @@ const double BC::init(const int true_gen,
     return log(0.5);
 }
 
-const double BC::emit(const int obs_gen, const int true_gen, const double error_prob,
-                      const bool is_x_chr, const bool is_female, const IntegerVector cross_info)
+const double BC::emit(const int& obs_gen, const int& true_gen, const double& error_prob,
+                      const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -66,9 +66,9 @@ const double BC::emit(const int obs_gen, const int true_gen, const double error_
 }
 
 
-const double BC::step(const int gen_left, const int gen_right, const double rec_frac,
-                      const bool is_x_chr, const bool is_female,
-                      const IntegerVector cross_info)
+const double BC::step(const int& gen_left, const int& gen_right, const double& rec_frac,
+                      const bool& is_x_chr, const bool& is_female,
+                      const IntegerVector& cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -80,8 +80,8 @@ const double BC::step(const int gen_left, const int gen_right, const double rec_
     else return log(rec_frac);
 }
 
-const IntegerVector BC::possible_gen(const bool is_x_chr, const bool is_female,
-                                     const IntegerVector cross_info)
+const IntegerVector BC::possible_gen(const bool& is_x_chr, const bool& is_female,
+                                     const IntegerVector& cross_info)
 {
     if(!is_x_chr || (is_x_chr && is_female)) {
         int vals[] = {AA,AB};
@@ -95,15 +95,15 @@ const IntegerVector BC::possible_gen(const bool is_x_chr, const bool is_female,
     }
 }
 
-const int BC::ngen(const bool is_x_chr)
+const int BC::ngen(const bool& is_x_chr)
 {
     if(is_x_chr) return 4;
     return 2;
 }
 
 
-const double BC::nrec(const int gen_left, const int gen_right,
-                      const bool is_x_chr, const bool is_female, const IntegerVector cross_info)
+const double BC::nrec(const int& gen_left, const int& gen_right,
+                      const bool& is_x_chr, const bool& is_female, const IntegerVector& cross_info)
 {
     #ifdef DEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -115,7 +115,7 @@ const double BC::nrec(const int gen_left, const int gen_right,
     else return 1.0;
 }
 
-const double BC::est_rec_frac(const NumericMatrix gamma, const bool is_x_chr)
+const double BC::est_rec_frac(const NumericMatrix& gamma, const bool& is_x_chr)
 {
 
     int n_gen = gamma.rows();

@@ -17,11 +17,11 @@ public:
 
     String phase_known_type;
 
-    static QTLCross* Create(const String type);
+    static QTLCross* Create(const String& type);
 
-    virtual const bool check_geno(const int gen, const bool is_observed_value,
-                                  const bool is_x_chr, const bool is_female,
-                                  const IntegerVector cross_info)
+    virtual const bool check_geno(const int& gen, const bool& is_observed_value,
+                                  const bool& is_x_chr, const bool& is_female,
+                                  const IntegerVector& cross_info)
     {
         if(is_observed_value && gen==0) return true;
         if(gen==1 || gen==2) return true;
@@ -29,9 +29,9 @@ public:
         return false;
     }
 
-    virtual const double init(const int true_gen,
-                              const bool is_x_chr, const bool is_female,
-                              const IntegerVector cross_info)
+    virtual const double init(const int& true_gen,
+                              const bool& is_x_chr, const bool& is_female,
+                              const IntegerVector& cross_info)
     {
         #ifdef DEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -41,9 +41,9 @@ public:
         return -log(2.0);
     }
 
-    virtual const double emit(const int obs_gen, const int true_gen, const double error_prob,
-                              const bool is_x_chr, const bool is_female,
-                              const IntegerVector cross_info)
+    virtual const double emit(const int& obs_gen, const int& true_gen, const double& error_prob,
+                              const bool& is_x_chr, const bool& is_female,
+                              const IntegerVector& cross_info)
     {
         #ifdef DEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -59,9 +59,9 @@ public:
 
     }
 
-    virtual const double step(const int gen_left, const int gen_right, const double rec_frac,
-                              const bool is_x_chr, const bool is_female,
-                              const IntegerVector cross_info)
+    virtual const double step(const int& gen_left, const int& gen_right, const double& rec_frac,
+                              const bool& is_x_chr, const bool& is_female,
+                              const IntegerVector& cross_info)
     {
         #ifdef DEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -73,13 +73,13 @@ public:
         else return log(rec_frac);
     }
 
-    virtual const int ngen(const bool is_x_chr)
+    virtual const int ngen(const bool& is_x_chr)
     {
         return 2;
     }
 
-    virtual const IntegerVector possible_gen(const bool is_x_chr, const bool is_female,
-                                             const IntegerVector cross_info)
+    virtual const IntegerVector possible_gen(const bool& is_x_chr, const bool& is_female,
+                                             const IntegerVector& cross_info)
     {
         int ng = ngen(is_x_chr);
         IntegerVector x(ng);
@@ -87,9 +87,9 @@ public:
         return x;
     }
 
-    virtual const double nrec(const int gen_left, const int gen_right,
-                              const bool is_x_chr, const bool is_female,
-                              const IntegerVector cross_info)
+    virtual const double nrec(const int& gen_left, const int& gen_right,
+                              const bool& is_x_chr, const bool& is_female,
+                              const IntegerVector& cross_info)
     {
         #ifdef DEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -101,7 +101,7 @@ public:
         else return 1.0;
     }
 
-    virtual const double est_rec_frac(const NumericMatrix gamma, const bool is_x_chr)
+    virtual const double est_rec_frac(const NumericMatrix& gamma, const bool& is_x_chr)
     {
         int n_gen = gamma.rows();
         int n_gen_sq = n_gen*n_gen;
