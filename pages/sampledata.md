@@ -49,7 +49,7 @@ can read this file directly:
 
 ---
 
-### An intercross
+### F<sub>2</sub> intercross
 
 Data from [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
 
