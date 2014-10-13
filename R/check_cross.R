@@ -211,6 +211,13 @@ function(cross2)
         }
     }
 
+    # Markers in gmap in non-decreasing order
+    d <- vapply(gmap, function(x) min(diff(x)), 0)
+    if(any(d < 0)) {
+        result <- FALSE
+        warning("Markers not in order in gmap on chr ", paste(names(gmap)[d < 0], collapse=", "))
+    }
+
     # compare geno to is_female
     if(nrow(geno[[1]]) != length(is_female)) {
         result <- FALSE
@@ -304,7 +311,7 @@ function(cross2)
 
     # pmap
     pmap <- cross2$pmap
-    if(!is.null(pmap) && !is.null(gmap)) { # pmap is optional
+    if(!is.null(pmap)) { # pmap is optional
         if(length(gmap) != length(pmap)) {
             result <- FALSE
             warning("length(gmap) (", length(gmap), ") != length(pmap) (", length(pmap), ")")
@@ -324,6 +331,13 @@ function(cross2)
                     warning("Mismatch in marker names between gmap and pmap on chr ", names(gmap)[i])
                 }
             }
+        }
+
+        # markers in order?
+        d <- vapply(pmap, function(x) min(diff(x)), 0)
+        if(any(d < 0)) {
+            result <- FALSE
+            warning("Markers not in order in pmap on chr ", paste(names(pmap)[d < 0], collapse=", "))
         }
     }
 
