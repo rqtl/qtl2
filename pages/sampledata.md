@@ -41,7 +41,7 @@ You can load these data into R as follows:
 You can also [peruse the data at GitHub](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/grav2).
 
 The data are also available as a zip file,
-[`grav2.zip`](../assets/sampledata/grav2/grav2.zip), and `read.cross2()`
+[`grav2.zip`](../assets/sampledata/grav2/grav2.zip), and `read_cross2()`
 can read this file directly:
 
     library(qtl2)
@@ -70,7 +70,7 @@ You can load these data into R as follows:
 You can also [peruse the data at GitHub](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron).
 
 The data are also available as a zip file,
-[`iron.zip`](../assets/sampledata/iron/iron.zip), and `read.cross2()`
+[`iron.zip`](../assets/sampledata/iron/iron.zip), and `read_cross2()`
 can read this file directly:
 
     library(qtl2)
