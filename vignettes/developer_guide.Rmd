@@ -394,7 +394,7 @@ na.strings:
 ```
 
 The order of the information is not important, but the names of things
-is critical.
+are critical.
 
 `crosstype` indicates the cross type. `geno`, `pheno`, `phenocovar`,
 `covar`, and `gmap` indicate the names of the files for the different
