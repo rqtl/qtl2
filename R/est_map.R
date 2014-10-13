@@ -48,6 +48,9 @@ function(cross, error_prob=1e-4,
     if(n_cores > 1) quiet <- TRUE
 
     by_chr_func <- function(chr) {
+        # the following avoids a warning in R CMD check
+        . <- "avoid R CMD check warning"
+
         if(!quiet) cat(paste0("Chr ", names(cross$geno)[chr], ":\n"))
 
         gmap <- cross$gmap[[chr]]
@@ -87,3 +90,4 @@ function(cross, error_prob=1e-4,
     names(map) <- names(cross$gmap)
     map
 }
+
