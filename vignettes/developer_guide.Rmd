@@ -323,9 +323,9 @@ persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
 for [R/qtl](http://www.rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
-[Pjotr Prins](http://thebird.nl/) had another important idea, in his
-[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md), 
-that I'd like to adopt: the inclusion of metadata, such as genotype
+An another important idea is from [Pjotr Prins](http://thebird.nl/)'s
+[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md): 
+the inclusion of metadata, such as genotype
 encodings, with the primary data. This will simplify the handling of
 multiple files and will help to avoid mistakes.
 
@@ -343,8 +343,8 @@ simplifies the function for reading in the data. That function,
 control file.
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
-all of the data files, and read that zip file directly (with the same
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
+all of the data files, and to read that zip file directly (with the same
 function, `read_cross2()`). The function `zip_datafiles()` can be used
 to create the zip file.
 
@@ -434,7 +434,7 @@ rows.
 
 The phenotype and covariate data are as individuals &times;
 variables. The phenotype file must be _strictly numeric_, while the
-covariate file can be a mixture. The first column in each must be the
+covariate file can be a mixture of types. The first column in each must be the
 individual IDs.
 
 The phenotype covariate information is a matrix of phenotypes
@@ -473,6 +473,11 @@ For more detail, see
 
 
 ## Parallel processing
+
+
+## Documentation with [Roxygen2](https://github.com/klutometis/roxygen)
+
+## Tests with [testthat](https://github.com/hadley/testthat)
 
 
 <!-- the following to make it look nicer -->
