@@ -279,6 +279,8 @@ function(map)
 convert_sex <-
 function(sex_control, covar, sep, dir)
 {
+    if(is.null(sex_control)) return(NULL)
+
     if("covar" %in% names(sex_control)) { # sex within the covariates
         sex <- covar[,sex_control[["covar"]], drop=FALSE]
     }
@@ -346,6 +348,8 @@ function(codes)
 convert_cross_info <-
 function(cross_info_control, covar, sep, dir)
 {
+    if(is.null(cross_info_control)) return(NULL)
+
     if(!is.list(cross_info_control)) { # provided file name directly?
         if(file.exists(file.path(dir, cross_info_control)))
             cross_info_control <- list(file=cross_info_control)
