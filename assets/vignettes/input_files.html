@@ -228,7 +228,7 @@ for <a href="http://www.rqtl.org">R/qtl</a>, with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.</p>
 
 <p>An another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>&#39;s
-<a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: 
+<a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>:
 the inclusion of metadata, such as genotype
 encodings, with the primary data. This will simplify the handling of
 multiple files and will help to avoid mistakes.</p>
@@ -286,26 +286,396 @@ file.</p>
 
 <h2>Format of the data files</h2>
 
+<p>The bulk of the data is in a set of comma-delimited (CSV) files. In
+addition, a control file (in <a href="http://www.yaml.org">YAML</a> format),
+contained in the same directory as the CSV files,
+specifies the file names and other control parameters (such as
+genotype and sex encodings). Sample data files are available at
+<a href="http://kbroman.org/qtl2/pages/sampledata.html">the R/qtl2 website</a>.
+We&#39;ll discuss the CSV files first.</p>
+
+<h3>CSV files</h3>
+
+<p>The bulk of the data are in a series of comma-delimited (CSV)
+files. Each is in the form of a simple matrix, and for most the first
+column is a set of IDs and the first row is a set of variable names.</p>
+
+<p>Missing value codes will be specified in the YAML control file (as
+<code>na.strings</code>) and will apply across all files, so the missing value
+code for one file cannot be an allowed value in another file.</p>
+
+<h4>Genotype and founder genotype data</h4>
+
+<p>The genotype data file is a matrix of lines &times; markers. The first
+column is the line IDs; the first row is the marker names. The founder
+genotypes (if needed) are in the same form, with founder lines as rows
+and markers as columns, and with founder IDs in the first column.</p>
+
+<h4>Phenotype and covariate data</h4>
+
+<p>We split the numeric phenotypes from the mixed-mode covariates, as two
+separate CSV files. Each file forms a matrix of individuals &times;
+phenotypes (or covariates), with the first column being individual IDs
+and the first row being phenotype or covariate names. Sex and line IDs
+(if needed) will generally be columns in the covariate data.</p>
+
+<h4>Phenotype covariates</h4>
+
+<p>A separate CSV file contains phenotype covariate data, as phenotypes
+&times; phenotype covariates. The first column
+contains phenotype names, and the first row contains the names of the
+phenotype covariates.</p>
+
+<h4>Genetic and physical maps</h4>
+
+<p>Genetic and physical maps of the genotyped markers will be as separate
+CSV files, each with three columns: marker, chromosome, and
+position. The first row should be <code>marker,chr,pos</code> but will be
+ignored. In the genetic map file, positions should be in centiMorgans
+(cM). In the physical map file, positions should be in megabasepairs
+(Mbp).</p>
+
+<h4>Cross information</h4>
+
+<p>The <code>&quot;cross_info&quot;</code> data specifies details of the cross that generated
+each line (or individual) and is a numeric matrix with lines as rows
+(the same number of rows as in the genotype data) and with columns
+depending on the cross type.</p>
+
+<p>For simple cross types (e.g., <code>&quot;f2&quot;</code>, an intercross between two inbred
+lines), this cross information may be included as a column in the
+covariate data. More generally, the cross information will be a
+separate CSV file. For example, for a set of Collaborative Cross (CC)
+lines, we will want a matrix with eight columns, which indicate the
+order of the founders in the crosses that generated each CC line.</p>
+
+<p>So, in general, the cross information will be in a CSV file lines as
+rows and a set of columns that define the cross information for that
+cross type. The first column contains line IDs and the first row
+contains column names. Details on the column information are provided
+in the cross-type-specific information, below.</p>
+
 <h3>YAML control file</h3>
 
-<p>(Mention here the use of <code>write_control_file()</code> for creating these
-YAML files.)</p>
+<p>The new input file format includes a text-based control file (in
+<a href="http://www.yaml.org">YAML</a> format) to specify the names of all of the other
+files as well as various control parameters such as genotype and sex
+encodings and codes for missing values. We use
+<a href="http://www.yaml.org">YAML</a> because it is flexible, human-readable,
+and easy to import into R.</p>
 
-<h3>Genotype data</h3>
+<p>The format of the control file is a bit technical. We
+describe the details here and also provide a function
+<code>write_control_file()</code> that takes the detailed specifications as input
+and contructs the control file in the correct format.</p>
 
-<h3>Founder genotype data</h3>
+<p>We&#39;ll start with an example: the control file for the
+<a href="http://kbroman.org/qtl2/pages/sampledata">sample intercross data</a>.</p>
 
-<h3>Phenotype data</h3>
+<pre><code># Data from Grant et al. (2006) Hepatology 44:174-185
+# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
+crosstype: f2
+geno: iron_geno.csv
+pheno: iron_pheno.csv
+phenocovar: iron_phenocovar.csv
+covar: iron_covar.csv
+gmap: iron_gmap.csv
+alleles:
+- S
+- B
+genotypes:
+  SS: 1
+  SB: 2
+  BB: 3
+sex:
+  covar: sex
+  f: female
+  m: male
+cross_info:
+  covar: cross_direction
+  (SxB)x(SxB): 0
+  (BxS)x(BxS): 1
+x_chr: X
+na.strings:
+- &#39;-&#39;
+- NA
+</code></pre>
 
-<h3>Covariate data</h3>
+<p>Any line that begins with a <code>#</code> is treated as a comment and
+ignored. It&#39;s good to include some comments at the top describing the
+dataset.</p>
 
-<h3>Phenotype covariates</h3>
+<p>The order of things within the file is not important, but the names
+of things are critical.</p>
 
-<h3>Genetic map</h3>
+<p>Much of the information is represented as key-value pairs, as <code>key:
+value</code>.  For example, the cross type is indicated with a line like</p>
 
-<h3>Physical map</h3>
+<pre><code>crosstype: f2
+</code></pre>
 
-<h3>Cross_info file</h3>
+<h3>File names</h3>
+
+<p>The names of the basic CSV files are indicated with lines like</p>
+
+<pre><code>geno: iron_geno.csv
+</code></pre>
+
+<p>This indicates that the genotype data are in the file <code>iron_geno.csv</code>.
+The files are expected to be in the same directory as the YAML control
+file. They could be placed in a separate directory, with the file name
+being the path relative to the location of the control file, but this
+is not recommended (or well tested).</p>
+
+<p>The <em>keys</em> for the different files are the following:</p>
+
+<pre><code>geno:         genotype_filename
+founder_geno: founder_genotype_filename
+pheno:        phenotype_filename
+covar:        covariate_filename
+phenocovar:   phenotype_covariate_filename
+gmap:         genetic_map_filename
+pmap:         physical_map_filename
+</code></pre>
+
+<p>Most of these files are optional; if a particular file is not used,
+the corresponding key can be omitted from the YAML control file.</p>
+
+<h3>X chromosome</h3>
+
+<p>If one of the chromosomes is to be treated as the X chromosome, there
+should be a line like</p>
+
+<pre><code>x_chr: X
+</code></pre>
+
+<p>This specifies the chromosome ID for the X chromosome (<code>X</code> in this case).</p>
+
+<h3>Allele labels</h3>
+
+<p>To add labels in summary tables and plots, provide a vector of
+single-character allele labels, with one for each founder line.
+For example,</p>
+
+<pre><code>alleles:
+- S
+- B
+</code></pre>
+
+<p>This list of items, each beginning with a hyphen and a space, is the
+YAML format for a vector. It is equivalent to the R code <code>c(&quot;S&quot;, &quot;B&quot;)</code>.</p>
+
+<p>You could also write this line as</p>
+
+<pre><code>alleles: [S, B]
+</code></pre>
+
+<p>which is an alternative format for vectors in YAML.</p>
+
+<h3>Genotype codes</h3>
+
+<p>The control file should contain a record with <code>genotypes:</code> that specifies
+the genotype encodings. Here&#39;s an example:</p>
+
+<pre><code>genotypes:
+  SS: 1
+  SB: 2
+  BB: 3
+</code></pre>
+
+<p>For each possible genotype code, indent and provide a <code>key: value</code>
+pair, with the key being the code used in the genotype and founder
+genotype files, and the value being an integer to which the genotype
+should be converted.</p>
+
+<p>The above example would be suitable for a backcross or intercross. For
+a backcross, the second homozygote (<code>BB</code> in this case) is only needed
+in the case that there are X chromosome genotypes for males.</p>
+
+<p>For RIL, we would use something like</p>
+
+<pre><code>genotypes:
+  BB: 1
+  DD: 2
+</code></pre>
+
+<p>For crosses with multiple parents, the genotype file should contain
+genotype calls for a set of SNPs, and there should be a corresponding
+founder genotype file with genotypes of the founders at those SNPs.
+A common set of genotype codes needs to be used for all SNPs.
+In particular, the genotypes <strong>cannot</strong> be encoded as <code>AA</code>, <code>CC</code>,
+<code>GG</code>, <code>TT</code>, <code>AC</code>, <code>AG</code>, because then, e.g., <code>CC</code> would need to be
+treated as <code>1</code> for some SNPs and <code>3</code> for others. Instead, code the
+genotypes with something like <code>AA</code>, <code>AB</code>, <code>BB</code>, and then include the
+following in the control file:</p>
+
+<pre><code>genotypes:
+  AA: 1
+  AB: 2
+  BB: 3
+</code></pre>
+
+<h3>Sex</h3>
+
+<p>Sex can be provided as a column in the covariate file or as a separate
+file.</p>
+
+<p>If it is a column in the covariate file, the control file should have
+a section that looks like this:</p>
+
+<pre><code>sex:
+  covar: sex
+  f: female
+  m: male
+</code></pre>
+
+<p>Here, <code>covar: sex</code> indicates that the column name used in the
+covariate file is <code>sex</code>. If the column name were <code>Sex</code>, you would
+write <code>covar: Sex</code>.</p>
+
+<p>The following two <code>key: value</code> pairs indicate the encodings used for
+sex, with the keys being the values used in the covariate file and the
+values being <code>female</code> and <code>male</code>. So this indicates that sex was
+encoded as <code>f</code> for females and <code>m</code> for males. If, instead, the sex
+covariate had <code>0</code> for females and <code>1</code> for males, you&#39;d use:</p>
+
+<pre><code>sex:
+  covar: sex
+  0: female
+  1: male
+</code></pre>
+
+<p>Sex information can also be provided as a separate file. In this case,
+the file should have two columns: individual ID, and sex. Further, the
+part of the control file dealing with sex should look like this:</p>
+
+<pre><code>sex:
+  file: sex_filename
+  f: female
+  m: male
+</code></pre>
+
+<p>So instead of a line with <code>covar:</code>, use <code>file:</code> followed by the name
+of the file (e.g., <code>file: sex.csv</code>). You must still provide the sex
+encodings, just as before.</p>
+
+<h3>Cross information</h3>
+
+<p>For simple crosses (e.g., an intercross), cross information can be a
+single column within the covariate file. In this case, include
+something like the following in the control file:</p>
+
+<pre><code>cross_info:
+  covar: cross_direction
+  (SxB)x(SxB): 0
+  (BxS)x(BxS): 1
+</code></pre>
+
+<p>This is much like the information for sex: the <code>covar:</code> line
+indicates the name of the column in the covariate data that
+corresponds to the cross information. The following two lines indicate
+the encodings of the cross information as <code>key: value</code> where <code>key</code> is
+the code used in the cross information column and <code>value</code> is the
+integer to which it should be converted.</p>
+
+<p>More generally, the cross information would contained in a separate
+comma-delimited file.</p>
+
+<p>For simple crosses, in which the cross information is a single column,
+we allow it to be encoded differently from what&#39;s needed, and the
+control file information should look like this:</p>
+
+<pre><code>cross_info:
+  file: crossinfo_filename
+  (SxB)x(SxB): 0
+  (BxS)x(BxS): 1
+</code></pre>
+
+<p>For more complex crosses (e.g., the Collaborative Cross), the cross
+information spans multiple columns and we require that the user have
+set this up in advance (no translation of encodings will be
+performed). In this case the relevant section of the control file
+looks like this:</p>
+
+<pre><code>cross_info:
+  file: crossinfo_filename
+</code></pre>
+
+<p>Or, more simply, you could write:</p>
+
+<pre><code>cross_info: crossinfo_filename
+</code></pre>
+
+<h3>Individual-to-line mapping (<code>&quot;linemap&quot;</code>)</h3>
+
+<p>For crosses with multiple phenotyped individuals for each genotyped
+line, we need a mapping of individuals to lines, (<code>&quot;linemap&quot;</code>). This
+can be a single column in the covariate file, or it can be a separate
+file.</p>
+
+<p>If the individual-to-line mapping is provided as a column in the
+covariate data, the control file information should look like this:</p>
+
+<pre><code>linemap:
+  covar: linemap_column_name
+</code></pre>
+
+<p>Or, more simply, write:</p>
+
+<pre><code>linemap: linemap_column_name
+</code></pre>
+
+<p>If, instead, the mapping is provided as a separate file, write:</p>
+
+<pre><code>linemap:
+  file: linemap_filename
+</code></pre>
+
+<p>Or, more simply, write:</p>
+
+<pre><code>linemap: linemap_filename
+</code></pre>
+
+<p>If a construction like <code>linemap: value</code> is used, we look to see if
+<code>value</code> corresponds to the name of a file; otherwise, we treat it as a
+column name in the covariate data. But the use of <code>covar:</code> or <code>file:</code>
+is more explicit and so may be preferred.</p>
+
+<h3>Missing value codes</h3>
+
+<p>To indicate the set of codes that are to be treated as missing values
+in the genotype, founder genotype, phenotype, covariate, and phenotype
+covariate files, define <code>na.strings</code> within the control file:</p>
+
+<pre><code>na.strings:
+- NA
+- &#39;-&#39;
+</code></pre>
+
+<p>A hyphen needs to be surrounded in single- or double-quotes. Many
+other character strings (such as <code>NA</code>) do not. This is a similar
+contruction as for the allele codes above; the list with hyphens
+followed a space is the YAML format for a vector. You could also
+write:</p>
+
+<pre><code>na.strings: [NA, &#39;-&#39;]
+</code></pre>
+
+<p>which is another way to define a vector with YAML.</p>
+
+<h3>Field separator</h3>
+
+<p>If the data files use a separator other than a comma (e.g., a
+semi-colon, or I like the vertical bar (<code>|</code>) because it is seldom
+present in data), indicate the separator within the control file, as
+follows:</p>
+
+<pre><code>sep: &#39;|&#39;
+</code></pre>
+
+<p>A vertical bar needs to be surrounded by single- or double-quotes. A
+semicolon doesn&#39;t, but it doesn&#39;t hurt of you do.</p>
 
 <h2>Detailed specifications for each cross type</h2>
 
