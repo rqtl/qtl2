@@ -16,5 +16,5 @@ void permute_ivector_inplace(IntegerVector x);
 IntegerVector get_permutation(const int n);
 
 // get a set of permutations of a vector, as columns of a matrix
-NumericMatrix permute_nvector(const int n, NumericVector x);
-IntegerMatrix permute_ivector(const int n, IntegerVector x);
+NumericMatrix permute_nvector(const int n, const NumericVector x);
+IntegerMatrix permute_ivector(const int n, const IntegerVector x);

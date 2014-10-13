@@ -15,7 +15,7 @@ IntegerVector random_int(const int n, const int low, const int high)
 {
     IntegerVector result(n);
 
-    for(int i=0; i<n; i++)
+    for(unsigned int i=0; i<n; i++)
         result[i] = random_int(low, high);
     
     return result;
@@ -24,11 +24,11 @@ IntegerVector random_int(const int n, const int low, const int high)
 // permute a vector of numbers
 NumericVector permute_nvector(const NumericVector x)
 {
-    int n = x.size();
+    unsigned int n = x.size();
 
     NumericVector result(clone(x));
 
-    for(int i=n-1; i>0; i--)
+    for(unsigned int i=n-1; i>0; i--)
         std::swap(result[i], result[random_int(0, i)]);
 
     return result;
@@ -37,11 +37,11 @@ NumericVector permute_nvector(const NumericVector x)
 // permute a vector of integers
 IntegerVector permute_ivector(const IntegerVector x)
 {
-    int n = x.size();
+    unsigned int n = x.size();
 
     IntegerVector result(clone(x));
 
-    for(int i=n-1; i>0; i--)
+    for(unsigned int i=n-1; i>0; i--)
         std::swap(result[i], result[random_int(0, i)]);
 
     return result;
@@ -50,18 +50,18 @@ IntegerVector permute_ivector(const IntegerVector x)
 // permute a vector of numbers in place
 void permute_nvector_inplace(NumericVector x)
 {
-    int n = x.size();
+    unsigned int n = x.size();
 
-    for(int i=n-1; i>0; i--)
+    for(unsigned int i=n-1; i>0; i--)
         std::swap(x[i], x[random_int(0, i)]);
 }
 
 // permute a vector of integers in place
 void permute_ivector_inplace(IntegerVector x)
 {
-    int n = x.size();
+    unsigned int n = x.size();
 
-    for(int i=n-1; i>0; i--)
+    for(unsigned int i=n-1; i>0; i--)
         std::swap(x[i], x[random_int(0, i)]);
 }
 
@@ -71,7 +71,7 @@ IntegerVector get_permutation(const int n)
 {
     IntegerVector result(n);
 
-    for(int i=0; i<n; i++) result[i] = i;
+    for(unsigned int i=0; i<n; i++) result[i] = i;
 
     permute_ivector_inplace(result);
     
@@ -82,11 +82,11 @@ IntegerVector get_permutation(const int n)
 // [[Rcpp::export]]
 NumericMatrix permute_nvector(const int n, const NumericVector x)
 {
-    int length = x.size();
+    unsigned int length = x.size();
 
     NumericMatrix result(length,n);
 
-    for(int i=0; i<n; i++) {
+    for(unsigned int i=0; i<n; i++) {
         NumericVector permx = permute_nvector(x);
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }
@@ -98,11 +98,11 @@ NumericMatrix permute_nvector(const int n, const NumericVector x)
 // [[Rcpp::export]]
 IntegerMatrix permute_ivector(const int n, const IntegerVector x)
 {
-    int length = x.size();
+    unsigned int length = x.size();
 
     IntegerMatrix result(length,n);
 
-    for(int i=0; i<n; i++) {
+    for(unsigned int i=0; i<n; i++) {
         IntegerVector permx = permute_ivector(x);
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }
