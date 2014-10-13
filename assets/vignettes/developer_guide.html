@@ -210,7 +210,7 @@ was measured).</p>
 <p>The basic data structure in <a href="http://www.rqtl.org">R/qtl</a>, the
 <code>&quot;cross&quot;</code> class, has been redesigned.</p>
 
-<p>A basic principle in the design is to have the data as close as
+<p>A basic principle in the new design is to have the data as close as
 possible in the form in which it will be used, and to have a more-flat
 (i.e., less nested) data structure. So don&#39;t entangle the marker maps
 with the genotype data, and pull out the sex information rather than
@@ -232,7 +232,10 @@ the components are what matter.</p>
 separate &ldquo;lines&rdquo; from &ldquo;individuals.&rdquo; Genotype
 data will be on the lines, while phenotype data will be on the
 individuals. In this case we will need a mapping from individuals to
-lines, <code>&quot;linemap&quot;</code> (more below).</p>
+lines, <code>&quot;linemap&quot;</code> (more below). (For a cross type for which the
+phenotyped individuals are also the phenotyped ones (e.g., the
+Diversity Outcross), think &ldquo;individual&rdquo; wherever we write
+&ldquo;line.&rdquo;)</p>
 
 <h3>Cross type (<code>&quot;crosstype&quot;</code>)</h3>
 
@@ -301,7 +304,7 @@ intensities). It seems best to have separate data structures for these
 cases, perhaps named <code>geno_gbs</code> and <code>geno_int</code> (<code>int</code> for
 &ldquo;intensity&rdquo;). These could be three-dimensional arrays
 (<code>n_lines</code> &times; <code>n_markers</code> &times; <code>2</code>), with the third
-dimensional corresponding to the two alleles.</p>
+dimension corresponding to the two alleles.</p>
 
 <h3>Founder genotype data (<code>&quot;founder_geno&quot;</code>)</h3>
 
@@ -333,7 +336,7 @@ attribute being the individual IDs.</p>
 
 <p>For many cross types, and particularly for the treatment of the X
 chromosome, we need line-level information about the nature of the
-cross. For an intercross, this is like the <code>pgm</code> (for paternal
+cross. For an intercross, this is like <code>pgm</code> (for paternal
 grandmother) in <a href="http://www.rqtl.org">R/qtl</a>. For the Collaborative
 Cross, we need the order of the founders in the set of crosses that
 led to each line. For the AIL and the Diversity Outcross, we need to
@@ -356,9 +359,10 @@ names. The markers should be in increasing order.</p>
 <h3>Physical map (<code>&quot;pmap&quot;</code>)</h3>
 
 <p>We will also allow (and perhaps expect) a physical map of the
-markers. This will have the same form as the genetic map, but with
+markers. This will have the same form as the genetic map (with the
+same chromosomes, the same markers, and with markers in the same order), but with
 positions in Mbp. (Or perhaps we should use vectors of integers, with
-positions in basepairs.)</p>
+positions in basepairs?)</p>
 
 <h3>Phenotype data (<code>&quot;pheno&quot;</code>)</h3>
 
@@ -384,7 +388,7 @@ names.</p>
 
 <p>We will have a separate data frame of &ldquo;phenotype
 covariates.&rdquo; These are metadata describing the phenotypes. 
-The dimension is <code>n_phenotypes</code> &times; <code>n_pheno_covariates</code>.</p>
+The dimension is <code>n_phenotypes</code> &times; <code>n_phenocovar</code>.</p>
 
 <p>For example, in the case of a phenotype measured over time, one column
 in the phenotype covariate data frame could be the time of
@@ -416,14 +420,14 @@ use of multiple sets of phenotype data.)</p>
 <h3>Alleles (<code>&quot;alleles&quot;</code>)</h3>
 
 <p>The last bit is a vector of single-character strings, with allele
-codes for the founders, will be used in various summaries and data
+codes for the founders, to be used in various summaries and data
 visualizations.</p>
 
 <h3>Genotype probabilities (<code>&quot;genoprob&quot;</code>)</h3>
 
 <p>A critical piece of <em>derived data</em> is the conditional QTL genotype
 probabilities, given the observed marker data. This will be a list of
-arrays; each array corresponds to a chromosome and is of dimension
+three-dimensional arrays; each array corresponds to a chromosome and is of dimension
 <code>n_lines</code> &times; <code>n_positions</code> &times; <code>n_genotypes</code>.</p>
 
 <p>An important consideration is the encoding of the genotypes.
@@ -482,9 +486,9 @@ persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>&#39;s idea of a
 for <a href="http://www.rqtl.org">R/qtl</a>, with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.</p>
 
-<p><a href="http://thebird.nl/">Pjotr Prins</a> had another important idea, in his
-<a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>, 
-that I&#39;d like to adopt: the inclusion of metadata, such as genotype
+<p>An another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>&#39;s
+<a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: 
+the inclusion of metadata, such as genotype
 encodings, with the primary data. This will simplify the handling of
 multiple files and will help to avoid mistakes.</p>
 
@@ -502,8 +506,8 @@ simplifies the function for reading in the data. That function,
 control file.
 The large number of files is a bit cumbersome, so we&#39;ve made it
 possible to use a
-<a href="http://en.wikipedia.org/wiki/Zip_(file_format">zip file</a>) containing
-all of the data files, and read that zip file directly (with the same
+<a href="http://en.wikipedia.org/wiki/Zip_(file_format">zip file</a> containing
+all of the data files, and to read that zip file directly (with the same
 function, <code>read_cross2()</code>). The function <code>zip_datafiles()</code> can be used
 to create the zip file.</p>
 
@@ -591,7 +595,7 @@ rows.</p>
 
 <p>The phenotype and covariate data are as individuals &times;
 variables. The phenotype file must be <em>strictly numeric</em>, while the
-covariate file can be a mixture. The first column in each must be the
+covariate file can be a mixture of types. The first column in each must be the
 individual IDs.</p>
 
 <p>The phenotype covariate information is a matrix of phenotypes
@@ -628,6 +632,10 @@ cross type; weaknesses in the design</li>
 <h2>Linear mixed model details</h2>
 
 <h2>Parallel processing</h2>
+
+<h2>Documentation with <a href="https://github.com/klutometis/roxygen">Roxygen2</a></h2>
+
+<h2>Tests with <a href="https://github.com/hadley/testthat">testthat</a></h2>
 
 <!-- the following to make it look nicer -->
 
