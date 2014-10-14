@@ -24,7 +24,7 @@ persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
 for [R/qtl](http://www.rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
-An another important idea is from [Pjotr Prins](http://thebird.nl/)'s
+Another important idea is from [Pjotr Prins](http://thebird.nl/)'s
 [qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md):
 the inclusion of metadata, such as genotype
 encodings, with the primary data. This will simplify the handling of
