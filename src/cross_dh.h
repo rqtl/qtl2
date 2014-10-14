@@ -5,8 +5,8 @@ class DH : public QTLCross
 {
  public:
     DH(){
-        type = "dh";
-        phase_known_type = "dh";
+        crosstype = "dh";
+        phase_known_crosstype = "dh";
     };
 
     ~DH(){};

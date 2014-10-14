@@ -13,11 +13,11 @@ class QTLCross
 {
 
 public:
-    String type;
+    String crosstype;
 
-    String phase_known_type;
+    String phase_known_crosstype;
 
-    static QTLCross* Create(const String type);
+    static QTLCross* Create(const String crosstype);
 
     virtual const bool check_geno(const int gen, const bool is_observed_value,
                                   const bool is_x_chr, const bool is_female,

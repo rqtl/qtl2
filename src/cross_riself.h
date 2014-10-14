@@ -5,8 +5,8 @@ class RISELF : public QTLCross
 {
  public:
     RISELF(){
-        type = "riself";
-        phase_known_type = "riself";
+        crosstype = "riself";
+        phase_known_crosstype = "riself";
     };
     ~RISELF(){};
 

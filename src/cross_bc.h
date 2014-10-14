@@ -5,8 +5,8 @@ class BC : public QTLCross
 {
  public:
     BC(){
-        type = "bc";
-        phase_known_type = "bc";
+        crosstype = "bc";
+        phase_known_crosstype = "bc";
     };
     ~BC(){};
 

@@ -18,15 +18,15 @@
 #include "cross_dh.h"
 #include "cross_haploid.h"
 
-QTLCross* QTLCross::Create(const String type)
+QTLCross* QTLCross::Create(const String crosstype)
 {
-    if(type=="bc") return new BC();
-    if(type=="f2") return new F2();
-    if(type=="f2pk") return new F2PK();
-    if(type=="risib") return new RISIB();
-    if(type=="riself") return new RISELF();
-    if(type=="dh") return new DH();
-    if(type=="haploid") return new HAPLOID();
+    if(crosstype=="bc")      return new BC();
+    if(crosstype=="f2")      return new F2();
+    if(crosstype=="f2pk")    return new F2PK();
+    if(crosstype=="risib")   return new RISIB();
+    if(crosstype=="riself")  return new RISELF();
+    if(crosstype=="dh")      return new DH();
+    if(crosstype=="haploid") return new HAPLOID();
 
     throw std::range_error("cross type not yet supported."); 
     return NULL;

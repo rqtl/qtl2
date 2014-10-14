@@ -5,8 +5,8 @@ class F2 : public QTLCross
 {
  public:
     F2(){
-        type = "f2";
-        phase_known_type = "f2pk";
+        crosstype = "f2";
+        phase_known_crosstype = "f2pk";
     };
     ~F2(){};
 

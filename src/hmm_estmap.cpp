@@ -45,8 +45,8 @@ NumericVector est_map(const String& crosstype,
     // end of checks
 
     QTLCross* cross = QTLCross::Create(crosstype);
-    if(cross->type != cross->phase_known_type) // get phase-known version of cross
-        cross = QTLCross::Create(cross->phase_known_type);
+    if(cross->crosstype != cross->phase_known_crosstype) // get phase-known version of cross
+        cross = QTLCross::Create(cross->phase_known_crosstype);
     
     NumericVector cur_rec_frac(n_rf);
     NumericVector prev_rec_frac(clone(rec_frac));

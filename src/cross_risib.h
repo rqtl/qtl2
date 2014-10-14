@@ -5,8 +5,8 @@ class RISIB : public QTLCross
 {
  public:
     RISIB(){
-        type = "risib";
-        phase_known_type = "risib";
+        crosstype = "risib";
+        phase_known_crosstype = "risib";
     };
 
     ~RISIB(){};

@@ -5,8 +5,8 @@ class HAPLOID : public QTLCross
 {
  public:
     HAPLOID(){
-        type = "haploid";
-        phase_known_type = "haploid";
+        crosstype = "haploid";
+        phase_known_crosstype = "haploid";
     };
 
     ~HAPLOID(){};
