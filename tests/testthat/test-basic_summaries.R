@@ -108,4 +108,3 @@ test_that("basic summaries give correct numbers for grav2 data", {
     z <- summary(grav2)
 
 })
-

@@ -141,4 +141,3 @@ test_that("est_map for haploids matches R/qtl", {
                  lapply(newmap2, attr, "loglik"))
 
 })
-

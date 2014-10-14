@@ -143,4 +143,3 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
     expect_equal(names(map), names(combined_map))
 
 })
-

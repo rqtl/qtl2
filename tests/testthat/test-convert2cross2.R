@@ -118,4 +118,3 @@ test_that("convert2cross2 works appropriately for fake.f2 data", {
     expect_equal(fake.f2.2$covar, covar)
 
 })
-

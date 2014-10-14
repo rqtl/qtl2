@@ -241,5 +241,3 @@ test_that("haploids calc_genoprob matches R/qtl", {
     expect_equivalent(pr, pr2)
 
 })
-
-
