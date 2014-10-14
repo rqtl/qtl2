@@ -257,7 +257,7 @@ non-numeric covariates.</li>
 <li>We define a table of &ldquo;phenotype covariates.&rdquo; These are
 <a href="http://en.wikipedia.org/wiki/Metadata">metadata</a> describing the
 phenotypes. For example, in the case of a phenotype measured over
-time, one column in the phenotype covariate data frame could be the
+time, one column in the phenotype covariate data could be the
 time of measurement. For gene expression data, we would have columns
 representing chromosome and physical position of genes, as well as
 gene IDs.</li>
@@ -283,14 +283,14 @@ grav2 &lt;- read_cross2(&quot;~/my_data/grav2.yaml&quot;)
 
 <p>The large number of files is a bit cumbersome, so we&#39;ve made it
 possible to use a
-<a href="http://en.wikipedia.org/wiki/Zip_(file_format">zip file</a>) containing
+<a href="http://en.wikipedia.org/wiki/Zip_(file_format">zip file</a> containing
 all of the data files, and to read that zip file directly. There&#39;s even a
 function for creating the zip file:</p>
 
 <pre><code class="r">zip_datafiles(&quot;~/my_data/grav2.yaml&quot;)
 </code></pre>
 
-<p>The <code>zip_datafiles()</code> function will read the control file to identify
+<p>This <code>zip_datafiles()</code> function will read the control file to identify
 all of the relevant data files and then zip them up into a file with
 the same name and location, but with the extension <code>.zip</code> rather than
 <code>.yaml</code>.</p>
@@ -317,16 +317,18 @@ control file in the appropriate format.</p>
 
 <h2>Sample data sets</h2>
 
-<p>Sample data files are available at
-<a href="http://kbroman.org/qtl2/pages/sampledata.html">http://kbroman.org/qtl2/pages/sampledata.html</a>. Zipped versions of
-these datasets are included with the package and can be loaded into R
-using the <code>read_cross2()</code> function.</p>
+<p>The R/qtl2 web site includes
+<a href="http://kbroman.org/qtl2/pages/sampledata.html">sample data files</a> in
+the new format. Zipped versions of these datasets are included with
+the package and can be loaded into R using the <code>read_cross2()</code>
+function.</p>
 
-<p>In the <a href="https://github.com/kbroman/qtl2">package source</a>, these are
+<p>In the <a href="https://github.com/kbroman/qtl2">package source</a>, the sample
+zip files are
 located in
 <a href="https://github.com/kbroman/qtl2/tree/master/inst/extdata"><code>qtl2/inst/extdata</code></a>.
 In the installed version of the package, they are in <code>qtl2/extdata</code>,
-within whatever directory your R packages were installed. The base R
+within whatever directory your R packages were installed. The R
 function <code>system.file()</code> can be used to construct the path to these
 files.</p>
 
