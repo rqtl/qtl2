@@ -86,7 +86,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
 
         dimnames(pr) <- list(rownames(cross$geno),
                              names(map[[chr]]),
-                             NULL) # FIX_ME: need genotype names in here
+                             NULL) # FIX ME: need genotype names in here
         pr
     }
 
