@@ -27,7 +27,8 @@ class F2PK : public QTLCross
     const double nrec(const int gen_left, const int gen_right,
                       const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 
-    const double est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr);
+    const double est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
+                              const IntegerMatrix& cross_info, const int n_gen);
 
     // this is to indicate that the f2pk cross type shouldn't exist on the R side
     // (it's strictly a device for using phase-known version for est_map)

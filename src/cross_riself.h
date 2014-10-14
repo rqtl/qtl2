@@ -13,7 +13,8 @@ class RISELF : public QTLCross
     const double step(const int gen_left, const int gen_right, const double rec_frac,
                       const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 
-    const double est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr);
+    const double est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
+                              const IntegerMatrix& cross_info, const int n_gen);
 };
 
 #endif // CROSS_RISELF_H

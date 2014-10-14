@@ -254,27 +254,41 @@ const double F2PK::nrec(const int gen_left, const int gen_right,
     return NA_REAL; // shouldn't get here
 }
 
-const double F2PK::est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr)
+const double F2PK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
+                                const IntegerMatrix& cross_info, const int n_gen)
 {
-    int n_gen = gamma.rows();
+    int n_ind = cross_info.cols();
     int n_gen_sq = n_gen*n_gen;
 
-    double denom = 0.0;
-    for(int i=0; i<n_gen_sq; i++) denom += gamma[i];
-
     if(is_x_chr) {
-        double diagsum = 0.0;
-        for(int i=0; i<n_gen; i++) diagsum += gamma(i,i);
+        double denom=0.0, diagsum=0.0;
 
-        return 1.0 - diagsum/denom;
+        for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
+            for(int i=0; i<n_gen_sq; i++) denom += gamma[offset+i];
+            for(int i=0; i<n_gen; i++) diagsum += gamma[offset+i*n_gen+i];
+        }
+        return(1.0 - diagsum/denom);
     }
 
+    // get counts
+    NumericMatrix num_rec(n_gen, n_gen);
     IntegerVector empty(0);
 
-    double numerator = 0.0;
-    for(int il=0; il<n_gen; il++)
+    for(int il=0; il<n_gen; il++) {
         for(int ir=0; ir<n_gen; ir++)
-            numerator += gamma(il,ir)*nrec(il+1, ir+1, false, false, empty);
+            num_rec(il,ir) = nrec(il+1, ir+1, false, false, empty);
+    }
+
+    double denom=0.0, numerator=0.0;
+
+    for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
+        for(int il=0; il<n_gen; il++) {
+            for(int ir=0; ir<n_gen; ir++) {
+                denom += gamma[offset + ir*n_gen + il];
+                numerator += gamma[offset + ir*n_gen + il]*num_rec(il,ir);
+            }
+        }
+    }
 
     return numerator/denom;
 }

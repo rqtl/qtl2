@@ -44,4 +44,3 @@ void print_matdim(const MatrixXi x)
 {
     Rcout << x.rows() << " x " << x.cols() << '\n';
 }
-

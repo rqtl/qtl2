@@ -114,18 +114,3 @@ const double BC::nrec(const int gen_left, const int gen_right,
     if(gen_left == gen_right) return 0.0;
     else return 1.0;
 }
-
-const double BC::est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr)
-{
-
-    int n_gen = gamma.rows();
-    int n_gen_sq = n_gen*n_gen;
-
-    double denom = 0.0;
-    for(int i=0; i<n_gen_sq; i++) denom += gamma[i];
-
-    double diagsum = 0.0;
-    for(int i=0; i<n_gen; i++) diagsum += gamma(i,i);
-
-    return 1.0 - diagsum/denom;
-}

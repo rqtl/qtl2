@@ -47,7 +47,7 @@ NumericVector est_map(const String& crosstype,
     QTLCross* cross = QTLCross::Create(crosstype);
     if(cross->crosstype != cross->phase_known_crosstype) // get phase-known version of cross
         cross = QTLCross::Create(cross->phase_known_crosstype);
-    
+
     NumericVector cur_rec_frac(n_rf);
     NumericVector prev_rec_frac(clone(rec_frac));
 
@@ -58,12 +58,13 @@ NumericVector est_map(const String& crosstype,
     // 3-d array to contain sum(gamma(il,ir)) for each interval
     int n_gen = cross->ngen(is_X_chr);
     int n_gen_sq = n_gen*n_gen;
-    NumericVector full_gamma(n_gen_sq*n_rf);
+    int n_gen_sq_times_n_ind = n_gen_sq * n_ind;
+    NumericVector full_gamma(n_gen_sq_times_n_ind * n_rf);
 
     for(int it=0; it<max_iterations; it++) {
 
         // zero the full_gamma array
-        for(int i=0; i<n_gen_sq*n_rf; i++) full_gamma[i] = 0.0;
+        full_gamma.fill(0.0);
 
         for(int ind=0; ind < n_ind; ind++) {
 
@@ -89,7 +90,7 @@ NumericVector est_map(const String& crosstype,
                         gamma(il,ir) = alpha(il,pos) + beta(ir,pos+1) +
                             cross->emit(genotypes(pos+1,ind), poss_gen[ir], error_prob,
                                         is_X_chr, is_female[ind], cross_info(_,ind)) +
-                            cross->step(poss_gen[il], poss_gen[ir], prev_rec_frac[pos], 
+                            cross->step(poss_gen[il], poss_gen[ir], prev_rec_frac[pos],
                                         is_X_chr, is_female[ind], cross_info(_,ind));
 
                         if(sum_gamma_undef) {
@@ -101,9 +102,9 @@ NumericVector est_map(const String& crosstype,
                         }
                     }
                 }
-                
-                // add to full_gamma
-                const unsigned int offset = n_gen_sq*pos;
+
+                // add to full_gamma array of dim n_rf x n_ind x n_gen x n_gen
+                const unsigned int offset = n_gen_sq_times_n_ind*pos + n_gen_sq*ind;
                 for(int ir=0; ir<n_poss_gen; ir++) {
                     int gr_by_n_gen = (poss_gen[ir]-1)*n_gen;
                     for(int il=0; il<n_poss_gen; il++) {
@@ -112,14 +113,18 @@ NumericVector est_map(const String& crosstype,
                     }
                 }
             } // loop over marker intervals
-            
+
         } // loop over individuals
 
         // re-estimate rec'n fractions
+
         for(int pos=0; pos < n_rf; pos++) {
-            NumericMatrix sub_gamma(n_gen, n_gen);
-            std::copy(full_gamma.begin()+n_gen_sq*pos, full_gamma.begin()+n_gen_sq*(pos+1), sub_gamma.begin());
-            cur_rec_frac[pos] = cross->est_rec_frac(sub_gamma, is_X_chr);
+            // pull out the part for that position
+            NumericVector sub_gamma(n_gen_sq_times_n_ind);
+            std::copy(full_gamma.begin()+(n_gen_sq_times_n_ind*pos),
+                      full_gamma.begin()+(n_gen_sq_times_n_ind*(pos+1)),
+                      sub_gamma.begin());
+            cur_rec_frac[pos] = cross->est_rec_frac(sub_gamma, is_X_chr, cross_info, n_gen);
         }
 
         if(verbose) {
@@ -154,7 +159,7 @@ NumericVector est_map(const String& crosstype,
         NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), is_X_chr, is_female[ind],
                                                cross_info(_,ind), cur_rec_frac, marker_index, error_prob,
                                                poss_gen);
-        
+
         bool curloglik_undef = true;
         for(int i=0; i<n_poss_gen; i++) {
             if(curloglik_undef) {

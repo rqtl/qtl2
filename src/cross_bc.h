@@ -15,7 +15,7 @@ class BC : public QTLCross
 
     const double init(const int true_gen, const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info);
-    const double emit(const int obs_gen, const int true_gen, const double error_prob, 
+    const double emit(const int obs_gen, const int true_gen, const double error_prob,
                       const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
     const double step(const int gen_left, const int gen_right, const double rec_frac,
                       const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
@@ -25,9 +25,8 @@ class BC : public QTLCross
     const int ngen(const bool is_x_chr);
 
     const double nrec(const int gen_left, const int gen_right,
-                      const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-
-    const double est_rec_frac(const NumericMatrix& gamma, const bool is_x_chr);
+                      const bool is_x_chr, const bool is_female,
+                      const IntegerVector& cross_info);
 };
 
 #endif // CROSS_BC_H
