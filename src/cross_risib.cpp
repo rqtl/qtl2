@@ -101,5 +101,6 @@ const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr
 
     double R = 1.0 - diagsum/denom;
 
+    // FIX ME: need to cover X chromosome case!
     return R/(4.0-6.0*R);
 }
