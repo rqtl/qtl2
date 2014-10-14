@@ -84,8 +84,8 @@ NumericVector est_map(const String& crosstype,
                 NumericMatrix gamma(alpha.rows(), alpha.cols());
                 double sum_gamma;
                 bool sum_gamma_undef = true;
-                for(int il=0; il<n_poss_gen; il++) {
-                    for(int ir=0; ir<n_poss_gen; ir++) {
+                for(int ir=0; ir<n_poss_gen; ir++) {
+                    for(int il=0; il<n_poss_gen; il++) {
                         gamma(il,ir) = alpha(il,pos) + beta(ir,pos+1) +
                             cross->emit(genotypes(pos+1,ind), poss_gen[ir], error_prob,
                                         is_X_chr, is_female[ind], cross_info(_,ind)) +
@@ -103,11 +103,12 @@ NumericVector est_map(const String& crosstype,
                 }
                 
                 // add to full_gamma
-                for(int il=0; il<n_poss_gen; il++) {
-                    int gl = poss_gen[il]-1;
-                    for(int ir=0; ir<n_poss_gen; ir++) {
-                        int gr = poss_gen[ir]-1;
-                        full_gamma[n_gen_sq*pos + gr*n_gen + gl] += exp(gamma(il,ir) - sum_gamma);
+                const unsigned int offset = n_gen_sq*pos;
+                for(int ir=0; ir<n_poss_gen; ir++) {
+                    int gr_by_n_gen = (poss_gen[ir]-1)*n_gen;
+                    for(int il=0; il<n_poss_gen; il++) {
+                        int gl = poss_gen[il]-1;
+                        full_gamma[offset + gr_by_n_gen + gl] += exp(gamma(il,ir) - sum_gamma);
                     }
                 }
             } // loop over marker intervals
