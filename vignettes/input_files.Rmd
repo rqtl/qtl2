@@ -98,12 +98,12 @@ We'll discuss the CSV files first.
 
 ### CSV files
 
-The bulk of the data are in a series of comma-delimited (CSV)
-files. Each is in the form of a simple matrix, and for most the first
-column is a set of IDs and the first row is a set of variable names.
+The comma-delimited (CSV)
+files are each in the form of a simple matrix, with the first
+column being a set of IDs and the first row being a set of variable names.
 
-Missing value codes will be specified in the YAML control file (as
-`na.strings`) and will apply across all files, so the missing value
+Missing value codes will be specified in the control file (as
+`na.strings`) and will apply across all files, so a missing value
 code for one file cannot be an allowed value in another file.
 
 #### Genotype and founder genotype data
@@ -119,7 +119,7 @@ We split the numeric phenotypes from the mixed-mode covariates, as two
 separate CSV files. Each file forms a matrix of individuals &times;
 phenotypes (or covariates), with the first column being individual IDs
 and the first row being phenotype or covariate names. Sex and line IDs
-(if needed) will generally be columns in the covariate data.
+(if needed) can be columns in the covariate data.
 
 #### Phenotype covariates
 
@@ -152,7 +152,7 @@ separate CSV file. For example, for a set of Collaborative Cross (CC)
 lines, we will want a matrix with eight columns, which indicate the
 order of the founders in the crosses that generated each CC line.
 
-So, in general, the cross information will be in a CSV file lines as
+So, in general, the cross information will be in a CSV file with lines as
 rows and a set of columns that define the cross information for that
 cross type. The first column contains line IDs and the first row
 contains column names. Details on the column information are provided
@@ -165,7 +165,7 @@ The new input file format includes a text-based control file (in
 [YAML](http://www.yaml.org) format) to specify the names of all of the other
 files as well as various control parameters such as genotype and sex
 encodings and codes for missing values. We use
-[YAML](http://www.yaml.org) because it is flexible, human-readable,
+[YAML](http://www.yaml.org) because it is flexible, readable,
 and easy to import into R.
 
 The format of the control file is a bit technical. We
@@ -207,19 +207,24 @@ na.strings:
 - NA
 ```
 
-Any line that begins with a `#` is treated as a comment and
-ignored. It's good to include some comments at the top describing the
+Any line that begins with a &ldquo;`#`&rdquo; is treated as a comment and
+ignored. It's good to include some comments at the top of the file, describing the
 dataset.
 
 The order of things within the file is not important, but the names
 of things are critical.
 
-Much of the information is represented as key-value pairs, as `key:
-value`.  For example, the cross type is indicated with a line like
+Much of the information is represented as key-value pairs, as 
+&ldquo;`key: value`.&rdquo;  For example, the cross type is indicated with a line like
 
 ```
 crosstype: f2
 ```
+
+The &ldquo;`key`&rdquo; is &ldquo;`crosstype`&rdquo; and the
+&ldquo;`value`&rdquo; is &ldquo;`f2`.&rdquo; This indicates that the
+data are for an F<sub>2</sub> intercross between two inbred lines.
+
 
 ### File names
 
@@ -230,12 +235,12 @@ geno: iron_geno.csv
 ```
 
 This indicates that the genotype data are in the file `iron_geno.csv`.
-The files are expected to be in the same directory as the YAML control
-file. They could be placed in a separate directory, with the file name
-being the path relative to the location of the control file, but this
+The files are expected to be in the same directory as the control
+file. They could be placed in separate directories, with the file names
+being paths relative to the location of the control file, but this
 is not recommended (or well tested).
 
-The _keys_ for the different files are the following:
+The &ldquo;keys&rdquo; for the different files are the following:
 
 ```
 geno:         genotype_filename
@@ -248,7 +253,7 @@ pmap:         physical_map_filename
 ```
 
 Most of these files are optional; if a particular file is not used,
-the corresponding key can be omitted from the YAML control file.
+the corresponding key can be omitted from the control file.
 
 ### X chromosome
 
@@ -287,7 +292,7 @@ which is an alternative format for vectors in YAML.
 
 ### Genotype codes
 
-The control file should contain a record with `genotypes:` that specifies
+The control file should contain a record with &ldquo;`genotypes:`&rdquo; that specifies
 the genotype encodings. Here's an example:
 
 ```
@@ -297,7 +302,7 @@ genotypes:
   BB: 3
 ```
 
-For each possible genotype code, indent and provide a `key: value`
+For each possible genotype code, indent and provide a &ldquo;`key: value`&rdquo;
 pair, with the key being the code used in the genotype and founder
 genotype files, and the value being an integer to which the genotype
 should be converted.
@@ -346,15 +351,15 @@ sex:
   m: male
 ```
 
-Here, `covar: sex` indicates that the column name used in the
-covariate file is `sex`. If the column name were `Sex`, you would
-write `covar: Sex`.
+Here, &ldquo;`covar: sex`&rdquo; indicates that the column name used in the
+covariate file is &ldquo;`sex`.&rdquo; If the column name were &ldquo;`Sex`,&rdquo; you would
+write &ldquo;`covar: Sex`.&rdquo;
 
-The following two `key: value` pairs indicate the encodings used for
-sex, with the keys being the values used in the covariate file and the
-values being `female` and `male`. So this indicates that sex was
+The other two &ldquo;`key: value`&rdquo; pairs are the encodings used for
+sex, with the &ldquo;keys&rdquo; being the codes used in the covariate file and the
+&ldquo;values&rdquo; being `female` and `male`. So this indicates that sex was
 encoded as `f` for females and `m` for males. If, instead, the sex
-covariate had `0` for females and `1` for males, you'd use:
+covariate had `0` for females and `1` for males, you would use:
 
 ```
 sex:
@@ -374,9 +379,9 @@ sex:
   m: male
 ```
 
-So instead of a line with `covar:`, use `file:` followed by the name
-of the file (e.g., `file: sex.csv`). You must still provide the sex
-encodings, just as before.
+So instead of a line with &ldquo;`covar:`,&rdquo; use &ldquo;`file:`&rdquo; followed by the name
+of the file (e.g., &ldquo;`file: iron_sex.csv`&rdquo;). You must still provide the sex
+encodings, as before.
 
 
 ### Cross information
@@ -392,19 +397,19 @@ cross_info:
   (BxS)x(BxS): 1
 ```
 
-This is much like the information for sex: the `covar:` line
+This is much like the information for sex. The &ldquo;`covar:`&rdquo; line
 indicates the name of the column in the covariate data that
-corresponds to the cross information. The following two lines indicate
-the encodings of the cross information as `key: value` where `key` is
-the code used in the cross information column and `value` is the
+corresponds to the cross information. The other two lines indicate
+the encodings of the cross information as &ldquo;`key: value`&rdquo;
+pairs, where &ldquo;`key`&rdquo; is
+the code used in the cross information column and &ldquo;`value`&rdquo; is the
 integer to which it should be converted.
 
-More generally, the cross information would contained in a separate
-comma-delimited file.
-
-For simple crosses, in which the cross information is a single column,
-we allow it to be encoded differently from what's needed, and the
-control file information should look like this:
+More generally, the cross information would be contained in a separate
+comma-delimited file. For simple crosses, in which the cross
+information is a single column, we allow it to be encoded differently
+from what is needed, and the control file information should look like
+this:
 
 ```
 cross_info:
@@ -415,7 +420,7 @@ cross_info:
 
 For more complex crosses (e.g., the Collaborative Cross), the cross
 information spans multiple columns and we require that the user have
-set this up in advance (no translation of encodings will be
+set this up in advance (i.e., no translation of encodings will be
 performed). In this case the relevant section of the control file
 looks like this:
 
@@ -433,7 +438,7 @@ cross_info: crossinfo_filename
 ### Individual-to-line mapping (`"linemap"`)
 
 For crosses with multiple phenotyped individuals for each genotyped
-line, we need a mapping of individuals to lines, (`"linemap"`). This
+line, we need a mapping of individuals to lines (`"linemap"`). This
 can be a single column in the covariate file, or it can be a separate
 file.
 
@@ -464,9 +469,9 @@ Or, more simply, write:
 linemap: linemap_filename
 ```
 
-If a construction like `linemap: value` is used, we look to see if
-`value` corresponds to the name of a file; otherwise, we treat it as a
-column name in the covariate data. But the use of `covar:` or `file:`
+If a construction like &ldquo;`linemap: value`&rdquo; is used, we look to see if
+&ldquo;`value`&rdquo; corresponds to the name of a file; otherwise, we treat it as a
+column name in the covariate data. But the use of &ldquo;`covar:`&rdquo; or &ldquo;`file:`&rdquo;
 is more explicit and so may be preferred.
 
 
@@ -497,7 +502,7 @@ which is another way to define a vector with YAML.
 ### Field separator
 
 If the data files use a separator other than a comma (e.g., a
-semi-colon, or I like the vertical bar (`|`) because it is seldom
+semi-colon, or the vertical bar (`|`) which I like because it is seldom
 present in data), indicate the separator within the control file, as
 follows:
 
@@ -506,7 +511,7 @@ sep: '|'
 ```
 
 A vertical bar needs to be surrounded by single- or double-quotes. A
-semicolon doesn't, but it doesn't hurt of you do.
+semicolon doesn't, but it doesn't hurt if you do.
 
 
 
