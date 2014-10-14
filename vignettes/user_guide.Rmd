@@ -55,7 +55,7 @@ A few important changes in the tabular data:
 - We define a table of &ldquo;phenotype covariates.&rdquo; These are
   [metadata](http://en.wikipedia.org/wiki/Metadata) describing the
   phenotypes. For example, in the case of a phenotype measured over
-  time, one column in the phenotype covariate data frame could be the
+  time, one column in the phenotype covariate data could be the
   time of measurement. For gene expression data, we would have columns
   representing chromosome and physical position of genes, as well as
   gene IDs.
@@ -81,7 +81,7 @@ grav2 <- read_cross2("~/my_data/grav2.yaml")
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
 all of the data files, and to read that zip file directly. There's even a
 function for creating the zip file:
 
@@ -89,7 +89,7 @@ function for creating the zip file:
 zip_datafiles("~/my_data/grav2.yaml")
 ```
 
-The `zip_datafiles()` function will read the control file to identify
+This `zip_datafiles()` function will read the control file to identify
 all of the relevant data files and then zip them up into a file with
 the same name and location, but with the extension `.zip` rather than
 `.yaml`.
@@ -118,16 +118,18 @@ control file in the appropriate format.
 
 ## Sample data sets
 
-Sample data files are available at
-<http://kbroman.org/qtl2/pages/sampledata.html>. Zipped versions of
-these datasets are included with the package and can be loaded into R
-using the `read_cross2()` function.
+The R/qtl2 web site includes
+[sample data files](http://kbroman.org/qtl2/pages/sampledata.html) in
+the new format. Zipped versions of these datasets are included with
+the package and can be loaded into R using the `read_cross2()`
+function.
 
-In the [package source](https://github.com/kbroman/qtl2), these are
+In the [package source](https://github.com/kbroman/qtl2), the sample
+zip files are
 located in
 [`qtl2/inst/extdata`](https://github.com/kbroman/qtl2/tree/master/inst/extdata).
 In the installed version of the package, they are in `qtl2/extdata`,
-within whatever directory your R packages were installed. The base R
+within whatever directory your R packages were installed. The R
 function `system.file()` can be used to construct the path to these
 files.
 
