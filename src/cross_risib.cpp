@@ -90,16 +90,7 @@ const double RISIB::step(const int gen_left, const int gen_right, const double r
 const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
                                  const IntegerMatrix& cross_info, const int n_gen)
 {
-    int n_ind = cross_info.cols();
-    int n_gen_sq = n_gen*n_gen;
-
-    double denom = 0.0, diagsum = 0.0;
-    for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
-        for(int i=0; i<n_gen_sq; i++) denom += gamma[offset+i];
-        for(int i=0; i<n_gen; i++)    diagsum += gamma[offset+i*n_gen+i];
-    }
-
-    double R = 1.0 - diagsum/denom;
+    double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
 
     // FIX ME: need to cover X chromosome case!
     return R/(4.0-6.0*R);
