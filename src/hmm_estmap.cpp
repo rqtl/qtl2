@@ -10,7 +10,8 @@
 // re-estimate inter-marker recombination fractions
 // [[Rcpp::export(".est_map")]]
 NumericVector est_map(const String& crosstype,
-                      const IntegerMatrix& genotypes,
+                      const IntegerMatrix& genotypes, // columns are individuals, rows are markers
+                      const IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
                       const bool is_X_chr,
                       const LogicalVector& is_female,
                       const IntegerMatrix& cross_info,
@@ -23,6 +24,10 @@ NumericVector est_map(const String& crosstype,
     int n_ind = genotypes.cols();
     int n_mar = genotypes.rows();
     int n_rf = n_mar-1;
+
+    QTLCross* cross = QTLCross::Create(crosstype);
+    if(cross->crosstype != cross->phase_known_crosstype) // get phase-known version of cross
+        cross = QTLCross::Create(cross->phase_known_crosstype);
 
     // check inputs
     if(is_female.size() != n_ind)
@@ -44,11 +49,10 @@ NumericVector est_map(const String& crosstype,
       throw std::range_error("max_iterations should be >= 0");
     if(tol < 0)
       throw std::range_error("tol >= 0");
-    // end of checks
 
-    QTLCross* cross = QTLCross::Create(crosstype);
-    if(cross->crosstype != cross->phase_known_crosstype) // get phase-known version of cross
-        cross = QTLCross::Create(cross->phase_known_crosstype);
+    if(!cross->check_founder_geno(founder_geno, n_mar))
+        throw std::range_error("founder_geno is not the right size");
+    // end of checks
 
     NumericVector cur_rec_frac(n_rf);
     NumericVector prev_rec_frac(clone(rec_frac));
@@ -75,10 +79,10 @@ NumericVector est_map(const String& crosstype,
             int n_poss_gen = poss_gen.size();
 
             // forward and backward equations
-            NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), is_X_chr, is_female[ind],
+            NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), founder_geno, is_X_chr, is_female[ind],
                                                    cross_info(_,ind), prev_rec_frac, marker_index, error_prob,
                                                    poss_gen);
-            NumericMatrix beta = backwardEquations(cross, genotypes(_,ind), is_X_chr, is_female[ind],
+            NumericMatrix beta = backwardEquations(cross, genotypes(_,ind), founder_geno, is_X_chr, is_female[ind],
                                                    cross_info(_,ind), prev_rec_frac, marker_index, error_prob,
                                                    poss_gen);
 
@@ -91,7 +95,7 @@ NumericVector est_map(const String& crosstype,
                     for(int il=0; il<n_poss_gen; il++) {
                         gamma(il,ir) = alpha(il,pos) + beta(ir,pos+1) +
                             cross->emit(genotypes(pos+1,ind), poss_gen[ir], error_prob,
-                                        is_X_chr, is_female[ind], cross_info(_,ind)) +
+                                        founder_geno(_,pos+1), is_X_chr, is_female[ind], cross_info(_,ind)) +
                             cross->step(poss_gen[il], poss_gen[ir], prev_rec_frac[pos],
                                         is_X_chr, is_female[ind], cross_info(_,ind));
 
@@ -158,7 +162,7 @@ NumericVector est_map(const String& crosstype,
         int n_poss_gen = poss_gen.size();
 
         // forward and backward equations
-        NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), is_X_chr, is_female[ind],
+        NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), founder_geno, is_X_chr, is_female[ind],
                                                cross_info(_,ind), cur_rec_frac, marker_index, error_prob,
                                                poss_gen);
 

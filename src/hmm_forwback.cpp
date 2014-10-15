@@ -9,6 +9,7 @@
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,
                                const IntegerVector& genotypes,
+                               const IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
                                const bool is_X_chr,
                                const bool is_female,
                                const IntegerVector& cross_info,
@@ -31,7 +32,7 @@ NumericMatrix forwardEquations(QTLCross* cross,
         alpha(i,0) = cross->init(g, is_X_chr, is_female, cross_info);
         if(marker_index[0] >= 0)
             alpha(i,0) += cross->emit(genotypes[marker_index[0]], g, error_prob,
-                                      is_X_chr, is_female, cross_info);
+                                      founder_geno(_, marker_index[0]), is_X_chr, is_female, cross_info);
     }
 
     for(int pos=1; pos<n_pos; pos++) {
@@ -46,7 +47,7 @@ NumericMatrix forwardEquations(QTLCross* cross,
                                        
             if(marker_index[pos]>=0)
                 alpha(ir,pos) += cross->emit(genotypes[marker_index[pos]], poss_gen[ir], error_prob,
-                                             is_X_chr, is_female, cross_info);
+                                             founder_geno(_, marker_index[pos]), is_X_chr, is_female, cross_info);
         }
     }
 
@@ -58,6 +59,7 @@ NumericMatrix forwardEquations(QTLCross* cross,
 // backward Equations
 NumericMatrix backwardEquations(QTLCross* cross,
                                 const IntegerVector& genotypes,
+                                const IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
                                 const bool is_X_chr,
                                 const bool is_female,
                                 const IntegerVector& cross_info,
@@ -82,14 +84,14 @@ NumericMatrix backwardEquations(QTLCross* cross,
 
             if(marker_index[pos+1] >= 0)
                 beta(il,pos) += cross->emit(genotypes[marker_index[pos+1]], poss_gen[0], error_prob, 
-                                            is_X_chr, is_female, cross_info);
+                                            founder_geno(_, marker_index[pos+1]), is_X_chr, is_female, cross_info);
 
             for(int ir=1; ir<n_gen; ir++) {
                 double to_add = beta(ir,pos+1) + cross->step(poss_gen[il], poss_gen[ir], rec_frac[pos], 
                                                               is_X_chr, is_female, cross_info);
                 if(marker_index[pos+1] >=0)
                     to_add += cross->emit(genotypes[marker_index[pos+1]], poss_gen[ir], error_prob,
-                                         is_X_chr, is_female, cross_info);
+                                          founder_geno(_, marker_index[pos+1]), is_X_chr, is_female, cross_info);
                 beta(il,pos) = addlog(beta(il,pos), to_add);
             }
         }

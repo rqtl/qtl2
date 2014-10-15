@@ -11,6 +11,7 @@
 // [[Rcpp::export(".calc_genoprob")]]
 NumericVector calc_genoprob(const String& crosstype,
                             const IntegerMatrix& genotypes, // columns are individuals, rows are markers
+                            const IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
                             const bool is_X_chr,
                             const LogicalVector& is_female, // length n_ind
                             const IntegerMatrix& cross_info, // columns are individuals
@@ -20,6 +21,9 @@ NumericVector calc_genoprob(const String& crosstype,
 {
     int n_ind = genotypes.cols();
     int n_pos = marker_index.size();
+    int n_mar = genotypes.rows();
+
+    QTLCross* cross = QTLCross::Create(crosstype);
 
     // check inputs
     if(is_female.size() != n_ind)
@@ -36,9 +40,10 @@ NumericVector calc_genoprob(const String& crosstype,
         if(rec_frac[i] < 0 || rec_frac[i] > 0.5)
             throw std::range_error("rec_frac must be >= 0 and <= 0.5");
     }
+    if(!cross->check_founder_geno(founder_geno, n_mar))
+        throw std::range_error("founder_geno is not the right size");
     // end of checks
 
-    QTLCross* cross = QTLCross::Create(crosstype);
     int n_gen = cross->ngen(is_X_chr);
     int matsize = n_gen*n_ind; // size of genotype x individual matrix
     NumericVector genoprobs(matsize*n_pos);
@@ -49,10 +54,10 @@ NumericVector calc_genoprob(const String& crosstype,
         int n_poss_gen = poss_gen.size();
 
         // forward/backward equations
-        NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), is_X_chr, is_female[ind],
+        NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), founder_geno, is_X_chr, is_female[ind],
                                                cross_info(_,ind), rec_frac, marker_index, error_prob,
                                                poss_gen);
-        NumericMatrix beta = backwardEquations(cross, genotypes(_,ind), is_X_chr, is_female[ind],
+        NumericMatrix beta = backwardEquations(cross, genotypes(_,ind), founder_geno, is_X_chr, is_female[ind],
                                                cross_info(_,ind), rec_frac, marker_index, error_prob,
                                                poss_gen);
 

@@ -47,6 +47,9 @@ function(cross, error_prob=1e-4,
 
     if(n_cores > 1) quiet <- TRUE
 
+    if(is.null(cross$founder_geno))
+        cross$founder_geno <- create_empty_founder_geno(cross$geno)
+
     by_chr_func <- function(chr) {
         # the following avoids a warning in R CMD check
         . <- "avoid R CMD check warning"
@@ -61,7 +64,8 @@ function(cross, error_prob=1e-4,
         keep <- (ntyped >= 2)
 
         rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
-                       cross$is_x_chr[chr], cross$is_female[keep], cross_info[,keep,drop=FALSE],
+                       cross$founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[keep],
+                       cross_info[,keep,drop=FALSE],
                        diff(gmap) %>% mf(map_function), # positions to inter-marker rec frac
                        error_prob, maxit, tol, !quiet)
 

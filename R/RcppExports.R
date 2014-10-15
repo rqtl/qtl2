@@ -9,12 +9,12 @@
     .Call('qtl2_count_invalid_genotypes', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info)
 }
 
-.calc_genoprob <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
-    .Call('qtl2_calc_genoprob', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
+.calc_genoprob <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
+    .Call('qtl2_calc_genoprob', PACKAGE = 'qtl2', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
 
-.est_map <- function(crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
-    .Call('qtl2_est_map', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
+.est_map <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
+    .Call('qtl2_est_map', PACKAGE = 'qtl2', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
 }
 
 addlog <- function(a, b) {
@@ -65,31 +65,31 @@ permute_ivector <- function(n, x) {
     .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
 }
 
-test_init <- function(crosstype, true_gen, is_X_chr, is_female, cross_info) {
-    .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_gen, is_X_chr, is_female, cross_info)
+test_init <- function(crosstype, true_gen, is_x_chr, is_female, cross_info) {
+    .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_gen, is_x_chr, is_female, cross_info)
 }
 
-test_emit <- function(crosstype, obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info) {
-    .Call('qtl2_test_emit', PACKAGE = 'qtl2', crosstype, obs_gen, true_gen, error_prob, is_X_chr, is_female, cross_info)
+test_emit <- function(crosstype, obs_gen, true_gen, error_prob, founder_geno, is_x_chr, is_female, cross_info) {
+    .Call('qtl2_test_emit', PACKAGE = 'qtl2', crosstype, obs_gen, true_gen, error_prob, founder_geno, is_x_chr, is_female, cross_info)
 }
 
-test_step <- function(crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info) {
-    .Call('qtl2_test_step', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info)
+test_step <- function(crosstype, gen_left, gen_right, rec_frac, is_x_chr, is_female, cross_info) {
+    .Call('qtl2_test_step', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, rec_frac, is_x_chr, is_female, cross_info)
 }
 
-test_check_geno <- function(crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info) {
-    .Call('qtl2_test_check_geno', PACKAGE = 'qtl2', crosstype, gen, is_observed_value, is_X_chr, is_female, cross_info)
+test_check_geno <- function(crosstype, gen, is_observed_value, is_x_chr, is_female, cross_info) {
+    .Call('qtl2_test_check_geno', PACKAGE = 'qtl2', crosstype, gen, is_observed_value, is_x_chr, is_female, cross_info)
 }
 
-test_possible_gen <- function(crosstype, is_X_chr, is_female, cross_info) {
-    .Call('qtl2_test_possible_gen', PACKAGE = 'qtl2', crosstype, is_X_chr, is_female, cross_info)
+test_possible_gen <- function(crosstype, is_x_chr, is_female, cross_info) {
+    .Call('qtl2_test_possible_gen', PACKAGE = 'qtl2', crosstype, is_x_chr, is_female, cross_info)
 }
 
-test_ngen <- function(crosstype, is_X_chr) {
-    .Call('qtl2_test_ngen', PACKAGE = 'qtl2', crosstype, is_X_chr)
+test_ngen <- function(crosstype, is_x_chr) {
+    .Call('qtl2_test_ngen', PACKAGE = 'qtl2', crosstype, is_x_chr)
 }
 
-test_nrec <- function(crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info) {
-    .Call('qtl2_test_nrec', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, is_X_chr, is_female, cross_info)
+test_nrec <- function(crosstype, gen_left, gen_right, is_x_chr, is_female, cross_info) {
+    .Call('qtl2_test_nrec', PACKAGE = 'qtl2', crosstype, gen_left, gen_right, is_x_chr, is_female, cross_info)
 }
 

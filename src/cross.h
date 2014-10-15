@@ -17,7 +17,7 @@ public:
 
     String phase_known_crosstype;
 
-    static QTLCross* Create(const String crosstype);
+    static QTLCross* Create(const String& crosstype);
 
     virtual const bool check_geno(const int gen, const bool is_observed_value,
                                   const bool is_x_chr, const bool is_female,
@@ -42,8 +42,8 @@ public:
     }
 
     virtual const double emit(const int obs_gen, const int true_gen, const double error_prob,
-                              const bool is_x_chr, const bool is_female,
-                              const IntegerVector& cross_info)
+                              const IntegerVector& founder_geno, const bool is_x_chr, 
+                              const bool is_female, const IntegerVector& cross_info)
     {
         #ifdef DEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -124,6 +124,12 @@ public:
         return true;
     }
 
+    // check that founder genotype data is correct size
+    // (for crosses with no founder_geno, just return true)
+    virtual const bool check_founder_geno(const IntegerMatrix& founder_geno, const int n_markers)
+    {
+        return true;
+    }
 };
 
 #endif // CROSS.H

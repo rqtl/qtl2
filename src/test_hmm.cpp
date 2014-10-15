@@ -7,70 +7,71 @@ using namespace Rcpp;
 
 // test init functions from R
 // [[Rcpp::export]]
-double test_init(String crosstype,
-                 int true_gen,
-                 bool is_X_chr, bool is_female, IntegerVector cross_info)
+double test_init(const String& crosstype,
+                 const int true_gen,
+                 const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->init(true_gen, is_X_chr, is_female, cross_info);
+    return cross->init(true_gen, is_x_chr, is_female, cross_info);
 }
 
 // test emit functions from R
 // [[Rcpp::export]]
-double test_emit(String crosstype,
-                 int obs_gen, int true_gen, double error_prob,
-                 bool is_X_chr, bool is_female, IntegerVector cross_info)
+double test_emit(const String& crosstype,
+                 const int obs_gen, const int true_gen, const double error_prob,
+                 const IntegerVector& founder_geno, const bool is_x_chr, 
+                 const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
     return cross->emit(obs_gen, true_gen, error_prob,
-                       is_X_chr, is_female, cross_info);
+                       founder_geno, is_x_chr, is_female, cross_info);
 }
 
 
 // test emit functions from R
 // [[Rcpp::export]]
-double test_step(String crosstype,
-                 int gen_left, int gen_right, double rec_frac,
-                 bool is_X_chr, bool is_female, IntegerVector cross_info)
+double test_step(const String& crosstype,
+                 const int gen_left, const int gen_right, const double rec_frac,
+                 const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->step(gen_left, gen_right, rec_frac, is_X_chr, is_female, cross_info);
+    return cross->step(gen_left, gen_right, rec_frac, is_x_chr, is_female, cross_info);
 }
 
 // [[Rcpp::export]]
-bool test_check_geno(String crosstype, int gen, bool is_observed_value,
-                     bool is_X_chr, bool is_female, IntegerVector cross_info)
+bool test_check_geno(const String& crosstype, const int gen, const bool is_observed_value,
+                     const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->check_geno(gen, is_observed_value, is_X_chr, is_female, cross_info);
+    return cross->check_geno(gen, is_observed_value, is_x_chr, is_female, cross_info);
 }
 
 // [[Rcpp::export]]
-IntegerVector test_possible_gen(String crosstype,
-                                bool is_X_chr, bool is_female, IntegerVector cross_info)
+IntegerVector test_possible_gen(const String& crosstype,
+                                const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return wrap(cross->possible_gen(is_X_chr, is_female, cross_info));
+    return wrap(cross->possible_gen(is_x_chr, is_female, cross_info));
 }
 
 // [[Rcpp::export]]
-int test_ngen(String crosstype, bool is_X_chr)
+int test_ngen(const String& crosstype, const bool is_x_chr)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->ngen(is_X_chr);
+    return cross->ngen(is_x_chr);
 }
 
 // [[Rcpp::export]]
-double test_nrec(String crosstype, int gen_left, int gen_right,
-                 bool is_X_chr, bool is_female, IntegerVector cross_info)
+double test_nrec(const String& crosstype, const int gen_left, const int gen_right,
+                 const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->nrec(gen_left, gen_right, is_X_chr, is_female, cross_info);
+    return cross->nrec(gen_left, gen_right, is_x_chr, is_female, cross_info);
 }

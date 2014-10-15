@@ -49,8 +49,8 @@ const double F2PK::init(const int true_gen,
 }
 
 const double F2PK::emit(const int obs_gen, const int true_gen, const double error_prob,
-                        const bool is_x_chr, const bool is_female,
-                        const IntegerVector& cross_info)
+                        const IntegerVector& founder_geno, const bool is_x_chr,
+                        const bool is_female, const IntegerVector& cross_info)
 {
 
     #ifdef DEBUG

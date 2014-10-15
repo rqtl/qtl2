@@ -18,7 +18,7 @@
 #include "cross_dh.h"
 #include "cross_haploid.h"
 
-QTLCross* QTLCross::Create(const String crosstype)
+QTLCross* QTLCross::Create(const String& crosstype)
 {
     if(crosstype=="bc")      return new BC();
     if(crosstype=="f2")      return new F2();
