@@ -257,18 +257,12 @@ const double F2PK::nrec(const int gen_left, const int gen_right,
 const double F2PK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
                                 const IntegerMatrix& cross_info, const int n_gen)
 {
+
+    if(is_x_chr)
+        return QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
+
     int n_ind = cross_info.cols();
     int n_gen_sq = n_gen*n_gen;
-
-    if(is_x_chr) {
-        double denom=0.0, diagsum=0.0;
-
-        for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
-            for(int i=0; i<n_gen_sq; i++) denom += gamma[offset+i];
-            for(int i=0; i<n_gen; i++) diagsum += gamma[offset+i*n_gen+i];
-        }
-        return(1.0 - diagsum/denom);
-    }
 
     // get counts
     NumericMatrix num_rec(n_gen, n_gen);
