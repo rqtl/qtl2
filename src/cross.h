@@ -107,13 +107,14 @@ public:
         int n_ind = cross_info.cols();
         int n_gen_sq = n_gen*n_gen;
 
-        double denom = 0.0, diagsum = 0.0;
-        for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
-            for(int i=0; i<n_gen_sq; i++) denom += gamma[offset+i];
-            for(int i=0; i<n_gen; i++)    diagsum += gamma[offset+i*n_gen+i];
-        }
+        double diagsum=0.0;
+        for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq)
+            for(int i=0; i<n_gen; i++) diagsum += gamma[offset+i*n_gen+i];
 
-        return 1.0 - diagsum/denom;
+        double result = 1.0 - diagsum/(double)n_ind;
+        if(result < 0.0) result = 0.0;
+
+        return result;
     }
 
     // the following is for checking whether a crosstype is supported from R
