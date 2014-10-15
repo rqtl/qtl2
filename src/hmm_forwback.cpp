@@ -3,7 +3,8 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "hmm.h"
+#include "hmm_util.h"
+#include "hmm_forwback.h"
 
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,

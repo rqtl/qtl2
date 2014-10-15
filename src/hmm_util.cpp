@@ -3,7 +3,7 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "hmm.h"
+#include "hmm_util.h"
 
 // Calculate addlog(a,b) = log[exp(a) + exp(b)]
 // [[Rcpp::export]]

@@ -3,7 +3,9 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "hmm.h"
+#include "hmm_util.h"
+#include "hmm_forwback.h"
+#include "hmm_estmap.h"
 
 // calculate QTL genotype probabilities
 // [[Rcpp::export(".calc_genoprob")]]
