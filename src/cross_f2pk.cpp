@@ -279,16 +279,12 @@ const double F2PK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
             num_rec(il,ir) = nrec(il+1, ir+1, false, false, empty);
     }
 
-    double denom=0.0, numerator=0.0;
+    double numerator=0.0;
 
-    for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
-        for(int il=0; il<n_gen; il++) {
-            for(int ir=0; ir<n_gen; ir++) {
-                denom += gamma[offset + ir*n_gen + il];
+    for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq)
+        for(int il=0; il<n_gen; il++)
+            for(int ir=0; ir<n_gen; ir++)
                 numerator += gamma[offset + ir*n_gen + il]*num_rec(il,ir);
-            }
-        }
-    }
 
-    return numerator/denom;
+    return numerator/(double)n_ind;
 }
