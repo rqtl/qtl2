@@ -90,8 +90,32 @@ const double RISIB::step(const int gen_left, const int gen_right, const double r
 const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
                                  const IntegerMatrix& cross_info, const int n_gen)
 {
-    double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
+    if(is_x_chr) {
+        int n_ind = cross_info.cols();
+        int n_gen_sq = n_gen*n_gen;
 
-    // FIX ME: need to cover X chromosome case!
-    return R/(4.0-6.0*R);
+        double denom = 0.0, sum00=0.0, sum01=0.0;
+        for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
+            for(int i=0; i<n_gen_sq; i++) denom += gamma[offset+i];
+
+            if(cross_info[ind]==0) // A x B direction
+                sum00 += gamma[offset];
+            else                   // B x A direction
+                sum00 += gamma[offset+3];
+
+            // recombinants
+            sum01 += (gamma[offset+1]+gamma[offset+2]);
+        }
+
+        // the MLE is solution to a quadratic equation
+        return (2.0*denom - sum00 - 3.0*sum01  -
+                (sqrt(sum01*sum01 + (-2*sum00-4*denom)*sum01 + sum00*sum00 -
+                      4.0*denom*sum00 + 4.0*denom*denom)))/8.0/(sum01+sum00-denom);
+
+    }
+    else {
+        double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
+
+        return R/(4.0-6.0*R);
+    }
 }
