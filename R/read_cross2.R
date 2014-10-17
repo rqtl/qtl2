@@ -81,13 +81,7 @@ function(file)
         if(section %in% names(control)) {
             file <- file.path(dir, control[[section]])
             stop_if_no_file(file)
-            sheet <- data.table::fread(file,
-                                       na.strings=control$na.strings,
-                                       sep=control$sep,                     # note that nulls just get ignored
-                                       verbose=FALSE, showProgress=FALSE, data.table=FALSE)
-
-            # treat first column as rownames
-            sheet <- firstcol2rownames(sheet, section)
+            sheet <- read_csv(file, na.strings=control$na.strings, sep=control$sep)
 
             # change genotype codes and convert phenotypes to numeric matrix
             if(section=="geno" || section=="founder_geno")
@@ -282,14 +276,12 @@ function(sex_control, covar, sep, dir)
     if(is.null(sex_control)) return(NULL)
 
     if("covar" %in% names(sex_control)) { # sex within the covariates
-        sex <- covar[,sex_control[["covar"]], drop=FALSE]
+        sex <- covar[,sex_control$covar, drop=FALSE]
     }
     else if("file" %in% names(sex_control)) { # look for file
-        file <- file.path(dir, sex_control[["file"]])
+        file <- file.path(dir, sex_control$file)
         stop_if_no_file(file)
-        sex <- data.table::fread(file,
-                                 verbose=FALSE, showProgress=FALSE, data.table=FALSE)
-        sex <- firstcol2rownames(sex)
+        sex <- read_csv(file, sep=sep, na.strings=NULL)
     }
     else return(NULL)
 
@@ -356,16 +348,15 @@ function(cross_info_control, covar, sep, dir)
     }
 
     if("file" %in% names(cross_info_control)) { # look for file
-        file <- file.path(dir, cross_info_control[["file"]])
+        file <- file.path(dir, cross_info_control$file)
         stop_if_no_file(file)
-        cross_info <- data.table::fread(file,
-                                        verbose=FALSE, showProgress=FALSE, data.table=FALSE)
+        cross_info <- read_csv(file, sep=sep)
+
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
-        return(firstcol2rownames(cross_info))
     }
     else if("covar" %in% names(cross_info_control)) { # cross_info within the covariates
-        cross_info <- covar[,cross_info_control[["covar"]], drop=FALSE]
+        cross_info <- covar[,cross_info_control$covar, drop=FALSE]
     }
     else return(NULL)
 
@@ -417,13 +408,11 @@ function(linemap_control, covar, sep, dir)
 
     # see if it's a file
     if("file" %in% names(linemap_control)) {
-        filename <- file.path(dir, linemap_control[["file"]])
-        linemap <- data.table::fread(filename,
-                                     verbose=FALSE, showProgress=FALSE, data.table=FALSE)
-        linemap <- firstcol2rownames(linemap)
+        filename <- file.path(dir, linemap_control$file)
+        linemap <- read_csv(filename, sep=sep, na.strings=NULL)
     }
     else if("covar" %in% names(linemap_control)) { # column name in the covariate data
-        linemap <- covar[,linemap_control[["covar"]], drop=FALSE]
+        linemap <- covar[,linemap_control$covar, drop=FALSE]
     }
     else { # can't figure it out; just ignore it
         return(NULL)
@@ -455,4 +444,14 @@ function(filename)
     if(is_web_file(filename)) return(TRUE)
     if(!file.exists(filename))
         stop('file "', filename, '" does not exist.')
+}
+
+# read a csv file
+read_csv <-
+function(filename, sep=",", na.strings=c("NA", "-"))
+{
+    x <- data.table::fread(filename, na.strings=na.strings, sep=sep,
+                           verbose=FALSE, showProgress=FALSE, data.table=FALSE)
+
+    firstcol2rownames(x)
 }
