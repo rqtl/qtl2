@@ -1,5 +1,9 @@
+#include <vector>
+#include <map>
 #include <Rcpp.h>
 using namespace Rcpp;
+using std::vector;
+using std::map;
 
 #include "random.h"
 
@@ -17,7 +21,7 @@ IntegerVector random_int(const int n, const int low, const int high)
 
     for(unsigned int i=0; i<n; i++)
         result[i] = random_int(low, high);
-    
+
     return result;
 }
 
@@ -47,6 +51,34 @@ IntegerVector permute_ivector(const IntegerVector x)
     return result;
 }
 
+// permute a vector of numbers
+vector<double> permute_nvector(const vector<double> x)
+{
+    unsigned int n = x.size();
+
+    vector<double> result(x);
+
+    for(unsigned int i=n-1; i>0; i--)
+        std::swap(result[i], result[random_int(0, i)]);
+
+    return result;
+}
+
+
+// permute a vector of numbers
+vector<int> permute_ivector(const vector<int> x)
+{
+    unsigned int n = x.size();
+
+    vector<int> result(x);
+
+    for(unsigned int i=n-1; i>0; i--)
+        std::swap(result[i], result[random_int(0, i)]);
+
+    return result;
+}
+
+
 // permute a vector of numbers in place
 void permute_nvector_inplace(NumericVector x)
 {
@@ -65,6 +97,24 @@ void permute_ivector_inplace(IntegerVector x)
         std::swap(x[i], x[random_int(0, i)]);
 }
 
+// permute a vector of numbers in place
+void permute_nvector_inplace(vector<double> x)
+{
+    unsigned int n = x.size();
+
+    for(unsigned int i=n-1; i>0; i--)
+        std::swap(x[i], x[random_int(0, i)]);
+}
+
+// permute a vector of integers in place
+void permute_ivector_inplace(vector<int> x)
+{
+    unsigned int n = x.size();
+
+    for(unsigned int i=n-1; i>0; i--)
+        std::swap(x[i], x[random_int(0, i)]);
+}
+
 // get permutation of {0..(n-1)}
 // [[Rcpp::export]]
 IntegerVector get_permutation(const int n)
@@ -74,7 +124,7 @@ IntegerVector get_permutation(const int n)
     for(unsigned int i=0; i<n; i++) result[i] = i;
 
     permute_ivector_inplace(result);
-    
+
     return result;
 }
 
@@ -110,3 +160,80 @@ IntegerMatrix permute_ivector(const int n, const IntegerVector x)
     return result;
 }
 
+// permute x within strata
+//     strata is integer vector {0, 1, 2, ..., n_strata-1}
+//     n_strata is the number of strata; if == -1, it is calculated
+// [[Rcpp::export]]
+NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x,
+                                         const IntegerVector& strata, int n_strata = -1)
+{
+    unsigned int n = x.size();
+    NumericMatrix result(n,n_perm);
+
+    if(strata.size() != n)
+        throw std::length_error("length(x) != length(strata)");
+
+    if(n_strata < 0) // find maximum strata
+        n_strata = max(strata) + 1;
+
+    // map of indices for the strata
+    map<unsigned int, vector<int> > strata_index;
+    for(int i=0; i<n; ++i) {
+        if(strata[i] >= n_strata || strata[i] < 0)
+            throw std::domain_error("strata should be in [0, n_strata)");
+        strata_index[strata[i]].push_back(i);
+    }
+
+    for(unsigned int perm=0; perm<n_perm; ++perm) {
+        // for each stratum:
+        for(int stratum=0; stratum < n_strata; ++stratum) {
+            // permute indices
+            vector<int> index_permuted = permute_ivector(strata_index[stratum]);
+
+            unsigned int n = strata_index[stratum].size();
+            for(unsigned int i=0; i<n; ++i)
+                result(strata_index[stratum][i],perm) = x[index_permuted[i]];
+        }
+    }
+
+    return result;
+}
+
+// permute x within strata
+//     strata is integer vector {0, 1, 2, ..., n_strata-1}
+//     n_strata is the number of strata; if == -1, it is calculated
+// [[Rcpp::export]]
+IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x,
+                                         const IntegerVector& strata, int n_strata = -1)
+{
+    unsigned int n = x.size();
+    IntegerMatrix result(n,n_perm);
+
+    if(strata.size() != n)
+        throw std::length_error("length(x) != length(strata)");
+
+    if(n_strata < 0) // find maximum strata
+        n_strata = max(strata) + 1;
+
+    // map of indices for the strata
+    map<unsigned int, vector<int> > strata_index;
+    for(int i=0; i<n; ++i) {
+        if(strata[i] >= n_strata || strata[i] < 0)
+            throw std::domain_error("strata should be in [0, n_strata)");
+        strata_index[strata[i]].push_back(i);
+    }
+
+    for(unsigned int perm=0; perm<n_perm; ++perm) {
+        // for each stratum:
+        for(int stratum=0; stratum < n_strata; ++stratum) {
+            // permute indices
+            vector<int> index_permuted = permute_ivector(strata_index[stratum]);
+
+            unsigned int n = strata_index[stratum].size();
+            for(unsigned int i=0; i<n; ++i)
+                result(strata_index[stratum][i],perm) = x[index_permuted[i]];
+        }
+    }
+
+    return result;
+}

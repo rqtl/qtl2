@@ -1,4 +1,3 @@
-
 context("random/permutation")
 
 test_that("random_int looks correct", {
@@ -44,4 +43,57 @@ test_that("permutations look correct", {
     for(i in 1:n_runs)
         expect_equal(result2[,i], result3[,i]+1)
 
+})
+
+test_that("stratified permutations for integers works", {
+
+    vals <- sample(1:10000, 250)
+    strata <- sample(0:4, 250, replace=TRUE)
+
+    set.seed(22632617)
+    z <- permute_ivector_stratified(100, vals, strata)
+
+    expect_true( all(apply(z, 2, function(a,b) all(sort(a)==b), sort(vals))) )
+
+    for(i in unique(strata))
+        expect_true( all(apply(z[strata==i,], 2, function(a,b) all(sort(a)==b), sort(vals[strata==i]))) )
+
+    set.seed(22632617)
+    z2 <- permute_ivector_stratified(100, vals, strata, max(strata)+1)
+
+    expect_equal(z, z2)
+
+    # error: n_strata is too small
+    expect_error(permute_ivector_stratified(100, vals, strata, 3),
+                 'strata should be in \\[0, n_strata)')
+
+    # error: vals and strata are different lengths
+    expect_error(permute_ivector_stratified(100, vals[1:200], strata))
+
+})
+
+test_that("stratified permutations for dobules works", {
+
+    vals <- runif(250, 0, 100)
+    strata <- sample(0:4, 250, replace=TRUE)
+
+    set.seed(22632617)
+    z <- permute_nvector_stratified(100, vals, strata)
+
+    expect_true( all(apply(z, 2, function(a,b) all(sort(a)==b), sort(vals))) )
+
+    for(i in unique(strata))
+        expect_true( all(apply(z[strata==i,], 2, function(a,b) all(sort(a)==b), sort(vals[strata==i]))) )
+
+    set.seed(22632617)
+    z2 <- permute_nvector_stratified(100, vals, strata, max(strata)+1)
+
+    expect_equal(z, z2)
+
+    # error: n_strata is too small
+    expect_error(permute_nvector_stratified(100, vals, strata, 3),
+                 'strata should be in \\[0, n_strata)')
+
+    # error: vals and strata are different lengths
+    expect_error(permute_nvector_stratified(100, vals[1:200], strata))
 })

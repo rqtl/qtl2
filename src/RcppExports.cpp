@@ -282,6 +282,42 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// permute_nvector_stratified
+NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x, const IntegerVector& strata, int n_strata = -1);
+RcppExport SEXP qtl2_permute_nvector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP );
+        Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP );
+        Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP );
+        NumericMatrix __result = permute_nvector_stratified(n_perm, x, strata, n_strata);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// permute_ivector_stratified
+IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x, const IntegerVector& strata, int n_strata = -1);
+RcppExport SEXP qtl2_permute_ivector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP );
+        Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP );
+        IntegerMatrix __result = permute_ivector_stratified(n_perm, x, strata, n_strata);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // test_init
 double test_init(const String& crosstype, const int true_gen, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 RcppExport SEXP qtl2_test_init(SEXP crosstypeSEXP, SEXP true_genSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {

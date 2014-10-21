@@ -65,6 +65,14 @@ permute_ivector <- function(n, x) {
     .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
 }
 
+permute_nvector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
+    .Call('qtl2_permute_nvector_stratified', PACKAGE = 'qtl2', n_perm, x, strata, n_strata)
+}
+
+permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
+    .Call('qtl2_permute_ivector_stratified', PACKAGE = 'qtl2', n_perm, x, strata, n_strata)
+}
+
 test_init <- function(crosstype, true_gen, is_x_chr, is_female, cross_info) {
     .Call('qtl2_test_init', PACKAGE = 'qtl2', crosstype, true_gen, is_x_chr, is_female, cross_info)
 }
