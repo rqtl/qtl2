@@ -57,12 +57,12 @@ get_permutation <- function(n) {
     .Call('qtl2_get_permutation', PACKAGE = 'qtl2', n)
 }
 
-permute_nvector <- function(n, x) {
-    .Call('qtl2_permute_nvector', PACKAGE = 'qtl2', n, x)
+permute_nvector <- function(n_perm, x) {
+    .Call('qtl2_permute_nvector', PACKAGE = 'qtl2', n_perm, x)
 }
 
-permute_ivector <- function(n, x) {
-    .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n, x)
+permute_ivector <- function(n_perm, x) {
+    .Call('qtl2_permute_ivector', PACKAGE = 'qtl2', n_perm, x)
 }
 
 permute_nvector_stratified <- function(n_perm, x, strata, n_strata = -1L) {

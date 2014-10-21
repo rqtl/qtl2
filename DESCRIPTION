@@ -1,6 +1,6 @@
 Package: qtl2
-Version: 0.1-13
-Date: 2014-10-15
+Version: 0.1-14
+Date: 2014-10-21
 Title: Tools for analyzing high-dimensional QTL experiments
 Description: Reimplementation of the R/qtl package to better handle
     high-dimensional data and complex cross designs.

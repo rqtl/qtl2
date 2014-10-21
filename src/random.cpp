@@ -130,13 +130,13 @@ IntegerVector get_permutation(const int n)
 
 // get a set of permutations of a vector, as columns of a matrix
 // [[Rcpp::export]]
-NumericMatrix permute_nvector(const int n, const NumericVector x)
+NumericMatrix permute_nvector(const int n_perm, const NumericVector x)
 {
     unsigned int length = x.size();
 
-    NumericMatrix result(length,n);
+    NumericMatrix result(length,n_perm);
 
-    for(unsigned int i=0; i<n; i++) {
+    for(unsigned int i=0; i<n_perm; i++) {
         NumericVector permx = permute_nvector(x);
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }
@@ -146,13 +146,13 @@ NumericMatrix permute_nvector(const int n, const NumericVector x)
 
 // get a set of permutations of a vector, as columns of a matrix
 // [[Rcpp::export]]
-IntegerMatrix permute_ivector(const int n, const IntegerVector x)
+IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x)
 {
     unsigned int length = x.size();
 
-    IntegerMatrix result(length,n);
+    IntegerMatrix result(length,n_perm);
 
-    for(unsigned int i=0; i<n; i++) {
+    for(unsigned int i=0; i<n_perm; i++) {
         IntegerVector permx = permute_ivector(x);
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }

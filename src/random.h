@@ -20,8 +20,8 @@ void permute_ivector_inplace(vector<int> x);
 IntegerVector get_permutation(const int n);
 
 // get a set of permutations of a vector, as columns of a matrix
-NumericMatrix permute_nvector(const int n, const NumericVector x);
-IntegerMatrix permute_ivector(const int n, const IntegerVector x);
+NumericMatrix permute_nvector(const int n_perm, const NumericVector x);
+IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x);
 
 // stratified permutation
 NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x,
