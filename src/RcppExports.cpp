@@ -218,6 +218,72 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// cbind_imatrix
+IntegerMatrix cbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2);
+RcppExport SEXP qtl2_cbind_imatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP );
+        IntegerMatrix __result = cbind_imatrix(mat1, mat2);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// cbind_3imatrix
+IntegerMatrix cbind_3imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2, const IntegerMatrix& mat3);
+RcppExport SEXP qtl2_cbind_3imatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat3(mat3SEXP );
+        IntegerMatrix __result = cbind_3imatrix(mat1, mat2, mat3);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// cbind_nmatrix
+NumericMatrix cbind_nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2);
+RcppExport SEXP qtl2_cbind_nmatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP );
+        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP );
+        NumericMatrix __result = cbind_nmatrix(mat1, mat2);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// cbind_3nmatrix
+NumericMatrix cbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2, const NumericMatrix& mat3);
+RcppExport SEXP qtl2_cbind_3nmatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP );
+        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP );
+        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat3(mat3SEXP );
+        NumericMatrix __result = cbind_3nmatrix(mat1, mat2, mat3);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP qtl2_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {

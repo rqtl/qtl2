@@ -49,6 +49,22 @@ calc_rss_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
     .Call('qtl2_calc_rss_lapack', PACKAGE = 'qtl2', X, Y, skip_dgels, tol)
 }
 
+cbind_imatrix <- function(mat1, mat2) {
+    .Call('qtl2_cbind_imatrix', PACKAGE = 'qtl2', mat1, mat2)
+}
+
+cbind_3imatrix <- function(mat1, mat2, mat3) {
+    .Call('qtl2_cbind_3imatrix', PACKAGE = 'qtl2', mat1, mat2, mat3)
+}
+
+cbind_nmatrix <- function(mat1, mat2) {
+    .Call('qtl2_cbind_nmatrix', PACKAGE = 'qtl2', mat1, mat2)
+}
+
+cbind_3nmatrix <- function(mat1, mat2, mat3) {
+    .Call('qtl2_cbind_3nmatrix', PACKAGE = 'qtl2', mat1, mat2, mat3)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2_random_int', PACKAGE = 'qtl2', n, low, high)
 }
