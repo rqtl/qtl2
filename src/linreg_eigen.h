@@ -1,3 +1,5 @@
+// linear regression via RcppEigen
+
 // calc X'X
 MatrixXd calc_XpX_eigen(const MatrixXd A);
 

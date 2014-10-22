@@ -1,4 +1,4 @@
-// main HMM functions
+// calculate conditional genotype probabilities given multipoint marker data
 
 #include <math.h>
 #include <Rcpp.h>
@@ -7,7 +7,7 @@
 #include "hmm_forwback.h"
 #include "hmm_estmap.h"
 
-// calculate QTL genotype probabilities
+// calculate conditional genotype probabilities given multipoint marker data
 // [[Rcpp::export(".calc_genoprob")]]
 NumericVector calc_genoprob(const String& crosstype,
                             const IntegerMatrix& genotypes, // columns are individuals, rows are markers

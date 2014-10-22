@@ -1,4 +1,4 @@
-// main HMM functions
+// HMM utility functions
 
 #include <math.h>
 #include <Rcpp.h>

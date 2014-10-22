@@ -1,4 +1,4 @@
-// phase-known intercross HMM functions (for est.map)
+// phase-known intercross QTLCross class (for HMM, in particular est.map)
 
 #include <math.h>
 #include <Rcpp.h>

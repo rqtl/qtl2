@@ -10,4 +10,3 @@ NumericVector est_map(const String& crosstype,
                       const int max_iterations,
                       const double tol,
                       const bool verbose);
-

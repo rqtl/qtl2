@@ -1,4 +1,4 @@
-// RI selfing HMM functions
+// RI by selfing QTLCross class (for HMM)
 
 #include <math.h>
 #include <Rcpp.h>

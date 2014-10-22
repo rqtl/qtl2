@@ -1,4 +1,5 @@
-// calculate QTL genotype probabilities
+// calculate conditional genotype probabilities given multipoint marker data
+
 NumericVector calc_genoprob(const String& crosstype,
                             const IntegerMatrix& genotypes, // columns are individuals, rows are markers
                             const IntegerMatrix& founder_geno, // columns are markers, rows are founder lines

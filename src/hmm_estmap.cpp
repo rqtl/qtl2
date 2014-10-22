@@ -1,4 +1,4 @@
-// main HMM functions
+// re-estimate inter-marker recombination fractions
 
 #include <math.h>
 #include <Rcpp.h>

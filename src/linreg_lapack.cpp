@@ -1,3 +1,5 @@
+// linear regression via LAPACK
+
 #include <Rcpp.h>
 #include <R_ext/Lapack.h>
 
@@ -14,7 +16,7 @@ NumericVector calc_rss_lapack(const NumericMatrix X, const NumericMatrix Y,
     int ncolx = X.cols(), ncoly = Y.cols();
 
     int minXdim = std::min(nrow, ncolx);
-    int n_dwork = std::max(minXdim + std::max(minXdim, ncoly), 
+    int n_dwork = std::max(minXdim + std::max(minXdim, ncoly),
                            std::max(minXdim + 3*ncolx + 1, 2*minXdim*ncoly));
     std::vector<double> dwork(n_dwork);
     NumericVector rss(ncoly);

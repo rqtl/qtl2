@@ -1,3 +1,5 @@
+// RI by selfing QTLCross class (for HMM)
+
 #ifndef CROSS_RISELF_H
 #define CROSS_RISELF_H
 

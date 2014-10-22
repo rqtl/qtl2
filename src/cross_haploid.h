@@ -1,3 +1,5 @@
+// haploid QTLCross class (for HMM)
+
 #ifndef CROSS_HAPLOID_H
 #define CROSS_HAPLOID_H
 

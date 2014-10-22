@@ -1,3 +1,5 @@
+// forward-backward equations for HMM
+
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,
                                const IntegerVector& genotypes,

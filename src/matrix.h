@@ -1,3 +1,5 @@
+// Matrix utilities
+
 // cbind two or three matrices
 IntegerMatrix cbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2);
 IntegerMatrix cbind_3imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2,

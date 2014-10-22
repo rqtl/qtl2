@@ -1,3 +1,5 @@
+// random number generation (e.g., permutations)
+
 #include <vector>
 #include <map>
 #include <Rcpp.h>

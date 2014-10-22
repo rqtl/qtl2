@@ -1,3 +1,5 @@
+// intercross QTLCross class (for HMM)
+
 #ifndef CROSS_F2_H
 #define CROSS_F2_H
 

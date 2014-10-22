@@ -1,3 +1,5 @@
+// linear regression via RcppEigen
+
 // [[Rcpp::depends(RcppEigen)]]
 
 #include <RcppEigen.h>
@@ -34,7 +36,7 @@ List fit_linreg_eigenchol(const NumericMatrix X, const NumericVector y)
     double s = resid.norm() / std::sqrt((double)df);
     VectorXd se = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
     double rss = resid.squaredNorm();
-    
+
     return List::create(Named("coef") = betahat,
                         Named("fitted") = fitted,
                         Named("resid") = resid,
@@ -200,7 +202,7 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix X, const NumericMatrix Y)
     int r = PQR.rank();
 
     MatrixXd fitted(n,k);
-    
+
     if(r == p) { // full rank
         MatrixXd betahat(p,k);
 

@@ -1,4 +1,4 @@
-// main HMM functions
+// forward-backward equations for HMM
 
 #include <math.h>
 #include <Rcpp.h>
@@ -37,14 +37,14 @@ NumericMatrix forwardEquations(QTLCross* cross,
 
     for(int pos=1; pos<n_pos; pos++) {
         for(int ir=0; ir<n_gen; ir++) {
-            alpha(ir,pos) = alpha(0, pos-1) + cross->step(poss_gen[0], poss_gen[ir], rec_frac[pos-1], 
+            alpha(ir,pos) = alpha(0, pos-1) + cross->step(poss_gen[0], poss_gen[ir], rec_frac[pos-1],
                                                           is_X_chr, is_female, cross_info);
 
             for(int il=1; il<n_gen; il++)
                 alpha(ir,pos) = addlog(alpha(ir,pos), alpha(il,pos-1) +
                                        cross->step(poss_gen[il], poss_gen[ir], rec_frac[pos-1],
                                                    is_X_chr, is_female, cross_info));
-                                       
+
             if(marker_index[pos]>=0)
                 alpha(ir,pos) += cross->emit(genotypes[marker_index[pos]], poss_gen[ir], error_prob,
                                              founder_geno(_, marker_index[pos]), is_X_chr, is_female, cross_info);
@@ -75,7 +75,7 @@ NumericMatrix backwardEquations(QTLCross* cross,
 
     // to contain ln Pr(G_i = g | marker data)
     NumericMatrix beta(n_gen, n_pos);
-    
+
     // backward equations
     for(int pos = n_pos-2; pos >= 0; pos--) {
         for(int il=0; il<n_gen; il++) {
@@ -83,11 +83,11 @@ NumericMatrix backwardEquations(QTLCross* cross,
                                                        is_X_chr, is_female, cross_info);
 
             if(marker_index[pos+1] >= 0)
-                beta(il,pos) += cross->emit(genotypes[marker_index[pos+1]], poss_gen[0], error_prob, 
+                beta(il,pos) += cross->emit(genotypes[marker_index[pos+1]], poss_gen[0], error_prob,
                                             founder_geno(_, marker_index[pos+1]), is_X_chr, is_female, cross_info);
 
             for(int ir=1; ir<n_gen; ir++) {
-                double to_add = beta(ir,pos+1) + cross->step(poss_gen[il], poss_gen[ir], rec_frac[pos], 
+                double to_add = beta(ir,pos+1) + cross->step(poss_gen[il], poss_gen[ir], rec_frac[pos],
                                                               is_X_chr, is_female, cross_info);
                 if(marker_index[pos+1] >=0)
                     to_add += cross->emit(genotypes[marker_index[pos+1]], poss_gen[ir], error_prob,

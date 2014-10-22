@@ -1,3 +1,5 @@
+// phase-known intercross QTLCross class (for HMM, in particular est.map)
+
 #ifndef CROSS_F2PK_H
 #define CROSS_F2PK_H
 

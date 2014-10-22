@@ -1,4 +1,4 @@
-// RI sib-mating HMM functions
+// RI by sib-mating QTLCross class (for HMM)
 
 #include <math.h>
 #include <Rcpp.h>

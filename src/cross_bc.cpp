@@ -1,4 +1,4 @@
-// backcross HMM functions
+// backcross QTLCross class (for HMM)
 
 #include <math.h>
 #include <Rcpp.h>

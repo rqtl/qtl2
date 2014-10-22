@@ -1,3 +1,5 @@
+// doubled haploid QTLCross class (for HMM)
+
 #ifndef CROSS_DH_H
 #define CROSS_DH_H
 

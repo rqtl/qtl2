@@ -2,6 +2,7 @@
 
 #include <Rcpp.h>
 #include "cross.h"
+#include "test_hmm.h"
 
 using namespace Rcpp;
 
@@ -20,7 +21,7 @@ double test_init(const String& crosstype,
 // [[Rcpp::export]]
 double test_emit(const String& crosstype,
                  const int obs_gen, const int true_gen, const double error_prob,
-                 const IntegerVector& founder_geno, const bool is_x_chr, 
+                 const IntegerVector& founder_geno, const bool is_x_chr,
                  const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);

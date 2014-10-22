@@ -1,3 +1,5 @@
+// RI by sib-mating QTLCross class (for HMM)
+
 #ifndef CROSS_RISIB_H
 #define CROSS_RISIB_H
 

@@ -1,3 +1,5 @@
+// backcross QTLCross class (for HMM)
+
 #ifndef CROSS_BC_H
 #define CROSS_BC_H
 

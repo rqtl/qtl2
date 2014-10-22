@@ -2,6 +2,7 @@
 
 #include <Rcpp.h>
 #include "cross.h"
+#include "check_cross.h"
 
 using namespace Rcpp;
 
@@ -10,7 +11,7 @@ using namespace Rcpp;
 bool crosstype_supported(const String& crosstype)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
-    
+
     return cross->crosstype_supported();
 }
 
@@ -36,11 +37,10 @@ IntegerVector count_invalid_genotypes(const String& crosstype,
 
     for(int ind=0; ind<n_ind; ind++) {
         for(int mar=0; mar<n_mar; mar++) // counting valid genotypes
-            result[ind] += cross->check_geno(genotypes(mar,ind), true, is_X_chr, 
+            result[ind] += cross->check_geno(genotypes(mar,ind), true, is_X_chr,
                                              is_female[ind], cross_info(_, ind));
         result[ind] = n_mar - result[ind];
     }
 
     return result;
-}                                      
-                                      
+}
