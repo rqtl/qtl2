@@ -21,6 +21,10 @@ addlog <- function(a, b) {
     .Call('qtl2_addlog', PACKAGE = 'qtl2', a, b)
 }
 
+interpolate_map <- function(oldpos, oldmap, newmap) {
+    .Call('qtl2_interpolate_map', PACKAGE = 'qtl2', oldpos, oldmap, newmap)
+}
+
 fit_linreg_eigenchol <- function(X, y) {
     .Call('qtl2_fit_linreg_eigenchol', PACKAGE = 'qtl2', X, y)
 }

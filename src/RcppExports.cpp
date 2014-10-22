@@ -104,6 +104,23 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// interpolate_map
+NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
+RcppExport SEXP qtl2_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const NumericVector& >::type oldpos(oldposSEXP );
+        Rcpp::traits::input_parameter< const NumericVector& >::type oldmap(oldmapSEXP );
+        Rcpp::traits::input_parameter< const NumericVector& >::type newmap(newmapSEXP );
+        NumericVector __result = interpolate_map(oldpos, oldmap, newmap);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix X, const NumericVector y);
 RcppExport SEXP qtl2_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
