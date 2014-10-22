@@ -96,3 +96,109 @@ NumericMatrix cbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat
 
     return result;
 }
+
+// rbind two matrices
+// [[Rcpp::export]]
+IntegerMatrix rbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2)
+{
+    unsigned int ncol = mat1.cols();
+    if(mat2.cols() != ncol)
+        throw std::length_error("ncol(mat2) != ncol(mat1)");
+    unsigned int nrow1 = mat1.rows();
+    unsigned int nrow2 = mat2.rows();
+
+    unsigned int nrow = nrow1 + nrow2;
+    IntegerMatrix result(nrow, ncol);
+
+    for(unsigned int col=0, offset1=0, offset2=0, offset_result=0;
+        col < ncol;
+        col++, offset1 += nrow1, offset2 += nrow2, offset_result += nrow) {
+
+        std::copy(mat1.begin()+offset1, mat1.begin()+offset1+nrow1, result.begin()+offset_result);
+        std::copy(mat2.begin()+offset2, mat2.begin()+offset2+nrow2, result.begin()+offset_result+nrow1);
+    }
+
+    return result;
+}
+
+// rbind three matrices
+// [[Rcpp::export]]
+IntegerMatrix rbind_3imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2,
+                             const IntegerMatrix& mat3)
+{
+    unsigned int ncol = mat1.cols();
+    if(mat2.cols() != ncol)
+        throw std::length_error("ncol(mat2) != ncol(mat1)");
+    if(mat3.cols() != ncol)
+        throw std::length_error("ncol(mat3) != ncol(mat1)");
+    unsigned int nrow1 = mat1.rows();
+    unsigned int nrow2 = mat2.rows();
+    unsigned int nrow3 = mat3.rows();
+
+    unsigned int nrow = nrow1 + nrow2 + nrow3;
+    IntegerMatrix result(nrow, ncol);
+
+    for(unsigned int col=0, offset1=0, offset2=0, offset3=0, offset_result=0;
+        col < ncol;
+        col++, offset1 += nrow1, offset2 += nrow2, offset3 += nrow3, offset_result += nrow) {
+
+        std::copy(mat1.begin()+offset1, mat1.begin()+offset1+nrow1, result.begin()+offset_result);
+        std::copy(mat2.begin()+offset2, mat2.begin()+offset2+nrow2, result.begin()+offset_result+nrow1);
+        std::copy(mat3.begin()+offset3, mat3.begin()+offset3+nrow3, result.begin()+offset_result+nrow1+nrow2);
+    }
+
+    return result;
+}
+
+// rbind two matrices
+// [[Rcpp::export]]
+NumericMatrix rbind_nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2)
+{
+    unsigned int ncol = mat1.cols();
+    if(mat2.cols() != ncol)
+        throw std::length_error("ncol(mat2) != ncol(mat1)");
+    unsigned int nrow1 = mat1.rows();
+    unsigned int nrow2 = mat2.rows();
+
+    unsigned int nrow = nrow1 + nrow2;
+    NumericMatrix result(nrow, ncol);
+
+    for(unsigned int col=0, offset1=0, offset2=0, offset_result=0;
+        col < ncol;
+        col++, offset1 += nrow1, offset2 += nrow2, offset_result += nrow) {
+
+        std::copy(mat1.begin()+offset1, mat1.begin()+offset1+nrow1, result.begin()+offset_result);
+        std::copy(mat2.begin()+offset2, mat2.begin()+offset2+nrow2, result.begin()+offset_result+nrow1);
+    }
+
+    return result;
+}
+
+// rbind three matrices
+// [[Rcpp::export]]
+NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2,
+                             const NumericMatrix& mat3)
+{
+    unsigned int ncol = mat1.cols();
+    if(mat2.cols() != ncol)
+        throw std::length_error("ncol(mat2) != ncol(mat1)");
+    if(mat3.cols() != ncol)
+        throw std::length_error("ncol(mat3) != ncol(mat1)");
+    unsigned int nrow1 = mat1.rows();
+    unsigned int nrow2 = mat2.rows();
+    unsigned int nrow3 = mat3.rows();
+
+    unsigned int nrow = nrow1 + nrow2 + nrow3;
+    NumericMatrix result(nrow, ncol);
+
+    for(unsigned int col=0, offset1=0, offset2=0, offset3=0, offset_result=0;
+        col < ncol;
+        col++, offset1 += nrow1, offset2 += nrow2, offset3 += nrow3, offset_result += nrow) {
+
+        std::copy(mat1.begin()+offset1, mat1.begin()+offset1+nrow1, result.begin()+offset_result);
+        std::copy(mat2.begin()+offset2, mat2.begin()+offset2+nrow2, result.begin()+offset_result+nrow1);
+        std::copy(mat3.begin()+offset3, mat3.begin()+offset3+nrow3, result.begin()+offset_result+nrow1+nrow2);
+    }
+
+    return result;
+}

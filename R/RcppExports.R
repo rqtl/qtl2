@@ -65,6 +65,22 @@ cbind_3nmatrix <- function(mat1, mat2, mat3) {
     .Call('qtl2_cbind_3nmatrix', PACKAGE = 'qtl2', mat1, mat2, mat3)
 }
 
+rbind_imatrix <- function(mat1, mat2) {
+    .Call('qtl2_rbind_imatrix', PACKAGE = 'qtl2', mat1, mat2)
+}
+
+rbind_3imatrix <- function(mat1, mat2, mat3) {
+    .Call('qtl2_rbind_3imatrix', PACKAGE = 'qtl2', mat1, mat2, mat3)
+}
+
+rbind_nmatrix <- function(mat1, mat2) {
+    .Call('qtl2_rbind_nmatrix', PACKAGE = 'qtl2', mat1, mat2)
+}
+
+rbind_3nmatrix <- function(mat1, mat2, mat3) {
+    .Call('qtl2_rbind_3nmatrix', PACKAGE = 'qtl2', mat1, mat2, mat3)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2_random_int', PACKAGE = 'qtl2', n, low, high)
 }
