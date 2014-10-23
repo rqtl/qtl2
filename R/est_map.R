@@ -35,6 +35,7 @@ function(cross, error_prob=1e-4,
          maxit=10000, tol=1e-6, quiet=TRUE,
          n_cores=1)
 {
+    print(address(cross))
     map_function <- match.arg(map_function)
     if(error_prob < 0) stop("error_prob must be >= 0")
     if(maxit < 0) stop("maxit must be >= 0")
@@ -47,8 +48,9 @@ function(cross, error_prob=1e-4,
 
     if(n_cores > 1) quiet <- TRUE
 
-    if(is.null(cross$founder_geno))
-        cross$founder_geno <- create_empty_founder_geno(cross$geno)
+    founder_geno <- cross$founder_geno
+    if(is.null(founder_geno))
+        founder_geno <- create_empty_founder_geno(cross$geno)
 
     by_chr_func <- function(chr) {
         # the following avoids a warning in R CMD check
@@ -64,7 +66,7 @@ function(cross, error_prob=1e-4,
         keep <- (ntyped >= 2)
 
         rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
-                       cross$founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[keep],
+                       founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[keep],
                        cross_info[,keep,drop=FALSE],
                        diff(gmap) %>% mf(map_function), # positions to inter-marker rec frac
                        error_prob, maxit, tol, !quiet)
@@ -91,7 +93,7 @@ function(cross, error_prob=1e-4,
         map <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
     }
 
+    print(address(cross))
     names(map) <- names(cross$gmap)
     map
 }
-
