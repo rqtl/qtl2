@@ -78,12 +78,13 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     rf <- lapply(map, function(m) mf(diff(m), map_function))
     cross_info <- t(cross$cross_info)
 
-    if(is.null(cross$founder_geno))
-        cross$founder_geno <- create_empty_founder_geno(cross$geno)
+    founder_geno <- cross$founder_geno
+    if(is.null(founder_geno))
+        founder_geno <- create_empty_founder_geno(cross$geno)
 
     by_chr_func <- function(chr) {
         pr <- .calc_genoprob(cross$crosstype, t(cross$geno[[chr]]),
-                             cross$founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female,
+                             founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female,
                              cross_info, rf[[chr]], attr(map[[chr]], "index"),
                              error_prob) %>% aperm(c(2,3,1))
 
