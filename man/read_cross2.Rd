@@ -4,7 +4,7 @@
 \alias{read_cross2}
 \title{Read QTL data from files}
 \usage{
-read_cross2(file)
+read_cross2(file, quiet = TRUE)
 }
 \arguments{
 \item{file}{Character string with path to the
@@ -12,6 +12,8 @@ read_cross2(file)
 information. This could instead be a zip file containing all of the
 data files, in which case the contents are unzipped to a temporary
 directory and then read.}
+
+\item{quiet}{If \code{FALSE}, print progress messages.}
 }
 \value{
 Object of class \code{"cross2"}. For details, see the

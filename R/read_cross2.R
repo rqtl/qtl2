@@ -8,6 +8,7 @@
 #' information. This could instead be a zip file containing all of the
 #' data files, in which case the contents are unzipped to a temporary
 #' directory and then read.
+#' @param quiet If \code{FALSE}, print progress messages.
 #'
 #' @return Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
@@ -31,26 +32,26 @@
 #' zip_file <- system.file("extdata", "grav2.zip", package="qtl2")
 #' grav2 <- read_cross2(zip_file)
 read_cross2 <-
-function(file)
+function(file, quiet=TRUE)
 {
     if(length(grep("\\.zip$", file)) > 0) { # zip file
         dir <- tempdir()
         if(is_web_file(file)) {
             tmpfile <- tempfile()
-            message(" - downloading ", file, "\n       to ", tmpfile)
+            if(!quiet) message(" - downloading ", file, "\n       to ", tmpfile)
             download.file(file, tmpfile, quiet=TRUE)
             file <- tmpfile
             on.exit(unlink(tmpfile))
         }
 
-        message(" - unzipping ", file, "\n       to ", dir)
+        if(!quiet) message(" - unzipping ", file, "\n       to ", dir)
         file <- path.expand(file)
         stop_if_no_file(file)
         unzipped_files <- utils::unzip(file, exdir=dir)
         file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
 
         on.exit({ # clean up when done
-            message(" - cleaning up")
+            if(!quiet) message(" - cleaning up")
             unlink(unzipped_files)
         }, add=TRUE)
     }
@@ -79,13 +80,16 @@ function(file)
     sections <- c("geno", "gmap", "pmap", "pheno", "covar", "phenocovar", "founder_geno")
     for(section in sections) {
         if(section %in% names(control)) {
+            if(!quiet) message(" - reading ", section)
             file <- file.path(dir, control[[section]])
             stop_if_no_file(file)
             sheet <- read_csv(file, na.strings=control$na.strings, sep=control$sep)
 
             # change genotype codes and convert phenotypes to numeric matrix
-            if(section=="geno" || section=="founder_geno")
+            if(section=="geno" || section=="founder_geno") {
+                if(!quiet) message(" - encoding ", section)
                 sheet <- encode_geno(sheet, genotypes)
+            }
             else if(section=="pheno")
                 sheet <- pheno2matrix(sheet)
 
@@ -106,15 +110,19 @@ function(file)
     # split genotypes by chromosome
     geno <- c("geno", "founder_geno")
     for(section in geno) {
-        if(section %in% names(output))
+        if(section %in% names(output)) {
+            if(!quiet) message(" - splitting up ", section)
             output[[section]] <- split_geno(output[[section]], map)
+        }
     }
 
     # split maps by chr
     maps <- c("gmap", "pmap")
     for(section in maps) {
-        if(section %in% names(output))
+        if(section %in% names(output)) {
+            if(!quiet) message(" - splitting up ", section)
             output[[section]] <- split_map(output[[section]])
+        }
     }
 
     # X chr?
@@ -127,21 +135,21 @@ function(file)
     }
 
     # sex
-    output$is_female <- convert_sex(control$sex, output$covar, control$sep, dir)
+    output$is_female <- convert_sex(control$sex, output$covar, control$sep, dir, quiet=quiet)
     if(is.null(output$is_female)) { # missing; assume all FALSE
         output$is_female <- rep(FALSE, nrow(output$geno[[1]]))
         names(output$is_female) <- rownames(output$geno[[1]])
     }
 
     # cross_info
-    output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep, dir)
+    output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep, dir, quiet=quiet)
     if(is.null(output$cross_info)) { # missing; make a 0-column matrix
         output$cross_info <- matrix(0L, ncol=0, nrow=nrow(output$geno[[1]]))
         rownames(output$cross_info) <- rownames(output$geno[[1]])
     }
 
-    # line map (mapping of individuals to lines
-    output$linemap <- convert_linemap(control$linemap, output$covar, control$sep, dir)
+    # line map (mapping of individuals to lines)
+    output$linemap <- convert_linemap(control$linemap, output$covar, control$sep, dir, quiet=quiet)
 
     # alleles?
     if("alleles" %in% names(control))
@@ -271,7 +279,7 @@ function(map)
 
 # grab sex information
 convert_sex <-
-function(sex_control, covar, sep, dir)
+function(sex_control, covar, sep, dir, quiet=TRUE)
 {
     if(is.null(sex_control)) return(NULL)
 
@@ -279,6 +287,7 @@ function(sex_control, covar, sep, dir)
         sex <- covar[,sex_control$covar, drop=FALSE]
     }
     else if("file" %in% names(sex_control)) { # look for file
+        if(!quiet) message(" - reading sex")
         file <- file.path(dir, sex_control$file)
         stop_if_no_file(file)
         sex <- read_csv(file, sep=sep, na.strings=NULL)
@@ -338,7 +347,7 @@ function(codes)
 
 # grab cross_info
 convert_cross_info <-
-function(cross_info_control, covar, sep, dir)
+function(cross_info_control, covar, sep, dir, quiet=TRUE)
 {
     if(is.null(cross_info_control)) return(NULL)
 
@@ -348,6 +357,8 @@ function(cross_info_control, covar, sep, dir)
     }
 
     if("file" %in% names(cross_info_control)) { # look for file
+        if(!quiet) message(" - reading cross_info")
+
         file <- file.path(dir, cross_info_control$file)
         stop_if_no_file(file)
         cross_info <- read_csv(file, sep=sep)
@@ -395,7 +406,7 @@ function(cross_info_control, covar, sep, dir)
 
 # grab linemap information
 convert_linemap <-
-function(linemap_control, covar, sep, dir)
+function(linemap_control, covar, sep, dir, quiet=TRUE)
 {
     if(is.null(linemap_control)) return(NULL)
 
@@ -408,6 +419,7 @@ function(linemap_control, covar, sep, dir)
 
     # see if it's a file
     if("file" %in% names(linemap_control)) {
+        if(!quiet) message(" - reading linemap")
         filename <- file.path(dir, linemap_control$file)
         linemap <- read_csv(filename, sep=sep, na.strings=NULL)
     }
