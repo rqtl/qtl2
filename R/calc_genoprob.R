@@ -88,7 +88,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                              cross_info, rf[[chr]], attr(map[[chr]], "index"),
                              error_prob) %>% aperm(c(2,3,1))
 
-        dimnames(pr) <- list(rownames(cross$geno),
+        dimnames(pr) <- list(rownames(cross$geno[[chr]]),
                              names(map[[chr]]),
                              NULL) # FIX ME: need genotype names in here
         pr
