@@ -117,7 +117,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(step==0) {
         attr(map, "index") <- seq(along=map)-1
-        map <- add_pmap_attr(map, "fixed", step, off_end)
+        map <- add_pmap_attr(map, "markers", step, off_end)
         return(map)
     }
 
@@ -199,7 +199,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(step==0) {
         attr(map, "index") <- seq(along=map)-1
-        map <- add_pmap_attr(map, "max", step, off_end)
+        map <- add_pmap_attr(map, "markers", step, off_end)
         return(map)
     }
 
