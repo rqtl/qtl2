@@ -282,3 +282,17 @@ const double F2PK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
 
     return numerator/(double)n_ind;
 }
+
+const NumericMatrix F2PK::geno2allele_matrix(const bool is_x_chr)
+{
+    if(is_x_chr) // no conversion needed
+        return NumericMatrix(0,0);
+
+    NumericMatrix result(4,2);
+    result(0,0) = 1.0;
+    result(1,0) = result(1,1) = 0.5;
+    result(2,0) = result(2,1) = 0.5;
+    result(3,1) = 1.0;
+
+    return result;
+}

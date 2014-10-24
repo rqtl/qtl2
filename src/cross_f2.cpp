@@ -198,3 +198,16 @@ const int F2::ngen(const bool is_x_chr)
     if(is_x_chr) return 6;
     return 3;
 }
+
+const NumericMatrix F2::geno2allele_matrix(const bool is_x_chr)
+{
+    if(is_x_chr) // no conversion needed
+        return NumericMatrix(0,0);
+
+    NumericMatrix result(3,2);
+    result(0,0) = 1.0;
+    result(1,0) = result(1,1) = 0.5;
+    result(2,1) = 1.0;
+
+    return result;
+}

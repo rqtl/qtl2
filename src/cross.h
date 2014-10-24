@@ -42,7 +42,7 @@ public:
     }
 
     virtual const double emit(const int obs_gen, const int true_gen, const double error_prob,
-                              const IntegerVector& founder_geno, const bool is_x_chr, 
+                              const IntegerVector& founder_geno, const bool is_x_chr,
                               const bool is_female, const IntegerVector& cross_info)
     {
         #ifdef DEBUG
@@ -130,6 +130,14 @@ public:
     {
         return true;
     }
+
+    // matrix to convert genotype probabilities to allele probabilities
+    // if no conversion necessary, it returns a matrix with 0 rows and 0 cols
+    virtual const NumericMatrix geno2allele_matrix(const bool is_x_chr)
+    {
+        return NumericMatrix(0,0);
+    }
+
 };
 
 #endif // CROSS.H

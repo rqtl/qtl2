@@ -39,6 +39,8 @@ class F2PK : public QTLCross
         return false;
     }
 
+    const NumericMatrix geno2allele_matrix(const bool is_x_chr);
+
 };
 
 #endif // CROSS_F2PK_H

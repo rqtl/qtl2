@@ -13,6 +13,10 @@
     .Call('qtl2_count_invalid_genotypes', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info)
 }
 
+.genoprob_to_alleleprob <- function(crosstype, prob_array, is_x_chr) {
+    .Call('qtl2_genoprob_to_alleleprob', PACKAGE = 'qtl2', crosstype, prob_array, is_x_chr)
+}
+
 .calc_genoprob <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
     .Call('qtl2_calc_genoprob', PACKAGE = 'qtl2', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }

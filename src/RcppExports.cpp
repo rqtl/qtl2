@@ -55,6 +55,23 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// genoprob_to_alleleprob
+NumericVector genoprob_to_alleleprob(const String& crosstype, const NumericVector& prob_array, const bool is_x_chr);
+RcppExport SEXP qtl2_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP );
+        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
+        NumericVector __result = genoprob_to_alleleprob(crosstype, prob_array, is_x_chr);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // calc_genoprob
 NumericVector calc_genoprob(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
 RcppExport SEXP qtl2_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {

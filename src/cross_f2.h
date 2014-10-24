@@ -26,6 +26,9 @@ class F2 : public QTLCross
     const IntegerVector possible_gen(const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 
     const int ngen(const bool is_x_chr);
+
+    const NumericMatrix geno2allele_matrix(const bool is_x_chr);
+
 };
 
 #endif // CROSS_F2_H
