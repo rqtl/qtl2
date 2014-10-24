@@ -39,7 +39,12 @@ probs_to_grid <-
             stop("grid attribute not found for chr ", names(probs)[i])
 
         # subset probs
-        probs[[i]] <- probs[[i]][,grid,]
+        if(!all(grid)) {
+            if(length(grid) != ncol(probs[[i]]))
+                stop("length(grid) (", length(grid), ") != ncol(probs) (",
+                     ncol(probs[[i]]), ") for chr ", names(probs)[i])
+            probs[[i]] <- probs[[i]][,grid,]
+        }
     }
 
     # attribute indicating that the thing has been subsetted
