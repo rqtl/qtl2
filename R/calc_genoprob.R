@@ -109,6 +109,10 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
 
     names(probs) <- names(cross$gmap)
     attr(probs, "map") <- map
+    attr(probs, "is_x_chr") <- cross$is_x_chr
+    attr(probs, "crosstype") <- cross$crosstype
+    attr(probs, "sex") <- cross$sex
+    attr(probs, "cross_info") <- cross$cross_info
 
     probs
 }
