@@ -11,7 +11,7 @@
 #' use to convert genetic distances to recombination fractions.
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
-#' @param quiet If true, don't print any messages (
+#' @param quiet If \code{FALSE}, print progress messages.
 #' @param n_cores Number of CPU cores to use, for parallel calculations.
 #'
 #' @return A list of numeric vectors, with the estimated marker

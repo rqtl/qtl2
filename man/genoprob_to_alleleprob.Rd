@@ -7,15 +7,18 @@
 genoprob_to_alleleprob(probs, quiet = TRUE)
 }
 \arguments{
-\item{probs}{List of three-dimensional arrays of probabilities, as calculated from \code{\link{calc_genoprob}}.}
+\item{probs}{List of three-dimensional arrays of probabilities, as
+calculated from \code{\link{calc_genoprob}}.}
 
-\item{quiet}{IF \code{FALSE}, print messages on progress.}
+\item{quiet}{IF \code{FALSE}, print progress messages.}
 }
 \value{
-List of three-dimensional arrays of probabilities, regarding alleles rather than genotypes.
+List of three-dimensional arrays of probabilities,
+regarding alleles rather than genotypes.
 }
 \description{
-Reduce genotype probabilities (as calculated by \code{\link{calc_genoprob}}) to allele probabilities.
+Reduce genotype probabilities (as calculated by
+\code{\link{calc_genoprob}}) to allele probabilities.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))

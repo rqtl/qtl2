@@ -21,7 +21,7 @@ use to convert genetic distances to recombination fractions.}
 
 \item{tol}{Tolerance for determining convergence}
 
-\item{quiet}{If true, don't print any messages (}
+\item{quiet}{If \code{FALSE}, print progress messages.}
 
 \item{n_cores}{Number of CPU cores to use, for parallel calculations.}
 }

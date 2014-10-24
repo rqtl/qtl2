@@ -1,12 +1,15 @@
 # genoprob_to_alleleprob
 #' Convert genotype probabilities to allele probabilities
 #'
-#' Reduce genotype probabilities (as calculated by \code{\link{calc_genoprob}}) to allele probabilities.
+#' Reduce genotype probabilities (as calculated by
+#' \code{\link{calc_genoprob}}) to allele probabilities.
 #'
-#' @param probs List of three-dimensional arrays of probabilities, as calculated from \code{\link{calc_genoprob}}.
-#' @param quiet IF \code{FALSE}, print messages on progress.
+#' @param probs List of three-dimensional arrays of probabilities, as
+#' calculated from \code{\link{calc_genoprob}}.
+#' @param quiet IF \code{FALSE}, print progress messages.
 #'
-#' @return List of three-dimensional arrays of probabilities, regarding alleles rather than genotypes.
+#' @return List of three-dimensional arrays of probabilities,
+#' regarding alleles rather than genotypes.
 #'
 #' @export
 #' @keywords utilities
