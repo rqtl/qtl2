@@ -3,14 +3,25 @@
 #'
 #' Calculate genetic similarity among individuals from conditional genotype probabilities.
 #'
-#' @param probs List of three-dimensional arrays of probabilities, as calculated from \code{\link{calc_genoprob}}.
+#' @param probs List of three-dimensional arrays of probabilities, as
+#' calculated from \code{\link{calc_genoprob}}.
 #' @param use_grid_only If \code{TRUE} and \code{probs} were calculated with
 #' \code{stepwidth="fixed"}, reduce them to the grid using
 #' \code{\link{probs_to_grid}}.
 #' @param omit_x If \code{TRUE}, only use the autosomes.
 #' @param quiet IF \code{FALSE}, print messages on progress.
 #'
-#' @return A matrix of proportion of matching genotypes.
+#' @return A matrix of proportion of matching alleles.
+#'
+#' @details The genotype probabilities are converted to allele
+#' probabilities (using \code{\link{genoprob_to_alleleprob}}) and then
+#' we calculate \eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
+#' where \eqn{k} = position, \eqn{l} = allele, and \eqn{i,j} are two
+#' individuals.
+#'
+#' For crosses with just two possible genotypes (e.g., backcross), we
+#' don't convert to allele probabilities but just use the original
+#' genotype probabilities.
 #'
 #' @export
 #' @keywords utilities
@@ -40,7 +51,8 @@ calc_genetic_sim <-
         probs <- probs_to_grid(probs)
     }
 
-    ## FIX ME: should reduce to allele counts
+    # convert from genotype probabilities to allele probabilities
+    probs <- genoprob_to_alleleprob(probs)
 
     tot_pos <- 0
     for(i in chr) {

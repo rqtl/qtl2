@@ -49,6 +49,14 @@ test_that("calc_genetic_sim works for F2", {
     expect_equal(rownames(sim), rownames(iron$geno[[1]]))
     expect_equal(colnames(sim), rownames(iron$geno[[1]]))
 
+    f2_geno2alle <-
+        function(prob)
+        {
+            prob[,,1] <- prob[,,1]+prob[,,2]/2
+            prob[,,2] <- prob[,,3]+prob[,,2]/2
+            prob[,,1:2]
+        }
+
     # check a few values
     set.seed(54028069)
     n_ind <- nrow(probs[[1]])
@@ -57,9 +65,17 @@ test_that("calc_genetic_sim works for F2", {
         pairs <- c(pairs, list(sample(n_ind, 2), sample(n_ind, 2)))
     expected <- rep(0, length(pairs))
     tot_pos <- 0
-    for(i in which(!attr(probs_sub, "is_x_chr"))) { # just use autosomes
-        for(k in seq(along=pairs))
-            expected[k] <- expected[k] + sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
+    is_x_chr <- attr(probs_sub, "is_x_chr")
+    for(i in which(!is_x_chr)) { # just use autosomes
+        for(k in seq(along=pairs)) {
+            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+            # autosomes: convert to allele probs
+            prob_1 <- f2_geno2alle(prob_1)
+            prob_2 <- f2_geno2alle(prob_2)
+
+            expected[k] <- expected[k] + sum(prob_1 * prob_2)
+        }
         tot_pos <- tot_pos + ncol(probs_sub[[i]])
     }
     expected <- expected/tot_pos
@@ -86,8 +102,16 @@ test_that("calc_genetic_sim works for F2", {
     expected <- rep(0, length(pairs))
     tot_pos <- 0
     for(i in seq(along=probs_sub)) {
-        for(k in seq(along=pairs))
-            expected[k] <- expected[k] + sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
+        for(k in seq(along=pairs)) {
+            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+            if(!is_x_chr[i]) { # autosomes: convert to allele probs
+                prob_1 <- f2_geno2alle(prob_1)
+                prob_2 <- f2_geno2alle(prob_2)
+            }
+
+            expected[k] <- expected[k] + sum(prob_1 * prob_2)
+        }
         tot_pos <- tot_pos + ncol(probs_sub[[i]])
     }
     expected <- expected/tot_pos
