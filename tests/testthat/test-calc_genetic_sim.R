@@ -82,6 +82,28 @@ test_that("calc_genetic_sim works for F2", {
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
+    # version using genotype probabilities
+    sim <- calc_genetic_sim(probs, use_allele_probs=FALSE)
+    sim2 <- calc_genetic_sim(probs, use_allele_probs=FALSE)
+    expect_equal(sim, sim2)
+
+    # check a few values
+    expected <- rep(0, length(pairs))
+    tot_pos <- 0
+    for(i in which(!is_x_chr)) { # just use autosomes
+        for(k in seq(along=pairs)) {
+            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+
+            expected[k] <- expected[k] + sum(prob_1 * prob_2)
+        }
+        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+    }
+    expected <- expected/tot_pos
+    for(k in seq(along=pairs))
+        expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
+
+
     # also try with X chr
     sim <- calc_genetic_sim(probs, omit_x=FALSE)
 
@@ -117,4 +139,26 @@ test_that("calc_genetic_sim works for F2", {
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
+
+    # version using genotype probabilities
+    sim <- calc_genetic_sim(probs, omit_x=FALSE, use_allele_probs=FALSE)
+    sim2 <- calc_genetic_sim(probs, omit_x=FALSE, use_allele_probs=FALSE)
+    expect_equal(sim, sim2)
+
+    # check a few values
+    expected <- rep(0, length(pairs))
+    tot_pos <- 0
+    for(i in seq(along=probs_sub)) {
+        for(k in seq(along=pairs)) {
+            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+
+            expected[k] <- expected[k] + sum(prob_1 * prob_2)
+        }
+        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+    }
+    expected <- expected/tot_pos
+    for(k in seq(along=pairs))
+        expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
+
 })

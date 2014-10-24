@@ -4,10 +4,12 @@
 \alias{calc_genetic_sim}
 \title{Calculate genetic similarity among individuals}
 \usage{
-calc_genetic_sim(probs, use_grid_only = TRUE, omit_x = TRUE, quiet = TRUE)
+calc_genetic_sim(probs, use_grid_only = TRUE, omit_x = TRUE,
+  use_allele_probs = TRUE, quiet = TRUE)
 }
 \arguments{
-\item{probs}{List of three-dimensional arrays of probabilities, as calculated from \code{\link{calc_genoprob}}.}
+\item{probs}{List of three-dimensional arrays of probabilities, as
+calculated from \code{\link{calc_genoprob}}.}
 
 \item{use_grid_only}{If \code{TRUE} and \code{probs} were calculated with
 \code{stepwidth="fixed"}, reduce them to the grid using
@@ -15,13 +17,35 @@ calc_genetic_sim(probs, use_grid_only = TRUE, omit_x = TRUE, quiet = TRUE)
 
 \item{omit_x}{If \code{TRUE}, only use the autosomes.}
 
-\item{quiet}{IF \code{FALSE}, print messages on progress.}
+\item{use_allele_probs}{If \code{TRUE}, assess similarity with
+allele probabilities (that is, first run
+\code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
+probabilities.}
+
+\item{quiet}{IF \code{FALSE}, print progress messages.}
 }
 \value{
-A matrix of proportion of matching genotypes.
+A matrix of proportion of matching alleles.
 }
 \description{
 Calculate genetic similarity among individuals from conditional genotype probabilities.
+}
+\details{
+If \code{use_allele_probs=TRUE} (the default), we first
+convert the genotype probabilities are converted to allele
+probabilities (using \code{\link{genoprob_to_alleleprob}}). This is
+recommended, as then the result is like a empirical kinship
+coefficient (e.g., the expected value for an intercross is 1/2;
+using genotype probabilities, the expected value is 3/8).
+
+We then calculate
+\eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
+where \eqn{k} = position, \eqn{l} = allele, and \eqn{i,j}
+are two individuals.
+
+For crosses with just two possible genotypes (e.g., backcross), we
+don't convert to allele probabilities but just use the original
+genotype probabilities.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))

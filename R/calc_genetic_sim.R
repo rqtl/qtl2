@@ -9,15 +9,25 @@
 #' \code{stepwidth="fixed"}, reduce them to the grid using
 #' \code{\link{probs_to_grid}}.
 #' @param omit_x If \code{TRUE}, only use the autosomes.
-#' @param quiet IF \code{FALSE}, print messages on progress.
+#' @param use_allele_probs If \code{TRUE}, assess similarity with
+#' allele probabilities (that is, first run
+#' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
+#' probabilities.
+#' @param quiet IF \code{FALSE}, print progress messages.
 #'
 #' @return A matrix of proportion of matching alleles.
 #'
-#' @details The genotype probabilities are converted to allele
-#' probabilities (using \code{\link{genoprob_to_alleleprob}}) and then
-#' we calculate \eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
-#' where \eqn{k} = position, \eqn{l} = allele, and \eqn{i,j} are two
-#' individuals.
+#' @details If \code{use_allele_probs=TRUE} (the default), we first
+#' convert the genotype probabilities are converted to allele
+#' probabilities (using \code{\link{genoprob_to_alleleprob}}). This is
+#' recommended, as then the result is like a empirical kinship
+#' coefficient (e.g., the expected value for an intercross is 1/2;
+#' using genotype probabilities, the expected value is 3/8).
+#'
+#' We then calculate
+#' \eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
+#' where \eqn{k} = position, \eqn{l} = allele, and \eqn{i,j}
+#' are two individuals.
 #'
 #' For crosses with just two possible genotypes (e.g., backcross), we
 #' don't convert to allele probabilities but just use the original
@@ -32,7 +42,8 @@
 #' sim <- calc_genetic_sim(probs)
 
 calc_genetic_sim <-
-    function(probs, use_grid_only=TRUE, omit_x=TRUE, quiet=TRUE)
+    function(probs, use_grid_only=TRUE, omit_x=TRUE,
+             use_allele_probs=TRUE, quiet=TRUE)
 {
     n_ind <- nrow(probs[[1]])
     ind_names <- rownames(probs[[1]])
@@ -52,7 +63,8 @@ calc_genetic_sim <-
     }
 
     # convert from genotype probabilities to allele probabilities
-    probs <- genoprob_to_alleleprob(probs)
+    if(use_allele_probs)
+        probs <- genoprob_to_alleleprob(probs)
 
     tot_pos <- 0
     for(i in chr) {
