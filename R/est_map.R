@@ -93,5 +93,6 @@ function(cross, error_prob=1e-4,
     }
 
     names(map) <- names(cross$gmap)
+    attr(map, "is_x_chr") <- cross$is_x_chr
     map
 }
