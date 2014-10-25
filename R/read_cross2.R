@@ -462,7 +462,7 @@ function(filename)
 read_csv <-
 function(filename, sep=",", na.strings=c("NA", "-"))
 {
-    x <- data.table::fread(filename, na.strings=na.strings, sep=sep,
+    x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
                            verbose=FALSE, showProgress=FALSE, data.table=FALSE)
 
     firstcol2rownames(x)
