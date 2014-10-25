@@ -5,7 +5,7 @@
 \title{Calculate genetic similarity among individuals}
 \usage{
 calc_genetic_sim(probs, use_grid_only = TRUE, omit_x = TRUE,
-  use_allele_probs = TRUE, quiet = TRUE)
+  use_allele_probs = TRUE, quiet = TRUE, n_cores = 1)
 }
 \arguments{
 \item{probs}{List of three-dimensional arrays of probabilities, as
@@ -23,6 +23,9 @@ allele probabilities (that is, first run
 probabilities.}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
+
+\item{n_cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel]{detectCores}}.)}
 }
 \value{
 A matrix of proportion of matching alleles.

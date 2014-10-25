@@ -14,6 +14,8 @@
 #' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
 #' probabilities.
 #' @param quiet IF \code{FALSE}, print progress messages.
+#' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #'
 #' @return A matrix of proportion of matching alleles.
 #'
@@ -43,15 +45,21 @@
 
 calc_genetic_sim <-
     function(probs, use_grid_only=TRUE, omit_x=TRUE,
-             use_allele_probs=TRUE, quiet=TRUE)
+             use_allele_probs=TRUE, quiet=TRUE, n_cores=1)
 {
     n_ind <- nrow(probs[[1]])
     ind_names <- rownames(probs[[1]])
     result <- matrix(0, ncol=n_ind, nrow=n_ind)
     dimnames(result) <- list(ind_names, ind_names)
 
-    if(omit_x) chr <- which(!attr(probs, "is_x_chr"))
-    else chr <- seq(along=probs)
+    if(omit_x) chrs <- which(!attr(probs, "is_x_chr"))
+    else chrs <- seq(along=probs)
+
+    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
+    if(n_cores > 1) {
+        if(!quiet) message(" - Using ", n_cores, " cores.")
+        quiet <- TRUE # no more messages
+    }
 
     subsetted <- attr(probs, "subset")
     stepwidth <- attr(attr(probs, "map")[[1]], "stepwidth")
@@ -63,15 +71,33 @@ calc_genetic_sim <-
     }
 
     # convert from genotype probabilities to allele probabilities
-    if(use_allele_probs)
-        probs <- genoprob_to_alleleprob(probs)
-
-    tot_pos <- 0
-    for(i in chr) {
-        if(!quiet) message(" - Chr ", names(probs)[i])
-        result <- result + .calc_genetic_sim(aperm(probs[[i]], c(2,3,1)))
-        tot_pos <- tot_pos + ncol(probs[[i]])
+    if(use_allele_probs) {
+        if(!quiet) message(" - converting to allele probs")
+        probs <- genoprob_to_alleleprob(probs, quiet=quiet, n_cores=n_cores)
     }
 
+    by_chr_func <- function(chr) {
+        if(!quiet) message(" - Chr ", names(probs)[chr])
+        .calc_genetic_sim(aperm(probs[[chr]], c(2,3,1)))
+    }
+
+    if(n_cores<=1) { # no parallel processing
+        for(chr in chrs)
+            result <- result + by_chr_func(chr)
+    }
+    else {
+        if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+            cl <- parallel::makeCluster(n_cores)
+            on.exit(parallel::stopCluster(cl))
+            by_chr_res <- parallel::clusterApply(cl, chrs, by_chr_func)
+        }
+        else {
+            by_chr_res <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
+        }
+        for(chr in seq(along=by_chr_res))
+            result <- result + by_chr_res[[chr]]
+    }
+
+    tot_pos <- sum(vapply(probs, ncol, 0)[chrs])
     result/tot_pos
 }
