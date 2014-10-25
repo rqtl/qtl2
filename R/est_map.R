@@ -47,7 +47,10 @@ function(cross, error_prob=1e-4,
     map <- vector("list", length(cross$gmap))
 
     if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
-    if(n_cores > 1) quiet <- TRUE
+    if(n_cores > 1) {
+        if(!quiet) message(" - Using ", n_cores, " cores.")
+        quiet <- TRUE # no more messages
+    }
 
     founder_geno <- cross$founder_geno
     if(is.null(founder_geno))

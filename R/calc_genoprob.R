@@ -68,7 +68,10 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     stepwidth <- match.arg(stepwidth)
 
     if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
-    if(n_cores > 1) quiet <- TRUE
+    if(n_cores > 1) {
+        if(!quiet) message(" - Using ", n_cores, " cores.")
+        quiet <- TRUE # no more messages
+    }
 
     # construct map at which to do the calculations
     if(missing(pseudomarker_map))
