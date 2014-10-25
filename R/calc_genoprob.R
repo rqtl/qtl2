@@ -21,7 +21,9 @@
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
+#' @param quiet If \code{FALSE}, print progress messages.
 #' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #'
 #' @return A list of three-dimensional arrays of probabilities,
 #' individuals x positions x genotypes
@@ -55,7 +57,7 @@
 calc_genoprob <-
 function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         n_cores=1)
+         quiet=TRUE, n_cores=1)
 {
     # check inputs
     if(class(cross) != "cross2")
@@ -64,6 +66,9 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
     stepwidth <- match.arg(stepwidth)
+
+    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
+    if(n_cores > 1) quiet <- TRUE
 
     # construct map at which to do the calculations
     if(missing(pseudomarker_map))
@@ -83,6 +88,8 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         founder_geno <- create_empty_founder_geno(cross$geno)
 
     by_chr_func <- function(chr) {
+        if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
+
         pr <- .calc_genoprob(cross$crosstype, t(cross$geno[[chr]]),
                              founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female,
                              cross_info, rf[[chr]], attr(map[[chr]], "index"),

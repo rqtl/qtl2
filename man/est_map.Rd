@@ -23,7 +23,8 @@ use to convert genetic distances to recombination fractions.}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}
 
-\item{n_cores}{Number of CPU cores to use, for parallel calculations.}
+\item{n_cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel]{detectCores}}.)}
 }
 \value{
 A list of numeric vectors, with the estimated marker

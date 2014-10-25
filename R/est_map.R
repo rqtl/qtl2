@@ -13,6 +13,7 @@
 #' @param tol Tolerance for determining convergence
 #' @param quiet If \code{FALSE}, print progress messages.
 #' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #'
 #' @return A list of numeric vectors, with the estimated marker
 #' locations (in cM). The location of the initial marker on each
@@ -45,6 +46,7 @@ function(cross, error_prob=1e-4,
 
     map <- vector("list", length(cross$gmap))
 
+    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
     if(n_cores > 1) quiet <- TRUE
 
     founder_geno <- cross$founder_geno
