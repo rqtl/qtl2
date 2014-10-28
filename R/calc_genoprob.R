@@ -84,6 +84,14 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
 
     probs <- vector("list", length(map))
     rf <- lapply(map, function(m) mf(diff(m), map_function))
+
+    # deal with missing information
+    n.ind <- nrow(cross$geno[[1]])
+    chrnames <- names(cross$geno)
+    cross_info <- handle_null_crossinfo(cross$cross_info, n.ind)
+    is_female <- handle_null_isfemale(cross$is_female, n.ind)
+    is_x_chr <- handle_null_isxchr(cross$is_x_chr, chrnames)
+
     cross_info <- t(cross$cross_info)
 
     founder_geno <- cross$founder_geno
@@ -94,7 +102,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
 
         pr <- .calc_genoprob(cross$crosstype, t(cross$geno[[chr]]),
-                             founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female,
+                             founder_geno[[chr]], cross$is_x_chr[chr], is_female,
                              cross_info, rf[[chr]], attr(map[[chr]], "index"),
                              error_prob) %>% aperm(c(2,3,1))
 

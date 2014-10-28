@@ -15,7 +15,7 @@ const double RISIB::init(const int true_gen,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    const bool forward_direction = (cross_info[0] == 0); // AA female x BB male
+    const bool forward_direction = (cross_info.size()<1 || cross_info[0] == 0); // AA female x BB male
 
     if(is_x_chr) {
         if(forward_direction) {
@@ -44,7 +44,7 @@ const double RISIB::step(const int gen_left, const int gen_right, const double r
     #endif
 
     if(is_x_chr)  {
-        const bool forward_direction = (cross_info[0] == 0); // AA female x BB male
+        const bool forward_direction = (cross_info.size()<1 || cross_info[0] == 0); // AA female x BB male
 
         if(forward_direction) {
             if(gen_left == AA) {
@@ -98,7 +98,7 @@ const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr
         for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
             for(int i=0; i<n_gen_sq; i++) denom += gamma[offset+i];
 
-            if(cross_info[ind]==0) // A x B direction
+            if(cross_info.rows()<0 || cross_info[ind]==0) // A x B direction
                 sum00 += gamma[offset];
             else                   // B x A direction
                 sum00 += gamma[offset+3];

@@ -31,17 +31,16 @@ function(cross2)
     n.ind <- nrow(cross2$geno[[1]])
 
     # handle case of missing cross_info or is_female
-    cross_info <- cross2$cross_info
-    if(is.null(cross_info)) cross_info <- matrix(0L, nrow=n.ind, ncol=0)
-    is_female <- cross2$is_female
-    if(is.null(is_female)) is_female <- rep(FALSE, n.ind)
+    cross_info <- handle_null_crossinfo(cross2$cross_info, n.ind)
+    is_female <- handle_null_isfemale(cross2$is_female, n.ind)
+    is_x_chr <- handle_null_isxchr(cross2$is_x_chr, names(cross2$geno))
 
     cross_info <- t(cross_info)
 
     for(i in seq(along=cross2$geno))
         result[,i] <- .count_invalid_genotypes(cross2$crosstype,
                                                t(cross2$geno[[i]]),
-                                               cross2$is_x_chr[i],
+                                               is_x_chr[i],
                                                is_female,
                                                cross_info)
 
@@ -386,4 +385,32 @@ function(cross2)
     }
 
     result
+}
+
+handle_null_crossinfo <-
+    function(crossinfo, n_ind)
+{
+    if(is.null(crossinfo)) {
+        crossinfo <- matrix(0L, nrow=n_ind, ncol=0)
+    }
+    crossinfo
+}
+
+handle_null_isfemale <-
+    function(isfemale, n_ind)
+{
+    if(is.null(isfemale)) {
+        isfemale <- rep(FALSE, n_ind)
+    }
+    isfemale
+}
+
+handle_null_isxchr <-
+    function(is_x_chr, chrnames)
+{
+    if(is.null(is_x_chr)) {
+        is_x_chr <- rep(FALSE, length(chrnames))
+        names(is_x_chr) <- chrnames
+    }
+    is_x_chr
 }

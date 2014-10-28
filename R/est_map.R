@@ -41,8 +41,14 @@ function(cross, error_prob=1e-4,
     if(maxit < 0) stop("maxit must be >= 0")
     if(tol <= 0) stop("tol must be > 0")
 
-    cross_info <- t(cross$cross_info)
-    is_female <- cross$is_female
+    # deal with missing information
+    n.ind <- nrow(cross$geno[[1]])
+    chrnames <- names(cross$geno)
+    cross_info <- handle_null_crossinfo(cross$cross_info, n.ind)
+    is_female <- handle_null_isfemale(cross$is_female, n.ind)
+    is_x_chr <- handle_null_isxchr(cross$is_x_chr, chrnames)
+
+    cross_info <- t(cross_info)
 
     map <- vector("list", length(cross$gmap))
 
@@ -70,7 +76,7 @@ function(cross, error_prob=1e-4,
         keep <- (ntyped >= 2)
 
         rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
-                       founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[keep],
+                       founder_geno[[chr]], is_x_chr[chr], is_female[keep],
                        cross_info[,keep,drop=FALSE],
                        diff(gmap) %>% mf(map_function), # positions to inter-marker rec frac
                        error_prob, maxit, tol, !quiet)
@@ -98,6 +104,6 @@ function(cross, error_prob=1e-4,
     }
 
     names(map) <- names(cross$gmap)
-    attr(map, "is_x_chr") <- cross$is_x_chr
+    attr(map, "is_x_chr") <- is_x_chr
     map
 }
