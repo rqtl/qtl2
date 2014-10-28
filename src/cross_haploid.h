@@ -3,6 +3,8 @@
 #ifndef CROSS_HAPLOID_H
 #define CROSS_HAPLOID_H
 
+#include "r_message.h"
+
 class HAPLOID : public QTLCross
 {
  public:
@@ -17,7 +19,7 @@ class HAPLOID : public QTLCross
     const bool check_handle_x_chr(const bool any_x_chr)
     {
         if(any_x_chr) {
-            //REprintf("X chr ignored for haploids.\n");
+            r_message("X chr ignored for haploids.");
             return false;
         }
 

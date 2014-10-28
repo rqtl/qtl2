@@ -4,6 +4,7 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_bc.h"
+#include "r_message.h"
 
 enum gen {AA=1, AB=2, BB=3, AY=3, BY=4};
 
@@ -124,13 +125,13 @@ const bool BC::check_is_female_vector(const LogicalVector& is_female, const bool
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
             result = true; // don't call this an error
-            //REprintf("is_female included but not needed without X chromosome\n");
+            r_message("is_female included but not needed without X chromosome");
         }
     }
     else { // X chr included
         if(n == 0) {
             result = false;
-            //REprintf("is_female not provided, but needed to handle X chromosome\n");
+            r_message("is_female not provided, but needed to handle X chromosome");
         }
         else {
             unsigned int n_missing = 0;
@@ -138,7 +139,7 @@ const bool BC::check_is_female_vector(const LogicalVector& is_female, const bool
                 if(is_female[i] == NA_LOGICAL) ++n_missing;
             if(n_missing > 0) {
                 result = false;
-                //REprintf("%d missing is_female values; is_female should not be missing.\n", n_missing);
+                r_message("is_female contains missing values (it shouldn't)");
             }
         }
     }

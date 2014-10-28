@@ -3,6 +3,8 @@
 #ifndef CROSS_DH_H
 #define CROSS_DH_H
 
+#include "r_message.h"
+
 class DH : public QTLCross
 {
  public:
@@ -17,7 +19,7 @@ class DH : public QTLCross
     const bool check_handle_x_chr(const bool any_x_chr)
     {
         if(any_x_chr) {
-            //REprintf("X chr ignored for doubled haploids.\n");
+            r_message("X chr ignored for doubled haploids.");
             return false;
         }
 

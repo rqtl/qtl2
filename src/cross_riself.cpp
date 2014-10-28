@@ -4,6 +4,7 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_riself.h"
+#include "r_message.h"
 
 enum gen {AA=1, BB=2};
 
@@ -34,7 +35,7 @@ const double RISELF::est_rec_frac(const NumericVector& gamma, const bool is_x_ch
 const bool RISELF::check_handle_x_chr(const bool any_x_chr)
 {
     if(any_x_chr) {
-        //REprintf("X chr ignored for RIL by selfing.\n");
+        r_message("X chr ignored for RIL by selfing.");
         return false;
     }
 

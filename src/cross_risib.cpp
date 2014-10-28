@@ -4,6 +4,7 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_risib.h"
+#include "r_message.h"
 
 enum gen {AA=1, BB=2};
 
@@ -130,17 +131,17 @@ const bool RISIB::check_crossinfo(const IntegerMatrix& cross_info, const bool an
     if(!any_x_chr) { // all autosomes
         if(n_col > 0) {
             result = true; // don't call this an error
-            //REprintf("cross_info included but not needed without X chromosome\n");
+            r_message("cross_info included but not needed without X chromosome");
         }
     }
     else { // X chr included
         if(n_col == 0) {
             result = false;
-            //REprintf("cross_info not provided, but needed to handle X chromosome\n");
+            r_message("cross_info not provided, but needed to handle X chromosome");
         }
         else if(n_col > 1) {
             result = false;
-            //REprintf("cross_info has %d columns, but should have just 1\n", n_col);
+            r_message("cross_info has >1 columns, but should have just 1");
         }
         else {
             unsigned int n_missing = 0;
@@ -148,7 +149,7 @@ const bool RISIB::check_crossinfo(const IntegerMatrix& cross_info, const bool an
                 if(cross_info[i] == NA_INTEGER) ++n_missing;
             if(n_missing > 0) {
                 result = false;
-                //REprintf("%d missing cross_info values; cross_info should not be missing.\n", n_missing);
+                r_message("cross_info contains missing values (it shouldn't)");
             }
 
             unsigned int n_invalid = 0;
@@ -156,7 +157,7 @@ const bool RISIB::check_crossinfo(const IntegerMatrix& cross_info, const bool an
                 if(cross_info[i] != NA_INTEGER && cross_info[i] != 0 && cross_info[i] != 1) ++n_invalid;
             if(n_invalid > 0) {
                 result = false;
-                //REprintf("%d invalid cross_info values; cross_info should be 0 or 1.\n", n_invalid);
+                r_message("cross_info contains invalid values; should be 0 or 1.");
             }
         }
     }
