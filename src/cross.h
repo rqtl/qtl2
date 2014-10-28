@@ -19,6 +19,8 @@ public:
 
     static QTLCross* Create(const String& crosstype);
 
+    virtual ~QTLCross(){};
+
     virtual const bool check_geno(const int gen, const bool is_observed_value,
                                   const bool is_x_chr, const bool is_female,
                                   const IntegerVector& cross_info)

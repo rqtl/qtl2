@@ -25,9 +25,11 @@ NumericVector est_map(const String& crosstype,
     int n_mar = genotypes.rows();
     int n_rf = n_mar-1;
 
-    QTLCross* cross = QTLCross::Create(crosstype);
-    if(cross->crosstype != cross->phase_known_crosstype) // get phase-known version of cross
-        cross = QTLCross::Create(cross->phase_known_crosstype);
+    QTLCross* cross_pu = QTLCross::Create(crosstype);
+    QTLCross* cross;
+    if(cross_pu->crosstype != cross_pu->phase_known_crosstype) // get phase-known version of cross
+        cross = QTLCross::Create(cross_pu->phase_known_crosstype);
+    else cross = cross_pu;
 
     // check inputs
     if(is_female.size() != n_ind)
@@ -184,5 +186,7 @@ NumericVector est_map(const String& crosstype,
     }
 
     cur_rec_frac.attr("loglik") = loglik;
+    if(cross_pu != cross) delete cross_pu;
+    delete cross;
     return cur_rec_frac;
 }

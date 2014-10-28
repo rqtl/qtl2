@@ -29,7 +29,7 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
     if(n_allele == 0) { // no conversion needed
         NumericVector result(clone(prob_array));
         result.attr("dim") = Dimension(n_gen, n_ind, n_pos);
-
+        delete cross;
         return result;
     }
     else {
@@ -48,7 +48,8 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
         }
 
         result.attr("dim") = Dimension(n_allele, n_ind, n_pos);
-
+        delete cross;
         return result;
     }
+
 }

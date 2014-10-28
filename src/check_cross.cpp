@@ -12,7 +12,11 @@ bool crosstype_supported(const String& crosstype)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->crosstype_supported();
+    bool result = cross->crosstype_supported();
+
+    delete cross;
+
+    return result;
 }
 
 // count inconsistencies in marker data
@@ -42,6 +46,8 @@ IntegerVector count_invalid_genotypes(const String& crosstype,
         result[ind] = n_mar - result[ind];
     }
 
+    delete cross;
+
     return result;
 }
 
@@ -53,7 +59,11 @@ bool check_crossinfo(const String& crosstype,
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->check_crossinfo(cross_info, any_x_chr);
+    bool result = cross->check_crossinfo(cross_info, any_x_chr);
+
+    delete cross;
+
+    return result;
 }
 
 // check is_female vector
@@ -64,7 +74,11 @@ bool check_is_female_vector(const String& crosstype,
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->check_is_female_vector(is_female, any_x_chr);
+    bool result = cross->check_is_female_vector(is_female, any_x_chr);
+
+    delete cross;
+
+    return result;
 }
 
 // check if X chr can be handled
@@ -74,5 +88,9 @@ bool check_handle_x_chr(const String& crosstype,
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    return cross->check_handle_x_chr(any_x_chr);
+    bool result = cross->check_handle_x_chr(any_x_chr);
+
+    delete cross;
+
+    return result;
 }

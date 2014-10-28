@@ -76,6 +76,8 @@ NumericVector calc_genoprob(const String& crosstype,
             }
         }
     } // loop over individuals
+
     genoprobs.attr("dim") = Dimension(n_gen, n_ind, n_pos);
+    delete cross;
     return genoprobs;
 }
