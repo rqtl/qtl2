@@ -29,3 +29,14 @@ const double RISELF::est_rec_frac(const NumericVector& gamma, const bool is_x_ch
 
     return 0.5*R/(1-R);
 }
+
+// check whether X chr can be handled
+const bool RISELF::check_handle_x_chr(const bool any_x_chr)
+{
+    if(any_x_chr) {
+        //REprintf("X chr ignored for RIL by selfing.\n");
+        return false;
+    }
+
+    return true; // most crosses can handle the X chr
+}

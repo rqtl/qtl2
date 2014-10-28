@@ -13,6 +13,18 @@
     .Call('qtl2_count_invalid_genotypes', PACKAGE = 'qtl2', crosstype, genotypes, is_X_chr, is_female, cross_info)
 }
 
+check_crossinfo <- function(crosstype, cross_info, any_x_chr) {
+    .Call('qtl2_check_crossinfo', PACKAGE = 'qtl2', crosstype, cross_info, any_x_chr)
+}
+
+check_is_female_vector <- function(crosstype, is_female, any_x_chr) {
+    .Call('qtl2_check_is_female_vector', PACKAGE = 'qtl2', crosstype, is_female, any_x_chr)
+}
+
+check_handle_x_chr <- function(crosstype, any_x_chr) {
+    .Call('qtl2_check_handle_x_chr', PACKAGE = 'qtl2', crosstype, any_x_chr)
+}
+
 .genoprob_to_alleleprob <- function(crosstype, prob_array, is_x_chr) {
     .Call('qtl2_genoprob_to_alleleprob', PACKAGE = 'qtl2', crosstype, prob_array, is_x_chr)
 }

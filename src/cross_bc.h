@@ -30,6 +30,9 @@ class BC : public QTLCross
     const double nrec(const int gen_left, const int gen_right,
                       const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info);
+
+    const bool check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr);
+
 };
 
 #endif // CROSS_BC_H

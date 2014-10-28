@@ -44,3 +44,35 @@ IntegerVector count_invalid_genotypes(const String& crosstype,
 
     return result;
 }
+
+// check cross info
+// [[Rcpp::export]]
+bool check_crossinfo(const String& crosstype,
+                     const IntegerMatrix& cross_info,
+                     const bool any_x_chr)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    return cross->check_crossinfo(cross_info, any_x_chr);
+}
+
+// check is_female vector
+// [[Rcpp::export]]
+bool check_is_female_vector(const String& crosstype,
+                            const LogicalVector& is_female,
+                            const bool any_x_chr)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    return cross->check_is_female_vector(is_female, any_x_chr);
+}
+
+// check if X chr can be handled
+// [[Rcpp::export]]
+bool check_handle_x_chr(const String& crosstype,
+                        const bool any_x_chr)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    return cross->check_handle_x_chr(any_x_chr);
+}

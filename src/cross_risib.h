@@ -21,6 +21,9 @@ class RISIB : public QTLCross
 
     const double est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
                               const IntegerMatrix& cross_info, const int n_gen);
+
+    const bool check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr);
+
 };
 
 #endif // CROSS_RISIB_H

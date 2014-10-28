@@ -28,13 +28,21 @@ function(cross2)
     dimnames(result) <- list(rownames(cross2$geno[[1]]),
                              names(cross2$geno))
 
-    cross_info <- t(cross2$cross_info)
+    n.ind <- nrow(cross2$geno[[1]])
+
+    # handle case of missing cross_info or is_female
+    cross_info <- cross2$cross_info
+    if(is.null(cross_info)) cross_info <- matrix(0L, nrow=n.ind, ncol=0)
+    is_female <- cross2$is_female
+    if(is.null(is_female)) is_female <- rep(FALSE, n.ind)
+
+    cross_info <- t(cross_info)
 
     for(i in seq(along=cross2$geno))
         result[,i] <- .count_invalid_genotypes(cross2$crosstype,
                                                t(cross2$geno[[i]]),
                                                cross2$is_x_chr[i],
-                                               cross2$is_female,
+                                               is_female,
                                                cross_info)
 
     result
@@ -68,17 +76,19 @@ function(cross2)
     #     crosstype
     #     geno
     #     gmap
-    #     is_female
     #     is_x_chr
+
+    # sometimes required
+    #     is_female
     #     cross_info
+    #     linemap (required if nrow(pheno) != nrow(geno[[1]])
+    #     foundergeno (required for many crosstypes...add need_foundergeno function?)
 
     # optional pieces
     #     pheno
     #     covar
     #     phenocovar
     #     pmap
-    #     linemap (but required if nrow(pheno) != nrow(geno[[1]])
-    #     foundergeno (required for many crosstypes...add need_foundergeno function?)
 
     crosstype <- cross2$crosstype
     if(is.null(crosstype)) {
@@ -96,29 +106,48 @@ function(cross2)
         result <- FALSE
         warning("geno is missing")
     }
+
     gmap <- cross2$gmap
     if(is.null(gmap)) {
         result <- FALSE
         warning("gmap is missing")
     }
-    is_female <- cross2$is_female
-    if(is.null(is_female)) {
-        result <- FALSE
-        warning("is_female is missing")
-    }
-    cross_info <- cross2$cross_info
-    if(is.null(cross_info)) {
-        result <- FALSE
-        warning("cross_info is missing")
-    }
+
+    # if either of those pieces is missing, we'll just return
+    if(!result) return(result)
+
+    # generally required pieces, but not worth stopping
     is_x_chr <- cross2$is_x_chr
     if(is.null(is_x_chr)) {
         result <- FALSE
         warning("is_x_chr is missing")
+        is_x_chr <- rep(FALSE, length(geno))
+        names(is_x_chr) <- names(geno)
+        cross2$is_x_chr <- is_x_chr
     }
 
-    # if any of those pieces is missing, we'll just return
-    if(!result) return(result)
+    if(!check_handle_x_chr(crosstype, any(is_x_chr))) {
+        result <- FALSE
+        warning("X chr not handled for cross type ", crosstype)
+    }
+
+    is_female <- cross2$is_female
+    to_pass <- is_female
+    if(is.null(to_pass)) to_pass <- logical(0)
+    if(!check_is_female_vector(crosstype, to_pass, any(is_x_chr))) {
+        result <- FALSE
+        if(is.null(is_female)) warning("is_female is missing")
+        else warning("is_female is misspecified")
+    }
+
+    cross_info <- cross2$cross_info
+    to_pass <- cross_info
+    if(is.null(to_pass)) to_pass <- matrix(0L,0,0)
+    if(!check_crossinfo(crosstype, to_pass, any(is_x_chr))) {
+        result <- FALSE
+        if(is.null(cross_info)) warning("cross_info is missing")
+        else warning("cross_info is misspecified")
+    }
 
     # pheno
     pheno <- cross2$pheno
@@ -219,35 +248,44 @@ function(cross2)
     }
 
     # compare geno to is_female
-    if(nrow(geno[[1]]) != length(is_female)) {
-        result <- FALSE
-        warning("length(is_female) (", length(is_female), ") != nrow(geno[[1]]) (", nrow(geno[[1]]), ")")
-    }
-    else if(any(names(is_female) != rownames(geno[[1]]))) {
-        result <- FALSE
-        warning("names(is_female) != rownames(geno[[1]])")
-    }
-    if(!is.logical(is_female)) {
-        result <- FALSE
-        warning("is_female is not logical")
+    is_female <- cross2$is_female
+    if(!is.null(is_female)) {
+        if(nrow(geno[[1]]) != length(is_female)) {
+            result <- FALSE
+            warning("length(is_female) (", length(is_female), ") != nrow(geno[[1]]) (", nrow(geno[[1]]), ")")
+        }
+        else if(any(names(is_female) != rownames(geno[[1]]))) {
+            result <- FALSE
+            warning("names(is_female) != rownames(geno[[1]])")
+        }
+        if(!is.logical(is_female)) {
+            result <- FALSE
+            warning("is_female is not logical")
+        }
+        if(any(is.na(is_female))) {
+            result <- FALSE
+            warning("is_female has ", sum(is.na(is_female)), " missing values")
+        }
     }
 
     # compare geno to cross_info
-    if(nrow(geno[[1]]) != nrow(cross_info)) {
-        result <- FALSE
-        warning("nrow(cross_info) (", nrow(cross_info), ") != nrow(geno[[1]]) (", nrow(geno[[1]]), ")")
-    }
-    else if(any(rownames(cross_info) != rownames(geno[[1]]))) {
-        result <- FALSE
-        warning("rownames(cross_info) != rownames(geno[[1]])")
-    }
-    if(!is.matrix(cross_info)) {
-        result <- FALSE
-        warning("cross_info is not a matrix")
-    }
-    if(storage.mode(cross_info) != "integer") {
-        result <- FALSE
-        warning("cross_info is not stored as integers but rather ", storage.mode(cross_info))
+    if(!is.null(cross_info)) {
+        if(nrow(geno[[1]]) != nrow(cross_info)) {
+            result <- FALSE
+            warning("nrow(cross_info) (", nrow(cross_info), ") != nrow(geno[[1]]) (", nrow(geno[[1]]), ")")
+        }
+        else if(any(rownames(cross_info) != rownames(geno[[1]]))) {
+            result <- FALSE
+            warning("rownames(cross_info) != rownames(geno[[1]])")
+        }
+        if(!is.matrix(cross_info)) {
+            result <- FALSE
+            warning("cross_info is not a matrix")
+        }
+        if(storage.mode(cross_info) != "integer") {
+            result <- FALSE
+            warning("cross_info is not stored as integers but rather ", storage.mode(cross_info))
+        }
     }
 
     # check is_x_chr
@@ -349,4 +387,3 @@ function(cross2)
 
     result
 }
-

@@ -41,6 +41,10 @@ class F2PK : public QTLCross
 
     const NumericMatrix geno2allele_matrix(const bool is_x_chr);
 
+    const bool check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr);
+
+    const bool check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr);
+
 };
 
 #endif // CROSS_F2PK_H

@@ -115,3 +115,32 @@ const double BC::nrec(const int gen_left, const int gen_right,
     if(gen_left == gen_right) return 0.0;
     else return 1.0;
 }
+
+// check that sex conforms to expectation
+const bool BC::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
+{
+    bool result = true;
+    const unsigned int n = is_female.size();
+    if(!any_x_chr) { // all autosomes
+        if(n > 0) {
+            result = true; // don't call this an error
+            //REprintf("is_female included but not needed without X chromosome\n");
+        }
+    }
+    else { // X chr included
+        if(n == 0) {
+            result = false;
+            //REprintf("is_female not provided, but needed to handle X chromosome\n");
+        }
+        else {
+            unsigned int n_missing = 0;
+            for(unsigned int i=0; i<n; i++)
+                if(is_female[i] == NA_LOGICAL) ++n_missing;
+            if(n_missing > 0) {
+                result = false;
+                //REprintf("%d missing is_female values; is_female should not be missing.\n", n_missing);
+            }
+        }
+    }
+    return result;
+}

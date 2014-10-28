@@ -55,6 +55,56 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// check_crossinfo
+bool check_crossinfo(const String& crosstype, const IntegerMatrix& cross_info, const bool any_x_chr);
+RcppExport SEXP qtl2_check_crossinfo(SEXP crosstypeSEXP, SEXP cross_infoSEXP, SEXP any_x_chrSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
+        Rcpp::traits::input_parameter< const bool >::type any_x_chr(any_x_chrSEXP );
+        bool __result = check_crossinfo(crosstype, cross_info, any_x_chr);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// check_is_female_vector
+bool check_is_female_vector(const String& crosstype, const LogicalVector& is_female, const bool any_x_chr);
+RcppExport SEXP qtl2_check_is_female_vector(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP any_x_chrSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
+        Rcpp::traits::input_parameter< const bool >::type any_x_chr(any_x_chrSEXP );
+        bool __result = check_is_female_vector(crosstype, is_female, any_x_chr);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// check_handle_x_chr
+bool check_handle_x_chr(const String& crosstype, const bool any_x_chr);
+RcppExport SEXP qtl2_check_handle_x_chr(SEXP crosstypeSEXP, SEXP any_x_chrSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
+        Rcpp::traits::input_parameter< const bool >::type any_x_chr(any_x_chrSEXP );
+        bool __result = check_handle_x_chr(crosstype, any_x_chr);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // genoprob_to_alleleprob
 NumericVector genoprob_to_alleleprob(const String& crosstype, const NumericVector& prob_array, const bool is_x_chr);
 RcppExport SEXP qtl2_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {

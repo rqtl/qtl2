@@ -296,3 +296,75 @@ const NumericMatrix F2PK::geno2allele_matrix(const bool is_x_chr)
 
     return result;
 }
+
+// check that sex conforms to expectation
+const bool F2PK::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
+{
+    bool result = true;
+    const unsigned int n = is_female.size();
+    if(!any_x_chr) { // all autosomes
+        if(n > 0) {
+            result = true; // don't call this an error
+            //REprintf("is_female included but not needed without X chromosome\n");
+        }
+    }
+    else { // X chr included
+        if(n == 0) {
+            result = false;
+            //REprintf("is_female not provided, but needed to handle X chromosome\n");
+        }
+        else {
+            unsigned int n_missing = 0;
+            for(unsigned int i=0; i<n; i++)
+                if(is_female[i] == NA_LOGICAL) ++n_missing;
+            if(n_missing > 0) {
+                result = false;
+                //REprintf("%d missing is_female values; is_female should not be missing.\n", n_missing);
+            }
+        }
+    }
+    return result;
+}
+
+// check that cross_info conforms to expectation
+const bool F2PK::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
+{
+    bool result = true;
+    const unsigned int n_row = cross_info.rows();
+    const unsigned int n_col = cross_info.cols();
+
+    if(!any_x_chr) { // all autosomes
+        if(n_col > 0) {
+            result = true; // don't call this an error
+            //REprintf("cross_info included but not needed without X chromosome\n");
+        }
+    }
+    else { // X chr included
+        if(n_col == 0) {
+            result = false;
+            //REprintf("cross_info not provided, but needed to handle X chromosome\n");
+        }
+        else if(n_col > 1) {
+            result = false;
+            //REprintf("cross_info has %d columns, but should have just 1\n", n_col);
+        }
+        else {
+            unsigned int n_missing = 0;
+            for(unsigned int i=0; i<n_row; i++)
+                if(cross_info[i] == NA_INTEGER) ++n_missing;
+            if(n_missing > 0) {
+                result = false;
+                //REprintf("%d missing cross_info values; cross_info should not be missing.\n", n_missing);
+            }
+
+            unsigned int n_invalid = 0;
+            for(unsigned int i=0; i<n_row; i++)
+                if(cross_info[i] != NA_INTEGER && cross_info[i] != 0 && cross_info[i] != 1) ++n_invalid;
+            if(n_invalid > 0) {
+                result = false;
+                //REprintf("%d invalid cross_info values; cross_info should be 0 or 1.\n", n_invalid);
+            }
+        }
+    }
+    return result;
+}
