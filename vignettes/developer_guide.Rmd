@@ -463,7 +463,7 @@ For more detail, see
 
 - basic layout; what's needed in order to implement a new
   cross type; weaknesses in the design
-- for est_map, potentially need separate phase-known class
+- for `est_map`, we potentially need a separate phase-known class
   (explain why, and how this is done)
 
 ## Linear regression details
