@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Sample input data files
+description: Sample input data files for the R/qtl2 package
 ---
 
 The internal data structure for [R/qtl2](http://kbroman.org/qtl2) is
@@ -63,7 +64,7 @@ Data from [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.go
   the tissues that were measured).
 
 You can load these data into R as follows:
-  
+
     library(qtl2)
     iron <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/iron/iron.yaml")
 

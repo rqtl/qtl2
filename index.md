@@ -2,6 +2,7 @@
 layout: page
 title: R/qtl2
 tagline: QTL analysis for high-dimensional data and complex crosses
+description: R/qtl2, a reimplementation of R/qtl to better handle high-dimensional data and complex cross designs
 ---
 
 R/qtl2 (aka qtl2) is a reimplementation of the QTL analysis software
