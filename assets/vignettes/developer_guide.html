@@ -1,257 +1,61 @@
 <!DOCTYPE html>
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
 
 <title>R/qtl2 developer guide</title>
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
 
 
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
-}
-</style>
-
-
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{R/qtl2 developer guide}
--->
 
-<h1>R/qtl2 developer guide</h1>
 
-<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software
-<a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data
-and complex cross designs.</p>
 
-<p>In this document, we&#39;ll describe the technical details of interest to
-developers wishing to contribute to R/qtl2.</p>
+<div id="header">
+<h1 class="title">R/qtl2 developer guide</h1>
+</div>
 
+
+<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
+<p>In this document, we’ll describe the technical details of interest to developers wishing to contribute to R/qtl2.</p>
 <p>There are three basic aspects to the software:</p>
-
 <ul>
-<li>A hidden Markov model (HMM) to calculate QTL genotype probabilities
-given genetic marker data, and to estimate genetic maps. This is
-coded in C++, in a general way. Each possible cross type is a class,
-inherited from the class <code>QTLCross</code>. We&#39;re using
-<a href="http://rcpp.org">Rcpp</a> to connect from R to C++.</li>
-<li>Linear regression for QTL mapping by Haley-Knott regression. We&#39;re
-using <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a> and the
-<a href="http://eigen.tuxfamily.org/">Eigen linear algebra library</a>.</li>
-<li>Linear mixed models for handling varying relatedness among
-individuals. We&#39;ve not yet decided on the basic implementation;
-likely we&#39;ll follow the <a href="http://github.com/lme4/lme4">lme4 package</a>.<br/></li>
+<li>A hidden Markov model (HMM) to calculate QTL genotype probabilities given genetic marker data, and to estimate genetic maps. This is coded in C++, in a general way. Each possible cross type is a class, inherited from the class <code>QTLCross</code>. We’re using <a href="http://rcpp.org">Rcpp</a> to connect from R to C++.</li>
+<li>Linear regression for QTL mapping by Haley-Knott regression. We’re using <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a> and the <a href="http://eigen.tuxfamily.org/">Eigen linear algebra library</a>.</li>
+<li>Linear mixed models for handling varying relatedness among individuals. We’ve not yet decided on the basic implementation; likely we’ll follow the <a href="http://github.com/lme4/lme4">lme4 package</a>.</li>
 </ul>
-
-<p>We are redefining the basic data structures to be more general (to
-handle more complex crosses, such as the Collaborative Cross, MAGIC lines, and
-Diversity Outcross), and to incorporate more information, such as
-annotations of the phenotypes (for example, with gene expression data,
-the gene identifiers, physical locations of genes, and the tissue that
-was measured).</p>
-
+<p>We are redefining the basic data structures to be more general (to handle more complex crosses, such as the Collaborative Cross, MAGIC lines, and Diversity Outcross), and to incorporate more information, such as annotations of the phenotypes (for example, with gene expression data, the gene identifiers, physical locations of genes, and the tissue that was measured).</p>
 <p>We are also redefining the input data file formats.</p>
-
+<div id="qtl-data-structure" class="section level2">
 <h2>QTL data structure</h2>
-
-<p>The basic data structure in <a href="http://www.rqtl.org">R/qtl</a>, the
-<code>&quot;cross&quot;</code> class, has been redesigned.</p>
-
-<p>A basic principle in the new design is to have the data as close as
-possible in the form in which it will be used, and to have a more-flat
-(i.e., less nested) data structure. So don&#39;t entangle the marker maps
-with the genotype data, and pull out the sex information rather than
-have to find it within the phenotype data whenever it is needed.</p>
-
-<p>A key design decision concerns whether to split out the genotype data
-and marker maps by chromosome, or to keep them as a simpler table. I&#39;m
-choosing to have these data split out by chromosome, as much of the
-analysis tends to proceed by chromosome, and it tends to be easier to
-combine then to split.</p>
-
+<p>The basic data structure in <a href="http://www.rqtl.org">R/qtl</a>, the <code>&quot;cross&quot;</code> class, has been redesigned.</p>
+<p>A basic principle in the new design is to have the data as close as possible in the form in which it will be used, and to have a more-flat (i.e., less nested) data structure. So don’t entangle the marker maps with the genotype data, and pull out the sex information rather than have to find it within the phenotype data whenever it is needed.</p>
+<p>A key design decision concerns whether to split out the genotype data and marker maps by chromosome, or to keep them as a simpler table. I’m choosing to have these data split out by chromosome, as much of the analysis tends to proceed by chromosome, and it tends to be easier to combine then to split.</p>
 <p><strong>Note: I am fully open to modifying this design. I would be glad for suggestions.</strong></p>
-
-<p>The data remains a list, now of class <code>&quot;cross2&quot;</code>. It has many
-components (some of them optional) in unspecified order; the names of
-the components are what matter.</p>
-
-<p>For some cross types (e.g., recombinant inbred lines), we will
-separate &ldquo;lines&rdquo; from &ldquo;individuals.&rdquo; Genotype
-data will be on the lines, while phenotype data will be on the
-individuals. In this case we will need a mapping from individuals to
-lines, <code>&quot;linemap&quot;</code> (more below). (For a cross type for which the
-phenotyped individuals are also the phenotyped ones (e.g., the
-Diversity Outcross), think &ldquo;individual&rdquo; wherever we write
-&ldquo;line.&rdquo;)</p>
-
+<p>The data remains a list, now of class <code>&quot;cross2&quot;</code>. It has many components (some of them optional) in unspecified order; the names of the components are what matter.</p>
+<p>For some cross types (e.g., recombinant inbred lines), we will separate “lines” from “individuals.” Genotype data will be on the lines, while phenotype data will be on the individuals. In this case we will need a mapping from individuals to lines, <code>&quot;linemap&quot;</code> (more below). (For a cross type for which the phenotyped individuals are also the phenotyped ones (e.g., the Diversity Outcross), think “individual” wherever we write “line.”)</p>
+<div id="cross-type-crosstype" class="section level3">
 <h3>Cross type (<code>&quot;crosstype&quot;</code>)</h3>
-
-<p>Previously, the cross type (e.g., <code>&quot;bc&quot;</code> for backcross and <code>&quot;f2&quot;</code> for
-intercross) was part of the <code>&quot;class&quot;</code>. This was a bad idea.</p>
-
-<p>Now, the data will have a component <code>&quot;crosstype&quot;</code> that is a single
-character string with the cross type:</p>
-
+<p>Previously, the cross type (e.g., <code>&quot;bc&quot;</code> for backcross and <code>&quot;f2&quot;</code> for intercross) was part of the <code>&quot;class&quot;</code>. This was a bad idea.</p>
+<p>Now, the data will have a component <code>&quot;crosstype&quot;</code> that is a single character string with the cross type:</p>
 <ul>
 <li><code>&quot;bc&quot;</code> for backcross</li>
 <li><code>&quot;f2&quot;</code> for intercross</li>
 <li><code>&quot;riself&quot;</code> for 2-way RIL by selfing</li>
 <li><code>&quot;risib&quot;</code> for 2-way RIL by sib-mating</li>
-<li><code>&quot;dh&quot;</code> for doubled haploids (like a backcross, but with genotype
-codes AA/BB)</li>
+<li><code>&quot;dh&quot;</code> for doubled haploids (like a backcross, but with genotype codes AA/BB)</li>
 <li><code>&quot;haploid&quot;</code> for haploids (like a backcross, but with genotype codes A/B)</li>
 <li><code>&quot;ail&quot;</code> for 2-way advanced intercross lines</li>
 <li><code>&quot;mwriself&quot;</code> for 2<sup>k</sup>-way RIL by selfing</li>
@@ -261,189 +65,79 @@ codes AA/BB)</li>
 <li><code>&quot;do&quot;</code> for diversity outcross</li>
 <li><code>&quot;hs&quot;</code> for 8-way heterogeneous stock</li>
 </ul>
-
 <p>Most of these have not yet been implemented.</p>
-
+</div>
+<div id="genotype-data-geno" class="section level3">
 <h3>Genotype data (<code>&quot;geno&quot;</code>)</h3>
-
-<p>The previous data structure had deep nesting of information; we&#39;re going
-to split that out and make things more flat. The genotype data will
-now be a list of matrices of integers. Each component of the
-list is a chromosome; the names are the chromosome names. Each
-chromosome has a matrix of <code>n_lines</code> x <code>n_markers</code>.</p>
-
-<p>The column names are the marker names, and the row names are the line
-identifiers (hereafter &ldquo;IDs&rdquo;).</p>
-
-<p>The genotypes are observed marker genotypes, represented as
-integers. Missing values are coded as 0 (not <code>NA</code>, as in R/qtl). For
-simple crosses, the autosomal genotypes are coded as before.</p>
-
+<p>The previous data structure had deep nesting of information; we’re going to split that out and make things more flat. The genotype data will now be a list of matrices of integers. Each component of the list is a chromosome; the names are the chromosome names. Each chromosome has a matrix of <code>n_lines</code> x <code>n_markers</code>.</p>
+<p>The column names are the marker names, and the row names are the line identifiers (hereafter “IDs”).</p>
+<p>The genotypes are observed marker genotypes, represented as integers. Missing values are coded as 0 (not <code>NA</code>, as in R/qtl). For simple crosses, the autosomal genotypes are coded as before.</p>
 <ul>
 <li>riself, risib, dh, haploid: <code>1</code>/<code>2</code> for (AA/BB or A/B)</li>
 <li>backcross: <code>1</code>/<code>2</code> for autosomes (for AA/AB)</li>
 <li>intercross: <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code>/<code>5</code> for autosomes (for AA/AB/BB/notBB/notAA)</li>
 </ul>
-
-<p>However, we&#39;re <strong>changing the encoding of X chromosome genotypes</strong> to
-have males coded as if they were homozygous.  In an intercross, the X
-chromosome encodings are <code>1</code>/<code>2</code>/<code>3</code> for females (<code>1</code>/<code>2</code> for the forward
-direction and <code>2</code>/<code>3</code> for the reverse), and <code>1</code>/<code>3</code> for males. In a backcross,
-the females are <code>1</code>/<code>2</code> and the males are <code>1</code>/<code>3</code>.</p>
-
-<p>For crosses with &gt; 2 founders, I&#39;m expecting SNPs, and intending,
-initially, to assume that the markers are diallelic, encoded
-<code>1</code>/<code>2</code>/<code>3</code> (with <code>2</code> being the heterozygote).</p>
-
-<p>All of the above is under the assumption that we&#39;re using <em>genotypes
-calls</em> as the basic marker genotype information. Of course, we will
-also want to handle genotype-by-sequencing (GBS) data (which might be
-represented as a pair of allele counts), or array intensity
-information (which would be represented as a pair of allele
-intensities). It seems best to have separate data structures for these
-cases, perhaps named <code>geno_gbs</code> and <code>geno_int</code> (<code>int</code> for
-&ldquo;intensity&rdquo;). These could be three-dimensional arrays
-(<code>n_lines</code> &times; <code>n_markers</code> &times; <code>2</code>), with the third
-dimension corresponding to the two alleles.</p>
-
+<p>However, we’re <strong>changing the encoding of X chromosome genotypes</strong> to have males coded as if they were homozygous. In an intercross, the X chromosome encodings are <code>1</code>/<code>2</code>/<code>3</code> for females (<code>1</code>/<code>2</code> for the forward direction and <code>2</code>/<code>3</code> for the reverse), and <code>1</code>/<code>3</code> for males. In a backcross, the females are <code>1</code>/<code>2</code> and the males are <code>1</code>/<code>3</code>.</p>
+<p>For crosses with &gt; 2 founders, I’m expecting SNPs, and intending, initially, to assume that the markers are diallelic, encoded <code>1</code>/<code>2</code>/<code>3</code> (with <code>2</code> being the heterozygote).</p>
+<p>All of the above is under the assumption that we’re using <em>genotypes calls</em> as the basic marker genotype information. Of course, we will also want to handle genotype-by-sequencing (GBS) data (which might be represented as a pair of allele counts), or array intensity information (which would be represented as a pair of allele intensities). It seems best to have separate data structures for these cases, perhaps named <code>geno_gbs</code> and <code>geno_int</code> (<code>int</code> for “intensity”). These could be three-dimensional arrays (<code>n_lines</code> × <code>n_markers</code> × <code>2</code>), with the third dimension corresponding to the two alleles.</p>
+</div>
+<div id="founder-genotype-data-founder_geno" class="section level3">
 <h3>Founder genotype data (<code>&quot;founder_geno&quot;</code>)</h3>
-
-<p>For crosses with &gt; 2 founders, we will have a separate set of
-genotypes on the founders. This will again be a list of matrices, each
-matrix being the data for a chromosome, of size <code>n_founders</code> &times;
-<code>n_markers</code>. I expect these to be diallelic markers, such as SNPs. We
-will encode them as <code>1</code>/<code>2</code>/<code>3</code> (allowing heterozygotes, though I&#39;ll
-probably treat the hets as missing values).</p>
-
+<p>For crosses with &gt; 2 founders, we will have a separate set of genotypes on the founders. This will again be a list of matrices, each matrix being the data for a chromosome, of size <code>n_founders</code> × <code>n_markers</code>. I expect these to be diallelic markers, such as SNPs. We will encode them as <code>1</code>/<code>2</code>/<code>3</code> (allowing heterozygotes, though I’ll probably treat the hets as missing values).</p>
+</div>
+<div id="chromosome-type-is_x_chr" class="section level3">
 <h3>Chromosome type (<code>&quot;is_x_chr&quot;</code>)</h3>
-
-<p>A logical vector of length <code>n_chromosomes</code> indicates which of the
-chromosomes is the X chromosome.</p>
-
+<p>A logical vector of length <code>n_chromosomes</code> indicates which of the chromosomes is the X chromosome.</p>
+</div>
+<div id="sex-is_female" class="section level3">
 <h3>Sex (<code>&quot;is_female&quot;</code>)</h3>
-
-<p>For the treatment of the X chromosome, we need access to sex of the lines.
-(That sounds a bit strange; sex is really a feature of individuals and
-won&#39;t actually be considered for cross types where we separate
-<em>individuals</em> from <em>lines</em>.)
-We&#39;ll have a logical vector (<code>&quot;is_female&quot;</code>) indicating which
-individuals are female. I prefer the logical vector as it&#39;s less
-susceptible to confusion. (Is 0 female and 1 male, or the other way
-around?) This will have length <code>n_lines</code>, with the name
-attribute being the individual IDs.</p>
-
+<p>For the treatment of the X chromosome, we need access to sex of the lines. (That sounds a bit strange; sex is really a feature of individuals and won’t actually be considered for cross types where we separate <em>individuals</em> from <em>lines</em>.) We’ll have a logical vector (<code>&quot;is_female&quot;</code>) indicating which individuals are female. I prefer the logical vector as it’s less susceptible to confusion. (Is 0 female and 1 male, or the other way around?) This will have length <code>n_lines</code>, with the name attribute being the individual IDs.</p>
+</div>
+<div id="cross-information-cross_info" class="section level3">
 <h3>Cross information (<code>&quot;cross_info&quot;</code>)</h3>
-
-<p>For many cross types, and particularly for the treatment of the X
-chromosome, we need line-level information about the nature of the
-cross. For an intercross, this is like <code>pgm</code> (for paternal
-grandmother) in <a href="http://www.rqtl.org">R/qtl</a>. For the Collaborative
-Cross, we need the order of the founders in the set of crosses that
-led to each line. For the AIL and the Diversity Outcross, we need to
-know the number of generations of outbreeding.</p>
-
-<p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with
-<code>n_lines</code> rows, and with the number of columns depending on the cross
-type.</p>
-
-<p>This information is highly cross-type-specific. We&#39;ll leave the
-details to the discussion of the format of input files.</p>
-
+<p>For many cross types, and particularly for the treatment of the X chromosome, we need line-level information about the nature of the cross. For an intercross, this is like <code>pgm</code> (for paternal grandmother) in <a href="http://www.rqtl.org">R/qtl</a>. For the Collaborative Cross, we need the order of the founders in the set of crosses that led to each line. For the AIL and the Diversity Outcross, we need to know the number of generations of outbreeding.</p>
+<p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with <code>n_lines</code> rows, and with the number of columns depending on the cross type.</p>
+<p>This information is highly cross-type-specific. We’ll leave the details to the discussion of the format of input files.</p>
+</div>
+<div id="genetic-map-gmap" class="section level3">
 <h3>Genetic map (<code>&quot;gmap&quot;</code>)</h3>
-
-<p>The genetic map of the markers is a list of numeric vectors; each
-vector corresponds to a chromosome and gives the locations of markers
-in centiMorgans (cM), with the names attribute being the marker
-names. The markers should be in increasing order.</p>
-
+<p>The genetic map of the markers is a list of numeric vectors; each vector corresponds to a chromosome and gives the locations of markers in centiMorgans (cM), with the names attribute being the marker names. The markers should be in increasing order.</p>
+</div>
+<div id="physical-map-pmap" class="section level3">
 <h3>Physical map (<code>&quot;pmap&quot;</code>)</h3>
-
-<p>We will also allow (and perhaps expect) a physical map of the
-markers. This will have the same form as the genetic map (with the
-same chromosomes, the same markers, and with markers in the same order), but with
-positions in Mbp. (Or perhaps we should use vectors of integers, with
-positions in basepairs?)</p>
-
+<p>We will also allow (and perhaps expect) a physical map of the markers. This will have the same form as the genetic map (with the same chromosomes, the same markers, and with markers in the same order), but with positions in Mbp. (Or perhaps we should use vectors of integers, with positions in basepairs?)</p>
+</div>
+<div id="phenotype-data-pheno" class="section level3">
 <h3>Phenotype data (<code>&quot;pheno&quot;</code>)</h3>
-
-<p>We will separate out the numeric phenotypes from messier covariates.
-(In many cases, we want to perform QTL analysis on a large set of
-phenotypes, and having other stuff, like individual IDs, mixed in
-there can make things cumbersome). The phenotype data will be a
-numeric matrix of size <code>n_individuals</code> &times; <code>n_phenotypes</code>.</p>
-
-<p>Row names are the individual IDs and column names are the phenotype
-names.</p>
-
+<p>We will separate out the numeric phenotypes from messier covariates. (In many cases, we want to perform QTL analysis on a large set of phenotypes, and having other stuff, like individual IDs, mixed in there can make things cumbersome). The phenotype data will be a numeric matrix of size <code>n_individuals</code> × <code>n_phenotypes</code>.</p>
+<p>Row names are the individual IDs and column names are the phenotype names.</p>
+</div>
+<div id="covariate-data-covar" class="section level3">
 <h3>Covariate data (<code>&quot;covar&quot;</code>)</h3>
-
-<p>Covariate information, often non-numeric, will form a separate data
-frame, of size <code>n_individuals</code> &times; <code>n_covariates</code>. The columns can
-be of mixed modes (numeric, factors, character strings, etc.).</p>
-
-<p>Row names are the individual IDs and column names are the covariate
-names.</p>
-
+<p>Covariate information, often non-numeric, will form a separate data frame, of size <code>n_individuals</code> × <code>n_covariates</code>. The columns can be of mixed modes (numeric, factors, character strings, etc.).</p>
+<p>Row names are the individual IDs and column names are the covariate names.</p>
+</div>
+<div id="phenotype-covariates-phenocovar" class="section level3">
 <h3>Phenotype covariates (<code>&quot;phenocovar&quot;</code>)</h3>
-
-<p>We will have a separate data frame of &ldquo;phenotype
-covariates.&rdquo; These are metadata describing the phenotypes. 
-The dimension is <code>n_phenotypes</code> &times; <code>n_phenocovar</code>.</p>
-
-<p>For example, in the case of a phenotype measured over time, one column
-in the phenotype covariate data frame could be the time of
-measurement.</p>
-
-<p>For gene expression data, we would have columns representing
-chromosome and physical position of genes, as well as gene IDs.
-In the case of gene expression on multiple tissues, there could be a
-column representing the tissue. Or we might have both gene expression
-and proteomic measurements, and so a column indicating expression vs
-protein.</p>
-
+<p>We will have a separate data frame of “phenotype covariates.” These are metadata describing the phenotypes. The dimension is <code>n_phenotypes</code> × <code>n_phenocovar</code>.</p>
+<p>For example, in the case of a phenotype measured over time, one column in the phenotype covariate data frame could be the time of measurement.</p>
+<p>For gene expression data, we would have columns representing chromosome and physical position of genes, as well as gene IDs. In the case of gene expression on multiple tissues, there could be a column representing the tissue. Or we might have both gene expression and proteomic measurements, and so a column indicating expression vs protein.</p>
+</div>
+<div id="individual-to-line-mapping-linemap" class="section level3">
 <h3>Individual to line mapping (<code>&quot;linemap&quot;</code>)</h3>
-
-<p>For recombinant inbred lines (including the Collaborative Cross and
-MAGIC lines), we will want the genotypes at the line level and the
-phenotypes at the individual level. In this case we need a mapping
-between them. This will be a vector of character strings containing
-the line IDs, with length <code>n_individual</code> and the names attribute being
-the individual IDs. We might make this a two-column matrix, but it&#39;s
-more convenient as a vector with a names attribute, which acts like an
-<a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a>
-(also known as a dictionary, map, hash, or symbol table).</p>
-
-<p>(We might consider having a separate object type containing just the
-<code>pheno</code>, <code>phenocovar</code>, and <code>linemap</code> objects. This may simplify the
-use of multiple sets of phenotype data.)</p>
-
+<p>For recombinant inbred lines (including the Collaborative Cross and MAGIC lines), we will want the genotypes at the line level and the phenotypes at the individual level. In this case we need a mapping between them. This will be a vector of character strings containing the line IDs, with length <code>n_individual</code> and the names attribute being the individual IDs. We might make this a two-column matrix, but it’s more convenient as a vector with a names attribute, which acts like an <a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a> (also known as a dictionary, map, hash, or symbol table).</p>
+<p>(We might consider having a separate object type containing just the <code>pheno</code>, <code>phenocovar</code>, and <code>linemap</code> objects. This may simplify the use of multiple sets of phenotype data.)</p>
+</div>
+<div id="alleles-alleles" class="section level3">
 <h3>Alleles (<code>&quot;alleles&quot;</code>)</h3>
-
-<p>The last bit is a vector of single-character strings, with allele
-codes for the founders, to be used in various summaries and data
-visualizations.</p>
-
+<p>The last bit is a vector of single-character strings, with allele codes for the founders, to be used in various summaries and data visualizations.</p>
+</div>
+<div id="genotype-probabilities-genoprob" class="section level3">
 <h3>Genotype probabilities (<code>&quot;genoprob&quot;</code>)</h3>
-
-<p>A critical piece of <em>derived data</em> is the conditional QTL genotype
-probabilities, given the observed marker data. This will be a list of
-three-dimensional arrays; each array corresponds to a chromosome and is of dimension
-<code>n_lines</code> &times; <code>n_positions</code> &times; <code>n_genotypes</code>.</p>
-
-<p>An important consideration is the encoding of the genotypes.
-For crosses with two founder lines, this is straightforward except
-perhaps for the X chromosome. </p>
-
-<p>For the X chromosome, I&#39;m using phase-known genotypes for the females
-and separating the male hemizygous genotypes. For example, for a
-backcross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code> for AA/AB/AY/BY.
-For an intercross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code>/<code>5</code>/<code>6</code> for
-AA/AB/BA/BB/AY/BY.</p>
-
-<p>For crosses with &gt; 2 founders and heterozygous offspring (such as the
-Diversity Outcross), genotypes will be encoded as integers in the
-following way, for the phase-unknown case:</p>
-
+<p>A critical piece of <em>derived data</em> is the conditional QTL genotype probabilities, given the observed marker data. This will be a list of three-dimensional arrays; each array corresponds to a chromosome and is of dimension <code>n_lines</code> × <code>n_positions</code> × <code>n_genotypes</code>.</p>
+<p>An important consideration is the encoding of the genotypes. For crosses with two founder lines, this is straightforward except perhaps for the X chromosome.</p>
+<p>For the X chromosome, I’m using phase-known genotypes for the females and separating the male hemizygous genotypes. For example, for a backcross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code> for AA/AB/AY/BY. For an intercross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code>/<code>5</code>/<code>6</code> for AA/AB/BA/BB/AY/BY.</p>
+<p>For crosses with &gt; 2 founders and heterozygous offspring (such as the Diversity Outcross), genotypes will be encoded as integers in the following way, for the phase-unknown case:</p>
 <pre><code>##    A  B  C  D  E  F  G  H
 ## A  1  2  4  7 11 16 22 29
 ## B  2  3  5  8 12 17 23 30
@@ -452,16 +146,9 @@ following way, for the phase-unknown case:</p>
 ## E 11 12 13 14 15 20 26 33
 ## F 16 17 18 19 20 21 27 34
 ## G 22 23 24 25 26 27 28 35
-## H 29 30 31 32 33 34 35 36
-</code></pre>
-
-<p>If \(a_1\) and \(a_2\) are the two alleles, then we take
-\(m = \max(a_1, a_2)\) and \(d = |a_1 - a_2|\), and the encoding is 
-\(\binom{m+1}2 - d\).</p>
-
-<p>In the phase-known case, we can add \(\binom{n+1} 2 - 1\) to the lower
-triangle, where \(n\) is the number of alleles, to give the following:</p>
-
+## H 29 30 31 32 33 34 35 36</code></pre>
+<p>If <span class="math">\(a_1\)</span> and <span class="math">\(a_2\)</span> are the two alleles, then we take <span class="math">\(m = \max(a_1, a_2)\)</span> and <span class="math">\(d = |a_1 - a_2|\)</span>, and the encoding is <span class="math">\(\binom{m+1}2 - d\)</span>.</p>
+<p>In the phase-known case, we can add <span class="math">\(\binom{n+1} 2 - 1\)</span> to the lower triangle, where <span class="math">\(n\)</span> is the number of alleles, to give the following:</p>
 <pre><code>##    A  B  C  D  E  F  G  H
 ## A  1  2  4  7 11 16 22 29
 ## B 37  3  5  8 12 17 23 30
@@ -470,61 +157,21 @@ triangle, where \(n\) is the number of alleles, to give the following:</p>
 ## E 46 47 48 49 15 20 26 33
 ## F 51 52 53 54 55 21 27 34
 ## G 57 58 59 60 61 62 28 35
-## H 64 65 66 67 68 69 70 36
-</code></pre>
-
+## H 64 65 66 67 68 69 70 36</code></pre>
+</div>
+</div>
+<div id="input-data-file-formats" class="section level2">
 <h2>Input data file formats</h2>
-
-<p>For simple cross types, we can use the file formats for
-<a href="http://www.rqtl.org">R/qtl</a>, use <code>qtl::read.cross</code> to read in the
-data, and then use a conversion function (<code>convert2cross2</code>) to convert
-the data into the new format.</p>
-
-<p>For more complex crosses, we need to define a new format. I was
-persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>&#39;s idea of a
-<a href="https://github.com/kbroman/qtl/pull/20">&ldquo;tidy&rdquo; format</a>
-for <a href="http://www.rqtl.org">R/qtl</a>, with three separate CSV files, one
-for phenotypes, one for genotypes, and one for the genetic map.</p>
-
-<p>Another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>&#39;s
-<a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: 
-the inclusion of metadata, such as genotype
-encodings, with the primary data. This will simplify the handling of
-multiple files and will help to avoid mistakes.</p>
-
-<p>And so the basic idea for the new format is to have a separate file
-for each part of the primary data (genotypes, founder genotypes,
-genetic map, physical map, phenotypes, covariates, and phenotype
-covariates), and then a control file which specifies the names of all
-of those files, the genotype encodings and missing value codes, and
-things like the name of the sex column within the covariate data (and
-the encodings for the sexes) and which chromosome is the X chromosome.</p>
-
-<p>A key advantage of the control file scheme is that it greatly
-simplifies the function for reading in the data. That function,
-<code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the
-control file.
-The large number of files is a bit cumbersome, so we&#39;ve made it
-possible to use a
-<a href="http://en.wikipedia.org/wiki/Zip_(file_format">zip file</a> containing
-all of the data files, and to read that zip file directly (with the same
-function, <code>read_cross2()</code>). The function <code>zip_datafiles()</code> can be used
-to create the zip file.</p>
-
-<p>I describe the details of the input files in a
-<a href="input_files.html">separate vignette</a>. Here I&#39;ll give a brief sketch
-of the structure of the files.</p>
-
+<p>For simple cross types, we can use the file formats for <a href="http://www.rqtl.org">R/qtl</a>, use <code>qtl::read.cross</code> to read in the data, and then use a conversion function (<code>convert2cross2</code>) to convert the data into the new format.</p>
+<p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="http://www.rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
+<p>Another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>’s <a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: the inclusion of metadata, such as genotype encodings, with the primary data. This will simplify the handling of multiple files and will help to avoid mistakes.</p>
+<p>And so the basic idea for the new format is to have a separate file for each part of the primary data (genotypes, founder genotypes, genetic map, physical map, phenotypes, covariates, and phenotype covariates), and then a control file which specifies the names of all of those files, the genotype encodings and missing value codes, and things like the name of the sex column within the covariate data (and the encodings for the sexes) and which chromosome is the X chromosome.</p>
+<p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="http://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">http://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly (with the same function, <code>read_cross2()</code>). The function <code>zip_datafiles()</code> can be used to create the zip file.</p>
+<p>I describe the details of the input files in a <a href="input_files.html">separate vignette</a>. Here I’ll give a brief sketch of the structure of the files.</p>
+<div id="control-file" class="section level3">
 <h3>Control file</h3>
-
-<p>The control file will be in <a href="http://www.yaml.org">YAML</a>: a
-human-readable text file for representing relatively complex
-data. It&#39;s much like <a href="http://json.org/">JSON</a>, but <em>much</em> more
-readable.</p>
-
-<p>Here&#39;s an example, for a
-<a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">sample intercross dataset</a>.</p>
-
+<p>The control file will be in <a href="http://www.yaml.org">YAML</a>: a human-readable text file for representing relatively complex data. It’s much like <a href="http://json.org/">JSON</a>, but <em>much</em> more readable.</p>
+<p>Here’s an example, for a <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">sample intercross dataset</a>.</p>
 <pre><code># Data from Grant et al. (2006) Hepatology 44:174-185
 # Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
@@ -551,96 +198,61 @@ cross_info:
   (BxS)x(BxS): 1
 x_chr: X
 na.strings:
-- &#39;-&#39;
-- NA
-</code></pre>
-
-<p>The order of the information is not important, but the names of things
-are critical.</p>
-
-<p><code>crosstype</code> indicates the cross type. <code>geno</code>, <code>pheno</code>, <code>phenocovar</code>,
-<code>covar</code>, and <code>gmap</code> indicate the names of the files for the different
-major pieces of data, all expected to be within the same directory as
-the YAML control file.</p>
-
-<p><code>alleles</code> indicates the two single-character allele codes for the
-founders. The initial dashes are just to indicate that the <code>S</code> and <code>B</code>
-form a vector.</p>
-
-<p><code>genotypes</code> gives the genotype codes used in the genotype data
-file. <code>SS</code>, <code>SB</code>, and <code>BB</code> are the codes used, to be converted to <code>1</code>,
-<code>2</code>, and <code>3</code>, respectively. The <code>key: value</code> structure is for an
-<a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a>.</p>
-
-<p><code>sex</code> contains information about the name of the covariate that
-represents sex as well as the codes used: the sexes in the
-<code>iron_covar.csv</code> file are coded as <code>f</code> and <code>m</code>, and we want to
-indicate which one is <code>female</code> and which is <code>male</code>.</p>
-
-<p>The format of the control file is maybe a bit technical for some
-users, so there&#39;s a function <code>write_control_file()</code> that takes the
-control parameters (including file names) as input and writes the YAML
-file in the correct form.</p>
-
+- '-'
+- NA</code></pre>
+<p>The order of the information is not important, but the names of things are critical.</p>
+<p><code>crosstype</code> indicates the cross type. <code>geno</code>, <code>pheno</code>, <code>phenocovar</code>, <code>covar</code>, and <code>gmap</code> indicate the names of the files for the different major pieces of data, all expected to be within the same directory as the YAML control file.</p>
+<p><code>alleles</code> indicates the two single-character allele codes for the founders. The initial dashes are just to indicate that the <code>S</code> and <code>B</code> form a vector.</p>
+<p><code>genotypes</code> gives the genotype codes used in the genotype data file. <code>SS</code>, <code>SB</code>, and <code>BB</code> are the codes used, to be converted to <code>1</code>, <code>2</code>, and <code>3</code>, respectively. The <code>key: value</code> structure is for an <a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a>.</p>
+<p><code>sex</code> contains information about the name of the covariate that represents sex as well as the codes used: the sexes in the <code>iron_covar.csv</code> file are coded as <code>f</code> and <code>m</code>, and we want to indicate which one is <code>female</code> and which is <code>male</code>.</p>
+<p>The format of the control file is maybe a bit technical for some users, so there’s a function <code>write_control_file()</code> that takes the control parameters (including file names) as input and writes the YAML file in the correct form.</p>
+</div>
+<div id="all-the-other-files" class="section level3">
 <h3>All the other files</h3>
-
-<p>Again, I don&#39;t want to get into too much detail here. All of the other
-files are in a simple CSV format. Each is a simple matrix with row
-names in the first column and column names in the first row.</p>
-
-<p>Genotypes are as lines &times; markers, with the first column
-being line IDs and the first row being marker names.
-The founder genotypes are similar, but with founder lines as the
-rows.</p>
-
-<p>The phenotype and covariate data are as individuals &times;
-variables. The phenotype file must be <em>strictly numeric</em>, while the
-covariate file can be a mixture of types. The first column in each must be the
-individual IDs.</p>
-
-<p>The phenotype covariate information is a matrix of phenotypes
-&times; phenotype covariates. The first column contains the phenotype
-names and the first row contains the names of the phenotype
-covariates.</p>
-
-<p>The genetic and physical maps are in separate files with three
-columns: marker names, chromosome IDs, and positions.</p>
-
-<p>The individual-to-line mapping (<code>&quot;linemap&quot;</code>) would most likely be
-a column in the covariate data and would be represented in the YAML
-file much as <code>sex</code> is above.</p>
-
-<p>The last piece is <code>&quot;cross_info&quot;</code>. For an intercross, this can just
-be a column in the covariate data (as it is for the example
-above). For more complex crosses, it will be a matrix with the rows
-being lines, and with the first column being line IDs.</p>
-
-<p>For more detail, see
-<a href="input_files.html">the input file format vignette</a>.</p>
-
+<p>Again, I don’t want to get into too much detail here. All of the other files are in a simple CSV format. Each is a simple matrix with row names in the first column and column names in the first row.</p>
+<p>Genotypes are as lines × markers, with the first column being line IDs and the first row being marker names. The founder genotypes are similar, but with founder lines as the rows.</p>
+<p>The phenotype and covariate data are as individuals × variables. The phenotype file must be <em>strictly numeric</em>, while the covariate file can be a mixture of types. The first column in each must be the individual IDs.</p>
+<p>The phenotype covariate information is a matrix of phenotypes × phenotype covariates. The first column contains the phenotype names and the first row contains the names of the phenotype covariates.</p>
+<p>The genetic and physical maps are in separate files with three columns: marker names, chromosome IDs, and positions.</p>
+<p>The individual-to-line mapping (<code>&quot;linemap&quot;</code>) would most likely be a column in the covariate data and would be represented in the YAML file much as <code>sex</code> is above.</p>
+<p>The last piece is <code>&quot;cross_info&quot;</code>. For an intercross, this can just be a column in the covariate data (as it is for the example above). For more complex crosses, it will be a matrix with the rows being lines, and with the first column being line IDs.</p>
+<p>For more detail, see <a href="input_files.html">the input file format vignette</a>.</p>
+</div>
+</div>
+<div id="hmm-details" class="section level2">
 <h2>HMM details</h2>
-
 <ul>
-<li>basic layout; what&#39;s needed in order to implement a new
-cross type; weaknesses in the design</li>
-<li>for est_map, potentially need separate phase-known class
-(explain why, and how this is done)</li>
+<li>basic layout; what’s needed in order to implement a new cross type; weaknesses in the design</li>
+<li>for <code>est_map</code>, we potentially need a separate phase-known class (explain why, and how this is done)</li>
 </ul>
-
+</div>
+<div id="linear-regression-details" class="section level2">
 <h2>Linear regression details</h2>
-
+</div>
+<div id="linear-mixed-model-details" class="section level2">
 <h2>Linear mixed model details</h2>
-
+</div>
+<div id="parallel-processing" class="section level2">
 <h2>Parallel processing</h2>
-
+</div>
+<div id="documentation-with-roxygen2" class="section level2">
 <h2>Documentation with <a href="https://github.com/klutometis/roxygen">Roxygen2</a></h2>
-
+</div>
+<div id="tests-with-testthat" class="section level2">
 <h2>Tests with <a href="https://github.com/hadley/testthat">testthat</a></h2>
+</div>
 
-<!-- the following to make it look nicer -->
 
-<p><link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link></p>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>
