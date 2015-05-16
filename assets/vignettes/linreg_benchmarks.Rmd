@@ -1,4 +1,7 @@
-# R/qtl2: Benchmarks of linear regression routines
+---
+title: Benchmarks of linear regression routines
+output: rmarkdown::html_vignette
+---
 
 [R/qtl2](https://github.com/kbroman/qtl2) includes code with several
 options for linear regression. We're mostly focusing on using the
@@ -66,7 +69,7 @@ rank-deficient case.
 
 ## Rank-deficient case
 
-Let's now consider a rank-deficient case. We use an example from 
+Let's now consider a rank-deficient case. We use an example from
 [Bates and Eddelbuettel (2013)](http://www.jstatsoft.org/v52/i05/)
 (the [RcppEigen](https://github.com/RcppCore/RcppEigen) paper).
 
@@ -180,6 +183,3 @@ The following shows the R and package versions I was using.
 ```{r sessionInfo, results="markup"}
 devtools::session_info()
 ```
-
-<!-- the following to make it look nicer -->
-<link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>

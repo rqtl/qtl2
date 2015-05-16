@@ -1,4 +1,7 @@
-# R/qtl2: Benchmarks of HMM routines
+---
+title: Benchmarks of HMM routines
+output: rmarkdown::html_vignette
+---
 
 [R/qtl2](https://github.com/kbroman/qtl2) includes a reimplementation
 of the basic hidden Markov model code for the calculation of
@@ -43,7 +46,7 @@ bc$pheno$sex <- rep(0:1, each=n/2)
 
 There's a total of `r totmar(bc)` markers.
 
-We use `qtl2::convert2cross2()` to convert the data to the format for 
+We use `qtl2::convert2cross2()` to convert the data to the format for
 [R/qtl2](http://kbroman.org/qtl2).
 
 ```{r convert2cross2}
@@ -131,7 +134,7 @@ print(mapf2, unit="s")
 ```
 
 For the backcross, the new code takes `r median_ratio(mapbc)` times
-longer; for the intercross, the new code takes 
+longer; for the intercross, the new code takes
 `r median_ratio(mapf2)` times longer.
 
 
@@ -143,7 +146,7 @@ I made a number of changes to the HMM code between
 - Split out the forward/backward equations as separate functions (to
   avoid code duplication and to make the code potentially clearer).
 - Calculations are by individual, with an eye towards low-level
-  parallel processing 
+  parallel processing
 - Things are a bit more general. For example, the transition
   probabilities in the Markov chain can be completely different for
   each individual, depending on the `cross_info` data. Also, the
@@ -166,7 +169,7 @@ It's also possible that some basic aspects of my code could be
 improved, even keeping the overall design fixed. I'm new to C++ and
 not entirely sure that I'm doing things in the best way.
 
-  
+
 ## Session information
 
 The following shows the R and package versions I was using.
@@ -174,6 +177,3 @@ The following shows the R and package versions I was using.
 ```{r sessionInfo, results="markup"}
 devtools::session_info()
 ```
-
-<!-- the following to make it look nicer -->
-<link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>

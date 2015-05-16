@@ -11,12 +11,10 @@ EXTERNAL_VIGNETTES = assets/vignettes/developer_guide.html assets/vignettes/inpu
 external_vignettes: ${EXTERNAL_VIGNETTES}
 
 assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
-	cd $(<D);R -e 'library(knitr);knit2html("$(<F)")'
-	rm $(@D)/linreg_benchmarks.md
+	cd $(<D);R -e 'rmarkdown::render("$(<F)")'
 
 assets/vignettes/hmm_benchmarks.html: assets/vignettes/hmm_benchmarks.Rmd
-	cd $(<D);R -e 'library(knitr);knit2html("$(<F)")'
-	rm $(@D)/hmm_benchmarks.md
+	cd $(<D);R -e 'rmarkdown::render("$(<F)")'
 
 data: assets/sampledata/grav2/grav2.yaml assets/sampledata/iron/iron.yaml
 
