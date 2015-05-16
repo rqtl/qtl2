@@ -1,9 +1,11 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{R/qtl2 input file format}
--->
-
-# R/qtl2 input file format
+---
+title: R/qtl2 input file format
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{R/qtl2 input file format}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8](inputenc)
+---
 
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
@@ -518,7 +520,3 @@ semicolon doesn't, but it doesn't hurt if you do.
 
 
 ## Detailed specifications for each cross type
-
-
-<!-- the following to make it look nicer -->
-<link href="http://kbroman.org/qtlcharts/assets/vignettes/vignette.css" rel="stylesheet"></link>
