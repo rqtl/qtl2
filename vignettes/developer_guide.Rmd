@@ -26,7 +26,7 @@ There are three basic aspects to the software:
   [Eigen linear algebra library](http://eigen.tuxfamily.org/).
 - Linear mixed models for handling varying relatedness among
   individuals. We've not yet decided on the basic implementation;
-  likely we'll follow the [lme4 package](http://github.com/lme4/lme4).  
+  likely we'll follow the [lme4 package](http://github.com/lme4/lme4).
 
 We are redefining the basic data structures to be more general (to
 handle more complex crosses, such as the Collaborative Cross, MAGIC lines, and
@@ -217,7 +217,7 @@ names.
 ### Phenotype covariates (`"phenocovar"`)
 
 We will have a separate data frame of &ldquo;phenotype
-covariates.&rdquo; These are metadata describing the phenotypes. 
+covariates.&rdquo; These are metadata describing the phenotypes.
 The dimension is `n_phenotypes` &times; `n_phenocovar`.
 
 For example, in the case of a phenotype measured over time, one column
@@ -264,7 +264,7 @@ three-dimensional arrays; each array corresponds to a chromosome and is of dimen
 
 An important consideration is the encoding of the genotypes.
 For crosses with two founder lines, this is straightforward except
-perhaps for the X chromosome. 
+perhaps for the X chromosome.
 
 For the X chromosome, I'm using phase-known genotypes for the females
 and separating the male hemizygous genotypes. For example, for a
@@ -294,7 +294,7 @@ z
 ```
 
 If $a_1$ and $a_2$ are the two alleles, then we take
-$m = \max(a_1, a_2)$ and $d = |a_1 - a_2|$, and the encoding is 
+$m = \max(a_1, a_2)$ and $d = |a_1 - a_2|$, and the encoding is
 $\binom{m+1}2 - d$.
 
 In the phase-known case, we can add $\binom{n+1} 2 - 1$ to the lower
@@ -326,7 +326,7 @@ for [R/qtl](http://www.rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
 Another important idea is from [Pjotr Prins](http://thebird.nl/)'s
-[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md): 
+[qtab format](https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md):
 the inclusion of metadata, such as genotype
 encodings, with the primary data. This will simplify the handling of
 multiple files and will help to avoid mistakes.

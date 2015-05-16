@@ -216,7 +216,7 @@ dataset.
 The order of things within the file is not important, but the names
 of things are critical.
 
-Much of the information is represented as key-value pairs, as 
+Much of the information is represented as key-value pairs, as
 &ldquo;`key: value`.&rdquo;  For example, the cross type is indicated with a line like
 
 ```
