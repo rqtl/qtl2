@@ -79,12 +79,9 @@ probbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<spa
                          <span class="dt">times=</span><span class="dv">25</span>)
 <span class="kw">print</span>(probbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq       max neval
-##   qtl 0.7511628 0.7798232 0.8097127 0.8027961 0.8364654 0.9161911    25
-##  qtl2 1.1809099 1.2424304 1.3098340 1.2921666 1.3463174 1.5619056    25
-##  cld
-##   a
-##    b</code></pre>
+##  expr       min        lq      mean    median        uq       max neval cld
+##   qtl 0.7309962 0.7557728 0.8214125 0.8402856 0.8751108 0.9213518    25  a 
+##  qtl2 1.1359484 1.1979394 1.2691502 1.2467058 1.3158688 1.5575560    25   b</code></pre>
 <p>Let’s do the same for an intercross, also including the X chromosome, and with crosses in both directions and with both sexes.</p>
 <pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;f2&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
 f2$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)
@@ -97,8 +94,8 @@ f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)</c
 <span class="kw">print</span>(probf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 1.713635 1.724503 1.796496 1.792052 1.862028 1.893442    10  a
-##  qtl2 2.527531 2.605864 2.721199 2.715897 2.856374 2.918823    10   b</code></pre>
+##   qtl 1.699667 1.771321 1.830731 1.810030 1.936178 1.981828    10  a 
+##  qtl2 2.638928 2.727214 2.828249 2.780774 2.852358 3.337544    10   b</code></pre>
 </div>
 <div id="genetic-map-estimation" class="section level2">
 <h2>Genetic map estimation</h2>
@@ -112,9 +109,9 @@ bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</co
                         <span class="dt">times=</span><span class="dv">5</span>)
 <span class="kw">print</span>(mapbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq     max neval cld
-##   qtl 0.9635768 0.9688363 0.9773147 0.9747062 0.9774942 1.00196     5  a
-##  qtl2 6.1484608 6.3390660 6.4667014 6.3423457 6.6897448 6.81389     5   b</code></pre>
+##  expr       min        lq      mean   median        uq      max neval cld
+##   qtl 0.9420878 0.9546948 0.9767745 0.960541 0.9871092 1.039440     5  a 
+##  qtl2 6.1455040 6.5939737 6.8566386 7.077254 7.1322934 7.334168     5   b</code></pre>
 <p>Now to the intercross. Again, we’ll look at just chromosomes 1 and X, and we’ll perform just 5 replicates.</p>
 <pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span>f2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
 f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)
@@ -123,13 +120,10 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
                         <span class="dt">times=</span><span class="dv">5</span>)
 <span class="kw">print</span>(mapf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq       max neval
-##   qtl  2.836988  2.843887  2.906612  2.887325  2.937318  3.027545     5
-##  qtl2 10.973752 11.149373 11.483577 11.422147 11.688473 12.184138     5
-##  cld
-##   a
-##    b</code></pre>
-<p>For the backcross, the new code takes 6.5 times longer; for the intercross, the new code takes 4.0 times longer.</p>
+##  expr       min        lq      mean    median        uq       max neval cld
+##   qtl  2.868092  2.954082  2.994382  3.010505  3.047709  3.091519     5  a 
+##  qtl2 11.122488 11.181469 11.401594 11.226584 11.574318 11.903110     5   b</code></pre>
+<p>For the backcross, the new code takes 7.4 times longer; for the intercross, the new code takes 3.7 times longer.</p>
 </div>
 <div id="why-so-slow" class="section level2">
 <h2>Why so slow?</h2>
@@ -147,58 +141,58 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 <h2>Session information</h2>
 <p>The following shows the R and package versions I was using.</p>
 <pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre>
-<pre><code>## Session info --------------------------------------------------------------</code></pre>
-<pre><code>##  setting  value
+<pre><code>## Session info ---------------------------------------------------------------------------------------</code></pre>
+<pre><code>##  setting  value                       
 ##  version  R version 3.2.0 (2015-04-16)
-##  system   x86_64, darwin13.4.0
-##  ui       X11
-##  language en_US.UTF-8
-##  collate  en_US.UTF-8
+##  system   x86_64, darwin13.4.0        
+##  ui       X11                         
+##  language en_US.UTF-8                 
+##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago</code></pre>
-<pre><code>## Packages ------------------------------------------------------------------</code></pre>
-<pre><code>##  package        * version    date       source
-##  assertthat       0.1        2013-12-06 CRAN (R 3.2.0)
-##  bitops           1.0-6      2013-08-17 CRAN (R 3.2.0)
-##  broman         * 0.55-3     2015-04-27 local
-##  codetools        0.2-11     2015-03-10 CRAN (R 3.2.0)
-##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)
+<pre><code>## Packages -------------------------------------------------------------------------------------------</code></pre>
+<pre><code>##  package        * version    date       source                          
+##  assertthat       0.1        2013-12-06 CRAN (R 3.2.0)                  
+##  bitops           1.0-6      2013-08-17 CRAN (R 3.2.0)                  
+##  broman         * 0.55-3     2015-04-27 local                           
+##  codetools        0.2-11     2015-03-10 CRAN (R 3.2.0)                  
+##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)                  
 ##  devtools         1.8.0.9000 2015-05-12 Github (hadley/devtools@dc61a9e)
-##  digest           0.6.8      2014-12-31 CRAN (R 3.2.0)
-##  evaluate         0.7        2015-04-21 CRAN (R 3.2.0)
-##  formatR          1.2        2015-04-21 CRAN (R 3.2.0)
-##  ggplot2          1.0.1      2015-03-17 CRAN (R 3.2.0)
-##  git2r            0.10.1     2015-05-07 CRAN (R 3.2.0)
-##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)
-##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)
-##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)
-##  knitr            1.10       2015-04-23 CRAN (R 3.2.0)
-##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)
-##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)
-##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)
-##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)
-##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)
-##  multcomp         1.4-0      2015-03-05 CRAN (R 3.2.0)
-##  munsell          0.4.2      2013-07-11 CRAN (R 3.2.0)
-##  mvtnorm          1.0-2      2014-12-18 CRAN (R 3.2.0)
-##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)
-##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)
-##  qtl            * 1.37-1     2015-04-20 local
-##  qtl2           * 0.1-18     2015-05-16 local
-##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)
-##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)
-##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)
-##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)
-##  rmarkdown        0.5.1      2015-01-26 CRAN (R 3.2.0)
-##  RPushbullet    * 0.2.0      2015-02-09 CRAN (R 3.2.0)
-##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)
-##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)
-##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)
-##  stringi          0.4-1      2014-12-14 CRAN (R 3.2.0)
-##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)
-##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)
-##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)
-##  XML              3.98-1.1   2013-06-20 CRAN (R 3.2.0)
-##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)
+##  digest           0.6.8      2014-12-31 CRAN (R 3.2.0)                  
+##  evaluate         0.7        2015-04-21 CRAN (R 3.2.0)                  
+##  formatR          1.2        2015-04-21 CRAN (R 3.2.0)                  
+##  ggplot2          1.0.1      2015-03-17 CRAN (R 3.2.0)                  
+##  git2r            0.10.1     2015-05-07 CRAN (R 3.2.0)                  
+##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)                  
+##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)                  
+##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)                  
+##  knitr            1.10       2015-04-23 CRAN (R 3.2.0)                  
+##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)                  
+##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)                  
+##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)                  
+##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)                  
+##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)                  
+##  multcomp         1.4-0      2015-03-05 CRAN (R 3.2.0)                  
+##  munsell          0.4.2      2013-07-11 CRAN (R 3.2.0)                  
+##  mvtnorm          1.0-2      2014-12-18 CRAN (R 3.2.0)                  
+##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)                  
+##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)                  
+##  qtl            * 1.37-1     2015-04-20 local                           
+##  qtl2           * 0.1-18     2015-05-16 local                           
+##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)                  
+##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)                  
+##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)                  
+##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)                  
+##  rmarkdown        0.5.1      2015-01-26 CRAN (R 3.2.0)                  
+##  RPushbullet    * 0.2.0      2015-02-09 CRAN (R 3.2.0)                  
+##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)                  
+##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)                  
+##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)                  
+##  stringi          0.4-1      2014-12-14 CRAN (R 3.2.0)                  
+##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)                  
+##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)                  
+##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)                  
+##  XML              3.98-1.1   2013-06-20 CRAN (R 3.2.0)                  
+##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)                  
 ##  zoo              1.7-12     2015-03-16 CRAN (R 3.2.0)</code></pre>
 </div>
 

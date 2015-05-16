@@ -3,6 +3,10 @@ title: Benchmarks of HMM routines
 output: rmarkdown::html_vignette
 ---
 
+```{r change_width, include=FALSE}
+options(width=100)
+```
+
 [R/qtl2](https://github.com/kbroman/qtl2) includes a reimplementation
 of the basic hidden Markov model code for the calculation of
 conditional genotype probabilities (given the available multipoint

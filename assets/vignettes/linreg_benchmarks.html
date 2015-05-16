@@ -79,22 +79,14 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
                <span class="dt">eigen_chol=</span>    qtl2:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
                <span class="dt">times=</span><span class="dv">1000</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##            expr    min      lq      mean  median       uq      max neval
-##           lmfit 92.164 97.6540 115.39030 99.2965 101.7225 1421.143  1000
-##           dgels 32.451 34.7780  38.08151 35.7625  36.7685 1109.851  1000
-##          dgelsy 41.869 43.9195  49.23647 44.9645  46.1920 1703.625  1000
-##    eigen_qr_rss 26.936 28.8790  31.75782 29.6940  31.2190  120.005  1000
-##        eigen_qr 31.334 33.4285  42.46199 34.3915  36.4640 1209.946  1000
-##  eigen_chol_rss 24.517 26.2975  30.25102 27.3120  29.0860 1010.433  1000
-##      eigen_chol 28.793 30.8415  35.18786 31.6945  33.8995 1064.578  1000
-##   cld
-##     d
-##  ab
-##    c
-##  a
-##   bc
-##  a
-##  ab</code></pre>
+##            expr    min      lq      mean median      uq      max neval  cld
+##           lmfit 90.399 96.2115 113.99935 97.590 99.3680 1233.426  1000    d
+##           dgels 32.299 34.3305  35.99041 35.284 36.2300   64.004  1000 ab  
+##          dgelsy 41.489 43.4830  45.55658 44.411 45.3945  236.519  1000   c 
+##    eigen_qr_rss 27.174 28.6345  30.46110 29.366 30.4540  102.910  1000 a   
+##        eigen_qr 31.318 33.0575  40.05313 33.900 35.2005 1001.050  1000  bc 
+##  eigen_chol_rss 24.403 26.0185  28.99692 26.814 28.0590  943.091  1000 a   
+##      eigen_chol 28.575 30.4260  34.27309 31.296 32.7270 1370.689  1000 ab</code></pre>
 <p>It’s easy to beat <code>lm.fit</code>, but it’s great to see considerable gains with Eigen over LAPACK. The use of the Cholesky decomposition is somewhat faster than QR decomposition, but it can’t be used in the rank-deficient case.</p>
 </div>
 <div id="rank-deficient-case" class="section level2">
@@ -113,12 +105,12 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
                <span class="dt">eigen_qr=</span>    qtl2:::<span class="kw">fit_linreg_eigenqr</span>(mm, y),
                <span class="dt">times=</span><span class="dv">1000</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##          expr    min      lq     mean  median      uq      max neval  cld
-##         lmfit 66.333 73.0700 80.94147 75.1075 80.5470 1559.502  1000    d
-##         dgels 30.296 32.5540 37.49685 34.3215 36.4760 1618.570  1000   c
-##        dgelsy 23.746 26.2810 32.58452 27.8965 30.1255 1503.901  1000  bc
-##  eigen_qr_rss 19.878 22.4850 25.57479 24.4330 27.8025   56.473  1000 a
-##      eigen_qr 23.393 26.1645 30.05452 28.4170 32.0525  116.004  1000 ab</code></pre>
+##          expr    min      lq     mean  median      uq      max neval cld
+##         lmfit 64.975 71.6760 78.94010 73.4310 77.3565 1654.862  1000   c
+##         dgels 30.252 32.3895 38.09745 33.7885 35.5065 1570.090  1000  b 
+##        dgelsy 24.420 26.3170 28.66399 27.7355 29.4170  127.572  1000 a  
+##  eigen_qr_rss 19.978 22.5710 25.09874 24.2310 26.2840   90.411  1000 a  
+##      eigen_qr 23.919 26.3075 29.17958 28.2150 30.8775   58.901  1000 a</code></pre>
 <p>We skip the methods based on Cholesky decomposition, but we again see performance gains with Eigen over LAPACK.</p>
 <p><code>dgels</code> is slower than <code>dgelsy</code> here, because with that routine, I’m calling <code>dgels</code> to check the matrix rank and then switch to <code>dgelsy</code> if the matrix is rank-deficient.</p>
 </div>
@@ -140,22 +132,14 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
                <span class="dt">eigen_chol=</span>    qtl2:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
                <span class="dt">times=</span><span class="dv">10</span>)</code></pre>
 <pre><code>## Unit: milliseconds
-##            expr       min        lq      mean    median        uq
-##           lmfit 157.08286 158.01154 167.25704 159.16215 162.96944
-##           dgels 172.87645 173.23087 176.51863 175.02346 179.20305
-##          dgelsy 178.25564 179.27372 181.15291 181.15115 183.23643
-##    eigen_qr_rss 107.09812 107.33348 109.87436 108.69386 111.34813
-##        eigen_qr 123.63625 123.91794 125.79732 124.64635 128.21975
-##  eigen_chol_rss  22.77849  22.86517  23.44777  23.30485  24.01663
-##      eigen_chol  25.58543  26.21489  27.48253  27.65363  28.20357
-##        max neval   cld
-##  204.84479    10    d
-##  186.68553    10    de
-##  184.17271    10     e
-##  115.01057    10  b
-##  129.38006    10   c
-##   24.78458    10 a
-##   29.34396    10 a</code></pre>
+##            expr       min        lq      mean    median        uq       max neval cld
+##           lmfit 155.56928 157.41375 182.48762 166.67015 181.96706 299.85849    10   c
+##           dgels 173.15126 176.08811 189.22620 181.78788 189.11817 262.73471    10   c
+##          dgelsy 178.91874 181.81931 191.08771 188.30218 191.61163 228.37509    10   c
+##    eigen_qr_rss 106.67868 111.48155 144.73867 139.78596 170.55501 196.60863    10  b 
+##        eigen_qr 124.59601 125.24169 140.66867 131.57749 152.41601 203.28042    10  b 
+##  eigen_chol_rss  22.81412  22.94795  26.38286  24.73453  28.44321  35.38216    10 a  
+##      eigen_chol  25.76875  26.01814  28.22725  26.72947  28.37233  37.40611    10 a</code></pre>
 </div>
 <div id="multiple-phenotypes" class="section level2">
 <h2>Multiple phenotypes</h2>
@@ -173,18 +157,12 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
                <span class="dt">eigen_chol=</span>qtl2:::<span class="kw">calc_mvrss_eigenchol</span>(X, Y),
                <span class="dt">times=</span><span class="dv">50</span>)</code></pre>
 <pre><code>## Unit: milliseconds
-##        expr       min        lq      mean    median        uq       max
-##       lmfit 10.485118 48.812175 48.741824 50.444066 52.770711 61.413860
-##       dgels  3.403892  4.039098  4.374303  4.309396  4.564266  5.744003
-##      dgelsy  3.919051  4.072928  4.421388  4.262978  4.601718  6.204656
-##    eigen_qr  4.546019  5.678368  5.968048  5.866324  6.125180  8.208267
-##  eigen_chol  4.504293  5.436697  5.809670  5.569508  5.925305  8.502425
-##  neval cld
-##     50   b
-##     50  a
-##     50  a
-##     50  a
-##     50  a</code></pre>
+##        expr       min        lq      mean    median        uq      max neval cld
+##       lmfit 10.508951 48.807706 60.358575 52.677402 78.692688 98.28051    50   b
+##       dgels  3.416899  4.220708  5.299433  4.517682  5.845089 11.87299    50  a 
+##      dgelsy  3.921595  4.298323  5.569192  4.627801  6.747561 10.40646    50  a 
+##    eigen_qr  4.531927  5.863435  7.171044  6.247683  7.409643 17.30658    50  a 
+##  eigen_chol  4.435780  5.551048  7.229879  5.994992  7.870554 14.05860    50  a</code></pre>
 </div>
 <div id="multiple-phenotypes-rank-deficient-matrix" class="section level2">
 <h2>Multiple phenotypes, rank-deficient matrix</h2>
@@ -201,68 +179,68 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
                <span class="dt">eigen_qr=</span>  qtl2:::<span class="kw">calc_mvrss_eigenqr</span>(mm, Y),
                <span class="dt">times=</span><span class="dv">100</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##      expr     min       lq     mean   median       uq      max neval  cld
-##     lmfit 765.254 797.8465 955.9140 844.2185 943.0935 3707.216   100    d
-##     dgels 716.176 729.7725 773.4845 746.6175 772.5600 1331.353   100   c
-##    dgelsy 447.849 456.1580 493.1268 468.7435 511.1735  712.338   100 a
-##  eigen_qr 540.037 563.7850 613.0370 585.3850 633.4430  943.818   100  b</code></pre>
+##      expr     min       lq      mean   median        uq      max neval  cld
+##     lmfit 775.462 891.5415 1056.7933 954.5615 1093.4985 4969.231   100    d
+##     dgels 720.558 767.7020  834.6892 792.3300  873.2380 1249.743   100   c 
+##    dgelsy 447.490 456.1560  515.9161 489.6580  533.4515  800.634   100 a   
+##  eigen_qr 540.862 600.5855  659.1235 644.5555  694.7915  979.031   100  b</code></pre>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <p>The following shows the R and package versions I was using.</p>
 <pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre>
-<pre><code>## Session info --------------------------------------------------------------</code></pre>
-<pre><code>##  setting  value
+<pre><code>## Session info ---------------------------------------------------------------------------------------</code></pre>
+<pre><code>##  setting  value                       
 ##  version  R version 3.2.0 (2015-04-16)
-##  system   x86_64, darwin13.4.0
-##  ui       X11
-##  language en_US.UTF-8
-##  collate  en_US.UTF-8
+##  system   x86_64, darwin13.4.0        
+##  ui       X11                         
+##  language en_US.UTF-8                 
+##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago</code></pre>
-<pre><code>## Packages ------------------------------------------------------------------</code></pre>
-<pre><code>##  package        * version    date       source
-##  assertthat       0.1        2013-12-06 CRAN (R 3.2.0)
-##  bitops           1.0-6      2013-08-17 CRAN (R 3.2.0)
-##  broman         * 0.55-3     2015-04-27 local
-##  codetools        0.2-11     2015-03-10 CRAN (R 3.2.0)
-##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)
+<pre><code>## Packages -------------------------------------------------------------------------------------------</code></pre>
+<pre><code>##  package        * version    date       source                          
+##  assertthat       0.1        2013-12-06 CRAN (R 3.2.0)                  
+##  bitops           1.0-6      2013-08-17 CRAN (R 3.2.0)                  
+##  broman         * 0.55-3     2015-04-27 local                           
+##  codetools        0.2-11     2015-03-10 CRAN (R 3.2.0)                  
+##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)                  
 ##  devtools         1.8.0.9000 2015-05-12 Github (hadley/devtools@dc61a9e)
-##  digest           0.6.8      2014-12-31 CRAN (R 3.2.0)
-##  evaluate         0.7        2015-04-21 CRAN (R 3.2.0)
-##  formatR          1.2        2015-04-21 CRAN (R 3.2.0)
-##  ggplot2          1.0.1      2015-03-17 CRAN (R 3.2.0)
-##  git2r            0.10.1     2015-05-07 CRAN (R 3.2.0)
-##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)
-##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)
-##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)
-##  knitr            1.10       2015-04-23 CRAN (R 3.2.0)
-##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)
-##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)
-##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)
-##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)
-##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)
-##  multcomp         1.4-0      2015-03-05 CRAN (R 3.2.0)
-##  munsell          0.4.2      2013-07-11 CRAN (R 3.2.0)
-##  mvtnorm          1.0-2      2014-12-18 CRAN (R 3.2.0)
-##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)
-##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)
-##  qtl            * 1.37-1     2015-04-20 local
-##  qtl2           * 0.1-18     2015-05-16 local
-##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)
-##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)
-##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)
-##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)
-##  rmarkdown        0.5.1      2015-01-26 CRAN (R 3.2.0)
-##  RPushbullet    * 0.2.0      2015-02-09 CRAN (R 3.2.0)
-##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)
-##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)
-##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)
-##  stringi          0.4-1      2014-12-14 CRAN (R 3.2.0)
-##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)
-##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)
-##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)
-##  XML              3.98-1.1   2013-06-20 CRAN (R 3.2.0)
-##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)
+##  digest           0.6.8      2014-12-31 CRAN (R 3.2.0)                  
+##  evaluate         0.7        2015-04-21 CRAN (R 3.2.0)                  
+##  formatR          1.2        2015-04-21 CRAN (R 3.2.0)                  
+##  ggplot2          1.0.1      2015-03-17 CRAN (R 3.2.0)                  
+##  git2r            0.10.1     2015-05-07 CRAN (R 3.2.0)                  
+##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)                  
+##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)                  
+##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)                  
+##  knitr            1.10       2015-04-23 CRAN (R 3.2.0)                  
+##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)                  
+##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)                  
+##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)                  
+##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)                  
+##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)                  
+##  multcomp         1.4-0      2015-03-05 CRAN (R 3.2.0)                  
+##  munsell          0.4.2      2013-07-11 CRAN (R 3.2.0)                  
+##  mvtnorm          1.0-2      2014-12-18 CRAN (R 3.2.0)                  
+##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)                  
+##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)                  
+##  qtl            * 1.37-1     2015-04-20 local                           
+##  qtl2           * 0.1-18     2015-05-16 local                           
+##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)                  
+##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)                  
+##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)                  
+##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)                  
+##  rmarkdown        0.5.1      2015-01-26 CRAN (R 3.2.0)                  
+##  RPushbullet    * 0.2.0      2015-02-09 CRAN (R 3.2.0)                  
+##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)                  
+##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)                  
+##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)                  
+##  stringi          0.4-1      2014-12-14 CRAN (R 3.2.0)                  
+##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)                  
+##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)                  
+##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)                  
+##  XML              3.98-1.1   2013-06-20 CRAN (R 3.2.0)                  
+##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)                  
 ##  zoo              1.7-12     2015-03-16 CRAN (R 3.2.0)</code></pre>
 </div>
 

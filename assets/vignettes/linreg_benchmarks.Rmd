@@ -3,6 +3,10 @@ title: Benchmarks of linear regression routines
 output: rmarkdown::html_vignette
 ---
 
+```{r change_width, include=FALSE}
+options(width=100)
+```
+
 [R/qtl2](https://github.com/kbroman/qtl2) includes code with several
 options for linear regression. We're mostly focusing on using the
 [Eigen library](http://eigen.tuxfamily.org) via
