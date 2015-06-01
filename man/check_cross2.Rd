@@ -22,7 +22,7 @@ Checks whether a cross2 object meets the
 specifications. Problems are issued as warnings.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 check_cross2(grav2)
 }
 

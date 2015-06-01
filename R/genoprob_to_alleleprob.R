@@ -17,7 +17,7 @@
 #' @keywords utilities
 #'
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 #' allele_probs <- genoprob_to_alleleprob(probs)
 
