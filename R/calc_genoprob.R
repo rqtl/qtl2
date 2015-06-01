@@ -26,7 +26,8 @@
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #'
 #' @return A list of three-dimensional arrays of probabilities,
-#' individuals x positions x genotypes
+#' individuals x positions x genotypes. The genetic map and cross
+#' information are included as attributes.
 #'
 #' @details
 #'   Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
