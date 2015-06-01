@@ -5,6 +5,17 @@
 
 using namespace Rcpp;
 
+// calc_genetic_sim
+NumericMatrix calc_genetic_sim(const NumericVector& prob_array);
+RcppExport SEXP qtl2geno_calc_genetic_sim(SEXP prob_arraySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
+    __result = Rcpp::wrap(calc_genetic_sim(prob_array));
+    return __result;
+END_RCPP
+}
 // crosstype_supported
 bool crosstype_supported(const String& crosstype);
 RcppExport SEXP qtl2geno_crosstype_supported(SEXP crosstypeSEXP) {
