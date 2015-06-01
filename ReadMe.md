@@ -1,12 +1,16 @@
-### R/qtl2
+### R/qtl2geno
 
-[![Build Status](https://travis-ci.org/kbroman/qtl2.svg?branch=master)](https://travis-ci.org/kbroman/qtl2)
+[![Build Status](https://travis-ci.org/rqtl/qtl2geno.svg?branch=master)](https://travis-ci.org/rqtl/qtl2geno)
 
-[Karl W Broman](http://kbroman.org)
+[Karl Broman](http://kbroman.org)
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](http://www.rqtl.org), to better
-handle high-dimensional data and complex cross designs.
+handle high-dimensional data and complex cross designs. It is split
+into the [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
+genotype probabilities, imputations, and genetic maps) and
+[qtl2scan](https://github.com/rqtl/qtl2scan) (for QTL genome scans and
+related calculations).
 
 ---
 
@@ -15,8 +19,8 @@ handle high-dimensional data and complex cross designs.
 R/qtl2 is early in development and so is not yet available on
 [CRAN](http://cran.r-project.org).
 
-You can install R/qtl2 from its
-[GitHub repository](http://github.com/kbroman/qtl2). You first need to
+You can install R/qtl2 from [GitHub](https://github.com/rqtl).
+You first need to
 install the [devtools](https://github.com/hadley/devtools) package.
 
     install.packages("devtools")
@@ -24,7 +28,7 @@ install the [devtools](https://github.com/hadley/devtools) package.
 Then install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
-    install_github("kbroman/qtl2")
+    install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
 
 ---
 
@@ -41,4 +45,4 @@ Then install R/qtl2 using `devtools::install_github()`.
 
 #### License
 
-[Licensed](LICENSE) under [GPL-3](http://www.r-project.org/Licenses/GPL-3).
+[Licensed](License.md) under [GPL-3](http://www.r-project.org/Licenses/GPL-3).
