@@ -39,7 +39,8 @@ use to convert genetic distances to recombination fractions.}
 }
 \value{
 A list of three-dimensional arrays of probabilities,
-individuals x positions x genotypes
+individuals x positions x genotypes. The genetic map and cross
+information are included as attributes.
 }
 \description{
 Uses a hidden Markov model to calculate the probabilities of the
