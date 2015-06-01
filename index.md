@@ -47,10 +47,11 @@ Then install R/qtl2 using `devtools::install_github()`.
 
 ### License
 
-The qtl2geno and qtl2scan packages are free software; you can
-redistribute them and/or modify them under the terms of the GNU
-General Public License, version 3, as published by the Free Software
-Foundation.
+The [qtl2geno](https://github.com/rqtl/qtl2geno) and
+[qtl2scan](https://github.com/rqtl/qtl2scan) packages are free
+software; you can redistribute them and/or modify them under the terms
+of the GNU General Public License, version 3, as published by the Free
+Software Foundation.
 
 These programs are distributed in the hope that they will be useful, but
 without any warranty; without even the implied warranty of
