@@ -6,14 +6,16 @@
 
 using namespace Rcpp;
 
-// calc_genetic_sim
-NumericMatrix calc_genetic_sim(const NumericVector& prob_array);
-RcppExport SEXP qtl2scan_calc_genetic_sim(SEXP prob_arraySEXP) {
+// interpolate_map
+NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
+RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
-    __result = Rcpp::wrap(calc_genetic_sim(prob_array));
+    Rcpp::traits::input_parameter< const NumericVector& >::type oldpos(oldposSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type oldmap(oldmapSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type newmap(newmapSEXP);
+    __result = Rcpp::wrap(interpolate_map(oldpos, oldmap, newmap));
     return __result;
 END_RCPP
 }
@@ -200,6 +202,82 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type mat3(mat3SEXP);
     __result = Rcpp::wrap(rbind_3nmatrix(mat1, mat2, mat3));
+    return __result;
+END_RCPP
+}
+// random_int
+IntegerVector random_int(const int n, const int low, const int high);
+RcppExport SEXP qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int >::type low(lowSEXP);
+    Rcpp::traits::input_parameter< const int >::type high(highSEXP);
+    __result = Rcpp::wrap(random_int(n, low, high));
+    return __result;
+END_RCPP
+}
+// get_permutation
+IntegerVector get_permutation(const int n);
+RcppExport SEXP qtl2scan_get_permutation(SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    __result = Rcpp::wrap(get_permutation(n));
+    return __result;
+END_RCPP
+}
+// permute_nvector
+NumericMatrix permute_nvector(const int n_perm, const NumericVector x);
+RcppExport SEXP qtl2scan_permute_nvector(SEXP n_permSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(permute_nvector(n_perm, x));
+    return __result;
+END_RCPP
+}
+// permute_ivector
+IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x);
+RcppExport SEXP qtl2scan_permute_ivector(SEXP n_permSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type x(xSEXP);
+    __result = Rcpp::wrap(permute_ivector(n_perm, x));
+    return __result;
+END_RCPP
+}
+// permute_nvector_stratified
+NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x, const IntegerVector& strata, int n_strata);
+RcppExport SEXP qtl2scan_permute_nvector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP);
+    __result = Rcpp::wrap(permute_nvector_stratified(n_perm, x, strata, n_strata));
+    return __result;
+END_RCPP
+}
+// permute_ivector_stratified
+IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x, const IntegerVector& strata, int n_strata);
+RcppExport SEXP qtl2scan_permute_ivector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP);
+    __result = Rcpp::wrap(permute_ivector_stratified(n_perm, x, strata, n_strata));
     return __result;
 END_RCPP
 }
