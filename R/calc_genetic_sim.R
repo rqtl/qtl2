@@ -39,7 +39,7 @@
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 #' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
 #' sim <- calc_genetic_sim(probs)
 
@@ -67,13 +67,13 @@ calc_genetic_sim <-
        (is.null(subsetted) || !subsetted) &&
        !is.null(stepwidth) && stepwidth=="fixed") {
         if(!quiet) message(" - Reducing probabilities to grid")
-        probs <- probs_to_grid(probs)
+        probs <- qtl2geno::probs_to_grid(probs)
     }
 
     # convert from genotype probabilities to allele probabilities
     if(use_allele_probs) {
         if(!quiet) message(" - converting to allele probs")
-        probs <- genoprob_to_alleleprob(probs, quiet=quiet, n_cores=n_cores)
+        probs <- geno2geno::genoprob_to_alleleprob(probs, quiet=quiet, n_cores=n_cores)
     }
 
     by_chr_func <- function(chr) {
