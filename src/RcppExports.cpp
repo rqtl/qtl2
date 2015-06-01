@@ -6,682 +6,278 @@
 
 using namespace Rcpp;
 
-// calc_genetic_sim
-NumericMatrix calc_genetic_sim(const NumericVector& prob_array);
-RcppExport SEXP qtl2_calc_genetic_sim(SEXP prob_arraySEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP );
-        NumericMatrix __result = calc_genetic_sim(prob_array);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// crosstype_supported
-bool crosstype_supported(const String& crosstype);
-RcppExport SEXP qtl2_crosstype_supported(SEXP crosstypeSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        bool __result = crosstype_supported(crosstype);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// count_invalid_genotypes
-IntegerVector count_invalid_genotypes(const String& crosstype, const IntegerMatrix& genotypes, const bool& is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info);
-RcppExport SEXP qtl2_count_invalid_genotypes(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP );
-        Rcpp::traits::input_parameter< const bool& >::type is_X_chr(is_X_chrSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
-        IntegerVector __result = count_invalid_genotypes(crosstype, genotypes, is_X_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// check_crossinfo
-bool check_crossinfo(const String& crosstype, const IntegerMatrix& cross_info, const bool any_x_chr);
-RcppExport SEXP qtl2_check_crossinfo(SEXP crosstypeSEXP, SEXP cross_infoSEXP, SEXP any_x_chrSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
-        Rcpp::traits::input_parameter< const bool >::type any_x_chr(any_x_chrSEXP );
-        bool __result = check_crossinfo(crosstype, cross_info, any_x_chr);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// check_is_female_vector
-bool check_is_female_vector(const String& crosstype, const LogicalVector& is_female, const bool any_x_chr);
-RcppExport SEXP qtl2_check_is_female_vector(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP any_x_chrSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const bool >::type any_x_chr(any_x_chrSEXP );
-        bool __result = check_is_female_vector(crosstype, is_female, any_x_chr);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// check_handle_x_chr
-bool check_handle_x_chr(const String& crosstype, const bool any_x_chr);
-RcppExport SEXP qtl2_check_handle_x_chr(SEXP crosstypeSEXP, SEXP any_x_chrSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const bool >::type any_x_chr(any_x_chrSEXP );
-        bool __result = check_handle_x_chr(crosstype, any_x_chr);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// genoprob_to_alleleprob
-NumericVector genoprob_to_alleleprob(const String& crosstype, const NumericVector& prob_array, const bool is_x_chr);
-RcppExport SEXP qtl2_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        NumericVector __result = genoprob_to_alleleprob(crosstype, prob_array, is_x_chr);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// calc_genoprob
-NumericVector calc_genoprob(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
-RcppExport SEXP qtl2_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type marker_index(marker_indexSEXP );
-        Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP );
-        NumericVector __result = calc_genoprob(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// est_map
-NumericVector est_map(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const double error_prob, const int max_iterations, const double tol, const bool verbose);
-RcppExport SEXP qtl2_est_map(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP );
-        Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP );
-        Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP );
-        Rcpp::traits::input_parameter< const int >::type max_iterations(max_iterationsSEXP );
-        Rcpp::traits::input_parameter< const double >::type tol(tolSEXP );
-        Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP );
-        NumericVector __result = est_map(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// addlog
-double addlog(const double a, const double b);
-RcppExport SEXP qtl2_addlog(SEXP aSEXP, SEXP bSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const double >::type a(aSEXP );
-        Rcpp::traits::input_parameter< const double >::type b(bSEXP );
-        double __result = addlog(a, b);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
-RcppExport SEXP qtl2_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
+RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type oldpos(oldposSEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type oldmap(oldmapSEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type newmap(newmapSEXP );
-        NumericVector __result = interpolate_map(oldpos, oldmap, newmap);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type oldpos(oldposSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type oldmap(oldmapSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type newmap(newmapSEXP);
+    __result = Rcpp::wrap(interpolate_map(oldpos, oldmap, newmap));
+    return __result;
 END_RCPP
 }
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix X, const NumericVector y);
-RcppExport SEXP qtl2_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP qtl2scan_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP );
-        List __result = fit_linreg_eigenchol(X, y);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP);
+    __result = Rcpp::wrap(fit_linreg_eigenchol(X, y));
+    return __result;
 END_RCPP
 }
 // calc_rss_eigenchol
 double calc_rss_eigenchol(const NumericMatrix X, const NumericVector y);
-RcppExport SEXP qtl2_calc_rss_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP qtl2scan_calc_rss_eigenchol(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP );
-        double __result = calc_rss_eigenchol(X, y);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP);
+    __result = Rcpp::wrap(calc_rss_eigenchol(X, y));
+    return __result;
 END_RCPP
 }
 // fit_linreg_eigenqr
 List fit_linreg_eigenqr(const NumericMatrix X, const NumericVector y);
-RcppExport SEXP qtl2_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP qtl2scan_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP );
-        List __result = fit_linreg_eigenqr(X, y);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP);
+    __result = Rcpp::wrap(fit_linreg_eigenqr(X, y));
+    return __result;
 END_RCPP
 }
 // calc_rss_eigenqr
 double calc_rss_eigenqr(const NumericMatrix X, const NumericVector y);
-RcppExport SEXP qtl2_calc_rss_eigenqr(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP qtl2scan_calc_rss_eigenqr(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP );
-        double __result = calc_rss_eigenqr(X, y);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type y(ySEXP);
+    __result = Rcpp::wrap(calc_rss_eigenqr(X, y));
+    return __result;
 END_RCPP
 }
 // calc_mvrss_eigenchol
 NumericVector calc_mvrss_eigenchol(const NumericMatrix X, const NumericMatrix Y);
-RcppExport SEXP qtl2_calc_mvrss_eigenchol(SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP qtl2scan_calc_mvrss_eigenchol(SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix >::type Y(YSEXP );
-        NumericVector __result = calc_mvrss_eigenchol(X, Y);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type Y(YSEXP);
+    __result = Rcpp::wrap(calc_mvrss_eigenchol(X, Y));
+    return __result;
 END_RCPP
 }
 // calc_mvrss_eigenqr
 NumericVector calc_mvrss_eigenqr(const NumericMatrix X, const NumericMatrix Y);
-RcppExport SEXP qtl2_calc_mvrss_eigenqr(SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP qtl2scan_calc_mvrss_eigenqr(SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix >::type Y(YSEXP );
-        NumericVector __result = calc_mvrss_eigenqr(X, Y);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type Y(YSEXP);
+    __result = Rcpp::wrap(calc_mvrss_eigenqr(X, Y));
+    return __result;
 END_RCPP
 }
 // calc_rss_lapack
-NumericVector calc_rss_lapack(const NumericMatrix X, const NumericMatrix Y, const bool skip_dgels = false, const double tol = 1e-10);
-RcppExport SEXP qtl2_calc_rss_lapack(SEXP XSEXP, SEXP YSEXP, SEXP skip_dgelsSEXP, SEXP tolSEXP) {
+NumericVector calc_rss_lapack(const NumericMatrix X, const NumericMatrix Y, const bool skip_dgels, const double tol);
+RcppExport SEXP qtl2scan_calc_rss_lapack(SEXP XSEXP, SEXP YSEXP, SEXP skip_dgelsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix >::type Y(YSEXP );
-        Rcpp::traits::input_parameter< const bool >::type skip_dgels(skip_dgelsSEXP );
-        Rcpp::traits::input_parameter< const double >::type tol(tolSEXP );
-        NumericVector __result = calc_rss_lapack(X, Y, skip_dgels, tol);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const bool >::type skip_dgels(skip_dgelsSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_rss_lapack(X, Y, skip_dgels, tol));
+    return __result;
 END_RCPP
 }
 // cbind_imatrix
 IntegerMatrix cbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2);
-RcppExport SEXP qtl2_cbind_imatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
+RcppExport SEXP qtl2scan_cbind_imatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP );
-        IntegerMatrix __result = cbind_imatrix(mat1, mat2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP);
+    __result = Rcpp::wrap(cbind_imatrix(mat1, mat2));
+    return __result;
 END_RCPP
 }
 // cbind_3imatrix
 IntegerMatrix cbind_3imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2, const IntegerMatrix& mat3);
-RcppExport SEXP qtl2_cbind_3imatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
+RcppExport SEXP qtl2scan_cbind_3imatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat3(mat3SEXP );
-        IntegerMatrix __result = cbind_3imatrix(mat1, mat2, mat3);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat3(mat3SEXP);
+    __result = Rcpp::wrap(cbind_3imatrix(mat1, mat2, mat3));
+    return __result;
 END_RCPP
 }
 // cbind_nmatrix
 NumericMatrix cbind_nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2);
-RcppExport SEXP qtl2_cbind_nmatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
+RcppExport SEXP qtl2scan_cbind_nmatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP );
-        NumericMatrix __result = cbind_nmatrix(mat1, mat2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP);
+    __result = Rcpp::wrap(cbind_nmatrix(mat1, mat2));
+    return __result;
 END_RCPP
 }
 // cbind_3nmatrix
 NumericMatrix cbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2, const NumericMatrix& mat3);
-RcppExport SEXP qtl2_cbind_3nmatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
+RcppExport SEXP qtl2scan_cbind_3nmatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat3(mat3SEXP );
-        NumericMatrix __result = cbind_3nmatrix(mat1, mat2, mat3);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat3(mat3SEXP);
+    __result = Rcpp::wrap(cbind_3nmatrix(mat1, mat2, mat3));
+    return __result;
 END_RCPP
 }
 // rbind_imatrix
 IntegerMatrix rbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2);
-RcppExport SEXP qtl2_rbind_imatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
+RcppExport SEXP qtl2scan_rbind_imatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP );
-        IntegerMatrix __result = rbind_imatrix(mat1, mat2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP);
+    __result = Rcpp::wrap(rbind_imatrix(mat1, mat2));
+    return __result;
 END_RCPP
 }
 // rbind_3imatrix
 IntegerMatrix rbind_3imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2, const IntegerMatrix& mat3);
-RcppExport SEXP qtl2_rbind_3imatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
+RcppExport SEXP qtl2scan_rbind_3imatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP );
-        Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat3(mat3SEXP );
-        IntegerMatrix __result = rbind_3imatrix(mat1, mat2, mat3);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat2(mat2SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type mat3(mat3SEXP);
+    __result = Rcpp::wrap(rbind_3imatrix(mat1, mat2, mat3));
+    return __result;
 END_RCPP
 }
 // rbind_nmatrix
 NumericMatrix rbind_nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2);
-RcppExport SEXP qtl2_rbind_nmatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
+RcppExport SEXP qtl2scan_rbind_nmatrix(SEXP mat1SEXP, SEXP mat2SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP );
-        NumericMatrix __result = rbind_nmatrix(mat1, mat2);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP);
+    __result = Rcpp::wrap(rbind_nmatrix(mat1, mat2));
+    return __result;
 END_RCPP
 }
 // rbind_3nmatrix
 NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2, const NumericMatrix& mat3);
-RcppExport SEXP qtl2_rbind_3nmatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
+RcppExport SEXP qtl2scan_rbind_3nmatrix(SEXP mat1SEXP, SEXP mat2SEXP, SEXP mat3SEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP );
-        Rcpp::traits::input_parameter< const NumericMatrix& >::type mat3(mat3SEXP );
-        NumericMatrix __result = rbind_3nmatrix(mat1, mat2, mat3);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat1(mat1SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat2(mat2SEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat3(mat3SEXP);
+    __result = Rcpp::wrap(rbind_3nmatrix(mat1, mat2, mat3));
+    return __result;
 END_RCPP
 }
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
-RcppExport SEXP qtl2_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
+RcppExport SEXP qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const int >::type n(nSEXP );
-        Rcpp::traits::input_parameter< const int >::type low(lowSEXP );
-        Rcpp::traits::input_parameter< const int >::type high(highSEXP );
-        IntegerVector __result = random_int(n, low, high);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int >::type low(lowSEXP);
+    Rcpp::traits::input_parameter< const int >::type high(highSEXP);
+    __result = Rcpp::wrap(random_int(n, low, high));
+    return __result;
 END_RCPP
 }
 // get_permutation
 IntegerVector get_permutation(const int n);
-RcppExport SEXP qtl2_get_permutation(SEXP nSEXP) {
+RcppExport SEXP qtl2scan_get_permutation(SEXP nSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const int >::type n(nSEXP );
-        IntegerVector __result = get_permutation(n);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    __result = Rcpp::wrap(get_permutation(n));
+    return __result;
 END_RCPP
 }
 // permute_nvector
 NumericMatrix permute_nvector(const int n_perm, const NumericVector x);
-RcppExport SEXP qtl2_permute_nvector(SEXP n_permSEXP, SEXP xSEXP) {
+RcppExport SEXP qtl2scan_permute_nvector(SEXP n_permSEXP, SEXP xSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP );
-        Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP );
-        NumericMatrix __result = permute_nvector(n_perm, x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(permute_nvector(n_perm, x));
+    return __result;
 END_RCPP
 }
 // permute_ivector
 IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x);
-RcppExport SEXP qtl2_permute_ivector(SEXP n_permSEXP, SEXP xSEXP) {
+RcppExport SEXP qtl2scan_permute_ivector(SEXP n_permSEXP, SEXP xSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector >::type x(xSEXP );
-        IntegerMatrix __result = permute_ivector(n_perm, x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type x(xSEXP);
+    __result = Rcpp::wrap(permute_ivector(n_perm, x));
+    return __result;
 END_RCPP
 }
 // permute_nvector_stratified
-NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x, const IntegerVector& strata, int n_strata = -1);
-RcppExport SEXP qtl2_permute_nvector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x, const IntegerVector& strata, int n_strata);
+RcppExport SEXP qtl2scan_permute_nvector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP );
-        Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP );
-        Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP );
-        NumericMatrix __result = permute_nvector_stratified(n_perm, x, strata, n_strata);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP);
+    __result = Rcpp::wrap(permute_nvector_stratified(n_perm, x, strata, n_strata));
+    return __result;
 END_RCPP
 }
 // permute_ivector_stratified
-IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x, const IntegerVector& strata, int n_strata = -1);
-RcppExport SEXP qtl2_permute_ivector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x, const IntegerVector& strata, int n_strata);
+RcppExport SEXP qtl2scan_permute_ivector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP );
-        Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP );
-        IntegerMatrix __result = permute_ivector_stratified(n_perm, x, strata, n_strata);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_init
-double test_init(const String& crosstype, const int true_gen, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2_test_init(SEXP crosstypeSEXP, SEXP true_genSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const int >::type true_gen(true_genSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP );
-        double __result = test_init(crosstype, true_gen, is_x_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_emit
-double test_emit(const String& crosstype, const int obs_gen, const int true_gen, const double error_prob, const IntegerVector& founder_geno, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2_test_emit(SEXP crosstypeSEXP, SEXP obs_genSEXP, SEXP true_genSEXP, SEXP error_probSEXP, SEXP founder_genoSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const int >::type obs_gen(obs_genSEXP );
-        Rcpp::traits::input_parameter< const int >::type true_gen(true_genSEXP );
-        Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type founder_geno(founder_genoSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP );
-        double __result = test_emit(crosstype, obs_gen, true_gen, error_prob, founder_geno, is_x_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_step
-double test_step(const String& crosstype, const int gen_left, const int gen_right, const double rec_frac, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2_test_step(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP rec_fracSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const int >::type gen_left(gen_leftSEXP );
-        Rcpp::traits::input_parameter< const int >::type gen_right(gen_rightSEXP );
-        Rcpp::traits::input_parameter< const double >::type rec_frac(rec_fracSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP );
-        double __result = test_step(crosstype, gen_left, gen_right, rec_frac, is_x_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_check_geno
-bool test_check_geno(const String& crosstype, const int gen, const bool is_observed_value, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2_test_check_geno(SEXP crosstypeSEXP, SEXP genSEXP, SEXP is_observed_valueSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const int >::type gen(genSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_observed_value(is_observed_valueSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP );
-        bool __result = test_check_geno(crosstype, gen, is_observed_value, is_x_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_possible_gen
-IntegerVector test_possible_gen(const String& crosstype, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2_test_possible_gen(SEXP crosstypeSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP );
-        IntegerVector __result = test_possible_gen(crosstype, is_x_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_ngen
-int test_ngen(const String& crosstype, const bool is_x_chr);
-RcppExport SEXP qtl2_test_ngen(SEXP crosstypeSEXP, SEXP is_x_chrSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        int __result = test_ngen(crosstype, is_x_chr);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// test_nrec
-double test_nrec(const String& crosstype, const int gen_left, const int gen_right, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP );
-        Rcpp::traits::input_parameter< const int >::type gen_left(gen_leftSEXP );
-        Rcpp::traits::input_parameter< const int >::type gen_right(gen_rightSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP );
-        Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP );
-        Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP );
-        double __result = test_nrec(crosstype, gen_left, gen_right, is_x_chr, is_female, cross_info);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_perm(n_permSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type strata(strataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_strata(n_strataSEXP);
+    __result = Rcpp::wrap(permute_ivector_stratified(n_perm, x, strata, n_strata));
+    return __result;
 END_RCPP
 }
