@@ -1,11 +1,14 @@
 Package: qtl2geno
 Version: 0.2-1
 Date: 2015-06-01
-Title: Tools for analyzing high-dimensional QTL experiments
-Description: Reimplementation of the R/qtl package to better handle
-    high-dimensional data and complex cross designs.
-Author: Karl W Broman <kbroman@biostat.wisc.edu>
-Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
+Title: Treatment of Marker Genotypes for QTL Experiments
+Description: Functions to calculate QTL genotype probabilities, impute
+    QTL genotypes, and estimate genetic maps. Part of R/qtl2, a
+    reimplementation of the R/qtl package to better handle
+    high-dimensional data and complex cross designs).
+Author: Karl Broman <kbroman@biostat.wisc.edu>
+Maintainer: Karl Broman <kbroman@biostat.wisc.edu>
+Authors@R: person("Karl", "Broman", , "kbroman@biostat.wisc.edu", c("aut", "cre", "cph"))
 Depends:
     R (>= 3.1.0)
 Imports:
@@ -14,8 +17,7 @@ Imports:
     data.table,
     magrittr,
     parallel,
-    utils,
-    qtl2scan
+    utils
 Suggests:
     knitr,
     rmarkdown,
@@ -25,5 +27,5 @@ Suggests:
 License: GPL-3
 URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
-LinkingTo: Rcpp, RcppEigen
+LinkingTo: Rcpp
 LazyData: true
