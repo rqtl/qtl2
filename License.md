@@ -1,4 +1,4 @@
-The [R/qtl2 (aka qtl2) package](https://github.com/kbroman/qtl2) is
+The [qtl2scan package](https://github.com/rqtl/qtl2scan) is
 free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License, version 3, as published by
 the Free Software Foundation.
@@ -8,5 +8,5 @@ without any warranty; without even the implied warranty of
 merchantability or fitness for a particular purpose.  See the GNU
 General Public License for more details.
 
-A copy of the GNU General Public License, version 3, is available at  
+A copy of the GNU General Public License, version 3, is available at
 <http://www.r-project.org/Licenses/GPL-3>
