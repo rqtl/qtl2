@@ -105,7 +105,8 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         pr <- .calc_genoprob(cross$crosstype, t(cross$geno[[chr]]),
                              founder_geno[[chr]], cross$is_x_chr[chr], is_female,
                              cross_info, rf[[chr]], attr(map[[chr]], "index"),
-                             error_prob) %>% aperm(c(2,3,1))
+                             error_prob)
+        pr <- aperm(pr, c(2,3,1))
 
         dimnames(pr) <- list(rownames(cross$geno[[chr]]),
                              names(map[[chr]]),

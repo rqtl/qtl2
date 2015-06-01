@@ -20,7 +20,6 @@
 #' The \code{\link[utils]{zip}} function is used to do the zipping.
 #'
 #' @export
-#' @importFrom magrittr "%>%"
 #' @keywords IO
 #' @seealso \code{\link{read_cross2}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
