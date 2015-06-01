@@ -1,4 +1,4 @@
 # the following to get NAMESPACE file
 #' @importFrom Rcpp sourceCpp
-#' @useDynLib qtl2
+#' @useDynLib qtl2geno
 NULL
