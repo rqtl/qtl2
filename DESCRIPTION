@@ -1,6 +1,6 @@
-Package: qtl2
-Version: 0.1-18
-Date: 2015-05-16
+Package: qtl2scan
+Version: 0.2-1
+Date: 2015-06-01
 Title: Tools for analyzing high-dimensional QTL experiments
 Description: Reimplementation of the R/qtl package to better handle
     high-dimensional data and complex cross designs.
@@ -21,7 +21,8 @@ Suggests:
     rmarkdown,
     testthat,
     devtools,
-    roxygen2
+    roxygen2,
+    qtl2geno
 License: GPL-3
 URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
