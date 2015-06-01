@@ -89,7 +89,7 @@ grav2 <- read_cross2("~/my_data/grav2.yaml")
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
 all of the data files, and to read that zip file directly. There's even a
 function for creating the zip file:
 
