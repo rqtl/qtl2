@@ -19,9 +19,9 @@ related calculations).
 R/qtl2 is early in development and so is not yet available on
 [CRAN](http://cran.r-project.org).
 
-You can install R/qtl2 from [GitHub](https://github.com/rqtl).
-You first need to
-install the [devtools](https://github.com/hadley/devtools) package.
+You can install R/qtl2 from [GitHub](https://github.com/rqtl).  You
+first need to install the
+[devtools](https://github.com/hadley/devtools) package.
 
     install.packages("devtools")
 
