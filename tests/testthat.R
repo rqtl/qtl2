@@ -1,2 +1,2 @@
 library(testthat)
-test_check("qtl2")
+test_check("qtl2scan")
