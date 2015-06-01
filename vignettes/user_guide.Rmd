@@ -11,13 +11,19 @@ vignette: >
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
+**We are in the process of splitting the package into two parts,
+  [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype
+  probability calculations, and
+  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans.**
+
+
 ## Installation
 
 R/qtl2 is early in development and so is not yet available on
 [CRAN](http://cran.r-project.org).
 
-You can install R/qtl2 from its
-[GitHub repository](http://github.com/kbroman/qtl2). You first need to
+You can install R/qtl2 from
+[GitHub](http://github.com/rqtl). You first need to
 install the [devtools](https://github.com/hadley/devtools) package.
 
 ```{r install_devtools, eval=FALSE}
@@ -28,7 +34,7 @@ Then install R/qtl2 using `devtools::install_github()`.
 
 ```{r install_qtl2, eval=FALSE}
 library(devtools)
-install_github("kbroman/qtl2")
+install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
 ```
 
 ## Data file format
@@ -126,10 +132,10 @@ the new format. Zipped versions of these datasets are included with
 the package and can be loaded into R using the `read_cross2()`
 function.
 
-In the [package source](https://github.com/kbroman/qtl2), the sample
+In the [qtl2geno package source](https://github.com/rqtl/qtl2geno), the sample
 zip files are
 located in
-[`qtl2/inst/extdata`](https://github.com/kbroman/qtl2/tree/master/inst/extdata).
+[`qtl2geno/inst/extdata`](https://github.com/rqtl/qtl2/tree/master/inst/extdata).
 In the installed version of the package, they are in `qtl2/extdata`,
 within whatever directory your R packages were installed. The R
 function `system.file()` can be used to construct the path to these
@@ -138,10 +144,10 @@ files.
 For example, one of the sample data sets concerns a gravitropism
 phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from
 [Moore et al. (2013) Genetics 195:1077-1086](http://www.genetics.org/content/195/3/1077.abstract).
-The data are in `qtl2/extdata/grav2.zip`, which can be loaded as
+The data are in `qtl2geno/extdata/grav2.zip`, which can be loaded as
 follows:
 
 ```{r load_grav2, message=FALSE}
 library(qtl2geno)
-grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2") )
+grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2geno") )
 ```
