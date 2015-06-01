@@ -7,8 +7,11 @@ description: R/qtl2, a reimplementation of R/qtl to better handle high-dimension
 
 R/qtl2 (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
-and complex cross designs.
-
+and complex cross designs.  It is split
+into [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
+genotype probabilities, imputations, and genetic maps) and
+[qtl2scan](https://github.com/rqtl/qtl2scan) (for QTL genome scans and
+related calculations).
 
 ---
 
@@ -17,8 +20,8 @@ and complex cross designs.
 R/qtl2 is early in development and so is not yet available on
 [CRAN](http://cran.r-project.org).
 
-You can install R/qtl2 from its
-[GitHub repository](http://github.com/kbroman/qtl2). You first need to
+You can install R/qtl2 from
+[GitHub](http://github.com/rqtl). You first need to
 install the [devtools](https://github.com/hadley/devtools) package.
 
     install.packages("devtools")
@@ -26,7 +29,7 @@ install the [devtools](https://github.com/hadley/devtools) package.
 Then install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
-    install_github("kbroman/qtl2")
+    install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
 
 ---
 
@@ -44,11 +47,12 @@ Then install R/qtl2 using `devtools::install_github()`.
 
 ### License
 
-The R/qtl2 package is free software; you can redistribute it
-and/or modify it under the terms of the GNU General Public License,
-version 3, as published by the Free Software Foundation.
+The qtl2geno and qtl2scan packages are free software; you can
+redistribute them and/or modify them under the terms of the GNU
+General Public License, version 3, as published by the Free Software
+Foundation.
 
-This program is distributed in the hope that it will be useful, but
+These programs are distributed in the hope that they will be useful, but
 without any warranty; without even the implied warranty of
 merchantability or fitness for a particular purpose.  See the GNU
 General Public License for more details.
@@ -60,5 +64,6 @@ A copy of the GNU General Public License, version 3, is available at
 
 Sources on [github](http://github.com):
 
-- The [source for the package](https://github.com/kbroman/qtl2/tree/master)
+- The [source for the qtl2geno](https://github.com/rqtl/qtl2geno)
+- The [source for the qtl2scan](https://github.com/rqtl/qtl2scan)
 - The [source for the website](https://github.com/kbroman/qtl2/tree/gh-pages)
