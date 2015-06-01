@@ -1,5 +1,8 @@
 language: r
 
+r_packages_github:
+    rqtl/qtl2geno
+
 warnings_are_errors: true
 
 sudo: required
