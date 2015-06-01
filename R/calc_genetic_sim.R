@@ -61,10 +61,8 @@ calc_genetic_sim <-
         quiet <- TRUE # no more messages
     }
 
-    subsetted <- attr(probs, "subset")
     stepwidth <- attr(attr(probs, "map")[[1]], "stepwidth")
     if(use_grid_only &&
-       (is.null(subsetted) || !subsetted) &&
        !is.null(stepwidth) && stepwidth=="fixed") {
         if(!quiet) message(" - Reducing probabilities to grid")
         probs <- probs_to_grid(probs)

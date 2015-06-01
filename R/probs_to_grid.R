@@ -8,7 +8,12 @@
 #' \code{\link{calc_genoprob}} with \code{stepwidth="fixed"}.
 #'
 #' @return Same list as input, but subset to just include
-#' pseudomarkers along a grid.
+#' pseudomarkers along a grid. The map attribute is similarly subset.
+#'
+#' @details This only works if \code{\link{calc_genoprob}} was run
+#' with \code{stepwidth="fixed"}, so that the genotype probabilities
+#' were calculated at a grid of markers/pseudomarkers. When this is
+#' the case, we omit all but the probabilities on this grid.
 #'
 #' @export
 #' @keywords utilities
@@ -47,8 +52,36 @@ probs_to_grid <-
         }
     }
 
-    # attribute indicating that the thing has been subsetted
-    attr(probs, "subset") <- TRUE
+    attr(probs, "map") <- map_to_grid(map)
 
     probs
 }
+
+# subset a map object to grid
+#
+# input is a list; attributes include "grid"
+map_to_grid <-
+    function(map)
+{
+    for(i in seq(along=map)) {
+        mapat <- attributes(map[[i]])
+        grid <- mapat$grid
+        if(is.null(grid) || all(grid)) next
+
+        # subset map
+        map[[i]] <- map[[i]][grid]
+
+        mapat_ignore <- "names"
+        mapat_subset <- c("index", "grid")
+        for(att in names(mapat)) {
+            if(att %in% mapat_ignore) next
+            if(att %in% mapat_subset)
+                attr(map[[i]], att) <- mapat[[att]][grid]
+            else
+                attr(map[[i]], att) <- mapat[[att]]
+        }
+    }
+
+    map
+}
+

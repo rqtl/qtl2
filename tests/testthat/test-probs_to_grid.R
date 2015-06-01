@@ -17,11 +17,20 @@ test_that("probs_to_grid works", {
     expected_dim <- orig_dim; expected_dim[2,] <- npmar
     expect_equal(new_dim, expected_dim)
 
-    # another test
+    # test results
     expected <- probs
-    for(i in seq(along=probs))
-        expected[[i]] <- probs[[i]][,attr(map[[i]], "grid"),]
-    attr(expected, "subset") <- TRUE
-    expect_equal(probs_sub, expected)
+    for(i in seq(along=probs)) {
+        mapat <- attributes(map[[i]])
+        grid <- mapat$grid
+        expected[[i]] <- probs[[i]][,grid,,drop=FALSE]
 
+        map[[i]] <- map[[i]][grid]
+        for(j in c("grid", "index"))
+            mapat[[j]] <- mapat[[j]][grid]
+        for(j in names(mapat)[names(mapat) != "names"])
+            attr(map[[i]], j) <- mapat[[j]]
+    }
+
+    attr(expected, "map") <- map
+    expect_equal(probs_sub, expected)
 })
