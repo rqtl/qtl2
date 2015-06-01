@@ -67,13 +67,13 @@ calc_genetic_sim <-
        (is.null(subsetted) || !subsetted) &&
        !is.null(stepwidth) && stepwidth=="fixed") {
         if(!quiet) message(" - Reducing probabilities to grid")
-        probs <- qtl2geno::probs_to_grid(probs)
+        probs <- probs_to_grid(probs)
     }
 
     # convert from genotype probabilities to allele probabilities
     if(use_allele_probs) {
         if(!quiet) message(" - converting to allele probs")
-        probs <- geno2geno::genoprob_to_alleleprob(probs, quiet=quiet, n_cores=n_cores)
+        probs <- genoprob_to_alleleprob(probs, quiet=quiet, n_cores=n_cores)
     }
 
     by_chr_func <- function(chr) {
