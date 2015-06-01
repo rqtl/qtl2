@@ -12,11 +12,17 @@ probs_to_grid(probs)
 }
 \value{
 Same list as input, but subset to just include
-pseudomarkers along a grid.
+pseudomarkers along a grid. The map attribute is similarly subset.
 }
 \description{
 Subset genotype probability array (from \code{\link{calc_genoprob}}
 to a grid of pseudomarkers along each chromosome.
+}
+\details{
+This only works if \code{\link{calc_genoprob}} was run
+with \code{stepwidth="fixed"}, so that the genotype probabilities
+were calculated at a grid of markers/pseudomarkers. When this is
+the case, we omit all but the probabilities on this grid.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

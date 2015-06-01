@@ -9,13 +9,11 @@ test_that("map functions are giving the invertible", {
     for(m in mapfunc) {
         if(m == "morgan") d <- d[d <= 50]
 
-        d %>% mf(m) %>% imf(m) %>% expect_equal(d)
+        expect_equal(imf(mf(d, m), m), d)
     }
 
     r <- seq(0, 0.5, by=0.5)
-    for(m in mapfunc) {
-        r %>% imf(m) %>% mf(m) %>% expect_equal(r)
-    }
-
+    for(m in mapfunc)
+        expect_equal(imf(mf(r, m), m), r)
 
 })

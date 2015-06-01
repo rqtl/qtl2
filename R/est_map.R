@@ -75,14 +75,15 @@ function(cross, error_prob=1e-4,
         ntyped <- rowSums(geno>0)
         keep <- (ntyped >= 2)
 
+        rf_start <- mf(diff(gmap), map_function) # positions to inter-marker rec frac
         rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
                        founder_geno[[chr]], is_x_chr[chr], is_female[keep],
                        cross_info[,keep,drop=FALSE],
-                       diff(gmap) %>% mf(map_function), # positions to inter-marker rec frac
+                       rf_start,
                        error_prob, maxit, tol, !quiet)
 
         loglik <- attr(rf, "loglik")
-        map <- imf(rf, map_function) %>% c(gmap[1], .) %>% cumsum() # rec frac to positions
+        map <- cumsum(c(gmap[1], imf(rf, map_function))) # rec frac to positions
 
         names(map) <- names(gmap)
         attr(map, "loglik") <- loglik

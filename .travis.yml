@@ -1,5 +1,8 @@
 language: r
 
+r_github_packages:
+  - rqtl/qtl2scan
+
 warnings_are_errors: true
 
 sudo: required

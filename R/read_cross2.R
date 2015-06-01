@@ -21,7 +21,6 @@
 #' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
 #'
 #' @export
-#' @importFrom magrittr "%>%"
 #' @keywords IO
 #' @seealso \code{\link{write_control_file}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
@@ -335,10 +334,7 @@ function(sex_control, covar, sep, dir, quiet=TRUE)
 convert_sexcodes <-
 function(codes)
 {
-    result <- codes %>%
-        tolower() %>%
-        substr(1,1) %>%
-        match(c("f", "m")) - 1
+    result <- match(substr(tolower(codes), 1, 1), c("f", "m")) - 1
 
     names(result) <- names(codes)
     result
@@ -447,7 +443,7 @@ is_web_file <-
 function(file)
 {
     patterns <- c("^http://", "^https://", "^file://")
-    vapply(patterns, function(a,b) length(grep(a, b)), 0, file) %>% sum %>% ">"(0)
+    any(vapply(patterns, function(a,b) grepl(a, b), logical(1), file))
 }
 
 stop_if_no_file <-
