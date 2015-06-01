@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8](inputenc)
 ---
 
-[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
+[R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
@@ -51,7 +51,7 @@ simplifies the function for reading in the data. That function,
 control file. So you can read in data like this:
 
 ```{r read_cross2, eval=FALSE}
-library(qtl2)
+library(qtl2geno)
 grav2 <- read_cross2("~/my_data/grav2.yaml")
 ```
 

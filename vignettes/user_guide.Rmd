@@ -77,7 +77,7 @@ simplifies the function for reading in the data. That function,
 control file. So you can read in data like this:
 
 ```{r read_cross2, eval=FALSE}
-library(qtl2)
+library(qtl2geno)
 grav2 <- read_cross2("~/my_data/grav2.yaml")
 ```
 
@@ -142,6 +142,6 @@ The data are in `qtl2/extdata/grav2.zip`, which can be loaded as
 follows:
 
 ```{r load_grav2, message=FALSE}
-library(qtl2)
+library(qtl2geno)
 grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2") )
 ```
