@@ -12,7 +12,7 @@ using namespace Rcpp;
 //
 // return value contains coefficients and, for dgels, stuff that sums to RSS
 // rank and used_dgelsy are needed in the functions that call this
-NumericMatrix calc_regutil_lapack(const NumericMatrix X, const NumericMatrix Y,
+NumericMatrix calc_regutil_lapack(const NumericMatrix& X, const NumericMatrix& Y,
                                   int& rank, bool& used_dgelsy,
                                   const bool skip_dgels=false, const double tol=1e-10)
 {
@@ -73,7 +73,7 @@ NumericMatrix calc_regutil_lapack(const NumericMatrix X, const NumericMatrix Y,
 
 // calculate RSS for linear regression via LAPACK
 // [[Rcpp::export]]
-NumericVector calc_rss_lapack(const NumericMatrix X, const NumericMatrix Y,
+NumericVector calc_rss_lapack(const NumericMatrix& X, const NumericMatrix& Y,
                               const bool skip_dgels=false, const double tol=1e-10)
 {
     int nrow = X.rows();
@@ -116,7 +116,7 @@ NumericVector calc_rss_lapack(const NumericMatrix X, const NumericMatrix Y,
 
 // calculate residuals from linear regression via LAPACK
 // [[Rcpp::export]]
-NumericMatrix calc_resid_lapack(const NumericMatrix X, const NumericMatrix Y,
+NumericMatrix calc_resid_lapack(const NumericMatrix& X, const NumericMatrix& Y,
                                 const bool skip_dgels=false, const double tol=1e-10)
 {
     int nrow = X.rows();
