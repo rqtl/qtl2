@@ -50,6 +50,12 @@ test_that("lin regr works for simple example", {
     dgelsy_resid <- calc_resid_lapack(X,Y, skip_dgels=TRUE)
     expect_equal(dgelsy_resid, as.matrix(resid))
 
+    # generic
+    linreg_rss <- calc_rss_linreg(X,Y)
+    expect_equal(linreg_rss, rss)
+    linreg_resid <- calc_resid_linreg(X,Y)
+    expect_equal(linreg_resid, as.matrix(resid))
+
 })
 
 test_that("lin regr works for reduced-rank example", {
@@ -92,6 +98,12 @@ test_that("lin regr works for reduced-rank example", {
 
     dgelsy_resid <- calc_resid_lapack(mm, Y, skip_dgels=TRUE)
     expect_equal(dgelsy_resid, as.matrix(resid))
+
+    # generic
+    linreg_rss <- calc_rss_linreg(mm,Y)
+    expect_equal(linreg_rss, rss)
+    linreg_resid <- calc_resid_linreg(mm,Y)
+    expect_equal(linreg_resid, as.matrix(resid))
 
 })
 
@@ -167,6 +179,10 @@ test_that("lin regr works for multiple columns", {
     expect_equal(resid, calc_resid_lapack(X, Y))
     expect_equal(resid, calc_resid_lapack(X, Y, skip_dgels=TRUE))
 
+    # generic
+    expect_equal(lm.rss, calc_rss_linreg(X, Y))
+    expect_equal(as.matrix(resid), calc_resid_linreg(X, Y))
+
 })
 
 test_that("lin regr works for multiple columns, reduced-rank X", {
@@ -189,4 +205,7 @@ test_that("lin regr works for multiple columns, reduced-rank X", {
     expect_equal(resid, calc_resid_lapack(mm, Y))
     expect_equal(resid, calc_resid_lapack(mm, Y, skip_dgels=TRUE))
 
+    # generic
+    expect_equal(lm.rss, calc_rss_linreg(mm, Y))
+    expect_equal(as.matrix(resid), calc_resid_linreg(mm, Y))
 })

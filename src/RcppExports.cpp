@@ -6,15 +6,15 @@
 
 using namespace Rcpp;
 
-// calc_resid
-NumericVector calc_resid(const NumericMatrix& X, const NumericVector& P);
-RcppExport SEXP qtl2scan_calc_resid(SEXP XSEXP, SEXP PSEXP) {
+// calc_resid_linreg_3d
+NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P);
+RcppExport SEXP qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
-    __result = Rcpp::wrap(calc_resid(X, P));
+    __result = Rcpp::wrap(calc_resid_linreg_3d(X, P));
     return __result;
 END_RCPP
 }
@@ -128,6 +128,30 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type skip_dgels(skip_dgelsSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(calc_resid_lapack(X, Y, skip_dgels, tol));
+    return __result;
+END_RCPP
+}
+// calc_rss_linreg
+NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y);
+RcppExport SEXP qtl2scan_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    __result = Rcpp::wrap(calc_rss_linreg(X, Y));
+    return __result;
+END_RCPP
+}
+// calc_resid_linreg
+NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y);
+RcppExport SEXP qtl2scan_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    __result = Rcpp::wrap(calc_resid_linreg(X, Y));
     return __result;
 END_RCPP
 }
