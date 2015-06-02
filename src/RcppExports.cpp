@@ -6,6 +6,18 @@
 
 using namespace Rcpp;
 
+// calc_resid
+NumericVector calc_resid(const NumericMatrix& X, const NumericVector& P);
+RcppExport SEXP qtl2scan_calc_resid(SEXP XSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
+    __result = Rcpp::wrap(calc_resid(X, P));
+    return __result;
+END_RCPP
+}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
