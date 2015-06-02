@@ -26,13 +26,7 @@ NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix phen
     int x_size = n_ind * n_gen;
     // check that d[0] == n_ind;
 
-    Rcout << "n_ind: " << n_ind << '\n';
-    Rcout << "n_phe: " << n_phe << '\n';
-    Rcout << "n_pos: " << n_pos << '\n';
-    Rcout << "n_gen: " << n_gen << '\n';
-
     NumericMatrix result(n_phe, n_pos);
-
     NumericMatrix X(n_ind, n_gen);
 
     for(int i=0, offset=0; i<n_pos; i++, offset += x_size) {
@@ -40,7 +34,7 @@ NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix phen
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 
         // calc rss and paste into ith column of result
-        result(,i) = calc_resid_linreg(X, pheno);
+        result(_,i) = calc_rss_linreg(X, pheno);
     }
 
     return result;
