@@ -50,6 +50,12 @@ test_that("lin regr works for simple example", {
     dgelsy_resid <- calc_resid_lapack(X,Y, skip_dgels=TRUE)
     expect_equal(dgelsy_resid, as.matrix(resid))
 
+    # generic
+    linreg_rss <- calc_rss_linreg(X,Y)
+    expect_equal(linreg_rss, rss)
+    linreg_resid <- calc_resid_linreg(X,Y)
+    expect_equal(linreg_resid, as.matrix(resid))
+
 })
 
 test_that("lin regr works for reduced-rank example", {
@@ -92,6 +98,12 @@ test_that("lin regr works for reduced-rank example", {
 
     dgelsy_resid <- calc_resid_lapack(mm, Y, skip_dgels=TRUE)
     expect_equal(dgelsy_resid, as.matrix(resid))
+
+    # generic
+    linreg_rss <- calc_rss_linreg(mm,Y)
+    expect_equal(linreg_rss, rss)
+    linreg_resid <- calc_resid_linreg(mm,Y)
+    expect_equal(linreg_resid, as.matrix(resid))
 
 })
 
@@ -167,6 +179,10 @@ test_that("lin regr works for multiple columns", {
     expect_equal(resid, calc_resid_lapack(X, Y))
     expect_equal(resid, calc_resid_lapack(X, Y, skip_dgels=TRUE))
 
+    # generic
+    expect_equal(lm.rss, calc_rss_linreg(X, Y))
+    expect_equal(as.matrix(resid), calc_resid_linreg(X, Y))
+
 })
 
 test_that("lin regr works for multiple columns, reduced-rank X", {
@@ -188,5 +204,37 @@ test_that("lin regr works for multiple columns, reduced-rank X", {
     # resid
     expect_equal(resid, calc_resid_lapack(mm, Y))
     expect_equal(resid, calc_resid_lapack(mm, Y, skip_dgels=TRUE))
+
+    # generic
+    expect_equal(lm.rss, calc_rss_linreg(mm, Y))
+    expect_equal(as.matrix(resid), calc_resid_linreg(mm, Y))
+})
+
+
+test_that("calculation of residuals for 3d arrays works", {
+
+    library(qtl)
+    data(hyper)
+    hyper <- hyper[1,]
+    hyper2 <- qtl2geno::convert2cross2(hyper)
+    pr <- qtl2geno::calc_genoprob(hyper2, error_prob=0.002, step=1)[[1]]
+    pr <- aperm(pr, c(1,3,2)) # reorient to have genomic position last
+
+    # residuals with intercept plus the phenotype
+    X <- cbind(1, hyper$pheno[,1])
+    expected <- array(0, dim=dim(pr))
+    for(i in 1:dim(pr)[3])
+        expected[,,i] <- lm(pr[,,i] ~ X)$resid
+
+    resid <- calc_resid_linreg_3d(X, pr)
+    expect_equal(expected, resid)
+
+    # residuals with just the intercept
+    expected <- array(0, dim=dim(pr))
+    for(i in 1:dim(pr)[3])
+        expected[,,i] <- lm(pr[,,i] ~ 1)$resid
+
+    resid <- calc_resid_linreg_3d(X[,1,drop=FALSE], pr)
+    expect_equal(expected, resid)
 
 })

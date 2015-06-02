@@ -37,6 +37,18 @@ calc_resid_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
     .Call('qtl2scan_calc_resid_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
 }
 
+calc_rss_linreg <- function(X, Y) {
+    .Call('qtl2scan_calc_rss_linreg', PACKAGE = 'qtl2scan', X, Y)
+}
+
+calc_resid_linreg <- function(X, Y) {
+    .Call('qtl2scan_calc_resid_linreg', PACKAGE = 'qtl2scan', X, Y)
+}
+
+calc_resid_linreg_3d <- function(X, P) {
+    .Call('qtl2scan_calc_resid_linreg_3d', PACKAGE = 'qtl2scan', X, P)
+}
+
 cbind_imatrix <- function(mat1, mat2) {
     .Call('qtl2scan_cbind_imatrix', PACKAGE = 'qtl2scan', mat1, mat2)
 }

@@ -11,7 +11,7 @@ using namespace Eigen;
 #include "debug_util.h"
 
 // calc X'X
-MatrixXd calc_XpX_eigen(const MatrixXd X)
+MatrixXd calc_XpX_eigen(const MatrixXd& X)
 {
     int n = X.cols();
 
@@ -21,7 +21,7 @@ MatrixXd calc_XpX_eigen(const MatrixXd X)
 
 // least squares by "LLt" Cholesky decomposition
 // [[Rcpp::export]]
-List fit_linreg_eigenchol(const NumericMatrix X, const NumericVector y)
+List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
@@ -50,7 +50,7 @@ List fit_linreg_eigenchol(const NumericMatrix X, const NumericVector y)
 // least squares by "LLt" Cholesky decomposition
 // return just the residual sum of squares
 // [[Rcpp::export]]
-double calc_rss_eigenchol(const NumericMatrix X, const NumericVector y)
+double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
@@ -65,7 +65,7 @@ double calc_rss_eigenchol(const NumericMatrix X, const NumericVector y)
 
 // least squares by QR decomposition with column pivoting
 // [[Rcpp::export]]
-List fit_linreg_eigenqr(const NumericMatrix X, const NumericVector y)
+List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
@@ -126,7 +126,7 @@ List fit_linreg_eigenqr(const NumericMatrix X, const NumericVector y)
 // least squares by QR decomposition with column pivoting
 // return just the residual sum of squares
 // [[Rcpp::export]]
-double calc_rss_eigenqr(const NumericMatrix X, const NumericVector y)
+double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
@@ -160,7 +160,7 @@ double calc_rss_eigenqr(const NumericMatrix X, const NumericVector y)
 // least squares by "LLt" Cholesky decomposition, with matrix Y
 // return vector of RSS
 // [[Rcpp::export]]
-NumericVector calc_mvrss_eigenchol(const NumericMatrix X, const NumericMatrix Y)
+NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
     int ncolY = Y.cols();
     int ncolX = X.cols();
@@ -186,7 +186,7 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix X, const NumericMatrix Y)
 // least squares by QR decomposition with column pivoting, with matrix Y
 // return vector of RSS
 // [[Rcpp::export]]
-NumericVector calc_mvrss_eigenqr(const NumericMatrix X, const NumericMatrix Y)
+NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     MatrixXd YY(as<Map<MatrixXd> >(Y));
