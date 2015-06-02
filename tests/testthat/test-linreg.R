@@ -1,4 +1,3 @@
-
 context("linear regression")
 library(qtl)
 
@@ -13,7 +12,9 @@ test_that("lin regr works for simple example", {
     Y <- as.matrix(y)
 
     lm.out <- lm(y ~ x)
-    rss <- sum(lm.out$resid^2)
+    resid <- lm.out$resid
+    names(resid) <- NULL
+    rss <- sum(resid^2)
 
     # cholesky-based regression
     lltFit <- fit_linreg_eigenchol(X, y)
@@ -35,12 +36,19 @@ test_that("lin regr works for simple example", {
     qrRSS <- calc_rss_eigenqr(X, y)
     expect_equal(rss, qrRSS)
 
-    # LAPACK
+    # LAPACK rss
     lapack_rss <- calc_rss_lapack(X,Y)
     expect_equal(rss, lapack_rss)
 
     dgelsy_rss <- calc_rss_lapack(X,Y, skip_dgels=TRUE)
     expect_equal(rss, dgelsy_rss)
+
+    # LAPACK resid
+    lapack_resid <- calc_resid_lapack(X,Y)
+    expect_equal(lapack_resid, as.matrix(resid))
+
+    dgelsy_resid <- calc_resid_lapack(X,Y, skip_dgels=TRUE)
+    expect_equal(dgelsy_resid, as.matrix(resid))
 
 })
 
@@ -53,7 +61,9 @@ test_that("lin regr works for reduced-rank example", {
     Y <- as.matrix(y)
 
     lm.out <- lm(y ~ -1 + mm)
-    rss <- sum(lm.out$resid^2)
+    resid <- lm.out$resid
+    names(resid) <- NULL
+    rss <- sum(resid^2)
     lm_se <- lm.out$coef
     lm_se[!is.na(lm_se)] <- summary(lm.out)$coef[,2]
 
@@ -69,12 +79,19 @@ test_that("lin regr works for reduced-rank example", {
     qrRSS <- calc_rss_eigenqr(mm, y)
     expect_equal(rss, qrRSS)
 
-    # LAPACK
+    # LAPACK RSS
     lapack_rss <- calc_rss_lapack(mm,Y)
     expect_equal(rss, lapack_rss)
 
     dgelsy_rss <- calc_rss_lapack(mm, Y, skip_dgels=TRUE)
     expect_equal(rss, dgelsy_rss)
+
+    # LAPACK resid
+    lapack_resid <- calc_resid_lapack(mm,Y)
+    expect_equal(lapack_resid, as.matrix(resid))
+
+    dgelsy_resid <- calc_resid_lapack(mm, Y, skip_dgels=TRUE)
+    expect_equal(dgelsy_resid, as.matrix(resid))
 
 })
 
@@ -137,12 +154,18 @@ test_that("lin regr works for multiple columns", {
     ncolY <- 10
     Y <- permute_nvector(10, y)
 
-    lm.rss <- colSums(lm.fit(X, Y)$resid^2)
+    resid <- lm.fit(X,Y)$resid
+    lm.rss <- colSums(resid^2)
 
+    # RSS
     expect_equal(lm.rss, calc_mvrss_eigenchol(X, Y))
     expect_equal(lm.rss, calc_mvrss_eigenqr(X, Y))
     expect_equal(lm.rss, calc_rss_lapack(X, Y))
     expect_equal(lm.rss, calc_rss_lapack(X, Y, skip_dgels=TRUE))
+
+    # residuals
+    expect_equal(resid, calc_resid_lapack(X, Y))
+    expect_equal(resid, calc_resid_lapack(X, Y, skip_dgels=TRUE))
 
 })
 
@@ -154,10 +177,16 @@ test_that("lin regr works for multiple columns, reduced-rank X", {
     y <- mm %*% seq_len(ncol(mm)) + rnorm(nrow(mm), sd = 0.1)
     Y <- permute_nvector(10, y)
 
-    lm.rss <- colSums(lm.fit(mm, Y)$resid^2)
+    resid <- lm.fit(mm, Y)$resid
+    lm.rss <- colSums(resid^2)
 
+    # RSS
     expect_equal(lm.rss, calc_mvrss_eigenqr(mm, Y))
     expect_equal(lm.rss, calc_rss_lapack(mm, Y))
     expect_equal(lm.rss, calc_rss_lapack(mm, Y, skip_dgels=TRUE))
+
+    # resid
+    expect_equal(resid, calc_resid_lapack(mm, Y))
+    expect_equal(resid, calc_resid_lapack(mm, Y, skip_dgels=TRUE))
 
 })
