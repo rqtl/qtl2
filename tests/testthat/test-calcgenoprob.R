@@ -1,6 +1,8 @@
-
 context("calc_genoprob")
 library(qtl)
+
+grab_prob_rqtl <- function(cross) lapply(cross$geno, function(a) aperm(a$prob, c(1,3,2)))
+
 
 test_that("backcross autosome calc_genoprob matches R/qtl", {
 
@@ -9,7 +11,7 @@ test_that("backcross autosome calc_genoprob matches R/qtl", {
     hyper <- hyper[chr,]
 
     hyper <- calc.genoprob(hyper, err=0.002)
-    pr <- lapply(hyper$geno, "[[", "prob")
+    pr <- grab_prob_rqtl(hyper)
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, error_prob=0.002)
@@ -25,7 +27,7 @@ test_that("intercross autosome calc_genoprob matches R/qtl", {
     listeria <- listeria[chr,]
 
     listeria <- calc.genoprob(listeria, step=1, stepwidth="max", err=0.01)
-    pr <- lapply(listeria$geno, "[[", "prob")
+    pr <- grab_prob_rqtl(listeria)
 
     listeria2 <- convert2cross2(listeria)
     pr2 <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01)
@@ -43,7 +45,7 @@ test_that("risib autosome calc_genoprob matches R/qtl", {
     class(hyper)[1] <- "risib"
 
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", err=0.002)
-    pr <- lapply(hyper$geno, "[[", "prob")
+    pr <- grab_prob_rqtl(hyper)
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.002)
@@ -60,7 +62,7 @@ test_that("riself autosome calc_genoprob matches R/qtl", {
     class(hyper)[1] <- "riself"
 
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", err=0.002)
-    pr <- lapply(hyper$geno, "[[", "prob")
+    pr <- grab_prob_rqtl(hyper)
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.002)
@@ -78,6 +80,7 @@ test_that("f2 X chr calc_genoprob matches R/qtl", {
     fake.f2 <- calc.genoprob(fake.f2, step=1, stepwidth="max", error.prob=0.01)
     pr <- fake.f2$geno[[1]]$prob
     pr <- reviseXdata("f2", "full", getsex(fake.f2), prob=pr, cross.attr=attributes(fake.f2))
+    pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
     pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.01)[[1]]
@@ -96,6 +99,7 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", error.prob=0.02)
     pr <- hyper$geno[["X"]]$prob
     pr <- reviseXdata("bc", "full", getsex(hyper), prob=pr, cross.attr=attributes(hyper))
+    pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)[[1]]
@@ -112,9 +116,10 @@ test_that("f2 X chr all males calc_genoprob matches R/qtl", {
 
     fake.f2 <- calc.genoprob(fake.f2, step=1, stepwidth="max", error.prob=0.02)
     pr <- fake.f2$geno[["X"]]$prob
+    pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.02)[[1]][,,5:6]
+    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.02)[[1]][,5:6,]
 
     expect_equivalent(pr, pr2)
 
@@ -129,10 +134,11 @@ test_that("f2 X chr all females calc_genoprob matches R/qtl", {
 
     fake.f2 <- calc.genoprob(fake.f2, step=1, stepwidth="max", error.prob=0.02)
     pr <- fake.f2$geno[["X"]]$prob
+    pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
     pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.02)[[1]]
-    pr2 <- pr2[,,1:2] + pr2[,,4:3] # recode as in R/qtl
+    pr2 <- pr2[,1:2,] + pr2[,4:3,] # recode as in R/qtl
 
     expect_equivalent(pr, pr2)
 
@@ -147,9 +153,10 @@ test_that("f2 X chr all females forw calc_genoprob matches R/qtl", {
 
     fake.f2 <- calc.genoprob(fake.f2, step=1, stepwidth="max", error.prob=0.0001)
     pr <- fake.f2$geno[["X"]]$prob
+    pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.0001)[[1]][,,1:2]
+    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.0001)[[1]][,1:2,]
 
     expect_equivalent(pr, pr2)
 
@@ -163,9 +170,10 @@ test_that("f2 X chr all females rev calc_genoprob matches R/qtl", {
     fake.f2$pheno$pgm <- 1
     fake.f2 <- calc.genoprob(fake.f2, step=1, stepwidth="max", error.prob=0.0001)
     pr <- fake.f2$geno[["X"]]$prob
+    pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.0001)[[1]][,,4:3]
+    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.0001)[[1]][,4:3,]
 
     expect_equivalent(pr, pr2)
 
@@ -180,9 +188,10 @@ test_that("bc X chr all males calc_genoprob matches R/qtl", {
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", error.prob=0.02)
     pr <- hyper$geno[["X"]]$prob
     pr <- reviseXdata("bc", "full", getsex(hyper), prob=pr, cross.attr=attributes(hyper))
+    pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)[[1]][,,3:4]
+    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)[[1]][,3:4,]
 
     expect_equivalent(pr, pr2)
 
@@ -198,10 +207,11 @@ test_that("bc X chr all females calc_genoprob matches R/qtl", {
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", error.prob=0.02)
     pr <- hyper$geno[["X"]]$prob
     pr <- reviseXdata("bc", "full", getsex(hyper), prob=pr, cross.attr=attributes(hyper))
+    pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)[[1]]
-    pr2 <- pr2[,,1:2] + pr2[,,3:4]
+    pr2 <- pr2[,1:2,] + pr2[,3:4,]
 
     expect_equivalent(pr, pr2)
 
@@ -216,6 +226,7 @@ test_that("doubled haploids calc_genoprob matches R/qtl", {
 
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", error.prob=0.02)
     pr <- hyper$geno[[1]]$prob
+    pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)[[1]]
@@ -234,6 +245,7 @@ test_that("haploids calc_genoprob matches R/qtl", {
 
     hyper <- calc.genoprob(hyper, step=1, stepwidth="max", error.prob=0.02)
     pr <- hyper$geno[[1]]$prob
+    pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)[[1]]

@@ -19,9 +19,9 @@ test_that("genoprob_to_alleleprob works for F2", {
 
     expected <- probs
     for(i in which(!attr(probs, "is_x_chr"))) { # loop over autosomes
-        expected[[i]] <- probs[[i]][,,1:2]
-        expected[[i]][,,1] <- probs[[i]][,,1] + probs[[i]][,,2]/2
-        expected[[i]][,,2] <- probs[[i]][,,3] + probs[[i]][,,2]/2
+        expected[[i]] <- probs[[i]][,1:2,]
+        expected[[i]][,1,] <- probs[[i]][,1,] + probs[[i]][,2,]/2
+        expected[[i]][,2,] <- probs[[i]][,3,] + probs[[i]][,2,]/2
     }
     attr(expected, "alleles") <- TRUE
 
