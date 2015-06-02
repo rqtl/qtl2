@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 
 
-<p><a href="https://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
+<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
 <p>The input data file formats for <a href="http://www.rqtl.org">R/qtl</a> cannot handle complex crosses, and so for R/qtl2, we need to define a new input file format. This document describes the details.</p>
 <p>For simple cross types, we can continue to use the file formats for <a href="http://www.rqtl.org">R/qtl</a>, use <code>qtl::read.cross()</code> to read in the data, and then use a conversion function (<code>qtl2::convert2cross2()</code>) to convert the data into the new format.</p>
 <p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="http://www.rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
@@ -64,7 +64,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2>Reading the data files</h2>
 <p>Before discussing the boring file specifications, let’s consider briefly how the data are read into R.</p>
 <p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. So you can read in data like this:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
 <p>The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="http://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">http://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>

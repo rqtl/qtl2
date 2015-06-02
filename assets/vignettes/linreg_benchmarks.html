@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 
 
-<p><a href="https://github.com/kbroman/qtl2">R/qtl2</a> includes code with several options for linear regression. We’re mostly focusing on using the <a href="http://eigen.tuxfamily.org">Eigen library</a> via <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a>, particularly linear regression via QR decomposition with column pivoting. We want speed, but we often have to deal with rank-deficient matrices.</p>
+<p><a href="https://github.com/rqtl/qtl2scan">R/qtl2scan</a> includes code with several options for linear regression. We’re mostly focusing on using the <a href="http://eigen.tuxfamily.org">Eigen library</a> via <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a>, particularly linear regression via QR decomposition with column pivoting. We want speed, but we often have to deal with rank-deficient matrices.</p>
 <p>In addition to routines that return coefficient estimates and estimated standard errors (SEs), we also have routines that return just the residual sum of squares (RSS), as for the calculation of LOD scores, that’s all that matters. We might perform a lot of regressions, getting just the RSS as a measure of quality-of-fit, and then go back to the interesting cases to look at the full set of coefficients and SEs.</p>
 <p>Here, we present a few benchmarks comparing a couple of different routines from the <a href="http://eigen.tuxfamily.org">Eigen library</a> (QR decomposition with column pivoting and Cholesky decomposition; the latter doesn’t handle the rank-deficient case). We compare these to the <a href="http://www.netlib.org/lapack/">LAPACK</a> routines used in <a href="http://rqtl.org">R/qtl</a>: <a href="http://www.netlib.org/lapack/explore-html/d8/dde/dgels_8f.html"><code>dgels</code></a> and <a href="http://www.netlib.org/lapack/explore-html/d6/d4b/dgelsy_8f.html"><code>dgelsy</code></a>. We also consider R’s <code>lm.fit</code>, which is the workhorse behind <code>lm</code>.</p>
 <p>These linear regression functions are not exported, so we need to use <code>qtl2:::</code>.</p>
@@ -68,25 +68,25 @@ X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1
 y &lt;-<span class="st"> </span><span class="dv">30</span> +<span class="st"> </span><span class="fl">0.5</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">2.5</span>)
 Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre>
 <p>We use the <a href="http://cran.r-project.org/web/packages/microbenchmark/">microbenchmark package</a> and run each of the routines 1000 times.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2scan)
 <span class="kw">library</span>(microbenchmark)
 <span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>        <span class="kw">lm.fit</span>(X, y),
-               <span class="dt">dgels=</span>         qtl2:::<span class="kw">calc_rss_lapack</span>(X, Y),
-               <span class="dt">dgelsy=</span>        qtl2:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
-               <span class="dt">eigen_qr_rss=</span>  qtl2:::<span class="kw">calc_rss_eigenqr</span>(X, y),
-               <span class="dt">eigen_qr=</span>      qtl2:::<span class="kw">fit_linreg_eigenqr</span>(X, y),
-               <span class="dt">eigen_chol_rss=</span>qtl2:::<span class="kw">calc_rss_eigenchol</span>(X, y),
-               <span class="dt">eigen_chol=</span>    qtl2:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
+               <span class="dt">dgels=</span>         qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y),
+               <span class="dt">dgelsy=</span>        qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
+               <span class="dt">eigen_qr_rss=</span>  qtl2scan:::<span class="kw">calc_rss_eigenqr</span>(X, y),
+               <span class="dt">eigen_qr=</span>      qtl2scan:::<span class="kw">fit_linreg_eigenqr</span>(X, y),
+               <span class="dt">eigen_chol_rss=</span>qtl2scan:::<span class="kw">calc_rss_eigenchol</span>(X, y),
+               <span class="dt">eigen_chol=</span>    qtl2scan:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
                <span class="dt">times=</span><span class="dv">1000</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##            expr    min      lq      mean median      uq      max neval  cld
-##           lmfit 90.399 96.2115 113.99935 97.590 99.3680 1233.426  1000    d
-##           dgels 32.299 34.3305  35.99041 35.284 36.2300   64.004  1000 ab  
-##          dgelsy 41.489 43.4830  45.55658 44.411 45.3945  236.519  1000   c 
-##    eigen_qr_rss 27.174 28.6345  30.46110 29.366 30.4540  102.910  1000 a   
-##        eigen_qr 31.318 33.0575  40.05313 33.900 35.2005 1001.050  1000  bc 
-##  eigen_chol_rss 24.403 26.0185  28.99692 26.814 28.0590  943.091  1000 a   
-##      eigen_chol 28.575 30.4260  34.27309 31.296 32.7270 1370.689  1000 ab</code></pre>
+##            expr    min      lq      mean  median      uq      max neval   cld
+##           lmfit 91.735 96.5365 110.68360 97.6630 99.1235 1168.390  1000     e
+##           dgels 32.581 34.8125  36.26464 35.7570 36.5475  137.233  1000  bc  
+##          dgelsy 41.805 43.9440  46.79500 44.8105 45.7540 1181.291  1000    d 
+##    eigen_qr_rss 27.099 28.9990  30.42037 29.6980 30.6820   79.823  1000 ab   
+##        eigen_qr 31.491 33.4030  38.18202 34.0830 35.3595 1139.581  1000   c  
+##  eigen_chol_rss 24.518 26.4145  28.83349 27.1135 28.1610  934.749  1000 a    
+##      eigen_chol 29.373 30.8835  35.32688 31.6090 32.9855  996.371  1000 a c</code></pre>
 <p>It’s easy to beat <code>lm.fit</code>, but it’s great to see considerable gains with Eigen over LAPACK. The use of the Cholesky decomposition is somewhat faster than QR decomposition, but it can’t be used in the rank-deficient case.</p>
 </div>
 <div id="rank-deficient-case" class="section level2">
@@ -99,20 +99,24 @@ y &lt;-<span class="st"> </span>mm %*%<span class="st"> </span><span class="kw">
 Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre>
 <p>And here are the benchmark results.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit=</span>       <span class="kw">lm.fit</span>(mm, y),
-               <span class="dt">dgels=</span>       qtl2:::<span class="kw">calc_rss_lapack</span>(mm, Y),
-               <span class="dt">dgelsy=</span>      qtl2:::<span class="kw">calc_rss_lapack</span>(mm, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
-               <span class="dt">eigen_qr_rss=</span>qtl2:::<span class="kw">calc_rss_eigenqr</span>(mm, y),
-               <span class="dt">eigen_qr=</span>    qtl2:::<span class="kw">fit_linreg_eigenqr</span>(mm, y),
+               <span class="dt">dgels=</span>       qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y),
+               <span class="dt">dgelsy=</span>      qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
+               <span class="dt">eigen_qr_rss=</span>qtl2scan:::<span class="kw">calc_rss_eigenqr</span>(mm, y),
+               <span class="dt">eigen_qr=</span>    qtl2scan:::<span class="kw">fit_linreg_eigenqr</span>(mm, y),
                <span class="dt">times=</span><span class="dv">1000</span>)</code></pre>
 <pre><code>## Unit: microseconds
 ##          expr    min      lq     mean  median      uq      max neval cld
-##         lmfit 64.975 71.6760 78.94010 73.4310 77.3565 1654.862  1000   c
-##         dgels 30.252 32.3895 38.09745 33.7885 35.5065 1570.090  1000  b 
-##        dgelsy 24.420 26.3170 28.66399 27.7355 29.4170  127.572  1000 a  
-##  eigen_qr_rss 19.978 22.5710 25.09874 24.2310 26.2840   90.411  1000 a  
-##      eigen_qr 23.919 26.3075 29.17958 28.2150 30.8775   58.901  1000 a</code></pre>
+##         lmfit 64.742 70.1580 73.97012 71.5720 73.4285 1606.142  1000   c
+##         dgels 30.026 31.8210 33.41840 32.9245 34.5890   51.715  1000  b 
+##        dgelsy 24.005 25.7665 28.78115 26.7515 28.3735 1432.808  1000 ab 
+##  eigen_qr_rss 20.062 21.9405 25.03298 22.9560 24.6710 1412.282  1000 a  
+##      eigen_qr 23.454 25.3720 28.70574 26.7445 28.3705 1403.785  1000 ab</code></pre>
 <p>We skip the methods based on Cholesky decomposition, but we again see performance gains with Eigen over LAPACK.</p>
 <p><code>dgels</code> is slower than <code>dgelsy</code> here, because with that routine, I’m calling <code>dgels</code> to check the matrix rank and then switch to <code>dgelsy</code> if the matrix is rank-deficient.</p>
+<p>For further discussion of <code>dgels</code> vs. <code>dgelsy</code>, see <a href="http://www.netlib.org/lapack/lug/node71.html" class="uri">http://www.netlib.org/lapack/lug/node71.html</a>, which says:</p>
+<blockquote>
+<p>DGELS is the fastest. DGELSY <span class="math">\[uses\]</span> QR with pivoting, and so <span class="math">\[handles\]</span> rank-deficient problems more reliably than DGELS but can be more expensive.</p>
+</blockquote>
 </div>
 <div id="bigger-matrix" class="section level2">
 <h2>Bigger matrix</h2>
@@ -124,22 +128,22 @@ y &lt;-<span class="st"> </span>X %*%<span class="st"> </span><span class="kw">r
 Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre>
 <p>We use the full set again, as we can assume this to be a full-rank case. But we’ll just do 10 replicates.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>        <span class="kw">lm.fit</span>(X, y),
-               <span class="dt">dgels=</span>         qtl2:::<span class="kw">calc_rss_lapack</span>(X, Y),
-               <span class="dt">dgelsy=</span>        qtl2:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
-               <span class="dt">eigen_qr_rss=</span>  qtl2:::<span class="kw">calc_rss_eigenqr</span>(X, y),
-               <span class="dt">eigen_qr=</span>      qtl2:::<span class="kw">fit_linreg_eigenqr</span>(X, y),
-               <span class="dt">eigen_chol_rss=</span>qtl2:::<span class="kw">calc_rss_eigenchol</span>(X, y),
-               <span class="dt">eigen_chol=</span>    qtl2:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
+               <span class="dt">dgels=</span>         qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y),
+               <span class="dt">dgelsy=</span>        qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
+               <span class="dt">eigen_qr_rss=</span>  qtl2scan:::<span class="kw">calc_rss_eigenqr</span>(X, y),
+               <span class="dt">eigen_qr=</span>      qtl2scan:::<span class="kw">fit_linreg_eigenqr</span>(X, y),
+               <span class="dt">eigen_chol_rss=</span>qtl2scan:::<span class="kw">calc_rss_eigenchol</span>(X, y),
+               <span class="dt">eigen_chol=</span>    qtl2scan:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
                <span class="dt">times=</span><span class="dv">10</span>)</code></pre>
 <pre><code>## Unit: milliseconds
-##            expr       min        lq      mean    median        uq       max neval cld
-##           lmfit 155.56928 157.41375 182.48762 166.67015 181.96706 299.85849    10   c
-##           dgels 173.15126 176.08811 189.22620 181.78788 189.11817 262.73471    10   c
-##          dgelsy 178.91874 181.81931 191.08771 188.30218 191.61163 228.37509    10   c
-##    eigen_qr_rss 106.67868 111.48155 144.73867 139.78596 170.55501 196.60863    10  b 
-##        eigen_qr 124.59601 125.24169 140.66867 131.57749 152.41601 203.28042    10  b 
-##  eigen_chol_rss  22.81412  22.94795  26.38286  24.73453  28.44321  35.38216    10 a  
-##      eigen_chol  25.76875  26.01814  28.22725  26.72947  28.37233  37.40611    10 a</code></pre>
+##            expr       min        lq      mean    median        uq       max neval   cld
+##           lmfit 155.52688 156.83870 164.50044 157.28822 159.57175 196.37336    10    d 
+##           dgels 171.98619 172.04764 173.13062 172.74266 173.06287 176.10396    10     e
+##          dgelsy 178.18547 178.87876 179.52591 179.37172 180.44566 181.31177    10     e
+##    eigen_qr_rss 106.62661 107.11251 109.08075 109.10426 110.94938 111.77045    10  b   
+##        eigen_qr 121.85900 123.09707 123.69201 123.44549 124.31089 125.93874    10   c  
+##  eigen_chol_rss  22.63338  22.92634  23.74028  23.47850  24.09911  27.03465    10 a    
+##      eigen_chol  25.32774  25.52664  26.24011  25.91496  26.75462  28.77168    10 a</code></pre>
 </div>
 <div id="multiple-phenotypes" class="section level2">
 <h2>Multiple phenotypes</h2>
@@ -148,21 +152,21 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
 x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">50</span>, <span class="dv">10</span>)
 X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, x)
 y &lt;-<span class="st"> </span><span class="dv">30</span> +<span class="st"> </span><span class="fl">0.5</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">2.5</span>)
-Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre>
+Y &lt;-<span class="st"> </span>qtl2scan:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre>
 <p>Now we’ll get the benchmarks.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>    <span class="kw">colSums</span>(<span class="kw">lm.fit</span>(X, Y)$resid^<span class="dv">2</span>),
-               <span class="dt">dgels=</span>     qtl2:::<span class="kw">calc_rss_lapack</span>(X, Y),
-               <span class="dt">dgelsy=</span>    qtl2:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
-               <span class="dt">eigen_qr=</span>  qtl2:::<span class="kw">calc_mvrss_eigenqr</span>(X, Y),
-               <span class="dt">eigen_chol=</span>qtl2:::<span class="kw">calc_mvrss_eigenchol</span>(X, Y),
+               <span class="dt">dgels=</span>     qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y),
+               <span class="dt">dgelsy=</span>    qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
+               <span class="dt">eigen_qr=</span>  qtl2scan:::<span class="kw">calc_mvrss_eigenqr</span>(X, Y),
+               <span class="dt">eigen_chol=</span>qtl2scan:::<span class="kw">calc_mvrss_eigenchol</span>(X, Y),
                <span class="dt">times=</span><span class="dv">50</span>)</code></pre>
 <pre><code>## Unit: milliseconds
-##        expr       min        lq      mean    median        uq      max neval cld
-##       lmfit 10.508951 48.807706 60.358575 52.677402 78.692688 98.28051    50   b
-##       dgels  3.416899  4.220708  5.299433  4.517682  5.845089 11.87299    50  a 
-##      dgelsy  3.921595  4.298323  5.569192  4.627801  6.747561 10.40646    50  a 
-##    eigen_qr  4.531927  5.863435  7.171044  6.247683  7.409643 17.30658    50  a 
-##  eigen_chol  4.435780  5.551048  7.229879  5.994992  7.870554 14.05860    50  a</code></pre>
+##        expr       min        lq      mean    median        uq       max neval cld
+##       lmfit 10.697574 47.402450 46.422142 48.004734 49.260604 53.298264    50   b
+##       dgels  3.307727  3.990074  4.223884  4.200741  4.438979  4.831419    50  a 
+##      dgelsy  3.911887  4.025185  4.280483  4.297526  4.476567  4.771666    50  a 
+##    eigen_qr  4.664294  5.718992  6.017805  5.962229  6.198196  8.170692    50  a 
+##  eigen_chol  4.529208  5.426212  5.696468  5.676908  5.975227  7.360034    50  a</code></pre>
 </div>
 <div id="multiple-phenotypes-rank-deficient-matrix" class="section level2">
 <h2>Multiple phenotypes, rank-deficient matrix</h2>
@@ -171,19 +175,19 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
                  <span class="dt">f2 =</span> <span class="kw">gl</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dt">labels =</span> letters[<span class="dv">1</span>:<span class="dv">3</span>]))[-(<span class="dv">7</span>:<span class="dv">8</span>), ]
 mm &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(~<span class="st"> </span>f1*f2, dd)
 y &lt;-<span class="st"> </span>mm %*%<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">ncol</span>(mm)) +<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(mm), <span class="dt">sd =</span> <span class="fl">0.1</span>)
-Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre>
+Y &lt;-<span class="st"> </span>qtl2scan:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre>
 <p>And here are the benchmarks.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>    <span class="kw">colSums</span>(<span class="kw">lm.fit</span>(mm, Y)$resid^<span class="dv">2</span>),
-               <span class="dt">dgels=</span>     qtl2:::<span class="kw">calc_rss_lapack</span>(mm, Y),
-               <span class="dt">dgelsy=</span>    qtl2:::<span class="kw">calc_rss_lapack</span>(mm, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
-               <span class="dt">eigen_qr=</span>  qtl2:::<span class="kw">calc_mvrss_eigenqr</span>(mm, Y),
+               <span class="dt">dgels=</span>     qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y),
+               <span class="dt">dgelsy=</span>    qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
+               <span class="dt">eigen_qr=</span>  qtl2scan:::<span class="kw">calc_mvrss_eigenqr</span>(mm, Y),
                <span class="dt">times=</span><span class="dv">100</span>)</code></pre>
 <pre><code>## Unit: microseconds
-##      expr     min       lq      mean   median        uq      max neval  cld
-##     lmfit 775.462 891.5415 1056.7933 954.5615 1093.4985 4969.231   100    d
-##     dgels 720.558 767.7020  834.6892 792.3300  873.2380 1249.743   100   c 
-##    dgelsy 447.490 456.1560  515.9161 489.6580  533.4515  800.634   100 a   
-##  eigen_qr 540.862 600.5855  659.1235 644.5555  694.7915  979.031   100  b</code></pre>
+##      expr     min       lq     mean   median       uq      max neval  cld
+##     lmfit 765.438 786.0215 930.4394 819.6220 917.2545 3153.865   100    d
+##     dgels 716.531 721.8660 734.0229 726.1920 737.4395  802.433   100   c 
+##    dgelsy 447.232 449.7245 460.5411 451.9425 464.0050  542.908   100 a   
+##  eigen_qr 545.491 558.4040 584.8549 566.2310 594.8005  700.703   100  b</code></pre>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
@@ -199,9 +203,7 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
 ##  tz       America/Chicago</code></pre>
 <pre><code>## Packages -------------------------------------------------------------------------------------------</code></pre>
 <pre><code>##  package        * version    date       source                          
-##  assertthat       0.1        2013-12-06 CRAN (R 3.2.0)                  
 ##  bitops           1.0-6      2013-08-17 CRAN (R 3.2.0)                  
-##  broman         * 0.55-3     2015-04-27 local                           
 ##  codetools        0.2-11     2015-03-10 CRAN (R 3.2.0)                  
 ##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)                  
 ##  devtools         1.8.0.9000 2015-05-12 Github (hadley/devtools@dc61a9e)
@@ -212,10 +214,9 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
 ##  git2r            0.10.1     2015-05-07 CRAN (R 3.2.0)                  
 ##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)                  
 ##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)                  
-##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)                  
-##  knitr            1.10       2015-04-23 CRAN (R 3.2.0)                  
+##  knitr            1.10.5     2015-05-06 CRAN (R 3.2.0)                  
 ##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)                  
-##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)                  
+##  magrittr         1.5        2014-11-22 CRAN (R 3.2.0)                  
 ##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)                  
 ##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)                  
 ##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)                  
@@ -224,14 +225,11 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
 ##  mvtnorm          1.0-2      2014-12-18 CRAN (R 3.2.0)                  
 ##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)                  
 ##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)                  
-##  qtl            * 1.37-1     2015-04-20 local                           
-##  qtl2           * 0.1-18     2015-05-16 local                           
+##  qtl2scan       * 0.2-1      2015-06-01 local                           
 ##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)                  
 ##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)                  
 ##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)                  
-##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)                  
-##  rmarkdown        0.5.1      2015-01-26 CRAN (R 3.2.0)                  
-##  RPushbullet    * 0.2.0      2015-02-09 CRAN (R 3.2.0)                  
+##  rmarkdown        0.6.1      2015-05-07 CRAN (R 3.2.0)                  
 ##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)                  
 ##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)                  
 ##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)                  
@@ -239,7 +237,7 @@ Y &lt;-<span class="st"> </span>qtl2:::<span class="kw">permute_nvector</span>(<
 ##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)                  
 ##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)                  
 ##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)                  
-##  XML              3.98-1.1   2013-06-20 CRAN (R 3.2.0)                  
+##  XML              3.98-1.2   2015-05-31 CRAN (R 3.2.0)                  
 ##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)                  
 ##  zoo              1.7-12     2015-03-16 CRAN (R 3.2.0)</code></pre>
 </div>

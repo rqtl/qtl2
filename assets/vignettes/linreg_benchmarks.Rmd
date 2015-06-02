@@ -7,7 +7,7 @@ output: rmarkdown::html_vignette
 options(width=100)
 ```
 
-[R/qtl2](https://github.com/kbroman/qtl2) includes code with several
+[R/qtl2scan](https://github.com/rqtl/qtl2scan) includes code with several
 options for linear regression. We're mostly focusing on using the
 [Eigen library](http://eigen.tuxfamily.org) via
 [RcppEigen](https://github.com/RcppCore/RcppEigen), particularly
@@ -54,15 +54,15 @@ We use the
 and run each of the routines 1000 times.
 
 ```{r simple_benchmark}
-library(qtl2)
+library(qtl2scan)
 library(microbenchmark)
 microbenchmark(lmfit =        lm.fit(X, y),
-               dgels=         qtl2:::calc_rss_lapack(X, Y),
-               dgelsy=        qtl2:::calc_rss_lapack(X, Y, skip_dgels=TRUE),
-               eigen_qr_rss=  qtl2:::calc_rss_eigenqr(X, y),
-               eigen_qr=      qtl2:::fit_linreg_eigenqr(X, y),
-               eigen_chol_rss=qtl2:::calc_rss_eigenchol(X, y),
-               eigen_chol=    qtl2:::fit_linreg_eigenchol(X, y),
+               dgels=         qtl2scan:::calc_rss_lapack(X, Y),
+               dgelsy=        qtl2scan:::calc_rss_lapack(X, Y, skip_dgels=TRUE),
+               eigen_qr_rss=  qtl2scan:::calc_rss_eigenqr(X, y),
+               eigen_qr=      qtl2scan:::fit_linreg_eigenqr(X, y),
+               eigen_chol_rss=qtl2scan:::calc_rss_eigenchol(X, y),
+               eigen_chol=    qtl2scan:::fit_linreg_eigenchol(X, y),
                times=1000)
 ```
 
@@ -89,10 +89,10 @@ And here are the benchmark results.
 
 ```{r rankdef_benchmark}
 microbenchmark(lmfit=       lm.fit(mm, y),
-               dgels=       qtl2:::calc_rss_lapack(mm, Y),
-               dgelsy=      qtl2:::calc_rss_lapack(mm, Y, skip_dgels=TRUE),
-               eigen_qr_rss=qtl2:::calc_rss_eigenqr(mm, y),
-               eigen_qr=    qtl2:::fit_linreg_eigenqr(mm, y),
+               dgels=       qtl2scan:::calc_rss_lapack(mm, Y),
+               dgelsy=      qtl2scan:::calc_rss_lapack(mm, Y, skip_dgels=TRUE),
+               eigen_qr_rss=qtl2scan:::calc_rss_eigenqr(mm, y),
+               eigen_qr=    qtl2scan:::fit_linreg_eigenqr(mm, y),
                times=1000)
 ```
 
@@ -103,6 +103,12 @@ performance gains with Eigen over LAPACK.
 calling `dgels` to check the matrix rank and then switch to `dgelsy`
 if the matrix is rank-deficient.
 
+For further discussion of `dgels` vs. `dgelsy`, see
+<http://www.netlib.org/lapack/lug/node71.html>, which says:
+
+> DGELS is the fastest. DGELSY \[uses\] QR with pivoting, and so
+> \[handles\] rank-deficient problems more reliably than DGELS but can
+> be more expensive.
 
 ## Bigger matrix
 
@@ -123,12 +129,12 @@ case. But we'll just do 10 replicates.
 
 ```{r big_benchmark}
 microbenchmark(lmfit =        lm.fit(X, y),
-               dgels=         qtl2:::calc_rss_lapack(X, Y),
-               dgelsy=        qtl2:::calc_rss_lapack(X, Y, skip_dgels=TRUE),
-               eigen_qr_rss=  qtl2:::calc_rss_eigenqr(X, y),
-               eigen_qr=      qtl2:::fit_linreg_eigenqr(X, y),
-               eigen_chol_rss=qtl2:::calc_rss_eigenchol(X, y),
-               eigen_chol=    qtl2:::fit_linreg_eigenchol(X, y),
+               dgels=         qtl2scan:::calc_rss_lapack(X, Y),
+               dgelsy=        qtl2scan:::calc_rss_lapack(X, Y, skip_dgels=TRUE),
+               eigen_qr_rss=  qtl2scan:::calc_rss_eigenqr(X, y),
+               eigen_qr=      qtl2scan:::fit_linreg_eigenqr(X, y),
+               eigen_chol_rss=qtl2scan:::calc_rss_eigenchol(X, y),
+               eigen_chol=    qtl2scan:::fit_linreg_eigenchol(X, y),
                times=10)
 ```
 
@@ -143,17 +149,17 @@ n <- 1000
 x <- rnorm(n, 50, 10)
 X <- cbind(1, x)
 y <- 30 + 0.5*x + rnorm(n, 0, 2.5)
-Y <- qtl2:::permute_nvector(500, y)
+Y <- qtl2scan:::permute_nvector(500, y)
 ```
 
 Now we'll get the benchmarks.
 
 ```{r benchmark_multi_pheno}
 microbenchmark(lmfit =    colSums(lm.fit(X, Y)$resid^2),
-               dgels=     qtl2:::calc_rss_lapack(X, Y),
-               dgelsy=    qtl2:::calc_rss_lapack(X, Y, skip_dgels=TRUE),
-               eigen_qr=  qtl2:::calc_mvrss_eigenqr(X, Y),
-               eigen_chol=qtl2:::calc_mvrss_eigenchol(X, Y),
+               dgels=     qtl2scan:::calc_rss_lapack(X, Y),
+               dgelsy=    qtl2scan:::calc_rss_lapack(X, Y, skip_dgels=TRUE),
+               eigen_qr=  qtl2scan:::calc_mvrss_eigenqr(X, Y),
+               eigen_chol=qtl2scan:::calc_mvrss_eigenchol(X, Y),
                times=50)
 ```
 
@@ -167,16 +173,16 @@ dd <- data.frame(f1 = gl(4, 6, labels = LETTERS[1:4]),
                  f2 = gl(3, 2, labels = letters[1:3]))[-(7:8), ]
 mm <- model.matrix(~ f1*f2, dd)
 y <- mm %*% seq_len(ncol(mm)) + rnorm(nrow(mm), sd = 0.1)
-Y <- qtl2:::permute_nvector(500, y)
+Y <- qtl2scan:::permute_nvector(500, y)
 ```
 
 And here are the benchmarks.
 
 ```{r benchmark_multi_pheno_rank-def}
 microbenchmark(lmfit =    colSums(lm.fit(mm, Y)$resid^2),
-               dgels=     qtl2:::calc_rss_lapack(mm, Y),
-               dgelsy=    qtl2:::calc_rss_lapack(mm, Y, skip_dgels=TRUE),
-               eigen_qr=  qtl2:::calc_mvrss_eigenqr(mm, Y),
+               dgels=     qtl2scan:::calc_rss_lapack(mm, Y),
+               dgelsy=    qtl2scan:::calc_rss_lapack(mm, Y, skip_dgels=TRUE),
+               eigen_qr=  qtl2scan:::calc_mvrss_eigenqr(mm, Y),
                times=100)
 ```
 

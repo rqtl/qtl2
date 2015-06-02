@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 
 
-<p><a href="https://github.com/kbroman/qtl2">R/qtl2</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
+<p><a href="https://github.com/kbroman/qtl2geno">R/qtl2geno</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
 <p>The new HMM code can potentially handle more general cases and uses C++ classes to simplify the extension to new cross types. I’ve also split out the forward and backward equations as separate functions, to reduce code duplication. And the basic calculations are separated by individual, which may allow for low-level parallel processing (i.e., <a href="http://en.wikipedia.org/wiki/Concurrency_(computer_science)">concurrency</a>). (I’m considered using <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a> for this.)</p>
 <p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="http://www.rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="http://www.rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
 <div id="genotype-probabilities" class="section level2">
@@ -69,19 +69,19 @@ n &lt;-<span class="st"> </span><span class="dv">500</span>
 bc &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;bc&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
 bc$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)</code></pre>
 <p>There’s a total of 1685 markers.</p>
-<p>We use <code>qtl2::convert2cross2()</code> to convert the data to the format for <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2)
+<p>We use <code>qtl2geno::convert2cross2()</code> to convert the data to the format for <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</code></pre>
-<p>We use the <a href="http://cran.r-project.org/web/packages/microbenchmark/">microbenchmark package</a> and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2::calc_genoprob2()</code> 25 times, with calculations at a 0.5 cM spacing. Even though the data were simulated without genotyping errors, I’m going to do the calculations assuming a 0.2% genotype error rate.</p>
+<p>We use the <a href="http://cran.r-project.org/web/packages/microbenchmark/">microbenchmark package</a> and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2geno::calc_genoprob2()</code> 25 times, with calculations at a 0.5 cM spacing. Even though the data were simulated without genotyping errors, I’m going to do the calculations assuming a 0.2% genotype error rate.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
 probbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">calc.genoprob</span>(bc, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error.prob=</span><span class="fl">0.002</span>),
-                         <span class="dt">qtl2 =</span> qtl2::<span class="kw">calc_genoprob</span>(bc2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
+                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">calc_genoprob</span>(bc2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
                          <span class="dt">times=</span><span class="dv">25</span>)
 <span class="kw">print</span>(probbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
 ##  expr       min        lq      mean    median        uq       max neval cld
-##   qtl 0.7309962 0.7557728 0.8214125 0.8402856 0.8751108 0.9213518    25  a 
-##  qtl2 1.1359484 1.1979394 1.2691502 1.2467058 1.3158688 1.5575560    25   b</code></pre>
+##   qtl 0.7103831 0.7249905 0.7486349 0.7371471 0.7615736 0.8165685    25  a 
+##  qtl2 1.0920018 1.1380402 1.1781311 1.1784175 1.2279973 1.3184069    25   b</code></pre>
 <p>Let’s do the same for an intercross, also including the X chromosome, and with crosses in both directions and with both sexes.</p>
 <pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;f2&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
 f2$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)
@@ -89,41 +89,41 @@ f2$pheno$pgm &lt;-<span class="st"> </span><span class="kw">rep</span>(<span cla
 f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)</code></pre>
 <p>Now for the benchmarks; we’ll do the calculations just 10 times.</p>
 <pre class="sourceCode r"><code class="sourceCode r">probf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">calc.genoprob</span>(f2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error.prob=</span><span class="fl">0.002</span>),
-                         <span class="dt">qtl2 =</span> qtl2::<span class="kw">calc_genoprob</span>(f2_2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
+                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">calc_genoprob</span>(f2_2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
                          <span class="dt">times=</span><span class="dv">10</span>)
 <span class="kw">print</span>(probf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 1.699667 1.771321 1.830731 1.810030 1.936178 1.981828    10  a 
-##  qtl2 2.638928 2.727214 2.828249 2.780774 2.852358 3.337544    10   b</code></pre>
+##   qtl 1.685662 1.694231 1.724986 1.726407 1.739922 1.796371    10  a 
+##  qtl2 2.415408 2.463876 2.534604 2.511243 2.639942 2.680305    10   b</code></pre>
 </div>
 <div id="genetic-map-estimation" class="section level2">
 <h2>Genetic map estimation</h2>
-<p>Now let’s consider the estimation of inter-marker distances in the genetic map, with the functions <code>qtl::est.map</code> and <code>qtl2::est_map</code>.</p>
+<p>Now let’s consider the estimation of inter-marker distances in the genetic map, with the functions <code>qtl::est.map</code> and <code>qtl2geno::est_map</code>.</p>
 <p>First the backcross; to speed things up, we’ll look at just chromosomes 1 and X.</p>
 <pre class="sourceCode r"><code class="sourceCode r">bc &lt;-<span class="st"> </span>bc[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
 bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</code></pre>
 <p>Now for the benchmarks. We’ll just do 5 replicates.</p>
 <pre class="sourceCode r"><code class="sourceCode r">mapbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">est.map</span>(bc, <span class="dt">error.prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
-                        <span class="dt">qtl2 =</span> qtl2::<span class="kw">est_map</span>(bc2, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
+                        <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">est_map</span>(bc2, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
                         <span class="dt">times=</span><span class="dv">5</span>)
 <span class="kw">print</span>(mapbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean   median        uq      max neval cld
-##   qtl 0.9420878 0.9546948 0.9767745 0.960541 0.9871092 1.039440     5  a 
-##  qtl2 6.1455040 6.5939737 6.8566386 7.077254 7.1322934 7.334168     5   b</code></pre>
+##  expr       min        lq      mean    median        uq       max neval cld
+##   qtl 0.8793725 0.8951445 0.9236523 0.9027155 0.9653231 0.9757058     5  a 
+##  qtl2 5.5094063 5.5468859 5.5480607 5.5473157 5.5671699 5.5695255     5   b</code></pre>
 <p>Now to the intercross. Again, we’ll look at just chromosomes 1 and X, and we’ll perform just 5 replicates.</p>
 <pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span>f2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
 f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)
 mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">est.map</span>(f2, <span class="dt">error.prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
-                        <span class="dt">qtl2 =</span> qtl2::<span class="kw">est_map</span>(f2_2, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
+                        <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">est_map</span>(f2_2, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
                         <span class="dt">times=</span><span class="dv">5</span>)
 <span class="kw">print</span>(mapf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq       max neval cld
-##   qtl  2.868092  2.954082  2.994382  3.010505  3.047709  3.091519     5  a 
-##  qtl2 11.122488 11.181469 11.401594 11.226584 11.574318 11.903110     5   b</code></pre>
-<p>For the backcross, the new code takes 7.4 times longer; for the intercross, the new code takes 3.7 times longer.</p>
+##  expr      min       lq     mean   median       uq      max neval cld
+##   qtl 2.563113 2.629724 2.658564 2.638842 2.673152 2.787991     5  a 
+##  qtl2 8.950104 8.960476 9.139625 9.144089 9.159017 9.484441     5   b</code></pre>
+<p>For the backcross, the new code takes 6.1 times longer; for the intercross, the new code takes 3.5 times longer.</p>
 </div>
 <div id="why-so-slow" class="section level2">
 <h2>Why so slow?</h2>
@@ -165,7 +165,7 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 ##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)                  
 ##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)                  
 ##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)                  
-##  knitr            1.10       2015-04-23 CRAN (R 3.2.0)                  
+##  knitr            1.10.5     2015-05-06 CRAN (R 3.2.0)                  
 ##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)                  
 ##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)                  
 ##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)                  
@@ -177,13 +177,13 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 ##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)                  
 ##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)                  
 ##  qtl            * 1.37-1     2015-04-20 local                           
-##  qtl2           * 0.1-18     2015-05-16 local                           
+##  qtl2geno       * 0.2-2      2015-06-01 local                           
 ##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)                  
 ##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)                  
 ##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)                  
 ##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)                  
-##  rmarkdown        0.5.1      2015-01-26 CRAN (R 3.2.0)                  
-##  RPushbullet    * 0.2.0      2015-02-09 CRAN (R 3.2.0)                  
+##  rmarkdown        0.6.1      2015-05-07 CRAN (R 3.2.0)                  
+##  RPushbullet      0.2.0      2015-02-09 CRAN (R 3.2.0)                  
 ##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)                  
 ##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)                  
 ##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)                  
@@ -191,7 +191,7 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 ##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)                  
 ##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)                  
 ##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)                  
-##  XML              3.98-1.1   2013-06-20 CRAN (R 3.2.0)                  
+##  XML              3.98-1.2   2015-05-31 CRAN (R 3.2.0)                  
 ##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)                  
 ##  zoo              1.7-12     2015-03-16 CRAN (R 3.2.0)</code></pre>
 </div>

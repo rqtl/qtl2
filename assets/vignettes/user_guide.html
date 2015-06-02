@@ -55,14 +55,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 <p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
+<p><strong>We are in the process of splitting the package into two parts, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans.</strong></p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>R/qtl2 is early in development and so is not yet available on <a href="http://cran.r-project.org">CRAN</a>.</p>
-<p>You can install R/qtl2 from its <a href="http://github.com/kbroman/qtl2">GitHub repository</a>. You first need to install the <a href="https://github.com/hadley/devtools">devtools</a> package.</p>
+<p>You can install R/qtl2 from <a href="http://github.com/rqtl">GitHub</a>. You first need to install the <a href="https://github.com/hadley/devtools">devtools</a> package.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</code></pre>
 <p>Then install R/qtl2 using <code>devtools::install_github()</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="st">&quot;kbroman/qtl2&quot;</span>)</code></pre>
+<span class="kw">install_github</span>(<span class="kw">c</span>(<span class="st">&quot;rqtl/qtl2geno&quot;</span>, <span class="st">&quot;rqtl/qtl2scan&quot;</span>))</code></pre>
 </div>
 <div id="data-file-format" class="section level2">
 <h2>Data file format</h2>
@@ -76,9 +77,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>In additional to the set of CSV files with the primary data, we need a separate “control” file with various control parameters (or metadata), including the names of all of the other data files and the genotype codes used in the genotype data file. The control file is in a specific <a href="http://www.yaml.org">YAML</a> format. YAML is a human-readable text file for representing relatively complex data. (It’s much like <a href="http://json.org">JSON</a>, but <em>much</em> more readable.)</p>
 <p>A big advantage of this control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. So you can read in data like this:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
-<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="http://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">http://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
+<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="http://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
 <p>This <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code>.</p>
 <p>To read the data back in, we use the same <code>read_cross2()</code> function, providing the name (and path) of the zip file rather than the control file.</p>
@@ -91,10 +92,10 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 <div id="sample-data-sets" class="section level2">
 <h2>Sample data sets</h2>
 <p>The R/qtl2 web site includes <a href="http://kbroman.org/qtl2/pages/sampledata.html">sample data files</a> in the new format. Zipped versions of these datasets are included with the package and can be loaded into R using the <code>read_cross2()</code> function.</p>
-<p>In the <a href="https://github.com/kbroman/qtl2">package source</a>, the sample zip files are located in <a href="https://github.com/kbroman/qtl2/tree/master/inst/extdata"><code>qtl2/inst/extdata</code></a>. In the installed version of the package, they are in <code>qtl2/extdata</code>, within whatever directory your R packages were installed. The R function <code>system.file()</code> can be used to construct the path to these files.</p>
-<p>For example, one of the sample data sets concerns a gravitropism phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from <a href="http://www.genetics.org/content/195/3/1077.abstract">Moore et al. (2013) Genetics 195:1077-1086</a>. The data are in <code>qtl2/extdata/grav2.zip</code>, which can be loaded as follows:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2)
-grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>( <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;grav2.zip&quot;</span>, <span class="dt">package=</span><span class="st">&quot;qtl2&quot;</span>) )</code></pre>
+<p>In the <a href="https://github.com/rqtl/qtl2geno">qtl2geno package source</a>, the sample zip files are located in <a href="https://github.com/rqtl/qtl2/tree/master/inst/extdata"><code>qtl2geno/inst/extdata</code></a>. In the installed version of the package, they are in <code>qtl2/extdata</code>, within whatever directory your R packages were installed. The R function <code>system.file()</code> can be used to construct the path to these files.</p>
+<p>For example, one of the sample data sets concerns a gravitropism phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from <a href="http://www.genetics.org/content/195/3/1077.abstract">Moore et al. (2013) Genetics 195:1077-1086</a>. The data are in <code>qtl2geno/extdata/grav2.zip</code>, which can be loaded as follows:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
+grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>( <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;grav2.zip&quot;</span>, <span class="dt">package=</span><span class="st">&quot;qtl2geno&quot;</span>) )</code></pre>
 </div>
 
 
