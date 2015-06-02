@@ -33,6 +33,10 @@ calc_rss_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
     .Call('qtl2scan_calc_rss_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
 }
 
+calc_resid_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
+    .Call('qtl2scan_calc_resid_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
+}
+
 cbind_imatrix <- function(mat1, mat2) {
     .Call('qtl2scan_cbind_imatrix', PACKAGE = 'qtl2scan', mat1, mat2)
 }
