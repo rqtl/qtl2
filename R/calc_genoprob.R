@@ -26,8 +26,9 @@
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #'
 #' @return A list of three-dimensional arrays of probabilities,
-#' individuals x positions x genotypes. The genetic map and cross
-#' information are included as attributes.
+#' individuals x genotypes x positions. (Note that the arrangement is
+#' different from R/qtl.) The genetic map and cross information are
+#' included as attributes.
 #'
 #' @details
 #'   Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
@@ -106,11 +107,11 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                              founder_geno[[chr]], cross$is_x_chr[chr], is_female,
                              cross_info, rf[[chr]], attr(map[[chr]], "index"),
                              error_prob)
-        pr <- aperm(pr, c(2,3,1))
+        pr <- aperm(pr, c(2,1,3))
 
         dimnames(pr) <- list(rownames(cross$geno[[chr]]),
-                             names(map[[chr]]),
-                             NULL) # FIX ME: need genotype names in here
+                             NULL, # FIX ME: need genotype names in here
+                             names(map[[chr]]))
         pr
     }
 

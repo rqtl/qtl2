@@ -14,7 +14,7 @@ test_that("probs_to_grid works", {
 
     # reduced dimension match what we'd expect?
     npmar <- 1 + floor(sapply(map, function(a) diff(range(a))))
-    expected_dim <- orig_dim; expected_dim[2,] <- npmar
+    expected_dim <- orig_dim; expected_dim[3,] <- npmar
     expect_equal(new_dim, expected_dim)
 
     # test results
@@ -22,7 +22,7 @@ test_that("probs_to_grid works", {
     for(i in seq(along=probs)) {
         mapat <- attributes(map[[i]])
         grid <- mapat$grid
-        expected[[i]] <- probs[[i]][,grid,,drop=FALSE]
+        expected[[i]] <- probs[[i]][,,grid,drop=FALSE]
 
         map[[i]] <- map[[i]][grid]
         for(j in c("grid", "index"))

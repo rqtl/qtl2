@@ -76,7 +76,7 @@ calc_genetic_sim <-
 
     by_chr_func <- function(chr) {
         if(!quiet) message(" - Chr ", names(probs)[chr])
-        .calc_genetic_sim(aperm(probs[[chr]], c(2,3,1)))
+        .calc_genetic_sim(aperm(probs[[chr]], c(3,2,1))) # convert to pos x gen x ind
     }
 
     if(n_cores<=1) { # no parallel processing
@@ -96,6 +96,6 @@ calc_genetic_sim <-
             result <- result + by_chr_res[[chr]]
     }
 
-    tot_pos <- sum(vapply(probs, ncol, 0)[chrs])
+    tot_pos <- sum(vapply(probs, function(a) dim(a)[3], 0)[chrs])
     result/tot_pos
 }

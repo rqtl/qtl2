@@ -36,9 +36,9 @@ genoprob_to_alleleprob <-
         if(!quiet) message(" - Chr ", names(probs)[chr])
         attr_chr <- attributes(probs[[chr]])
         probs[[chr]] <- aperm(.genoprob_to_alleleprob(attr(probs, "crosstype"),
-                                                    aperm(probs[[chr]], c(3, 1, 2)),
+                                                    aperm(probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
                                                     is_x_chr[chr]),
-                            c(2, 3, 1))
+                            c(2, 1, 3))
         dimnames(probs[[chr]]) <- attr_chr$dimnames
         probs[[chr]]
     }

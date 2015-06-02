@@ -26,7 +26,7 @@ test_that("calc_genetic_sim works for RIL", {
     for(i in seq(along=probs)) {
         for(k in seq(along=pairs))
             expected[k] <- expected[k] + sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
-        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -52,9 +52,9 @@ test_that("calc_genetic_sim works for F2", {
     f2_geno2alle <-
         function(prob)
         {
-            prob[,,1] <- prob[,,1]+prob[,,2]/2
-            prob[,,2] <- prob[,,3]+prob[,,2]/2
-            prob[,,1:2]
+            prob[,1,] <- prob[,1,]+prob[,2,]/2
+            prob[,2,] <- prob[,3,]+prob[,2,]/2
+            prob[,1:2,]
         }
 
     # check a few values
@@ -76,7 +76,7 @@ test_that("calc_genetic_sim works for F2", {
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -97,7 +97,7 @@ test_that("calc_genetic_sim works for F2", {
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -134,7 +134,7 @@ test_that("calc_genetic_sim works for F2", {
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -155,7 +155,7 @@ test_that("calc_genetic_sim works for F2", {
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + ncol(probs_sub[[i]])
+        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))

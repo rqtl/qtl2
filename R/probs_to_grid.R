@@ -45,10 +45,10 @@ probs_to_grid <-
 
         # subset probs
         if(!all(grid)) {
-            if(length(grid) != ncol(probs[[i]]))
+            if(length(grid) != dim(probs[[i]])[3])
                 stop("length(grid) (", length(grid), ") != ncol(probs) (",
                      ncol(probs[[i]]), ") for chr ", names(probs)[i])
-            probs[[i]] <- probs[[i]][,grid,]
+            probs[[i]] <- probs[[i]][,,grid,drop=FALSE]
         }
     }
 
@@ -84,4 +84,3 @@ map_to_grid <-
 
     map
 }
-
