@@ -24,3 +24,20 @@ NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y)
                              false, // skip dgels
                              1e-10); // tolerance
 }
+
+// use calc_resid_linreg for a 3-dim array
+// [[Rcpp::export]]
+NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P)
+{
+    int nrowx = X.rows();
+    int sizep = P.size();
+
+    NumericMatrix pr(nrowx, sizep/nrowx);
+    std::copy(P.begin(), P.end(), pr.begin()); // FIXME I shouldn't need to copy
+
+    NumericMatrix result = calc_resid_linreg(X, pr);
+    result.attr("dim") = P.attr("dim");
+
+    return result;
+}
+// calc_resid_linreg_3d(X, aperm(pr[[1]], c(1,3,2))) // then permute genotypes again

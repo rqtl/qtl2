@@ -6,18 +6,6 @@
 
 using namespace Rcpp;
 
-// calc_resid_linreg_3d
-NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P);
-RcppExport SEXP qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
-    __result = Rcpp::wrap(calc_resid_linreg_3d(X, P));
-    return __result;
-END_RCPP
-}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
@@ -152,6 +140,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
     __result = Rcpp::wrap(calc_resid_linreg(X, Y));
+    return __result;
+END_RCPP
+}
+// calc_resid_linreg_3d
+NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P);
+RcppExport SEXP qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
+    __result = Rcpp::wrap(calc_resid_linreg_3d(X, P));
     return __result;
 END_RCPP
 }

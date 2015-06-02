@@ -209,3 +209,32 @@ test_that("lin regr works for multiple columns, reduced-rank X", {
     expect_equal(lm.rss, calc_rss_linreg(mm, Y))
     expect_equal(as.matrix(resid), calc_resid_linreg(mm, Y))
 })
+
+
+test_that("calculation of residuals for 3d arrays works", {
+
+    library(qtl)
+    data(hyper)
+    hyper <- hyper[1,]
+    hyper2 <- qtl2geno::convert2cross2(hyper)
+    pr <- qtl2geno::calc_genoprob(hyper2, error_prob=0.002, step=1)[[1]]
+    pr <- aperm(pr, c(1,3,2)) # reorient to have genomic position last
+
+    # residuals with intercept plus the phenotype
+    X <- cbind(1, hyper$pheno[,1])
+    expected <- array(0, dim=dim(pr))
+    for(i in 1:dim(pr)[3])
+        expected[,,i] <- lm(pr[,,i] ~ X)$resid
+
+    resid <- calc_resid_linreg_3d(X, pr)
+    expect_equal(expected, resid)
+
+    # residuals with just the intercept
+    expected <- array(0, dim=dim(pr))
+    for(i in 1:dim(pr)[3])
+        expected[,,i] <- lm(pr[,,i] ~ 1)$resid
+
+    resid <- calc_resid_linreg_3d(X[,1,drop=FALSE], pr)
+    expect_equal(expected, resid)
+
+})
