@@ -12,4 +12,7 @@ void r_warning(std::string text);
 #define r_assert(EX) (void)((EX) || (__r_assert (#EX, __FILE__, __LINE__),0))
 #endif
 
+// r_enforce is like r_assert but always works
+#define r_enforce(EX) (void)((EX) || (__r_assert (#EX, __FILE__, __LINE__),0))
+
 #endif // R_MESSAGE_H
