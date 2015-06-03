@@ -40,4 +40,3 @@ NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& 
 
     return result;
 }
-// calc_resid_linreg_3d(X, aperm(pr[[1]], c(1,3,2))) // then permute genotypes again

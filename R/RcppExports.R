@@ -105,3 +105,7 @@ permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
     .Call('qtl2scan_permute_ivector_stratified', PACKAGE = 'qtl2scan', n_perm, x, strata, n_strata)
 }
 
+scan_hk_onechr_nocovar <- function(genoprobs, pheno) {
+    .Call('qtl2scan_scan_hk_onechr_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno)
+}
+
