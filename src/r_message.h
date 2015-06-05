@@ -5,6 +5,8 @@
 void r_message(std::string text);
 void r_warning(std::string text);
 
+#undef NDEBUG // doesn't seem like it should be defined, but it is(?)
+
 // Following based on code from Luke Miratrix, http://bit.ly/rcpp_assert
 #ifdef NDEBUG
 #define r_assert(EX)
