@@ -2,8 +2,6 @@
 #ifndef LINREG_EIGEN_H
 #define LINREG_EIGEN_H
 
-#include "debug_util.h"
-
 // calc X'X
 MatrixXd calc_XpX_eigen(const MatrixXd& A);
 
