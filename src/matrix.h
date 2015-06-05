@@ -1,4 +1,6 @@
 // Matrix utilities
+#ifdef MATRIX_H
+#define MATRIX_H
 
 // cbind two or three matrices
 IntegerMatrix cbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2);
@@ -15,3 +17,5 @@ IntegerMatrix rbind_3imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat
 NumericMatrix rbind_nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2);
 NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2,
                              const NumericMatrix& mat3);
+
+#endif // MATRIX_H

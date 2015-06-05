@@ -1,4 +1,6 @@
 // linear regression via RcppEigen
+#ifdef LINREG_EIGEN_H
+#define LINREG_EIGEN_H
 
 // calc X'X
 MatrixXd calc_XpX_eigen(const MatrixXd& A);
@@ -26,3 +28,5 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 // least squares by QR decomposition with column pivoting, with matrix Y
 // return vector of RSS
 NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y);
+
+#endif // LINREG_EIGEN_H

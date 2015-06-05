@@ -1,4 +1,6 @@
 // random number generation (e.g., permutations)
+#ifdef RANDOM_H
+#define RANDOM_H
 
 // random integer from {low, low+1, ..., high}
 int random_int(const int low, const int high);
@@ -30,3 +32,5 @@ NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& 
                                          const IntegerVector& strata, int n_strata);
 IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x,
                                          const IntegerVector& strata, int n_strata);
+
+#endif // RANDOM_H

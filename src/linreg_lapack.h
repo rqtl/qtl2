@@ -1,4 +1,6 @@
 // linear regression via LAPACK
+#ifdef LINREG_LAPACK_H
+#define LINREG_LAPACK_H
 
 // perform linear regression via LAPACK
 // This does the major work; called by calc_rss_lapack or calc_resid_lapack
@@ -16,3 +18,5 @@ NumericVector calc_rss_lapack(const NumericMatrix& X, const NumericMatrix& Y,
 // calculate residuals from linear regression via LAPACK
 NumericMatrix calc_resid_lapack(const NumericMatrix& X, const NumericMatrix& Y,
                                 const bool skip_dgels, const double tol);
+
+#endif // LINREG_LAPACK_H

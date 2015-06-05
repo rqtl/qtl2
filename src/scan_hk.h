@@ -1,4 +1,6 @@
 // genome scan by Haley-Knott regression
+#ifndef SCAN_HK_H
+#define SCAN_HK_H
 
 // Scan a single chromosome with no additive covariates (not even intercept)
 //
@@ -8,3 +10,5 @@
 //
 // output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
 NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const NumericMatrix& pheno);
+
+#endif // SCAN_HK_H
