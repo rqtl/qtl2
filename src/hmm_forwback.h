@@ -2,9 +2,6 @@
 #ifndef HMM_FORWBACK_H
 #define HMM_FORWBACK_H
 
-#include "cross.h"
-#include "hmm_util.h"
-
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,
                                const IntegerVector& genotypes,

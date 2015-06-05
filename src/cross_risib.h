@@ -3,9 +3,6 @@
 #ifndef CROSS_RISIB_H
 #define CROSS_RISIB_H
 
-#include "cross.h"
-#include "r_message.h"
-
 class RISIB : public QTLCross
 {
  public:

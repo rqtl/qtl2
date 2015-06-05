@@ -2,8 +2,6 @@
 #ifndef CHECK_CROSS_H
 #define CHECK_CROSS_H
 
-#include "cross.h"
-
 // check if a cross type is supported
 bool crosstype_supported(const String& crosstype);
 

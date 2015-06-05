@@ -2,8 +2,6 @@
 #ifndef TEST_HMM_H
 #define TEST_HMM_H
 
-#include "cross.h"
-
 // test init functions from R
 double test_init(const String& crosstype,
                  const int true_gen,

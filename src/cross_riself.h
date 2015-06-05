@@ -3,9 +3,6 @@
 #ifndef CROSS_RISELF_H
 #define CROSS_RISELF_H
 
-#include "cross.h"
-#include "r_message.h"
-
 class RISELF : public QTLCross
 {
  public:

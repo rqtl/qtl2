@@ -2,10 +2,6 @@
 #ifndef HMM_CALCGENOPROB_H
 #define HMM_CALCGENOPROB_H
 
-#include "cross.h"
-#include "hmm_util.h"
-#include "hmm_forwback.h"
-
 NumericVector calc_genoprob(const String& crosstype,
                             const IntegerMatrix& genotypes, // columns are individuals, rows are markers
                             const IntegerMatrix& founder_geno, // columns are markers, rows are founder lines

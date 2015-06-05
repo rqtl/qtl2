@@ -3,9 +3,6 @@
 #ifndef CROSS_BC_H
 #define CROSS_BC_H
 
-#include "cross.h"
-#include "r_message.h"
-
 class BC : public QTLCross
 {
  public:
