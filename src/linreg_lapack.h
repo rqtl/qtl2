@@ -1,5 +1,5 @@
 // linear regression via LAPACK
-#ifdef LINREG_LAPACK_H
+#ifndef LINREG_LAPACK_H
 #define LINREG_LAPACK_H
 
 // perform linear regression via LAPACK

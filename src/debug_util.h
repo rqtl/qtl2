@@ -1,5 +1,5 @@
 // debugging utilities
-#ifdef DEBUG_UTIL_H
+#ifndef DEBUG_UTIL_H
 #define DEBUG_UTIL_H
 
 // print a vector

@@ -1,6 +1,8 @@
 // generic linear regression functions
-#ifdef LINREG_H
+#ifndef LINREG_H
 #define LINREG_H
+
+#include "linreg_lapack.h"
 
 // Calculate vector of residual sum of squares (RSS) from linear regression of Y vs X
 NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y);

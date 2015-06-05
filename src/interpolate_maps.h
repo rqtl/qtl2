@@ -1,5 +1,5 @@
 // Utilities to interpolate between genetic and physical maps
-#ifdef INTERPOLATE_MAPS_H
+#ifndef INTERPOLATE_MAPS_H
 #define INTERPOLATE_MAPS_H
 
 // find interval in map that contains pos

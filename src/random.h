@@ -1,5 +1,5 @@
 // random number generation (e.g., permutations)
-#ifdef RANDOM_H
+#ifndef RANDOM_H
 #define RANDOM_H
 
 // random integer from {low, low+1, ..., high}

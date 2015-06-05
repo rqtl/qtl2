@@ -4,6 +4,8 @@
 using namespace Rcpp;
 using namespace Eigen;
 
+#include "debug_util.h"
+
 // print a vector
 void print_vector(const NumericVector x)
 {

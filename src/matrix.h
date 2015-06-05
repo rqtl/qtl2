@@ -1,5 +1,5 @@
 // Matrix utilities
-#ifdef MATRIX_H
+#ifndef MATRIX_H
 #define MATRIX_H
 
 // cbind two or three matrices
