@@ -169,4 +169,4 @@ public:
 
 };
 
-#endif // CROSS.H
+#endif // CROSS_H

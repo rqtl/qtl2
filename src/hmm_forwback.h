@@ -1,4 +1,9 @@
 // forward-backward equations for HMM
+#ifndef HMM_FORWBACK_H
+#define HMM_FORWBACK_H
+
+#include "cross.h"
+#include "hmm_util.h"
 
 // forward equations
 NumericMatrix forwardEquations(QTLCross* cross,
@@ -24,3 +29,5 @@ NumericMatrix backwardEquations(QTLCross* cross,
                                 const IntegerVector& marker_index,
                                 const double error_prob,
                                 const IntegerVector& poss_gen);
+
+#endif // HMM_FORWBACK_H

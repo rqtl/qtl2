@@ -1,4 +1,8 @@
 // functions to check QTL cross data/information
+#ifndef CHECK_CROSS_H
+#define CHECK_CROSS_H
+
+#include "cross.h"
 
 // check if a cross type is supported
 bool crosstype_supported(const String& crosstype);
@@ -23,3 +27,5 @@ bool check_is_female_vector(const String& crosstype,
 // check if X chr can be handled
 bool check_handle_x_chr(const String& crosstype,
                         const bool any_x_chr);
+
+#endif // CHECK_CROSS_H

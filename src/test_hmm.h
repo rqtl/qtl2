@@ -1,4 +1,8 @@
 // functions to test basic HMM things from R
+#ifndef TEST_HMM_H
+#define TEST_HMM_H
+
+#include "cross.h"
 
 // test init functions from R
 double test_init(const String& crosstype,
@@ -26,3 +30,5 @@ int test_ngen(const String& crosstype, const bool is_x_chr);
 
 double test_nrec(const String& crosstype, const int gen_left, const int gen_right,
                  const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
+
+#endif // TEST_HMM_H

@@ -1,4 +1,10 @@
 // calculate conditional genotype probabilities given multipoint marker data
+#ifndef HMM_CALCGENOPROB_H
+#define HMM_CALCGENOPROB_H
+
+#include "cross.h"
+#include "hmm_util.h"
+#include "hmm_forwback.h"
 
 NumericVector calc_genoprob(const String& crosstype,
                             const IntegerMatrix& genotypes, // columns are individuals, rows are markers
@@ -9,3 +15,5 @@ NumericVector calc_genoprob(const String& crosstype,
                             const NumericVector& rec_frac,   // length nrow(genotypes)-1
                             const IntegerVector& marker_index, // length nrow(genotypes)
                             const double error_prob);
+
+#endif // HMM_CALCGENOPROB_H

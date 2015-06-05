@@ -2,6 +2,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+#include "calc_genetic_sim.h"
+
 // [[Rcpp::export(".calc_genetic_sim")]]
 NumericMatrix calc_genetic_sim(const NumericVector& prob_array) // array as n_pos x n_gen x n_ind
 {
