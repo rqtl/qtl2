@@ -26,10 +26,13 @@ install the [devtools](https://github.com/hadley/devtools) package.
 
     install.packages("devtools")
 
-Then install R/qtl2 using `devtools::install_github()`.
+Then install R/qtl2 using `devtools::install_github()`. Use of
+`build_vignettes=TRUE` ensures that the vignettes will be available
+locally.
 
     library(devtools)
-    install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
+    install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"),
+                   build_vignettes=TRUE)
 
 ---
 
