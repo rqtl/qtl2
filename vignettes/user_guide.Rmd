@@ -135,8 +135,8 @@ function.
 In the [qtl2geno package source](https://github.com/rqtl/qtl2geno), the sample
 zip files are
 located in
-[`qtl2geno/inst/extdata`](https://github.com/rqtl/qtl2/tree/master/inst/extdata).
-In the installed version of the package, they are in `qtl2/extdata`,
+[`qtl2geno/inst/extdata`](https://github.com/rqtl/qtl2geno/tree/master/inst/extdata).
+In the installed version of the package, they are in `qtl2geno/extdata`,
 within whatever directory your R packages were installed. The R
 function `system.file()` can be used to construct the path to these
 files.
