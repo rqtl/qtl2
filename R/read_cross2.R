@@ -38,7 +38,7 @@ function(file, quiet=TRUE)
         if(is_web_file(file)) {
             tmpfile <- tempfile()
             if(!quiet) message(" - downloading ", file, "\n       to ", tmpfile)
-            download.file(file, tmpfile, quiet=TRUE)
+            utils::download.file(file, tmpfile, quiet=TRUE)
             file <- tmpfile
             on.exit(unlink(tmpfile))
         }

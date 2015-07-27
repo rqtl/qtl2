@@ -67,6 +67,5 @@ function(d)
 
     sapply(d,function(a) {
         if(a==0) return(0)
-        uniroot(icf, c(0,0.5-1e-14),d=a,tol=1e-12)$root })
+        stats::uniroot(icf, c(0,0.5-1e-14),d=a,tol=1e-12)$root })
 }
-
