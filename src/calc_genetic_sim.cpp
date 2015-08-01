@@ -12,10 +12,10 @@ NumericMatrix calc_genetic_sim(const NumericVector& prob_array) // array as n_po
     const IntegerVector& dim = prob_array.attr("dim");
     if(dim.size() != 3)
         throw std::invalid_argument("prob_array should be 3-dimensional array of probabilities");
-    const int n_ind = dim[2];
-    const int n_pos = dim[0];
-    const int n_gen = dim[1];
-    const int pos_by_gen = n_pos*n_gen;
+    const unsigned int n_ind = dim[2];
+    const unsigned int n_pos = dim[0];
+    const unsigned int n_gen = dim[1];
+    const unsigned int pos_by_gen = n_pos*n_gen;
 
     NumericMatrix result(n_ind, n_ind);
 

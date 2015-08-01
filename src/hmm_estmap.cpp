@@ -91,7 +91,7 @@ NumericVector est_map(const String& crosstype,
             for(int pos=0; pos<n_rf; pos++) {
                 // calculate gamma = log Pr(v1, v2, O)
                 NumericMatrix gamma(alpha.rows(), alpha.cols());
-                double sum_gamma;
+                double sum_gamma=0.0;
                 bool sum_gamma_undef = true;
                 for(int ir=0; ir<n_poss_gen; ir++) {
                     for(int il=0; il<n_poss_gen; il++) {
@@ -157,7 +157,7 @@ NumericVector est_map(const String& crosstype,
     // calculate log likelihood
     double loglik = 0.0;
     for(int ind=0; ind<n_ind; ind++) {
-        double curloglik;
+        double curloglik=0.0;
 
         // possible genotypes for this individual
         IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));

@@ -16,15 +16,15 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
     const IntegerVector& dim = prob_array.attr("dim");
     if(dim.size() != 3)
         throw std::invalid_argument("prob_array should be 3-dimensional array of probabilities");
-    const int n_gen = dim[0];
-    const int n_ind = dim[1];
-    const int n_pos = dim[2];
-    const int ind_by_pos = n_ind*n_pos;
+    const unsigned int n_gen = dim[0];
+    const unsigned int n_ind = dim[1];
+    const unsigned int n_pos = dim[2];
+    const unsigned int ind_by_pos = n_ind*n_pos;
 
     QTLCross* cross = QTLCross::Create(crosstype);
 
     NumericMatrix transform = cross->geno2allele_matrix(is_x_chr);
-    const int n_allele = transform.cols();
+    const unsigned int n_allele = transform.cols();
 
     if(n_allele == 0) { // no conversion needed
         NumericVector result(clone(prob_array));
