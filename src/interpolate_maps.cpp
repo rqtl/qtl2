@@ -11,7 +11,7 @@ using namespace Rcpp;
 // map should be sorted
 int find_interval(const double pos, const NumericVector& map)
 {
-    const int n_map = map.size();
+    const unsigned int n_map = map.size();
 
     int result = -1;
     for(unsigned int i=0; i<n_map; i++) {
@@ -26,16 +26,16 @@ int find_interval(const double pos, const NumericVector& map)
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap,
                               const NumericVector& newmap)
 {
-    int n_pos = oldpos.size();
-    int n_map = oldmap.size();
+    const unsigned int n_pos = oldpos.size();
+    const unsigned int n_map = oldmap.size();
 
     if(newmap.size() != n_map)
         throw std::invalid_argument("length(oldmap) != length(newmap)");
 
     NumericVector result(n_pos);
 
-    double oldlength = oldmap[n_map-1] - oldmap[0];
-    double newlength = newmap[n_map-1] - newmap[0];
+    const double oldlength = oldmap[n_map-1] - oldmap[0];
+    const double newlength = newmap[n_map-1] - newmap[0];
 
     for(unsigned int i=0; i<n_pos; i++) {
         int interval = find_interval(oldpos[i], oldmap);

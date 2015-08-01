@@ -30,7 +30,7 @@ IntegerVector random_int(const int n, const int low, const int high)
 // permute a vector of numbers
 NumericVector permute_nvector(const NumericVector x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     NumericVector result(clone(x));
 
@@ -43,7 +43,7 @@ NumericVector permute_nvector(const NumericVector x)
 // permute a vector of integers
 IntegerVector permute_ivector(const IntegerVector x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     IntegerVector result(clone(x));
 
@@ -56,7 +56,7 @@ IntegerVector permute_ivector(const IntegerVector x)
 // permute a vector of numbers
 vector<double> permute_nvector(const vector<double> x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     vector<double> result(x);
 
@@ -70,7 +70,7 @@ vector<double> permute_nvector(const vector<double> x)
 // permute a vector of numbers
 vector<int> permute_ivector(const vector<int> x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     vector<int> result(x);
 
@@ -84,7 +84,7 @@ vector<int> permute_ivector(const vector<int> x)
 // permute a vector of numbers in place
 void permute_nvector_inplace(NumericVector x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     for(unsigned int i=n-1; i>0; i--)
         std::swap(x[i], x[random_int(0, i)]);
@@ -93,7 +93,7 @@ void permute_nvector_inplace(NumericVector x)
 // permute a vector of integers in place
 void permute_ivector_inplace(IntegerVector x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     for(unsigned int i=n-1; i>0; i--)
         std::swap(x[i], x[random_int(0, i)]);
@@ -102,7 +102,7 @@ void permute_ivector_inplace(IntegerVector x)
 // permute a vector of numbers in place
 void permute_nvector_inplace(vector<double> x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     for(unsigned int i=n-1; i>0; i--)
         std::swap(x[i], x[random_int(0, i)]);
@@ -111,7 +111,7 @@ void permute_nvector_inplace(vector<double> x)
 // permute a vector of integers in place
 void permute_ivector_inplace(vector<int> x)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
 
     for(unsigned int i=n-1; i>0; i--)
         std::swap(x[i], x[random_int(0, i)]);
@@ -134,7 +134,7 @@ IntegerVector get_permutation(const int n)
 // [[Rcpp::export]]
 NumericMatrix permute_nvector(const int n_perm, const NumericVector x)
 {
-    unsigned int length = x.size();
+    const unsigned int length = x.size();
 
     NumericMatrix result(length,n_perm);
 
@@ -150,7 +150,7 @@ NumericMatrix permute_nvector(const int n_perm, const NumericVector x)
 // [[Rcpp::export]]
 IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x)
 {
-    unsigned int length = x.size();
+    const unsigned int length = x.size();
 
     IntegerMatrix result(length,n_perm);
 
@@ -169,7 +169,7 @@ IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x)
 NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x,
                                          const IntegerVector& strata, int n_strata = -1)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
     NumericMatrix result(n,n_perm);
 
     if(strata.size() != n)
@@ -208,7 +208,7 @@ NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& 
 IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x,
                                          const IntegerVector& strata, int n_strata = -1)
 {
-    unsigned int n = x.size();
+    const unsigned int n = x.size();
     IntegerMatrix result(n,n_perm);
 
     if(strata.size() != n)
