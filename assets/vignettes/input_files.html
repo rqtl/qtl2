@@ -59,7 +59,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>For simple cross types, we can continue to use the file formats for <a href="http://www.rqtl.org">R/qtl</a>, use <code>qtl::read.cross()</code> to read in the data, and then use a conversion function (<code>qtl2::convert2cross2()</code>) to convert the data into the new format.</p>
 <p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="http://www.rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
 <p>Another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>’s <a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: the inclusion of metadata, such as genotype encodings, with the primary data. This will simplify the handling of multiple files and will help to avoid mistakes.</p>
-<p>And so the basic idea for the new format is to have a separate file for each part of the primary data (genotypes, founder genotypes, genetic map, physical map, phenotypes, covariates, and phenotype covariates), and then a control file which specifies the names of all of those files, the genotype encodings and missing value codes, and things like the name of the sex column within the covariate data (and the encodings for the sexes) and which chromosome is the X chromosome.</p>
+<p>And so the basic idea for the new format is to have a separate file for each part of the primary data (genotypes, founder genotypes, genetic map, physical map, phenotypes, covariates, and phenotype covariates), and then a control file (in <a href="http://www.yaml.org">YAML</a> or <a href="http://www.json.org">JSON</a> format) which specifies the names of all of those files, the genotype encodings and missing value codes, and things like the name of the sex column within the covariate data (and the encodings for the sexes) and which chromosome is the X chromosome.</p>
 <div id="reading-the-data-files" class="section level2">
 <h2>Reading the data files</h2>
 <p>Before discussing the boring file specifications, let’s consider briefly how the data are read into R.</p>
@@ -68,7 +68,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
 <p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="http://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
-<p>The <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code>.</p>
+<p>The <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code> or <code>.json</code>.</p>
 <p>To read the data back in, we use the same <code>read_cross2()</code> function, providing the name (and path) of the zip file rather than the control file.</p>
 <pre class="sourceCode r"><code class="sourceCode r">grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.zip&quot;</span>)</code></pre>
 <p>This can even be done with remote files.</p>
@@ -77,7 +77,7 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 </div>
 <div id="format-of-the-data-files" class="section level2">
 <h2>Format of the data files</h2>
-<p>The bulk of the data is in a set of comma-delimited (CSV) files. In addition, a control file (in <a href="http://www.yaml.org">YAML</a> format), contained in the same directory as the CSV files, specifies the file names and other control parameters (such as genotype and sex encodings). Sample data files are available at <a href="http://kbroman.org/qtl2/pages/sampledata.html">the R/qtl2 website</a>. We’ll discuss the CSV files first.</p>
+<p>The bulk of the data is in a set of comma-delimited (CSV) files. In addition, a control file (in <a href="http://www.yaml.org">YAML</a> or <a href="http://www.json.org">JSON</a> format), contained in the same directory as the CSV files, specifies the file names and other control parameters (such as genotype and sex encodings). Sample data files are available at <a href="http://kbroman.org/qtl2/pages/sampledata.html">the R/qtl2 website</a>. We’ll discuss the CSV files first.</p>
 <div id="csv-files" class="section level3">
 <h3>CSV files</h3>
 <p>The comma-delimited (CSV) files are each in the form of a simple matrix, with the first column being a set of IDs and the first row being a set of variable names.</p>
@@ -105,9 +105,9 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 <p>So, in general, the cross information will be in a CSV file with lines as rows and a set of columns that define the cross information for that cross type. The first column contains line IDs and the first row contains column names. Details on the column information are provided in the cross-type-specific information, below.</p>
 </div>
 </div>
-<div id="yaml-control-file" class="section level3">
-<h3>YAML control file</h3>
-<p>The new input file format includes a text-based control file (in <a href="http://www.yaml.org">YAML</a> format) to specify the names of all of the other files as well as various control parameters such as genotype and sex encodings and codes for missing values. We use <a href="http://www.yaml.org">YAML</a> because it is flexible, readable, and easy to import into R.</p>
+<div id="control-file" class="section level3">
+<h3>Control file</h3>
+<p>The new input file format includes a text-based control file (in <a href="http://www.yaml.org">YAML</a> or <a href="http://www.json.org">JSON</a> format) to specify the names of all of the other files as well as various control parameters such as genotype and sex encodings and codes for missing values. We use <a href="http://www.yaml.org">YAML</a> because it is flexible, readable, and easy to import into R. We also allow <a href="http://www.json.org">JSON</a>; though it is often less human-readable, it can be less prone to errors.</p>
 <p>The format of the control file is a bit technical. We describe the details here and also provide a function <code>write_control_file()</code> that takes the detailed specifications as input and contructs the control file in the correct format.</p>
 <p>We’ll start with an example: the control file for the <a href="http://kbroman.org/qtl2/pages/sampledata">sample intercross data</a>.</p>
 <pre><code># Data from Grant et al. (2006) Hepatology 44:174-185
@@ -143,9 +143,8 @@ na.strings:
 <p>Much of the information is represented as key-value pairs, as “<code>key: value</code>.” For example, the cross type is indicated with a line like</p>
 <pre><code>crosstype: f2</code></pre>
 <p>The “<code>key</code>” is “<code>crosstype</code>” and the “<code>value</code>” is “<code>f2</code>.” This indicates that the data are for an F<sub>2</sub> intercross between two inbred lines.</p>
-</div>
-<div id="file-names" class="section level3">
-<h3>File names</h3>
+<div id="file-names" class="section level4">
+<h4>File names</h4>
 <p>The names of the basic CSV files are indicated with lines like</p>
 <pre><code>geno: iron_geno.csv</code></pre>
 <p>This indicates that the genotype data are in the file <code>iron_geno.csv</code>. The files are expected to be in the same directory as the control file. They could be placed in separate directories, with the file names being paths relative to the location of the control file, but this is not recommended (or well tested).</p>
@@ -159,14 +158,14 @@ gmap:         genetic_map_filename
 pmap:         physical_map_filename</code></pre>
 <p>Most of these files are optional; if a particular file is not used, the corresponding key can be omitted from the control file.</p>
 </div>
-<div id="x-chromosome" class="section level3">
-<h3>X chromosome</h3>
+<div id="x-chromosome" class="section level4">
+<h4>X chromosome</h4>
 <p>If one of the chromosomes is to be treated as the X chromosome, there should be a line like</p>
 <pre><code>x_chr: X</code></pre>
 <p>This specifies the chromosome ID for the X chromosome (<code>X</code> in this case).</p>
 </div>
-<div id="allele-labels" class="section level3">
-<h3>Allele labels</h3>
+<div id="allele-labels" class="section level4">
+<h4>Allele labels</h4>
 <p>To add labels in summary tables and plots, provide a vector of single-character allele labels, with one for each founder line. For example,</p>
 <pre><code>alleles:
 - S
@@ -176,8 +175,8 @@ pmap:         physical_map_filename</code></pre>
 <pre><code>alleles: [S, B]</code></pre>
 <p>which is an alternative format for vectors in YAML.</p>
 </div>
-<div id="genotype-codes" class="section level3">
-<h3>Genotype codes</h3>
+<div id="genotype-codes" class="section level4">
+<h4>Genotype codes</h4>
 <p>The control file should contain a record with “<code>genotypes:</code>” that specifies the genotype encodings. Here’s an example:</p>
 <pre><code>genotypes:
   SS: 1
@@ -195,8 +194,8 @@ pmap:         physical_map_filename</code></pre>
   AB: 2
   BB: 3</code></pre>
 </div>
-<div id="sex" class="section level3">
-<h3>Sex</h3>
+<div id="sex" class="section level4">
+<h4>Sex</h4>
 <p>Sex can be provided as a column in the covariate file or as a separate file.</p>
 <p>If it is a column in the covariate file, the control file should have a section that looks like this:</p>
 <pre><code>sex:
@@ -216,8 +215,8 @@ pmap:         physical_map_filename</code></pre>
   m: male</code></pre>
 <p>So instead of a line with “<code>covar:</code>,” use “<code>file:</code>” followed by the name of the file (e.g., “<code>file: iron_sex.csv</code>”). You must still provide the sex encodings, as before.</p>
 </div>
-<div id="cross-information-1" class="section level3">
-<h3>Cross information</h3>
+<div id="cross-information-1" class="section level4">
+<h4>Cross information</h4>
 <p>For simple crosses (e.g., an intercross), cross information can be a single column within the covariate file. In this case, include something like the following in the control file:</p>
 <pre><code>cross_info:
   covar: cross_direction
@@ -235,8 +234,8 @@ pmap:         physical_map_filename</code></pre>
 <p>Or, more simply, you could write:</p>
 <pre><code>cross_info: crossinfo_filename</code></pre>
 </div>
-<div id="individual-to-line-mapping-linemap" class="section level3">
-<h3>Individual-to-line mapping (<code>&quot;linemap&quot;</code>)</h3>
+<div id="individual-to-line-mapping-linemap" class="section level4">
+<h4>Individual-to-line mapping (<code>&quot;linemap&quot;</code>)</h4>
 <p>For crosses with multiple phenotyped individuals for each genotyped line, we need a mapping of individuals to lines (<code>&quot;linemap&quot;</code>). This can be a single column in the covariate file, or it can be a separate file.</p>
 <p>If the individual-to-line mapping is provided as a column in the covariate data, the control file information should look like this:</p>
 <pre><code>linemap:
@@ -250,8 +249,8 @@ pmap:         physical_map_filename</code></pre>
 <pre><code>linemap: linemap_filename</code></pre>
 <p>If a construction like “<code>linemap: value</code>” is used, we look to see if “<code>value</code>” corresponds to the name of a file; otherwise, we treat it as a column name in the covariate data. But the use of “<code>covar:</code>” or “<code>file:</code>” is more explicit and so may be preferred.</p>
 </div>
-<div id="missing-value-codes" class="section level3">
-<h3>Missing value codes</h3>
+<div id="missing-value-codes" class="section level4">
+<h4>Missing value codes</h4>
 <p>To indicate the set of codes that are to be treated as missing values in the genotype, founder genotype, phenotype, covariate, and phenotype covariate files, define <code>na.strings</code> within the control file:</p>
 <pre><code>na.strings:
 - NA
@@ -260,11 +259,12 @@ pmap:         physical_map_filename</code></pre>
 <pre><code>na.strings: [NA, '-']</code></pre>
 <p>which is another way to define a vector with YAML.</p>
 </div>
-<div id="field-separator" class="section level3">
-<h3>Field separator</h3>
+<div id="field-separator" class="section level4">
+<h4>Field separator</h4>
 <p>If the data files use a separator other than a comma (e.g., a semi-colon, or the vertical bar (<code>|</code>) which I like because it is seldom present in data), indicate the separator within the control file, as follows:</p>
 <pre><code>sep: '|'</code></pre>
 <p>A vertical bar needs to be surrounded by single- or double-quotes. A semicolon doesn’t, but it doesn’t hurt if you do.</p>
+</div>
 </div>
 </div>
 <div id="detailed-specifications-for-each-cross-type" class="section level2">
