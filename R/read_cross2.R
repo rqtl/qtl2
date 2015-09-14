@@ -4,7 +4,7 @@
 #' Read QTL data from a set of files
 #'
 #' @param file Character string with path to the
-#' \href{http://www.yaml.org}{YAML} file containing all of the control
+#' \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} file containing all of the control
 #' information. This could instead be a zip file containing all of the
 #' data files, in which case the contents are unzipped to a temporary
 #' directory and then read.
@@ -13,7 +13,7 @@
 #' @return Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #'
-#' @details A control file in \href{http://www.yaml.org}{YAML} format contains information about
+#' @details A control file in \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format contains information about
 #' basic parameters as well as the names of the series of data files
 #' to be read. See the
 #' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files}
@@ -47,7 +47,15 @@ function(file, quiet=TRUE)
         file <- path.expand(file)
         stop_if_no_file(file)
         unzipped_files <- utils::unzip(file, exdir=dir)
-        file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
+        if(any(grepl("\\.yaml$", unzipped_files))) {
+            file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
+        }
+        else if(any(grepl("\\.json$", unzipped_files))) {
+            file <- unzipped_files[grep("\\.json$", unzipped_files)]
+        }
+        else {
+            stop('No ".yaml" or ".json" control file found')
+        }
 
         on.exit({ # clean up when done
             if(!quiet) message(" - cleaning up")
@@ -61,7 +69,7 @@ function(file, quiet=TRUE)
 
     # load the control file
     stop_if_no_file(file)
-    control <-  yaml::yaml.load_file(file)
+    control <-  read_control_file(file)
 
     # grab cross type
     if("crosstype" %in% names(control))
@@ -462,4 +470,18 @@ function(filename, sep=",", na.strings=c("NA", "-"))
                            verbose=FALSE, showProgress=FALSE, data.table=FALSE)
 
     firstcol2rownames(x)
+}
+
+# read control file, as either YAML or JSON
+read_control_file <-
+function(filename)
+{
+    # ends in yaml?
+    if(grepl("\\.yaml$", filename)) {
+        return(yaml::yaml.load_file(filename))
+    }
+    if(grepl("\\.json$", filename)) {
+        return(jsonlite::fromJSON(readLines(filename)))
+    }
+    stop(paste('Control file', filename, 'should have extension ".yaml" or ".json"'))
 }
