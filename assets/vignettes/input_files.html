@@ -82,6 +82,8 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 <h3>CSV files</h3>
 <p>The comma-delimited (CSV) files are each in the form of a simple matrix, with the first column being a set of IDs and the first row being a set of variable names.</p>
 <p>Missing value codes will be specified in the control file (as <code>na.strings</code>) and will apply across all files, so a missing value code for one file cannot be an allowed value in another file.</p>
+<p>All of these CSV files may be transposed relative to the form described below. You just need to include, in the control file, a line like</p>
+<pre><code>geno_transposed: true</code></pre>
 <div id="genotype-and-founder-genotype-data" class="section level4">
 <h4>Genotype and founder genotype data</h4>
 <p>The genotype data file is a matrix of lines × markers. The first column is the line IDs; the first row is the marker names. The founder genotypes (if needed) are in the same form, with founder lines as rows and markers as columns, and with founder IDs in the first column.</p>
