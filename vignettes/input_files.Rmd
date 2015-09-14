@@ -35,7 +35,8 @@ multiple files and will help to avoid mistakes.
 And so the basic idea for the new format is to have a separate file
 for each part of the primary data (genotypes, founder genotypes,
 genetic map, physical map, phenotypes, covariates, and phenotype
-covariates), and then a control file which specifies the names of all
+covariates), and then a control file (in [YAML](http://www.yaml.org)
+or [JSON](http://www.json.org) format) which specifies the names of all
 of those files, the genotype encodings and missing value codes, and
 things like the name of the sex column within the covariate data (and
 the encodings for the sexes) and which chromosome is the X chromosome.
@@ -68,7 +69,7 @@ zip_datafiles("~/my_data/grav2.yaml")
 The `zip_datafiles()` function will read the control file to identify
 all of the relevant data files and then zip them up into a file with
 the same name and location, but with the extension `.zip` rather than
-`.yaml`.
+`.yaml` or `.json`.
 
 To read the data back in, we use the same `read_cross2()` function,
 providing the name (and path) of the zip file rather than the control
@@ -90,7 +91,8 @@ _compressed_ and so smaller than the combined set of CSV files.
 ## Format of the data files
 
 The bulk of the data is in a set of comma-delimited (CSV) files. In
-addition, a control file (in [YAML](http://www.yaml.org) format),
+addition, a control file (in [YAML](http://www.yaml.org)
+or [JSON](http://www.json.org) format),
 contained in the same directory as the CSV files,
 specifies the file names and other control parameters (such as
 genotype and sex encodings). Sample data files are available at
@@ -161,14 +163,15 @@ contains column names. Details on the column information are provided
 in the cross-type-specific information, below.
 
 
-### YAML control file
+### Control file
 
 The new input file format includes a text-based control file (in
-[YAML](http://www.yaml.org) format) to specify the names of all of the other
+[YAML](http://www.yaml.org) or [JSON](http://www.json.org) format) to specify the names of all of the other
 files as well as various control parameters such as genotype and sex
 encodings and codes for missing values. We use
 [YAML](http://www.yaml.org) because it is flexible, readable,
-and easy to import into R.
+and easy to import into R. We also allow [JSON](http://www.json.org);
+though it is often less human-readable, it can be less prone to errors.
 
 The format of the control file is a bit technical. We
 describe the details here and also provide a function
