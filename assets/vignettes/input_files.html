@@ -66,7 +66,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. So you can read in data like this:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
-<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="http://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">http://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
+<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="http://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre>
 <p>The <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code>.</p>
 <p>To read the data back in, we use the same <code>read_cross2()</code> function, providing the name (and path) of the zip file rather than the control file.</p>
