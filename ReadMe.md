@@ -19,13 +19,18 @@ related calculations).
 R/qtl2 is early in development and so is not yet available on
 [CRAN](http://cran.r-project.org).
 
-You can install R/qtl2 from [GitHub](https://github.com/rqtl).  You
-first need to install the
+You can install R/qtl2 from [GitHub](https://github.com/rqtl).
+
+You first need to install a Fortran compiler. See
+[Tools for Mac OS X](https://r.research.att.com/tools/) or
+[RTools for Windows](https://cran.r-project.org/bin/windows/Rtools/).
+
+You then need to install the
 [devtools](https://github.com/hadley/devtools) package.
 
     install.packages("devtools")
 
-Then install R/qtl2 using `devtools::install_github()`.
+Finally, install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
     install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
