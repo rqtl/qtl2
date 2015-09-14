@@ -4,14 +4,15 @@
 \alias{zip_datafiles}
 \title{Zip a set of data files}
 \usage{
-zip_datafiles(yaml_file, zip_file)
+zip_datafiles(control_file, zip_file)
 }
 \arguments{
-\item{yaml_file}{Character string with path to the yaml file
+\item{control_file}{Character string with path to the control file
+(\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON})
 containing all of the control information.}
 
 \item{zip_file}{Name of zip file to use. If omitted, we use the
-stem of \code{yaml_file} but with a \code{.zip} extension.}
+stem of \code{control_file} but with a \code{.zip} extension.}
 }
 \value{
 Character string with the file name of the zip file that
@@ -21,8 +22,8 @@ was created.
 Zip a set of data files (in format read by \code{\link{read_cross2}}).
 }
 \details{
-The input \code{yaml_file} is the control file (in
-\href{http://www.yaml.org}{YAML} format for data to in the format
+The input \code{control_file} is the control file (in
+\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format)
 to be read by \code{\link{read_cross2}}.  (See the
 \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
 \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
@@ -31,8 +32,8 @@ The \code{\link[utils]{zip}} function is used to do the zipping.
 }
 \examples{
 \dontrun{
-yaml_file <- "~/grav2_data/grav2.yaml"
-zip_datafiles(yaml_file, "grav2.zip")
+control_file <- "~/grav2_data/grav2.yaml"
+zip_datafiles(control_file, "grav2.zip")
 }
 }
 \seealso{

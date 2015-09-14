@@ -3,16 +3,17 @@
 #'
 #' Zip a set of data files (in format read by \code{\link{read_cross2}}).
 #'
-#' @param yaml_file Character string with path to the yaml file
+#' @param control_file Character string with path to the control file
+#' (\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON})
 #' containing all of the control information.
 #' @param zip_file Name of zip file to use. If omitted, we use the
-#' stem of \code{yaml_file} but with a \code{.zip} extension.
+#' stem of \code{control_file} but with a \code{.zip} extension.
 #'
 #' @return Character string with the file name of the zip file that
 #' was created.
 #'
-#' @details The input \code{yaml_file} is the control file (in
-#' \href{http://www.yaml.org}{YAML} format for data to in the format
+#' @details The input \code{control_file} is the control file (in
+#' \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format)
 #' to be read by \code{\link{read_cross2}}.  (See the
 #' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
@@ -24,27 +25,27 @@
 #' @seealso \code{\link{read_cross2}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
 #' \dontrun{
-#' yaml_file <- "~/grav2_data/grav2.yaml"
-#' zip_datafiles(yaml_file, "grav2.zip")
+#' control_file <- "~/grav2_data/grav2.yaml"
+#' zip_datafiles(control_file, "grav2.zip")
 #' }
 zip_datafiles <-
-function(yaml_file, zip_file)
+function(control_file, zip_file)
 {
-    yaml_file <- path.expand(yaml_file)
-    if(!(file.exists(yaml_file)))
-        stop("The yaml file (", yaml_file, ") doesn't exist.")
+    control_file <- path.expand(control_file)
+    if(!(file.exists(control_file)))
+        stop("The control file (", control_file, ") doesn't exist.")
 
-    dir <- dirname(yaml_file)
+    dir <- dirname(control_file)
 
     if(missing(zip_file) || is.null(zip_file))
-        zip_file <- gsub("\\.yaml$", ".zip", yaml_file)
+        zip_file <- gsub("\\.[a-z]+$", ".zip", control_file)
 
-    # read yaml file
-    control <-  yaml::yaml.load_file(yaml_file)
+    # read control file
+    control <-  read_control_file(control_file)
 
     # get all of the file names
     sections <- c("geno", "gmap", "pmap", "pheno", "covar", "phenocovar", "founder_geno")
-    files <- basename(yaml_file)
+    files <- basename(control_file)
     for(section in sections) {
         if(section %in% names(control))
             files <- c(files, control[[section]])
