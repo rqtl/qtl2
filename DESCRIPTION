@@ -1,6 +1,6 @@
 Package: qtl2geno
-Version: 0.2-6
-Date: 2015-08-01
+Version: 0.2-7
+Date: 2015-09-14
 Title: Treatment of Marker Genotypes for QTL Experiments
 Description: Functions to calculate QTL genotype probabilities, impute
     QTL genotypes, and estimate genetic maps. Part of R/qtl2, a
@@ -13,6 +13,7 @@ Depends:
 Imports:
     Rcpp (>= 0.11.2),
     yaml,
+    jsonlite,
     data.table,
     parallel,
     stats,

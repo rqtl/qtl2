@@ -35,7 +35,8 @@ multiple files and will help to avoid mistakes.
 And so the basic idea for the new format is to have a separate file
 for each part of the primary data (genotypes, founder genotypes,
 genetic map, physical map, phenotypes, covariates, and phenotype
-covariates), and then a control file which specifies the names of all
+covariates), and then a control file (in [YAML](http://www.yaml.org)
+or [JSON](http://www.json.org) format) which specifies the names of all
 of those files, the genotype encodings and missing value codes, and
 things like the name of the sex column within the covariate data (and
 the encodings for the sexes) and which chromosome is the X chromosome.
@@ -57,7 +58,7 @@ grav2 <- read_cross2("~/my_data/grav2.yaml")
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
+[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
 all of the data files, and to read that zip file directly. There's even a
 function for creating the zip file:
 
@@ -68,7 +69,7 @@ zip_datafiles("~/my_data/grav2.yaml")
 The `zip_datafiles()` function will read the control file to identify
 all of the relevant data files and then zip them up into a file with
 the same name and location, but with the extension `.zip` rather than
-`.yaml`.
+`.yaml` or `.json`.
 
 To read the data back in, we use the same `read_cross2()` function,
 providing the name (and path) of the zip file rather than the control
@@ -90,7 +91,8 @@ _compressed_ and so smaller than the combined set of CSV files.
 ## Format of the data files
 
 The bulk of the data is in a set of comma-delimited (CSV) files. In
-addition, a control file (in [YAML](http://www.yaml.org) format),
+addition, a control file (in [YAML](http://www.yaml.org)
+or [JSON](http://www.json.org) format),
 contained in the same directory as the CSV files,
 specifies the file names and other control parameters (such as
 genotype and sex encodings). Sample data files are available at
@@ -107,6 +109,12 @@ column being a set of IDs and the first row being a set of variable names.
 Missing value codes will be specified in the control file (as
 `na.strings`) and will apply across all files, so a missing value
 code for one file cannot be an allowed value in another file.
+
+All of these CSV files may be transposed relative to the form described
+below. You just need to include, in the control file, a line like
+
+    geno_transposed: true
+
 
 #### Genotype and founder genotype data
 
@@ -161,14 +169,15 @@ contains column names. Details on the column information are provided
 in the cross-type-specific information, below.
 
 
-### YAML control file
+### Control file
 
 The new input file format includes a text-based control file (in
-[YAML](http://www.yaml.org) format) to specify the names of all of the other
+[YAML](http://www.yaml.org) or [JSON](http://www.json.org) format) to specify the names of all of the other
 files as well as various control parameters such as genotype and sex
 encodings and codes for missing values. We use
 [YAML](http://www.yaml.org) because it is flexible, readable,
-and easy to import into R.
+and easy to import into R. We also allow [JSON](http://www.json.org);
+though it is often less human-readable, it can be less prone to errors.
 
 The format of the control file is a bit technical. We
 describe the details here and also provide a function
@@ -228,7 +237,7 @@ The &ldquo;`key`&rdquo; is &ldquo;`crosstype`&rdquo; and the
 data are for an F<sub>2</sub> intercross between two inbred lines.
 
 
-### File names
+#### File names
 
 The names of the basic CSV files are indicated with lines like
 
@@ -257,7 +266,7 @@ pmap:         physical_map_filename
 Most of these files are optional; if a particular file is not used,
 the corresponding key can be omitted from the control file.
 
-### X chromosome
+#### X chromosome
 
 If one of the chromosomes is to be treated as the X chromosome, there
 should be a line like
@@ -268,7 +277,7 @@ x_chr: X
 
 This specifies the chromosome ID for the X chromosome (`X` in this case).
 
-### Allele labels
+#### Allele labels
 
 To add labels in summary tables and plots, provide a vector of
 single-character allele labels, with one for each founder line.
@@ -292,7 +301,7 @@ alleles: [S, B]
 which is an alternative format for vectors in YAML.
 
 
-### Genotype codes
+#### Genotype codes
 
 The control file should contain a record with &ldquo;`genotypes:`&rdquo; that specifies
 the genotype encodings. Here's an example:
@@ -338,7 +347,7 @@ genotypes:
   BB: 3
 ```
 
-### Sex
+#### Sex
 
 Sex can be provided as a column in the covariate file or as a separate
 file.
@@ -386,7 +395,7 @@ of the file (e.g., &ldquo;`file: iron_sex.csv`&rdquo;). You must still provide t
 encodings, as before.
 
 
-### Cross information
+#### Cross information
 
 For simple crosses (e.g., an intercross), cross information can be a
 single column within the covariate file. In this case, include
@@ -437,7 +446,7 @@ Or, more simply, you could write:
 cross_info: crossinfo_filename
 ```
 
-### Individual-to-line mapping (`"linemap"`)
+#### Individual-to-line mapping (`"linemap"`)
 
 For crosses with multiple phenotyped individuals for each genotyped
 line, we need a mapping of individuals to lines (`"linemap"`). This
@@ -477,7 +486,7 @@ column name in the covariate data. But the use of &ldquo;`covar:`&rdquo; or &ldq
 is more explicit and so may be preferred.
 
 
-### Missing value codes
+#### Missing value codes
 
 To indicate the set of codes that are to be treated as missing values
 in the genotype, founder genotype, phenotype, covariate, and phenotype
@@ -501,7 +510,7 @@ na.strings: [NA, '-']
 
 which is another way to define a vector with YAML.
 
-### Field separator
+#### Field separator
 
 If the data files use a separator other than a comma (e.g., a
 semi-colon, or the vertical bar (`|`) which I like because it is seldom
