@@ -110,6 +110,12 @@ Missing value codes will be specified in the control file (as
 `na.strings`) and will apply across all files, so a missing value
 code for one file cannot be an allowed value in another file.
 
+All of these CSV files may be transposed relative to the form described
+below. You just need to include, in the control file, a line like
+
+    geno_transposed: true
+
+
 #### Genotype and founder genotype data
 
 The genotype data file is a matrix of lines &times; markers. The first

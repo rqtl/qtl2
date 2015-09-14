@@ -90,7 +90,14 @@ function(file, quiet=TRUE)
             if(!quiet) message(" - reading ", section)
             file <- file.path(dir, control[[section]])
             stop_if_no_file(file)
-            sheet <- read_csv(file, na.strings=control$na.strings, sep=control$sep)
+
+            # transposed?
+            tr <- paste0(section, "_transposed")
+            tr <- tr %in% names(control) && control[[tr]]
+
+            # read file
+            sheet <- read_csv(file, na.strings=control$na.strings, sep=control$sep,
+                              transpose=tr)
 
             # change genotype codes and convert phenotypes to numeric matrix
             if(section=="geno" || section=="founder_geno") {
@@ -464,12 +471,16 @@ function(filename)
 
 # read a csv file
 read_csv <-
-function(filename, sep=",", na.strings=c("NA", "-"))
+function(filename, sep=",", na.strings=c("NA", "-"), transpose=FALSE)
 {
     x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
                            verbose=FALSE, showProgress=FALSE, data.table=FALSE)
 
-    firstcol2rownames(x)
+    x <- firstcol2rownames(x)
+    if(transpose)
+        x <- as.data.frame(t(x), stringAsFactors=FALSE)
+
+    x
 }
 
 # read control file, as either YAML or JSON
