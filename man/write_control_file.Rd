@@ -8,12 +8,14 @@ write_control_file(output_file, crosstype, geno_file, foundergeno_file,
   gmap_file, pmap_file, pheno_file, covar_file, phenocovar_file, sex_file,
   sex_covar, sex_codes, crossinfo_file, crossinfo_covar, crossinfo_codes,
   linemap_file, linemap_covar, geno_codes, alleles, xchr, na.strings = c("-",
-  "NA"), comments)
+  "NA"), geno_transposed = FALSE, foundergeno_transposed = FALSE,
+  pheno_transposed = FALSE, covar_transposed = FALSE,
+  phenocovar_transposed = FALSE, comments)
 }
 \arguments{
 \item{output_file}{File name (with path) of the
-\href{http://www.yaml.org}{YAML} file to be created, as a character
-string.}
+\href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON} file to be created, as a character
+string. If extension is \code{.json}, JSON format is used; otherwise, YAML is used.}
 
 \item{crosstype}{Character string with the cross type.}
 
@@ -79,6 +81,16 @@ alleles.}
 
 \item{na.strings}{Vector of character strings with codes to be
 treated as missing values.}
+
+\item{geno_transposed}{If TRUE, genotype file is transposed (with markers as rows).}
+
+\item{foundergeno_transposed}{If TRUE, founder genotype file is transposed (with markers as rows).}
+
+\item{pheno_transposed}{If TRUE, phenotype file is transposed (with phenotypes as rows).}
+
+\item{covar_transposed}{If TRUE, covariate file is transposed (with covariates as rows).}
+
+\item{phenocovar_transposed}{If TRUE, phenotype covariate file is transposed (with phenotype covariates as rows).}
 
 \item{comments}{Vector of character strings to be inserted as
 comments at the top of the file, with each string as a line.}

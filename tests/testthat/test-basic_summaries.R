@@ -2,7 +2,7 @@ context("check cross")
 
 test_that("basic summaries give correct numbers for iron data", {
 
-    suppressMessages(iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno")))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
     expect_equal(n_ind(iron), 284)
     expect_equal(n_lines(iron), 284)
@@ -40,7 +40,7 @@ test_that("basic summaries give correct numbers for iron data", {
 
 test_that("basic summaries give correct numbers for grav2 data", {
 
-    suppressMessages(grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno")))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 
     expect_equal(n_ind(grav2), 162)
     expect_equal(n_lines(grav2), 162)
