@@ -17,6 +17,7 @@
 #include "cross_riself.h"
 #include "cross_dh.h"
 #include "cross_haploid.h"
+#include "cross_ail.h"
 
 QTLCross* QTLCross::Create(const String& crosstype)
 {
@@ -27,7 +28,8 @@ QTLCross* QTLCross::Create(const String& crosstype)
     if(crosstype=="riself")  return new RISELF();
     if(crosstype=="dh")      return new DH();
     if(crosstype=="haploid") return new HAPLOID();
+    if(crosstype=="ail")     return new AIL();
 
-    throw std::range_error("cross type not yet supported."); 
+    throw std::range_error("cross type not yet supported.");
     return NULL;
 }
