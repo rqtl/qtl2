@@ -459,5 +459,4 @@ const bool AIL::check_crossinfo(const IntegerMatrix& cross_info, const bool any_
         }
     }
     return result;
-
 }
