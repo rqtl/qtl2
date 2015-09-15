@@ -146,6 +146,18 @@ function(output_file, crosstype, geno_file, foundergeno_file, gmap_file,
         result$genotypes <- as.list(geno_codes)
     }
 
+    # transposed file?
+    if(!missing(geno_transposed) && geno_transposed)
+        result$geno_transposed <- geno_transposed
+    if(!missing(foundergeno_transposed) && foundergeno_transposed)
+        result$foundergeno_transposed <- foundergeno_transposed
+    if(!missing(pheno_transposed) && pheno_transposed)
+        result$pheno_transposed <- pheno_transposed
+    if(!missing(covar_transposed) && covar_transposed)
+        result$covar_transposed <- covar_transposed
+    if(!missing(phenocovar_transposed) && phenocovar_transposed)
+        result$phenocovar_transposed <- phenocovar_transposed
+
     # sex
     if(!missing(sex_file) && !is.null(sex_file)) {
         if(!missing(sex_covar) && !is.null(sex_covar))
