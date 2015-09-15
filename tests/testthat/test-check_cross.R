@@ -16,12 +16,12 @@ test_that("check_crosstype works appropriately", {
 
 test_that("count_invalid_genotypes works appropriately", {
 
-    suppressMessages(grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno")))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
     expect_true(check_cross2(grav2))
     count <- count_invalid_genotypes(grav2)
     expect_true(all(count==0))
 
-    suppressMessages(iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno")))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     expect_true(check_cross2(iron))
     count <- count_invalid_genotypes(iron)
     expect_true(all(count==0))
