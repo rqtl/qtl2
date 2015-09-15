@@ -1,4 +1,4 @@
-context("yaml control files")
+context("I/O of yaml/json control files")
 
 test_that("write_control_file gives correct output for riself", {
 
