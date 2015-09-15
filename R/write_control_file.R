@@ -5,8 +5,9 @@
 #' by \code{\link{read_cross2}} for a set of QTL data.
 #'
 #' @param output_file File name (with path) of the
-#' \href{http://www.yaml.org}{YAML} file to be created, as a character
-#' string.
+#' \href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON} file to be created, as a character
+#' string. If extension is \code{.json}, JSON format is used; otherwise, YAML is used.
+#'
 #' @param crosstype Character string with the cross type.
 #' @param geno_file File name for genotype data.
 #' @param foundergeno_file File name for the founder genotype data.
@@ -201,14 +202,24 @@ function(output_file, crosstype, geno_file, foundergeno_file, gmap_file,
         result$linemap <- linemap_covar
     }
 
-    # comments as a single string
-    if(missing(comments) || is.null(comments))
-        comments <- ""
-    else comments <- paste0("# ", comments, "\n", collapse="")
+    # JSON or YAML?
+    if(grepl("\\.json$", output_file)) { # assume JSON
+        if(!missing(comments) && !is.null(comments))
+            result$comments <- comments
 
-    # write data
-    cat(comments, file=output_file)
-    cat(yaml::as.yaml(result), file=output_file, append=TRUE)
+        cat(jsonlite::toJSON(result, auto_unbox=TRUE, pretty=TRUE),
+            file=output_file)
+    }
+    else {
+        # comments as a single string
+        if(missing(comments) || is.null(comments))
+            comments <- ""
+        else comments <- paste0("# ", comments, "\n", collapse="")
+
+        # write data
+        cat(comments, file=output_file)
+        cat(yaml::as.yaml(result), file=output_file, append=TRUE)
+    }
 
     invisible(result)
 }

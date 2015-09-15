@@ -14,8 +14,8 @@ write_control_file(output_file, crosstype, geno_file, foundergeno_file,
 }
 \arguments{
 \item{output_file}{File name (with path) of the
-\href{http://www.yaml.org}{YAML} file to be created, as a character
-string.}
+\href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON} file to be created, as a character
+string. If extension is \code{.json}, JSON format is used; otherwise, YAML is used.}
 
 \item{crosstype}{Character string with the cross type.}
 
