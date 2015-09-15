@@ -1,4 +1,3 @@
-
 context("yaml control files")
 
 test_that("write_control_file gives correct output for riself", {
@@ -19,7 +18,7 @@ test_that("write_control_file gives correct output for riself", {
                     na.strings=c("-", "NA"))
 
     # read it back in
-    control <-  yaml::yaml.load_file(file)
+    control <-  read_control_file(file)
 
     expected <- structure(list(crosstype = "riself", geno = "grav2_geno.csv",
                                pheno = "grav2_pheno.csv", phenocovar = "grav2_phenocovar.csv",
@@ -60,7 +59,7 @@ test_that("write_control_file gives correct output for intercross", {
                        na.strings=c("-", "NA"))
 
     # read it back in
-    control <-  yaml::yaml.load_file(file)
+    control <-  read_control_file(file)
 
     expected <- structure(list(crosstype = "f2", geno = "iron_geno.csv", pheno = "iron_pheno.csv",
                                phenocovar = "iron_phenocovar.csv", covar = "iron_covar.csv",
