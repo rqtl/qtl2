@@ -52,6 +52,11 @@
 #' @param xchr Character string with the ID for the X chromosome.
 #' @param na.strings Vector of character strings with codes to be
 #' treated as missing values.
+#' @param geno_transposed If TRUE, genotype file is transposed (with markers as rows).
+#' @param foundergeno_transposed If TRUE, founder genotype file is transposed (with markers as rows).
+#' @param pheno_transposed If TRUE, phenotype file is transposed (with phenotypes as rows).
+#' @param covar_transposed If TRUE, covariate file is transposed (with covariates as rows).
+#' @param phenocovar_transposed If TRUE, phenotype covariate file is transposed (with phenotype covariates as rows).
 #' @param comments Vector of character strings to be inserted as
 #' comments at the top of the file, with each string as a line.
 #'
@@ -106,7 +111,11 @@ function(output_file, crosstype, geno_file, foundergeno_file, gmap_file,
          sex_file, sex_covar, sex_codes,
          crossinfo_file, crossinfo_covar, crossinfo_codes,
          linemap_file, linemap_covar, geno_codes, alleles, xchr,
-         na.strings=c("-", "NA"), comments)
+         na.strings=c("-", "NA"),
+         geno_transposed=FALSE, foundergeno_transposed=FALSE,
+         pheno_transposed=FALSE, covar_transposed=FALSE,
+         phenocovar_transposed=FALSE,
+         comments)
 {
     output_file <- path.expand(output_file)
     if(file.exists(output_file))
