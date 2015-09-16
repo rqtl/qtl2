@@ -285,39 +285,90 @@ Diversity Outcross), genotypes will be encoded as integers in the
 following way, for the phase-unknown case:
 
 ```{r DO_genotype_encoding, echo=FALSE}
+# function to encode genotypes
 encode_geno <-
 function(g1,g2, phase_known=FALSE, n_alleles=8)
 {
-    m <- pmax(g1, g2)
+    m <- max(g1, g2)
     d <- abs(g1 - g2)
-    result <- choose(m+1, 2) - d
-    if(phase_known)
-        result[g1 > g2] <- result[g1 > g2] + choose(n_alleles+1,2)-1
+
+    if(g1 <= g2 || !phase_known) {
+        result <- choose(m+1, 2) - d
+    }
+    else {
+        result <- choose(m, 2) - d + 1 + choose(n_alleles+1, 2)
+    }
+
     result
 }
-ng <- 8
-z <- outer(1:ng, 1:ng, encode_geno)
-colnames(z) <- rownames(z) <- LETTERS[1:ng]
-z
+
+# for completeness, a function to decode the genotypes
+decode_gen <-
+function(gen, phase_known=FALSE, n_alleles=8)
+{
+    n_phaseunknown <- n_alleles + choose(n_alleles,2)
+
+    if(gen < 0 ||
+       (!phase_known && gen > n_phaseunknown) ||
+       (phase_known && gen > n_alleles^2))
+        stop("invalid genotype")
+
+    if(!phase_known && gen > n_phaseunknown)
+        gen <- gen-n_phaseunknown
+
+    if(gen <= n_phaseunknown) {
+        last_max <- 0
+        for(i in 1:n_alleles) {
+            if(gen <= last_max+i) {
+                result <- c(gen-last_max, i)
+                return(result)
+            }
+            last_max <- last_max + i
+        }
+    }
+    else {
+        gen <- gen-n_phaseunknown
+        last_max <- 0
+        for(i in 1:(n_alleles-1)) {
+            if(gen <= last_max+i) {
+                result <- c(i+1, gen-last_max)
+                return(result)
+            }
+            last_max <- last_max + i
+        }
+    }
+}
+
+# calculate matrix of encodings, for phase known and phase unknown cases
+g_punk <- matrix(ncol=8, nrow=8)
+g_pk <- matrix(ncol=8, nrow=8)
+for(i in 1:ncol(g_punk)) {
+    for(j in 1:nrow(g_punk)) {
+        g_punk[i,j] <- encode_geno(i, j, FALSE, 8)
+        g_pk[i,j] <- encode_geno(i, j, TRUE, 8)
+    }
+}
+# print the phase unknown case
+g_punk
 ```
 
 If $a_1$ and $a_2$ are the two alleles, then we take
 $m = \max(a_1, a_2)$ and $d = |a_1 - a_2|$, and the encoding is
-$\binom{m+1}2 - d$.
+$\binom{m+1} 2 - d$.
 
-In the phase-known case, we can add $\binom{n+1} 2 - 1$ to the lower
-triangle, where $n$ is the number of alleles, to give the following:
+In the phase-known case, we can fill out the lower triangle the way we
+filled out the upper triangle and diagonal for the phase-unknown
+case. With $n$ denoting the number of alleles, and with $a_1$, $a_2$,
+$m$, and $d$ as before, and assuming $a_1 > a_2$, we take
+$\binom{m} 2 - d + \binom{n+1} 2 + 1$.
 
 ```{r DO_genotype_encoding_phase_known, echo=FALSE}
-ng <- 8
-z <- outer(1:ng, 1:ng, encode_geno, TRUE, ng)
-colnames(z) <- rownames(z) <- LETTERS[1:ng]
-z
+# print the phase known case
+g_pk
 ```
 
-
-
-
+Decoding the genotypes to the allele pair is relatively
+straightforward, with a loop over columns.
 
 
 ## Input data file formats
