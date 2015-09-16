@@ -11,10 +11,13 @@ vignette: >
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-**We are in the process of splitting the package into two parts,
+**We have split the package into two parts,
   [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype
   probability calculations, and
-  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans.**
+  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans, but the
+  [user](http://kbroman.org/qtl2/assets/vignettes/user_guide.html) and
+  [developer](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
+  guides haven't yet been revised to reflect this.**
 
 
 ## Installation
