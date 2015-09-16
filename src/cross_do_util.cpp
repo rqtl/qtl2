@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <Rcpp.h>
+using namespace Rcpp;
 #include "cross_do_util.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -243,8 +244,8 @@ double DOrec_malX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
 double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double result;
-    int n_precc = precc_gen.size();
     #ifdef DEBUG
+    int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
@@ -280,8 +281,8 @@ double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_
 double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double result;
-    int n_precc = precc_gen.size();
 #ifdef DEBUG
+    int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
 #endif
@@ -297,8 +298,8 @@ double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_
         double f1 = DOrec_femX_s1(r, precc_gen, precc_alpha);
         double m1 = DOrec_malX_s1(r, precc_gen, precc_alpha);
 
-        double result = (2.0 + (64.0*m1 - 256.0*f1 + 3.0)*(1.0 - r)/z * (ys - ws) -
-                         (1.0 - 64*m1)*(ws+ys))/128.0;
+        result = (2.0 + (64.0*m1 - 256.0*f1 + 3.0)*(1.0 - r)/z * (ys - ws) -
+                  (1.0 - 64*m1)*(ws+ys))/128.0;
     }
 
     return( 1.0 - 8.0*result );
@@ -318,8 +319,7 @@ double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_
  * r = recombination fraction
  * s = generation of DO
  *
- * precc_alpha = proportion of preCC progenitors at generation k
- * n_precc = length of k and precc_alpha
+ * precc_alpha = proportion of preCC progenitors at generation precc_gen
  *
  * This calculates Pr(right | left)
  *
@@ -331,8 +331,8 @@ double DOstep_auto(int left, int right, double r, int s,
                    IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    int n_precc = precc_gen.size();
     #ifdef DEBUG
+    int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
@@ -401,8 +401,8 @@ double DOstep_femX(int left, int right, double r, int s,
                    IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    int n_precc = precc_gen.size();
     #ifdef DEBUG
+    int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
@@ -469,12 +469,13 @@ double DOstep_malX(int left, int right, double r, int s,
 {
     double recprob;
     #ifdef DEBUG
+    int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
     /* probability of recombinant haplotype */
-    recprob = DOrec_malX(r, s, precc_prob, precc_alpha);
+    recprob = DOrec_malX(r, s, precc_gen, precc_alpha);
 
     if(left == right) return(1.0 - recprob);
     return(recprob/7.0);
