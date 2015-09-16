@@ -368,13 +368,11 @@ const IntegerVector AILPK::possible_gen(const bool is_x_chr, const bool is_femal
                                        const IntegerVector& cross_info)
 {
     if(is_x_chr && !is_female) { // male X chromosome
-        int vals[] = {AY,BY};
-        IntegerVector result(vals, vals+2);
+        IntegerVector result = IntegerVector::create(AY,BY);
         return result;
     }
     else { // autosome
-        int vals[] = {AA,AB,BA,BB};
-        IntegerVector result(vals, vals+4);
+        IntegerVector result = IntegerVector::create(AA,AB,BA,BB);
         return result;
     }
 }
