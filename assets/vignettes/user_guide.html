@@ -55,13 +55,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 <p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
-<p><strong>We are in the process of splitting the package into two parts, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans.</strong></p>
+<p><strong>We have split the package into two parts, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans, but the <a href="http://kbroman.org/qtl2/assets/vignettes/user_guide.html">user</a> and <a href="http://kbroman.org/qtl2/assets/vignettes/developer_guide.html">developer</a> guides haven’t yet been revised to reflect this.</strong></p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>R/qtl2 is early in development and so is not yet available on <a href="http://cran.r-project.org">CRAN</a>.</p>
-<p>You can install R/qtl2 from <a href="http://github.com/rqtl">GitHub</a>. You first need to install the <a href="https://github.com/hadley/devtools">devtools</a> package.</p>
+<p>You can install R/qtl2 from <a href="http://github.com/rqtl">GitHub</a>.</p>
+<p>You first need to install a Fortran compiler. See <a href="https://r.research.att.com/tools/">Tools for Mac OS X</a> or <a href="https://cran.r-project.org/bin/windows/Rtools/">RTools for Windows</a>.</p>
+<p>You then need to install the <a href="https://github.com/hadley/devtools">devtools</a> package.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</code></pre>
-<p>Then install R/qtl2 using <code>devtools::install_github()</code>.</p>
+<p>Finally, install R/qtl2 using <code>devtools::install_github()</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
 <span class="kw">install_github</span>(<span class="kw">c</span>(<span class="st">&quot;rqtl/qtl2geno&quot;</span>, <span class="st">&quot;rqtl/qtl2scan&quot;</span>))</code></pre>
 </div>

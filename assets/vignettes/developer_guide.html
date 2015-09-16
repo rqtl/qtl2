@@ -29,6 +29,7 @@
 
 
 <p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
+<p><strong>We have split the package into two parts, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans, but the <a href="http://kbroman.org/qtl2/assets/vignettes/user_guide.html">user</a> and <a href="http://kbroman.org/qtl2/assets/vignettes/developer_guide.html">developer</a> guides haven’t yet been revised to reflect this.</strong></p>
 <p>In this document, we’ll describe the technical details of interest to developers wishing to contribute to R/qtl2.</p>
 <p>There are three basic aspects to the software:</p>
 <ul>
@@ -170,8 +171,8 @@
 <p>I describe the details of the input files in a <a href="input_files.html">separate vignette</a>. Here I’ll give a brief sketch of the structure of the files.</p>
 <div id="control-file" class="section level3">
 <h3>Control file</h3>
-<p>The control file will be in <a href="http://www.yaml.org">YAML</a>: a human-readable text file for representing relatively complex data. It’s much like <a href="http://json.org/">JSON</a>, but <em>much</em> more readable.</p>
-<p>Here’s an example, for a <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">sample intercross dataset</a>.</p>
+<p>The control file can be in <a href="http://www.yaml.org">YAML</a> or <a href="http://www.json.org">JSON</a> formats. Both are human-readable text file for representing relatively complex data. YAML tends to be more readable, but JSON is more robust.</p>
+<p>Here’s an example, for a <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">sample intercross dataset</a>, in YAML.</p>
 <pre><code># Data from Grant et al. (2006) Hepatology 44:174-185
 # Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
