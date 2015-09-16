@@ -11,6 +11,14 @@ vignette: >
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
+**We have split the package into two parts,
+  [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype
+  probability calculations, and
+  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans, but the
+  [user](http://kbroman.org/qtl2/assets/vignettes/user_guide.html) and
+  [developer](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
+  guides haven't yet been revised to reflect this.**
+
 In this document, we'll describe the technical details of interest to
 developers wishing to contribute to R/qtl2.
 
@@ -356,13 +364,14 @@ of the structure of the files.
 
 ### Control file
 
-The control file will be in [YAML](http://www.yaml.org): a
+The control file can be in [YAML](http://www.yaml.org) or
+[JSON](http://www.json.org) formats. Both are
 human-readable text file for representing relatively complex
-data. It's much like [JSON](http://json.org/), but _much_ more
-readable.
+data. YAML tends to be more readable, but JSON is more robust.
 
 Here's an example, for a
-[sample intercross dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron).
+[sample intercross dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron),
+in YAML.
 
 ```
 # Data from Grant et al. (2006) Hepatology 44:174-185

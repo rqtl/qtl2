@@ -11,10 +11,13 @@ vignette: >
 [R/qtl](http://www.rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-**We are in the process of splitting the package into two parts,
+**We have split the package into two parts,
   [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype
   probability calculations, and
-  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans.**
+  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans, but the
+  [user](http://kbroman.org/qtl2/assets/vignettes/user_guide.html) and
+  [developer](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
+  guides haven't yet been revised to reflect this.**
 
 
 ## Installation
@@ -22,15 +25,20 @@ and complex cross designs.
 R/qtl2 is early in development and so is not yet available on
 [CRAN](http://cran.r-project.org).
 
-You can install R/qtl2 from
-[GitHub](http://github.com/rqtl). You first need to
-install the [devtools](https://github.com/hadley/devtools) package.
+You can install R/qtl2 from [GitHub](http://github.com/rqtl).
+
+You first need to install a Fortran compiler. See
+[Tools for Mac OS X](https://r.research.att.com/tools/) or
+[RTools for Windows](https://cran.r-project.org/bin/windows/Rtools/).
+
+You then need to install the
+[devtools](https://github.com/hadley/devtools) package.
 
 ```{r install_devtools, eval=FALSE}
 install.packages("devtools")
 ```
 
-Then install R/qtl2 using `devtools::install_github()`.
+Finally, install R/qtl2 using `devtools::install_github()`.
 
 ```{r install_qtl2, eval=FALSE}
 library(devtools)

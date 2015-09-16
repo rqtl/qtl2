@@ -57,10 +57,10 @@ const double AILPK::init(const int true_gen,
             double logm, logf, log1mm, log1mf;
             if(n_gen % 2 == 1) { // s is odd
                 logf = log(2.0/3.0) + log1p( -exp( -((double)(n_gen+1) * log(2.0)) ) );
-                logm = log(2.0/3.0) + log1p( exp( -((double)(n_gen) * log(2.0)) ) );
+                logm = log(2.0/3.0) + log1pexp( -((double)(n_gen) * log(2.0)) );
             }
             else {
-                logf = log(2.0/3.0) + log1p( exp( -((double)(n_gen+1) * log(2.0)) ) );
+                logf = log(2.0/3.0) + log1pexp( -((double)(n_gen+1) * log(2.0)) );
                 logm = log(2.0/3.0) + log1p( -exp( -((double)(n_gen) * log(2.0)) ) );
             }
 
