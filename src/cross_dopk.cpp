@@ -4,6 +4,7 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_dopk.h"
+#include "cross_do_util.h"
 #include "r_message.h"
 
 enum gen {AA=1, AB=2, BA=3, BB=4,

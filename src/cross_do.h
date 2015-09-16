@@ -33,6 +33,11 @@ class DO : public QTLCross
 
     const bool check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr);
 
+    const bool is_het(const int true_gen); // is heterozygous (just for female X or autosome)
+
+    const int encode_alleles(const int allele1, const int allele2); // convert (a1,a2) pair to genotype 1-36
+    const IntegerVector decode_geno(const int true_gen);            // convert genotype to (a1,a2) pair
+
 };
 
 #endif // CROSS_DO_H

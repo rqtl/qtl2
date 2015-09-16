@@ -4,28 +4,64 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_do.h"
+#include "cross_do_util.h"
 #include "r_message.h"
 
-enum gen {AA=1, AB=2, BB=3, notA=5, notB=4,
-          AAX=1, ABX=2, BBX=3, AY=4, BY=5};
+enum gen {A=1, H=2, B=3, notA=5, notB=4};
+
+const bool DO::is_het(const int true_gen)
+{
+    IntegerVector alleles = DO::decode_geno(true_gen);
+    if(alleles[0] == alleles[1]) return false;
+    return true;
+}
+
+const int DO::encode_alleles(const int allele1, const int allele2)
+{
+    #ifdef DEBUG
+    if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+
+    int m = max(allele1, allele2);
+    int d = abs(allele1 - allele2);
+
+    return (int)choose((double)(m+1), 2.0) - d;
+}
+
+const IntegerVector DO::decode_geno(const int true_gen)
+{
+    n_gen = 8;
+    IntegerVector result(2);
+
+    int last_max = 0;
+    for(int i=1; i<=n_gen; i++) {
+        if(true_gen <= last_max) {
+            result[1] = i;
+            result[0] = true_gen - last_max;
+            return(result);
+        }
+        last_max += i;
+    }
+}
+
 
 const bool DO::check_geno(const int gen, const bool is_observed_value,
                           const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     // allow any value 0-5 for observed
     if(is_observed_value) {
-        if(gen==0 || gen==AA || gen==AB || gen==BB ||
+        if(gen==0 || gen==A || gen==H || gen==B ||
            gen==notA || gen==notB) return true;
         else return false;
     }
 
-    if(is_x_chr) {
-        if(is_female) {
-            if(gen==AAX || gen==ABX || gen==BBX) return true;
-        }
-        else if(gen==AY || gen==BY) return true;
+    if(!is_x_chr || is_female) { // autosome or female X
+        if(gen>= 1 && gen <= 36) return true;
     }
-    else if(gen==AA || gen==AB || gen==BB) return true;
+    else {
+        if(gen>=37 && gen <=44) return true;
+    }
 
     return false; // otherwise a problem
 }
@@ -39,57 +75,9 @@ const double DO::init(const int true_gen,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    const int n_gen = cross_info[0];
-    const int dir   = cross_info[1];
 
-    if(is_x_chr) {
-        if(dir==2) { // balanced case
-            if(is_female) {
-                if(true_gen==AB) return log(0.5);
-                else return log(0.25);
-            }
-            else { // male
-                return log(0.5);
-            }
-        }
-        else { // AxB or BxA
-            // frequency of A in AxB in males is (2/3) + (1/3)*(-1/2)^(s-1)
-            double logm, logf, log1mm, log1mf;
-            if(n_gen % 2 == 1) { // s is odd
-                logf = log(2.0/3.0) + log1p( -exp( -((double)(n_gen+1) * log(2.0)) ) );
-                logm = log(2.0/3.0) + log1pexp( -((double)(n_gen) * log(2.0)) );
-            }
-            else {
-                logf = log(2.0/3.0) + log1pexp( -((double)(n_gen+1) * log(2.0)) );
-                logm = log(2.0/3.0) + log1p( -exp( -((double)(n_gen) * log(2.0)) ) );
-            }
 
-            if(dir == 0) { // AxB
-                log1mf = log1p(-exp(logf));
-                log1mm = log1p(-exp(logm));
-            }
-            else { // BxA, take 1-p
-                log1mf = logf;
-                log1mm = logm;
-                logf = log1p(-exp(logf));
-                logm = log1p(-exp(logm));
-            }
 
-            if(is_female) {
-                if(true_gen == AAX) return 2.0*logf;
-                else if(true_gen == ABX) return log(2.0) + logf + log1mf;
-                else return 2.0*log1mf;
-            }
-            else { // male
-                if(true_gen==AY) return logm;
-                else return log1mm;
-            }
-        }
-    }
-    else {
-        if(true_gen==AB) return log(0.5);
-        else return log(0.25);
-    }
 }
 
 const double DO::emit(const int obs_gen, const int true_gen, const double error_prob,
