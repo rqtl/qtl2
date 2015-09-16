@@ -16,33 +16,40 @@ const bool DO::is_het(const int true_gen)
     return true;
 }
 
+// alleles -> integer 1, 2, ..., 36 (phase unknown case)
 const int DO::encode_alleles(const int allele1, const int allele2)
 {
+    int m = std::max(allele1, allele2);
+    int d = abs(allele1 - allele2);
+
+    return (int)round(R::choose((double)(m+1), 2.0) - d);
+}
+
+// integer 1, 2, ..., 36 -> alleles (phase unknown case)
+const IntegerVector DO::decode_geno(const int true_gen)
+{
+    int n_alleles = 8;
+    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
     #ifdef DEBUG
-    if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
+    if(true_gen < 0 || true_gen > n_geno)
         throw std::range_error("genotype value not allowed");
     #endif
 
-    int m = max(allele1, allele2);
-    int d = abs(allele1 - allele2);
-
-    return (int)choose((double)(m+1), 2.0) - d;
-}
-
-const IntegerVector DO::decode_geno(const int true_gen)
-{
-    n_gen = 8;
     IntegerVector result(2);
 
     int last_max = 0;
-    for(int i=1; i<=n_gen; i++) {
-        if(true_gen <= last_max) {
+    for(int i=1; i<=n_geno; i++) {
+        if(true_gen <= last_max+i) {
             result[1] = i;
             result[0] = true_gen - last_max;
             return(result);
         }
         last_max += i;
     }
+
+    result[0] = NA_INTEGER;
+    result[1] = NA_INTEGER;
+    return result;
 }
 
 
@@ -56,11 +63,14 @@ const bool DO::check_geno(const int gen, const bool is_observed_value,
         else return false;
     }
 
+    int n_alleles = 8;
+    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+
     if(!is_x_chr || is_female) { // autosome or female X
-        if(gen>= 1 && gen <= 36) return true;
+        if(gen>= 1 && gen <= n_geno) return true;
     }
-    else {
-        if(gen>=37 && gen <=44) return true;
+    else { // male X
+        if(gen>=n_geno+1 && gen <=n_geno+n_alleles) return true;
     }
 
     return false; // otherwise a problem
@@ -75,9 +85,13 @@ const double DO::init(const int true_gen,
         throw std::range_error("genotype value not allowed");
     #endif
 
-
-
-
+    if(!is_x_chr || is_female) { // autosome or female X
+        if(is_het(true_gen)) return -log(32.0);
+        else return -log(64.0);
+    }
+    else { // male X
+        return -log(8.0);
+    }
 }
 
 const double DO::emit(const int obs_gen, const int true_gen, const double error_prob,
@@ -88,41 +102,6 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
-
-    if(obs_gen==0 || !check_geno(obs_gen, true, is_x_chr, is_female, cross_info))
-       return 0.0; // missing or invalid
-
-    if(is_female || !is_x_chr) { // female X chromosome just like autosome
-        if(true_gen==AA) {
-            if(obs_gen==AA) return log(1.0-error_prob);
-            if(obs_gen==AB || obs_gen==BB) return log(error_prob/2.0);
-            if(obs_gen==notB) return log(1.0-error_prob/2.0);
-            if(obs_gen==notA) return log(error_prob);
-        }
-        if(true_gen==AB) {
-            if(obs_gen==AB) return log(1.0-error_prob);
-            if(obs_gen==AA || obs_gen==BB) return log(error_prob/2.0);
-            if(obs_gen==notB || obs_gen==notA) return log(1.0-error_prob/2.0);
-        }
-        if(true_gen==BB) {
-            if(obs_gen==BB) return log(1.0-error_prob);
-            if(obs_gen==AB || obs_gen==AA) return log(error_prob/2.0);
-            if(obs_gen==notA) return log(1.0-error_prob/2.0);
-            if(obs_gen==notB) return log(error_prob);
-        }
-    }
-    else { // males
-        if(true_gen==AY) {
-            if(obs_gen==AA || obs_gen==notB) return log(1.0-error_prob);
-            if(obs_gen==BB || obs_gen==notA) return log(error_prob);
-            return 0.0; // treat everything else as missing
-        }
-        if(true_gen==BY) {
-            if(obs_gen==BB || obs_gen==notA) return log(1.0-error_prob);
-            if(obs_gen==AA || obs_gen==notB) return log(error_prob);
-            return 0.0; // treat everything else as missing
-        }
-    }
 
     return NA_REAL; // shouldn't get here
 }
@@ -138,209 +117,36 @@ const double DO::step(const int gen_left, const int gen_right, const double rec_
         throw std::range_error("genotype value not allowed");
     #endif
 
-    const int n_gen = cross_info[0];
-    const int dir = cross_info[1];
-
-    if(is_x_chr) {
-        if(dir == 2) { // balanced case
-            double z = sqrt((1.0-rec_frac)*(9.0-rec_frac));
-            double w = (1.0 - rec_frac + z)/4.0;
-            double y = (1.0 - rec_frac - z)/4.0; // make positive
-            double Rm, Rf;
-            double k = (double)(n_gen - 2);
-            double wk = pow(w,k);
-            double yk = pow(y,k);
-            Rm = 1 - 0.25*(2.0 + (1.0-2.0*rec_frac) * (wk + yk) +
-                           (3.0 - 5.0*rec_frac + 2.0*rec_frac*rec_frac)/z * (wk - yk));
-            Rf = 1 - 0.25*(2.0 + (1.0-2.0*rec_frac) * (wk + yk) +
-                           (3.0 - 6.0*rec_frac + rec_frac*rec_frac)/z * (wk - yk));
-
-            if(is_female) {
-                switch(gen_left) {
-                case AA:
-                    switch(gen_right) {
-                    case AA: return 2.0*log1p(-Rf);
-                    case AB: return log(2.0)+log1p(-Rf)+log(Rf);
-                    case BB: return 2.0*log(Rf);
-                    }
-                case AB:
-                    switch(gen_right) {
-                    case AA: case BB: return log(Rf)+log1p(-Rf);
-                    case AB: return log(Rf*Rf + (1.0-Rf)*(1.0-Rf));
-                    }
-                case BB:
-                    switch(gen_right) {
-                    case AA: return 2.0*log(Rf);
-                    case AB: return log(2.0)+log1p(-Rf)+log(Rf);
-                    case BB: return 2.0*log1p(-Rf);
-                    }
-                }
-            }
-            else { // male
-                if(gen_left == gen_right) return log1p(-Rm);
-                return log(Rm);
-            }
-        }
-        else { // 0 = AxB; 1 = BxA
-            // calculate frequency of AA haplotype in males and females
-            double m11prev = 1.0;
-            double f11prev = 0.5;
-            double f11, m11, qp, qpp;
-            for(int i=2; i<=n_gen; i++) {
-                qpp = (2.0/3.0) + (1.0/3.0)*pow(-0.5, (double)(i-3));
-                qp  = (2.0/3.0) + (1.0/3.0)*pow(-0.5, (double)(i-2));
-                m11 = (1.0-rec_frac)*f11prev + rec_frac*qp*qpp;
-                f11 = m11prev/2.0 + (1.0-rec_frac)/2.0*f11prev + (rec_frac/2.0)*qp*qpp;
-                m11prev = m11;
-                f11prev = f11;
-            }
-
-            if(is_female) {
-                // allele frequencies at this generation
-                double qf = (2.0/3.0) + (1.0/3.0)*pow(-0.5, (double)n_gen);
-                // conditional probabilities along random haplotypes
-                double f1to1 = f11/qf;
-                double f1to2 = 1.0 - f1to1;
-                double f2to1 = (qf - f11)/(1.0-qf);
-                double f2to2 = 1.0 - f2to1;
-
-                if(dir == 0) { // AxB
-                    switch(gen_left) {
-                    case AA:
-                        switch(gen_right) {
-                        case AA: return 2.0*log(f1to1);
-                        case AB: return log(2.0)+log(f1to1)+log(f1to2);
-                        case BB: return 2.0*log(f1to2);
-                        }
-                    case AB:
-                        switch(gen_right) {
-                        case AA: return log(f1to1)+log(f2to1);
-                        case AB: return log(f1to1*f2to2 + f1to2*f2to1);
-                        case BB: return log(f1to2)+log(f2to2);
-                        }
-                    case BB:
-                        switch(gen_right) {
-                        case AA: return 2.0*log(f2to1);
-                        case AB: return log(2.0)+log(f2to2)+log(f2to1);
-                        case BB: return 2.0*log(f2to2);
-                        }
-                    }
-                }
-                else { // BxA
-                    switch(gen_left) {
-                    case BB:
-                        switch(gen_right) {
-                        case BB: return 2.0*log(f1to1);
-                        case AB: return log(2.0)+log(f1to1)+log(f1to2);
-                        case AA: return 2.0*log(f1to2);
-                        }
-                    case AB:
-                        switch(gen_right) {
-                        case BB: return log(f1to1)+log(f2to1);
-                        case AB: return log(f1to1*f2to2 + f1to2*f2to1);
-                        case AA: return log(f1to2)+log(f2to2);
-                        }
-                    case AA:
-                        switch(gen_right) {
-                        case BB: return 2.0*log(f2to1);
-                        case AB: return log(2.0)+log(f2to2)+log(f2to1);
-                        case AA: return 2.0*log(f2to2);
-                        }
-                    }
-                }
-            }
-            else {
-                // allele frequencies at this generation
-                double qm = (2.0/3.0) + (1.0/3.0)*pow(-0.5, (double)(n_gen-1));
-                // conditional probabilities along random haplotypes
-                double m1to1 = m11/qm;
-                double m1to2 = 1.0 - m1to1;
-                double m2to1 = (qm - m11)/(1.0-qm);
-                double m2to2 = 1.0 - m2to1;
-
-                if(dir == 0) { // AxB
-                    switch(gen_left) {
-                    case AY:
-                        switch(gen_right) {
-                        case AY: return log(m1to1);
-                        case BY: return log(m1to2);
-                        }
-                    case BY:
-                        switch(gen_right) {
-                        case AY: return log(m2to1);
-                        case BY: return log(m2to2);
-                        }
-                    }
-                }
-                else { // BxA; change A->B and B->A
-                    switch(gen_left) {
-                    case AY:
-                        switch(gen_right) {
-                        case AY: return log(m2to2);
-                        case BY: return log(m2to1);
-                        }
-                    case BY:
-                        switch(gen_right) {
-                        case AY: return log(m1to2);
-                        case BY: return log(m1to1);
-                        }
-                    }
-                }
-
-
-            }
-        }
-    }
-    else { // autosome
-        // cross_info[0] is the number of generations
-        // R = 0.5*[ 1 - (1-2r)*(1-r)^(s-2) ]
-        double tmp = (1-2.0*rec_frac)*pow(1.0-rec_frac, (double)(n_gen-2));
-        double logR = -log(2.0) + log1p(-tmp);
-        double log1mR = -log(2.0) + log1p(tmp);
-
-        switch(gen_left) {
-        case AA:
-            switch(gen_right) {
-            case AA: return 2.0*log1mR;
-            case AB: return log(2.0)+log1mR+logR;
-            case BB: return 2.0*logR;
-            }
-        case AB:
-            switch(gen_right) {
-            case AA: case BB: return logR+log1mR;
-            case AB: return log(exp(2.0*logR) + exp(2.0*log1mR));
-            }
-        case BB:
-            switch(gen_right) {
-            case AA: return 2.0*logR;
-            case AB: return log(2.0)+log1mR+logR;
-            case BB: return 2.0*log1mR;
-            }
-        }
-    }
-
     return NA_REAL; // shouldn't get here
 }
 
 const IntegerVector DO::possible_gen(const bool is_x_chr, const bool is_female,
                                      const IntegerVector& cross_info)
 {
+    int n_alleles = 8;
+    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+
     if(is_x_chr && !is_female) { // male X chromosome
-        int vals[] = {AY,BY};
-        IntegerVector result(vals, vals+2);
+        IntegerVector result(n_alleles);
+        for(int i=0; i<n_alleles; i++)
+            result[i] = n_geno+i;
         return result;
     }
-    else { // autosome
-        int vals[] = {AA,AB,BB};
-        IntegerVector result(vals, vals+3);
+    else { // autosome or female X
+        IntegerVector result(n_geno);
+        for(int i=0; i<n_geno; i++)
+            result[i] = i+1;
         return result;
     }
 }
 
 const int DO::ngen(const bool is_x_chr)
 {
-    if(is_x_chr) return 5;
-    return 3;
+    int n_alleles = 8;
+    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+
+    if(is_x_chr) return n_geno+n_alleles;
+    return n_geno;
 }
 
 const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
