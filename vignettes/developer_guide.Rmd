@@ -364,13 +364,14 @@ of the structure of the files.
 
 ### Control file
 
-The control file will be in [YAML](http://www.yaml.org): a
+The control file can be in [YAML](http://www.yaml.org) or
+[JSON](http://www.json.org) formats. Both are
 human-readable text file for representing relatively complex
-data. It's much like [JSON](http://json.org/), but _much_ more
-readable.
+data. YAML tends to be more readable, but JSON is more robust.
 
 Here's an example, for a
-[sample intercross dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron).
+[sample intercross dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron),
+in YAML.
 
 ```
 # Data from Grant et al. (2006) Hepatology 44:174-185
