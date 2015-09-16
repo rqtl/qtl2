@@ -180,25 +180,21 @@ const IntegerVector F2PK::possible_gen(const bool is_x_chr, const bool is_female
         bool is_forward_direction = (cross_info[0]==0);
         if(is_female) {
             if(is_forward_direction) {
-                int vals[] = {AA,AB};
-                IntegerVector result(vals, vals+2);
+                IntegerVector result = IntegerVector::create(AA,AB);
                 return result;
             }
             else {
-                int vals[] = {BA,BB};
-                IntegerVector result(vals, vals+2);
+                IntegerVector result = IntegerVector::create(BA,BB);
                 return result;
             }
         }
         else { // male
-            int vals[] = {AY,BY};
-            IntegerVector result(vals, vals+2);
+            IntegerVector result = IntegerVector::create(AY,BY);
             return result;
         }
     }
     else { // autosome
-        int vals[] = {AA,AB,BA,BB};
-        IntegerVector result(vals, vals+4);
+        IntegerVector result = IntegerVector::create(AA,AB,BA,BB);
         return result;
     }
 }

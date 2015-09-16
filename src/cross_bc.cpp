@@ -86,13 +86,11 @@ const IntegerVector BC::possible_gen(const bool is_x_chr, const bool is_female,
                                      const IntegerVector& cross_info)
 {
     if(!is_x_chr || (is_x_chr && is_female)) {
-        int vals[] = {AA,AB};
-        IntegerVector result(vals, vals+2);
+        IntegerVector result = IntegerVector::create(AA,AB);
         return result;
     }
     else {
-        int vals[] = {AY,BY};
-        IntegerVector result(vals, vals+2);
+        IntegerVector result = IntegerVector::create(AY,BY);
         return result;
     }
 }

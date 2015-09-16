@@ -171,25 +171,21 @@ const IntegerVector F2::possible_gen(const bool is_x_chr, const bool is_female,
         bool is_forward_direction = (cross_info[0]==0);
         if(is_female) {
             if(is_forward_direction) {
-                int vals[] = {AAX,ABX};
-                IntegerVector result(vals, vals+2);
+                IntegerVector result = IntegerVector::create(AAX,ABX);
                 return result;
             }
             else {
-                int vals[] = {BAX,BBX};
-                IntegerVector result(vals, vals+2);
+                IntegerVector result = IntegerVector::create(BAX,BBX);
                 return result;
             }
         }
         else { // male
-            int vals[] = {AY,BY};
-            IntegerVector result(vals, vals+2);
+            IntegerVector result = IntegerVector::create(AY,BY);
             return result;
         }
     }
     else { // autosome
-        int vals[] = {AA,AB,BB};
-        IntegerVector result(vals, vals+3);
+        IntegerVector result = IntegerVector::create(AA,AB,BB);
         return result;
     }
 }
