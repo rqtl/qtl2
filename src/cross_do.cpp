@@ -129,7 +129,7 @@ const IntegerVector DO::possible_gen(const bool is_x_chr, const bool is_female,
     if(is_x_chr && !is_female) { // male X chromosome
         IntegerVector result(n_alleles);
         for(int i=0; i<n_alleles; i++)
-            result[i] = n_geno+i;
+            result[i] = n_geno+i+1;
         return result;
     }
     else { // autosome or female X
