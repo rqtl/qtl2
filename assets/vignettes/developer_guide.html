@@ -139,26 +139,27 @@
 <p>An important consideration is the encoding of the genotypes. For crosses with two founder lines, this is straightforward except perhaps for the X chromosome.</p>
 <p>For the X chromosome, I’m using phase-known genotypes for the females and separating the male hemizygous genotypes. For example, for a backcross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code> for AA/AB/AY/BY. For an intercross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code>/<code>5</code>/<code>6</code> for AA/AB/BA/BB/AY/BY.</p>
 <p>For crosses with &gt; 2 founders and heterozygous offspring (such as the Diversity Outcross), genotypes will be encoded as integers in the following way, for the phase-unknown case:</p>
-<pre><code>##    A  B  C  D  E  F  G  H
-## A  1  2  4  7 11 16 22 29
-## B  2  3  5  8 12 17 23 30
-## C  4  5  6  9 13 18 24 31
-## D  7  8  9 10 14 19 25 32
-## E 11 12 13 14 15 20 26 33
-## F 16 17 18 19 20 21 27 34
-## G 22 23 24 25 26 27 28 35
-## H 29 30 31 32 33 34 35 36</code></pre>
-<p>If <span class="math">\(a_1\)</span> and <span class="math">\(a_2\)</span> are the two alleles, then we take <span class="math">\(m = \max(a_1, a_2)\)</span> and <span class="math">\(d = |a_1 - a_2|\)</span>, and the encoding is <span class="math">\(\binom{m+1}2 - d\)</span>.</p>
-<p>In the phase-known case, we can add <span class="math">\(\binom{n+1} 2 - 1\)</span> to the lower triangle, where <span class="math">\(n\)</span> is the number of alleles, to give the following:</p>
-<pre><code>##    A  B  C  D  E  F  G  H
-## A  1  2  4  7 11 16 22 29
-## B 37  3  5  8 12 17 23 30
-## C 39 40  6  9 13 18 24 31
-## D 42 43 44 10 14 19 25 32
-## E 46 47 48 49 15 20 26 33
-## F 51 52 53 54 55 21 27 34
-## G 57 58 59 60 61 62 28 35
-## H 64 65 66 67 68 69 70 36</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,]    1    2    4    7   11   16   22   29
+## [2,]    2    3    5    8   12   17   23   30
+## [3,]    4    5    6    9   13   18   24   31
+## [4,]    7    8    9   10   14   19   25   32
+## [5,]   11   12   13   14   15   20   26   33
+## [6,]   16   17   18   19   20   21   27   34
+## [7,]   22   23   24   25   26   27   28   35
+## [8,]   29   30   31   32   33   34   35   36</code></pre>
+<p>If <span class="math">\(a_1\)</span> and <span class="math">\(a_2\)</span> are the two alleles, then we take <span class="math">\(m = \max(a_1, a_2)\)</span> and <span class="math">\(d = |a_1 - a_2|\)</span>, and the encoding is <span class="math">\(\binom{m+1} 2 - d\)</span>.</p>
+<p>In the phase-known case, we can fill out the lower triangle the way we filled out the upper triangle and diagonal for the phase-unknown case. With <span class="math">\(n\)</span> denoting the number of alleles, and with <span class="math">\(a_1\)</span>, <span class="math">\(a_2\)</span>, <span class="math">\(m\)</span>, and <span class="math">\(d\)</span> as before, and assuming <span class="math">\(a_1 &gt; a_2\)</span>, we take <span class="math">\(\binom{m} 2 - d + \binom{n+1} 2 + 1\)</span>.</p>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,]    1    2    4    7   11   16   22   29
+## [2,]   37    3    5    8   12   17   23   30
+## [3,]   38   39    6    9   13   18   24   31
+## [4,]   40   41   42   10   14   19   25   32
+## [5,]   43   44   45   46   15   20   26   33
+## [6,]   47   48   49   50   51   21   27   34
+## [7,]   52   53   54   55   56   57   28   35
+## [8,]   58   59   60   61   62   63   64   36</code></pre>
+<p>Decoding the genotypes to the allele pair is relatively straightforward, with a loop over columns.</p>
 </div>
 </div>
 <div id="input-data-file-formats" class="section level2">
