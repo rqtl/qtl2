@@ -172,13 +172,13 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
         switch(founder_allele) {
         case A:
             switch(obs_gen) {
-            case A: return log(1.0-error_prob);
-            case B: return log(error_prob);
+            case A: case notB: return log(1.0-error_prob);
+            case B: case notA: return log(error_prob);
             }
         case B:
             switch(obs_gen) {
-            case B: return log(1.0-error_prob);
-            case A: return log(error_prob);
+            case B: case notA: return log(1.0-error_prob);
+            case A: case notB: return log(error_prob);
             }
         }
         return(0.0);
