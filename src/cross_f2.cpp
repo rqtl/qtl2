@@ -36,7 +36,7 @@ const double F2::init(const int true_gen,
                       const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -52,7 +52,7 @@ const double F2::emit(const int obs_gen, const int true_gen, const double error_
                       const IntegerVector& founder_geno, const bool is_x_chr,
                       const bool is_female, const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -129,7 +129,7 @@ const double F2::step(const int gen_left, const int gen_right, const double rec_
                       const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");

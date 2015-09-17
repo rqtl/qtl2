@@ -29,7 +29,7 @@ const int DO::encode_alleles(const int allele1, const int allele2)
 const IntegerVector DO::decode_geno(const int true_gen)
 {
     const int n_geno = 36;
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(true_gen < 0 || true_gen > n_geno)
         throw std::range_error("genotype value not allowed");
     #endif
@@ -79,7 +79,7 @@ const double DO::init(const int true_gen,
                       const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -97,7 +97,7 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
                       const IntegerVector& founder_geno, const bool is_x_chr,
                       const bool is_female, const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -192,7 +192,7 @@ const double DO::step(const int gen_left, const int gen_right, const double rec_
                       const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
