@@ -28,8 +28,9 @@ const int DO::encode_alleles(const int allele1, const int allele2)
 // integer 1, 2, ..., 36 -> alleles (phase unknown case)
 const IntegerVector DO::decode_geno(const int true_gen)
 {
-    const int n_geno = 36;
+    const int n_alleles = 8;
     #ifndef NDEBUG
+    const int n_geno = 36;
     if(true_gen < 0 || true_gen > n_geno)
         throw std::range_error("genotype value not allowed");
     #endif
@@ -37,7 +38,7 @@ const IntegerVector DO::decode_geno(const int true_gen)
     IntegerVector result(2);
 
     int last_max = 0;
-    for(int i=1; i<=n_geno; i++) {
+    for(int i=1; i<=n_alleles; i++) {
         if(true_gen <= last_max+i) {
             result[1] = i;
             result[0] = true_gen - last_max;
