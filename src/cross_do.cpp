@@ -134,7 +134,7 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
             return 0.0;
         }
         else { // both founder alleles observed
-            switch(f1+f2) {
+            switch(f1+f2-1) { // values 1, 2, 3
             case A:
                 switch(obs_gen) {
                 case A: return log(1.0-error_prob);
