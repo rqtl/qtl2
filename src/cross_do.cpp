@@ -19,8 +19,8 @@ const bool DO::is_het(const int true_gen)
 // alleles -> integer 1, 2, ..., 36 (phase unknown case)
 const int DO::encode_alleles(const int allele1, const int allele2)
 {
-    int m = std::max(allele1, allele2);
-    int d = abs(allele1 - allele2);
+    const int m = std::max(allele1, allele2);
+    const int d = abs(allele1 - allele2);
 
     return (int)round(R::choose((double)(m+1), 2.0) - d);
 }
@@ -28,8 +28,7 @@ const int DO::encode_alleles(const int allele1, const int allele2)
 // integer 1, 2, ..., 36 -> alleles (phase unknown case)
 const IntegerVector DO::decode_geno(const int true_gen)
 {
-    int n_alleles = 8;
-    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+    const int n_geno = 36;
     #ifdef DEBUG
     if(true_gen < 0 || true_gen > n_geno)
         throw std::range_error("genotype value not allowed");
@@ -63,8 +62,8 @@ const bool DO::check_geno(const int gen, const bool is_observed_value,
         else return false;
     }
 
-    int n_alleles = 8;
-    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+    const int n_alleles = 8;
+    const int n_geno = 36;
 
     if(!is_x_chr || is_female) { // autosome or female X
         if(gen>= 1 && gen <= n_geno) return true;
@@ -102,6 +101,85 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
+    const int n_geno = 36;
+
+    if(obs_gen==0) return 0.0; // missing
+
+    if(!is_x_chr || is_female) { // autosome or female X
+        const IntegerVector true_alleles = decode_geno(true_gen);
+        const int f1 = founder_geno[true_alleles[0]-1];
+        const int f2 = founder_geno[true_alleles[1]-1];
+
+        // neither founder alleles observed
+        if(f1 == NA_INTEGER && f2 == NA_INTEGER) return 0.0;
+
+        // one founder allele observed
+        if(f1 == NA_INTEGER || f2 == NA_INTEGER) {
+            if(obs_gen==H) return 0.0;
+
+            switch(std::min(f1, f2)) {
+            case A:
+                switch(obs_gen) {
+                case A: case notB: return log(1.0-error_prob);
+                case B: case notA: return log(error_prob);
+                case H: return 0.0;
+                }
+            case B:
+                switch(obs_gen) {
+                case B: case notA: return log(1.0-error_prob);
+                case A: case notB: return log(error_prob);
+                case H: return 0.0;
+                }
+            }
+            return 0.0;
+        }
+        else { // both founder alleles observed
+            switch(f1+f2) {
+            case A:
+                switch(obs_gen) {
+                case A: return log(1.0-error_prob);
+                case H: return log(error_prob/2.0);
+                case B: return log(error_prob/2.0);
+                case notA: return log(error_prob);
+                case notB: return log(1.0-error_prob/2.0);
+                }
+            case H:
+                switch(obs_gen) {
+                case A: return log(error_prob/2.0);
+                case H: return log(1.0-error_prob);
+                case B: return log(error_prob/2.0);
+                case notA: return log(1.0-error_prob/2.0);
+                case notB: return log(1.0-error_prob/2.0);
+                }
+            case B:
+                switch(obs_gen) {
+                case B: return log(1.0-error_prob);
+                case H: return log(error_prob/2.0);
+                case A: return log(error_prob/2.0);
+                case notB: return log(error_prob);
+                case notA: return log(1.0-error_prob/2.0);
+                }
+            }
+            return 0.0;
+        }
+    }
+    else { // male X
+        const int founder_allele = founder_geno[(true_gen - n_geno) - 1];
+
+        switch(founder_allele) {
+        case A:
+            switch(obs_gen) {
+            case A: return log(1.0-error_prob);
+            case B: return log(error_prob);
+            }
+        case B:
+            switch(obs_gen) {
+            case B: return log(1.0-error_prob);
+            case A: return log(error_prob);
+            }
+        }
+        return(0.0);
+    }
 
     return NA_REAL; // shouldn't get here
 }
