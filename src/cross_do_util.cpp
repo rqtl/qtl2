@@ -323,7 +323,7 @@ double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_
  *
  * precc_alpha = proportion of preCC progenitors at generation precc_gen
  *
- * This calculates Pr(right | left)
+ * This calculates log Pr(right | left) for phase-unknown case
  *
  **********************************************************************/
 double DOstep_auto(int left, int right, double r, int s,
@@ -351,41 +351,41 @@ double DOstep_auto(int left, int right, double r, int s,
     if(left1 == left2) {
         if(right1 == right2) {
             if(left1 == right1) { // AA -> AA
-                return( (1.0 - recprob)*(1.0 - recprob) );
+                return( 2.0*log(1.0 - recprob) );
             }
             else { // AA -> BB
-                return( recprob*recprob/49.0 );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
         else {
             if(left1 == right1 || left1 == right2) { // AA -> AB
-                return( 2.0*recprob*(1.0-recprob)/7.0 );
+                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
             }
             else { // AA -> BC
-                return( recprob * recprob * 2.0 / 49.0 );
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
             }
         }
     }
     else { // AB
         if(right1 == right2) {
             if(left1 == right1 || left2 == right1) { // AB -> AA
-                return( recprob * (1.0 - recprob) / 7.0 );
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
             }
             else { // AB -> CC
-                return( recprob * recprob / 49.0 );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
         else {
             if((left1==right1 && left2==right2) ||
                (left1==right2 && left2==right1)) { // AB -> AB
-                return( recprob*recprob/49.0 + (1-recprob)*(1-recprob) );
+                return( log(recprob*recprob/49.0 + (1-recprob)*(1-recprob)) );
             }
             else if(left1==right1 || left1==right2 ||
                     left2==right1 || left2==right2) { // AB -> AC
-                return( recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0 );
+                return( log(recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0) );
             }
             else { // AB -> CD
-                return( recprob*recprob*2.0/49.0 );
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
             }
         }
     }
@@ -420,41 +420,41 @@ double DOstep_femX(int left, int right, double r, int s,
     if(left1 == left2) {
         if(right1 == right2) {
             if(left1 == right1) { // AA -> AA
-                return( (1.0 - recprob)*(1.0 - recprob) );
+                return( 2.0*log(1.0 - recprob) );
             }
             else { // AA -> BB
-                return( recprob*recprob/49.0 );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
         else {
             if(left1 == right1 || left1 == right2) { // AA -> AB
-                return( 2.0*recprob*(1.0-recprob)/7.0 );
+                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
             }
             else { // AA -> BC
-                return( recprob * recprob * 2.0 / 49.0 );
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
             }
         }
     }
     else { // AB
         if(right1 == right2) {
             if(left1 == right1 || left2 == right1) { // AB -> AA
-                return( recprob * (1.0 - recprob) / 7.0 );
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
             }
             else { // AB -> CC
-                return( recprob * recprob / 49.0 );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
         else {
             if((left1==right1 && left2==right2) ||
                (left1==right2 && left2==right1)) { // AB -> AB
-                return( recprob*recprob/49.0 + (1-recprob)*(1-recprob) );
+                return( log(recprob*recprob/49.0 + (1-recprob)*(1-recprob)) );
             }
             else if(left1==right1 || left1==right2 ||
                     left2==right1 || left2==right2) { // AB -> AC
-                return( recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0 );
+                return( log(recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0) );
             }
             else { // AB -> CD
-                return( recprob*recprob*2.0/49.0 );
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
             }
         }
     }
@@ -476,6 +476,6 @@ double DOstep_malX(int left, int right, double r, int s,
     // probability of recombinant haplotype
     recprob = DOrec_malX(r, s, precc_gen, precc_alpha);
 
-    if(left == right) return(1.0 - recprob);
-    return(recprob/7.0);
+    if(left == right) return log(1.0 - recprob);
+    return log(recprob) - log(7.0);
 }
