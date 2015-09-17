@@ -79,8 +79,22 @@ const IntegerVector DOPK::decode_geno(const int true_gen)
 const bool DOPK::check_geno(const int gen, const bool is_observed_value,
                             const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
-    // need to fill in this function
-    return false;
+    if(is_observed_value) {
+        if(gen==0 || gen==A || gen==H || gen==B ||
+           gen==notA || gen==notB) return true;
+        return false;
+    }
+
+    const int n_alleles =   8;
+    const int n_geno =  64;
+
+    if(!is_x_chr || is_female) { // autosome or female X
+        if(gen >= 1 && gen <= n_geno) return true;
+    }
+    else {
+        if(gen >= n_geno+1 && gen <= n_geno+n_alleles) return true;
+    }
+    return false; // otherwise a problem
 }
 
 
