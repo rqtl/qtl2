@@ -14,8 +14,10 @@
 #' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
 #' probabilities.
 #' @param quiet IF \code{FALSE}, print progress messages.
-#' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by \code{\link[parallel]{makeCluster}}.
 #'
 #' @return A matrix of proportion of matching alleles.
 #'
@@ -45,7 +47,7 @@
 
 calc_genetic_sim <-
     function(probs, use_grid_only=TRUE, omit_x=TRUE,
-             use_allele_probs=TRUE, quiet=TRUE, n_cores=1)
+             use_allele_probs=TRUE, quiet=TRUE, cores=1)
 {
     n_ind <- nrow(probs[[1]])
     ind_names <- rownames(probs[[1]])
@@ -55,10 +57,17 @@ calc_genetic_sim <-
     if(omit_x) chrs <- which(!attr(probs, "is_x_chr"))
     else chrs <- seq(along=probs)
 
-    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
-    if(n_cores > 1) {
-        if(!quiet) message(" - Using ", n_cores, " cores.")
+    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
+        cluster_ready <- TRUE
+        if(!quiet) message(" - Using ", length(cores), " cores.")
         quiet <- TRUE # no more messages
+    } else {
+        cluster_ready <- FALSE
+        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
+        if(cores > 1) {
+            if(!quiet) message(" - Using ", cores, " cores.")
+            quiet <- TRUE # no more messages
+        }
     }
 
     stepwidth <- attr(attr(probs, "map")[[1]], "stepwidth")
@@ -71,7 +80,7 @@ calc_genetic_sim <-
     # convert from genotype probabilities to allele probabilities
     if(use_allele_probs) {
         if(!quiet) message(" - converting to allele probs")
-        probs <- genoprob_to_alleleprob(probs, quiet=quiet, n_cores=n_cores)
+        probs <- genoprob_to_alleleprob(probs, quiet=quiet, cores=cores)
     }
 
     by_chr_func <- function(chr) {
@@ -79,18 +88,20 @@ calc_genetic_sim <-
         .calc_genetic_sim(aperm(probs[[chr]], c(3,2,1))) # convert to pos x gen x ind
     }
 
-    if(n_cores<=1) { # no parallel processing
+    if(!cluster_ready && cores<=1) { # no parallel processing
         for(chr in chrs)
             result <- result + by_chr_func(chr)
     }
     else {
-        if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-            cl <- parallel::makeCluster(n_cores)
-            on.exit(parallel::stopCluster(cl))
-            by_chr_res <- parallel::clusterApply(cl, chrs, by_chr_func)
+        if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+            if(!cluster_ready) {
+                cores <- parallel::makeCluster(cores)
+                on.exit(parallel::stopCluster(cores))
+            }
+            by_chr_res <- parallel::clusterApply(cores, chrs, by_chr_func)
         }
         else {
-            by_chr_res <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
+            by_chr_res <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
         }
         for(chr in seq(along=by_chr_res))
             result <- result + by_chr_res[[chr]]
