@@ -3,6 +3,8 @@
 #include <math.h>
 #include <Rcpp.h>
 using namespace Rcpp;
+#include "cross.h"
+#include "cross_do.h"
 #include "cross_do_util.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -323,9 +325,6 @@ double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_
  *
  * This calculates Pr(right | left)
  *
- * code left, right = 0..63
- * with: first allele =  left / 8  (0..7)
- *       second allele = left % 8  (0..7)
  **********************************************************************/
 double DOstep_auto(int left, int right, double r, int s,
                    IntegerVector precc_gen, NumericVector precc_alpha)
@@ -338,10 +337,13 @@ double DOstep_auto(int left, int right, double r, int s,
     #endif
 
     /* pull out alleles for left and right loci */
-    int left1 = left / 8;
-    int left2 = left % 8;
-    int right1 = right / 8;
-    int right2 = right % 8;
+    DO* do_obj = new DO(); // need to create class object to use decode_geno
+    IntegerVector leftv = do_obj->decode_geno(left);
+    IntegerVector rightv = do_obj->decode_geno(right);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
 
     /* probability of recombinant haplotype */
     recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
@@ -392,10 +394,6 @@ double DOstep_auto(int left, int right, double r, int s,
 
 /**********************************************************************
  * transition probability for DO, female X chr
- *
- * code left, right = 0..63
- * with: first allele =  left / 8 (0..7)
- *       second allele = left % 8 (0..7)
  **********************************************************************/
 double DOstep_femX(int left, int right, double r, int s,
                    IntegerVector precc_gen, NumericVector precc_alpha)
@@ -408,10 +406,13 @@ double DOstep_femX(int left, int right, double r, int s,
     #endif
 
     /* pull out alleles for left and right loci */
-    int left1 = left / 8;
-    int left2 = left % 8;
-    int right1 = right / 8;
-    int right2 = right % 8;
+    DO* do_obj = new DO(); // need to create class object to use decode_geno
+    IntegerVector leftv = do_obj->decode_geno(left);
+    IntegerVector rightv = do_obj->decode_geno(right);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
 
     /* probability of recombinant haplotype */
     recprob = DOrec_femX(r, s, precc_gen, precc_alpha);
@@ -461,8 +462,6 @@ double DOstep_femX(int left, int right, double r, int s,
 
 /**********************************************************************
  * transition probability for DO, male X chr
- *
- * left, right coded 1, 2, ..., 8 [just one X chr in males]
  **********************************************************************/
 double DOstep_malX(int left, int right, double r, int s,
                    IntegerVector precc_gen, NumericVector precc_alpha)
