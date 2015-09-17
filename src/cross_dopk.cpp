@@ -102,16 +102,109 @@ const double DOPK::init(const int true_gen,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
-    // need to fill in this function
-    return NA_REAL;
+    #ifndef NDEBUG
+    if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+
+    if(!is_x_chr || is_female) // autosome or female X
+        return(-log(64.0));
+    else
+        return(-log(8.0));
 }
 
 const double DOPK::emit(const int obs_gen, const int true_gen, const double error_prob,
                         const IntegerVector& founder_geno, const bool is_x_chr,
                         const bool is_female, const IntegerVector& cross_info)
 {
-    // need to fill in this function
-    return NA_REAL;
+    #ifndef NDEBUG
+    if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+    const int n_geno = 64;
+
+    if(obs_gen==0) return 0.0; // missing
+
+    if(!is_x_chr || is_female) { // autosome or female X
+        const IntegerVector true_alleles = decode_geno(true_gen);
+        int f1 = founder_geno[true_alleles[0]-1];
+        int f2 = founder_geno[true_alleles[1]-1];
+
+        // treat founder hets as missing
+        if(f1==2) f1 = 0;
+        if(f2==2) f2 = 0;
+
+        // neither founder alleles observed
+        if(f1 == 0 && f2 == 0) return 0.0;
+
+        // one founder allele observed
+        if(f1 == 0 || f2 == 0) {
+
+            switch(std::max(f1, f2)) {
+            case H: return 0.0; // het compatible with either founder allele
+            case A:
+                switch(obs_gen) {
+                case A: case notB: return log(1.0-error_prob);
+                case B: case notA: return log(error_prob);
+                case H: return 0.0;
+                }
+            case B:
+                switch(obs_gen) {
+                case B: case notA: return log(1.0-error_prob);
+                case A: case notB: return log(error_prob);
+                case H: return 0.0;
+                }
+            }
+            return 0.0;
+        }
+
+        switch((f1+f2)/2) { // values 1, 2, 3
+        case A:
+            switch(obs_gen) {
+            case A: return log(1.0-error_prob);
+            case H: return log(error_prob/2.0);
+            case B: return log(error_prob/2.0);
+            case notA: return log(error_prob);
+            case notB: return log(1.0-error_prob/2.0);
+            }
+        case H:
+            switch(obs_gen) {
+            case A: return log(error_prob/2.0);
+            case H: return log(1.0-error_prob);
+            case B: return log(error_prob/2.0);
+            case notA: return log(1.0-error_prob/2.0);
+            case notB: return log(1.0-error_prob/2.0);
+            }
+        case B:
+            switch(obs_gen) {
+            case B: return log(1.0-error_prob);
+            case H: return log(error_prob/2.0);
+            case A: return log(error_prob/2.0);
+            case notB: return log(error_prob);
+            case notA: return log(1.0-error_prob/2.0);
+            }
+        }
+        return 0.0;
+    }
+    else { // male X
+        const int founder_allele = founder_geno[(true_gen - n_geno) - 1];
+
+        switch(founder_allele) {
+        case A:
+            switch(obs_gen) {
+            case A: case notB: return log(1.0-error_prob);
+            case B: case notA: return log(error_prob);
+            }
+        case B:
+            switch(obs_gen) {
+            case B: case notA: return log(1.0-error_prob);
+            case A: case notB: return log(error_prob);
+            }
+        }
+        return 0.0;
+    }
+
+    return NA_REAL; // shouldn't get here
 }
 
 
