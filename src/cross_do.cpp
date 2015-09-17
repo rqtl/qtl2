@@ -254,17 +254,36 @@ const int DO::ngen(const bool is_x_chr)
     return n_geno;
 }
 
-const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr) // FIX ME
+const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
 {
-    if(is_x_chr) // no conversion needed
-        return NumericMatrix(0,0);
+    const int n_alleles = 8;
+    const int n_geno = 36;
 
-    NumericMatrix result(3,2);
-    result(0,0) = 1.0;
-    result(1,0) = result(1,1) = 0.5;
-    result(2,1) = 1.0;
+    if(is_x_chr) {
+        NumericMatrix result(n_geno+n_alleles, n_alleles*2);
+        // female X
+        for(int trueg=0; i<n_geno; trueg++) {
+            IntegerVector alleles = decode_geno(trueg+1);
+            result(trueg,alleles[0]) += 0.5;
+            result(trueg,alleles[1]) += 0.5;
+        }
+        // male X
+        for(int trueg=0; i<n_geno; trueg++)
+            result(trueg+n_geno, trueg+n_alleles) = 1.0;
 
-    return result;
+        return result;
+    }
+    else { // autosome
+        NumericMatrix result(n_geno,n_alleles);
+
+        for(int trueg=0; i<n_geno; trueg++) {
+            IntegerVector alleles = decode_geno(trueg+1);
+            result(trueg,alleles[0]) += 0.5;
+            result(trueg,alleles[1]) += 0.5;
+        }
+
+        return result;
+    }
 }
 
 // check that sex conforms to expectation
