@@ -90,6 +90,68 @@ test_that("DO init works", {
 
 test_that("DO emit works", {
 
+    fgen <- c(1,3,0,1,3,0,1,3) # founder genotypes; 0=missing, 1=AA, 3=BB
+    err <- 0.01
+
+    # Autosome or female X
+    # truth = homA: AA (1), AD (7), AG (22), DD (10), DG (25), GG (28)
+    expected <- log(c(1-err, err/2, err/2, 1-err/2, err))
+    for(trueg in c(1,7,22,10,25,28)) {
+        for(obsg in 1:5) {
+            expect_equal(test_emit("do", obsg, trueg, err, fgen, FALSE, FALSE, 20), expected[obsg])
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE,  TRUE, 20), expected[obsg])
+        }
+    }
+    # truth = het: AB (2), AE (11), AH (29), BD (8), BG (23), DE (14), DH (32), EG (26), GH (35)
+    expected <- log(c(err/2, 1-err, err/2, 1-err/2, 1-err/2))
+    for(trueg in c(2,11,29,8,23,14,32,26,35)) {
+        for(obsg in 1:5) {
+            expect_equal(test_emit("do", obsg, trueg, err, fgen, FALSE, FALSE, 20), expected[obsg])
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE,  TRUE, 20), expected[obsg])
+        }
+    }
+    # truth = homB: BB (3), BE (12), BH (30), EE (15), EH (33), HH (36)
+    expected <- log(c(err/2, err/2, 1-err, err, 1-err/2))
+    for(trueg in c(3,12,30,15,33,36)) {
+        for(obsg in 1:5) {
+            expect_equal(test_emit("do", obsg, trueg, err, fgen, FALSE, FALSE, 20), expected[obsg])
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE,  TRUE, 20), expected[obsg])
+        }
+    }
+    # truth = A-: AC (4), AF (16), CD (9), DF (19), CG (24), FG (27)
+    expected <- log(c(1-err,1,err,1-err,err))
+    for(trueg in c(4,16,9,19,24,27)) {
+        for(obsg in 1:5) {
+            expect_equal(test_emit("do", obsg, trueg, err, fgen, FALSE, FALSE, 20), expected[obsg])
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE,  TRUE, 20), expected[obsg])
+        }
+    }
+    # truth = B-: BC (5), BF (17), CE (13), EF (20), CH (31), FH (34)
+    expected <- log(c(err,1,1-err,err,1-err))
+    for(trueg in c(5,17,13,20,31,34)) {
+        for(obsg in 1:5) {
+            expect_equal(test_emit("do", obsg, trueg, err, fgen, FALSE, FALSE, 20), expected[obsg])
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE,  TRUE, 20), expected[obsg])
+        }
+    }
+
+    # male X: treat het as missing
+    # truth = hemA: A (1+36), D (4+36), G (7+36)
+    expected <- log(c(1-err, 1, err, 1-err, err))
+    for(trueg in 36+c(1,4,7))
+        for(obsg in 1:5)
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE, FALSE, 20), expected[obsg])
+    # truth = hemB: BB (2+36), E (5+36), H (8+36)
+    expected <- log(c(err, 1, 1-err, err, 1-err))
+    for(trueg in 36+c(2,5,8))
+        for(obsg in 1:5)
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE, FALSE, 20), expected[obsg])
+    # truth = missing: C (3+36), F (6+36)
+    expected <- rep(0,5)
+    for(trueg in 36+c(3,6))
+        for(obsg in 1:5)
+            expect_equal(test_emit("do", obsg, trueg, err, fgen,  TRUE, FALSE, 20), expected[obsg])
+
 
 })
 
