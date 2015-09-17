@@ -11,7 +11,7 @@ enum gen {A=1, H=2, B=3, notA=5, notB=4};
 
 const bool DO::is_het(const int true_gen)
 {
-    IntegerVector alleles = DO::decode_geno(true_gen);
+    IntegerVector alleles = decode_geno(true_gen);
     if(alleles[0] == alleles[1]) return false;
     return true;
 }
