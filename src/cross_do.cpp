@@ -195,6 +195,30 @@ const double DO::step(const int gen_left, const int gen_right, const double rec_
         throw std::range_error("genotype value not allowed");
     #endif
 
+    // info about preCC progenitors
+    const static IntegerVector precc_gen = IntegerVector::create(4,5,6,7,8,9,10,11,12);
+    const static NumericVector precc_alpha =
+        NumericVector::create(21.0/144.0, 64.0/144.0, 24.0/144.0, 10.0/144.0, 5.0/144.0,
+                               9.0/144.0,  5.0/144.0,  3.0/144.0,  3.0/144.0);
+
+    // no. generations for this mouse
+    int n_gen = cross_info[0];
+
+    if(is_x_chr) {
+        if(is_female) { // female X
+            return DOstep_femX(gen_left, gen_right, rec_frac, n_gen,
+                               precc_gen, precc_alpha);
+        }
+        else { // male X
+            return DOstep_malX(gen_left, gen_right, rec_frac, n_gen,
+                               precc_gen, precc_alpha);
+        }
+    }
+    else { // autosome
+        return DOstep_auto(gen_left, gen_right, rec_frac, n_gen,
+                           precc_gen, precc_alpha);
+    }
+
     return NA_REAL; // shouldn't get here
 }
 
