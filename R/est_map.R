@@ -12,8 +12,10 @@
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
 #' @param quiet If \code{FALSE}, print progress messages.
-#' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by \code{\link[parallel]{makeCluster}}.
 #'
 #' @return A list of numeric vectors, with the estimated marker
 #' locations (in cM). The location of the initial marker on each
@@ -28,13 +30,13 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' gmap <- est_map(grav2, error_prob=0.002, n_cores=1)
+#' gmap <- est_map(grav2, error_prob=0.002)
 
 est_map <-
 function(cross, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
          maxit=10000, tol=1e-6, quiet=TRUE,
-         n_cores=1)
+         cores=1)
 {
     map_function <- match.arg(map_function)
     if(error_prob < 0) stop("error_prob must be >= 0")
@@ -52,10 +54,17 @@ function(cross, error_prob=1e-4,
 
     map <- vector("list", length(cross$gmap))
 
-    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
-    if(n_cores > 1) {
-        if(!quiet) message(" - Using ", n_cores, " cores.")
+    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
+        cluster_ready <- TRUE
+        if(!quiet) message(" - Using ", length(cores), " cores.")
         quiet <- TRUE # no more messages
+    } else {
+        cluster_ready <- FALSE
+        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
+        if(cores > 1) {
+            if(!quiet) message(" - Using ", cores, " cores.")
+            quiet <- TRUE # no more messages
+        }
     }
 
     founder_geno <- cross$founder_geno
@@ -92,16 +101,18 @@ function(cross, error_prob=1e-4,
     }
 
     chrs <- seq(along=map)
-    if(n_cores<=1) { # no parallel processing
+    if(!cluster_ready && cores<=1) { # no parallel processing
         map <- lapply(chrs, by_chr_func)
     }
-    else if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        cl <- parallel::makeCluster(n_cores)
-        on.exit(parallel::stopCluster(cl))
-        map <- parallel::clusterApply(cl, chrs, by_chr_func)
+    else if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+        if(!cluster_ready) {
+            cores <- parallel::makeCluster(cores)
+            on.exit(parallel::stopCluster(cores))
+        }
+        map <- parallel::clusterApply(cores, chrs, by_chr_func)
     }
     else {
-        map <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
+        map <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
     }
 
     names(map) <- names(cross$gmap)
