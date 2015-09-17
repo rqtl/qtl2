@@ -4,7 +4,7 @@
 \alias{genoprob_to_alleleprob}
 \title{Convert genotype probabilities to allele probabilities}
 \usage{
-genoprob_to_alleleprob(probs, quiet = TRUE, n_cores = 1)
+genoprob_to_alleleprob(probs, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{List of three-dimensional arrays of probabilities, as
@@ -12,8 +12,10 @@ calculated from \code{\link{calc_genoprob}}.}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
-\item{n_cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)}
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
 List of three-dimensional arrays of probabilities,

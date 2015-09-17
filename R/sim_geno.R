@@ -24,8 +24,10 @@
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
 #' @param quiet If \code{FALSE}, print progress messages.
-#' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by \code{\link[parallel]{makeCluster}}.
 #'
 #' @return A list of three-dimensional arrays of imputed genotypes,
 #' individuals x positions x draws.  The genetic map and cross
@@ -46,7 +48,7 @@
 sim_geno <-
 function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         quiet=TRUE, n_cores=1)
+         quiet=TRUE, cores=1)
 {
     # check inputs
     if(class(cross) != "cross2")
@@ -56,10 +58,17 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     map_function <- match.arg(map_function)
     stepwidth <- match.arg(stepwidth)
 
-    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
-    if(n_cores > 1) {
-        if(!quiet) message(" - Using ", n_cores, " cores.")
+    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
+        cluster_ready <- TRUE
+        if(!quiet) message(" - Using ", length(cores), " cores.")
         quiet <- TRUE # no more messages
+    } else {
+        cluster_ready <- FALSE
+        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
+        if(cores > 1) {
+            if(!quiet) message(" - Using ", cores, " cores.")
+            quiet <- TRUE # no more messages
+        }
     }
 
     # construct map at which to do the calculations
@@ -103,16 +112,18 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     }
 
     chrs <- seq(along=map)
-    if(n_cores<=1) { # no parallel processing
+    if(!cluster_ready && cores<=1) { # no parallel processing
         draws <- lapply(chrs, by_chr_func)
     }
-    else if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        cl <- parallel::makeCluster(n_cores)
-        on.exit(parallel::stopCluster(cl))
-        draws <- parallel::clusterApply(cl, chrs, by_chr_func)
+    else if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+        if(!cluster_ready) {
+            cores <- parallel::makeCluster(cores)
+            on.exit(parallel::stopCluster(cores))
+        }
+        draws <- parallel::clusterApply(cores, chrs, by_chr_func)
     }
     else {
-        draws <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
+        draws <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
     }
 
     names(draws) <- names(cross$gmap)

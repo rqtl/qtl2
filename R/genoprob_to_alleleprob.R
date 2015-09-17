@@ -7,8 +7,10 @@
 #' @param probs List of three-dimensional arrays of probabilities, as
 #' calculated from \code{\link{calc_genoprob}}.
 #' @param quiet IF \code{FALSE}, print progress messages.
-#' @param n_cores Number of CPU cores to use, for parallel calculations.
+#' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by \code{\link[parallel]{makeCluster}}.
 #'
 #' @return List of three-dimensional arrays of probabilities,
 #' regarding alleles rather than genotypes.
@@ -22,14 +24,21 @@
 #' allele_probs <- genoprob_to_alleleprob(probs)
 
 genoprob_to_alleleprob <-
-    function(probs, quiet=TRUE, n_cores=1)
+    function(probs, quiet=TRUE, cores=1)
 {
     is_x_chr <- attr(probs, "is_x_chr")
 
-    if(n_cores==0) n_cores <- parallel::detectCores() # if 0, detect cores
-    if(n_cores > 1) {
-        if(!quiet) message(" - Using ", n_cores, " cores.")
+    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
+        cluster_ready <- TRUE
+        if(!quiet) message(" - Using ", length(cores), " cores.")
         quiet <- TRUE # no more messages
+    } else {
+        cluster_ready <- FALSE
+        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
+        if(cores > 1) {
+            if(!quiet) message(" - Using ", cores, " cores.")
+            quiet <- TRUE # no more messages
+        }
     }
 
     by_chr_func <- function(chr) {
@@ -45,16 +54,18 @@ genoprob_to_alleleprob <-
 
     chrs <- seq(along=probs)
     probs_attr <- attributes(probs)
-    if(n_cores<=1) { # no parallel processing
+    if(!cluster_ready && cores<=1) { # no parallel processing
         probs <- lapply(chrs, by_chr_func)
     }
-    else if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        cl <- parallel::makeCluster(n_cores)
-        on.exit(parallel::stopCluster(cl))
-        probs <- parallel::clusterApply(cl, chrs, by_chr_func)
+    else if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+        if(!cluster_ready) {
+            cores <- parallel::makeCluster(cores)
+            on.exit(parallel::stopCluster(cores))
+        }
+        probs <- parallel::clusterApply(cores, chrs, by_chr_func)
     }
     else {
-        probs <- parallel::mclapply(chrs, by_chr_func, mc.cores=n_cores)
+        probs <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
     }
 
     for(at in names(probs_attr))
