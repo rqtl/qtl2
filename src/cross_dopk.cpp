@@ -28,7 +28,7 @@ const int DOPK::encode_alleles(const int allele1, const int allele2)
         return (int)round(R::choose((double)(m+1), 2.0) - d);
     else
         return (int)round(R::choose((double)(m), 2.0) - d + 1 +
-                          R::choose((double)(n_alleles+1, 2.0)));
+                          R::choose((double)(n_alleles+1), 2.0));
 }
 
 // integer 1, 2, ..., 64 -> alleles (phase unknown case)
@@ -56,12 +56,12 @@ const IntegerVector DOPK::decode_geno(const int true_gen)
       }
     }
     else {
-        true_gen = true_gen - n_puk_geno;
+        int g = true_gen - n_puk_geno;
         int last_max = 0;
         for(int i=1; i<n_alleles-1; i++) {
-            if(true_gen <= last_max+i) {
+            if(g <= last_max+i) {
                 result[0] = i+1;
-                result[1] = true_gen-last_max;
+                result[1] = g-last_max;
                 return result;
             }
             last_max += i;
