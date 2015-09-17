@@ -440,16 +440,28 @@ const double AILPK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr
 
 const NumericMatrix AILPK::geno2allele_matrix(const bool is_x_chr)
 {
-    if(is_x_chr) // no conversion needed
-        return NumericMatrix(0,0);
+    if(is_x_chr) {
+        NumericMatrix result(6,4);
 
-    NumericMatrix result(4,2);
-    result(0,0) = 1.0;
-    result(1,0) = result(1,1) = 0.5;
-    result(2,0) = result(2,1) = 0.5;
-    result(3,1) = 1.0;
+        result(0,0) = 1.0;               // AA female
+        result(1,0) = result(1,1) = 0.5; // AB female
+        result(2,0) = result(2,1) = 0.5; // BA female
+        result(3,1) = 1.0;               // BB female
 
-    return result;
+        result(4,2) = 1.0; // AY male
+        result(5,3) = 1.0; // BY male
+
+        return result;
+    }
+    else {
+        NumericMatrix result(4,2);
+        result(0,0) = 1.0;
+        result(1,0) = result(1,1) = 0.5;
+        result(2,0) = result(2,1) = 0.5;
+        result(3,1) = 1.0;
+
+        return result;
+    }
 }
 
 // check that sex conforms to expectation

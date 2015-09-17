@@ -355,15 +355,25 @@ const int AIL::ngen(const bool is_x_chr)
 
 const NumericMatrix AIL::geno2allele_matrix(const bool is_x_chr)
 {
-    if(is_x_chr) // no conversion needed
-        return NumericMatrix(0,0);
+    if(is_x_chr) {
+        NumericMatrix result(5,4);
+        result(0,0) = 1.0;               // AA female
+        result(1,0) = result(1,1) = 0.5; // AB female
+        result(2,1) = 1.0;               // BB female
 
-    NumericMatrix result(3,2);
-    result(0,0) = 1.0;
-    result(1,0) = result(1,1) = 0.5;
-    result(2,1) = 1.0;
+        result(3,2) = 1.0; // AY male
+        result(4,3) = 1.0; // BY male
 
-    return result;
+        return result;
+    }
+    else {
+        NumericMatrix result(3,2);
+        result(0,0) = 1.0;
+        result(1,0) = result(1,1) = 0.5;
+        result(2,1) = 1.0;
+
+        return result;
+    }
 }
 
 // check that sex conforms to expectation
