@@ -111,13 +111,13 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
         const int f2 = founder_geno[true_alleles[1]-1];
 
         // neither founder alleles observed
-        if(f1 == NA_INTEGER && f2 == NA_INTEGER) return 0.0;
+        if(f1 == 0 && f2 == 0) return 0.0;
 
         // one founder allele observed
-        if(f1 == NA_INTEGER || f2 == NA_INTEGER) {
-            if(obs_gen==H) return 0.0;
+        if(f1 == 0 || f2 == 0) {
 
-            switch(std::min(f1, f2)) {
+            switch(std::max(f1, f2)) {
+            case H: return 0.0; // het compatible with either founder allele
             case A:
                 switch(obs_gen) {
                 case A: case notB: return log(1.0-error_prob);
