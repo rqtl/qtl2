@@ -162,16 +162,16 @@ double DOrec_auto(double r, int s, IntegerVector precc_gen, NumericVector precc_
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
-    /* calculate probability of AA haplotype at generation s=1 */
+    // calculate probability of AA haplotype at generation s=1
     hapAA = 0.0;
     for(int i=0; i<n_precc; i++)
         hapAA += (precc_alpha[i] * ri4way_auto_hapAA(r, precc_gen[i]+1) * (1.0-r)/2.0);
 
-    /* later generations (using eqn (6)) */
+    // later generations (using eqn (6))
     if(s > 1)
         hapAA = 1.0/64.0 + pow(1.0-r, (double)(s-1)) * (hapAA - 1.0/64.0);
 
-    /* probability of recombinant, assuming random order of initial crosses */
+    // probability of recombinant, assuming random order of initial crosses
     return( 1.0 - 8.0*hapAA );
 }
 
@@ -194,7 +194,7 @@ double DOrec_femX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
-    /* calculate probability of AA haplotype at generation s=1 */
+    // calculate probability of AA haplotype at generation s=1
     result = 0.0;
     for(int i=0; i<n_precc; i++)
         result += (precc_alpha[i] * (ri4way_femX_hapAA(r, precc_gen[i]+1) * (2.0-r) +
@@ -222,7 +222,7 @@ double DOrec_malX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
-    /* calculate probability of AA haplotype at generation s=1 */
+    // calculate probability of AA haplotype at generation s=1
     result = 0.0;
     for(int i=0; i<n_precc; i++)
         result += (precc_alpha[i] * (ri4way_malX_hapAA(r, precc_gen[i]+1) * (2.0-r) +
@@ -259,7 +259,7 @@ double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_
         double ws = pow((1.0-r+z)/4.0, (double)(s-1));
         double ys = pow((1.0-r-z)/4.0, (double)(s-1));
 
-        /* calculate probability of AA haplotype at generation s=1 */
+        // calculate probability of AA haplotype at generation s=1
         double f1 = DOrec_femX_s1(r, precc_gen, precc_alpha);
         double m1 = DOrec_malX_s1(r, precc_gen, precc_alpha);
 
@@ -296,7 +296,7 @@ double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_
         double ws = pow((1.0-r+z)/4.0, (double)(s-1));
         double ys = pow((1.0-r-z)/4.0, (double)(s-1));
 
-        /* calculate probability of AA haplotype at generation s=1 */
+        // calculate probability of AA haplotype at generation s=1
         double f1 = DOrec_femX_s1(r, precc_gen, precc_alpha);
         double m1 = DOrec_malX_s1(r, precc_gen, precc_alpha);
 
@@ -336,7 +336,7 @@ double DOstep_auto(int left, int right, double r, int s,
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
-    /* pull out alleles for left and right loci */
+    // pull out alleles for left and right loci
     DO* do_obj = new DO(); // need to create class object to use decode_geno
     IntegerVector leftv = do_obj->decode_geno(left);
     IntegerVector rightv = do_obj->decode_geno(right);
@@ -345,46 +345,46 @@ double DOstep_auto(int left, int right, double r, int s,
     int right1 = rightv[0];
     int right2 = rightv[1];
 
-    /* probability of recombinant haplotype */
+    // probability of recombinant haplotype
     recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
 
     if(left1 == left2) {
         if(right1 == right2) {
-            if(left1 == right1) { /* AA -> AA */
+            if(left1 == right1) { // AA -> AA
                 return( (1.0 - recprob)*(1.0 - recprob) );
             }
-            else { /* AA -> BB */
+            else { // AA -> BB
                 return( recprob*recprob/49.0 );
             }
         }
         else {
-            if(left1 == right1 || left1 == right2) { /* AA -> AB */
+            if(left1 == right1 || left1 == right2) { // AA -> AB
                 return( 2.0*recprob*(1.0-recprob)/7.0 );
             }
-            else { /* AA -> BC */
+            else { // AA -> BC
                 return( recprob * recprob * 2.0 / 49.0 );
             }
         }
     }
-    else { /* AB */
+    else { // AB
         if(right1 == right2) {
-            if(left1 == right1 || left2 == right1) { /* AB -> AA */
+            if(left1 == right1 || left2 == right1) { // AB -> AA
                 return( recprob * (1.0 - recprob) / 7.0 );
             }
-            else { /* AB -> CC */
+            else { // AB -> CC
                 return( recprob * recprob / 49.0 );
             }
         }
         else {
             if((left1==right1 && left2==right2) ||
-               (left1==right2 && left2==right1)) { /* AB -> AB */
+               (left1==right2 && left2==right1)) { // AB -> AB
                 return( recprob*recprob/49.0 + (1-recprob)*(1-recprob) );
             }
             else if(left1==right1 || left1==right2 ||
-                    left2==right1 || left2==right2) { /* AB -> AC */
+                    left2==right1 || left2==right2) { // AB -> AC
                 return( recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0 );
             }
-            else { /* AB -> CD */
+            else { // AB -> CD
                 return( recprob*recprob*2.0/49.0 );
             }
         }
@@ -405,7 +405,7 @@ double DOstep_femX(int left, int right, double r, int s,
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
-    /* pull out alleles for left and right loci */
+    // pull out alleles for left and right loci
     DO* do_obj = new DO(); // need to create class object to use decode_geno
     IntegerVector leftv = do_obj->decode_geno(left);
     IntegerVector rightv = do_obj->decode_geno(right);
@@ -414,46 +414,46 @@ double DOstep_femX(int left, int right, double r, int s,
     int right1 = rightv[0];
     int right2 = rightv[1];
 
-    /* probability of recombinant haplotype */
+    // probability of recombinant haplotype
     recprob = DOrec_femX(r, s, precc_gen, precc_alpha);
 
     if(left1 == left2) {
         if(right1 == right2) {
-            if(left1 == right1) { /* AA -> AA */
+            if(left1 == right1) { // AA -> AA
                 return( (1.0 - recprob)*(1.0 - recprob) );
             }
-            else { /* AA -> BB */
+            else { // AA -> BB
                 return( recprob*recprob/49.0 );
             }
         }
         else {
-            if(left1 == right1 || left1 == right2) { /* AA -> AB */
+            if(left1 == right1 || left1 == right2) { // AA -> AB
                 return( 2.0*recprob*(1.0-recprob)/7.0 );
             }
-            else { /* AA -> BC */
+            else { // AA -> BC
                 return( recprob * recprob * 2.0 / 49.0 );
             }
         }
     }
-    else { /* AB */
+    else { // AB
         if(right1 == right2) {
-            if(left1 == right1 || left2 == right1) { /* AB -> AA */
+            if(left1 == right1 || left2 == right1) { // AB -> AA
                 return( recprob * (1.0 - recprob) / 7.0 );
             }
-            else { /* AB -> CC */
+            else { // AB -> CC
                 return( recprob * recprob / 49.0 );
             }
         }
         else {
             if((left1==right1 && left2==right2) ||
-               (left1==right2 && left2==right1)) { /* AB -> AB */
+               (left1==right2 && left2==right1)) { // AB -> AB
                 return( recprob*recprob/49.0 + (1-recprob)*(1-recprob) );
             }
             else if(left1==right1 || left1==right2 ||
-                    left2==right1 || left2==right2) { /* AB -> AC */
+                    left2==right1 || left2==right2) { // AB -> AC
                 return( recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0 );
             }
-            else { /* AB -> CD */
+            else { // AB -> CD
                 return( recprob*recprob*2.0/49.0 );
             }
         }
@@ -473,7 +473,7 @@ double DOstep_malX(int left, int right, double r, int s,
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
 
-    /* probability of recombinant haplotype */
+    // probability of recombinant haplotype
     recprob = DOrec_malX(r, s, precc_gen, precc_alpha);
 
     if(left == right) return(1.0 - recprob);
