@@ -254,7 +254,7 @@ const int DO::ngen(const bool is_x_chr)
     return n_geno;
 }
 
-const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
+const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr) // FIX ME
 {
     if(is_x_chr) // no conversion needed
         return NumericMatrix(0,0);
@@ -268,7 +268,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
 }
 
 // check that sex conforms to expectation
-const bool DO::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
+const bool DO::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr) // FIX ME
 {
     bool result = true;
     const unsigned int n = is_female.size();
@@ -297,7 +297,7 @@ const bool DO::check_is_female_vector(const LogicalVector& is_female, const bool
 }
 
 // check that cross_info conforms to expectation
-const bool DO::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
+const bool DO::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr) // FIX ME
 {
     bool result = true;
     const unsigned int n_row = cross_info.rows();
