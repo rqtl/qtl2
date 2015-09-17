@@ -198,15 +198,28 @@ const int F2::ngen(const bool is_x_chr)
 
 const NumericMatrix F2::geno2allele_matrix(const bool is_x_chr)
 {
-    if(is_x_chr) // no conversion needed
-        return NumericMatrix(0,0);
+    if(is_x_chr) { // X chr
+        NumericMatrix result(6,4);
+        // female X
+        result(0,0) = 1.0;
+        result(1,0) = result(1,1) = 0.5;
+        result(2,0) = result(2,1) = 0.5;
+        result(3,1) = 1.0;
 
-    NumericMatrix result(3,2);
-    result(0,0) = 1.0;
-    result(1,0) = result(1,1) = 0.5;
-    result(2,1) = 1.0;
+        // male X
+        result(4,0) = result(5,1) = 1.0;
 
-    return result;
+        return result;
+    }
+    else {
+        NumericMatrix result(3,2);
+
+        result(0,0) = 1.0;
+        result(1,0) = result(1,1) = 0.5;
+        result(2,1) = 1.0;
+
+        return result;
+    }
 }
 
 // check that sex conforms to expectation
