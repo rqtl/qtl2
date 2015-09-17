@@ -287,7 +287,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
 }
 
 // check that sex conforms to expectation
-const bool DO::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr) // FIX ME
+const bool DO::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
     const unsigned int n = is_female.size();
@@ -321,12 +321,11 @@ const bool DO::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
     bool result = true;
     const unsigned int n_row = cross_info.rows();
     const unsigned int n_col = cross_info.cols();
-    // first column is number of generations (needed no matter what; values should be >= 2)
-    // second column is 0=AxB, 1=BxA, 2=balanced (needed for X chromosome)
+    // one column with number of generations (needed no matter what; values should be >= 1)
 
     if(n_col == 0) {
         result = false;
-        r_message("cross_info not provided, but should at least have one column, with no. generations");
+        r_message("cross_info not provided, but should at least one column, with no. generations");
         return result;
     }
 
@@ -334,47 +333,16 @@ const bool DO::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
     unsigned int n_invalid=0;
     for(unsigned int i=0; i<n_row; i++) {
         if(cross_info[i] == NA_INTEGER) ++n_missing;
-        else if(cross_info[i] < 2) ++n_invalid;
+        else if(cross_info[i] < 1) ++n_invalid;
     }
     if(n_missing > 0) {
         result = false;
-        r_message("1st column in cross_info has missing values (it shouldn't)");
+        r_message("cross_info has missing values (it shouldn't)");
     }
     if(n_invalid > 0) {
         result = false;
-        r_message("1st column in cross_info has invalid values; no. generations should be >= 2");
+        r_message("cross_info has invalid values; no. generations should be >= 1");
     }
 
-    if(n_col == 1 && any_x_chr) {
-        result = false;
-        r_message("cross_info should have at two columns (no. generations and cross direction)");
-    }
-
-    if(n_col > 1) {
-        if(n_col > 2) {
-            result = false;
-            r_message("cross_info should have no more than 2 columns (no. generations and cross direction)");
-        }
-
-        unsigned int n_missing = 0;
-        unsigned int n_invalid = 0;
-        for(unsigned int i=0; i<n_row; i++) {
-            if(cross_info[i+n_row] == NA_INTEGER) ++n_missing;
-            else if(cross_info[i+n_row] != 0 &&
-                    cross_info[i+n_row] != 1 &&
-                    cross_info[i+n_row] != 2) {
-                ++n_invalid;
-            }
-        }
-        if(n_missing > 0) {
-            result = false;
-            r_message("2nd column in cross_info contains missing values (it shouldn't)");
-        }
-
-        if(n_invalid > 0) {
-            result = false;
-            r_message("2nd column in cross_info contains invalid values; should be 0, 1, or 2.");
-        }
-    }
     return result;
 }
