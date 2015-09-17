@@ -107,8 +107,12 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
 
     if(!is_x_chr || is_female) { // autosome or female X
         const IntegerVector true_alleles = decode_geno(true_gen);
-        const int f1 = founder_geno[true_alleles[0]-1];
-        const int f2 = founder_geno[true_alleles[1]-1];
+        int f1 = founder_geno[true_alleles[0]-1];
+        int f2 = founder_geno[true_alleles[1]-1];
+
+        // treat founder hets as missing
+        if(f1==2) f1 = 0;
+        if(f2==2) f2 = 0;
 
         // neither founder alleles observed
         if(f1 == 0 && f2 == 0) return 0.0;
@@ -133,35 +137,34 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
             }
             return 0.0;
         }
-        else { // both founder alleles observed
-            switch(f1+f2-1) { // values 1, 2, 3
-            case A:
-                switch(obs_gen) {
-                case A: return log(1.0-error_prob);
-                case H: return log(error_prob/2.0);
-                case B: return log(error_prob/2.0);
-                case notA: return log(error_prob);
-                case notB: return log(1.0-error_prob/2.0);
-                }
-            case H:
-                switch(obs_gen) {
-                case A: return log(error_prob/2.0);
-                case H: return log(1.0-error_prob);
-                case B: return log(error_prob/2.0);
-                case notA: return log(1.0-error_prob/2.0);
-                case notB: return log(1.0-error_prob/2.0);
-                }
-            case B:
-                switch(obs_gen) {
-                case B: return log(1.0-error_prob);
-                case H: return log(error_prob/2.0);
-                case A: return log(error_prob/2.0);
-                case notB: return log(error_prob);
-                case notA: return log(1.0-error_prob/2.0);
-                }
+
+        switch((f1+f2)/2) { // values 1, 2, 3
+        case A:
+            switch(obs_gen) {
+            case A: return log(1.0-error_prob);
+            case H: return log(error_prob/2.0);
+            case B: return log(error_prob/2.0);
+            case notA: return log(error_prob);
+            case notB: return log(1.0-error_prob/2.0);
             }
-            return 0.0;
+        case H:
+            switch(obs_gen) {
+            case A: return log(error_prob/2.0);
+            case H: return log(1.0-error_prob);
+            case B: return log(error_prob/2.0);
+            case notA: return log(1.0-error_prob/2.0);
+            case notB: return log(1.0-error_prob/2.0);
+            }
+        case B:
+            switch(obs_gen) {
+            case B: return log(1.0-error_prob);
+            case H: return log(error_prob/2.0);
+            case A: return log(error_prob/2.0);
+            case notB: return log(error_prob);
+            case notA: return log(1.0-error_prob/2.0);
+            }
         }
+        return 0.0;
     }
     else { // male X
         const int founder_allele = founder_geno[(true_gen - n_geno) - 1];
