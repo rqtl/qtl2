@@ -229,7 +229,7 @@ const IntegerVector DO::possible_gen(const bool is_x_chr, const bool is_female,
                                      const IntegerVector& cross_info)
 {
     int n_alleles = 8;
-    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+    int n_geno = 36;
 
     if(is_x_chr && !is_female) { // male X chromosome
         IntegerVector result(n_alleles);
@@ -248,7 +248,7 @@ const IntegerVector DO::possible_gen(const bool is_x_chr, const bool is_female,
 const int DO::ngen(const bool is_x_chr)
 {
     int n_alleles = 8;
-    int n_geno = (int)round(R::choose((double)(n_alleles+1), 2.0));
+    int n_geno = 36;
 
     if(is_x_chr) return n_geno+n_alleles;
     return n_geno;
