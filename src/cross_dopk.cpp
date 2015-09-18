@@ -419,7 +419,7 @@ const double DOPK::step_auto(int left, int right, double r, int s,
     // probability of recombinant haplotype
     recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
 
-    if(left1 == left2) {
+    if(left1 == left2) { // AA ->
         if(right1 == right2) {
             if(left1 == right1) { // AA -> AA
                 return( 2.0*log(1.0 - recprob) );
@@ -430,14 +430,14 @@ const double DOPK::step_auto(int left, int right, double r, int s,
         }
         else {
             if(left1 == right1 || left1 == right2) { // AA -> AB
-                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
             }
             else { // AA -> BC
-                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
     }
-    else { // AB
+    else { // AB ->
         if(right1 == right2) {
             if(left1 == right1 || left2 == right1) { // AB -> AA
                 return( log(recprob) + log(1.0 - recprob) - log(7.0) );
@@ -453,14 +453,14 @@ const double DOPK::step_auto(int left, int right, double r, int s,
             else if(left1==right2 && left2==right1) { // AB -> BA
                 return( 2.0*log(recprob) - log(49.0) );
             }
-            else if(left1==right1 || left2==right2) { // AB -> AC or AB -> CB
+            else if(left1==right1 || left2==right2) { // AB -> AC
                 return( log(recprob) + log(1.0-recprob) - log(7.0) );
             }
-            else if(left2==right1 || left2==right2) { // AB -> CA or AB -> BC
+            else if(left2==right1 || left2==right2) { // AB -> CA
                 return( 2.0*log(recprob) - log(49.0) );
             }
             else { // AB -> CD
-                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
     }
@@ -490,7 +490,7 @@ const double DOPK::step_femX(int left, int right, double r, int s,
     // probability of recombinant haplotype
     recprob = DOrec_femX(r, s, precc_gen, precc_alpha);
 
-    if(left1 == left2) {
+    if(left1 == left2) { // AA ->
         if(right1 == right2) {
             if(left1 == right1) { // AA -> AA
                 return( 2.0*log(1.0 - recprob) );
@@ -501,14 +501,14 @@ const double DOPK::step_femX(int left, int right, double r, int s,
         }
         else {
             if(left1 == right1 || left1 == right2) { // AA -> AB
-                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
             }
             else { // AA -> BC
-                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
     }
-    else { // AB
+    else { // AB ->
         if(right1 == right2) {
             if(left1 == right1 || left2 == right1) { // AB -> AA
                 return( log(recprob) + log(1.0 - recprob) - log(7.0) );
@@ -524,14 +524,14 @@ const double DOPK::step_femX(int left, int right, double r, int s,
             else if(left1==right2 && left2==right1) { // AB -> BA
                 return( 2.0*log(recprob) - log(49.0) );
             }
-            else if(left1==right1 || left2==right2) { // AB -> AC or AB -> CB
+            else if(left1==right1 || left2==right2) { // AB -> AC
                 return( log(recprob) + log(1.0-recprob) - log(7.0) );
             }
-            else if(left2==right1 || left2==right2) { // AB -> CA or AB -> BC
+            else if(left2==right1 || left2==right2) { // AB -> CA
                 return( 2.0*log(recprob) - log(49.0) );
             }
             else { // AB -> CD
-                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+                return( 2.0*log(recprob) - log(49.0) );
             }
         }
     }
