@@ -212,8 +212,37 @@ const double DOPK::step(const int gen_left, const int gen_right, const double re
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
-    // need to fill in this function
-    return NA_REAL;
+    #ifndef NDEBUG
+    if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+
+    // info about preCC progenitors
+    const static IntegerVector precc_gen = IntegerVector::create(4,5,6,7,8,9,10,11,12);
+    const static NumericVector precc_alpha =
+        NumericVector::create(21.0/144.0, 64.0/144.0, 24.0/144.0, 10.0/144.0, 5.0/144.0,
+                               9.0/144.0,  5.0/144.0,  3.0/144.0,  3.0/144.0);
+
+    // no. generations for this mouse
+    int n_gen = cross_info[0];
+
+    if(is_x_chr) {
+        if(is_female) { // female X
+            return step_femX(gen_left, gen_right, rec_frac, n_gen,
+                             precc_gen, precc_alpha);
+        }
+        else { // male X
+            return step_malX(gen_left, gen_right, rec_frac, n_gen,
+                               precc_gen, precc_alpha);
+        }
+    }
+    else { // autosome
+        return step_auto(gen_left, gen_right, rec_frac, n_gen,
+                         precc_gen, precc_alpha);
+    }
+
+    return NA_REAL; // shouldn't get here
 }
 
 const IntegerVector DOPK::possible_gen(const bool is_x_chr, const bool is_female,
