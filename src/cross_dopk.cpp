@@ -300,8 +300,8 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
         // female X
         for(int trueg=0; trueg<n_geno; trueg++) {
             IntegerVector alleles = decode_geno(trueg+1);
-            result(trueg,alleles[0]) += 0.5;
-            result(trueg,alleles[1]) += 0.5;
+            result(trueg,alleles[0]-1) += 0.5;
+            result(trueg,alleles[1]-1) += 0.5;
         }
         // male X
         for(int trueg=0; trueg<n_geno; trueg++)
@@ -314,8 +314,8 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
 
         for(int trueg=0; trueg<n_geno; trueg++) {
             IntegerVector alleles = decode_geno(trueg+1);
-            result(trueg,alleles[0]) += 0.5;
-            result(trueg,alleles[1]) += 0.5;
+            result(trueg,alleles[0]-1) += 0.5;
+            result(trueg,alleles[1]-1) += 0.5;
         }
 
         return result;
