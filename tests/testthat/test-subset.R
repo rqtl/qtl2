@@ -115,3 +115,28 @@ test_that("subset.sim_geno works", {
     expect_equal(drsub, expected)
 
 })
+
+test_that("subset.calc_genoprob works with reduction to grid and/or allele prob", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    ironsub <- iron[,c(5,8,"X")]
+
+    pr <- calc_genoprob(ironsub, step=2.5, err=0.002)
+
+    pr_grid <- probs_to_grid(pr)
+    pr_a <- genoprob_to_alleleprob(pr)
+
+    set.seed(20150918)
+    ind <- sample(rownames(iron$geno[[1]]), 10, replace=FALSE)
+    chr <- c("5", "X")
+    pr_sub <- pr[ind,chr]
+
+    pr_grid_sub <- pr_grid[ind,chr]
+    pr_sub_grid <- probs_to_grid(pr_sub)
+    expect_equal(pr_grid_sub, pr_sub_grid)
+
+    pr_a_sub <- pr_a[ind,chr]
+    pr_sub_a <- genoprob_to_alleleprob(pr_sub)
+    expect_equal(pr_a_sub, pr_sub_a)
+
+})
