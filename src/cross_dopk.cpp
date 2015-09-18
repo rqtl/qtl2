@@ -58,7 +58,7 @@ const IntegerVector DOPK::decode_geno(const int true_gen)
     else {
         int g = true_gen - n_puk_geno;
         int last_max = 0;
-        for(int i=1; i<n_alleles-1; i++) {
+        for(int i=1; i<=n_alleles-1; i++) {
             if(g <= last_max+i) {
                 result[0] = i+1;
                 result[1] = g-last_max;
