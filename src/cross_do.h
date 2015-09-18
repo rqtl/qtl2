@@ -38,6 +38,14 @@ class DO : public QTLCross
     const int encode_alleles(const int allele1, const int allele2); // convert (a1,a2) pair to genotype 1-36
     const IntegerVector decode_geno(const int true_gen);            // convert genotype to (a1,a2) pair
 
+    // helper functions for step()
+    const double step_auto(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha);
+    const double step_femX(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha);
+    const double step_malX(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha);
+
 };
 
 #endif // CROSS_DO_H

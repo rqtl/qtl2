@@ -116,46 +116,4 @@ double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_
  **********************************************************************/
 double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha);
 
-//////////////////////////////////////////////////////////////////////
-// 3. transition probabilties for diversity outcross
-//////////////////////////////////////////////////////////////////////
-
-/**********************************************************************
- * transition probability for DO, autosome
- *
- * left = genotype at left locus
- * right = genotype at right locus
- * r = recombination fraction
- * s = generation of DO
- *
- * precc_alpha = proportion of preCC progenitors at generation k
- * n_precc = length of k and precc_alpha
- *
- * This calculates Pr(right | left)
- *
- * code left, right = 0..63
- * with: first allele =  left / 8  (0..7)
- *       second allele = left % 8  (0..7)
- **********************************************************************/
-double DOstep_auto(int left, int right, double r, int s,
-                   IntegerVector precc_gen, NumericVector precc_alpha);
-
-/**********************************************************************
- * transition probability for DO, female X chr
- *
- * code left, right = 0..63
- * with: first allele =  left / 8 (0..7)
- *       second allele = left % 8 (0..7)
- **********************************************************************/
-double DOstep_femX(int left, int right, double r, int s,
-                   IntegerVector precc_gen, NumericVector precc_alpha);
-
-/**********************************************************************
- * transition probability for DO, male X chr
- *
- * left, right coded 1, 2, ..., 8 [just one X chr in males]
- **********************************************************************/
-double DOstep_malX(int left, int right, double r, int s,
-                   IntegerVector precc_gen, NumericVector precc_alpha);
-
 #endif // CROSS_DO_UTIL_H

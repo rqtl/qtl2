@@ -353,3 +353,175 @@ const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any
 
     return result;
 }
+
+
+
+/**********************************************************************
+ * transition probability for DO, autosome, phase-known case
+ *
+ * left = genotype at left locus
+ * right = genotype at right locus
+ * r = recombination fraction
+ * s = generation of DO
+ *
+ * precc_alpha = proportion of preCC progenitors at generation precc_gen
+ *
+ * This calculates log Pr(right | left) for phase-known case
+ *
+ **********************************************************************/
+const double DOPK::step_auto(int left, int right, double r, int s,
+                             IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // pull out alleles for left and right loci
+    IntegerVector leftv = decode_geno(left);
+    IntegerVector rightv = decode_geno(right);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
+
+    // probability of recombinant haplotype
+    recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
+
+    if(left1 == left2) {
+        if(right1 == right2) {
+            if(left1 == right1) { // AA -> AA
+                return( 2.0*log(1.0 - recprob) );
+            }
+            else { // AA -> BB
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1 == right1 || left1 == right2) { // AA -> AB
+                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else { // AA -> BC
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+    else { // AB
+        if(right1 == right2) {
+            if(left1 == right1 || left2 == right1) { // AB -> AA
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
+            }
+            else { // AB -> CC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1==right1 && left2==right2) { // AB -> AB
+                return( 2.0*log(1-recprob) );
+            }
+            else if(left1==right2 && left2==right1) { // AB -> BA
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else if(left1==right1 || left2==right2) { // AB -> AC or AB -> CB
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else if(left2==right1 || left2==right2) { // AB -> CA or AB -> BC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else { // AB -> CD
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+}
+
+/**********************************************************************
+ * transition probability for DO, female X chr in phase-known case
+ **********************************************************************/
+const double DOPK::step_femX(int left, int right, double r, int s,
+                             IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // pull out alleles for left and right loci
+    IntegerVector leftv = decode_geno(left);
+    IntegerVector rightv = decode_geno(right);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
+
+    // probability of recombinant haplotype
+    recprob = DOrec_femX(r, s, precc_gen, precc_alpha);
+
+    if(left1 == left2) {
+        if(right1 == right2) {
+            if(left1 == right1) { // AA -> AA
+                return( 2.0*log(1.0 - recprob) );
+            }
+            else { // AA -> BB
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1 == right1 || left1 == right2) { // AA -> AB
+                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else { // AA -> BC
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+    else { // AB
+        if(right1 == right2) {
+            if(left1 == right1 || left2 == right1) { // AB -> AA
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
+            }
+            else { // AB -> CC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1==right1 && left2==right2) { // AB -> AB
+                return( 2.0*log(1-recprob) );
+            }
+            else if(left1==right2 && left2==right1) { // AB -> BA
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else if(left1==right1 || left2==right2) { // AB -> AC or AB -> CB
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else if(left2==right1 || left2==right2) { // AB -> CA or AB -> BC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else { // AB -> CD
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+}
+
+// transition probability for DO, male X chr
+const double DOPK::step_malX(int left, int right, double r, int s,
+                             IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // probability of recombinant haplotype
+    recprob = DOrec_malX(r, s, precc_gen, precc_alpha);
+
+    if(left == right) return log(1.0 - recprob);
+    return log(recprob) - log(7.0);
+}
