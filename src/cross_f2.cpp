@@ -229,8 +229,8 @@ const bool F2::check_is_female_vector(const LogicalVector& is_female, const bool
     const unsigned int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
-            result = true; // don't call this an error
-            r_message("is_female included but not needed without X chromosome");
+            // not needed here, but don't call it an error
+            result = true;
         }
     }
     else { // X chr included
@@ -260,8 +260,8 @@ const bool F2::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
 
     if(!any_x_chr) { // all autosomes
         if(n_col > 0) {
-            result = true; // don't call this an error
-            r_message("cross_info included but not needed without X chromosome");
+            // not needed here, but don't call it an error
+            result = true;
         }
     }
     else { // X chr included
