@@ -35,7 +35,7 @@ public:
                               const bool is_x_chr, const bool is_female,
                               const IntegerVector& cross_info)
     {
-        #ifdef DEBUG
+        #ifndef NDEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
@@ -47,7 +47,7 @@ public:
                               const IntegerVector& founder_geno, const bool is_x_chr,
                               const bool is_female, const IntegerVector& cross_info)
     {
-        #ifdef DEBUG
+        #ifndef NDEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
@@ -65,7 +65,7 @@ public:
                               const bool is_x_chr, const bool is_female,
                               const IntegerVector& cross_info)
     {
-        #ifdef DEBUG
+        #ifndef NDEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
            !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
@@ -93,7 +93,7 @@ public:
                               const bool is_x_chr, const bool is_female,
                               const IntegerVector& cross_info)
     {
-        #ifdef DEBUG
+        #ifndef NDEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
            !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");

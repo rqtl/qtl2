@@ -27,8 +27,8 @@ test_that("checks of cross_info, sex, and X are correct", {
         expect_true(check_is_female_vector(crosstype, c(TRUE, NA, FALSE), TRUE))
     }
 
-    # backcross, intercross, and AIL need is_female
-    for(crosstype in c("bc", "f2", "f2pk", "ail")) {
+    # backcross, intercross, AIL, and DO need is_female
+    for(crosstype in c("bc", "f2", "f2pk", "ail", "do")) {
         expect_true(check_is_female_vector(crosstype, null_isfemale, FALSE))
         expect_false(check_is_female_vector(crosstype, null_isfemale, TRUE))
         expect_true(check_is_female_vector(crosstype, c(TRUE, FALSE), TRUE))
@@ -66,7 +66,7 @@ test_that("checks of cross_info, sex, and X are correct", {
     expect_true(check_crossinfo("ail", cbind(c(2,3,25,50),c(0,0,1,2)), FALSE))
     expect_true(check_crossinfo("ail", cbind(c(2,3,25,50),c(0,0,1,2)), TRUE))
 
-    # no. generations >= 2 and not missing
+    # AIL: no. generations >= 2 and not missing
     expect_false(check_crossinfo("ail", cbind(c(1,3,25,50),c(0,0,1,2)), FALSE))
     expect_false(check_crossinfo("ail", cbind(c(2,NA,25,50),c(0,0,1,2)), FALSE))
     expect_false(check_crossinfo("ail", cbind(c(2,3,1,50),c(0,0,1,2)), FALSE))
@@ -76,7 +76,7 @@ test_that("checks of cross_info, sex, and X are correct", {
     expect_false(check_crossinfo("ail", cbind(c(2,3,1,50),c(0,0,1,2)), TRUE))
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,NA),c(0,0,1,2)), TRUE))
 
-    # dir = 0,1,2 and not missing
+    # AIL: dir = 0,1,2 and not missing
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,50),c(0,-1,1,2)), FALSE))
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,50),c(0,0,1,-1)), FALSE))
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,50),c(NA,0,1,2)), FALSE))
@@ -87,5 +87,21 @@ test_that("checks of cross_info, sex, and X are correct", {
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,50),c(NA,0,1,2)), TRUE))
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,50),c(0,0,NA,2)), TRUE))
     expect_false(check_crossinfo("ail", cbind(c(2,3,25,50),c(0,0,1,NA)), TRUE))
+
+    # DO needs no. generations
+    expect_false(check_crossinfo("do", null_crossinfo, FALSE))
+    expect_false(check_crossinfo("do", null_crossinfo, TRUE))
+    expect_true(check_crossinfo("do", cbind(c(2,3,1,50)), FALSE))
+    expect_true(check_crossinfo("do", cbind(c(2,3,1,50)), TRUE))
+
+    # DO: no. generations >= 1 and not missing
+    expect_false(check_crossinfo("do", cbind(c(0,3,25,50)), FALSE))
+    expect_false(check_crossinfo("do", cbind(c(2,NA,25,50)), FALSE))
+    expect_false(check_crossinfo("do", cbind(c(2,3,0,50)), FALSE))
+    expect_false(check_crossinfo("do", cbind(c(2,3,25,NA)), FALSE))
+    expect_false(check_crossinfo("do", cbind(c(0,3,25,50)), TRUE))
+    expect_false(check_crossinfo("do", cbind(c(2,NA,25,50)), TRUE))
+    expect_false(check_crossinfo("do", cbind(c(2,3,0,50)), TRUE))
+    expect_false(check_crossinfo("do", cbind(c(2,3,25,NA)), TRUE))
 
 })

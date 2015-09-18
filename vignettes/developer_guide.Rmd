@@ -342,6 +342,7 @@ function(gen, phase_known=FALSE, n_alleles=8)
 # calculate matrix of encodings, for phase known and phase unknown cases
 g_punk <- matrix(ncol=8, nrow=8)
 g_pk <- matrix(ncol=8, nrow=8)
+dimnames(g_punk) <- dimnames(g_pk) <- list(LETTERS[1:8], LETTERS[1:8])
 for(i in 1:ncol(g_punk)) {
     for(j in 1:nrow(g_punk)) {
         g_punk[i,j] <- encode_geno(i, j, FALSE, 8)

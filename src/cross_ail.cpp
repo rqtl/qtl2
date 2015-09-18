@@ -34,7 +34,7 @@ const double AIL::init(const int true_gen,
                        const bool is_x_chr, const bool is_female,
                        const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -96,7 +96,7 @@ const double AIL::emit(const int obs_gen, const int true_gen, const double error
                       const IntegerVector& founder_geno, const bool is_x_chr,
                       const bool is_female, const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -144,7 +144,7 @@ const double AIL::step(const int gen_left, const int gen_right, const double rec
                       const bool is_x_chr, const bool is_female,
                       const IntegerVector& cross_info)
 {
-    #ifdef DEBUG
+    #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
@@ -355,15 +355,25 @@ const int AIL::ngen(const bool is_x_chr)
 
 const NumericMatrix AIL::geno2allele_matrix(const bool is_x_chr)
 {
-    if(is_x_chr) // no conversion needed
-        return NumericMatrix(0,0);
+    if(is_x_chr) {
+        NumericMatrix result(5,4);
+        result(0,0) = 1.0;               // AA female
+        result(1,0) = result(1,1) = 0.5; // AB female
+        result(2,1) = 1.0;               // BB female
 
-    NumericMatrix result(3,2);
-    result(0,0) = 1.0;
-    result(1,0) = result(1,1) = 0.5;
-    result(2,1) = 1.0;
+        result(3,2) = 1.0; // AY male
+        result(4,3) = 1.0; // BY male
 
-    return result;
+        return result;
+    }
+    else {
+        NumericMatrix result(3,2);
+        result(0,0) = 1.0;
+        result(1,0) = result(1,1) = 0.5;
+        result(2,1) = 1.0;
+
+        return result;
+    }
 }
 
 // check that sex conforms to expectation
