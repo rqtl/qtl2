@@ -133,5 +133,6 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     attr(draws, "sex") <- cross$sex
     attr(draws, "cross_info") <- cross$cross_info
 
+    class(draws) <- c("sim_geno", "list")
     draws
 }
