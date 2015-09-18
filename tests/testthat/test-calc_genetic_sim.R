@@ -50,11 +50,18 @@ test_that("calc_genetic_sim works for F2", {
     expect_equal(colnames(sim), rownames(iron$geno[[1]]))
 
     f2_geno2alle <-
-        function(prob)
+        function(prob, x_chr=FALSE)
         {
-            prob[,1,] <- prob[,1,]+prob[,2,]/2
-            prob[,2,] <- prob[,3,]+prob[,2,]/2
-            prob[,1:2,]
+            if(x_chr) {
+                prob[,1,] <- prob[,1,]+prob[,2,]/2+prob[,3,]/2
+                prob[,2,] <- prob[,4,]+prob[,2,]/2+prob[,3,]/2
+                return(prob[,-(3:4),])
+
+            } else {
+                prob[,1,] <- prob[,1,]+prob[,2,]/2
+                prob[,2,] <- prob[,3,]+prob[,2,]/2
+                return(prob[,1:2,])
+            }
         }
 
     # check a few values
@@ -127,18 +134,17 @@ test_that("calc_genetic_sim works for F2", {
         for(k in seq(along=pairs)) {
             prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
             prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
-            if(!is_x_chr[i]) { # autosomes: convert to allele probs
-                prob_1 <- f2_geno2alle(prob_1)
-                prob_2 <- f2_geno2alle(prob_2)
-            }
+            prob_1 <- f2_geno2alle(prob_1, is_x_chr[i])
+            prob_2 <- f2_geno2alle(prob_2, is_x_chr[i])
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
-    for(k in seq(along=pairs))
+    for(k in seq(along=pairs)) {
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
+    }
 
     # version using genotype probabilities
     sim <- calc_genetic_sim(probs, omit_x=FALSE, use_allele_probs=FALSE)

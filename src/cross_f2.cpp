@@ -207,7 +207,7 @@ const NumericMatrix F2::geno2allele_matrix(const bool is_x_chr)
         result(3,1) = 1.0;
 
         // male X
-        result(4,0) = result(5,1) = 1.0;
+        result(4,2) = result(5,3) = 1.0;
 
         return result;
     }
