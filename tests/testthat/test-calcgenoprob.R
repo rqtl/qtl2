@@ -1,5 +1,5 @@
 context("calc_genoprob")
-library(qtl)
+suppressMessages(library(qtl))
 
 grab_prob_rqtl <- function(cross) lapply(cross$geno, function(a) aperm(a$prob, c(1,3,2)))
 

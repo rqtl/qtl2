@@ -1,6 +1,5 @@
-
 context("convert2cross2")
-library(qtl)
+suppressMessages(library(qtl))
 
 test_that("convert2cross2 works appropriately for hyper data", {
 
