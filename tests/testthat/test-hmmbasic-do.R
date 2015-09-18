@@ -157,5 +157,25 @@ test_that("DO emit works", {
 
 test_that("DO step works", {
 
+    ng <- 36
+    trmat <- matrix(nrow=ng, ncol=ng)
+    for(rf in c(0.01, 0.001, 0.0001)) {
+        for(ngen in c(6, 12, 50)) {
+
+            for(gl in 1:ng)
+                for(gr in 1:ng)
+                    trmat[gl,gr] <- test_step("do", gl, gr, rf, FALSE, FALSE, ngen)
+
+            # no missing values
+            expect_true(all(!is.na(trmat)))
+            # all in (-Inf, 0]
+            expect_true(all(trmat > -Inf & trmat <= 0))
+            # rows sum to 1
+            expect_equal( rowSums(exp(trmat)), rep(1, ng))
+
+            # maximum value on the diagonal
+            expect_equal( apply(trmat, 1, which.max), 1:ng)
+        }
+    }
 
 })
