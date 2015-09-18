@@ -17,12 +17,25 @@ test_that("genoprob_to_alleleprob works for F2", {
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
     allele_probs <- genoprob_to_alleleprob(probs)
 
+    f2_geno2alle <-
+        function(prob, x_chr=FALSE)
+        {
+            if(x_chr) {
+                prob[,1,] <- prob[,1,]+prob[,2,]/2+prob[,3,]/2
+                prob[,2,] <- prob[,4,]+prob[,2,]/2+prob[,3,]/2
+                return(prob[,-(3:4),])
+
+            } else {
+                prob[,1,] <- prob[,1,]+prob[,2,]/2
+                prob[,2,] <- prob[,3,]+prob[,2,]/2
+                return(prob[,1:2,])
+            }
+        }
+
     expected <- probs
-    for(i in which(!attr(probs, "is_x_chr"))) { # loop over autosomes
-        expected[[i]] <- probs[[i]][,1:2,]
-        expected[[i]][,1,] <- probs[[i]][,1,] + probs[[i]][,2,]/2
-        expected[[i]][,2,] <- probs[[i]][,3,] + probs[[i]][,2,]/2
-    }
+    is_x_chr <- attr(probs, "is_x_chr")
+    for(i in seq(along=probs)) # loop over chromosomes
+        expected[[i]] <- f2_geno2alle(probs[[i]], is_x_chr[i])
     attr(expected, "alleles") <- TRUE
 
     expect_equal(allele_probs, expected)
