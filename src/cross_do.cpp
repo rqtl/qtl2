@@ -382,7 +382,7 @@ const double DO::step_auto(int left, int right, double r, int s,
     // probability of recombinant haplotype
     recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
 
-    if(left1 == left2) {
+    if(left1 == left2) { // AA ->
         if(right1 == right2) {
             if(left1 == right1) { // AA -> AA
                 return( 2.0*log(1.0 - recprob) );
@@ -400,7 +400,7 @@ const double DO::step_auto(int left, int right, double r, int s,
             }
         }
     }
-    else { // AB
+    else { // AB ->
         if(right1 == right2) {
             if(left1 == right1 || left2 == right1) { // AB -> AA
                 return( log(recprob) + log(1.0 - recprob) - log(7.0) );
