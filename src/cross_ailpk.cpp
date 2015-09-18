@@ -471,8 +471,8 @@ const bool AILPK::check_is_female_vector(const LogicalVector& is_female, const b
     const unsigned int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
-            result = true; // don't call this an error
-            r_message("is_female included but not needed without X chromosome");
+            // not needed here, but don't call this an error
+            result = true;
         }
     }
     else { // X chr included

@@ -130,8 +130,8 @@ const bool RISIB::check_crossinfo(const IntegerMatrix& cross_info, const bool an
 
     if(!any_x_chr) { // all autosomes
         if(n_col > 0) {
-            result = true; // don't call this an error
-            r_message("cross_info included but not needed without X chromosome");
+            // not needed here, but don't call this an error
+            result = true;
         }
     }
     else { // X chr included
