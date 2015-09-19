@@ -91,3 +91,23 @@ double test_nrec(const String& crosstype, const int gen_left, const int gen_righ
     delete cross;
     return result;
 }
+
+// [[Rcpp::export]]
+bool test_founder_geno_values(const String& crosstype, const IntegerMatrix& founder_geno)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    bool result = cross->check_founder_geno_values(founder_geno);
+    delete cross;
+    return result;
+}
+
+// [[Rcpp::export]]
+bool need_founder_geno(const String& crosstype)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    bool result = cross->need_founder_geno();
+    delete cross;
+    return result;
+}

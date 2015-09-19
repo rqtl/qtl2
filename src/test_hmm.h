@@ -29,4 +29,8 @@ int test_ngen(const String& crosstype, const bool is_x_chr);
 double test_nrec(const String& crosstype, const int gen_left, const int gen_right,
                  const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 
+bool test_founder_geno(const String& crosstype, const IntegerMatrix& founder_geno, const int n_markers);
+
+bool need_founder_geno(const String& crosstype);
+
 #endif // TEST_HMM_H

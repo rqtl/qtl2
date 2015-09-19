@@ -273,3 +273,26 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// test_founder_geno_values
+bool test_founder_geno_values(const String& crosstype, const IntegerMatrix& founder_geno);
+RcppExport SEXP qtl2geno_test_founder_geno_values(SEXP crosstypeSEXP, SEXP founder_genoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP);
+    __result = Rcpp::wrap(test_founder_geno_values(crosstype, founder_geno));
+    return __result;
+END_RCPP
+}
+// need_founder_geno
+bool need_founder_geno(const String& crosstype);
+RcppExport SEXP qtl2geno_need_founder_geno(SEXP crosstypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    __result = Rcpp::wrap(need_founder_geno(crosstype));
+    return __result;
+END_RCPP
+}
