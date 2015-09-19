@@ -81,7 +81,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
                                 pseudomarker_map, tol)
 
     probs <- vector("list", length(map))
-    rf <- lapply(map, function(m) mf(diff(m), map_function))
+    rf <- map2rf(map, map_function)
 
     # deal with missing information
     n.ind <- nrow(cross$geno[[1]])

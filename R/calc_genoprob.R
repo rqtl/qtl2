@@ -94,7 +94,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                                 pseudomarker_map, tol)
 
     probs <- vector("list", length(map))
-    rf <- lapply(map, function(m) mf(diff(m), map_function))
+    rf <- map2rf(map, map_function)
 
     # deal with missing information
     n.ind <- nrow(cross$geno[[1]])
@@ -149,17 +149,4 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     class(probs) <- c("calc_genoprob", "list")
 
     probs
-}
-
-# create empty set of matrices for founder genotype data
-create_empty_founder_geno <-
-function(geno)
-{
-    result <- vector("list", length(geno))
-    names(result) <- names(geno)
-    for(i in seq(along=geno)) {
-        result[[i]] <- matrix(0L, nrow=0, ncol=ncol(geno[[i]]))
-        colnames(result[[i]]) <- colnames(geno[[i]])
-    }
-    result
 }
