@@ -84,7 +84,7 @@ function(cross, error_prob=1e-4,
         ntyped <- rowSums(geno>0)
         keep <- (ntyped >= 2)
 
-        rf_start <- mf(diff(gmap), map_function) # positions to inter-marker rec frac
+        rf_start <- map2rf(gmap) # positions to inter-marker rec frac
         rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
                        founder_geno[[chr]], is_x_chr[chr], is_female[keep],
                        cross_info[,keep,drop=FALSE],
