@@ -198,13 +198,14 @@ function(geno, genotypes)
     }
 
     # re-code
-    for(g in gnames)
-        newgeno[!is.na(geno) & geno==g] <- genotypes[[g]]
+    for(g in gnames) {
+        if(g != genotypes[[g]]) # if g==genotypes[[g]], don't need to switch
+            newgeno[!is.na(geno) & geno==g] <- genotypes[[g]]
+    }
 
     # turn missing values to 0s
     newgeno[is.na(newgeno)] <- "0"
 
-    #
     storage.mode(newgeno) <- "integer"
 
     newgeno
