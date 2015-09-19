@@ -1,6 +1,5 @@
-
 context("construction of pseudomarker map")
-library(qtl)
+suppressMessages(library(qtl))
 
 test_that("grid-based version works in simple case", {
 

@@ -10,7 +10,7 @@
 #'
 #' @param crosstype Character string with the cross type.
 #' @param geno_file File name for genotype data.
-#' @param foundergeno_file File name for the founder genotype data.
+#' @param founder_geno_file File name for the founder genotype data.
 #' @param gmap_file File name for genetic map.
 #' @param pmap_file File name for the physical map.
 #' @param pheno_file File name for the phenotype data.
@@ -54,7 +54,7 @@
 #' @param na.strings Vector of character strings with codes to be
 #' treated as missing values.
 #' @param geno_transposed If TRUE, genotype file is transposed (with markers as rows).
-#' @param foundergeno_transposed If TRUE, founder genotype file is transposed (with markers as rows).
+#' @param founder_geno_transposed If TRUE, founder genotype file is transposed (with markers as rows).
 #' @param pheno_transposed If TRUE, phenotype file is transposed (with phenotypes as rows).
 #' @param covar_transposed If TRUE, covariate file is transposed (with covariates as rows).
 #' @param phenocovar_transposed If TRUE, phenotype covariate file is transposed (with phenotype covariates as rows).
@@ -107,13 +107,13 @@
 #'                    na.strings=c("-", "NA"))
 #' }
 write_control_file <-
-function(output_file, crosstype, geno_file, foundergeno_file, gmap_file,
+function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
          pmap_file, pheno_file, covar_file, phenocovar_file,
          sex_file, sex_covar, sex_codes,
          crossinfo_file, crossinfo_covar, crossinfo_codes,
          linemap_file, linemap_covar, geno_codes, alleles, xchr,
          na.strings=c("-", "NA"),
-         geno_transposed=FALSE, foundergeno_transposed=FALSE,
+         geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
          phenocovar_transposed=FALSE,
          comments)
@@ -126,8 +126,8 @@ function(output_file, crosstype, geno_file, foundergeno_file, gmap_file,
 
     if(!missing(geno_file))
         result$geno <- geno_file
-    if(!missing(foundergeno_file))
-        result$foundergeno <- foundergeno_file
+    if(!missing(founder_geno_file))
+        result$founder_geno <- founder_geno_file
     if(!missing(gmap_file))
         result$gmap <- gmap_file
     if(!missing(pmap_file))
@@ -150,8 +150,8 @@ function(output_file, crosstype, geno_file, foundergeno_file, gmap_file,
     # transposed file?
     if(!missing(geno_transposed) && geno_transposed)
         result$geno_transposed <- geno_transposed
-    if(!missing(foundergeno_transposed) && foundergeno_transposed)
-        result$foundergeno_transposed <- foundergeno_transposed
+    if(!missing(founder_geno_transposed) && founder_geno_transposed)
+        result$founder_geno_transposed <- founder_geno_transposed
     if(!missing(pheno_transposed) && pheno_transposed)
         result$pheno_transposed <- pheno_transposed
     if(!missing(covar_transposed) && covar_transposed)

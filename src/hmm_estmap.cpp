@@ -52,7 +52,7 @@ NumericVector est_map(const String& crosstype,
     if(tol < 0)
       throw std::range_error("tol >= 0");
 
-    if(!cross->check_founder_geno(founder_geno, n_mar))
+    if(!cross->check_founder_geno_size(founder_geno, n_mar))
         throw std::range_error("founder_geno is not the right size");
     // end of checks
 

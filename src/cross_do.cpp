@@ -508,3 +508,49 @@ const double DO::step_malX(int left, int right, double r, int s,
     if(left == right) return log(1.0 - recprob);
     return log(recprob) - log(7.0);
 }
+
+// check that founder genotype data has correct no. founders and markers
+const bool DO::check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
+{
+    bool result=true;
+
+    const int fg_mar = founder_geno.cols();
+    const int fg_f   = founder_geno.rows();
+
+    if(fg_mar != n_markers) {
+        result = false;
+        r_message("founder_geno has incorrect number of markers");
+    }
+
+    if(fg_f != 8) {
+        result = false;
+        r_message("founder_geno should have 8 founders");
+    }
+
+    return result;
+}
+
+// check that founder genotype data has correct values
+const bool DO::check_founder_geno_values(const IntegerMatrix& founder_geno)
+{
+    const int fg_mar = founder_geno.cols();
+    const int fg_f   = founder_geno.rows();
+
+    for(int f=0; f<fg_f; f++) {
+        for(int mar=0; mar<fg_mar; mar++) {
+            int fg = founder_geno(f,mar);
+            if(fg != 0 & fg != 1 & fg != 3) {
+                // at least one invalid value
+                r_message("founder_geno contains invalid values; should be in {0, 1, 3}");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+const bool DO::need_founder_geno()
+{
+    return true;
+}

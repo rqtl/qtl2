@@ -81,7 +81,7 @@ function(cross2)
     #     is_female
     #     cross_info
     #     linemap (required if nrow(pheno) != nrow(geno[[1]])
-    #     foundergeno (required for many crosstypes...add need_foundergeno function?)
+    #     founder_geno (required for some crosstypes)
 
     # optional pieces
     #     pheno
@@ -320,27 +320,38 @@ function(cross2)
         warning("linemap missing but nrow(pheno) != nrow(geno[[1]])")
     }
 
-    # foundergeno
-    foundergeno <- cross2$foundergeno
-    if(!is.null(foundergeno)) { # foundergeno is optional
-
-        if(length(geno) != length(foundergeno)) {
+    # founder_geno
+    founder_geno <- cross2$founder_geno
+    if(need_founder_geno(crosstype)) {
+        if(is.null(founder_geno)) {
             result <- FALSE
-            warning("length(geno) (", length(geno), ") != length(foundergeno) (", length(foundergeno), ")")
+            warning("founder_geno not provided but needed.")
         }
         else {
-            if(any(names(geno) != names(foundergeno))) {
+
+            if(length(geno) != length(founder_geno)) {
                 result <- FALSE
-                warning("names(geno) != names(foundergeno)")
+                warning("length(geno) (", length(geno), ") != length(founder_geno) (", length(founder_geno), ")")
             }
-            for(i in seq(along=geno)) {
-                if(length(geno[[i]]) != length(foundergeno[[i]])) {
+            else {
+                if(any(names(geno) != names(founder_geno))) {
                     result <- FALSE
-                    warning("Mismatch between geno and foundergeno in no. markers on chr ", names(geno)[i])
+                    warning("names(geno) != names(founder_geno)")
                 }
-                else if(any(colnames(geno[[i]]) != names(foundergeno[[i]]))) {
-                    result <- FALSE
-                    warning("Mismatch in marker names between geno and foundergeno on chr ", names(geno)[i])
+                for(i in seq(along=geno)) {
+                    if(ncol(geno[[i]]) != ncol(founder_geno[[i]])) {
+                        result <- FALSE
+                        warning("Mismatch between geno and founder_geno in no. markers on chr ", names(geno)[i])
+                    }
+                    else if(any(colnames(geno[[i]]) != colnames(founder_geno[[i]]))) {
+                        result <- FALSE
+                        warning("Mismatch in marker names between geno and founder_geno on chr ", names(geno)[i])
+                    }
+
+                    # check values
+                    if(!test_founder_geno_values(crosstype, founder_geno[[i]])) {
+                        result <- FALSE
+                    }
                 }
             }
         }

@@ -1,6 +1,5 @@
-
 context("est_map")
-library(qtl)
+suppressMessages(library(qtl))
 
 test_that("est_map for backcross autosome matches R/qtl", {
 

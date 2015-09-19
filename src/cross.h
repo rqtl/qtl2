@@ -126,9 +126,16 @@ public:
         return true;
     }
 
-    // check that founder genotype data is correct size
+    // check that founder genotype data has correct no. founders and markers
     // (for crosses with no founder_geno, just return true)
-    virtual const bool check_founder_geno(const IntegerMatrix& founder_geno, const int n_markers)
+    virtual const bool check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
+    {
+        return true;
+    }
+
+    // check that founder genotype data contains correct values
+    // (for crosses with no founder_geno, just return true)
+    virtual const bool check_founder_geno_values(const IntegerMatrix& founder_geno)
     {
         return true;
     }
@@ -165,6 +172,12 @@ public:
     virtual const bool check_handle_x_chr(const bool any_x_chr)
     {
         return true; // most crosses can handle the X chr
+    }
+
+    // need founder_geno?
+    virtual const bool need_founder_geno()
+    {
+        return false; // most crosses don't need founder_geno
     }
 
 };

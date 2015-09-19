@@ -40,7 +40,7 @@ NumericVector calc_genoprob(const String& crosstype,
         if(rec_frac[i] < 0 || rec_frac[i] > 0.5)
             throw std::range_error("rec_frac must be >= 0 and <= 0.5");
     }
-    if(!cross->check_founder_geno(founder_geno, n_mar))
+    if(!cross->check_founder_geno_size(founder_geno, n_mar))
         throw std::range_error("founder_geno is not the right size");
     // end of checks
 

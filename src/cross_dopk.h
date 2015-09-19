@@ -59,6 +59,9 @@ class DOPK : public QTLCross
     const double step_malX(int left, int right, double r, int s,
                            IntegerVector precc_gen, NumericVector precc_alpha);
 
+    const bool check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers);
+    const bool check_founder_geno_values(const IntegerMatrix& founder_geno);
+    const bool need_founder_geno();
 
 };
 

@@ -4,11 +4,11 @@
 \alias{write_control_file}
 \title{Write a control file for QTL data}
 \usage{
-write_control_file(output_file, crosstype, geno_file, foundergeno_file,
+write_control_file(output_file, crosstype, geno_file, founder_geno_file,
   gmap_file, pmap_file, pheno_file, covar_file, phenocovar_file, sex_file,
   sex_covar, sex_codes, crossinfo_file, crossinfo_covar, crossinfo_codes,
   linemap_file, linemap_covar, geno_codes, alleles, xchr, na.strings = c("-",
-  "NA"), geno_transposed = FALSE, foundergeno_transposed = FALSE,
+  "NA"), geno_transposed = FALSE, founder_geno_transposed = FALSE,
   pheno_transposed = FALSE, covar_transposed = FALSE,
   phenocovar_transposed = FALSE, comments)
 }
@@ -21,7 +21,7 @@ string. If extension is \code{.json}, JSON format is used; otherwise, YAML is us
 
 \item{geno_file}{File name for genotype data.}
 
-\item{foundergeno_file}{File name for the founder genotype data.}
+\item{founder_geno_file}{File name for the founder genotype data.}
 
 \item{gmap_file}{File name for genetic map.}
 
@@ -84,7 +84,7 @@ treated as missing values.}
 
 \item{geno_transposed}{If TRUE, genotype file is transposed (with markers as rows).}
 
-\item{foundergeno_transposed}{If TRUE, founder genotype file is transposed (with markers as rows).}
+\item{founder_geno_transposed}{If TRUE, founder genotype file is transposed (with markers as rows).}
 
 \item{pheno_transposed}{If TRUE, phenotype file is transposed (with phenotypes as rows).}
 

@@ -146,6 +146,8 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     attr(probs, "sex") <- cross$sex
     attr(probs, "cross_info") <- cross$cross_info
 
+    class(probs) <- c("calc_genoprob", "list")
+
     probs
 }
 

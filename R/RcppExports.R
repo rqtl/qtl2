@@ -73,3 +73,11 @@ test_nrec <- function(crosstype, gen_left, gen_right, is_x_chr, is_female, cross
     .Call('qtl2geno_test_nrec', PACKAGE = 'qtl2geno', crosstype, gen_left, gen_right, is_x_chr, is_female, cross_info)
 }
 
+test_founder_geno_values <- function(crosstype, founder_geno) {
+    .Call('qtl2geno_test_founder_geno_values', PACKAGE = 'qtl2geno', crosstype, founder_geno)
+}
+
+need_founder_geno <- function(crosstype) {
+    .Call('qtl2geno_need_founder_geno', PACKAGE = 'qtl2geno', crosstype)
+}
+
