@@ -33,7 +33,7 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
         return result;
     }
     else {
-        if(transform.rows() != n_gen)
+        if((unsigned int)transform.rows() != n_gen)
             throw std::invalid_argument("no. genotypes in prob_array doesn't match no. rows in transform matrix");
         NumericVector result(ind_by_pos*n_allele);
 
