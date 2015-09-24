@@ -204,7 +204,7 @@ const double AILPK::step(const int gen_left, const int gen_right, const double r
             // calculate frequency of AA haplotype in males and females
             double m11prev = 1.0;
             double f11prev = 0.5;
-            double f11, m11, qp, qpp;
+            double m11=1.0, f11=0.5, qp, qpp;
             for(int i=2; i<=n_gen; i++) {
                 qpp = (2.0/3.0) + (1.0/3.0)*pow(-0.5, (double)(i-3));
                 qp  = (2.0/3.0) + (1.0/3.0)*pow(-0.5, (double)(i-2));
