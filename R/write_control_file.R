@@ -51,6 +51,7 @@
 #' @param alleles Vector of single-character codes for the founder
 #' alleles.
 #' @param xchr Character string with the ID for the X chromosome.
+#' @param sep Character string that separates columns in the data files.
 #' @param na.strings Vector of character strings with codes to be
 #' treated as missing values.
 #' @param geno_transposed If TRUE, genotype file is transposed (with markers as rows).
@@ -112,7 +113,7 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
          sex_file, sex_covar, sex_codes,
          crossinfo_file, crossinfo_covar, crossinfo_codes,
          linemap_file, linemap_covar, geno_codes, alleles, xchr,
-         na.strings=c("-", "NA"),
+         sep=",", na.strings=c("-", "NA"),
          geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
          phenocovar_transposed=FALSE,
@@ -122,7 +123,7 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
     if(file.exists(output_file))
         stop("The output file (", output_file, ") already exists. Please remove it first.")
 
-    result <- list(crosstype=crosstype, na.strings=na.strings)
+    result <- list(crosstype=crosstype, sep=sep, na.strings=na.strings)
 
     if(!missing(geno_file))
         result$geno <- geno_file

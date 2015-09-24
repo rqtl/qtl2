@@ -458,7 +458,7 @@ function(linemap_control, covar, sep, dir, quiet=TRUE)
 is_web_file <-
 function(file)
 {
-    patterns <- c("^http://", "^https://", "^file://")
+    patterns <- c("^http://", "^https://", "^file://", "^ftp://")
     any(vapply(patterns, function(a,b) grepl(a, b), logical(1), file))
 }
 
@@ -490,10 +490,16 @@ function(filename)
 {
     # ends in yaml?
     if(grepl("\\.yaml$", filename)) {
-        return(yaml::yaml.load_file(filename))
+        control <- yaml::yaml.load_file(filename)
     }
-    if(grepl("\\.json$", filename)) {
-        return(jsonlite::fromJSON(readLines(filename)))
+    else if(grepl("\\.json$", filename)) {
+        control <- jsonlite::fromJSON(readLines(filename))
     }
-    stop(paste('Control file', filename, 'should have extension ".yaml" or ".json"'))
+    else stop(paste('Control file', filename, 'should have extension ".yaml" or ".json"'))
+
+    # default values for sep and na.strings
+    if(is.null(control$sep)) control$sep <- ","
+    if(is.null(control$na.strings)) control$na.strings <- "NA"
+
+    control
 }

@@ -253,3 +253,17 @@ test_that("haploids calc_genoprob matches R/qtl", {
     expect_equivalent(pr, pr2)
 
 })
+
+test_that("backcross autosome calc_genoprob with markers at same location", {
+
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- grav2[1:4,1]
+
+    # put some markers at same location
+    grav2$gmap[[1]][4] <- grav2$gmap[[1]][3]
+
+    pr <- calc_genoprob(grav2, err=0)
+
+    expect_true( all(!is.na(pr[[1]])) )
+
+})

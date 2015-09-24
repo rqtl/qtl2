@@ -586,7 +586,7 @@ const bool DOPK::check_founder_geno_values(const IntegerMatrix& founder_geno)
     for(int f=0; f<fg_f; f++) {
         for(int mar=0; mar<fg_mar; mar++) {
             int fg = founder_geno(f,mar);
-            if(fg != 0 & fg != 1 & fg != 3) {
+            if(fg != 0 && fg != 1 && fg != 3) {
                 // at least one invalid value
                 r_message("founder_geno contains invalid values; should be in {0, 1, 3}");
                 return false;
