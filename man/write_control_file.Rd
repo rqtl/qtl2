@@ -7,10 +7,10 @@
 write_control_file(output_file, crosstype, geno_file, founder_geno_file,
   gmap_file, pmap_file, pheno_file, covar_file, phenocovar_file, sex_file,
   sex_covar, sex_codes, crossinfo_file, crossinfo_covar, crossinfo_codes,
-  linemap_file, linemap_covar, geno_codes, alleles, xchr, na.strings = c("-",
-  "NA"), geno_transposed = FALSE, founder_geno_transposed = FALSE,
-  pheno_transposed = FALSE, covar_transposed = FALSE,
-  phenocovar_transposed = FALSE, comments)
+  linemap_file, linemap_covar, geno_codes, alleles, xchr, sep = ",",
+  na.strings = c("-", "NA"), geno_transposed = FALSE,
+  founder_geno_transposed = FALSE, pheno_transposed = FALSE,
+  covar_transposed = FALSE, phenocovar_transposed = FALSE, comments)
 }
 \arguments{
 \item{output_file}{File name (with path) of the
@@ -78,6 +78,8 @@ converted.}
 alleles.}
 
 \item{xchr}{Character string with the ID for the X chromosome.}
+
+\item{sep}{Character string that separates columns in the data files.}
 
 \item{na.strings}{Vector of character strings with codes to be
 treated as missing values.}
