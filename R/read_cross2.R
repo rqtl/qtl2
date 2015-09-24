@@ -458,7 +458,7 @@ function(linemap_control, covar, sep, dir, quiet=TRUE)
 is_web_file <-
 function(file)
 {
-    patterns <- c("^http://", "^https://", "^file://")
+    patterns <- c("^http://", "^https://", "^file://", "^ftp://")
     any(vapply(patterns, function(a,b) grepl(a, b), logical(1), file))
 }
 
