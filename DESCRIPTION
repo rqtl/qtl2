@@ -24,8 +24,7 @@ Suggests:
     rmarkdown,
     testthat,
     devtools,
-    roxygen2,
-    qtl2scan
+    roxygen2
 License: GPL-3
 URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
