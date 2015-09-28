@@ -148,3 +148,34 @@ test_that("est_map for haploids matches R/qtl", {
                  lapply(newmap2, attr, "loglik"))
 
 })
+
+test_that("est_map works in case of 2 markers", {
+    data(hyper)
+    hyper <- pull.markers(hyper, markers=markernames(hyper, chr=6)[2:3])
+    hyper <- shiftmap(hyper)
+
+    newmap <- est.map(hyper, err=0.002, tol=1e-8)
+    newmap <- lapply(newmap, unclass)
+
+    hyper2 <- convert2cross2(hyper)
+    newmap2 <- est_map(hyper2, err=0.002, tol=1e-8)
+
+    expect_equivalent(newmap, newmap2)
+    expect_equal(lapply(newmap, attr, "loglik"),
+                 lapply(newmap2, attr, "loglik"))
+})
+
+test_that("est_map works in case of 2 markers in intercross", {
+
+    data(fake.f2)
+    fake.f2 <- fake.f2[18,]
+    newmap <- est.map(fake.f2, err=0.01, tol=1e-8)
+    newmap <- lapply(newmap, unclass)
+
+    fake.f2.2 <- convert2cross2(fake.f2)
+    newmap2 <- est_map(fake.f2.2, err=0.01, tol=1e-8)
+
+    expect_equivalent(newmap, newmap2)
+    expect_equal(lapply(newmap, attr, "loglik"),
+                 lapply(newmap2, attr, "loglik"))
+})
