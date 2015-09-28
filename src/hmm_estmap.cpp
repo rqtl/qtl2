@@ -90,7 +90,7 @@ NumericVector est_map(const String& crosstype,
 
             for(int pos=0; pos<n_rf; pos++) {
                 // calculate gamma = log Pr(v1, v2, O)
-                NumericMatrix gamma(alpha.rows(), alpha.cols());
+                NumericMatrix gamma(n_poss_gen, n_poss_gen);
                 double sum_gamma=0.0;
                 bool sum_gamma_undef = true;
                 for(int ir=0; ir<n_poss_gen; ir++) {
