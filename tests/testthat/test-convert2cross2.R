@@ -43,7 +43,7 @@ test_that("convert2cross2 works appropriately for hyper data", {
     expect_equal(hyper2$is_female, is_female)
 
     # cross_info
-    cross_info <- matrix(0L, ncol=0, nrow=nind(hyper))
+    cross_info <- matrix(0L, ncol=1, nrow=nind(hyper))
     rownames(cross_info) <- ids
     expect_equal(hyper2$cross_info, cross_info)
 
