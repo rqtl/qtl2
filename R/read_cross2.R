@@ -111,24 +111,17 @@ function(file, quiet=TRUE)
         }
     }
 
-    # pull out a map
+    # stop if no genotypes
+    if(!("geno" %in% names(output)))
+       stop("No genotype data found.")
+
+    # pull out a map; make it numeric
     if("gmap" %in% names(output))
         map <- output$gmap
     else if("pmap" %in% output)
         map <- output$pmap
     else stop("Need a genetic or physical marker map")
-
-    if(!("geno" %in% names(output)))
-       stop("No genotype data found.")
-
-    # split genotypes by chromosome
-    geno <- c("geno", "founder_geno")
-    for(section in geno) {
-        if(section %in% names(output)) {
-            if(!quiet) message(" - splitting up ", section)
-            output[[section]] <- split_geno(output[[section]], map)
-        }
-    }
+    map[,2] <- as.numeric(map[,2])
 
     # split maps by chr
     maps <- c("gmap", "pmap")
@@ -136,6 +129,15 @@ function(file, quiet=TRUE)
         if(section %in% names(output)) {
             if(!quiet) message(" - splitting up ", section)
             output[[section]] <- split_map(output[[section]])
+        }
+    }
+
+    # split genotypes by chromosome
+    geno <- c("geno", "founder_geno")
+    for(section in geno) {
+        if(section %in% names(output)) {
+            if(!quiet) message(" - splitting up ", section)
+            output[[section]] <- split_geno(output[[section]], map)
         }
     }
 
@@ -283,7 +285,7 @@ function(geno, map)
 split_map <-
 function(map)
 {
-    pos <- map[,2]
+    pos <- as.numeric(map[,2])
     chr <- map[,1]
     uchr <- unique(chr)
 
@@ -475,7 +477,8 @@ read_csv <-
 function(filename, sep=",", na.strings=c("NA", "-"), transpose=FALSE)
 {
     x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
-                           verbose=FALSE, showProgress=FALSE, data.table=FALSE)
+                           verbose=FALSE, showProgress=FALSE, data.table=FALSE,
+                           colClasses="character")
 
     x <- firstcol2rownames(x)
     if(transpose)
