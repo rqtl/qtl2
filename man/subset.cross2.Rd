@@ -32,7 +32,7 @@ Pull out a specified set of individuals and/or chromosomes from a
 \section{Warning}{
 
 The order of the two arguments is reversed relative to the related
-function in \href{http://www.rqtl.org}{R/qtl}.
+function in \href{http://rqtl.org}{R/qtl}.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

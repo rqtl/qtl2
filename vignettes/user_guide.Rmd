@@ -8,7 +8,7 @@ vignette: >
 ---
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
-[R/qtl](http://www.rqtl.org), to better handle high-dimensional data
+[R/qtl](http://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
 **We have split the package into two parts,
@@ -47,7 +47,7 @@ install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
 
 ## Data file format
 
-The input data file formats for [R/qtl](http://www.rqtl.org) cannot
+The input data file formats for [R/qtl](http://rqtl.org) cannot
 handle complex crosses, and so for R/qtl2, we have defined a new
 format for the data files. We'll describe it here briefly; for
 details, see the separate

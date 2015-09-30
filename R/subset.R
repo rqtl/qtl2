@@ -19,7 +19,7 @@
 #'
 #' @section Warning:
 #' The order of the two arguments is reversed relative to the related
-#' function in \href{http://www.rqtl.org}{R/qtl}.
+#' function in \href{http://rqtl.org}{R/qtl}.
 #'
 #' @export
 #' @keywords utilities
