@@ -79,20 +79,15 @@ NumericMatrix backwardEquations(QTLCross* cross,
     // backward equations
     for(int pos = n_pos-2; pos >= 0; pos--) {
         for(int il=0; il<n_gen; il++) {
-            beta(il,pos) = beta(0,pos+1) + cross->step(poss_gen[il], poss_gen[0], rec_frac[pos],
-                                                       is_X_chr, is_female, cross_info);
-
-            if(marker_index[pos+1] >= 0)
-                beta(il,pos) += cross->emit(genotypes[marker_index[pos+1]], poss_gen[0], error_prob,
-                                            founder_geno(_, marker_index[pos+1]), is_X_chr, is_female, cross_info);
-
-            for(int ir=1; ir<n_gen; ir++) {
+            for(int ir=0; ir<n_gen; ir++) {
                 double to_add = beta(ir,pos+1) + cross->step(poss_gen[il], poss_gen[ir], rec_frac[pos],
                                                               is_X_chr, is_female, cross_info);
                 if(marker_index[pos+1] >=0)
                     to_add += cross->emit(genotypes[marker_index[pos+1]], poss_gen[ir], error_prob,
                                           founder_geno(_, marker_index[pos+1]), is_X_chr, is_female, cross_info);
-                beta(il,pos) = addlog(beta(il,pos), to_add);
+
+                if(ir==0) beta(il,pos) = to_add;
+                else beta(il,pos) = addlog(beta(il,pos), to_add);
             }
         }
     }
