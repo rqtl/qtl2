@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 
 
-<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://www.rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
+<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
 <p><strong>We have split the package into two parts, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans, but the <a href="http://kbroman.org/qtl2/assets/vignettes/user_guide.html">user</a> and <a href="http://kbroman.org/qtl2/assets/vignettes/developer_guide.html">developer</a> guides haven’t yet been revised to reflect this.</strong></p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
@@ -69,7 +69,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </div>
 <div id="data-file-format" class="section level2">
 <h2>Data file format</h2>
-<p>The input data file formats for <a href="http://www.rqtl.org">R/qtl</a> cannot handle complex crosses, and so for R/qtl2, we have defined a new format for the data files. We’ll describe it here briefly; for details, see the separate <a href="input_files.html">vignette on the input file format</a>.</p>
+<p>The input data file formats for <a href="http://rqtl.org">R/qtl</a> cannot handle complex crosses, and so for R/qtl2, we have defined a new format for the data files. We’ll describe it here briefly; for details, see the separate <a href="input_files.html">vignette on the input file format</a>.</p>
 <p>QTL mapping data consists of a set of tables of data: marker genotypes, phenotypes, marker maps, etc. In the new format, these different tables are in separate comma-delimited (CSV) files. In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns. For example, the phenotype data file will have individual IDs in the first column and phenotype names in the first row.</p>
 <p>A few important changes in the tabular data:</p>
 <ul>
