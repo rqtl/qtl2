@@ -54,3 +54,19 @@ find_common_ids <-
 
     reduced
 }
+
+# align genotypes, is_female and cross_info
+# (because we'll do this alot)
+align_geno_sex_cross <-
+    function(geno, is_female, cross_info)
+{
+    ind <- rownames(geno)
+    is_female <- handle_null_isfemale(is_female, ind)
+    cross_info <- handle_null_crossinfo(cross_info, ind)
+
+    keep <- find_common_ids(rownames(geno), names(is_female), rownames(cross_info))
+
+    list(geno=geno[keep,,drop=FALSE],
+         is_female=is_female[keep],
+         cross_info=cross_info[keep,,drop=FALSE])
+}
