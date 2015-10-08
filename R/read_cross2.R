@@ -181,7 +181,7 @@ function(file, quiet=TRUE)
     output$is_female <- gfc$is_female
     output$cross_info <- gfc$cross_info
 
-    summary(output) # run all the checks
+    check_cross2(output) # run all the checks
 
     output
 }
