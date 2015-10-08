@@ -89,5 +89,8 @@ function(cross)
     }
 
     class(result) <- "cross2"
+
+    check_cross2(result) # double-check
+
     result
 }
