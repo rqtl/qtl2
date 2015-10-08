@@ -181,6 +181,31 @@ function(file, quiet=TRUE)
     output$is_female <- gfc$is_female
     output$cross_info <- gfc$cross_info
 
+    # force same markers in geno, founder_geno, and cross_info
+    for(i in seq(along=output$geno)) {
+        gmar <- colnames(output$geno[[i]])
+        mmar <- names(output$gmap[[i]])
+        pmar <- names(output$pmap[[i]])
+        if(is.null(pmar)) pmar <- mmar
+        fmar <- colnames(output$founder_geno[[i]])
+        if(is.null(fmar)) fmar <- gmar
+
+        mar <- find_common_ids(gmar, mmar, pmar, fmar)
+        tmar <- length(unique(c(gmar, mmar, pmar, fmar)))
+        if(length(mar) < tmar)
+            warning("Omitting ", tmar - length(mar),
+                    " markers on chr ", names(output$geno)[i],
+                    " that ", ifelse(tmar-length(mar)==1, "is", "are"),
+                    " missing position, genotypes, or founder genotypes.")
+
+        output$geno[[i]] <- output$geno[[i]][,mar,drop=FALSE]
+        output$gmap[[i]] <- output$gmap[[i]][mar]
+        if(!is.null(output$pmap))
+            output$pmap[[i]] <- output$pmap[[i]][mar]
+        if(!is.null(output$founder_geno))
+            output$founder_geno[[i]] <- output$founder_geno[[i]][,mar,drop=FALSE]
+    }
+
     check_cross2(output) # run all the checks
 
     output
