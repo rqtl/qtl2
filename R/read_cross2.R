@@ -172,6 +172,17 @@ function(file, quiet=TRUE)
         output$alleles <- control$alleles
 
     class(output) <- "cross2"
+
+    # force genotypes, is_female, and cross_info to be aligned
+    gfc <- align_geno_sex_cross(output$geno,
+                                output$is_female,
+                                output$cross_info)
+    output$geno <- gfc$geno
+    output$is_female <- gfc$is_female
+    output$cross_info <- gfc$cross_info
+
+    summary(output) # run all the checks
+
     output
 }
 
