@@ -84,13 +84,11 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     rf <- map2rf(map, map_function)
 
     # deal with missing information
-    n.ind <- nrow(cross$geno[[1]])
+    ind <- rownames(cross$geno[[1]])
     chrnames <- names(cross$geno)
-    cross_info <- handle_null_crossinfo(cross$cross_info, n.ind)
-    is_female <- handle_null_isfemale(cross$is_female, n.ind)
     is_x_chr <- handle_null_isxchr(cross$is_x_chr, chrnames)
-
-    cross_info <- t(cross$cross_info)
+    cross$is_female <- handle_null_isfemale(cross$is_female, ind)
+    cross$cross_info <- handle_null_isfemale(cross$cross_info, ind)
 
     founder_geno <- cross$founder_geno
     if(is.null(founder_geno))
@@ -100,8 +98,8 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
         if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
 
         dr <- .sim_geno(cross$crosstype, t(cross$geno[[chr]]),
-                        founder_geno[[chr]], cross$is_x_chr[chr], is_female,
-                        cross_info, rf[[chr]], attr(map[[chr]], "index"),
+                        founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female,
+                        t(cross$cross_info), rf[[chr]], attr(map[[chr]], "index"),
                         error_prob, n_draws)
         dr <- aperm(dr, c(3,1,2))
 

@@ -1,4 +1,4 @@
-context("check cross")
+context("basic summaries")
 
 test_that("basic summaries give correct numbers for iron data", {
 

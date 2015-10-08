@@ -44,13 +44,11 @@ function(cross, error_prob=1e-4,
     if(tol <= 0) stop("tol must be > 0")
 
     # deal with missing information
-    n.ind <- nrow(cross$geno[[1]])
+    ind <- rownames(cross$geno[[1]])
     chrnames <- names(cross$geno)
-    cross_info <- handle_null_crossinfo(cross$cross_info, n.ind)
-    is_female <- handle_null_isfemale(cross$is_female, n.ind)
     is_x_chr <- handle_null_isxchr(cross$is_x_chr, chrnames)
-
-    cross_info <- t(cross_info)
+    cross$is_female <- handle_null_isfemale(cross$is_female, ind)
+    cross$cross_info <- handle_null_isfemale(cross$cross_info, ind)
 
     map <- vector("list", length(cross$gmap))
 
@@ -82,12 +80,15 @@ function(cross, error_prob=1e-4,
         # omit individuals with < 2 genotypes
         geno <- cross$geno[[chr]]
         ntyped <- rowSums(geno>0)
-        keep <- (ntyped >= 2)
+        keep <- ntyped >= 2
+        geno <- t(geno[keep,,drop=FALSE])
+        is_female <- cross$is_female[keep]
+        cross_info <- t(cross$cross_info[keep,,drop=FALSE])
 
         rf_start <- map2rf(gmap) # positions to inter-marker rec frac
-        rf <- .est_map(cross$crosstype, t(cross$geno[[chr]][keep,,drop=FALSE]),
-                       founder_geno[[chr]], is_x_chr[chr], is_female[keep],
-                       cross_info[,keep,drop=FALSE],
+        rf <- .est_map(cross$crosstype, geno,
+                       founder_geno[[chr]], is_x_chr[chr], is_female,
+                       cross_info,
                        rf_start,
                        error_prob, maxit, tol, !quiet)
 

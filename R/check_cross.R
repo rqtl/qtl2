@@ -28,11 +28,11 @@ function(cross2)
     dimnames(result) <- list(rownames(cross2$geno[[1]]),
                              names(cross2$geno))
 
-    n.ind <- nrow(cross2$geno[[1]])
+    ind <- rownames(cross2$geno[[1]])
 
     # handle case of missing cross_info or is_female
-    cross_info <- handle_null_crossinfo(cross2$cross_info, n.ind)
-    is_female <- handle_null_isfemale(cross2$is_female, n.ind)
+    cross_info <- handle_null_crossinfo(cross2$cross_info, ind)
+    is_female <- handle_null_isfemale(cross2$is_female, ind)
     is_x_chr <- handle_null_isxchr(cross2$is_x_chr, names(cross2$geno))
 
     cross_info <- t(cross_info)
@@ -123,6 +123,17 @@ function(cross2)
         is_x_chr <- rep(FALSE, length(geno))
         names(is_x_chr) <- names(geno)
         cross2$is_x_chr <- is_x_chr
+    }
+    else {
+        chr <- names(cross2$geno)
+        # double-check X chr in case that one of the chromosomes is called "X" or "x"
+        if(any(chr=="X" | chr=="x")) {
+          if(!all(is_x_chr[chr=="X" | chr=="x"]) ||
+             any(is_x_chr[chr!="X" & chr!="x"]))
+              warning("Suspicious indication of X chromosome:\n",
+                      "    autosomes: ", paste(chr[!is_x_chr], collapse=" "), "\n",
+                      "    X chr: ", paste(chr[is_x_chr], collapse=" "))
+      }
     }
 
     if(!check_handle_x_chr(crosstype, any(is_x_chr))) {
@@ -399,19 +410,23 @@ function(cross2)
 }
 
 handle_null_crossinfo <-
-    function(crossinfo, n_ind)
+    function(crossinfo, ids)
 {
+    n_ind <- length(ids)
     if(is.null(crossinfo)) {
         crossinfo <- matrix(0L, nrow=n_ind, ncol=0)
+        rownames(crossinfo) <- ids
     }
     crossinfo
 }
 
 handle_null_isfemale <-
-    function(isfemale, n_ind)
+    function(isfemale, ids)
 {
+    n_ind <- length(ids)
     if(is.null(isfemale)) {
         isfemale <- rep(FALSE, n_ind)
+        names(isfemale) <- ids
     }
     isfemale
 }

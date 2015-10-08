@@ -5,7 +5,7 @@
 [Karl Broman](http://kbroman.org)
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
-the QTL analysis software [R/qtl](http://www.rqtl.org), to better
+the QTL analysis software [R/qtl](http://rqtl.org), to better
 handle high-dimensional data and complex cross designs. It is split
 into the [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
 genotype probabilities, imputations, and genetic maps) and
