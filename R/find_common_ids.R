@@ -60,11 +60,28 @@ find_common_ids <-
 align_geno_sex_cross <-
     function(geno, is_female, cross_info)
 {
+    if(is.list(geno)) {
+        for(i in seq(along=geno)) {
+            tmp <- align_geno_sex_cross(geno[[i]],
+                                        is_female,
+                                        cross_info)
+            is_female <- tmp$is_female
+            cross_info <- tmp$cross_info
+            geno[[i]] <- tmp$geno
+        }
+        return(list(geno=geno, is_female=is_female, cross_info=cross_info))
+    }
+
     ind <- rownames(geno)
     is_female <- handle_null_isfemale(is_female, ind)
     cross_info <- handle_null_crossinfo(cross_info, ind)
 
     keep <- find_common_ids(rownames(geno), names(is_female), rownames(cross_info))
+
+    if(length(keep) < length(ind))
+        warning("Omitting genotypes for ",
+                length(ind)-length(keep),
+                " individuals with no sex/cross info.")
 
     list(geno=geno[keep,,drop=FALSE],
          is_female=is_female[keep],
