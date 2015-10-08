@@ -124,6 +124,17 @@ function(cross2)
         names(is_x_chr) <- names(geno)
         cross2$is_x_chr <- is_x_chr
     }
+    else {
+        chr <- names(cross2$geno)
+        # double-check X chr in case that one of the chromosomes is called "X" or "x"
+        if(any(chr=="X" | chr=="x")) {
+          if(all(is_x_chr[chr=="X" | chr=="x"]) &&
+             !any(is_x_chr[chr!="X" & chr!="x"]))
+              warning("Suspicious indication of X chromosome:\n",
+                      "    autosomes: ", paste(chr[!is_x_chr], collapse=" "), "\n",
+                      "    X chr: ", paste(chr[is_x_chr], collapse=" "))
+      }
+    }
 
     if(!check_handle_x_chr(crosstype, any(is_x_chr))) {
         result <- FALSE
