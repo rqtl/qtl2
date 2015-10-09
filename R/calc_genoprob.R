@@ -130,6 +130,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     groupindex <- seq(along=group)
 
     probs <- vector("list", length(cross$geno))
+    names(probs) <- names(cross$geno)
     for(chr in seq(along=cross$geno)) {
         if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
 
