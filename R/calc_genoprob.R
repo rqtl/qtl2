@@ -121,9 +121,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                              founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[group[[i]]],
                              t(cross$cross_info[group[[i]],,drop=FALSE]), rf[[chr]], attr(map[[chr]], "index"),
                              error_prob)
-        pr <- aperm(pr, c(2,1,3))
-
-        pr
+        aperm(pr, c(2,1,3))
     }
 
     group <- vec4parallel(nrow(cross$geno[[1]]), n_cores)
