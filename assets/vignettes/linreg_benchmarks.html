@@ -115,7 +115,7 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
 <p><code>dgels</code> is slower than <code>dgelsy</code> here, because with that routine, I’m calling <code>dgels</code> to check the matrix rank and then switch to <code>dgelsy</code> if the matrix is rank-deficient.</p>
 <p>For further discussion of <code>dgels</code> vs. <code>dgelsy</code>, see <a href="http://www.netlib.org/lapack/lug/node71.html" class="uri">http://www.netlib.org/lapack/lug/node71.html</a>, which says:</p>
 <blockquote>
-<p>DGELS is the fastest. DGELSY <span class="math">\[uses\]</span> QR with pivoting, and so <span class="math">\[handles\]</span> rank-deficient problems more reliably than DGELS but can be more expensive.</p>
+<p>DGELS is the fastest. DGELSY [uses] QR with pivoting, and so [handles] rank-deficient problems more reliably than DGELS but can be more expensive.</p>
 </blockquote>
 </div>
 <div id="bigger-matrix" class="section level2">

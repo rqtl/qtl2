@@ -106,8 +106,8 @@ if the matrix is rank-deficient.
 For further discussion of `dgels` vs. `dgelsy`, see
 <http://www.netlib.org/lapack/lug/node71.html>, which says:
 
-> DGELS is the fastest. DGELSY \[uses\] QR with pivoting, and so
-> \[handles\] rank-deficient problems more reliably than DGELS but can
+> DGELS is the fastest. DGELSY [uses] QR with pivoting, and so
+> [handles] rank-deficient problems more reliably than DGELS but can
 > be more expensive.
 
 ## Bigger matrix
