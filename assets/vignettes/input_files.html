@@ -81,7 +81,12 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 <div id="csv-files" class="section level3">
 <h3>CSV files</h3>
 <p>The comma-delimited (CSV) files are each in the form of a simple matrix, with the first column being a set of IDs and the first row being a set of variable names.</p>
-<p>Missing value codes will be specified in the control file (as <code>na.strings</code>) and will apply across all files, so a missing value code for one file cannot be an allowed value in another file.</p>
+<p>Missing value codes will be specified in the control file (as <code>na.strings</code>, with default value <code>&quot;NA&quot;</code>) and will apply across all files, so a missing value code for one file cannot be an allowed value in another file.</p>
+<p>The CSV files can include a header with a set of comment lines initiated by a value specified in the control file as <code>comment.char</code> (with default value <code>&quot;#&quot;</code>). The first such line could be a description of the contents of the file. These comment lines can include the expected number of rows and columns, like this:</p>
+<pre><code># This file contains blah, blah, blah...
+# nrow 25012
+# ncol 91</code></pre>
+<p>The number of rows (<code>nrow</code>) includes <em>only</em> the data rows (<em>not</em> the comment rows, <em>nor</em> the row with variable names). On the other hand, the number of columns (<code>ncol</code>) <em>does include</em> the column with individual IDs.</p>
 <p>All of these CSV files may be transposed relative to the form described below. You just need to include, in the control file, a line like</p>
 <pre><code>geno_transposed: true</code></pre>
 <div id="genotype-and-founder-genotype-data" class="section level4">
