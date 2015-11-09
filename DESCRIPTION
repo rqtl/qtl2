@@ -24,3 +24,4 @@ URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppEigen
 LazyData: true
+RoxygenNote: 5.0.0
