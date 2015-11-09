@@ -180,6 +180,27 @@ public:
         return false; // most crosses don't need founder_geno
     }
 
+    // X chromosome covariates
+    virtual const NumericMatrix get_x_covar(const LogicalVector& is_female, const IntegerMatrix& cross_info)
+    {
+        const unsigned int n_ind = is_female.size();
+        unsigned int n_female=0;
+        for(unsigned int i=0; i<n_ind; i++)
+            if(is_female[i]) ++n_female;
+
+        if(n_female==0 || n_female==n_ind) // all male or all female
+            return NumericMatrix(n_ind,0);
+
+        // some males and some females; return single-column matrix with sex indicators
+        NumericMatrix result(n_ind,1);
+        for(unsigned int i=0; i<n_ind; i++) {
+            if(is_female[i]) result(i,0) = 0.0;
+            else result(i,0) = 1.0;
+        }
+
+        return result;
+    }
+
 };
 
 #endif // CROSS_H

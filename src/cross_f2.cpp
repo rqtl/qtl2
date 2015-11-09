@@ -293,3 +293,55 @@ const bool F2::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
     }
     return result;
 }
+
+// X chromosome covariates
+const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const IntegerMatrix& cross_info)
+{
+    const unsigned int n_ind = is_female.size();
+
+    unsigned int n_female=0, n_forwdir=0;
+    for(unsigned int i=0; i<n_ind; i++) {
+        if(is_female[i]) ++n_female;
+        if(cross_info[i] == 0) ++n_forwdir;
+    }
+
+    if(n_female==0) { // all male
+        return NumericMatrix(n_ind,0);
+    }
+    else if(n_female==n_ind) { // all female
+        if(n_forwdir==n_ind || n_forwdir==0) { // one direction
+            return NumericMatrix(n_ind,0);
+        }
+        else { // some of each direction but all female, return single-column matrix with cross direction indicators
+            NumericMatrix result(n_ind,1);
+            for(unsigned int i=0; i<n_ind; i++) {
+                if(cross_info[i]==0) result(i,0) = 0.0;
+                else result(i,0) = 1.0;
+            }
+            return result;
+        }
+    }
+    else { // both sexes
+
+        if(n_forwdir==n_ind || n_forwdir==0) { // one direction
+            // both sexes but one direction; return single-column matrix with sex indicators
+            NumericMatrix result(n_ind,1);
+            for(unsigned int i=0; i<n_ind; i++) {
+                if(is_female[i]) result(i,0) = 0.0;
+                else result(i,0) = 1.0;
+            }
+            return result;
+        }
+        else { // both directions and both sexes
+            NumericMatrix result(n_ind,2);
+            for(unsigned int i=0; i<n_ind; i++) {
+                if(is_female[i]) result(i,0) = 0.0;
+                else result(i,0) = 1.0;
+
+                if(is_female[i] && cross_info[i]==1) result(i,1)=1.0;
+                else result(i,1)=0.0;
+            }
+            return result;
+        }
+    }
+}

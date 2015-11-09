@@ -93,6 +93,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// get_x_covar
+NumericMatrix get_x_covar(const String& crosstype, const LogicalVector& is_female, const IntegerMatrix& cross_info);
+RcppExport SEXP qtl2geno_get_x_covar(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP);
+    __result = Rcpp::wrap(get_x_covar(crosstype, is_female, cross_info));
+    return __result;
+END_RCPP
+}
 // calc_genoprob
 NumericVector calc_genoprob(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
 RcppExport SEXP qtl2geno_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {

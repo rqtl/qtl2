@@ -60,7 +60,8 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
 
     if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
         cluster_ready <- TRUE
-        if(!quiet) message(" - Using ", length(cores), " cores.")
+        n_cores <- length(cores)
+        if(!quiet) message(" - Using ", n_cores, " cores.")
         quiet <- TRUE # no more messages
     } else {
         cluster_ready <- FALSE
@@ -68,7 +69,15 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
         if(cores > 1) {
             if(!quiet) message(" - Using ", cores, " cores.")
             quiet <- TRUE # no more messages
+
+            if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
+                n_cores <- cores
+                cores <- parallel::makeCluster(cores)
+                cluster_ready <- TRUE
+                on.exit(parallel::stopCluster(cores))
+            }
         }
+        n_cores <- cores
     }
 
     # construct map at which to do the calculations
@@ -94,34 +103,45 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     if(is.null(founder_geno))
         founder_geno <- create_empty_founder_geno(cross$geno)
 
-    by_chr_func <- function(chr) {
+    by_group_func <- function(i) {
+        dr <- .sim_geno(cross$crosstype, t(cross$geno[[chr]][group[[i]],,drop=FALSE]),
+                        founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[group[[i]]],
+                        t(cross$cross_info[group[[i]],,drop=FALSE]), rf[[chr]], attr(map[[chr]], "index"),
+                        error_prob, n_draws)
+        aperm(dr, c(3,1,2))
+    }
+
+    group <- vec4parallel(nrow(cross$geno[[1]]), n_cores)
+    groupindex <- seq(along=group)
+
+    draws <- vector("list", length(cross$geno))
+    names(draws) <- names(cross$geno)
+    for(chr in seq(along=cross$geno)) {
         if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
 
-        dr <- .sim_geno(cross$crosstype, t(cross$geno[[chr]]),
-                        founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female,
-                        t(cross$cross_info), rf[[chr]], attr(map[[chr]], "index"),
-                        error_prob, n_draws)
-        dr <- aperm(dr, c(3,1,2))
-
-        dimnames(dr) <- list(rownames(cross$geno[[chr]]),
-                             names(map[[chr]]),
-                             NULL)
-        dr
-    }
-
-    chrs <- seq(along=map)
-    if(!cluster_ready && cores<=1) { # no parallel processing
-        draws <- lapply(chrs, by_chr_func)
-    }
-    else if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        if(!cluster_ready) {
-            cores <- parallel::makeCluster(cores)
-            on.exit(parallel::stopCluster(cores))
+        if(cores<=1) { # no parallel processing
+            # calculations in one group
+            draws[[chr]] <- by_group_func(1)
         }
-        draws <- parallel::clusterApply(cores, chrs, by_chr_func)
-    }
-    else {
-        draws <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
+        else {
+            # calculations in parallel
+            if(cluster_ready) # Windows doesn't suport mclapply
+                temp <- parallel::clusterApply(cores, groupindex, by_group_func)
+            else
+                temp <- parallel::mclapply(groupindex, by_group_func, mc.cores=cores)
+
+            # paste them back together
+            d <- vapply(temp, dim, rep(0,3))
+            nr <- sum(d[1,])
+            draws[[chr]] <- array(dim=c(nr, d[2,1], d[3,1]))
+            for(i in groupindex)
+                draws[[chr]][group[[i]],,] <- temp[[i]]
+        }
+
+        dimnames(draws[[chr]]) <- list(rownames(cross$geno[[chr]]),
+                                       names(map[[chr]]),
+                                       NULL)
+
     }
 
     names(draws) <- names(cross$gmap)
