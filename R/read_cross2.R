@@ -168,7 +168,7 @@ function(file, quiet=TRUE)
 
     # line map (mapping of individuals to lines)
     output$linemap <- convert_linemap(control$linemap, output$covar, control$sep,
-                                      convert$comment.char, dir, quiet=quiet)
+                                      control$comment.char, dir, quiet=quiet)
 
     # alleles?
     if("alleles" %in% names(control))
