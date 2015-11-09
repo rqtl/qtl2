@@ -49,7 +49,7 @@ function(cross)
 
     if(is.null(sexpgm$pgm))
         result$cross_info <- matrix(0L, ncol=1, nrow=n.ind) # if missing, assume they're all 0's
-    else result$cross_info <- matrix(sexpgm$pgm)
+    else result$cross_info <- matrix(as.integer(sexpgm$pgm))
     rownames(result$cross_info) <- ids
 
     # convert X chr genotypes
