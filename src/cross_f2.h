@@ -33,6 +33,7 @@ class F2 : public QTLCross
 
     const bool check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr);
 
+    const NumericMatrix get_x_covar(const LogicalVector& is_female, const IntegerMatrix& cross_info);
 };
 
 #endif // CROSS_F2_H

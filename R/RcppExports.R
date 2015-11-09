@@ -29,6 +29,10 @@ check_handle_x_chr <- function(crosstype, any_x_chr) {
     .Call('qtl2geno_genoprob_to_alleleprob', PACKAGE = 'qtl2geno', crosstype, prob_array, is_x_chr)
 }
 
+.get_x_covar <- function(crosstype, is_female, cross_info) {
+    .Call('qtl2geno_get_x_covar', PACKAGE = 'qtl2geno', crosstype, is_female, cross_info)
+}
+
 .calc_genoprob <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
     .Call('qtl2geno_calc_genoprob', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
