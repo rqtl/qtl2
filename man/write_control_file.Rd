@@ -8,7 +8,7 @@ write_control_file(output_file, crosstype, geno_file, founder_geno_file,
   gmap_file, pmap_file, pheno_file, covar_file, phenocovar_file, sex_file,
   sex_covar, sex_codes, crossinfo_file, crossinfo_covar, crossinfo_codes,
   linemap_file, linemap_covar, geno_codes, alleles, xchr, sep = ",",
-  na.strings = c("-", "NA"), geno_transposed = FALSE,
+  na.strings = c("-", "NA"), comment.char = "#", geno_transposed = FALSE,
   founder_geno_transposed = FALSE, pheno_transposed = FALSE,
   covar_transposed = FALSE, phenocovar_transposed = FALSE, comments)
 }
@@ -83,6 +83,9 @@ alleles.}
 
 \item{na.strings}{Vector of character strings with codes to be
 treated as missing values.}
+
+\item{comment.char}{Character string that is used as initial
+character in a set of leading comment lines in the data files.}
 
 \item{geno_transposed}{If TRUE, genotype file is transposed (with markers as rows).}
 

@@ -97,7 +97,7 @@ function(file, quiet=TRUE)
 
             # read file
             sheet <- read_csv(file, na.strings=control$na.strings, sep=control$sep,
-                              transpose=tr)
+                              comment.char=control$comment.char, transpose=tr)
 
             # change genotype codes and convert phenotypes to numeric matrix
             if(section=="geno" || section=="founder_geno") {
@@ -151,21 +151,24 @@ function(file, quiet=TRUE)
     }
 
     # sex
-    output$is_female <- convert_sex(control$sex, output$covar, control$sep, dir, quiet=quiet)
+    output$is_female <- convert_sex(control$sex, output$covar, control$sep,
+                                    control$comment.char, dir, quiet=quiet)
     if(is.null(output$is_female)) { # missing; assume all FALSE
         output$is_female <- rep(FALSE, nrow(output$geno[[1]]))
         names(output$is_female) <- rownames(output$geno[[1]])
     }
 
     # cross_info
-    output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep, dir, quiet=quiet)
+    output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep,
+                                            control$comment.char, dir, quiet=quiet)
     if(is.null(output$cross_info)) { # missing; make a 0-column matrix
         output$cross_info <- matrix(0L, ncol=0, nrow=nrow(output$geno[[1]]))
         rownames(output$cross_info) <- rownames(output$geno[[1]])
     }
 
     # line map (mapping of individuals to lines)
-    output$linemap <- convert_linemap(control$linemap, output$covar, control$sep, dir, quiet=quiet)
+    output$linemap <- convert_linemap(control$linemap, output$covar, control$sep,
+                                      control$comment.char, dir, quiet=quiet)
 
     # alleles?
     if("alleles" %in% names(control))
@@ -332,7 +335,7 @@ function(map)
 
 # grab sex information
 convert_sex <-
-function(sex_control, covar, sep, dir, quiet=TRUE)
+function(sex_control, covar, sep, comment.char, dir, quiet=TRUE)
 {
     if(is.null(sex_control)) return(NULL)
 
@@ -343,7 +346,7 @@ function(sex_control, covar, sep, dir, quiet=TRUE)
         if(!quiet) message(" - reading sex")
         file <- file.path(dir, sex_control$file)
         stop_if_no_file(file)
-        sex <- read_csv(file, sep=sep, na.strings=NULL)
+        sex <- read_csv(file, sep=sep, na.strings=NULL, comment.char=comment.char)
     }
     else return(NULL)
 
@@ -397,7 +400,7 @@ function(codes)
 
 # grab cross_info
 convert_cross_info <-
-function(cross_info_control, covar, sep, dir, quiet=TRUE)
+function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
 {
     if(is.null(cross_info_control)) return(NULL)
 
@@ -411,7 +414,7 @@ function(cross_info_control, covar, sep, dir, quiet=TRUE)
 
         file <- file.path(dir, cross_info_control$file)
         stop_if_no_file(file)
-        cross_info <- read_csv(file, sep=sep)
+        cross_info <- read_csv(file, sep=sep, comment.char=comment.char)
 
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
@@ -456,7 +459,7 @@ function(cross_info_control, covar, sep, dir, quiet=TRUE)
 
 # grab linemap information
 convert_linemap <-
-function(linemap_control, covar, sep, dir, quiet=TRUE)
+function(linemap_control, covar, sep, comment.char, dir, quiet=TRUE)
 {
     if(is.null(linemap_control)) return(NULL)
 
@@ -471,7 +474,7 @@ function(linemap_control, covar, sep, dir, quiet=TRUE)
     if("file" %in% names(linemap_control)) {
         if(!quiet) message(" - reading linemap")
         filename <- file.path(dir, linemap_control$file)
-        linemap <- read_csv(filename, sep=sep, na.strings=NULL)
+        linemap <- read_csv(filename, sep=sep, na.strings=NULL, comment.char=comment.char)
     }
     else if("covar" %in% names(linemap_control)) { # column name in the covariate data
         linemap <- covar[,linemap_control$covar, drop=FALSE]
@@ -510,13 +513,32 @@ function(filename)
 
 # read a csv file
 read_csv <-
-function(filename, sep=",", na.strings=c("NA", "-"), transpose=FALSE)
+function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE)
 {
+    # read header and extract expected number of rows and columns
+    # (number of columns includes ID column; number of rows does *not* include header row)
+    header <- read_header(filename, comment.char=comment.char)
+    expected_dim <- extract_dim_from_header(header)
+
+    # read the data
     x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
                            verbose=FALSE, showProgress=FALSE, data.table=FALSE,
-                           colClasses="character")
+                           colClasses="character", skip=length(header))
 
+    # check that number of rows and columns match expected from header
+    for(i in 1:2) {
+        labels <- c("rows", "columns")
+        if(!is.na(expected_dim[i])) { # nrows given
+            if(dim(x)[i] != expected_dim[i])
+                stop('In file "', filename, '", no. ', labels[i],
+                     ' (', dim(x)[i], ') != expected (', expected_dim[i], ')')
+        }
+    }
+
+    # move first column to row names
     x <- firstcol2rownames(x)
+
+    # transpose if requested
     if(transpose)
         x <- as.data.frame(t(x), stringAsFactors=FALSE)
 
@@ -536,9 +558,44 @@ function(filename)
     }
     else stop(paste('Control file', filename, 'should have extension ".yaml" or ".json"'))
 
-    # default values for sep and na.strings
+    # default values for sep, na.strings, and comment.char
     if(is.null(control$sep)) control$sep <- ","
     if(is.null(control$na.strings)) control$na.strings <- "NA"
+    if(is.null(control$comment.char)) control$comment.char <- "#"
 
     control
+}
+
+# read header lines
+read_header <-
+    function(filename, comment.char="#")
+{
+    con <- file(filename, "rt")
+    on.exit(close(con))
+    header <- NULL
+    while(length(line <- readLines(con, 1))>0) {
+        if(grepl(paste0("^", comment.char), line))
+            header <- c(header, line)
+        else break
+    }
+    header
+}
+
+# get expected dimensions from header
+# (expecting header rows like "# nrow 5201" and "# ncol 59")
+extract_dim_from_header <-
+    function(header, comment.char="#")
+{
+    result <- c(NA, NA)
+    nam <- c("nrow", "ncol")
+    for(i in seq(along=nam)) {
+        matchhead <- grepl(paste0("^", comment.char, "\\s*", nam[i], "\\s*\\d+"), header)
+        if(sum(matchhead) > 1) # more than one matches
+            stop('Multiple header lines with "', nam[i], '"')
+        if(sum(matchhead) == 0) next
+        spl <- strsplit(header[matchhead], "\\s+")[[1]]
+        result[i] <- as.numeric(spl[length(spl)])
+    }
+
+    result
 }
