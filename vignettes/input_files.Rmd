@@ -107,8 +107,23 @@ files are each in the form of a simple matrix, with the first
 column being a set of IDs and the first row being a set of variable names.
 
 Missing value codes will be specified in the control file (as
-`na.strings`) and will apply across all files, so a missing value
+`na.strings`, with default value `"NA"`) and will apply across all files, so a missing value
 code for one file cannot be an allowed value in another file.
+
+The CSV files can include a header with a set of comment lines
+initiated by a value specified in the control file as `comment.char`
+(with default value `"#"`). The first such line could be a description
+of the contents of the file. These comment lines can include the
+expected number of rows and columns, like this:
+
+    # This file contains blah, blah, blah...
+    # nrow 25012
+    # ncol 91
+
+The number of rows (`nrow`) includes *only* the data rows (*not* the
+comment rows, *nor* the row with variable names). On the other hand, the
+number of columns (`ncol`) *does include* the column with individual
+IDs.
 
 All of these CSV files may be transposed relative to the form described
 below. You just need to include, in the control file, a line like
