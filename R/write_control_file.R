@@ -210,6 +210,7 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
 
         cat(jsonlite::toJSON(result, auto_unbox=TRUE, pretty=TRUE),
             file=output_file)
+        cat("\n", file=output_file, append=TRUE) # add extra newline to avoid warning when reading
     }
     else {
         # comments as a single string
