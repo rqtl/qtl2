@@ -71,15 +71,26 @@ function(file, quiet=TRUE)
     stop_if_no_file(file)
     control <-  read_control_file(file)
 
+    # for keeping track of use of control stuff
+    used_control <- rep(FALSE, length(control))
+    names(used_control) <- names(control)
+    used_control["sep"] <- used_control["na.strings"] <-
+        used_control["comment.char"] <- used_control["description"] <-
+            used_control["comments"] <- TRUE
+
     # grab cross type
-    if("crosstype" %in% names(control))
+    if("crosstype" %in% names(control)) {
         output <- list(crosstype=control$crosstype)
+        used_control["crosstype"] <- TRUE # indicate that we used it
+    }
     else
         stop("crosstype not found")
 
     # grab genotype encodings or use defaults
-    if("genotypes" %in% names(control))
+    if("genotypes" %in% names(control)) {
         genotypes <- control$genotypes
+        used_control["genotypes"] <- TRUE # indicate that we used it
+    }
     else
         genotypes <- list(A=1, H=2, B=3, D=4, C=5)
 
@@ -87,10 +98,12 @@ function(file, quiet=TRUE)
     sections <- c("geno", "gmap", "pmap", "pheno", "covar", "phenocovar", "founder_geno")
     for(section in sections) {
         if(section %in% names(control)) {
+            used_control[section] <- TRUE # indicate that we used it
             if(!quiet) message(" - reading ", section)
 
             # transposed?
             tr <- paste0(section, "_transposed")
+            used_control[tr] <- TRUE # indicate that we used it
             tr <- tr %in% names(control) && control[[tr]]
 
             filename <- control[[section]]
@@ -169,6 +182,7 @@ function(file, quiet=TRUE)
     names(output$is_x_chr) <- chr
     if("x_chr" %in% names(control)) {
         x_chr <- control$x_chr # name of X chromosome
+        used_control["x_chr"] <- TRUE # indicate that we used it
         output$is_x_chr[x_chr] <- TRUE
     }
 
@@ -179,6 +193,7 @@ function(file, quiet=TRUE)
         output$is_female <- rep(FALSE, nrow(output$geno[[1]]))
         names(output$is_female) <- rownames(output$geno[[1]])
     }
+    used_control["sex"] <- TRUE # indicate that we used it
 
     # cross_info
     output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep,
@@ -187,14 +202,18 @@ function(file, quiet=TRUE)
         output$cross_info <- matrix(0L, ncol=0, nrow=nrow(output$geno[[1]]))
         rownames(output$cross_info) <- rownames(output$geno[[1]])
     }
+    used_control["cross_info"] <- TRUE # indicate that we used it
 
     # line map (mapping of individuals to lines)
     output$linemap <- convert_linemap(control$linemap, output$covar, control$sep,
                                       control$comment.char, dir, quiet=quiet)
+    used_control["linemap"] <- TRUE # indicate that we used it
 
     # alleles?
-    if("alleles" %in% names(control))
+    if("alleles" %in% names(control)) {
         output$alleles <- control$alleles
+        used_control["alleles"] <- TRUE # indicate that we used it
+    }
 
     class(output) <- "cross2"
 
@@ -232,6 +251,10 @@ function(file, quiet=TRUE)
     }
 
     check_cross2(output) # run all the checks
+
+    if(any(!used_control))
+        warning("Used control information: ",
+                paste0('"', names(used_control)[!used_control], '"', collapse=", "))
 
     output
 }
