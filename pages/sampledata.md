@@ -18,6 +18,7 @@ load them with `qtl::read.cross()`, and then convert the data to the
 new format with `qtl2::convert2cross2()`.
 
 The following are sample input data files in the new R/qtl2 format.
+Also see <https://github.com/rqtl/qtl2data>.
 
 ---
 
