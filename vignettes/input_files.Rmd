@@ -544,3 +544,5 @@ semicolon doesn't, but it doesn't hurt if you do.
 
 
 ## Detailed specifications for each cross type
+
+[to be provided, eventually]
