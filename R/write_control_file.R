@@ -122,16 +122,20 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
          geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
          phenocovar_transposed=FALSE,
-         description="", comments)
+         description, comments)
 {
     output_file <- path.expand(output_file)
     if(file.exists(output_file))
         stop("The output file (", output_file, ") already exists. Please remove it first.")
 
-    result <- list(description=paste(description, collapse="\n"),
+    result <- list(description="", # stub to be replaced or removed
                    comments="", # stub to be replaced or removed
                    crosstype=crosstype, sep=sep, na.strings=na.strings,
                    comment.char=comment.char)
+    if(missing(description) || is.null(description) || description=="")
+        result$description <- NULL
+    else
+        paste(description, collapse="\n")
 
     if(!missing(geno_file))
         result$geno <- geno_file
@@ -213,7 +217,9 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
 
     # JSON or YAML?
     if(grepl("\\.json$", output_file)) { # assume JSON
-        if(!missing(comments) && !is.null(comments))
+        if(missing(comments) || is.null(comments))
+            result$comments <- NULL
+        else
             result$comments <- comments
 
         cat(jsonlite::toJSON(result, auto_unbox=TRUE, pretty=TRUE),

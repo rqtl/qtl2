@@ -10,8 +10,8 @@ write_control_file(output_file, crosstype, geno_file, founder_geno_file,
   linemap_file, linemap_covar, geno_codes, alleles, xchr, sep = ",",
   na.strings = c("-", "NA"), comment.char = "#", geno_transposed = FALSE,
   founder_geno_transposed = FALSE, pheno_transposed = FALSE,
-  covar_transposed = FALSE, phenocovar_transposed = FALSE,
-  description = "", comments)
+  covar_transposed = FALSE, phenocovar_transposed = FALSE, description,
+  comments)
 }
 \arguments{
 \item{output_file}{File name (with path) of the
