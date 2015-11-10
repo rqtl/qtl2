@@ -10,7 +10,8 @@ write_control_file(output_file, crosstype, geno_file, founder_geno_file,
   linemap_file, linemap_covar, geno_codes, alleles, xchr, sep = ",",
   na.strings = c("-", "NA"), comment.char = "#", geno_transposed = FALSE,
   founder_geno_transposed = FALSE, pheno_transposed = FALSE,
-  covar_transposed = FALSE, phenocovar_transposed = FALSE, comments)
+  covar_transposed = FALSE, phenocovar_transposed = FALSE,
+  description = "", comments)
 }
 \arguments{
 \item{output_file}{File name (with path) of the
@@ -97,8 +98,12 @@ character in a set of leading comment lines in the data files.}
 
 \item{phenocovar_transposed}{If TRUE, phenotype covariate file is transposed (with phenotype covariates as rows).}
 
+\item{description}{Optional character string describing the data.}
+
 \item{comments}{Vector of character strings to be inserted as
-comments at the top of the file, with each string as a line.}
+comments at the top of the file (in the case of YAML), with each
+string as a line. For JSON, the comments are instead included
+within the control object.}
 }
 \value{
 (Invisibly) The data structure that was written.

@@ -61,8 +61,11 @@
 #' @param pheno_transposed If TRUE, phenotype file is transposed (with phenotypes as rows).
 #' @param covar_transposed If TRUE, covariate file is transposed (with covariates as rows).
 #' @param phenocovar_transposed If TRUE, phenotype covariate file is transposed (with phenotype covariates as rows).
+#' @param description Optional character string describing the data.
 #' @param comments Vector of character strings to be inserted as
-#' comments at the top of the file, with each string as a line.
+#' comments at the top of the file (in the case of YAML), with each
+#' string as a line. For JSON, the comments are instead included
+#' within the control object.
 #'
 #' @return (Invisibly) The data structure that was written.
 #'
@@ -119,13 +122,15 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
          geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
          phenocovar_transposed=FALSE,
-         comments)
+         description="", comments)
 {
     output_file <- path.expand(output_file)
     if(file.exists(output_file))
         stop("The output file (", output_file, ") already exists. Please remove it first.")
 
-    result <- list(crosstype=crosstype, sep=sep, na.strings=na.strings,
+    result <- list(description=paste(description, collapse="\n"),
+                   comments="", # stub to be replaced or removed
+                   crosstype=crosstype, sep=sep, na.strings=na.strings,
                    comment.char=comment.char)
 
     if(!missing(geno_file))
@@ -216,6 +221,8 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
         cat("\n", file=output_file, append=TRUE) # add extra newline to avoid warning when reading
     }
     else {
+        result$comments <- NULL # delete the placeholder
+
         # comments as a single string
         if(missing(comments) || is.null(comments))
             comments <- ""
@@ -225,6 +232,5 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
         cat(comments, file=output_file)
         cat(yaml::as.yaml(result), file=output_file, append=TRUE)
     }
-
     invisible(result)
 }
