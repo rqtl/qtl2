@@ -88,16 +88,38 @@ function(file, quiet=TRUE)
     for(section in sections) {
         if(section %in% names(control)) {
             if(!quiet) message(" - reading ", section)
-            file <- file.path(dir, control[[section]])
-            stop_if_no_file(file)
 
             # transposed?
             tr <- paste0(section, "_transposed")
             tr <- tr %in% names(control) && control[[tr]]
 
-            # read file
-            sheet <- read_csv(file, na.strings=control$na.strings, sep=control$sep,
-                              comment.char=control$comment.char, transpose=tr)
+            filename <- control[[section]]
+
+            if(length(filename)==1) { # single file
+                filename <- file.path(dir, filename)
+                stop_if_no_file(filename)
+
+                # read file
+                sheet <- read_csv(filename, na.strings=control$na.strings, sep=control$sep,
+                                  comment.char=control$comment.char, transpose=tr)
+            }
+            else { # vector of files
+                if(section=="gmap" || section=="pmap")
+                    stop(section, " shouldn't be a vector of filenames")
+
+                # add dir to paths
+                filenames <- vapply(filename, function(a) file.path(dir, a), "")
+
+                # check that the all exist
+                lapply(filenames, stop_if_no_file)
+
+                # read all of the files and cbind(), matching on row names
+                sheet <- read_mult_csv(filenames, na.strings=control$na.strings,
+                                       sep=control$sep, comment.char=control$comment.char,
+                                       transpose=tr)
+            }
+            if(length(unique(colnames(sheet))) != ncol(sheet))
+                warning("Duplicate column names in ", section, " data")
 
             # change genotype codes and convert phenotypes to numeric matrix
             if(section=="geno" || section=="founder_geno") {
@@ -543,6 +565,21 @@ function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose
         x <- as.data.frame(t(x), stringAsFactors=FALSE)
 
     x
+}
+
+# read multiple CSV files and cbind results
+read_mult_csv <-
+    function(filenames, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE)
+{
+    result <- NULL
+    for(file in filenames) {
+        this <- read_csv(file, sep=sep, na.strings=na.strings,
+                         comment.char=comment.char, transpose=transpose)
+
+        if(is.null(result)) result <- this
+        else result <- cbind_expand(result, this)
+    }
+    result
 }
 
 # read control file, as either YAML or JSON
