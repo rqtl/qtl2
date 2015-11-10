@@ -100,6 +100,7 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 <div id="phenotype-covariates" class="section level4">
 <h4>Phenotype covariates</h4>
 <p>A separate CSV file contains phenotype covariate data, as phenotypes × phenotype covariates. The first column contains phenotype names, and the first row contains the names of the phenotype covariates.</p>
+<p><strong>Note</strong>: The genotype, founder genotype, phenotype, covariate, and phenotype covariate data can be split across multiple files. For example, the genotype data could be split by chromosome. The individual IDs must appear in each file; these are used to combine the files.</p>
 </div>
 <div id="genetic-and-physical-maps" class="section level4">
 <h4>Genetic and physical maps</h4>
@@ -164,6 +165,15 @@ phenocovar:   phenotype_covariate_filename
 gmap:         genetic_map_filename
 pmap:         physical_map_filename</code></pre>
 <p>Most of these files are optional; if a particular file is not used, the corresponding key can be omitted from the control file.</p>
+<p>If the data for a section is split into multiple files (for example, if the genotypes are split into chromosome-specific files), then a vector of file names should be provided. For example:</p>
+<pre><code>geno:
+  - geno1.csv
+  - geno2.csv
+  - genoX.csv
+founder_geno:
+  - founder_geno1.csv
+  - founder_geno2.csv
+  - founder_genoX.csv</code></pre>
 </div>
 <div id="x-chromosome" class="section level4">
 <h4>X chromosome</h4>
@@ -276,6 +286,7 @@ pmap:         physical_map_filename</code></pre>
 </div>
 <div id="detailed-specifications-for-each-cross-type" class="section level2">
 <h2>Detailed specifications for each cross type</h2>
+<p>[to be provided, eventually]</p>
 </div>
 
 
