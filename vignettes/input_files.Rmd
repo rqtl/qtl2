@@ -153,6 +153,12 @@ A separate CSV file contains phenotype covariate data, as phenotypes
 contains phenotype names, and the first row contains the names of the
 phenotype covariates.
 
+**Note**: The genotype, founder genotype, phenotype, covariate, and
+  phenotype covariate data can be split across multiple files. For
+  example, the genotype data could be split by chromosome. The
+  individual IDs must appear in each file; these are used to combine
+  the files.
+
 #### Genetic and physical maps
 
 Genetic and physical maps of the genotyped markers will be as separate
@@ -280,6 +286,21 @@ pmap:         physical_map_filename
 
 Most of these files are optional; if a particular file is not used,
 the corresponding key can be omitted from the control file.
+
+If the data for a section is split into multiple files (for example,
+if the genotypes are split into chromosome-specific files), then a
+vector of file names should be provided. For example:
+
+```
+geno:
+  - geno1.csv
+  - geno2.csv
+  - genoX.csv
+founder_geno:
+  - founder_geno1.csv
+  - founder_geno2.csv
+  - founder_genoX.csv
+```
 
 #### X chromosome
 
