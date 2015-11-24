@@ -3,7 +3,7 @@
 #define LINREG_EIGEN_H
 
 // calc X'X
-MatrixXd calc_XpX_eigen(const MatrixXd& A);
+MatrixXd calc_XpX(const MatrixXd& A);
 
 // least squares by "LLt" Cholesky decomposition
 // needs to be full rank
