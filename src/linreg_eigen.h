@@ -29,4 +29,12 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 // return vector of RSS
 NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y);
 
+// least squares by "LLt" Cholesky decomposition, with matrix Y
+// return matrix of residuals
+NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& Y);
+
+// least squares by QR decomposition with column pivoting, with matrix Y
+// return matrix of residuals
+NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y);
+
 #endif // LINREG_EIGEN_H

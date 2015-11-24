@@ -12,9 +12,8 @@ batch_cols(mat)
 \value{
 A list containing the batches, each with two components:
 \code{cols} containing numeric indices of the columns in the
-corresponding batch, and \code{keep} containing a logical vector
-with \code{TRUE} indicating that the corresponding row is not
-missing in this batch.
+corresponding batch, and \code{keep} containing a vector of row indices
+that have missing values in this batch.
 }
 \description{
 Identify batches of columns of a matrix that have the same pattern

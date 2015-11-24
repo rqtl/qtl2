@@ -29,6 +29,14 @@ calc_mvrss_eigenqr <- function(X, Y) {
     .Call('qtl2scan_calc_mvrss_eigenqr', PACKAGE = 'qtl2scan', X, Y)
 }
 
+calc_resid_eigenchol <- function(X, Y) {
+    .Call('qtl2scan_calc_resid_eigenchol', PACKAGE = 'qtl2scan', X, Y)
+}
+
+calc_resid_eigenqr <- function(X, Y) {
+    .Call('qtl2scan_calc_resid_eigenqr', PACKAGE = 'qtl2scan', X, Y)
+}
+
 calc_rss_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
     .Call('qtl2scan_calc_rss_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
 }
