@@ -27,9 +27,15 @@ You first need to install a Fortran compiler. See
 [RTools for Windows](https://cran.r-project.org/bin/windows/Rtools/).
 
 You then need to install the
-[devtools](https://github.com/hadley/devtools) package.
+[devtools](https://github.com/hadley/devtools) package, plus a set of
+package dependencies: [yaml](https://cran.r-project.org/package=yaml),
+[jsonlite](https://cran.r-project.org/package=jsonlite),
+[data.table](https://cran.r-project.org/package=data.table),
+[qtl](http://rqtl.org), [RcppEigen](https://github.com/RcppCore/RcppEigen).
+(Additional, secondary dependencies will also be installed)
 
-    install.packages("devtools")
+    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "qtl", "RcppEigen"))
+
 
 Finally, install R/qtl2 using `devtools::install_github()`.
 
