@@ -9,17 +9,17 @@ test_that("batch_cols works", {
                c(10, 11, 12))
 
     expect_equal(batch_cols(x),
-                 list(list(cols=1, keep=c(TRUE, TRUE, TRUE, FALSE, TRUE)),
-                      list(cols=2, keep=c(TRUE, TRUE, FALSE, FALSE, TRUE)),
-                      list(cols=3, keep=c(TRUE, TRUE, TRUE, TRUE, TRUE)))
+                 list(list(cols=3, keep=numeric(0)),
+                      list(cols=1, keep=4),
+                      list(cols=2, keep=c(3,4)))
                  )
 
     expect_equal(batch_cols( rbind(c(1,2,3)) ),
-                 list(list(cols=c(1,2,3), keep=TRUE))
+                 list(list(cols=c(1,2,3), keep=numeric(0)))
                  )
 
     expect_equal(batch_cols( rbind(1, 2, NA, 3) ),
-                 list(list(cols=1, keep=c(TRUE, TRUE, FALSE, TRUE)))
+                 list(list(cols=1, keep=3))
                  )
 
     y <- rbind(c( 1,  2,  3, 13, 16),
@@ -28,8 +28,9 @@ test_that("batch_cols works", {
                c(NA, NA, NA, NA, 19),
                c(10, 11, 12, 15, 20))
     expect_equal(batch_cols(y),
-                 list(list(cols=c(1,3), keep=c(TRUE, TRUE, TRUE, FALSE, TRUE)),
-                      list(cols=c(2,4), keep=c(TRUE, TRUE, FALSE, FALSE, TRUE)),
-                      list(cols=5, keep=rep(TRUE, 5)))
+                 list(list(cols=5, keep=numeric(0)),
+                      list(cols=c(1,3), keep=4),
+                      list(cols=c(2,4), keep=c(3,4)))
+
                  )
 })
