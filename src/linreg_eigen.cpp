@@ -229,3 +229,78 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
     NumericVector rss(wrap(resid.colwise().squaredNorm().transpose()));
     return rss;
 }
+
+// least squares by "LLt" Cholesky decomposition, with matrix Y
+// return matrix of residuals
+// [[Rcpp::export]]
+NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
+{
+    int ncolY = Y.cols();
+    int ncolX = X.cols();
+
+    MatrixXd XX(as<Map<MatrixXd> >(X));
+    MatrixXd YY(as<Map<MatrixXd> >(Y));
+
+    LLT<MatrixXd> llt = calc_XpX_eigen(XX);
+
+    MatrixXd XXpY(XX.adjoint() * YY);
+
+    MatrixXd betahat(ncolX,ncolY);
+    for(int i=0; i<ncolY; i++)
+        betahat.col(i) = llt.solve(XXpY.col(i));
+
+    MatrixXd fitted = XX * betahat;
+    MatrixXd resid = YY - fitted;
+
+    NumericMatrix result(wrap(resid));
+
+    return result;
+}
+
+// least squares by QR decomposition with column pivoting, with matrix Y
+// return matrix of residuals
+// [[Rcpp::export]]
+NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
+{
+    MatrixXd XX(as<Map<MatrixXd> >(X));
+    MatrixXd YY(as<Map<MatrixXd> >(Y));
+
+    typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
+    typedef CPivQR::PermutationType Permutation;
+
+    int n = XX.rows(), p = XX.cols();
+    int k = YY.cols();
+
+    CPivQR PQR = XX;
+    Permutation Pmat = PQR.colsPermutation();
+    int r = PQR.rank();
+
+    MatrixXd fitted(n,k);
+
+    if(r == p) { // full rank
+        MatrixXd betahat(p,k);
+
+        for(int i=0; i<k; i++)
+            betahat.col(i) = PQR.solve(YY.col(i));
+
+        fitted = XX * betahat;
+
+    } else {
+
+        MatrixXd Rinv = PQR.matrixQR().topLeftCorner(r,r)
+            .triangularView<Upper>().solve(MatrixXd::Identity(r,r));
+
+        for(int i=0; i<k; i++) {
+            VectorXd effects = PQR.householderQ().adjoint() * YY.col(i);
+            effects.tail(n - r).setZero();
+
+            fitted.col(i) = PQR.householderQ() * effects;
+        }
+    }
+
+    MatrixXd resid = YY - fitted;
+
+    NumericMatrix result(wrap(resid));
+
+    return result;
+}
