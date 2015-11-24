@@ -11,7 +11,7 @@ using namespace Eigen;
 #include "debug_util.h"
 
 // calc X'X
-MatrixXd calc_XpX_eigen(const MatrixXd& X)
+MatrixXd calc_XpX(const MatrixXd& X)
 {
     int n = X.cols();
 
@@ -27,7 +27,7 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
     VectorXd yy(as<Map<VectorXd> >(y));
 
     int n = XX.rows(), p=XX.cols();
-    LLT<MatrixXd> llt = calc_XpX_eigen(XX);
+    LLT<MatrixXd> llt = calc_XpX(XX);
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
     VectorXd fitted = XX * betahat;
@@ -55,7 +55,7 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
 
-    LLT<MatrixXd> llt = calc_XpX_eigen(XX);
+    LLT<MatrixXd> llt = calc_XpX(XX);
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
     VectorXd fitted = XX * betahat;
@@ -168,7 +168,7 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     MatrixXd XX(as<Map<MatrixXd> >(X));
     MatrixXd YY(as<Map<MatrixXd> >(Y));
 
-    LLT<MatrixXd> llt = calc_XpX_eigen(XX);
+    LLT<MatrixXd> llt = calc_XpX(XX);
 
     MatrixXd XXpY(XX.adjoint() * YY);
 
@@ -241,7 +241,7 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     MatrixXd XX(as<Map<MatrixXd> >(X));
     MatrixXd YY(as<Map<MatrixXd> >(Y));
 
-    LLT<MatrixXd> llt = calc_XpX_eigen(XX);
+    LLT<MatrixXd> llt = calc_XpX(XX);
 
     MatrixXd XXpY(XX.adjoint() * YY);
 
