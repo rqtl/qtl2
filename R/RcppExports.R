@@ -57,6 +57,18 @@ calc_resid_linreg_3d <- function(X, P) {
     .Call('qtl2scan_calc_resid_linreg_3d', PACKAGE = 'qtl2scan', X, P)
 }
 
+Rcpp_eigen_decomp <- function(A) {
+    .Call('qtl2scan_Rcpp_eigen_decomp', PACKAGE = 'qtl2scan', A)
+}
+
+Rcpp_eigen_rotation <- function(K, y, X) {
+    .Call('qtl2scan_Rcpp_eigen_rotation', PACKAGE = 'qtl2scan', K, y, X)
+}
+
+Rcpp_fitLMM <- function(Kva, y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
+    .Call('qtl2scan_Rcpp_fitLMM', PACKAGE = 'qtl2scan', Kva, y, X, reml, check_boundary, logdetXpX, tol)
+}
+
 cbind_imatrix <- function(mat1, mat2) {
     .Call('qtl2scan_cbind_imatrix', PACKAGE = 'qtl2scan', mat1, mat2)
 }
