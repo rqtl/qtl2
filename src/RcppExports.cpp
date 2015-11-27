@@ -179,6 +179,47 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Rcpp_eigen_decomp
+List Rcpp_eigen_decomp(const NumericMatrix& A);
+RcppExport SEXP qtl2scan_Rcpp_eigen_decomp(SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type A(ASEXP);
+    __result = Rcpp::wrap(Rcpp_eigen_decomp(A));
+    return __result;
+END_RCPP
+}
+// Rcpp_eigen_rotation
+List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y, const NumericMatrix& X);
+RcppExport SEXP qtl2scan_Rcpp_eigen_rotation(SEXP KSEXP, SEXP ySEXP, SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type K(KSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    __result = Rcpp::wrap(Rcpp_eigen_rotation(K, y, X));
+    return __result;
+END_RCPP
+}
+// Rcpp_fitLMM
+List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
+RcppExport SEXP qtl2scan_Rcpp_fitLMM(SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type Kva(KvaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const bool >::type reml(remlSEXP);
+    Rcpp::traits::input_parameter< const bool >::type check_boundary(check_boundarySEXP);
+    Rcpp::traits::input_parameter< const double >::type logdetXpX(logdetXpXSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(Rcpp_fitLMM(Kva, y, X, reml, check_boundary, logdetXpX, tol));
+    return __result;
+END_RCPP
+}
 // cbind_imatrix
 IntegerMatrix cbind_imatrix(const IntegerMatrix& mat1, const IntegerMatrix& mat2);
 RcppExport SEXP qtl2scan_cbind_imatrix(SEXP mat1SEXP, SEXP mat2SEXP) {

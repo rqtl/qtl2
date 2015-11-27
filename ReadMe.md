@@ -30,10 +30,10 @@ You then need to install the
 package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [jsonlite](https://cran.r-project.org/package=jsonlite),
 [data.table](https://cran.r-project.org/package=data.table),
-[qtl](http://rqtl.org), [RcppEigen](https://github.com/RcppCore/RcppEigen).
+[RcppEigen](https://github.com/RcppCore/RcppEigen).
 (Additional, secondary dependencies will also be installed)
 
-    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "qtl", "RcppEigen"))
+    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
 
 Finally, install R/qtl2 using `devtools::install_github()`.
 
