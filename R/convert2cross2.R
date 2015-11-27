@@ -22,7 +22,7 @@ function(cross)
     crosstype <- class(cross)[1]
     check_crosstype(crosstype)
     result <- list(crosstype=crosstype)
-    n.ind <- nrow(cross$geno[[1]]$data)
+    n.ind <- rqtl_nind(cross)
 
     # genetic map, and grab chrtype
     result$gmap <- rqtl_pull_map(cross)
@@ -95,24 +95,33 @@ function(cross)
     result
 }
 
+
+rqtl_nind <-
+    function(object)
+{
+    if(!any(class(object) == "cross"))
+        stop("Input should have class \"cross\".")
+
+    n.ind1 <- nrow(object$pheno)
+    n.ind2 <- sapply(object$geno,function(x) nrow(x$data))
+    if(any(n.ind2 != n.ind1))
+        stop("Different numbers of individuals in genotypes and phenotypes.")
+    n.ind1
+}
+
 # R/qtl pull.map
 rqtl_pull_map <-
-    function(cross, chr, as.table=FALSE)
+    function(cross)
 {
     if(!any(class(cross) == "cross"))
         stop("Input should have class \"cross\".")
 
-    if(!missing(chr)) cross <- subset(cross, chr=chr)
-    if(!as.table) {
-        result <- lapply(cross$geno,function(a) {
-            b <- a$map
-            class(b) <- as.character(class(a))
-            b })
-        class(result) <- "map"
-        return(result)
-    } else {
-        return(map2table(pull.map(cross, as.table=FALSE)))
-    }
+    result <- lapply(cross$geno,function(a) {
+        b <- a$map
+        class(b) <- as.character(class(a))
+        b })
+    class(result) <- "map"
+    result
 }
 
 # R/qtl getid
@@ -181,9 +190,9 @@ rqtl_getsex <-
 
             if(length(levels(temp)) == 1) {
                 if(levels(temp) == "F" || levels(temp)=="f" ||
-                   toupper(levels(temp)) == "FEMALE") sex <- rep(0,nind(cross))
+                   toupper(levels(temp)) == "FEMALE") sex <- rep(0,rqtl_nind(cross))
                 else if(levels(temp) == "M" || levels(temp)=="m" ||
-                        toupper(levels(temp)) == "MALE") sex <- rep(1,nind(cross))
+                        toupper(levels(temp)) == "MALE") sex <- rep(1,rqtl_nind(cross))
                 else
                     warning("Sex column should be coded as 0=female 1=male; sex ignored.")
             }
