@@ -1,5 +1,5 @@
-^ReadMe.md$
-^License.md$
-Makefile
+^ReadMe\.md$
+^License\.md$
+Makefile$
 ^\.travis\.yml$
 \.Rout$
