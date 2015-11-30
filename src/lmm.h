@@ -8,7 +8,7 @@
 
 struct lmm_fit {
     double hsq;
-    VectorXd beta;
+    Eigen::VectorXd beta;
     double sigmasq;
     double loglik;
     double rss;
@@ -16,40 +16,42 @@ struct lmm_fit {
 };
 
 struct calcLL_args {
-    VectorXd Kva;
-    VectorXd y;
-    MatrixXd X;
+    Eigen::VectorXd Kva;
+    Eigen::VectorXd y;
+    Eigen::MatrixXd X;
     bool reml;
     double logdetXpX;
 };
 
 struct eigenrot {
-    VectorXd Kva;
-    MatrixXd Kve;
-    MatrixXd y;
-    MatrixXd X;
+    Eigen::VectorXd Kva;
+    Eigen::MatrixXd Kve;
+    Eigen::MatrixXd y;
+    Eigen::MatrixXd X;
 };
 
 // eigen decomposition
 //    returns eigenvalues and transposed eigenvectors
-std::pair<VectorXd, MatrixXd> eigen_decomp(const MatrixXd& A);
+std::pair<Eigen::VectorXd, Eigen::MatrixXd> eigen_decomp(const Eigen::MatrixXd& A);
 
 // eigen decomposition
 //    returns list with eigenvalues and transposed eigenvectors
-List Rcpp_eigen_decomp(const NumericMatrix &A);
+Rcpp::List Rcpp_eigen_decomp(const Rcpp::NumericMatrix &A);
 
 // eigen + rotation
 // perform eigen decomposition of kinship matrix
 // and rotate phenotype and covariate matrices by transpose of eigenvectors
-struct eigenrot eigen_rotation(const MatrixXd& K, const MatrixXd& y,
-                               const MatrixXd& X);
+struct eigenrot eigen_rotation(const Eigen::MatrixXd& K,
+                               const Eigen::MatrixXd& y,
+                               const Eigen::MatrixXd& X);
 
 // eigen + rotation
-List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y,
-                         const NumericMatrix& X);
+Rcpp::List Rcpp_eigen_rotation(const Rcpp::NumericMatrix& K,
+                               const Rcpp::NumericMatrix& y,
+                               const Rcpp::NumericMatrix& X);
 
 // calculate log det X'X
-double calc_logdetXpX(const MatrixXd& X);
+double calc_logdetXpX(const Eigen::MatrixXd& X);
 
 // getMLsoln
 // for fixed value of hsq, calculate MLEs of beta and sigmasq
@@ -60,8 +62,11 @@ double calc_logdetXpX(const MatrixXd& X);
 // y     = rotated vector of phenotypes
 // X     = rotated matrix of covariates
 // reml  = whether you'll be using REML (so need to calculate log det XSX)
-struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& y,
-                         const MatrixXd& X, const bool reml);
+struct lmm_fit getMLsoln(const double hsq,
+                         const Eigen::VectorXd& Kva,
+                         const Eigen::VectorXd& y,
+                         const Eigen::MatrixXd& X,
+                         const bool reml);
 
 // calcLL
 // calculate log likelihood for fixed value of hsq
@@ -73,8 +78,12 @@ struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& 
 // X     = rotated matrix of covariates
 // reml  = boolean indicating whether to use REML (vs ML)
 // logdetXpX = log det X'X; if NA, it's calculated
-struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
-                const MatrixXd& X, const bool reml, const double logdetXpX);
+struct lmm_fit calcLL(const double hsq,
+                      const Eigen::VectorXd& Kva,
+                      const Eigen::VectorXd& y,
+                      const Eigen::MatrixXd& X,
+                      const bool reml,
+                      const double logdetXpX);
 
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args);
@@ -89,13 +98,21 @@ double negLL(const double x, struct calcLL_args *args);
 // check_boundary = if true, explicity check 0.0 and 1.0 boundaries
 // logdetXpX = log det X'X; if NA, it's calculated
 // tol   = tolerance for convergence
-struct lmm_fit fitLMM(const VectorXd& Kva, const VectorXd& y, const MatrixXd& X,
-                      const bool reml, const bool check_boundary,
-                      const double logdetXpX, const double tol);
+struct lmm_fit fitLMM(const Eigen::VectorXd& Kva,
+                      const Eigen::VectorXd& y,
+                      const Eigen::MatrixXd& X,
+                      const bool reml,
+                      const bool check_boundary,
+                      const double logdetXpX,
+                      const double tol);
 
 // fitLMM (version called from R)
-List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X,
-                 const bool reml, const bool check_boundary,
-                 const double logdetXpX, const double tol);
+Rcpp::List Rcpp_fitLMM(const Rcpp::NumericVector& Kva,
+                       const Rcpp::NumericVector& y,
+                       const Rcpp::NumericMatrix& X,
+                       const bool reml,
+                       const bool check_boundary,
+                       const double logdetXpX,
+                       const double tol);
 
 #endif // LMM_H
