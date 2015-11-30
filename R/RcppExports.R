@@ -137,3 +137,35 @@ scan_hk_onechr_nocovar <- function(genoprobs, pheno, tol = 1e-12) {
     .Call('qtl2scan_scan_hk_onechr_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, tol)
 }
 
+print_numvec <- function(x) {
+    invisible(.Call('qtl2scan_print_numvec', PACKAGE = 'qtl2scan', x))
+}
+
+print_intvec <- function(x) {
+    invisible(.Call('qtl2scan_print_intvec', PACKAGE = 'qtl2scan', x))
+}
+
+print_enumvec <- function(x) {
+    invisible(.Call('qtl2scan_print_enumvec', PACKAGE = 'qtl2scan', x))
+}
+
+print_eintvec <- function(x) {
+    invisible(.Call('qtl2scan_print_eintvec', PACKAGE = 'qtl2scan', x))
+}
+
+print_nummatdim <- function(x) {
+    invisible(.Call('qtl2scan_print_nummatdim', PACKAGE = 'qtl2scan', x))
+}
+
+print_intmatdim <- function(x) {
+    invisible(.Call('qtl2scan_print_intmatdim', PACKAGE = 'qtl2scan', x))
+}
+
+print_enummatdim <- function(x) {
+    invisible(.Call('qtl2scan_print_enummatdim', PACKAGE = 'qtl2scan', x))
+}
+
+print_eintmatdim <- function(x) {
+    invisible(.Call('qtl2scan_print_eintmatdim', PACKAGE = 'qtl2scan', x))
+}
+

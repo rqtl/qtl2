@@ -440,3 +440,83 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// print_numvec
+void print_numvec(const NumericVector& x);
+RcppExport SEXP qtl2scan_print_numvec(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    print_numvec(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_intvec
+void print_intvec(const IntegerVector& x);
+RcppExport SEXP qtl2scan_print_intvec(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP);
+    print_intvec(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_enumvec
+void print_enumvec(const NumericVector& x);
+RcppExport SEXP qtl2scan_print_enumvec(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
+    print_enumvec(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_eintvec
+void print_eintvec(const IntegerVector& x);
+RcppExport SEXP qtl2scan_print_eintvec(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type x(xSEXP);
+    print_eintvec(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_nummatdim
+void print_nummatdim(const NumericMatrix& x);
+RcppExport SEXP qtl2scan_print_nummatdim(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    print_nummatdim(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_intmatdim
+void print_intmatdim(const IntegerMatrix& x);
+RcppExport SEXP qtl2scan_print_intmatdim(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type x(xSEXP);
+    print_intmatdim(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_enummatdim
+void print_enummatdim(const NumericMatrix& x);
+RcppExport SEXP qtl2scan_print_enummatdim(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    print_enummatdim(x);
+    return R_NilValue;
+END_RCPP
+}
+// print_eintmatdim
+void print_eintmatdim(const IntegerMatrix& x);
+RcppExport SEXP qtl2scan_print_eintmatdim(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type x(xSEXP);
+    print_eintmatdim(x);
+    return R_NilValue;
+END_RCPP
+}
