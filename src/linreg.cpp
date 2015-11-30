@@ -7,8 +7,8 @@
 using namespace Rcpp;
 using namespace Eigen;
 
-#include "linreg.h"
 #include "linreg_eigen.h"
+#include "linreg.h"
 
 // Calculate vector of residual sum of squares (RSS) from linear regression of Y vs X
 // [[Rcpp::export]]
