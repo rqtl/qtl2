@@ -41,10 +41,12 @@ List Rcpp_eigen_decomp(const NumericMatrix &A);
 // eigen + rotation
 // perform eigen decomposition of kinship matrix
 // and rotate phenotype and covariate matrices by transpose of eigenvectors
-struct eigenrot eigen_rotation(const MatrixXd& K, const MatrixXd& y, const MatrixXd& X);
+struct eigenrot eigen_rotation(const MatrixXd& K, const MatrixXd& y,
+                               const MatrixXd& X);
 
 // eigen + rotation
-List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y, const NumericMatrix& X);
+List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y,
+                         const NumericMatrix& X);
 
 // calculate log det X'X
 double calc_logdetXpX(const MatrixXd& X);

@@ -37,7 +37,8 @@ List Rcpp_eigen_decomp(const NumericMatrix& A)
 // eigen + rotation
 // perform eigen decomposition of kinship matrix
 // and rotate phenotype and covariate matrices by transpose of eigenvectors
-struct eigenrot eigen_rotation(const MatrixXd& K, const MatrixXd& y, const MatrixXd& X)
+struct eigenrot eigen_rotation(const MatrixXd& K, const MatrixXd& y,
+                               const MatrixXd& X)
 {
     const std::pair<VectorXd,MatrixXd> e = eigen_decomp(K);
     const MatrixXd yrot = e.second * y;
@@ -54,7 +55,8 @@ struct eigenrot eigen_rotation(const MatrixXd& K, const MatrixXd& y, const Matri
 
 // eigen + rotation
 // [[Rcpp::export]]
-List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y, const NumericMatrix& X)
+List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y,
+                         const NumericMatrix& X)
 {
     const MatrixXd KK(as<Map<MatrixXd> >(K));
     const MatrixXd yy(as<Map<MatrixXd> >(y));
