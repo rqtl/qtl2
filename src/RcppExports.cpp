@@ -44,26 +44,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // fit_linreg_eigenqr
-List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP) {
+List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    __result = Rcpp::wrap(fit_linreg_eigenqr(X, y));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(fit_linreg_eigenqr(X, y, tol));
     return __result;
 END_RCPP
 }
 // calc_rss_eigenqr
-double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_calc_rss_eigenqr(SEXP XSEXP, SEXP ySEXP) {
+double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_calc_rss_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    __result = Rcpp::wrap(calc_rss_eigenqr(X, y));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_rss_eigenqr(X, y, tol));
     return __result;
 END_RCPP
 }
@@ -80,14 +82,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_mvrss_eigenqr
-NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_calc_mvrss_eigenqr(SEXP XSEXP, SEXP YSEXP) {
+NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
+RcppExport SEXP qtl2scan_calc_mvrss_eigenqr(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    __result = Rcpp::wrap(calc_mvrss_eigenqr(X, Y));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_mvrss_eigenqr(X, Y, tol));
     return __result;
 END_RCPP
 }
@@ -104,14 +107,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_resid_eigenqr
-NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_calc_resid_eigenqr(SEXP XSEXP, SEXP YSEXP) {
+NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
+RcppExport SEXP qtl2scan_calc_resid_eigenqr(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    __result = Rcpp::wrap(calc_resid_eigenqr(X, Y));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_resid_eigenqr(X, Y, tol));
     return __result;
 END_RCPP
 }
@@ -144,38 +148,41 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_rss_linreg
-NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP) {
+NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
+RcppExport SEXP qtl2scan_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    __result = Rcpp::wrap(calc_rss_linreg(X, Y));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_rss_linreg(X, Y, tol));
     return __result;
 END_RCPP
 }
 // calc_resid_linreg
-NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP) {
+NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
+RcppExport SEXP qtl2scan_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    __result = Rcpp::wrap(calc_resid_linreg(X, Y));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_resid_linreg(X, Y, tol));
     return __result;
 END_RCPP
 }
 // calc_resid_linreg_3d
-NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P);
-RcppExport SEXP qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP) {
+NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P, const double tol);
+RcppExport SEXP qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
-    __result = Rcpp::wrap(calc_resid_linreg_3d(X, P));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_resid_linreg_3d(X, P, tol));
     return __result;
 END_RCPP
 }
@@ -421,14 +428,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // scan_hk_onechr_nocovar
-NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix pheno);
-RcppExport SEXP qtl2scan_scan_hk_onechr_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP) {
+NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix pheno, const double tol);
+RcppExport SEXP qtl2scan_scan_hk_onechr_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericVector >::type genoprobs(genoprobsSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type pheno(phenoSEXP);
-    __result = Rcpp::wrap(scan_hk_onechr_nocovar(genoprobs, pheno));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(scan_hk_onechr_nocovar(genoprobs, pheno, tol));
     return __result;
 END_RCPP
 }

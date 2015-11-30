@@ -64,7 +64,8 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 
 // least squares by QR decomposition with column pivoting
 // [[Rcpp::export]]
-List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y)
+List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
+                        const double tol=1e-12)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
@@ -75,6 +76,7 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y)
     const unsigned int n = XX.rows(), p = XX.cols();
 
     CPivQR PQR( XX );
+    PQR.setThreshold(tol); // set tolerance
     Permutation Pmat( PQR.colsPermutation() );
     const unsigned int r = PQR.rank();
 
@@ -125,7 +127,8 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y)
 // least squares by QR decomposition with column pivoting
 // return just the residual sum of squares
 // [[Rcpp::export]]
-double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y)
+double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
+                        const double tol=1e-12)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     VectorXd yy(as<Map<VectorXd> >(y));
@@ -136,6 +139,7 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y)
     const unsigned int n = XX.rows(), p = XX.cols();
 
     CPivQR PQR = XX;
+    PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const unsigned int r = PQR.rank();
 
@@ -185,7 +189,8 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 // least squares by QR decomposition with column pivoting, with matrix Y
 // return vector of RSS
 // [[Rcpp::export]]
-NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
+NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
+                                 const double tol=1e-12)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     MatrixXd YY(as<Map<MatrixXd> >(Y));
@@ -197,6 +202,7 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
     const unsigned int k = YY.cols();
 
     CPivQR PQR = XX;
+    PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const unsigned int r = PQR.rank();
 
@@ -259,7 +265,8 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 // least squares by QR decomposition with column pivoting, with matrix Y
 // return matrix of residuals
 // [[Rcpp::export]]
-NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
+NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
+                                 const double tol=1e-12)
 {
     MatrixXd XX(as<Map<MatrixXd> >(X));
     MatrixXd YY(as<Map<MatrixXd> >(Y));
@@ -271,6 +278,7 @@ NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y)
     const unsigned int k = YY.cols();
 
     CPivQR PQR = XX;
+    PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const unsigned int r = PQR.rank();
 
