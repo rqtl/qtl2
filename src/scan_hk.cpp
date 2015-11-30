@@ -18,18 +18,18 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix pheno)
 {
-    int n_ind = pheno.rows();
-    int n_phe = pheno.cols();
+    const unsigned int n_ind = pheno.rows();
+    const unsigned int n_phe = pheno.cols();
     Dimension d = genoprobs.attr("dim");
-    int n_pos = d[2];
-    int n_gen = d[1];
-    int x_size = n_ind * n_gen;
+    const unsigned int n_pos = d[2];
+    const unsigned int n_gen = d[1];
+    const unsigned int x_size = n_ind * n_gen;
     // check that d[0] == n_ind;
 
     NumericMatrix result(n_phe, n_pos);
     NumericMatrix X(n_ind, n_gen);
 
-    for(int i=0, offset=0; i<n_pos; i++, offset += x_size) {
+    for(unsigned int i=0, offset=0; i<n_pos; i++, offset += x_size) {
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 

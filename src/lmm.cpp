@@ -72,14 +72,14 @@ List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y, const N
 double calc_logdetXpX(const MatrixXd& X)
 {
     const MatrixXd XpX(calc_XpX(X)); // calc X'X
-    const int p = X.cols();
+    const unsigned int p = X.cols();
 
     // eigen decomposition of X'X
     const std::pair<VectorXd, MatrixXd> e = eigen_decomp(XpX);
 
     // calculate log det X'X
     double result=0.0;
-    for(int i=0; i<p; i++) result += log(e.first[i]);
+    for(unsigned int i=0; i<p; i++) result += log(e.first[i]);
 
     return result;
 }
@@ -96,19 +96,19 @@ double calc_logdetXpX(const MatrixXd& X)
 struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& y,
                          const MatrixXd& X)
 {
-    const int n = Kva.size();
-    const int p = X.cols();
+    const unsigned int n = Kva.size();
+    const unsigned int p = X.cols();
     struct lmm_fit result;
 
     // diagonal matrix of weights
     VectorXd S(n);
-    for(int i=0; i<n; i++)
+    for(unsigned int i=0; i<n; i++)
         S[i] = 1.0/(hsq*Kva[i] + 1.0-hsq);
 
     // calculate a bunch of matrices
     const MatrixXd XSt = X.transpose() * S.asDiagonal();
     MatrixXd ySt(1,n);
-    for(int i=0; i<n; i++) ySt(0,i) = y[i]*S[i];
+    for(unsigned int i=0; i<n; i++) ySt(0,i) = y[i]*S[i];
     const MatrixXd XSX = XSt * X;
     const MatrixXd XSy = XSt * y;
     const MatrixXd ySy = ySt * y;
@@ -117,7 +117,7 @@ struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& 
     const std::pair<VectorXd, MatrixXd>e = eigen_decomp(XSX);
     double logdetXSX=0.0;
     VectorXd inv_evals(p);
-    for(int i=0; i<p; i++) {
+    for(unsigned int i=0; i<p; i++) {
         inv_evals[i] = 1.0/e.first[i];
         logdetXSX += log(e.first[i]);
     }
@@ -148,15 +148,15 @@ struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& 
 struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
                 const MatrixXd& X, const bool reml=true, const double logdetXpX=NA_REAL)
 {
-    const int n = Kva.size();
-    const int p = X.cols();
+    const unsigned int n = Kva.size();
+    const unsigned int p = X.cols();
 
     // estimate beta and sigma^2
     struct lmm_fit ml_soln = getMLsoln(hsq, Kva, y, X);
 
     // calculate log likelihood
     double loglik = (double)n*log(ml_soln.rss);
-    for(int i=0; i<n; i++)
+    for(unsigned int i=0; i<n; i++)
         loglik += log(hsq*Kva[i] + 1.0 - hsq);
     loglik *= -0.5;
 

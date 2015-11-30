@@ -28,8 +28,8 @@ NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y)
 // [[Rcpp::export]]
 NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P)
 {
-    int nrowx = X.rows();
-    int sizep = P.size();
+    const unsigned int nrowx = X.rows();
+    const unsigned int sizep = P.size();
 
     NumericMatrix pr(nrowx, sizep/nrowx);
     std::copy(P.begin(), P.end(), pr.begin()); // FIXME I shouldn't need to copy
