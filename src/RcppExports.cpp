@@ -320,6 +320,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// find_matching_cols
+NumericVector find_matching_cols(const NumericMatrix& mat, const double tol);
+RcppExport SEXP qtl2scan_find_matching_cols(SEXP matSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(find_matching_cols(mat, tol));
+    return __result;
+END_RCPP
+}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {

@@ -18,4 +18,10 @@ NumericMatrix rbind_nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2
 NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat2,
                              const NumericMatrix& mat3);
 
+// find columns that exactly match previous columns
+// returns numeric vector with -1 indicating no match to an earlier column and
+//                             >0 indicating matches that earlier column
+//                                (indexes starting at 1)
+NumericVector find_matching_cols(const NumericMatrix& mat, const double tol);
+
 #endif // MATRIX_H

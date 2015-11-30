@@ -202,3 +202,42 @@ NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat
 
     return result;
 }
+
+// find columns that exactly match previous columns
+// returns numeric vector with -1 indicating no match to an earlier column and
+//                             >0 indicating matches that earlier column
+//                                (indexes starting at 1)
+// [[Rcpp::export]]
+NumericVector find_matching_cols(const NumericMatrix& mat, const double tol=1e-8)
+{
+    const unsigned int ncol = mat.cols();
+    const unsigned int nrow = mat.rows();
+    NumericVector result(ncol);
+
+    if(ncol < 1) Rf_error("Matrix has 0 columns");
+
+    result[0] = -1;
+    if(ncol==1) return(result);
+
+    for(unsigned int i=1; i<ncol; i++) {
+        result[i] = -1;
+        for(unsigned int j=0; j<i; j++) {
+            double max_diff=0.0;
+            for(unsigned int k=0; k<nrow; k++) {
+                const bool na_i = NumericVector::is_na(mat(k,i));
+                const bool na_j = NumericVector::is_na(mat(k,j));
+                // if both missing, return 0.0
+                // if one missing but not other, return 1.0
+                // otherwise, return difference
+                double d = na_i != na_j ? 1.0 : ((na_i && na_j) ? 0.0 : fabs(mat(k,i) - mat(k,j)));
+                if(d > max_diff) max_diff = d;
+            }
+            if(max_diff < tol) {
+                result[i] = j+1;
+                break;
+            }
+        }
+    }
+
+    return(result);
+}

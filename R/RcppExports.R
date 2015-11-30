@@ -101,6 +101,10 @@ rbind_3nmatrix <- function(mat1, mat2, mat3) {
     .Call('qtl2scan_rbind_3nmatrix', PACKAGE = 'qtl2scan', mat1, mat2, mat3)
 }
 
+find_matching_cols <- function(mat, tol = 1e-8) {
+    .Call('qtl2scan_find_matching_cols', PACKAGE = 'qtl2scan', mat, tol)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2scan_random_int', PACKAGE = 'qtl2scan', n, low, high)
 }
