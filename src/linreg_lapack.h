@@ -2,6 +2,8 @@
 #ifndef LINREG_LAPACK_H
 #define LINREG_LAPACK_H
 
+#include <Rcpp.h>
+
 // perform linear regression via LAPACK
 // This does the major work; called by calc_rss_lapack or calc_resid_lapack
 //

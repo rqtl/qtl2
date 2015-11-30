@@ -2,6 +2,8 @@
 #ifndef SCAN_HK_H
 #define SCAN_HK_H
 
+#include <Rcpp.h>
+
 // Scan a single chromosome with no additive covariates (not even intercept)
 //
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)

@@ -2,6 +2,8 @@
 #ifndef LINREG_H
 #define LINREG_H
 
+#include <RcppEigen.h>
+
 // Calculate vector of residual sum of squares (RSS) from linear regression of Y vs X
 Rcpp::NumericVector calc_rss_linreg(const Rcpp::NumericMatrix& X,
                                     const Rcpp::NumericMatrix& Y,

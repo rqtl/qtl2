@@ -1,11 +1,11 @@
 // linear regression via LAPACK
 
+#include "linreg_lapack.h"
 #include <Rcpp.h>
 #include <R_ext/Lapack.h>
 
 using namespace Rcpp;
 
-#include "linreg_lapack.h"
 
 // perform linear regression via LAPACK
 // This does the major work; called by calc_rss_lapack or calc_resid_lapack

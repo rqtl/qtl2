@@ -1,5 +1,6 @@
 // random number generation (e.g., permutations)
 
+#include "random.h"
 #include <vector>
 #include <map>
 #include <Rcpp.h>
@@ -7,7 +8,6 @@ using namespace Rcpp;
 using std::vector;
 using std::map;
 
-#include "random.h"
 
 // random integer from {low, low+1, ..., high}
 int random_int(const int low, const int high)

@@ -1,10 +1,12 @@
 // Matrix utilities
 
+// [[Rcpp::depends(RcppEigen)]]
+
+#include "matrix.h"
 #include <RcppEigen.h>
 using namespace Rcpp;
 using namespace Eigen;
 
-#include "matrix.h"
 
 // cbind two matrices
 // [[Rcpp::export]]

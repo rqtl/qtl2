@@ -6,6 +6,9 @@
 #ifndef LMM_H
 #define LMM_H
 
+#include <math.h>
+#include <RcppEigen.h>
+
 struct lmm_fit {
     double hsq;
     Eigen::VectorXd beta;

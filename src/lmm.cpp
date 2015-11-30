@@ -5,6 +5,7 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 
+#include "lmm.h"
 #include <math.h>
 #include <RcppEigen.h>
 
@@ -13,7 +14,6 @@ using namespace Eigen;
 
 #include "brent_fmin.h"
 #include "linreg_eigen.h" // contains calc_XpX
-#include "lmm.h"
 
 // eigen decomposition
 // returns eigenvalues and *transposed* eigenvectors

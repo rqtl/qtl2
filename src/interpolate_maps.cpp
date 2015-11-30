@@ -1,10 +1,10 @@
 // Utilities to interpolate between genetic and physical maps
 
+#include "interpolate_maps.h"
 #include <exception>
 #include <Rcpp.h>
 using namespace Rcpp;
 
-#include "interpolate_maps.h"
 
 // find interval in map that contains pos
 // [-1 if to left, map.size()-1 if to right]

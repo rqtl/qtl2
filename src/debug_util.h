@@ -2,6 +2,8 @@
 #ifndef DEBUG_UTIL_H
 #define DEBUG_UTIL_H
 
+#include <RcppEigen.h>
+
 // print a vector
 void print_vector(const Rcpp::NumericVector& x);
 void print_vector(const Rcpp::IntegerVector& x);

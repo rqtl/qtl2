@@ -2,6 +2,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <RcppEigen.h>
+
 // cbind two or three matrices
 Rcpp::IntegerMatrix cbind_imatrix(const Rcpp::IntegerMatrix& mat1,
                                   const Rcpp::IntegerMatrix& mat2);

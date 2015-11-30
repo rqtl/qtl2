@@ -2,12 +2,12 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 
+#include "linreg_eigen.h"
 #include <RcppEigen.h>
 
 using namespace Rcpp;
 using namespace Eigen;
 
-#include "linreg_eigen.h"
 
 // calc X'X
 MatrixXd calc_XpX(const MatrixXd& X)

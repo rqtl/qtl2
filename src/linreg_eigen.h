@@ -2,6 +2,8 @@
 #ifndef LINREG_EIGEN_H
 #define LINREG_EIGEN_H
 
+#include <RcppEigen.h>
+
 // calc X'X
 Eigen::MatrixXd calc_XpX(const Eigen::MatrixXd& A);
 
