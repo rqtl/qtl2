@@ -24,4 +24,8 @@ NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat
 //                                (indexes starting at 1)
 NumericVector find_matching_cols(const NumericMatrix& mat, const double tol);
 
+// find set of linearly independent columns in a matrix
+// returns a vector of column indices (starting at 1)
+IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol);
+
 #endif // MATRIX_H

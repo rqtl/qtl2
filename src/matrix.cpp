@@ -1,7 +1,8 @@
 // Matrix utilities
 
-#include <Rcpp.h>
+#include <RcppEigen.h>
 using namespace Rcpp;
+using namespace Eigen;
 
 #include "matrix.h"
 
@@ -208,7 +209,7 @@ NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat
 //                             >0 indicating matches that earlier column
 //                                (indexes starting at 1)
 // [[Rcpp::export]]
-NumericVector find_matching_cols(const NumericMatrix& mat, const double tol=1e-8)
+NumericVector find_matching_cols(const NumericMatrix& mat, const double tol=1e-12)
 {
     const unsigned int ncol = mat.cols();
     const unsigned int nrow = mat.rows();
@@ -239,5 +240,40 @@ NumericVector find_matching_cols(const NumericMatrix& mat, const double tol=1e-8
         }
     }
 
-    return(result);
+    return result;
+}
+
+// find set of linearly independent columns in a matrix
+// returns a vector of column indices (starting at 1)
+// [[Rcpp::export]]
+IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-12)
+{
+    const unsigned int ncol=mat.cols();
+
+    // QR decomp with column pivoting
+    MatrixXd XX(as<Map<MatrixXd> >(mat));
+    typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
+    typedef CPivQR::PermutationType Permutation;
+    CPivQR PQR = XX;
+    PQR.setThreshold(tol);
+
+    // pivot matrix, treated as regular matrix
+    Permutation Pmat = PQR.colsPermutation();
+    MatrixXd PPmat(Pmat);
+
+    // rank of input matrix
+    const unsigned int rank=PQR.rank();
+    IntegerVector result(rank);
+
+    // for each column, find the row with a 1
+    for(unsigned int j=0; j<rank; j++) {
+        for(unsigned int i=0; i<ncol; i++) {
+            if(fabs(PPmat(i,j) - 1.0) < tol) {
+                result[j] = i+1;
+                break;
+            }
+        }
+    }
+
+    return result;
 }
