@@ -4,8 +4,9 @@
 #
 # addcovar and intcovar are two matrices
 # intcovar columns should all be within the addcovar columns
+# tol is tolerance for determining matching columns
 force_intcovar <-
-    function(addcovar=NULL, intcovar=NULL)
+    function(addcovar=NULL, intcovar=NULL, tol=1e-12)
 {
     if(is.null(intcovar)) # no intcovar, so return addcovar w/o change
         return(addcovar)
@@ -22,7 +23,7 @@ force_intcovar <-
 
     # look for matching columns
     full <- cbind(addcovar, intcovar)
-    has_match <- find_matching_cols(full)
+    has_match <- find_matching_cols(full, tol)
     if(any(has_match > 0))
         full <- full[, has_match<0, drop=FALSE]
 
