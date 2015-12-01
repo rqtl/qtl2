@@ -63,3 +63,73 @@ test_that("rbind_nmatrix works", {
     expect_error(rbind_3nmatrix(x1, x2, t(x3)))
 
 })
+
+test_that("formX_intcovar works", {
+
+    set.seed(20151130)
+    n <- 100
+    addcovar <- cbind(rep(1,n), sample(0:1, n, replace=TRUE))
+
+    # create a prob matrix
+    prob <- matrix(abs(rnorm(n*3)), ncol=3)
+    prob <- (prob/rowSums(prob))[,-1]
+
+    intcovar <- addcovar[,2,drop=FALSE]
+
+    X <- formX_intcovar(prob, addcovar, intcovar)
+    expected <- cbind(addcovar, prob, prob*intcovar[,1]) # the [,1] makes intcovar an ordinary vector
+    expect_equal(X, expected)
+
+    # no interactive covariates
+    expect_equal(formX_intcovar(prob, addcovar, matrix(ncol=0, nrow=n)), cbind(addcovar, prob))
+
+    # neither interactive nor additive covariates
+    expect_equal(formX_intcovar(prob, matrix(ncol=0, nrow=n), matrix(ncol=0, nrow=n)), prob)
+
+    # mismatch in rows
+    expect_error(formX_intcovar(prob, addcovar[-n,], intcovar))
+    expect_error(formX_intcovar(prob, addcovar, intcovar[-1,]))
+
+    # two interactive covariates
+    addcovar <- cbind(addcovar, sample(0:1, n, replace=TRUE))
+
+    intcovar <- addcovar[,-1]
+
+    X <- formX_intcovar(prob, addcovar, intcovar)
+    expected <- cbind(addcovar, prob, prob*intcovar[,1], prob*intcovar[,2])
+    expect_equal(X, expected)
+
+})
+
+test_that("weighted_matrix works", {
+
+    set.seed(20151201)
+    n <- 100
+    p <- 10
+    X <- matrix(rnorm(n*p), ncol=p)
+    w <- runif(n, 1, 4)
+
+    result <- weighted_matrix(X, w)
+
+    expect_equal(result, X*w)
+    for(i in 1:p) expect_equal(result[,i], X[,i]*w)
+
+})
+
+test_that("weighted_3darray works", {
+
+    set.seed(20151201)
+    n <- 100
+    p <- 3
+    q <- 8
+    X <- array(rnorm(n*p*q), dim=c(n, p, q))
+    w <- runif(n, 1, 4)
+
+    result <- weighted_3darray(X, w)
+
+    expect_equal(result, X*w)
+    for(i in 1:p)
+        for(j in 1:q)
+            expect_equal(result[,i,j], X[,i,j]*w)
+
+})

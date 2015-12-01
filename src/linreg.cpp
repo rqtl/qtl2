@@ -32,13 +32,15 @@ NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& 
                                    const double tol=1e-12)
 {
     const unsigned int nrowx = X.rows();
-    const unsigned int sizep = P.size();
+    const Dimension d = P.attr("dim");
+    if(d[0] != nrowx)
+        throw std::range_error("nrow(X) != nrow(P)");
 
-    NumericMatrix pr(nrowx, sizep/nrowx);
+    NumericMatrix pr(nrowx, d[1]*d[2]);
     std::copy(P.begin(), P.end(), pr.begin()); // FIXME I shouldn't need to copy
 
     NumericMatrix result = calc_resid_eigenqr(X, pr, tol);
-    result.attr("dim") = P.attr("dim");
+    result.attr("dim") = d;
 
     return result;
 }

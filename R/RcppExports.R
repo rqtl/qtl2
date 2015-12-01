@@ -109,6 +109,18 @@ find_lin_indep_cols <- function(mat, tol = 1e-12) {
     .Call('qtl2scan_find_lin_indep_cols', PACKAGE = 'qtl2scan', mat, tol)
 }
 
+formX_intcovar <- function(probs, addcovar, intcovar) {
+    .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar)
+}
+
+weighted_matrix <- function(mat, weights) {
+    .Call('qtl2scan_weighted_matrix', PACKAGE = 'qtl2scan', mat, weights)
+}
+
+weighted_3darray <- function(array, weights) {
+    .Call('qtl2scan_weighted_3darray', PACKAGE = 'qtl2scan', array, weights)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2scan_random_int', PACKAGE = 'qtl2scan', n, low, high)
 }
@@ -135,5 +147,13 @@ permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
 
 scan_hk_onechr_nocovar <- function(genoprobs, pheno, tol = 1e-12) {
     .Call('qtl2scan_scan_hk_onechr_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, tol)
+}
+
+scan_hk_onechr <- function(genoprobs, pheno, addcovar, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, tol)
+}
+
+scan_hk_onechr_weighted <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_weighted', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
 }
 
