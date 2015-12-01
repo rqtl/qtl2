@@ -161,3 +161,7 @@ scan_hk_onechr_weighted <- function(genoprobs, pheno, addcovar, weights, tol = 1
     .Call('qtl2scan_scan_hk_onechr_weighted', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
 }
 
+scan_hk_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, tol)
+}
+

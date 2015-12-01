@@ -66,8 +66,6 @@ NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix
     if(n_ind != addcovar.rows())
         throw std::range_error("nrow(pheno) != nrow(addcovar)");
 
-    NumericMatrix result(n_phe, n_pos);
-
     NumericVector genoprobs_resid = calc_resid_linreg_3d(addcovar, genoprobs, tol);
     NumericMatrix pheno_resid = calc_resid_linreg(addcovar, pheno, tol);
 
@@ -100,9 +98,6 @@ NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const Nume
     if(n_ind != weights.size())
         throw std::range_error("nrow(pheno) != length(weights)");
 
-    // to contain the result
-    NumericMatrix result(n_phe, n_pos);
-
     // multiply everything by the (square root) of the weights
     // (weights should ALREADY be the square-root of the real weights)
     NumericMatrix addcovar_wt = weighted_matrix(addcovar, weights);
@@ -115,4 +110,45 @@ NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const Nume
 
     // now the scan
     return scan_hk_onechr_nocovar(genoprobs_wt, pheno_wt, tol);
+}
+
+// Scan a single chromosome with interactive covariates
+// this version should be fast but requires more memory
+// (since we first expand the genotype probabilities to probs x intcovar)
+//
+// genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
+// pheno     = matrix of numeric phenotypes (individuals x phenotypes)
+//             (no missing data allowed)
+// addcovar  = additive covariates (an intercept, at least)
+// intcovar  = interactive covariates (should also be included in addcovar)
+//
+// output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
+//
+// [[Rcpp::export]]
+NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs,
+                                              const NumericMatrix& pheno,
+                                              const NumericMatrix& addcovar,
+                                              const NumericMatrix& intcovar,
+                                              const double tol=1e-12)
+{
+    const unsigned int n_ind = pheno.rows();
+    const unsigned int n_phe = pheno.cols();
+    const Dimension d = genoprobs.attr("dim");
+    const unsigned int n_pos = d[2];
+    if(n_ind != d[0])
+        throw std::range_error("nrow(pheno) != nrow(genoprobs)");
+    if(n_ind != addcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(addcovar)");
+    if(n_ind != intcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(intcovar)");
+
+    // expand genotype probabilities to include geno x interactive covariate
+    NumericVector genoprobs_rev = expand_genoprobs_intcovar(genoprobs, intcovar);
+
+    // regress out the additive covariates
+    genoprobs_rev = calc_resid_linreg_3d(addcovar, genoprobs_rev, tol);
+    NumericMatrix pheno_rev = calc_resid_linreg(addcovar, pheno, tol);
+
+    // genotype can
+    return scan_hk_onechr_nocovar(genoprobs_rev, pheno_rev, tol);
 }
