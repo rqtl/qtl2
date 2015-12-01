@@ -441,13 +441,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // scan_hk_onechr_nocovar
-NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix pheno, const double tol);
+NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const NumericMatrix& pheno, const double tol);
 RcppExport SEXP qtl2scan_scan_hk_onechr_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type genoprobs(genoprobsSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type pheno(phenoSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(scan_hk_onechr_nocovar(genoprobs, pheno, tol));
     return __result;

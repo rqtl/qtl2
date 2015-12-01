@@ -16,7 +16,7 @@ using namespace Rcpp;
 // output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
 //
 // [[Rcpp::export]]
-NumericMatrix scan_hk_onechr_nocovar(NumericVector genoprobs, NumericMatrix pheno,
+NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const NumericMatrix& pheno,
                                      const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
