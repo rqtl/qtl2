@@ -61,7 +61,6 @@ NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix
     const unsigned int n_phe = pheno.cols();
     const Dimension d = genoprobs.attr("dim");
     const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -94,7 +93,6 @@ NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const Nume
     const unsigned int n_phe = pheno.cols();
     const Dimension d = genoprobs.attr("dim");
     const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
