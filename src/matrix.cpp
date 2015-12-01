@@ -282,28 +282,39 @@ IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-
 
 // form X matrix with intcovar
 // [[Rcpp::export]]
-NumericMatrix formX_intcovar(const NumericMatrix& probs,
+NumericMatrix formX_intcovar(const NumericVector& probs,
                              const NumericMatrix& addcovar,
-                             const NumericMatrix& intcovar)
+                             const NumericMatrix& intcovar,
+                             const int position) // with indexes starting at 0
 {
-    const unsigned int nrow  = probs.rows();
-    const unsigned int nprob = probs.cols();
+
+    const Dimension d = probs.attr("dim");
+    const unsigned int nrow  = d[0];
+    const unsigned int ngen = d[1];
+    const unsigned int recsize = nrow*ngen;
+    const unsigned int offset = recsize*position;
     const unsigned int nadd  = addcovar.cols();
     const unsigned int nint  = intcovar.cols();
 
+    NumericMatrix result(nrow, nadd + ngen*(nint+1));
+
+    if(position < 0 || position >= d[2])
+        throw std::range_error("position out of range of 0 .. (n_pos-1)");
     if(addcovar.rows() != nrow)
         throw std::range_error("nrow(addcovar) != nrow(probs)");
     if(intcovar.rows() != nrow)
         throw std::range_error("nrow(intcovar) != nrow(probs)");
 
-    NumericMatrix result(nrow,nadd+nprob+nprob*nint);
     std::copy(addcovar.begin(), addcovar.end(), result.begin());
-    std::copy(probs.begin(), probs.end(), result.begin() + nrow*nadd);
+    std::copy(probs.begin()+offset,
+              probs.begin()+offset+recsize,
+              result.begin() + nrow*nadd);
 
-    for(unsigned int i=0, rescol=nprob+nadd; i<nint; i++) {
-        for(unsigned int j=0; j<nprob; j++, rescol++) {
-            for(unsigned int k=0; k<nrow; k++)
-                result(k,rescol) = probs(k,j)*intcovar(k,i);
+    for(unsigned int i=0, rescol=ngen+nadd; i<nint; i++) {
+        for(unsigned int j=0; j<ngen; j++, rescol++) {
+            for(unsigned int k=0; k<nrow; k++) {
+                result(k,rescol) = probs[offset + k + j*nrow] * intcovar(k,i);
+            }
         }
     }
 

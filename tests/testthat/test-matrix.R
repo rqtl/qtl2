@@ -67,36 +67,43 @@ test_that("rbind_nmatrix works", {
 test_that("formX_intcovar works", {
 
     set.seed(20151130)
-    n <- 100
-    addcovar <- cbind(rep(1,n), sample(0:1, n, replace=TRUE))
 
     # create a prob matrix
-    prob <- matrix(abs(rnorm(n*3)), ncol=3)
-    prob <- (prob/rowSums(prob))[,-1]
+    library(qtl)
+    data(fake.f2)
+    prob <- aperm(calc.genoprob(fake.f2["2",], step=5)$geno[["2"]]$prob[,,-1],
+                  c(1,3,2))
+    dimnames(prob) <- NULL
 
+    n <- nind(fake.f2)
+    addcovar <- cbind(rep(1,n), sample(0:1, n, replace=TRUE))
     intcovar <- addcovar[,2,drop=FALSE]
 
-    X <- formX_intcovar(prob, addcovar, intcovar)
-    expected <- cbind(addcovar, prob, prob*intcovar[,1]) # the [,1] makes intcovar an ordinary vector
+    X <- formX_intcovar(prob, addcovar, intcovar, 0)
+    expected <- cbind(addcovar, prob[,,1], prob[,,1]*intcovar[,1]) # the [,1] makes intcovar an ordinary vector
+    expect_equal(X, expected)
+
+    X <- formX_intcovar(prob, addcovar, intcovar, 5)
+    expected <- cbind(addcovar, prob[,,6], prob[,,6]*intcovar[,1]) # the [,1] makes intcovar an ordinary vector
     expect_equal(X, expected)
 
     # no interactive covariates
-    expect_equal(formX_intcovar(prob, addcovar, matrix(ncol=0, nrow=n)), cbind(addcovar, prob))
+    expect_equal(formX_intcovar(prob, addcovar, matrix(ncol=0, nrow=n), 2), cbind(addcovar, prob[,,3]))
 
     # neither interactive nor additive covariates
-    expect_equal(formX_intcovar(prob, matrix(ncol=0, nrow=n), matrix(ncol=0, nrow=n)), prob)
+    expect_equal(formX_intcovar(prob, matrix(ncol=0, nrow=n), matrix(ncol=0, nrow=n), 3), prob[,,4])
 
     # mismatch in rows
-    expect_error(formX_intcovar(prob, addcovar[-n,], intcovar))
-    expect_error(formX_intcovar(prob, addcovar, intcovar[-1,]))
+    expect_error(formX_intcovar(prob, addcovar[-n,], intcovar, 0))
+    expect_error(formX_intcovar(prob, addcovar, intcovar[-1,], 2))
 
     # two interactive covariates
     addcovar <- cbind(addcovar, sample(0:1, n, replace=TRUE))
 
     intcovar <- addcovar[,-1]
 
-    X <- formX_intcovar(prob, addcovar, intcovar)
-    expected <- cbind(addcovar, prob, prob*intcovar[,1], prob*intcovar[,2])
+    X <- formX_intcovar(prob, addcovar, intcovar, 4)
+    expected <- cbind(addcovar, prob[,,5], prob[,,5]*intcovar[,1], prob[,,5]*intcovar[,2])
     expect_equal(X, expected)
 
 })
