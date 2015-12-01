@@ -75,6 +75,7 @@ test_that("genome scan by Haley-Knott works", {
 
 test_that("genome scan by Haley-Knott with multiple phenotypes works", {
 
+    set.seed(20151201)
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
@@ -143,5 +144,120 @@ test_that("genome scan by Haley-Knott with multiple phenotypes works", {
     rssw3 <- apply(pr, 3, function(a) colSums(lm(y ~ a, weights=w)$resid^2*w))
     dimnames(rssw3) <- NULL
     expect_equal(rssw1, rssw3)
+
+})
+
+
+test_that("genome scan by Haley-Knott works with additive covariates", {
+
+    set.seed(20151201)
+
+    # data for chr 6
+    data(hyper)
+    hyper <- hyper[6,]
+    hyper2 <- qtl2geno::convert2cross2(hyper)
+
+    # scan by R/qtl
+    hyper <- calc.genoprob(hyper, step=1)
+    p <- hyper$pheno[,1]; p <- (p-min(p))/max(p)
+    x <- rbinom(nind(hyper), 1, prob=p)
+    out <- scanone(hyper, addcovar=x, method="hk")
+    lod0 <- out[,3]
+
+    # inputs for R/qtl2
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    y <- hyper2$pheno[,1]
+    n <- length(y)
+
+    # scan
+    rss1 <- scan_hk_onechr(pr, as.matrix(y), cbind(1, x))
+    lod1 <- n/2 * (log10(sum(lm(y~x)$resid^2)) - log10(rss1))
+    lod1 <- as.numeric(lod1)
+
+    # as expected?
+    expect_equal(lod0, lod1)
+
+    ###
+    # direct calculation with lm()
+    rss2 <- apply(pr, 3, function(a) sum(lm(y ~ x+a)$resid^2))
+    names(rss2) <- NULL
+    expect_equal(as.numeric(rss1), rss2)
+
+    ##############################
+    # weighted scan
+    w <- runif(n, 1, 3)
+    outw <- scanone(hyper, method="hk", weights=w, addcovar=x)
+    lodw0 <- outw[,3]
+
+    rssw1 <- scan_hk_onechr_weighted(pr, as.matrix(y), cbind(1,x), sqrt(w))
+    lodw1 <- n/2 * (log10(sum(lm(y ~ x, weights=w)$resid^2*w)) - log10(rssw1))
+    lodw1 <- as.numeric(lodw1)
+
+    # as expected?
+    expect_equal(lodw0, lodw1)
+
+    ###
+    # direct calculation with lm()
+    rssw2 <- apply(pr, 3, function(a) sum(lm(y ~ x+a, weights=w)$resid^2*w))
+    names(rssw2) <- NULL
+    expect_equal(as.numeric(rssw1), rssw2)
+
+})
+
+test_that("genome scan by Haley-Knott with multiple phenotypes and an additive covariate works", {
+
+    set.seed(20151201)
+    # data for chr 6
+    data(hyper)
+    hyper <- hyper[6,]
+    hyper2 <- qtl2geno::convert2cross2(hyper)
+    n_phe <- 200
+    hyper$pheno <- cbind(permute_nvector(n_phe, hyper$pheno[,1]),
+                         hyper$pheno[,2,drop=FALSE]) # sex column left at the end
+
+    # scan by R/qtl
+    hyper <- calc.genoprob(hyper, step=1)
+    p <- hyper$pheno[,1]; p <- (p-min(p))/max(p)
+    x <- rbinom(nind(hyper), 1, prob=p)
+    out <- scanone(hyper, method="hk", addcovar=x, pheno.col=1:n_phe)
+    lod0 <- t(out[,-(1:2)])
+    dimnames(lod0) <- NULL
+
+    # inputs for R/qtl2
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    y <- as.matrix(hyper$pheno[,1:n_phe])
+    n <- nrow(y)
+
+    # scan
+    rss1 <- scan_hk_onechr(pr, y, cbind(1,x))
+    lod1 <- n/2 * (log10(colSums(lm(y~x)$resid^2)) - log10(rss1))
+
+    # as expected?
+    expect_equal(lod0, lod1)
+
+    ###
+    # direct calculation with lm()
+    rss2 <- apply(pr, 3, function(a) colSums(lm(y ~ x+a)$resid^2))
+    dimnames(rss2) <- NULL
+    expect_equal(rss1, rss2)
+
+    ##############################
+    # weighted scan
+    w <- runif(n, 1, 3)
+    outw <- scanone(hyper, method="hk", weights=w, addcovar=x, phe=1:n_phe)
+    lodw0 <- t(outw[,-(1:2)])
+    dimnames(lodw0) <- NULL
+
+    rssw1 <- scan_hk_onechr_weighted(pr, y, cbind(1,x), sqrt(w))
+    lodw1 <- n/2 * (log10(colSums(lm(y~x, weights=w)$resid^2*w)) - log10(rssw1))
+
+    # as expected?
+    expect_equal(lodw0, lodw1)
+
+    ###
+    # direct calculation with lm()
+    rssw2 <- apply(pr, 3, function(a) colSums(lm(y ~ x+a, weights=w)$resid^2*w))
+    dimnames(rssw2) <- NULL
+    expect_equal(rssw1, rssw2)
 
 })
