@@ -5,7 +5,7 @@
 \title{Simulate genotypes given observed marker data}
 \usage{
 sim_geno(cross, n_draws = 1, step = 0, off_end = 0,
-  stepwidth = c("fixed", "max"), pseudomarker_map, error_prob = 0.0001,
+  stepwidth = c("fixed", "max"), pseudomarker_map, error_prob = 1e-04,
   map_function = c("haldane", "kosambi", "c-f", "morgan"), quiet = TRUE,
   cores = 1)
 }

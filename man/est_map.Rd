@@ -4,9 +4,8 @@
 \alias{est_map}
 \title{Estimate genetic maps}
 \usage{
-est_map(cross, error_prob = 0.0001, map_function = c("haldane", "kosambi",
-  "c-f", "morgan"), maxit = 10000, tol = 0.000001, quiet = TRUE,
-  cores = 1)
+est_map(cross, error_prob = 1e-04, map_function = c("haldane", "kosambi",
+  "c-f", "morgan"), maxit = 10000, tol = 1e-06, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
