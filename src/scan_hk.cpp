@@ -68,10 +68,10 @@ NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix
 
     NumericMatrix result(n_phe, n_pos);
 
-    NumericVector genoprob_resid = calc_resid_linreg_3d(addcovar, genoprobs, tol);
+    NumericVector genoprobs_resid = calc_resid_linreg_3d(addcovar, genoprobs, tol);
     NumericMatrix pheno_resid = calc_resid_linreg(addcovar, pheno, tol);
 
-    return scan_hk_onechr_nocovar(genoprob_resid, pheno_resid, tol);
+    return scan_hk_onechr_nocovar(genoprobs_resid, pheno_resid, tol);
 }
 
 // Scan a single chromosome with additive covariates and weights
