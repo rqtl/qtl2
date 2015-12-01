@@ -63,3 +63,31 @@ test_that("rbind_nmatrix works", {
     expect_error(rbind_3nmatrix(x1, x2, t(x3)))
 
 })
+
+test_that("formX_intcovar works", {
+
+    set.seed(20151130)
+    n <- 100
+    addcovar <- cbind(rep(1,n), sample(0:1, n, replace=TRUE))
+
+    # create a prob matrix
+    prob <- matrix(abs(rnorm(n*3)), ncol=3)
+    prob <- (prob/rowSums(prob))[,-1]
+
+    intcovar <- addcovar[,2,drop=FALSE]
+
+    X <- formX_intcovar(prob, addcovar, intcovar)
+    expected <- cbind(addcovar, prob, prob*as.numeric(intcovar))
+    expect_equal(X, expected)
+
+    # no interactive covariates
+    expect_equal(formX_intcovar(prob, addcovar, matrix(ncol=0, nrow=n)), cbind(addcovar, prob))
+
+    # neither interactive nor additive covariates
+    expect_equal(formX_intcovar(prob, matrix(ncol=0, nrow=n), matrix(ncol=0, nrow=n)), prob)
+
+    # mismatch in rows
+    expect_error(formX_intcovar(prob, addcovar[-n,], intcovar))
+    expect_error(formX_intcovar(prob, addcovar, intcovar[-1,]))
+
+})

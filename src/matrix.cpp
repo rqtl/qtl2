@@ -279,3 +279,33 @@ IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-
 
     return result;
 }
+
+// form X matrix with intcovar
+// [[Rcpp::export]]
+NumericMatrix formX_intcovar(const NumericMatrix& probs,
+                             const NumericMatrix& addcovar,
+                             const NumericMatrix& intcovar)
+{
+    const unsigned int nrow  = probs.rows();
+    const unsigned int nprob = probs.cols();
+    const unsigned int nadd  = addcovar.cols();
+    const unsigned int nint  = intcovar.cols();
+
+    if(addcovar.rows() != nrow)
+        throw std::range_error("nrow(addcovar) != nrow(probs)");
+    if(intcovar.rows() != nrow)
+        throw std::range_error("nrow(intcovar) != nrow(probs)");
+
+    NumericMatrix result(nrow,nadd+nprob+nprob*nint);
+    std::copy(addcovar.begin(), addcovar.end(), result.begin());
+    std::copy(probs.begin(), probs.end(), result.begin() + nrow*nadd);
+
+    for(unsigned int i=0, rescol=nprob+nadd; i<nint; i++) {
+        for(unsigned int j=0; j<nprob; j++, rescol++) {
+            for(unsigned int k=0; k<nrow; k++)
+                result(k,rescol) = probs(k,j)*intcovar(k,i);
+        }
+    }
+
+    return result;
+}

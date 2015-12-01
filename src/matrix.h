@@ -40,4 +40,9 @@ Rcpp::NumericVector find_matching_cols(const Rcpp::NumericMatrix& mat,
 Rcpp::IntegerVector find_lin_indep_cols(const Rcpp::NumericMatrix& mat,
                                         const double tol);
 
+// form X matrix with intcovar
+Rcpp::NumericMatrix formX_intcovar(const Rcpp::NumericMatrix& probs,
+                                   const Rcpp::NumericMatrix& addcovar,
+                                   const Rcpp::NumericMatrix& intcovar);
+
 #endif // MATRIX_H

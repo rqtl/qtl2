@@ -351,6 +351,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// formX_intcovar
+NumericMatrix formX_intcovar(const NumericMatrix& probs, const NumericMatrix& addcovar, const NumericMatrix& intcovar);
+RcppExport SEXP qtl2scan_formX_intcovar(SEXP probsSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type probs(probsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    __result = Rcpp::wrap(formX_intcovar(probs, addcovar, intcovar));
+    return __result;
+END_RCPP
+}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {

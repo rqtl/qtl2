@@ -109,6 +109,10 @@ find_lin_indep_cols <- function(mat, tol = 1e-12) {
     .Call('qtl2scan_find_lin_indep_cols', PACKAGE = 'qtl2scan', mat, tol)
 }
 
+formX_intcovar <- function(probs, addcovar, intcovar) {
+    .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2scan_random_int', PACKAGE = 'qtl2scan', n, low, high)
 }
