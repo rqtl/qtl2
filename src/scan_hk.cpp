@@ -58,9 +58,7 @@ NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix
                              const NumericMatrix& addcovar, const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
-    const unsigned int n_phe = pheno.cols();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -88,9 +86,7 @@ NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const Nume
                                       const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
-    const unsigned int n_phe = pheno.cols();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -132,9 +128,7 @@ NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs,
                                               const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
-    const unsigned int n_phe = pheno.cols();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
