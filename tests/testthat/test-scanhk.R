@@ -18,11 +18,11 @@ test_that("genome scan by Haley-Knott same as R/qtl", {
 
     # center
     intercept <- cbind(rep(1, qtl2geno::n_ind(hyper2)))
-    pr <- qtl2scan:::calc_resid_linreg_3d(intercept, pr)
-    y <- qtl2scan:::calc_resid_linreg(intercept, as.matrix(y))
+    pr <- calc_resid_linreg_3d(intercept, pr)
+    y <- calc_resid_linreg(intercept, as.matrix(y))
 
     # scan
-    rss <- qtl2scan:::scan_hk_onechr_nocovar(pr, y)
+    rss <- scan_hk_onechr_nocovar(pr, y)
     lod <- qtl2geno::n_ind(hyper2)/2 * (log10(sum(y^2)) - log10(rss))
     lod <- as.numeric(lod)
 
