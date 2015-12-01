@@ -364,6 +364,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// expand_genoprobs_intcovar
+NumericVector expand_genoprobs_intcovar(const NumericVector& probs, const NumericMatrix& intcovar);
+RcppExport SEXP qtl2scan_expand_genoprobs_intcovar(SEXP probsSEXP, SEXP intcovarSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type probs(probsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    __result = Rcpp::wrap(expand_genoprobs_intcovar(probs, intcovar));
+    return __result;
+END_RCPP
+}
 // weighted_matrix
 NumericMatrix weighted_matrix(const NumericMatrix& mat, const NumericVector& weights);
 RcppExport SEXP qtl2scan_weighted_matrix(SEXP matSEXP, SEXP weightsSEXP) {

@@ -101,6 +101,36 @@ test_that("formX_intcovar works", {
 
 })
 
+test_that("expand_genoprobs_intcovar works", {
+
+    set.seed(20151201)
+    library(qtl)
+    data(fake.f2)
+    pr <- aperm(calc.genoprob(fake.f2["2",], step=5)$geno[["2"]]$prob[,,-1],
+                c(1,3,2))
+    dimnames(pr) <- NULL
+    rownames(pr) <- paste(1:nind(fake.f2))
+
+    intcovar <- cbind(sample(0:1, nrow(pr), replace=TRUE),
+                      sample(0:1, nrow(pr), replace=TRUE))
+
+    result <- expand_genoprobs_intcovar(pr, intcovar)
+
+    expect_equal(dim(result), dim(pr)*c(1,ncol(intcovar)+1,1))
+    expect_equal(result[,1:2,] , pr)
+    expect_equal(result[,3:4,], pr*intcovar[,1])
+    expect_equal(result[,5:6,], pr*intcovar[,2])
+
+    # single interactive covariate
+    result2 <- expand_genoprobs_intcovar(pr, intcovar[,1,drop=FALSE])
+
+    expect_equal(dim(result2), dim(pr)*c(1,2,1))
+    expect_equal(result2[,1:2,] , pr)
+    expect_equal(result2[,3:4,], pr*intcovar[,1])
+
+})
+
+
 test_that("weighted_matrix works", {
 
     set.seed(20151201)

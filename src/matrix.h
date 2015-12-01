@@ -53,4 +53,8 @@ Rcpp::NumericMatrix weighted_matrix(const Rcpp::NumericMatrix& mat,
 Rcpp::NumericVector weighted_3darray(const Rcpp::NumericVector& array,
                                      const Rcpp::NumericVector& weights);
 
+// expand genotype probabilities with intcovar
+Rcpp::NumericVector expand_genoprobs_intcovar(const Rcpp::NumericVector& probs, // 3d array ind x prob x pos
+                                              const Rcpp::NumericMatrix& intcovar);
+
 #endif // MATRIX_H

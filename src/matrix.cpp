@@ -310,6 +310,48 @@ NumericMatrix formX_intcovar(const NumericMatrix& probs,
     return result;
 }
 
+
+// expand genotype probabilities with intcovar
+// [[Rcpp::export]]
+NumericVector expand_genoprobs_intcovar(const NumericVector& probs, // 3d array ind x prob x pos
+                                        const NumericMatrix& intcovar)
+{
+    Dimension d = probs.attr("dim");
+    const unsigned int nrow  = d[0];
+    const unsigned int ngen = d[1];
+    const unsigned int npos = d[2];
+    const unsigned int nint  = intcovar.cols();
+
+    if(intcovar.rows() != nrow)
+        throw std::range_error("nrow(intcovar) != nrow(probs)");
+
+    const unsigned int ngen_result = d[1]*(nint+1); // no. cols in result
+    const unsigned int recsize = nrow*ngen; // ind x geno rectangle
+    const unsigned int recsize_result = nrow*ngen_result; // ind x geno rectangle in result
+
+    NumericVector result(recsize_result*npos);
+
+    for(unsigned int i=0; i<npos; i++) {
+        // paste probs into first batch
+        std::copy(probs.begin()+i*recsize,
+                  probs.begin()+(i+1)*recsize,
+                  result.begin()+i*recsize_result);
+        for(unsigned int j=0; j<nint; j++) {
+            for(unsigned int k=0; k<ngen; k++) {
+                for(unsigned int s=0; s<nrow; s++)
+                    result[i*recsize_result + (j+1)*recsize + k*nrow + s] =
+                        probs[i*recsize + k*nrow + s] * intcovar(s,j);
+            }
+        }
+    }
+
+    // add dimension attribute
+    d[1] = ngen_result;
+    result.attr("dim") = d;
+    rownames(result) = rownames(probs);
+    return result;
+}
+
 // multiply each column of a matrix by a set of weights
 // [[Rcpp::export]]
 NumericMatrix weighted_matrix(const NumericMatrix& mat,

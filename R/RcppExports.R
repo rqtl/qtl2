@@ -113,6 +113,10 @@ formX_intcovar <- function(probs, addcovar, intcovar) {
     .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar)
 }
 
+expand_genoprobs_intcovar <- function(probs, intcovar) {
+    .Call('qtl2scan_expand_genoprobs_intcovar', PACKAGE = 'qtl2scan', probs, intcovar)
+}
+
 weighted_matrix <- function(mat, weights) {
     .Call('qtl2scan_weighted_matrix', PACKAGE = 'qtl2scan', mat, weights)
 }
