@@ -1,7 +1,7 @@
 // print R messages or warnings from C++
+#include "r_message.h"
 #include <Rcpp.h>
 #include <R_ext/Error.h>
-#include "r_message.h"
 
 void r_message(std::string text)
 {

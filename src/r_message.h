@@ -2,6 +2,9 @@
 #ifndef R_MESSAGE_H
 #define R_MESSAGE_H
 
+#include <Rcpp.h>
+#include <R_ext/Error.h>
+
 void r_message(std::string text);
 void r_warning(std::string text);
 

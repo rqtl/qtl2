@@ -1,9 +1,12 @@
 // Matrix utilities
 
-#include <Rcpp.h>
-using namespace Rcpp;
+// [[Rcpp::depends(RcppEigen)]]
 
 #include "matrix.h"
+#include <RcppEigen.h>
+using namespace Rcpp;
+using namespace Eigen;
+
 
 // cbind two matrices
 // [[Rcpp::export]]
@@ -198,6 +201,80 @@ NumericMatrix rbind_3nmatrix(const NumericMatrix& mat1, const NumericMatrix& mat
         std::copy(mat1.begin()+offset1, mat1.begin()+offset1+nrow1, result.begin()+offset_result);
         std::copy(mat2.begin()+offset2, mat2.begin()+offset2+nrow2, result.begin()+offset_result+nrow1);
         std::copy(mat3.begin()+offset3, mat3.begin()+offset3+nrow3, result.begin()+offset_result+nrow1+nrow2);
+    }
+
+    return result;
+}
+
+// find columns that exactly match previous columns
+// returns numeric vector with -1 indicating no match to an earlier column and
+//                             >0 indicating matches that earlier column
+//                                (indexes starting at 1)
+// [[Rcpp::export]]
+NumericVector find_matching_cols(const NumericMatrix& mat, const double tol=1e-12)
+{
+    const unsigned int ncol = mat.cols();
+    const unsigned int nrow = mat.rows();
+    NumericVector result(ncol);
+
+    if(ncol < 1) Rf_error("Matrix has 0 columns");
+
+    result[0] = -1;
+    if(ncol==1) return(result);
+
+    for(unsigned int i=1; i<ncol; i++) {
+        result[i] = -1;
+        for(unsigned int j=0; j<i; j++) {
+            double max_diff=0.0;
+            for(unsigned int k=0; k<nrow; k++) {
+                const bool na_i = NumericVector::is_na(mat(k,i));
+                const bool na_j = NumericVector::is_na(mat(k,j));
+                // if both missing, return 0.0
+                // if one missing but not other, return 1.0
+                // otherwise, return difference
+                double d = na_i != na_j ? 1.0 : ((na_i && na_j) ? 0.0 : fabs(mat(k,i) - mat(k,j)));
+                if(d > max_diff) max_diff = d;
+            }
+            if(max_diff < tol) {
+                result[i] = j+1;
+                break;
+            }
+        }
+    }
+
+    return result;
+}
+
+// find set of linearly independent columns in a matrix
+// returns a vector of column indices (starting at 1)
+// [[Rcpp::export]]
+IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-12)
+{
+    const unsigned int ncol=mat.cols();
+
+    // QR decomp with column pivoting
+    MatrixXd XX(as<Map<MatrixXd> >(mat));
+    typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
+    typedef CPivQR::PermutationType Permutation;
+    CPivQR PQR = XX;
+    PQR.setThreshold(tol);
+
+    // pivot matrix, treated as regular matrix
+    Permutation Pmat = PQR.colsPermutation();
+    MatrixXd PPmat(Pmat);
+
+    // rank of input matrix
+    const unsigned int rank=PQR.rank();
+    IntegerVector result(rank);
+
+    // for each column, find the row with a 1
+    for(unsigned int j=0; j<rank; j++) {
+        for(unsigned int i=0; i<ncol; i++) {
+            if(fabs(PPmat(i,j) - 1.0) < tol) {
+                result[j] = i+1;
+                break;
+            }
+        }
     }
 
     return result;

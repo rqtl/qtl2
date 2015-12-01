@@ -1,8 +1,8 @@
 // 1-d optimization by Brent's method
 
+#include "brent_fmin.h"
 #include <math.h>
 #include <float.h> /* DBL_EPSILON */
-#include "brent_fmin.h"
 
 /***********************************************************************
  * Taken from R ver 3.2.2

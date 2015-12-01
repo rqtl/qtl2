@@ -1,5 +1,6 @@
 // random number generation (e.g., permutations)
 
+#include "random.h"
 #include <vector>
 #include <map>
 #include <Rcpp.h>
@@ -7,7 +8,6 @@ using namespace Rcpp;
 using std::vector;
 using std::map;
 
-#include "random.h"
 
 // random integer from {low, low+1, ..., high}
 int random_int(const int low, const int high)
@@ -180,7 +180,7 @@ NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& 
 
     // map of indices for the strata
     map<unsigned int, vector<int> > strata_index;
-    for(int i=0; i<n; ++i) {
+    for(unsigned int i=0; i<n; ++i) {
         if(strata[i] >= n_strata || strata[i] < 0)
             throw std::domain_error("strata should be in [0, n_strata)");
         strata_index[strata[i]].push_back(i);
@@ -188,7 +188,7 @@ NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& 
 
     for(unsigned int perm=0; perm<n_perm; ++perm) {
         // for each stratum:
-        for(int stratum=0; stratum < n_strata; ++stratum) {
+        for(unsigned int stratum=0; stratum < n_strata; ++stratum) {
             // permute indices
             vector<int> index_permuted = permute_ivector(strata_index[stratum]);
 
@@ -219,7 +219,7 @@ IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& 
 
     // map of indices for the strata
     map<unsigned int, vector<int> > strata_index;
-    for(int i=0; i<n; ++i) {
+    for(unsigned int i=0; i<n; ++i) {
         if(strata[i] >= n_strata || strata[i] < 0)
             throw std::domain_error("strata should be in [0, n_strata)");
         strata_index[strata[i]].push_back(i);
@@ -227,7 +227,7 @@ IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& 
 
     for(unsigned int perm=0; perm<n_perm; ++perm) {
         // for each stratum:
-        for(int stratum=0; stratum < n_strata; ++stratum) {
+        for(unsigned int stratum=0; stratum < n_strata; ++stratum) {
             // permute indices
             vector<int> index_permuted = permute_ivector(strata_index[stratum]);
 

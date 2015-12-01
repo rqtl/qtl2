@@ -1,6 +1,6 @@
 Package: qtl2scan
-Version: 0.3-4
-Date: 2015-11-27
+Version: 0.3-5
+Date: 2015-11-30
 Title: Genome Scans for QTL Experiments
 Description: Functions to calculate QTL genotype probabilities, impute
     QTL genotypes, and estimate genetic maps. Part of R/qtl2, a
@@ -22,7 +22,6 @@ Suggests:
     qtl2geno
 License: GPL-3
 URL: http://kbroman.org/qtl2
-VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppEigen
 LazyData: true
 RoxygenNote: 5.0.1

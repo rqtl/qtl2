@@ -13,28 +13,28 @@ calc_rss_eigenchol <- function(X, y) {
     .Call('qtl2scan_calc_rss_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }
 
-fit_linreg_eigenqr <- function(X, y) {
-    .Call('qtl2scan_fit_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y)
+fit_linreg_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_fit_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
-calc_rss_eigenqr <- function(X, y) {
-    .Call('qtl2scan_calc_rss_eigenqr', PACKAGE = 'qtl2scan', X, y)
+calc_rss_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_rss_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 calc_mvrss_eigenchol <- function(X, Y) {
     .Call('qtl2scan_calc_mvrss_eigenchol', PACKAGE = 'qtl2scan', X, Y)
 }
 
-calc_mvrss_eigenqr <- function(X, Y) {
-    .Call('qtl2scan_calc_mvrss_eigenqr', PACKAGE = 'qtl2scan', X, Y)
+calc_mvrss_eigenqr <- function(X, Y, tol = 1e-12) {
+    .Call('qtl2scan_calc_mvrss_eigenqr', PACKAGE = 'qtl2scan', X, Y, tol)
 }
 
 calc_resid_eigenchol <- function(X, Y) {
     .Call('qtl2scan_calc_resid_eigenchol', PACKAGE = 'qtl2scan', X, Y)
 }
 
-calc_resid_eigenqr <- function(X, Y) {
-    .Call('qtl2scan_calc_resid_eigenqr', PACKAGE = 'qtl2scan', X, Y)
+calc_resid_eigenqr <- function(X, Y, tol = 1e-12) {
+    .Call('qtl2scan_calc_resid_eigenqr', PACKAGE = 'qtl2scan', X, Y, tol)
 }
 
 calc_rss_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
@@ -45,16 +45,16 @@ calc_resid_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
     .Call('qtl2scan_calc_resid_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
 }
 
-calc_rss_linreg <- function(X, Y) {
-    .Call('qtl2scan_calc_rss_linreg', PACKAGE = 'qtl2scan', X, Y)
+calc_rss_linreg <- function(X, Y, tol = 1e-12) {
+    .Call('qtl2scan_calc_rss_linreg', PACKAGE = 'qtl2scan', X, Y, tol)
 }
 
-calc_resid_linreg <- function(X, Y) {
-    .Call('qtl2scan_calc_resid_linreg', PACKAGE = 'qtl2scan', X, Y)
+calc_resid_linreg <- function(X, Y, tol = 1e-12) {
+    .Call('qtl2scan_calc_resid_linreg', PACKAGE = 'qtl2scan', X, Y, tol)
 }
 
-calc_resid_linreg_3d <- function(X, P) {
-    .Call('qtl2scan_calc_resid_linreg_3d', PACKAGE = 'qtl2scan', X, P)
+calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
+    .Call('qtl2scan_calc_resid_linreg_3d', PACKAGE = 'qtl2scan', X, P, tol)
 }
 
 Rcpp_eigen_decomp <- function(A) {
@@ -101,6 +101,14 @@ rbind_3nmatrix <- function(mat1, mat2, mat3) {
     .Call('qtl2scan_rbind_3nmatrix', PACKAGE = 'qtl2scan', mat1, mat2, mat3)
 }
 
+find_matching_cols <- function(mat, tol = 1e-12) {
+    .Call('qtl2scan_find_matching_cols', PACKAGE = 'qtl2scan', mat, tol)
+}
+
+find_lin_indep_cols <- function(mat, tol = 1e-12) {
+    .Call('qtl2scan_find_lin_indep_cols', PACKAGE = 'qtl2scan', mat, tol)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2scan_random_int', PACKAGE = 'qtl2scan', n, low, high)
 }
@@ -125,7 +133,7 @@ permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
     .Call('qtl2scan_permute_ivector_stratified', PACKAGE = 'qtl2scan', n_perm, x, strata, n_strata)
 }
 
-scan_hk_onechr_nocovar <- function(genoprobs, pheno) {
-    .Call('qtl2scan_scan_hk_onechr_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno)
+scan_hk_onechr_nocovar <- function(genoprobs, pheno, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, tol)
 }
 
