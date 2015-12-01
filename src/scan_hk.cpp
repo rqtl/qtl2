@@ -21,11 +21,12 @@ NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const Numer
 {
     const unsigned int n_ind = pheno.rows();
     const unsigned int n_phe = pheno.cols();
-    Dimension d = genoprobs.attr("dim");
+    const Dimension d = genoprobs.attr("dim");
     const unsigned int n_pos = d[2];
     const unsigned int n_gen = d[1];
     const unsigned int x_size = n_ind * n_gen;
-    // check that d[0] == n_ind;
+    if(d[0] != n_ind)
+        throw std::range_error("nrow(pheno) != nrow(genoprobs)");
 
     NumericMatrix result(n_phe, n_pos);
     NumericMatrix X(n_ind, n_gen);
@@ -39,4 +40,36 @@ NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const Numer
     }
 
     return result;
+}
+
+
+// Scan a single chromosome with additive covariates
+//
+// genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
+// pheno     = matrix of numeric phenotypes (individuals x phenotypes)
+//             (no missing data allowed)
+// addcovar  = additive covariates (an intercept, at least)
+//
+// output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
+//
+// [[Rcpp::export]]
+NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno,
+                             const NumericMatrix& addcovar, const double tol=1e-12)
+{
+    const unsigned int n_ind = pheno.rows();
+    const unsigned int n_phe = pheno.cols();
+    const Dimension d = genoprobs.attr("dim");
+    const unsigned int n_pos = d[2];
+    const unsigned int n_gen = d[1];
+    if(n_ind != d[0])
+        throw std::range_error("nrow(pheno) != nrow(genoprobs)");
+    if(n_ind != addcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(addcovar)");
+
+    NumericMatrix result(n_phe, n_pos);
+
+    NumericVector genoprob_resid = calc_resid_linreg_3d(addcovar, genoprobs, tol);
+    NumericMatrix pheno_resid = calc_resid_linreg(addcovar, pheno, tol);
+
+    return scan_hk_onechr_nocovar(genoprob_resid, pheno_resid, tol);
 }
