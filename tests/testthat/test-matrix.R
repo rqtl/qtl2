@@ -77,7 +77,7 @@ test_that("formX_intcovar works", {
     intcovar <- addcovar[,2,drop=FALSE]
 
     X <- formX_intcovar(prob, addcovar, intcovar)
-    expected <- cbind(addcovar, prob, prob*as.numeric(intcovar))
+    expected <- cbind(addcovar, prob, prob*intcovar[,1]) # the [,1] makes intcovar an ordinary vector
     expect_equal(X, expected)
 
     # no interactive covariates
@@ -89,5 +89,14 @@ test_that("formX_intcovar works", {
     # mismatch in rows
     expect_error(formX_intcovar(prob, addcovar[-n,], intcovar))
     expect_error(formX_intcovar(prob, addcovar, intcovar[-1,]))
+
+    # two interactive covariates
+    addcovar <- cbind(addcovar, sample(0:1, n, replace=TRUE))
+
+    intcovar <- addcovar[,-1]
+
+    X <- formX_intcovar(prob, addcovar, intcovar)
+    expected <- cbind(addcovar, prob, prob*intcovar[,1], prob*intcovar[,2])
+    expect_equal(X, expected)
 
 })
