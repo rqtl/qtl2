@@ -309,3 +309,43 @@ NumericMatrix formX_intcovar(const NumericMatrix& probs,
 
     return result;
 }
+
+// multiply each column of a matrix by a set of weights
+// [[Rcpp::export]]
+NumericMatrix weighted_matrix(const NumericMatrix& mat,
+                              const NumericVector& weights)
+{
+    const unsigned int nrow = mat.rows();
+    const unsigned int ncol = mat.cols();
+    if(nrow != weights.size())
+        throw std::range_error("nrow(mat) != length(weights)");
+
+    NumericMatrix result(nrow,ncol);
+
+    for(unsigned int j=0; j<ncol; j++)
+        for(unsigned int i=0; i<nrow; i++)
+            result(i,j) = mat(i,j)*weights[i];
+
+    return result;
+}
+
+// multiply each column of a 3-dimensional array by a set of weights
+// [[Rcpp::export]]
+NumericVector weighted_3darray(const NumericVector& array,
+                               const NumericVector& weights)
+{
+    const Dimension d = array.attr("dim");
+    const unsigned int n = d[0];
+    const unsigned int ncol = d[1]*d[2];
+    if(n != weights.size())
+        throw std::range_error("nrow(array) != length(weights)");
+
+    NumericVector result(n*ncol);
+    result.attr("dim") = d;
+
+    for(unsigned int j=0, k=0; j<ncol; j++)
+        for(unsigned int i=0; i<n; i++, k++)
+            result[k] = array[k]*weights[i];
+
+    return result;
+}

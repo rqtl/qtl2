@@ -45,4 +45,12 @@ Rcpp::NumericMatrix formX_intcovar(const Rcpp::NumericMatrix& probs,
                                    const Rcpp::NumericMatrix& addcovar,
                                    const Rcpp::NumericMatrix& intcovar);
 
+// multiply each column of a matrix by a set of weights
+Rcpp::NumericMatrix weighted_matrix(const Rcpp::NumericMatrix& mat,
+                              const Rcpp::NumericVector& weights);
+
+// multiply each element of a vector by the corresponding weight
+Rcpp::NumericVector weighted_3darray(const Rcpp::NumericVector& array,
+                                     const Rcpp::NumericVector& weights);
+
 #endif // MATRIX_H

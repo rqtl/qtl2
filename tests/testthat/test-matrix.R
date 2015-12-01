@@ -100,3 +100,36 @@ test_that("formX_intcovar works", {
     expect_equal(X, expected)
 
 })
+
+test_that("weighted_matrix works", {
+
+    set.seed(20151201)
+    n <- 100
+    p <- 10
+    X <- matrix(rnorm(n*p), ncol=p)
+    w <- runif(n, 1, 4)
+
+    result <- weighted_matrix(X, w)
+
+    expect_equal(result, X*w)
+    for(i in 1:p) expect_equal(result[,i], X[,i]*w)
+
+})
+
+test_that("weighted_3darray works", {
+
+    set.seed(20151201)
+    n <- 100
+    p <- 3
+    q <- 8
+    X <- array(rnorm(n*p*q), dim=c(n, p, q))
+    w <- runif(n, 1, 4)
+
+    result <- weighted_3darray(X, w)
+
+    expect_equal(result, X*w)
+    for(i in 1:p)
+        for(j in 1:q)
+            expect_equal(result[,i,j], X[,i,j]*w)
+
+})
