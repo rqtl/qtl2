@@ -1,7 +1,7 @@
 context("genome scan by Haley-Knott")
 library(qtl)
 
-test_that("genome scan by Haley-Knott same as R/qtl", {
+test_that("genome scan by Haley-Knott works", {
 
     # data for chr 6
     data(hyper)
@@ -41,6 +41,12 @@ test_that("genome scan by Haley-Knott same as R/qtl", {
     expect_equal(lod0, lod2)
     expect_equal(rss1, rss2)
 
+    ###
+    # direct calculation with lm()
+    rss3 <- apply(pr, 3, function(a) sum(lm(y ~ a)$resid^2))
+    names(rss3) <- NULL
+    expect_equal(as.numeric(rss1), rss3)
+
     ##############################
     # weighted scan
     w <- runif(n, 1, 3)
@@ -59,9 +65,15 @@ test_that("genome scan by Haley-Knott same as R/qtl", {
     expect_equal(lodw0, lodw1)
     expect_equal(lodw1, lodw2)
 
+    ###
+    # direct calculation with lm()
+    rssw3 <- apply(pr, 3, function(a) sum(lm(y ~ a, weights=w)$resid^2*w))
+    names(rssw3) <- NULL
+    expect_equal(as.numeric(rssw1), rssw3)
+
 })
 
-test_that("genome scan by Haley-Knott with multiple phenotypes is same as R/qtl", {
+test_that("genome scan by Haley-Knott with multiple phenotypes works", {
 
     # data for chr 6
     data(hyper)
@@ -103,6 +115,12 @@ test_that("genome scan by Haley-Knott with multiple phenotypes is same as R/qtl"
     expect_equal(lod0, lod2)
     expect_equal(rss1, rss2)
 
+    ###
+    # direct calculation with lm()
+    rss3 <- apply(pr, 3, function(a) colSums(lm(y ~ a)$resid^2))
+    dimnames(rss3) <- NULL
+    expect_equal(rss1, rss3)
+
     ##############################
     # weighted scan
     w <- runif(n, 1, 3)
@@ -119,5 +137,11 @@ test_that("genome scan by Haley-Knott with multiple phenotypes is same as R/qtl"
     # as expected?
     expect_equal(lodw0, lodw1)
     expect_equal(lodw1, lodw2)
+
+    ###
+    # direct calculation with lm()
+    rssw3 <- apply(pr, 3, function(a) colSums(lm(y ~ a, weights=w)$resid^2*w))
+    dimnames(rssw3) <- NULL
+    expect_equal(rssw1, rssw3)
 
 })
