@@ -158,7 +158,6 @@ NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs,
 // addcovar  = additive covariates (an intercept, at least)
 // intcovar  = interactive covariates (should also be included in addcovar)
 //
-//
 // output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
 //
 // [[Rcpp::export]]
@@ -195,4 +194,96 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_highmem(const NumericVector& geno
 
     // genotype can
     return scan_hk_onechr_nocovar(genoprobs_rev, pheno_rev, tol);
+}
+
+// Scan a single chromosome with interactive covariates
+// this version uses less memory but will be slower
+// (since we need to work with each position, one at a time)
+//
+// genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
+// pheno     = matrix of numeric phenotypes (individuals x phenotypes)
+//             (no missing data allowed)
+// addcovar  = additive covariates (an intercept, at least)
+// intcovar  = interactive covariates (should also be included in addcovar)
+//
+// output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
+//
+// [[Rcpp::export]]
+NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs,
+                                             const NumericMatrix& pheno,
+                                             const NumericMatrix& addcovar,
+                                             const NumericMatrix& intcovar,
+                                             const double tol=1e-12)
+{
+    const unsigned int n_ind = pheno.rows();
+    const Dimension d = genoprobs.attr("dim");
+    const unsigned int n_pos = d[2];
+    const unsigned int n_phe = pheno.cols();
+    if(n_ind != d[0])
+        throw std::range_error("nrow(pheno) != nrow(genoprobs)");
+    if(n_ind != addcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(addcovar)");
+    if(n_ind != intcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(intcovar)");
+
+    NumericMatrix result(n_phe, n_pos);
+
+    for(unsigned int pos=0; pos<n_pos; pos++) {
+        // form X matrix
+        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
+
+        // do regression
+        result(_,pos) = calc_rss_linreg(X, pheno, tol);
+    }
+
+    return result;
+}
+
+// Scan a single chromosome with interactive covariates
+// this version uses less memory but will be slower
+// (since we need to work with each position, one at a time)
+// and this one allows weights for the individuals (the same for all phenotypes)
+//
+// genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
+// pheno     = matrix of numeric phenotypes (individuals x phenotypes)
+//             (no missing data allowed)
+// addcovar  = additive covariates (an intercept, at least)
+// intcovar  = interactive covariates (should also be included in addcovar)
+// weights   = vector of weights (really the SQUARE ROOT of the weights)
+//
+// output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
+//
+// [[Rcpp::export]]
+NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genoprobs,
+                                                      const NumericMatrix& pheno,
+                                                      const NumericMatrix& addcovar,
+                                                      const NumericMatrix& intcovar,
+                                                      const NumericVector& weights,
+                                                      const double tol=1e-12)
+{
+    const unsigned int n_ind = pheno.rows();
+    const Dimension d = genoprobs.attr("dim");
+    const unsigned int n_pos = d[2];
+    const unsigned int n_phe = pheno.cols();
+    if(n_ind != d[0])
+        throw std::range_error("nrow(pheno) != nrow(genoprobs)");
+    if(n_ind != addcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(addcovar)");
+    if(n_ind != intcovar.rows())
+        throw std::range_error("nrow(pheno) != nrow(intcovar)");
+
+    NumericMatrix result(n_phe, n_pos);
+
+    NumericMatrix pheno_rev = weighted_matrix(pheno, weights);
+
+    for(unsigned int pos=0; pos<n_pos; pos++) {
+        // form X matrix
+        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
+        X = weighted_matrix(X, weights);
+
+        // do regression
+        result(_,pos) = calc_rss_linreg(X, pheno_rev, tol);
+    }
+
+    return result;
 }

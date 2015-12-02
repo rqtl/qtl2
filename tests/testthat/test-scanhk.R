@@ -286,6 +286,8 @@ test_that("genome scan by Haley-Knott works with interactive covariates", {
 
     # scan
     rss1 <- scan_hk_onechr_intcovar_highmem(pr, as.matrix(y), cbind(1, x), as.matrix(x))
+    rss1_lm <- scan_hk_onechr_intcovar_lowmem(pr, as.matrix(y), cbind(1, x), as.matrix(x))
+    expect_equal(rss1, rss1_lm)
     lod1 <- n/2 * (log10(sum(lm(y~x)$resid^2)) - log10(rss1))
     lod1 <- as.numeric(lod1)
 
@@ -306,6 +308,9 @@ test_that("genome scan by Haley-Knott works with interactive covariates", {
 
     rssw1 <- scan_hk_onechr_intcovar_weighted_highmem(pr, as.matrix(y), cbind(1,x),
                                                       as.matrix(x), sqrt(w))
+    rssw1_lm <- scan_hk_onechr_intcovar_weighted_lowmem(pr, as.matrix(y), cbind(1,x),
+                                                        as.matrix(x), sqrt(w))
+    expect_equal(rssw1, rssw1_lm)
     lodw1 <- n/2 * (log10(sum(lm(y ~ x, weights=w)$resid^2*w)) - log10(rssw1))
     lodw1 <- as.numeric(lodw1)
 
@@ -346,6 +351,8 @@ test_that("genome scan by Haley-Knott with multiple phenotypes and an interactiv
 
     # scan
     rss1 <- scan_hk_onechr_intcovar_highmem(pr, y, cbind(1,x), as.matrix(x))
+    rss1_lm <- scan_hk_onechr_intcovar_lowmem(pr, y, cbind(1,x), as.matrix(x))
+    expect_equal(rss1, rss1_lm)
     lod1 <- n/2 * (log10(colSums(lm(y~x)$resid^2)) - log10(rss1))
 
     # as expected?
@@ -365,6 +372,8 @@ test_that("genome scan by Haley-Knott with multiple phenotypes and an interactiv
     dimnames(lodw0) <- NULL
 
     rssw1 <- scan_hk_onechr_intcovar_weighted_highmem(pr, y, cbind(1,x), as.matrix(x), sqrt(w))
+    rssw1_lm <- scan_hk_onechr_intcovar_weighted_lowmem(pr, y, cbind(1,x), as.matrix(x), sqrt(w))
+    expect_equal(rssw1, rssw1_lm)
     lodw1 <- n/2 * (log10(colSums(lm(y~x, weights=w)$resid^2*w)) - log10(rssw1))
 
     # as expected?

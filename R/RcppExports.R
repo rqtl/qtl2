@@ -169,3 +169,11 @@ scan_hk_onechr_intcovar_weighted_highmem <- function(genoprobs, pheno, addcovar,
     .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 
+scan_hk_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, tol)
+}
+
+scan_hk_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+}
+
