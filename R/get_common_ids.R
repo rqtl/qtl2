@@ -39,6 +39,8 @@ get_common_ids <-
     # find the IDs in common across all
     id <- NULL
     for(i in seq(along=args)) {
+        if(is.null(args[[i]])) next
+
         if(is.matrix(args[[i]]) || is.data.frame(args[[i]]) || is.array(args[[i]])) {
             if(length(dim(args[[i]])) > 3)
                 stop("Can't handle arrays with >3 dimensions")
