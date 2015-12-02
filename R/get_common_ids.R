@@ -12,6 +12,21 @@
 #' @return A vector of character strings for the individuals that are
 #' in common.
 #'
+#' @details This is used (mostly internally) to align phenotypes,
+#' genotype probabilities, and covariates in preparation for a genome
+#' scan. The \code{complete.cases} argument is used to omit
+#' individuals with any missing covariate values.
+#'
+#' @examples
+#' x <- matrix(0, nrow=10, ncol=5); rownames(x) <- LETTERS[1:10]
+#' y <- matrix(0, nrow=5, ncol=5);  rownames(y) <- LETTERS[(1:5)+7]
+#' z <- LETTERS[5:15]
+#' get_common_ids(x, y, z)
+#'
+#' x[8,1] <- NA
+#' get_common_ids(x, y, z)
+#' get_common_ids(x, y, z, complete.cases=TRUE)
+#'
 #' @export
 get_common_ids <-
     function(..., complete.cases=FALSE)
