@@ -32,3 +32,33 @@ test_that("drop_depcols works", {
     expect_equal(drop_depcols(X), X[,c(1,3,4)])
 
 })
+
+test_that("drop_xcovar works", {
+
+    set.seed(20151202)
+    n <- 100
+    Xcovar <- sample(0:1, n, replace=TRUE)
+    int <- rep(1, n)
+
+    expect_equal( drop_xcovar(NULL, NULL), NULL)
+    expect_equal( drop_xcovar(NULL, Xcovar), Xcovar)
+    expect_equal( drop_xcovar(int, NULL), NULL)
+    expect_equal( drop_xcovar(int, Xcovar), as.matrix(Xcovar))
+    expect_equal( drop_xcovar(Xcovar, Xcovar), NULL)
+    expect_equal( drop_xcovar(cbind(int, Xcovar), Xcovar), NULL)
+    expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar), NULL)
+
+    pgm <- sample(0:1, n, replace=TRUE)
+    Xcovar <- cbind(Xcovar, pgm)
+
+    expect_equal( drop_xcovar(NULL, Xcovar), Xcovar)
+    expect_equal( drop_xcovar(int, Xcovar), Xcovar)
+    expect_equal( drop_xcovar(Xcovar, Xcovar), NULL)
+    expect_equal( drop_xcovar(cbind(int, Xcovar), Xcovar), NULL)
+    expect_equal( drop_xcovar(cbind(int, Xcovar[,1]), Xcovar), Xcovar[,2,drop=FALSE])
+    expect_equal( drop_xcovar(cbind(int, Xcovar[,2]), Xcovar), Xcovar[,1,drop=FALSE])
+    expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar), NULL)
+    expect_equal( drop_xcovar(cbind(Xcovar[,1], int), Xcovar), Xcovar[,2,drop=FALSE])
+    expect_equal( drop_xcovar(cbind(Xcovar[,2], int), Xcovar), Xcovar[,1,drop=FALSE])
+
+})
