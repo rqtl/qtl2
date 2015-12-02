@@ -5,7 +5,7 @@
 \title{Calculate conditional genotype probabilities}
 \usage{
 calc_genoprob(cross, step = 0, off_end = 0, stepwidth = c("fixed", "max"),
-  pseudomarker_map, error_prob = 0.0001, map_function = c("haldane",
+  pseudomarker_map, error_prob = 1e-04, map_function = c("haldane",
   "kosambi", "c-f", "morgan"), quiet = TRUE, cores = 1)
 }
 \arguments{
