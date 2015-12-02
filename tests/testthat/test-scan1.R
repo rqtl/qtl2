@@ -12,7 +12,7 @@ test_that("scan1 for backcross with one phenotype", {
 
     # inputs for R/qtl2
     pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
-    y <- hyper2$pheno[,1]
+    y <- hyper$pheno[,1]
     names(y) <- paste(1:nind(hyper))
     for(i in seq(along=pr)) rownames(pr[[i]]) <- names(y)
     n <- length(y)
