@@ -102,8 +102,14 @@ scan1 <-
         stop("Only ", length(ind2keep), " individuals in common: ",
              paste(ind2keep, collapse=":"))
 
-    # checkout additive and interactive covariates, plus Xcover if any X chr
+    # make sure addcovar is full rank when we add an intercept
+    addcovar <- drop_depcols(cbind(1, addcovar), tol)[,-1,drop=FALSE]
 
+    # make sure columns in intcovar are also in addcovar
+    addcovar <- force_intcovar(addcovar, intcovar, tol)
+
+    # drop things from Xcovar that are already in addcovar
+    Xcovar <- drop_xcovar(addcovar, Xcovar, tol)
 
     # batch phenotypes by missing values
     phe_batches <- batch_cols(pheno[ind2keep,,drop=FALSE])
