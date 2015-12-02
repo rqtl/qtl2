@@ -2,5 +2,6 @@
 
 export(batch_cols)
 export(get_common_ids)
+export(scan1)
 importFrom(Rcpp,sourceCpp)
 useDynLib(qtl2scan)
