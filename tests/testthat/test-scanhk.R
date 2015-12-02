@@ -298,6 +298,26 @@ test_that("genome scan by Haley-Knott works with interactive covariates", {
     names(rss2) <- NULL
     expect_equal(as.numeric(rss1), rss2)
 
+    ##############################
+    # weighted scan
+    w <- runif(n, 1, 3)
+    outw <- scanone(hyper, method="hk", weights=w, addcovar=x, intcovar=x)
+    lodw0 <- outw[,3]
+
+    rssw1 <- scan_hk_onechr_intcovar_weighted_highmem(pr, as.matrix(y), cbind(1,x),
+                                                      as.matrix(x), sqrt(w))
+    lodw1 <- n/2 * (log10(sum(lm(y ~ x, weights=w)$resid^2*w)) - log10(rssw1))
+    lodw1 <- as.numeric(lodw1)
+
+    # as expected?
+    expect_equal(lodw0, lodw1)
+
+    ###
+    # direct calculation with lm()
+    rssw2 <- apply(pr, 3, function(a) sum(lm(y ~ x*a, weights=w)$resid^2*w))
+    names(rssw2) <- NULL
+    expect_equal(as.numeric(rssw1), rssw2)
+
 })
 
 test_that("genome scan by Haley-Knott with multiple phenotypes and an interactive covariate works", {
@@ -336,5 +356,24 @@ test_that("genome scan by Haley-Knott with multiple phenotypes and an interactiv
     rss2 <- apply(pr, 3, function(a) colSums(lm(y ~ x*a)$resid^2))
     dimnames(rss2) <- NULL
     expect_equal(rss1, rss2)
+
+    ##############################
+    # weighted scan
+    w <- runif(n, 1, 3)
+    outw <- scanone(hyper, method="hk", weights=w, addcovar=x, intcovar=x, phe=1:n_phe)
+    lodw0 <- t(outw[,-(1:2)])
+    dimnames(lodw0) <- NULL
+
+    rssw1 <- scan_hk_onechr_intcovar_weighted_highmem(pr, y, cbind(1,x), as.matrix(x), sqrt(w))
+    lodw1 <- n/2 * (log10(colSums(lm(y~x, weights=w)$resid^2*w)) - log10(rssw1))
+
+    # as expected?
+    expect_equal(lodw0, lodw1)
+
+    ###
+    # direct calculation with lm()
+    rssw2 <- apply(pr, 3, function(a) colSums(lm(y ~ x*a, weights=w)$resid^2*w))
+    dimnames(rssw2) <- NULL
+    expect_equal(rssw1, rssw2)
 
 })
