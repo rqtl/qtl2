@@ -7,7 +7,7 @@
 #'
 #' @return A list containing the batches, each with two components:
 #' \code{cols} containing numeric indices of the columns in the
-#' corresponding batch, and \code{keep} containing a vector of row indices
+#' corresponding batch, and \code{omit} containing a vector of row indices
 #' that have missing values in this batch.
 #'
 #' @export
@@ -31,7 +31,7 @@ batch_cols <-
     no_na <- (n_na==0)
     if(any(no_na))
         result <- list(list(cols=which(no_na),
-                                keep=numeric(0)))
+                                omit=numeric(0)))
 
     # now deal with the columns that have exactly 1 NA
     one_na <- (n_na==1)
@@ -40,7 +40,7 @@ batch_cols <-
         spl <- split(which(one_na), wh)
         part2 <- lapply(seq(along=spl), function(i)
                         list(cols=as.numeric(spl[[i]]),
-                             keep=as.numeric(names(spl)[i])))
+                             omit=as.numeric(names(spl)[i])))
 
         if(is.null(result)) result <- part2
         else result <- c(result, part2)
@@ -60,7 +60,7 @@ batch_cols <-
         # the result
         part3 <- lapply(u, function(a)
                         list(cols=other_cols[pat==a],
-                             keep=as.numeric(strsplit(a, ":")[[1]])))
+                             omit=as.numeric(strsplit(a, ":")[[1]])))
 
         if(is.null(result)) return(part3)
     } else part3 <- NULL
