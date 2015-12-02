@@ -16,16 +16,6 @@ test_that("lin regr works for simple example", {
     names(resid) <- NULL
     rss <- sum(resid^2)
 
-    # cholesky-based regression
-    lltFit <- fit_linreg_eigenchol(X, y)
-    expect_equal(rss, lltFit$rss)
-    expect_equivalent(lm.out$coef, lltFit$coef)
-    expect_equivalent(lm.out$fitted, lltFit$fitted)
-    expect_equivalent(summary(lm.out)$coef[,2], lltFit$SE)
-
-    lltRSS <- calc_rss_eigenchol(X, y)
-    expect_equal(rss, lltRSS)
-
     # QR-based regression
     qrFit <- fit_linreg_eigenqr(X, y)
     expect_equal(rss, qrFit$rss)
@@ -35,20 +25,6 @@ test_that("lin regr works for simple example", {
 
     qrRSS <- calc_rss_eigenqr(X, y)
     expect_equal(rss, qrRSS)
-
-    # LAPACK rss
-    lapack_rss <- calc_rss_lapack(X,Y)
-    expect_equal(rss, lapack_rss)
-
-    dgelsy_rss <- calc_rss_lapack(X,Y, skip_dgels=TRUE)
-    expect_equal(rss, dgelsy_rss)
-
-    # LAPACK resid
-    lapack_resid <- calc_resid_lapack(X,Y)
-    expect_equal(lapack_resid, as.matrix(resid))
-
-    dgelsy_resid <- calc_resid_lapack(X,Y, skip_dgels=TRUE)
-    expect_equal(dgelsy_resid, as.matrix(resid))
 
     # eigen residuals
     eigenqr_resid <- calc_resid_eigenqr(X,Y)
@@ -90,20 +66,6 @@ test_that("lin regr works for reduced-rank example", {
 
     qrRSS <- calc_rss_eigenqr(mm, y)
     expect_equal(rss, qrRSS)
-
-    # LAPACK RSS
-    lapack_rss <- calc_rss_lapack(mm,Y)
-    expect_equal(rss, lapack_rss)
-
-    dgelsy_rss <- calc_rss_lapack(mm, Y, skip_dgels=TRUE)
-    expect_equal(rss, dgelsy_rss)
-
-    # LAPACK resid
-    lapack_resid <- calc_resid_lapack(mm,Y)
-    expect_equal(lapack_resid, as.matrix(resid))
-
-    dgelsy_resid <- calc_resid_lapack(mm, Y, skip_dgels=TRUE)
-    expect_equal(dgelsy_resid, as.matrix(resid))
 
     # eigen resid
     eigenqr_resid <- calc_resid_eigenqr(mm, Y)
@@ -182,12 +144,8 @@ test_that("lin regr works for multiple columns", {
     # RSS
     expect_equal(lm.rss, calc_mvrss_eigenchol(X, Y))
     expect_equal(lm.rss, calc_mvrss_eigenqr(X, Y))
-    expect_equal(lm.rss, calc_rss_lapack(X, Y))
-    expect_equal(lm.rss, calc_rss_lapack(X, Y, skip_dgels=TRUE))
 
     # residuals
-    expect_equal(resid, calc_resid_lapack(X, Y))
-    expect_equal(resid, calc_resid_lapack(X, Y, skip_dgels=TRUE))
     expect_equal(resid, calc_resid_eigenqr(X, Y))
     expect_equal(resid, calc_resid_eigenchol(X, Y))
 
@@ -210,12 +168,8 @@ test_that("lin regr works for multiple columns, reduced-rank X", {
 
     # RSS
     expect_equal(lm.rss, calc_mvrss_eigenqr(mm, Y))
-    expect_equal(lm.rss, calc_rss_lapack(mm, Y))
-    expect_equal(lm.rss, calc_rss_lapack(mm, Y, skip_dgels=TRUE))
 
     # resid
-    expect_equal(resid, calc_resid_lapack(mm, Y))
-    expect_equal(resid, calc_resid_lapack(mm, Y, skip_dgels=TRUE))
     expect_equal(resid, calc_resid_eigenqr(mm, Y))
 
     # generic

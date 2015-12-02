@@ -37,14 +37,6 @@ calc_resid_eigenqr <- function(X, Y, tol = 1e-12) {
     .Call('qtl2scan_calc_resid_eigenqr', PACKAGE = 'qtl2scan', X, Y, tol)
 }
 
-calc_rss_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
-    .Call('qtl2scan_calc_rss_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
-}
-
-calc_resid_lapack <- function(X, Y, skip_dgels = FALSE, tol = 1e-10) {
-    .Call('qtl2scan_calc_resid_lapack', PACKAGE = 'qtl2scan', X, Y, skip_dgels, tol)
-}
-
 calc_rss_linreg <- function(X, Y, tol = 1e-12) {
     .Call('qtl2scan_calc_rss_linreg', PACKAGE = 'qtl2scan', X, Y, tol)
 }
