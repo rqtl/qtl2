@@ -6,13 +6,15 @@
 #' @param ... A set of objects: vectors, lists, matrices, data frames,
 #' and/or arrays. If one is a character vector with no names
 #' attribute, it's taken to be a set of IDs, itself.
+#' @param complete.cases If TRUE, look at matrices and non-character
+#' vectors and keep only individuals with no missing values.
 #'
 #' @return A vector of character strings for the individuals that are
 #' in common.
 #'
 #' @export
 get_common_ids <-
-    function(...)
+    function(..., complete.cases=FALSE)
 {
     args <- list(...)
     if(length(args)==0) {
@@ -26,12 +28,17 @@ get_common_ids <-
             if(length(dim(args[[i]])) > 3)
                 stop("Can't handle arrays with >3 dimensions")
             these <- rownames(args[[i]])
+            if(complete.cases && (is.matrix(args[[i]]) || is.data.frame(args[[i]])))
+                these <- these[complete.cases(args[[i]])]
         }
         else if(is.vector(args[[i]])) {
             if(is.character(args[[i]]) && is.null(names(args[[i]])))
                 these <- args[[i]]
-            else
+            else {
                 these <- names(args[[i]])
+                if(complete.cases)
+                    these <- these[!is.na(args[[i]])]
+            }
         }
         else {
             stop("Not sure what to do with object of class ", class(args[[i]]))

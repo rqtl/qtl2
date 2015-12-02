@@ -4,12 +4,15 @@
 \alias{get_common_ids}
 \title{Get common set of IDs from objects}
 \usage{
-get_common_ids(...)
+get_common_ids(..., complete.cases = FALSE)
 }
 \arguments{
 \item{...}{A set of objects: vectors, lists, matrices, data frames,
 and/or arrays. If one is a character vector with no names
 attribute, it's taken to be a set of IDs, itself.}
+
+\item{complete.cases}{If TRUE, look at matrices and non-character
+vectors and keep only individuals with no missing values.}
 }
 \value{
 A vector of character strings for the individuals that are
