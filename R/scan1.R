@@ -70,6 +70,7 @@ scan1 <-
     if("tol" %in% names(dotargs))
         tol <- dotargs$tol
     else tol <- 1e-12
+
     if("intcovar_method" %in% names(dotargs)) {
         intcovar_method <- dotargs$intcovar_method
         if(!(intcovar_method %in% c("highmem", "lowmem"))) {
@@ -77,9 +78,14 @@ scan1 <-
             intcovar_method <- "lowmem"
         }
     } else intcovar_method <- "lowmem"
+
     if("quiet" %in% names(dotargs))
         quiet <- dotargs$quiet
     else quiet <- TRUE
+
+    if("max_batch" %in% names(dotargs))
+        max_batch <- dotargs$max_batch
+    else max_batch <- NULL
 
     # force things to be matrices
     if(!is.matrix(pheno))
@@ -112,7 +118,7 @@ scan1 <-
     Xcovar <- drop_xcovar(addcovar, Xcovar, tol)
 
     # batch phenotypes by missing values
-    phe_batches <- batch_cols(pheno[ind2keep,,drop=FALSE])
+    phe_batches <- batch_cols(pheno[ind2keep,,drop=FALSE], max_batch)
 
     # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
