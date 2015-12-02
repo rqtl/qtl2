@@ -109,7 +109,7 @@ scan1 <-
              paste(ind2keep, collapse=":"))
 
     # make sure addcovar is full rank when we add an intercept
-    addcovar <- drop_depcols(cbind(1, addcovar), tol)[,-1,drop=FALSE]
+    addcovar <- drop_depcols(addcovar, TRUE, tol)
 
     # make sure columns in intcovar are also in addcovar
     addcovar <- force_intcovar(addcovar, intcovar, tol)
@@ -166,12 +166,14 @@ scan1 <-
         if(length(omit) > 0) these2keep <- ind2keep[-omit]
         if(length(these2keep)<=2) return(NULL) # not enough individuals
 
-        # subset the genotype probabilities
+        # subset the genotype probabilities: drop cols with all 0s, plus the first column
         Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
-        if(length(Xcol2drop) > 0)
+        if(length(Xcol2drop) > 0) {
             pr <- genoprobs[[chr]][these2keep,-Xcol2drop,,drop=FALSE]
+            pr <- pr[,-1,,drop=FALSE]
+        }
         else
-            pr <- genoprobs[[chr]][these2keep,,,drop=FALSE]
+            pr <- genoprobs[[chr]][these2keep,-1,,drop=FALSE]
 
         # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
