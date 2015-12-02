@@ -18,12 +18,12 @@ Get the matrix of covariates to be used for the null hypothesis when
 performing QTL analysis with the X chromosome.
 }
 \details{
-For most crosses, the result is either a matrix with no
-columns (indicating no additional covariates are needed) or a
+For most crosses, the result is either \code{NULL}
+(indicating no additional covariates are needed) or a
 matrix with a single column containing sex indicators (1 for males
 and 0 for females).
 
- For an intercross, we also consider cross direction. There are
+For an intercross, we also consider cross direction. There are
 four cases: (1) All male or all female but just one direction: no
 covariate; (2) All female but both directions: covariate indicating
 cross direction; (3) Both sexes, one direction: covariate
