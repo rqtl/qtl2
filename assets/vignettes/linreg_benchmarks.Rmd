@@ -14,6 +14,13 @@ options for linear regression. We're mostly focusing on using the
 linear regression via QR decomposition with column pivoting. We want
 speed, but we often have to deal with rank-deficient matrices.
 
+*A [previous version of qtl2scan (0.3-8)](https://github.com/rqtl/qtl2scan/tree/0.3-8)
+included code to do linear regression via LAPACK (more below), but
+we've since removed it, since Eigen seems sufficient, and inclusion of
+the LAPACK code requires availability of a Fortran compiler. The
+results reported here were obtained using that older version of
+qtl2scan.*
+
 In addition to routines that return coefficient estimates and
 estimated standard errors (SEs), we also have routines that return
 just the residual sum of squares (RSS), as for the calculation of LOD

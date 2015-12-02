@@ -60,10 +60,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2>Installation</h2>
 <p>R/qtl2 is early in development and so is not yet available on <a href="http://cran.r-project.org">CRAN</a>.</p>
 <p>You can install R/qtl2 from <a href="http://github.com/rqtl">GitHub</a>.</p>
-<p>You first need to install a Fortran compiler. See <a href="https://r.research.att.com/tools/">Tools for Mac OS X</a> or <a href="https://cran.r-project.org/bin/windows/Rtools/">RTools for Windows</a>.</p>
-<p>You then need to install the <a href="https://github.com/hadley/devtools">devtools</a> package.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</code></pre>
-<p>Finally, install R/qtl2 using <code>devtools::install_github()</code>.</p>
+<p>You first need to install the <a href="https://github.com/hadley/devtools">devtools</a> package, plus a set of package dependencies: <a href="https://cran.r-project.org/package=yaml">yaml</a>, <a href="https://cran.r-project.org/package=jsonlite">jsonlite</a>, <a href="https://cran.r-project.org/package=data.table">data.table</a>, and <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a>. (Additional, secondary dependencies will also be installed)</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;yaml&quot;</span>, <span class="st">&quot;jsonlite&quot;</span>, <span class="st">&quot;data.table&quot;</span>, <span class="st">&quot;RcppEigen&quot;</span>))</code></pre>
+<p>Then, install R/qtl2 using <code>devtools::install_github()</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
 <span class="kw">install_github</span>(<span class="kw">c</span>(<span class="st">&quot;rqtl/qtl2geno&quot;</span>, <span class="st">&quot;rqtl/qtl2scan&quot;</span>))</code></pre>
 </div>

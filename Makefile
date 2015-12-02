@@ -11,7 +11,9 @@ EXTERNAL_VIGNETTES = assets/vignettes/developer_guide.html assets/vignettes/inpu
 external_vignettes: ${EXTERNAL_VIGNETTES}
 
 assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
+	R $(R_OPTS) -e "devtools::install_github('kbroman/qtl2scan@0.3-8')" # install version that had lapack code
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
+	R $(R_OPTS) -e "devtools::install_github('rqtl/qtl2scan')" # re-install latest version
 
 assets/vignettes/hmm_benchmarks.html: assets/vignettes/hmm_benchmarks.Rmd
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
