@@ -20,6 +20,7 @@ test_that("genoprobs_cols2drop works", {
     names(expected) <- names(pr)
     for(i in seq(along=expected)) expected[[i]] <- numeric(0)
     expect_equal(genoprobs_col2drop(pr), expected)
+    expect_equal(genoprobs_col2drop(pr, FALSE), expected)
 
     #####
     # all males
@@ -32,6 +33,14 @@ test_that("genoprobs_cols2drop works", {
     # all chromosomes
     expected$X <- 1:4
     expect_equal(genoprobs_col2drop(pr), expected)
+    expect_equal(genoprobs_col2drop(pr, FALSE), expected)
+
+    # test Xonly=FALSE
+    expected2 <- expected;expected2$X <- numeric(0)
+    prA <- pr
+    attr(prA, "is_x_chr") <- rep(FALSE, length(prA))
+    expect_equal(genoprobs_col2drop(prA), expected2)
+    expect_equal(genoprobs_col2drop(prA, FALSE), expected)
 
     #####
     # all females
@@ -44,5 +53,13 @@ test_that("genoprobs_cols2drop works", {
     # all chromosomes
     expected$X <- 5:6
     expect_equal(genoprobs_col2drop(pr), expected)
+    expect_equal(genoprobs_col2drop(pr, FALSE), expected)
+
+    # test Xonly=FALSE
+    expected2 <- expected;expected2$X <- numeric(0)
+    prA <- pr
+    attr(prA, "is_x_chr") <- rep(FALSE, length(prA))
+    expect_equal(genoprobs_col2drop(prA), expected2)
+    expect_equal(genoprobs_col2drop(prA, FALSE), expected)
 
 })
