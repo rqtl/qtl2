@@ -1,7 +1,7 @@
-context("genome scan by Haley-Knott")
+context("chromosome scan by basic Haley-Knott functions")
 library(qtl)
 
-test_that("genome scan by Haley-Knott works", {
+test_that("chromosome scan by Haley-Knott works", {
 
     # data for chr 6
     data(hyper)
@@ -73,7 +73,7 @@ test_that("genome scan by Haley-Knott works", {
 
 })
 
-test_that("genome scan by Haley-Knott with multiple phenotypes works", {
+test_that("chromosome scan by Haley-Knott with multiple phenotypes works", {
 
     set.seed(20151201)
     # data for chr 6
@@ -148,7 +148,7 @@ test_that("genome scan by Haley-Knott with multiple phenotypes works", {
 })
 
 
-test_that("genome scan by Haley-Knott works with additive covariates", {
+test_that("chromosome scan by Haley-Knott works with additive covariates", {
 
     set.seed(20151201)
 
@@ -204,7 +204,7 @@ test_that("genome scan by Haley-Knott works with additive covariates", {
 
 })
 
-test_that("genome scan by Haley-Knott with multiple phenotypes and an additive covariate works", {
+test_that("chromosome scan by Haley-Knott with multiple phenotypes and an additive covariate works", {
 
     set.seed(20151201)
     # data for chr 6
@@ -263,7 +263,7 @@ test_that("genome scan by Haley-Knott with multiple phenotypes and an additive c
 })
 
 
-test_that("genome scan by Haley-Knott works with interactive covariates", {
+test_that("chromosome scan by Haley-Knott works with interactive covariates", {
 
     set.seed(20151201)
 
@@ -325,7 +325,7 @@ test_that("genome scan by Haley-Knott works with interactive covariates", {
 
 })
 
-test_that("genome scan by Haley-Knott with multiple phenotypes and an interactive covariate works", {
+test_that("chromosome scan by Haley-Knott with multiple phenotypes and an interactive covariate works", {
 
     set.seed(20151201)
     # data for chr 6
