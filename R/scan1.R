@@ -90,6 +90,7 @@ scan1 <-
         Xcovar <- as.matrix(Xcovar)
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
+    # square-root of weights
     weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
 
     # find individuals in common across all arguments
@@ -153,13 +154,14 @@ scan1 <-
         if(length(omit) > 0) these2keep <- ind2keep[-omit]
         if(length(these2keep)<=2) return(NULL) # not enough individuals
 
-        # subset the data
+        # subset the genotype probabilities
         Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
         if(length(Xcol2drop) > 0)
             pr <- genoprobs[[chr]][these2keep,-Xcol2drop,,drop=FALSE]
         else
             pr <- genoprobs[[chr]][these2keep,,,drop=FALSE]
 
+        # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
         Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
         ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
@@ -169,12 +171,13 @@ scan1 <-
         # if X chr, paste X covariates onto additive covariates
         if(is_x_chr[chr]) ac <- cbind(ac, Xc)
 
-        # FIX_ME: calculating null RSS for each chromosome :(
+        # FIX_ME: calculating null RSS multiple times :(
         nullrss <- as.numeric(nullrss_clean(ph, ac, wts, tol))
 
         # scan1 function taking clean data (with no missing values)
         rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)
 
+        # calculate LOD score
         nrow(ph)/2 * (log10(nullrss) - log10(rss))
     }
 
@@ -184,8 +187,7 @@ scan1 <-
     pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
     # object to contain the LOD scores
-    result <- matrix(nrow=totpos,
-                     ncol=ncol(pheno))
+    result <- matrix(nrow=totpos, ncol=ncol(pheno))
 
     if(cores<=1) { # no parallel processing
         for(i in run_indexes) {
@@ -217,8 +219,6 @@ scan1 <-
                 result[pos_index[[chr]], phecol] <- t(list_result[[i]])
         }
     }
-
-    # need to calculate null RSS and convert to LOD
 
     dimnames(result) <- list(dimnames(genoprobs)[[3]], colnames(pheno))
     result
