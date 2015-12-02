@@ -109,8 +109,12 @@ find_lin_indep_cols <- function(mat, tol = 1e-12) {
     .Call('qtl2scan_find_lin_indep_cols', PACKAGE = 'qtl2scan', mat, tol)
 }
 
-formX_intcovar <- function(probs, addcovar, intcovar) {
-    .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar)
+formX_intcovar <- function(probs, addcovar, intcovar, position) {
+    .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar, position)
+}
+
+expand_genoprobs_intcovar <- function(probs, intcovar) {
+    .Call('qtl2scan_expand_genoprobs_intcovar', PACKAGE = 'qtl2scan', probs, intcovar)
 }
 
 weighted_matrix <- function(mat, weights) {
@@ -155,5 +159,21 @@ scan_hk_onechr <- function(genoprobs, pheno, addcovar, tol = 1e-12) {
 
 scan_hk_onechr_weighted <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
     .Call('qtl2scan_scan_hk_onechr_weighted', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
+}
+
+scan_hk_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, tol)
+}
+
+scan_hk_onechr_intcovar_weighted_highmem <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+}
+
+scan_hk_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, tol)
+}
+
+scan_hk_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 

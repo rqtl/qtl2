@@ -41,16 +41,21 @@ Rcpp::IntegerVector find_lin_indep_cols(const Rcpp::NumericMatrix& mat,
                                         const double tol);
 
 // form X matrix with intcovar
-Rcpp::NumericMatrix formX_intcovar(const Rcpp::NumericMatrix& probs,
+Rcpp::NumericMatrix formX_intcovar(const Rcpp::NumericVector& probs,
                                    const Rcpp::NumericMatrix& addcovar,
-                                   const Rcpp::NumericMatrix& intcovar);
+                                   const Rcpp::NumericMatrix& intcovar,
+                                   const int position);
 
 // multiply each column of a matrix by a set of weights
 Rcpp::NumericMatrix weighted_matrix(const Rcpp::NumericMatrix& mat,
-                              const Rcpp::NumericVector& weights);
+                                    const Rcpp::NumericVector& weights);
 
 // multiply each element of a vector by the corresponding weight
 Rcpp::NumericVector weighted_3darray(const Rcpp::NumericVector& array,
                                      const Rcpp::NumericVector& weights);
+
+// expand genotype probabilities with intcovar
+Rcpp::NumericVector expand_genoprobs_intcovar(const Rcpp::NumericVector& probs, // 3d array ind x prob x pos
+                                              const Rcpp::NumericMatrix& intcovar);
 
 #endif // MATRIX_H

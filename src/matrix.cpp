@@ -282,31 +282,84 @@ IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-
 
 // form X matrix with intcovar
 // [[Rcpp::export]]
-NumericMatrix formX_intcovar(const NumericMatrix& probs,
+NumericMatrix formX_intcovar(const NumericVector& probs,
                              const NumericMatrix& addcovar,
-                             const NumericMatrix& intcovar)
+                             const NumericMatrix& intcovar,
+                             const int position) // with indexes starting at 0
 {
-    const unsigned int nrow  = probs.rows();
-    const unsigned int nprob = probs.cols();
+
+    const Dimension d = probs.attr("dim");
+    const unsigned int nrow  = d[0];
+    const unsigned int ngen = d[1];
+    const unsigned int recsize = nrow*ngen;
+    const unsigned int offset = recsize*position;
     const unsigned int nadd  = addcovar.cols();
     const unsigned int nint  = intcovar.cols();
 
+    NumericMatrix result(nrow, nadd + ngen*(nint+1));
+
+    if(position < 0 || position >= d[2])
+        throw std::range_error("position out of range of 0 .. (n_pos-1)");
     if(addcovar.rows() != nrow)
         throw std::range_error("nrow(addcovar) != nrow(probs)");
     if(intcovar.rows() != nrow)
         throw std::range_error("nrow(intcovar) != nrow(probs)");
 
-    NumericMatrix result(nrow,nadd+nprob+nprob*nint);
     std::copy(addcovar.begin(), addcovar.end(), result.begin());
-    std::copy(probs.begin(), probs.end(), result.begin() + nrow*nadd);
+    std::copy(probs.begin()+offset,
+              probs.begin()+offset+recsize,
+              result.begin() + nrow*nadd);
 
-    for(unsigned int i=0, rescol=nprob+nadd; i<nint; i++) {
-        for(unsigned int j=0; j<nprob; j++, rescol++) {
-            for(unsigned int k=0; k<nrow; k++)
-                result(k,rescol) = probs(k,j)*intcovar(k,i);
+    for(unsigned int i=0, rescol=ngen+nadd; i<nint; i++) {
+        for(unsigned int j=0; j<ngen; j++, rescol++) {
+            for(unsigned int k=0; k<nrow; k++) {
+                result(k,rescol) = probs[offset + k + j*nrow] * intcovar(k,i);
+            }
         }
     }
 
+    return result;
+}
+
+
+// expand genotype probabilities with intcovar
+// [[Rcpp::export]]
+NumericVector expand_genoprobs_intcovar(const NumericVector& probs, // 3d array ind x prob x pos
+                                        const NumericMatrix& intcovar)
+{
+    Dimension d = probs.attr("dim");
+    const unsigned int nrow  = d[0];
+    const unsigned int ngen = d[1];
+    const unsigned int npos = d[2];
+    const unsigned int nint  = intcovar.cols();
+
+    if(intcovar.rows() != nrow)
+        throw std::range_error("nrow(intcovar) != nrow(probs)");
+
+    const unsigned int ngen_result = d[1]*(nint+1); // no. cols in result
+    const unsigned int recsize = nrow*ngen; // ind x geno rectangle
+    const unsigned int recsize_result = nrow*ngen_result; // ind x geno rectangle in result
+
+    NumericVector result(recsize_result*npos);
+
+    for(unsigned int i=0; i<npos; i++) {
+        // paste probs into first batch
+        std::copy(probs.begin()+i*recsize,
+                  probs.begin()+(i+1)*recsize,
+                  result.begin()+i*recsize_result);
+        for(unsigned int j=0; j<nint; j++) {
+            for(unsigned int k=0; k<ngen; k++) {
+                for(unsigned int s=0; s<nrow; s++)
+                    result[i*recsize_result + (j+1)*recsize + k*nrow + s] =
+                        probs[i*recsize + k*nrow + s] * intcovar(s,j);
+            }
+        }
+    }
+
+    // add dimension attribute
+    d[1] = ngen_result;
+    result.attr("dim") = d;
+    rownames(result) = rownames(probs);
     return result;
 }
 

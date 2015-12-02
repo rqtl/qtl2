@@ -352,15 +352,28 @@ BEGIN_RCPP
 END_RCPP
 }
 // formX_intcovar
-NumericMatrix formX_intcovar(const NumericMatrix& probs, const NumericMatrix& addcovar, const NumericMatrix& intcovar);
-RcppExport SEXP qtl2scan_formX_intcovar(SEXP probsSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP) {
+NumericMatrix formX_intcovar(const NumericVector& probs, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const int position);
+RcppExport SEXP qtl2scan_formX_intcovar(SEXP probsSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP positionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type probs(probsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type probs(probsSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
     Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
-    __result = Rcpp::wrap(formX_intcovar(probs, addcovar, intcovar));
+    Rcpp::traits::input_parameter< const int >::type position(positionSEXP);
+    __result = Rcpp::wrap(formX_intcovar(probs, addcovar, intcovar, position));
+    return __result;
+END_RCPP
+}
+// expand_genoprobs_intcovar
+NumericVector expand_genoprobs_intcovar(const NumericVector& probs, const NumericMatrix& intcovar);
+RcppExport SEXP qtl2scan_expand_genoprobs_intcovar(SEXP probsSEXP, SEXP intcovarSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type probs(probsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    __result = Rcpp::wrap(expand_genoprobs_intcovar(probs, intcovar));
     return __result;
 END_RCPP
 }
@@ -503,6 +516,68 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(scan_hk_onechr_weighted(genoprobs, pheno, addcovar, weights, tol));
+    return __result;
+END_RCPP
+}
+// scan_hk_onechr_intcovar_highmem
+NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const double tol);
+RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(scan_hk_onechr_intcovar_highmem(genoprobs, pheno, addcovar, intcovar, tol));
+    return __result;
+END_RCPP
+}
+// scan_hk_onechr_intcovar_weighted_highmem
+NumericMatrix scan_hk_onechr_intcovar_weighted_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
+RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_weighted_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(scan_hk_onechr_intcovar_weighted_highmem(genoprobs, pheno, addcovar, intcovar, weights, tol));
+    return __result;
+END_RCPP
+}
+// scan_hk_onechr_intcovar_lowmem
+NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const double tol);
+RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(scan_hk_onechr_intcovar_lowmem(genoprobs, pheno, addcovar, intcovar, tol));
+    return __result;
+END_RCPP
+}
+// scan_hk_onechr_intcovar_weighted_lowmem
+NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
+RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(scan_hk_onechr_intcovar_weighted_lowmem(genoprobs, pheno, addcovar, intcovar, weights, tol));
     return __result;
 END_RCPP
 }
