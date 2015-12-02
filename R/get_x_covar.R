@@ -36,5 +36,13 @@ function(cross)
     if(class(cross) != "cross2")
         stop('Input cross must have class "cross2"')
 
-    .get_x_covar(cross$crosstype, cross$is_female, cross$cross_info)
+    x <- .get_x_covar(cross$crosstype, cross$is_female, cross$cross_info)
+
+    if(ncol(x)==0) return(NULL)
+
+    # add rownames
+    nam <- names(cross$is_female)
+    if(!is.null(nam)) rownames(x) <- nam
+
+    x
 }
