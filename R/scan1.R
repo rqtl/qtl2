@@ -234,7 +234,7 @@ scan1 <-
         }
     }
 
-    pos_names <- unlist(lapply(probs, function(a) dimnames(a)[[3]]))
+    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # function to add column names as attribute
