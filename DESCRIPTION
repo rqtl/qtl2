@@ -5,7 +5,7 @@ Title: Genome Scans for QTL Experiments
 Description: Functions to calculate QTL genotype probabilities, impute
     QTL genotypes, and estimate genetic maps. Part of R/qtl2, a
     reimplementation of the R/qtl package to better handle
-    high-dimensional data and complex cross designs).
+    high-dimensional data and complex cross designs.
 Author: Karl W Broman <kbroman@biostat.wisc.edu>
 Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
 Depends:
