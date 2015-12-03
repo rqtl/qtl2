@@ -4,15 +4,17 @@
 \alias{batch_cols}
 \title{Batch columns by pattern of missing values}
 \usage{
-batch_cols(mat)
+batch_cols(mat, max_batch = NULL)
 }
 \arguments{
 \item{mat}{A numeric matrix}
+
+\item{max_batch}{Maximum batch size}
 }
 \value{
 A list containing the batches, each with two components:
 \code{cols} containing numeric indices of the columns in the
-corresponding batch, and \code{keep} containing a vector of row indices
+corresponding batch, and \code{omit} containing a vector of row indices
 that have missing values in this batch.
 }
 \description{

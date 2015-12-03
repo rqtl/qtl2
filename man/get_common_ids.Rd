@@ -4,12 +4,15 @@
 \alias{get_common_ids}
 \title{Get common set of IDs from objects}
 \usage{
-get_common_ids(...)
+get_common_ids(..., complete.cases = FALSE)
 }
 \arguments{
 \item{...}{A set of objects: vectors, lists, matrices, data frames,
 and/or arrays. If one is a character vector with no names
 attribute, it's taken to be a set of IDs, itself.}
+
+\item{complete.cases}{If TRUE, look at matrices and non-character
+vectors and keep only individuals with no missing values.}
 }
 \value{
 A vector of character strings for the individuals that are
@@ -18,5 +21,22 @@ in common.
 \description{
 For a set objects with IDs as row names (or, for a vector, just
 names), find the IDs that are present in all of the objects.
+}
+\details{
+This is used (mostly internally) to align phenotypes,
+genotype probabilities, and covariates in preparation for a genome
+scan. The \code{complete.cases} argument is used to omit
+individuals with any missing covariate values.
+}
+\examples{
+x <- matrix(0, nrow=10, ncol=5); rownames(x) <- LETTERS[1:10]
+y <- matrix(0, nrow=5, ncol=5);  rownames(y) <- LETTERS[(1:5)+7]
+z <- LETTERS[5:15]
+get_common_ids(x, y, z)
+
+x[8,1] <- NA
+get_common_ids(x, y, z)
+get_common_ids(x, y, z, complete.cases=TRUE)
+
 }
 

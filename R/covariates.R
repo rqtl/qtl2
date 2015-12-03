@@ -27,12 +27,15 @@ force_intcovar <-
     if(any(has_match > 0))
         full <- full[, has_match<0, drop=FALSE]
 
+    if(ncol(full)==0) return(NULL)
+
     full
 }
 
 # drop linearly dependent columns
+# if intercept=TRUE, add intercept before checking and then remove afterwards
 drop_depcols <-
-    function(covar=NULL, tol=1e-12)
+    function(covar=NULL, intercept=FALSE, tol=1e-12)
 {
     if(is.null(covar)) return(covar)
 
@@ -40,8 +43,37 @@ drop_depcols <-
         stop("covar shouldn't contain missing values")
 
     if(!is.matrix(covar)) covar <- as.matrix(covar)
+    if(intercept) covar <- cbind(rep(1, nrow(covar)), covar)
 
     if(ncol(covar) <= 1) return(covar)
 
-    covar[, sort(find_lin_indep_cols(covar, tol)), drop=FALSE]
+    depcols <- sort(find_lin_indep_cols(covar, tol))
+    if(intercept) {
+        if(depcols[1] != 1)
+            message("oops in drop_depcols; I figured the intercept would always be included.")
+        depcols <- depcols[-1]
+    }
+    if(length(depcols)==0) return(NULL)
+
+    covar[, depcols, drop=FALSE]
+}
+
+# drop columns from X covariates that are already in addcovar
+drop_xcovar <-
+    function(covar=NULL, Xcovar=NULL, tol=1e-12)
+{
+    if(is.null(Xcovar) || is.null(covar)) return(Xcovar)
+
+    if(!is.matrix(covar)) covar <- as.matrix(covar)
+    if(!is.matrix(Xcovar)) Xcovar <- as.matrix(Xcovar)
+
+    stopifnot(nrow(covar) == nrow(Xcovar))
+
+    # find columns that match a previous column
+    matches <- find_matching_cols(cbind(covar, Xcovar), tol)[-(1:ncol(covar))]
+
+    if(all(matches > 0)) return(NULL)
+
+    # drop the columns with matches
+    Xcovar[,matches<0,drop=FALSE]
 }

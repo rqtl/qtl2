@@ -4,10 +4,11 @@
 #' of missing values.
 #'
 #' @param mat A numeric matrix
+#' @param max_batch Maximum batch size
 #'
 #' @return A list containing the batches, each with two components:
 #' \code{cols} containing numeric indices of the columns in the
-#' corresponding batch, and \code{keep} containing a vector of row indices
+#' corresponding batch, and \code{omit} containing a vector of row indices
 #' that have missing values in this batch.
 #'
 #' @export
@@ -19,8 +20,11 @@
 #'            c(10, 11, 12, 15, 20))
 #' batch_cols(x)
 batch_cols <-
-    function(mat)
+    function(mat, max_batch=NULL)
 {
+    if(is.null(max_batch) || max_batch<=0)
+        max_batch <- ncol(mat)
+
     mat <- is.na(mat)
     n <- nrow(mat)
     all_true <- rep(TRUE, n)
@@ -31,7 +35,7 @@ batch_cols <-
     no_na <- (n_na==0)
     if(any(no_na))
         result <- list(list(cols=which(no_na),
-                                keep=numeric(0)))
+                                omit=numeric(0)))
 
     # now deal with the columns that have exactly 1 NA
     one_na <- (n_na==1)
@@ -40,7 +44,7 @@ batch_cols <-
         spl <- split(which(one_na), wh)
         part2 <- lapply(seq(along=spl), function(i)
                         list(cols=as.numeric(spl[[i]]),
-                             keep=as.numeric(names(spl)[i])))
+                             omit=as.numeric(names(spl)[i])))
 
         if(is.null(result)) result <- part2
         else result <- c(result, part2)
@@ -60,12 +64,42 @@ batch_cols <-
         # the result
         part3 <- lapply(u, function(a)
                         list(cols=other_cols[pat==a],
-                             keep=as.numeric(strsplit(a, ":")[[1]])))
+                             omit=as.numeric(strsplit(a, ":")[[1]])))
 
-        if(is.null(result)) return(part3)
     } else part3 <- NULL
 
-    if(is.null(part3)) return(result)
+    if(is.null(result)) result <- part3
+    else result <- c(result, part3)
 
-    c(result, part3)
+    # reduce to max_batch
+    sizes <- vapply(result, function(a) length(a$cols), 1)
+    big <- sizes > max_batch
+    if(!any(big)) return(result)
+
+    toreduce <- which(big)
+    for(i in toreduce) {
+        omit <- result[[i]]$omit
+        col_list <- batch_vec(result[[i]]$cols, max_batch)
+        this <- lapply(col_list, function(a) list(cols=a, omit=omit))
+        result <- c(result, this)
+    }
+
+   result[-toreduce]
+}
+
+
+# split a vector into batches, each no longer than batch_size
+batch_vec <-
+    function(vec, batch_size)
+{
+    n <- length(vec)
+    n_batches <- ceiling(n/batch_size)
+    n_per_batch <- rep(floor(n/n_batches), n_batches)
+    d <- n - sum(n_per_batch)
+    if(d >= 1)
+        n_per_batch[1:d] <- n_per_batch[1:d]+1
+
+    result <- split(vec, rep(1:n_batches, n_per_batch))
+    names(result) <- NULL
+    result
 }
