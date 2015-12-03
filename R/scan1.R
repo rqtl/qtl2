@@ -186,7 +186,7 @@ scan1 <-
         if(is_x_chr[chr]) ac <- cbind(ac, Xc)
 
         # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- as.numeric(nullrss_clean(ph, ac, wts, tol))
+        nullrss <- nullrss_clean(ph, ac, wts, tol)
 
         # scan1 function taking clean data (with no missing values)
         rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)
