@@ -234,7 +234,27 @@ scan1 <-
         }
     }
 
-    dimnames(result) <- list(dimnames(genoprobs)[[3]], colnames(pheno))
+    pos_names <- unlist(lapply(probs, function(a) dimnames(a)[[3]]))
+    dimnames(result) <- list(pos_names, colnames(pheno))
+
+    # function to add column names as attribute
+    cn_attr <-
+        function(mat)
+        {
+            if(is.null(mat)) return(mat)
+            if(!is.matrix(mat)) mat <- as
+            cn <- colnames(mat)
+            if(is.null(cn)) return(character(ncol(mat)))
+            cn
+        }
+
+    # add some attributes with details on analysis
+    attr(result, "addcovar") <- cn_attr(addcovar)
+    attr(result, "Xcovar") <- cn_attr(Xcovar)
+    attr(result, "intcovar") <- cn_attr(intcovar)
+    if(!is.null(weights))
+        attr(result, "weights") <- TRUE
+
     result
 }
 
