@@ -61,38 +61,6 @@ Rcpp_fitLMM <- function(Kva, y, X, reml = TRUE, check_boundary = TRUE, logdetXpX
     .Call('qtl2scan_Rcpp_fitLMM', PACKAGE = 'qtl2scan', Kva, y, X, reml, check_boundary, logdetXpX, tol)
 }
 
-cbind_imatrix <- function(mat1, mat2) {
-    .Call('qtl2scan_cbind_imatrix', PACKAGE = 'qtl2scan', mat1, mat2)
-}
-
-cbind_3imatrix <- function(mat1, mat2, mat3) {
-    .Call('qtl2scan_cbind_3imatrix', PACKAGE = 'qtl2scan', mat1, mat2, mat3)
-}
-
-cbind_nmatrix <- function(mat1, mat2) {
-    .Call('qtl2scan_cbind_nmatrix', PACKAGE = 'qtl2scan', mat1, mat2)
-}
-
-cbind_3nmatrix <- function(mat1, mat2, mat3) {
-    .Call('qtl2scan_cbind_3nmatrix', PACKAGE = 'qtl2scan', mat1, mat2, mat3)
-}
-
-rbind_imatrix <- function(mat1, mat2) {
-    .Call('qtl2scan_rbind_imatrix', PACKAGE = 'qtl2scan', mat1, mat2)
-}
-
-rbind_3imatrix <- function(mat1, mat2, mat3) {
-    .Call('qtl2scan_rbind_3imatrix', PACKAGE = 'qtl2scan', mat1, mat2, mat3)
-}
-
-rbind_nmatrix <- function(mat1, mat2) {
-    .Call('qtl2scan_rbind_nmatrix', PACKAGE = 'qtl2scan', mat1, mat2)
-}
-
-rbind_3nmatrix <- function(mat1, mat2, mat3) {
-    .Call('qtl2scan_rbind_3nmatrix', PACKAGE = 'qtl2scan', mat1, mat2, mat3)
-}
-
 find_matching_cols <- function(mat, tol = 1e-12) {
     .Call('qtl2scan_find_matching_cols', PACKAGE = 'qtl2scan', mat, tol)
 }
