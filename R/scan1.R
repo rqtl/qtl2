@@ -319,6 +319,7 @@ colnames4attr <-
     if(is.null(mat)) return(NULL)
 
     if(!is.matrix(mat)) mat <- as.matrix(mat)
+    if(ncol(mat)==0) return(NULL)
     cn <- colnames(mat)
 
     if(is.null(cn)) cn <- rep("", ncol(mat))
