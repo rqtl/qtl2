@@ -19,7 +19,10 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A matrix of LOD scores, positions x phenotypes.
+#' @return A matrix of LOD scores, positions x phenotypes.  Covariate
+#' column names are included as attributes (\code{"addcovar"},
+#' \code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
+#' sample size for each phenotype (\code{"sample_size"})
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
@@ -197,8 +200,7 @@ scan1 <-
 
         # calculate LOD score
         lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
-        attr(lod, "n_used") <- nrow(ph)
-        lod
+        list(lod=lod, n=nrow(ph)) # return LOD & number of individuals used
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
@@ -208,8 +210,7 @@ scan1 <-
 
     # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
-    n_used <- matrix(nrow=length(genoprobs), ncol=ncol(pheno))
-    dimnames(n_used) <- list(names(genoprobs), colnames(pheno))
+    n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
     if(cores<=1) { # no parallel processing
         for(i in run_indexes) {
@@ -218,11 +219,11 @@ scan1 <-
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
-            tmp_result <- by_group_func(i)
-            if(!is.null(tmp_result))
-                result[pos_index[[chr]], phecol] <- t(tmp_result)
-            if(!is.null(attr(tmp_result, "n_used")))
-                n_used[chr, phecol] <- attr(tmp_result, "n_used")
+            this_result <- by_group_func(i)
+            if(!is.null(this_result)) {
+                result[pos_index[[chr]], phecol] <- t(this_result$lod)
+                n[phecol] <- this_result$n
+            }
         }
     }
     else {
@@ -239,23 +240,18 @@ scan1 <-
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
-            if(!is.null(list_result[[i]]))
-                result[pos_index[[chr]], phecol] <- t(list_result[[i]])
-            if(!is.null(attr(list_result[[i]], "n_usesd")))
-                n_used[chr, phecol] <- attr(list_result[[i]], "n_used")
+            if(!is.null(list_result[[i]])) {
+                result[pos_index[[chr]], phecol] <- t(list_result[[i]]$lod)
+                n[chr, phecol] <- list_result[[i]]$n
+            }
         }
     }
-
-    # if same sample size on all chromosomes for each phenotype,
-    # (as expected), reduce to a single value
-    if(all(apply(n_used, 2, function(a) length(unique(a)))==1))
-        n_used <- n_used[1,]
 
     pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # add some attributes with details on analysis
-    attr(result, "n_used") <- n_used
+    attr(result, "sample_size") <- n
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)

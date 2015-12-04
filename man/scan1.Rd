@@ -33,7 +33,10 @@ produced by \code{\link[parallel]{makeCluster}}.}
 \item{...}{Additional control parameters; see Details.}
 }
 \value{
-A matrix of LOD scores, positions x phenotypes.
+A matrix of LOD scores, positions x phenotypes.  Covariate
+column names are included as attributes (\code{"addcovar"},
+\code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
+sample size for each phenotype (\code{"sample_size"})
 }
 \description{
 Genome scan with a single-QTL model by Haley-Knott regression, with possible allowance for covariates.
