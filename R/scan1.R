@@ -7,8 +7,8 @@
 #' individuals x genotypes x positions.
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param addcovar An optional matrix of additive covariates.
-#' @param Xcovar An optional matrix with additive covariates used for
-#' the X chromosome.
+#' @param Xcovar An optional matrix with additional additive covariates used for
+#' null hypothesis when scanning the X chromosome.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
 #' individuals. As with the other inputs, it must have \code{names}
@@ -19,7 +19,10 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A matrix of LOD scores, positions x phenotypes.
+#' @return A matrix of LOD scores, positions x phenotypes.  Covariate
+#' column names are included as attributes (\code{"addcovar"},
+#' \code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
+#' sample size for each phenotype (\code{"sample_size"})
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
@@ -104,9 +107,13 @@ scan1 <-
     ind2keep <- get_common_ids(genoprobs[[1]], addcovar, Xcovar, intcovar,
                                weights, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
-    if(length(ind2keep)<=2)
-        stop("Only ", length(ind2keep), " individuals in common: ",
-             paste(ind2keep, collapse=":"))
+    if(length(ind2keep)<=2) {
+        if(length(ind2keep)==0)
+            stop("No individuals in common.")
+        else
+            stop("Only ", length(ind2keep), " individuals in common: ",
+                 paste(ind2keep, collapse=":"))
+    }
 
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
@@ -182,17 +189,18 @@ scan1 <-
         ph <- pheno[these2keep,phecol,drop=FALSE]
         wts <- weights[these2keep]
 
+        # FIX_ME: calculating null RSS multiple times :(
+        nullrss <- nullrss_clean(ph, ac, wts, tol)
+
         # if X chr, paste X covariates onto additive covariates
         if(is_x_chr[chr]) ac <- cbind(ac, Xc)
-
-        # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- as.numeric(nullrss_clean(ph, ac, wts, tol))
 
         # scan1 function taking clean data (with no missing values)
         rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)
 
         # calculate LOD score
-        nrow(ph)/2 * (log10(nullrss) - log10(rss))
+        lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+        list(lod=lod, n=nrow(ph)) # return LOD & number of individuals used
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
@@ -200,8 +208,9 @@ scan1 <-
     totpos <- sum(npos_by_chr)
     pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
-    # object to contain the LOD scores
+    # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
+    n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
     if(cores<=1) { # no parallel processing
         for(i in run_indexes) {
@@ -210,9 +219,11 @@ scan1 <-
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
-            tmp_result <- by_group_func(i)
-            if(!is.null(tmp_result))
-                result[pos_index[[chr]], phecol] <- t(tmp_result)
+            this_result <- by_group_func(i)
+            if(!is.null(this_result)) {
+                result[pos_index[[chr]], phecol] <- t(this_result$lod)
+                n[phecol] <- this_result$n
+            }
         }
     }
     else {
@@ -229,12 +240,24 @@ scan1 <-
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
-            if(!is.null(list_result[[i]]))
-                result[pos_index[[chr]], phecol] <- t(list_result[[i]])
+            if(!is.null(list_result[[i]])) {
+                result[pos_index[[chr]], phecol] <- t(list_result[[i]]$lod)
+                n[chr, phecol] <- list_result[[i]]$n
+            }
         }
     }
 
-    dimnames(result) <- list(dimnames(genoprobs)[[3]], colnames(pheno))
+    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    dimnames(result) <- list(pos_names, colnames(pheno))
+
+    # add some attributes with details on analysis
+    attr(result, "sample_size") <- n
+    attr(result, "addcovar") <- colnames4attr(addcovar)
+    attr(result, "Xcovar") <- colnames4attr(Xcovar)
+    attr(result, "intcovar") <- colnames4attr(intcovar)
+    if(!is.null(weights))
+        attr(result, "weights") <- TRUE
+
     result
 }
 
@@ -287,4 +310,21 @@ nullrss_clean <-
     }
 
     as.numeric(result)
+}
+
+# function to add column names as attribute
+colnames4attr <-
+    function(mat)
+{
+    if(is.null(mat)) return(NULL)
+
+    if(!is.matrix(mat)) mat <- as.matrix(mat)
+    if(ncol(mat)==0) return(NULL)
+    cn <- colnames(mat)
+
+    if(is.null(cn)) cn <- rep("", ncol(mat))
+
+    if(any(cn=="")) cn[cn==""] <- paste0("unnamed", 1:sum(cn==""))
+
+    cn
 }
