@@ -28,10 +28,10 @@ interpreted as \code{NA} values.}
 \item{comment.char}{A character vector of length one containing a
 single character to denote comments within the CSV files.}
 
-\item{quiet}{If \code{FALSE}, print progress messages.}
-
-\item{tranpose}{If TRUE, the phenotype data will be transposed. The
+\item{transpose}{If TRUE, the phenotype data will be transposed. The
 phenotype covariate information is \bold{never} transposed.}
+
+\item{quiet}{If \code{FALSE}, print progress messages.}
 }
 \value{
 Either a matrix of phenotype data, or a list containing

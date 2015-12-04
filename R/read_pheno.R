@@ -19,7 +19,7 @@
 #' interpreted as \code{NA} values.
 #' @param comment.char A character vector of length one containing a
 #' single character to denote comments within the CSV files.
-#' @param tranpose If TRUE, the phenotype data will be transposed. The
+#' @param transpose If TRUE, the phenotype data will be transposed. The
 #' phenotype covariate information is \bold{never} transposed.
 #' @param quiet If \code{FALSE}, print progress messages.
 #'
@@ -99,7 +99,7 @@ read_pheno <-
 
     # read phenocovarfile
     if(!is.null(phenocovarfile)) {
-        if(!quiet) message(" - Reading ", basename(phecovarfile))
+        if(!quiet) message(" - Reading ", basename(phenocovarfile))
         phenocovar <- read_phenocovar(phenocovarfile, sep=sep, na.strings=na.strings,
                                       comment.char=comment.char, quiet=quiet)
         return(list(pheno=pheno, phenocovar=phenocovar))
