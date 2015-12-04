@@ -1,16 +1,9 @@
 context("genome scan by scan1")
 
-# calc lod scores via lm()
+# calc lod scores via lm(), just one chromosome
 lod_via_lm <-
     function(probs, pheno, addcovar=NULL, intcovar=NULL, weights=NULL)
 {
-    if(is.list(probs)) { # mult chr by recursion
-        result <- NULL
-        for(s in seq(along=probs))
-            result <- rbind(result, lod_via_lm(probs[[s]], pheno, addcovar, intcovar, weights))
-        return(result)
-    }
-
     if(!is.matrix(pheno)) pheno <- as.matrix(pheno)
 
     d3 <- dim(probs)[3]
@@ -21,6 +14,9 @@ lod_via_lm <-
 
     addcovar <- cbind(rep(1, n), addcovar)
     if(is.null(weights)) weights <- rep(1, n)
+
+    sample_size <- rep(NA, ncol(pheno))
+    names(sample_size) <- colnames(pheno)
 
     for(i in 1:p) {
         not_na <- !is.na(pheno[,i])
@@ -34,10 +30,26 @@ lod_via_lm <-
                                weights=weights)$resid^2*weights[not_na])
             result[j,i] <- sum(not_na)/2 * (log10(rss0) - log10(rss1))
         }
+        sample_size[i] <- sum(not_na)
     }
+
+    attr(result, "sample_size") <- sample_size
+    attr(result, "addcovar") <- colnames4attr(addcovar[,-1]) # drop intercept
+    attr(result, "intcovar") <- colnames4attr(intcovar)
+    dimnames(result) <- list(dimnames(probs)[[3]], colnames(pheno))
+
     result
 }
 
+subset_scan1result <-
+    function(x, rows)
+{
+    at <- attributes(x)
+    x <- x[rows,,drop=FALSE]
+    for(i in c("addcovar", "intcovar", "sample_size"))
+        attr(x, i) <- at[[i]]
+    x
+}
 
 
 
@@ -64,9 +76,10 @@ test_that("scan1 for backcross with one phenotype", {
     # as expected?
     expect_equivalent(as.numeric(out2), lod0)
 
-    # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[1]], y)
-    expect_equal(as.numeric(out.lm), as.numeric(out2[1:nrow(out.lm),]))
+    # cf lm() for chr 18
+    lm_rows <- which(out[,1]==18)
+    out.lm <- lod_via_lm(pr[[18]], y)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # weighted scan
@@ -79,9 +92,9 @@ test_that("scan1 for backcross with one phenotype", {
     out2 <- scan1(pr, y, weights=w)
     expect_equal(as.numeric(out2), lod0)
 
-    # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[1]], y, weights=w)
-    expect_equal(as.numeric(out.lm), as.numeric(out2[1:nrow(out.lm),]))
+    # cf lm() for chr 18
+    out.lm <- lod_via_lm(pr[[18]], y, weights=w)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
 
     ##############################
@@ -92,9 +105,9 @@ test_that("scan1 for backcross with one phenotype", {
     out2 <- scan1(pr, y, x)
     expect_equal(as.numeric(out2), out[,3])
 
-    # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[1]], y, x)
-    expect_equal(as.numeric(out.lm), as.numeric(out2[1:nrow(out.lm),]))
+    # cf lm() for chr 18
+    out.lm <- lod_via_lm(pr[[18]], y, x)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # additive covariate + weights
@@ -102,9 +115,9 @@ test_that("scan1 for backcross with one phenotype", {
     out2 <- scan1(pr, y, x, weights=w)
     expect_equal(as.numeric(out2), out[,3])
 
-    # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[1]], y, x, weights=w)
-    expect_equal(as.numeric(out.lm), as.numeric(out2[1:nrow(out.lm),]))
+    # cf lm() for chr 18
+    out.lm <- lod_via_lm(pr[[18]], y, x, weights=w)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # interactive covariate
@@ -116,9 +129,9 @@ test_that("scan1 for backcross with one phenotype", {
     out2r <- scan1(pr, y, intcovar=x)
     expect_equal(as.numeric(out2r), out[,3])
 
-    # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[1]], y, x, x)
-    expect_equal(as.numeric(out.lm), as.numeric(out2[1:nrow(out.lm),]))
+    # cf lm() for chr 18
+    out.lm <- lod_via_lm(pr[[18]], y, x, x)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # interactive covariate + weights
@@ -130,9 +143,9 @@ test_that("scan1 for backcross with one phenotype", {
     out2 <- scan1(pr, y, intcovar=x, weights=w)
     expect_equal(as.numeric(out2), out[,3])
 
-    # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[1]], y, x, x, weights=w)
-    expect_equal(as.numeric(out.lm), as.numeric(out2[1:nrow(out.lm),]))
+    # cf lm() for chr 18
+    out.lm <- lod_via_lm(pr[[18]], y, x, x, weights=w)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
 })
 
@@ -167,16 +180,14 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # scan
     out2 <- scan1(pr, y)
-    dimnames(out2) <- NULL
-    attr(out2, "sample_size") <- NULL
 
     # as expected?
-    expect_equal(out2, lod0)
+    expect_equivalent(out2, lod0)
 
     # cf lm() for chr 1
     lm_rows <- which(out[,1]==18)
     out.lm <- lod_via_lm(pr[[18]], y)
-    expect_equal(out.lm, out2[lm_rows,])
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # weighted scan
@@ -190,7 +201,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, weights=w)
-    expect_equivalent(out.lm, out2[lm_rows,])
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # additive covariate
@@ -203,7 +214,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, x)
-    expect_equivalent(out.lm, out2[lm_rows,])
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # additive covariate + weights
@@ -214,7 +225,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, x, weights=w)
-    expect_equivalent(out.lm, out2[lm_rows,])
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # interactive covariate
@@ -229,7 +240,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, x, intcovar=x)
-    expect_equivalent(out.lm, out2[lm_rows,])
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
     # interactive covariate + weights
@@ -244,6 +255,6 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, x, intcovar=x, weights=w)
-    expect_equivalent(out.lm, out2[lm_rows,])
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
 })
