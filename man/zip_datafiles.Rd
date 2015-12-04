@@ -4,7 +4,7 @@
 \alias{zip_datafiles}
 \title{Zip a set of data files}
 \usage{
-zip_datafiles(control_file, zip_file)
+zip_datafiles(control_file, zip_file, quiet = TRUE)
 }
 \arguments{
 \item{control_file}{Character string with path to the control file
@@ -13,6 +13,8 @@ containing all of the control information.}
 
 \item{zip_file}{Name of zip file to use. If omitted, we use the
 stem of \code{control_file} but with a \code{.zip} extension.}
+
+\item{quiet}{If \code{FALSE}, print progress messages.}
 }
 \value{
 Character string with the file name of the zip file that
