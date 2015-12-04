@@ -318,6 +318,7 @@ const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const Intege
                 if(cross_info[i]==0) result(i,0) = 0.0;
                 else result(i,0) = 1.0;
             }
+            colnames(result) = CharacterVector::create("direction");
             return result;
         }
     }
@@ -330,6 +331,7 @@ const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const Intege
                 if(is_female[i]) result(i,0) = 0.0;
                 else result(i,0) = 1.0;
             }
+            colnames(result) = CharacterVector::create("sex");
             return result;
         }
         else { // both directions and both sexes
@@ -341,6 +343,7 @@ const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const Intege
                 if(is_female[i] && cross_info[i]==1) result(i,1)=1.0;
                 else result(i,1)=0.0;
             }
+            colnames(result) = CharacterVector::create("sex", "direction");
             return result;
         }
     }
