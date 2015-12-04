@@ -39,7 +39,9 @@ zip_file <- system.file("extdata", "grav2.zip", package="qtl2geno")
 grav2 <- read_cross2(zip_file)
 }
 \seealso{
-\code{\link{write_control_file}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+\code{\link{read_pheno}}, \code{\link{write_control_file}},
+sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+and \url{http://github.com/rqtl/qtl2data}
 }
 \keyword{IO}
 

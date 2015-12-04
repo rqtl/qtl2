@@ -51,3 +51,72 @@ test_that("can read iron data", {
     pr <- calc_genoprob(iron, step=1)
 
 })
+
+test_that("read_pheno works", {
+
+    # iron data
+    ironfile <- system.file("extdata", "iron.zip", package="qtl2geno")
+    dir <- tempdir()
+
+    # read full data
+    iron <- read_cross2(ironfile)
+
+    # unzip data
+    unzipped_files <- utils::unzip(ironfile, exdir=dir)
+
+    # names of data files to be used
+    phefile <- unzipped_files[grep("_pheno\\.csv$", unzipped_files)]
+    phecovfile <- unzipped_files[grep("_phenocovar\\.csv$", unzipped_files)]
+
+    # zip files to be created
+    phezipfile <- paste0(phefile, ".zip")
+    phecovzipfile <- paste0(phecovfile, ".zip")
+    bothzipfile <- paste0(phefile, "_both.zip")
+
+    # clean up
+    on.exit(unlink(c(unzipped_files, phezipfile, phecovzipfile, bothzipfile)))
+
+    # create zip files (-j: don't store file name, -q: be quiet)
+    zip(phezipfile, phefile, flags="-j -q")
+    zip(phecovzipfile, phecovfile, flags="-j -q")
+    zip(bothzipfile, c(phefile, phecovfile), flags="-j -q")
+
+    # read pheno as plain file
+    expect_equal(read_pheno(phefile), iron$pheno)
+
+    # read pheno as zip file
+    expect_equal(read_pheno(phezipfile), iron$pheno)
+    unzip(phezipfile, exdir=dirname(phezipfile)) # restore file
+
+    # read pheno + phenocovar each in plain files
+    phelist <- read_pheno(phefile, phecovfile)
+    expect_equal(phelist$pheno, iron$pheno)
+    expect_equal(phelist$phenocovar, iron$phenocovar)
+
+    # read pheno + phenocovar in one zip file
+    expect_error(read_pheno(bothzipfile))
+    phelist <- read_pheno(bothzipfile, basename(phecovfile))
+    expect_equal(phelist$pheno, iron$pheno)
+    expect_equal(phelist$phenocovar, iron$phenocovar)
+    unzip(bothzipfile, exdir=dirname(bothzipfile)) # restore files
+
+    # read pheno from one zip file and phenocovar from plain file
+    phelist <- read_pheno(phezipfile, phecovfile)
+    expect_equal(phelist$pheno, iron$pheno)
+    expect_equal(phelist$phenocovar, iron$phenocovar)
+    unzip(phezipfile, exdir=dirname(phezipfile)) # restore file
+
+    # read pheno from one zip file and phenocovar from another
+    phelist <- read_pheno(phezipfile, phecovzipfile)
+    expect_equal(phelist$pheno, iron$pheno)
+    expect_equal(phelist$phenocovar, iron$phenocovar)
+    unzip(phezipfile, exdir=dirname(phezipfile)) # restore file
+    unzip(phecovzipfile, exdir=dirname(phecovzipfile)) # restore file
+
+    # read pheno from zip file and phenocovar from plain file
+    phelist <- read_pheno(phefile, phecovzipfile)
+    expect_equal(phelist$pheno, iron$pheno)
+    expect_equal(phelist$phenocovar, iron$phenocovar)
+    unzip(phecovzipfile, exdir=dirname(phecovzipfile)) # restore file
+
+})
