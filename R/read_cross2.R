@@ -328,10 +328,10 @@ function(mat, name="")
 check4duplicates <-
 function(ids, name="")
 {
-    if(name != "") name <- paste("in", name)
+    if(name != "") name <- paste(" in", name)
     dup <- duplicated(ids)
     if(any(dup)) {
-        stop("Not all ids in ", name, " are unique: ",
+        stop("Not all ids", name, " are unique: ",
              paste0('"', unique(ids[dup]), '"', collapse=", "))
     }
     TRUE
@@ -581,7 +581,7 @@ function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose
     }
 
     # move first column to row names
-    x <- firstcol2rownames(x)
+    x <- firstcol2rownames(x, filename)
 
     # transpose if requested
     if(transpose)
