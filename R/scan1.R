@@ -196,7 +196,9 @@ scan1 <-
         rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)
 
         # calculate LOD score
-        nrow(ph)/2 * (log10(nullrss) - log10(rss))
+        lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+        attr(lod, "n_used") <- nrow(ph)
+        lod
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
@@ -206,6 +208,8 @@ scan1 <-
 
     # object to contain the LOD scores
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
+    n_used <- matrix(nrow=length(genoprobs), ncol=ncol(pheno))
+    dimnames(n_used) <- list(names(genoprobs), colnames(pheno))
 
     if(cores<=1) { # no parallel processing
         for(i in run_indexes) {
@@ -217,6 +221,8 @@ scan1 <-
             tmp_result <- by_group_func(i)
             if(!is.null(tmp_result))
                 result[pos_index[[chr]], phecol] <- t(tmp_result)
+            if(!is.null(attr(tmp_result, "n_used")))
+                n_used[chr, phecol] <- attr(tmp_result, "n_used")
         }
     }
     else {
@@ -235,13 +241,19 @@ scan1 <-
 
             if(!is.null(list_result[[i]]))
                 result[pos_index[[chr]], phecol] <- t(list_result[[i]])
+            if(!is.null(attr(list_result[[i]], "n_usesd")))
+                n_used[chr, phecol] <- attr(list_result[[i]], "n_used")
         }
     }
+
+    if(all(apply(n_used, 2, function(a) length(unique(a)))==1))
+        n_used <- n_used[1,]
 
     pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # add some attributes with details on analysis
+    attr(result, "n_used") <- n_used
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)
@@ -306,12 +318,14 @@ nullrss_clean <-
 colnames4attr <-
     function(mat)
 {
-    if(is.null(mat)) return(mat)
+    if(is.null(mat)) return(NULL)
 
     if(!is.matrix(mat)) mat <- as.matrix(mat)
     cn <- colnames(mat)
 
-    if(is.null(cn)) return(character(ncol(mat)))
+    if(is.null(cn)) cn <- rep("", ncol(mat))
+
+    if(any(cn=="")) cn[cn==""] <- paste0("unnamed", 1:sum(cn==""))
 
     cn
 }

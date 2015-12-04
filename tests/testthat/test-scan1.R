@@ -168,6 +168,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     # scan
     out2 <- scan1(pr, y)
     dimnames(out2) <- NULL
+    attr(out2, "n_used") <- NULL
 
     # as expected?
     expect_equal(out2, lod0)
