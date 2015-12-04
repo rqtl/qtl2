@@ -104,9 +104,13 @@ scan1 <-
     ind2keep <- get_common_ids(genoprobs[[1]], addcovar, Xcovar, intcovar,
                                weights, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
-    if(length(ind2keep)<=2)
-        stop("Only ", length(ind2keep), " individuals in common: ",
-             paste(ind2keep, collapse=":"))
+    if(length(ind2keep)<=2) {
+        if(length(ind2keep)==0)
+            stop("No individuals in common.")
+        else
+            stop("Only ", length(ind2keep), " individuals in common: ",
+                 paste(ind2keep, collapse=":"))
+    }
 
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
