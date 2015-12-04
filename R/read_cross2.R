@@ -328,10 +328,10 @@ function(mat, name="")
 check4duplicates <-
 function(ids, name="")
 {
-    if(name != "") name <- paste("in", name)
+    if(name != "") name <- paste(" in", name)
     dup <- duplicated(ids)
     if(any(dup)) {
-        stop("Not all ids in ", name, " are unique: ",
+        stop("Not all ids", name, " are unique: ",
              paste0('"', unique(ids[dup]), '"', collapse=", "))
     }
     TRUE
