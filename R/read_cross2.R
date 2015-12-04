@@ -581,7 +581,7 @@ function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose
     }
 
     # move first column to row names
-    x <- firstcol2rownames(x)
+    x <- firstcol2rownames(x, filename)
 
     # transpose if requested
     if(transpose)
