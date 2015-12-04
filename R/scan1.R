@@ -206,7 +206,7 @@ scan1 <-
     totpos <- sum(npos_by_chr)
     pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
-    # object to contain the LOD scores
+    # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
     n_used <- matrix(nrow=length(genoprobs), ncol=ncol(pheno))
     dimnames(n_used) <- list(names(genoprobs), colnames(pheno))
@@ -246,6 +246,8 @@ scan1 <-
         }
     }
 
+    # if same sample size on all chromosomes for each phenotype,
+    # (as expected), reduce to a single value
     if(all(apply(n_used, 2, function(a) length(unique(a)))==1))
         n_used <- n_used[1,]
 
