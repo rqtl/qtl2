@@ -7,8 +7,8 @@
 #' individuals x genotypes x positions.
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param addcovar An optional matrix of additive covariates.
-#' @param Xcovar An optional matrix with additive covariates used for
-#' the X chromosome.
+#' @param Xcovar An optional matrix with additional additive covariates used for
+#' null hypothesis when scanning the X chromosome.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
 #' individuals. As with the other inputs, it must have \code{names}
@@ -186,11 +186,11 @@ scan1 <-
         ph <- pheno[these2keep,phecol,drop=FALSE]
         wts <- weights[these2keep]
 
-        # if X chr, paste X covariates onto additive covariates
-        if(is_x_chr[chr]) ac <- cbind(ac, Xc)
-
         # FIX_ME: calculating null RSS multiple times :(
         nullrss <- nullrss_clean(ph, ac, wts, tol)
+
+        # if X chr, paste X covariates onto additive covariates
+        if(is_x_chr[chr]) ac <- cbind(ac, Xc)
 
         # scan1 function taking clean data (with no missing values)
         rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)

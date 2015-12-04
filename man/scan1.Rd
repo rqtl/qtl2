@@ -16,8 +16,8 @@ individuals x genotypes x positions.}
 
 \item{addcovar}{An optional matrix of additive covariates.}
 
-\item{Xcovar}{An optional matrix with additive covariates used for
-the X chromosome.}
+\item{Xcovar}{An optional matrix with additional additive covariates used for
+null hypothesis when scanning the X chromosome.}
 
 \item{intcovar}{An optional matrix of interactive covariates.}
 
