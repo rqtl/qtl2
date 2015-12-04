@@ -8,6 +8,7 @@
 #' containing all of the control information.
 #' @param zip_file Name of zip file to use. If omitted, we use the
 #' stem of \code{control_file} but with a \code{.zip} extension.
+#' @param quiet If \code{FALSE}, print progress messages.
 #'
 #' @return Character string with the file name of the zip file that
 #' was created.
@@ -29,7 +30,7 @@
 #' zip_datafiles(control_file, "grav2.zip")
 #' }
 zip_datafiles <-
-function(control_file, zip_file)
+function(control_file, zip_file, quiet=TRUE)
 {
     control_file <- path.expand(control_file)
     if(!(file.exists(control_file)))
@@ -68,7 +69,8 @@ function(control_file, zip_file)
     }
 
     # zip the files (with the -j flag, directory info not included in zip file)
-    utils::zip(zip_file, file.path(dir, files), flags="-j")
+    zip_flags <- ifelse(quiet, "-j -q", "-j")
+    utils::zip(zip_file, file.path(dir, files), flags=zip_flags)
 
     invisible(zip_file)
 }

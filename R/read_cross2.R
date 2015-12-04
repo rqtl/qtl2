@@ -22,7 +22,10 @@
 #'
 #' @export
 #' @keywords IO
-#' @seealso \code{\link{write_control_file}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' @seealso \code{\link{read_pheno}}, \code{\link{write_control_file}},
+#' sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' and \url{http://github.com/rqtl/qtl2data}
+#'
 #' @examples
 #' \dontrun{
 #' yaml_file <- "http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
