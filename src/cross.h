@@ -197,6 +197,7 @@ public:
             if(is_female[i]) result(i,0) = 0.0;
             else result(i,0) = 1.0;
         }
+        colnames(result) = CharacterVector::create("sex");
 
         return result;
     }
