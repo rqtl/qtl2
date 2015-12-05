@@ -39,10 +39,9 @@
 #' (and possibly slower) method, with values \code{"highmem"} or
 #' \code{"lowmem"}; default \code{"lowmem"}.
 #'
-#' @references Haley, C. S. and Knott, S. A. (1992) A simple
+#' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line
-#' crosses using flanking markers.  \emph{Heredity} \bold{69},
-#' 315--324.
+#' crosses using flanking markers.  Heredity 69:315--324.
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
