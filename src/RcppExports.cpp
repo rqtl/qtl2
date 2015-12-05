@@ -178,6 +178,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// reduce_markers
+IntegerVector reduce_markers(const NumericVector& pos, const NumericVector& weights, const double min_dist);
+RcppExport SEXP qtl2geno_reduce_markers(SEXP posSEXP, SEXP weightsSEXP, SEXP min_distSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const double >::type min_dist(min_distSEXP);
+    __result = Rcpp::wrap(reduce_markers(pos, weights, min_dist));
+    return __result;
+END_RCPP
+}
 // test_init
 double test_init(const String& crosstype, const int true_gen, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 RcppExport SEXP qtl2geno_test_init(SEXP crosstypeSEXP, SEXP true_genSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {

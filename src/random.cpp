@@ -20,3 +20,9 @@ int sample_int(NumericVector probs)
 
     return NA_INTEGER;
 }
+
+// sample random integer from 0, 1, 2, ..., n-1 with equal probabilities
+int sample_int(int n)
+{
+    return (int)(unif_rand()*n);
+}

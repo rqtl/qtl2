@@ -49,6 +49,10 @@ addlog <- function(a, b) {
     .Call('qtl2geno_addlog', PACKAGE = 'qtl2geno', a, b)
 }
 
+.reduce_markers <- function(pos, weights, min_dist) {
+    .Call('qtl2geno_reduce_markers', PACKAGE = 'qtl2geno', pos, weights, min_dist)
+}
+
 test_init <- function(crosstype, true_gen, is_x_chr, is_female, cross_info) {
     .Call('qtl2geno_test_init', PACKAGE = 'qtl2geno', crosstype, true_gen, is_x_chr, is_female, cross_info)
 }
