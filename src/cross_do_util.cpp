@@ -1,11 +1,11 @@
 // Utility functions for Diversity Outcross transition probabilities
 
+#include "cross_do_util.h"
 #include <math.h>
 #include <Rcpp.h>
 using namespace Rcpp;
 #include "cross.h"
 #include "cross_do.h"
-#include "cross_do_util.h"
 
 //////////////////////////////////////////////////////////////////////
 // 1. Stuff related to partially inbred 4-way RIL

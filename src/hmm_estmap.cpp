@@ -1,11 +1,11 @@
 // re-estimate inter-marker recombination fractions
 
+#include "hmm_estmap.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
 #include "hmm_util.h"
 #include "hmm_forwback.h"
-#include "hmm_estmap.h"
 
 // re-estimate inter-marker recombination fractions
 // [[Rcpp::export(".est_map")]]

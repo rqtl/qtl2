@@ -1,9 +1,9 @@
 // Diversity Outcross QTLCross class (for HMM)
 
+#include "cross_do.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "cross_do.h"
 #include "cross_do_util.h"
 #include "r_message.h"
 

@@ -1,8 +1,8 @@
 // functions to check QTL cross data/information
 
+#include "check_cross.h"
 #include <Rcpp.h>
 #include "cross.h"
-#include "check_cross.h"
 
 using namespace Rcpp;
 

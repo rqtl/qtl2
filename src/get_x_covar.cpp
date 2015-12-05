@@ -1,8 +1,8 @@
 // get X chromosome covariates
 
+#include "get_x_covar.h"
 #include <Rcpp.h>
 #include "cross.h"
-#include "get_x_covar.h"
 
 // [[Rcpp::export(".get_x_covar")]]
 NumericMatrix get_x_covar(const String& crosstype,

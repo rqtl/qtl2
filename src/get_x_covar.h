@@ -2,8 +2,10 @@
 #ifndef GET_X_COVAR_H
 #define GET_X_COVAR_H
 
-NumericMatrix get_x_covar(const String& crosstype,
-                          const LogicalVector& is_female, // length n_ind
-                          const IntegerMatrix& cross_info); // columns are individuals
+#include <Rcpp.h>
+
+Rcpp::NumericMatrix get_x_covar(const Rcpp::String& crosstype,
+                                const Rcpp::LogicalVector& is_female, // length n_ind
+                                const Rcpp::IntegerMatrix& cross_info); // columns are individuals
 
 #endif // GET_X_COVAR_H

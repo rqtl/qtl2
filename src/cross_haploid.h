@@ -3,6 +3,7 @@
 #ifndef CROSS_HAPLOID_H
 #define CROSS_HAPLOID_H
 
+#include "cross.h"
 #include "r_message.h"
 
 class HAPLOID : public QTLCross

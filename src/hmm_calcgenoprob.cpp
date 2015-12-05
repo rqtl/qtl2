@@ -1,11 +1,11 @@
 // calculate conditional genotype probabilities given multipoint marker data
 
+#include "hmm_calcgenoprob.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
 #include "hmm_util.h"
 #include "hmm_forwback.h"
-#include "hmm_calcgenoprob.h"
 
 // calculate conditional genotype probabilities given multipoint marker data
 // [[Rcpp::export(".calc_genoprob")]]

@@ -1,9 +1,9 @@
 // RI by selfing QTLCross class (for HMM)
 
+#include "cross_riself.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "cross_riself.h"
 #include "r_message.h"
 
 enum gen {AA=1, BB=2};

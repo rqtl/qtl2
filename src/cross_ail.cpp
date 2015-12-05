@@ -1,9 +1,9 @@
 // AIL QTLCross class (for HMM)
 
+#include "cross_ail.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "cross_ail.h"
 #include "r_message.h"
 
 enum gen {AA=1, AB=2, BB=3, notA=5, notB=4,

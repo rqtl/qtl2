@@ -1,12 +1,12 @@
 // simulate genotypes given observed marker data
 
+#include "hmm_simgeno.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
 #include "hmm_util.h"
 #include "hmm_forwback.h"
 #include "random.h"
-#include "hmm_simgeno.h"
 
 // simulate genotypes given observed marker data
 // [[Rcpp::export(".sim_geno")]]

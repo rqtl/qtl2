@@ -1,10 +1,10 @@
 // phase-known Diversity Outcross QTLCross class (for HMM, in particular est.map)
 
+#include "cross_dopk.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_do.h"
-#include "cross_dopk.h"
 #include "cross_do_util.h"
 #include "r_message.h"
 

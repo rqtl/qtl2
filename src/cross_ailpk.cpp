@@ -1,9 +1,9 @@
 // phase-known AIL QTLCross class (for HMM, in particular est.map)
 
+#include "cross_ailpk.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "cross_ailpk.h"
 #include "r_message.h"
 
 enum gen {AA=1, AB=2, BA=3, BB=4,

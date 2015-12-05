@@ -3,6 +3,8 @@
 #ifndef CROSS_DO_UTIL_H
 #define CROSS_DO_UTIL_H
 
+#include <Rcpp.h>
+
 //////////////////////////////////////////////////////////////////////
 // 1. Stuff related to partially inbred 4-way RIL
 //////////////////////////////////////////////////////////////////////
@@ -66,7 +68,7 @@ double ri4way_malX_hapCC(double r, int k);
  * intercross populations.  Technical report #223, Department of
  * Biostatistics and Medical Informatics, UW-Madison
  **********************************************************************/
-double DOrec_auto(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha);
+double DOrec_auto(double r, int s, Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
 
 /**********************************************************************
  * probability of recombinant haplotype on female X chr at generation s
@@ -78,7 +80,7 @@ double DOrec_auto(double r, int s, IntegerVector precc_gen, NumericVector precc_
  * intercross populations.  Technical report #223, Department of
  * Biostatistics and Medical Informatics, UW-Madison
  **********************************************************************/
-double DOrec_femX_s1(double r, IntegerVector precc_gen, NumericVector precc_alpha);
+double DOrec_femX_s1(double r, Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
 
 /**********************************************************************
  * probability of recombinant haplotype on female X chr at generation s
@@ -90,7 +92,7 @@ double DOrec_femX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
  * intercross populations.  Technical report #223, Department of
  * Biostatistics and Medical Informatics, UW-Madison
  **********************************************************************/
-double DOrec_malX_s1(double r, IntegerVector precc_gen, NumericVector precc_alpha);
+double DOrec_malX_s1(double r, Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
 
 /**********************************************************************
  * probability of recombinant haplotype on female X chr at generation s
@@ -102,7 +104,7 @@ double DOrec_malX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
  * intercross populations.  Technical report #223, Department of
  * Biostatistics and Medical Informatics, UW-Madison
  **********************************************************************/
-double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha);
+double DOrec_femX(double r, int s, Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
 
 /**********************************************************************
  * probability of recombinant haplotype on female X chr at generation s
@@ -114,6 +116,6 @@ double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_
  * intercross populations.  Technical report #223, Department of
  * Biostatistics and Medical Informatics, UW-Madison
  **********************************************************************/
-double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha);
+double DOrec_malX(double r, int s, Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
 
 #endif // CROSS_DO_UTIL_H

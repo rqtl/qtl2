@@ -1,9 +1,9 @@
 // backcross QTLCross class (for HMM)
 
+#include "cross_bc.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "cross_bc.h"
 #include "r_message.h"
 
 enum gen {AA=1, AB=2, BB=3, AY=3, BY=4};

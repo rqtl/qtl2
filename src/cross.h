@@ -13,17 +13,17 @@ class QTLCross
 {
 
 public:
-    String crosstype;
+    Rcpp::String crosstype;
 
-    String phase_known_crosstype;
+    Rcpp::String phase_known_crosstype;
 
-    static QTLCross* Create(const String& crosstype);
+    static QTLCross* Create(const Rcpp::String& crosstype);
 
     virtual ~QTLCross(){};
 
     virtual const bool check_geno(const int gen, const bool is_observed_value,
                                   const bool is_x_chr, const bool is_female,
-                                  const IntegerVector& cross_info)
+                                  const Rcpp::IntegerVector& cross_info)
     {
         if(is_observed_value && gen==0) return true;
         if(gen==1 || gen==2) return true;
@@ -33,7 +33,7 @@ public:
 
     virtual const double init(const int true_gen,
                               const bool is_x_chr, const bool is_female,
-                              const IntegerVector& cross_info)
+                              const Rcpp::IntegerVector& cross_info)
     {
         #ifndef NDEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -44,8 +44,8 @@ public:
     }
 
     virtual const double emit(const int obs_gen, const int true_gen, const double error_prob,
-                              const IntegerVector& founder_geno, const bool is_x_chr,
-                              const bool is_female, const IntegerVector& cross_info)
+                              const Rcpp::IntegerVector& founder_geno, const bool is_x_chr,
+                              const bool is_female, const Rcpp::IntegerVector& cross_info)
     {
         #ifndef NDEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -63,7 +63,7 @@ public:
 
     virtual const double step(const int gen_left, const int gen_right, const double rec_frac,
                               const bool is_x_chr, const bool is_female,
-                              const IntegerVector& cross_info)
+                              const Rcpp::IntegerVector& cross_info)
     {
         #ifndef NDEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -80,18 +80,18 @@ public:
         return 2;
     }
 
-    virtual const IntegerVector possible_gen(const bool is_x_chr, const bool is_female,
-                                             const IntegerVector& cross_info)
+    virtual const Rcpp::IntegerVector possible_gen(const bool is_x_chr, const bool is_female,
+                                                   const Rcpp::IntegerVector& cross_info)
     {
         int ng = ngen(is_x_chr);
-        IntegerVector x(ng);
+        Rcpp::IntegerVector x(ng);
         for(int i=0; i<ng; i++) x[i] = i+1;
         return x;
     }
 
     virtual const double nrec(const int gen_left, const int gen_right,
                               const bool is_x_chr, const bool is_female,
-                              const IntegerVector& cross_info)
+                              const Rcpp::IntegerVector& cross_info)
     {
         #ifndef NDEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -103,8 +103,8 @@ public:
         else return 1.0;
     }
 
-    virtual const double est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
-                                      const IntegerMatrix& cross_info, const int n_gen)
+    virtual const double est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
+                                      const Rcpp::IntegerMatrix& cross_info, const int n_gen)
     {
         int n_ind = cross_info.cols();
         int n_gen_sq = n_gen*n_gen;
@@ -128,28 +128,28 @@ public:
 
     // check that founder genotype data has correct no. founders and markers
     // (for crosses with no founder_geno, just return true)
-    virtual const bool check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
+    virtual const bool check_founder_geno_size(const Rcpp::IntegerMatrix& founder_geno, const int n_markers)
     {
         return true;
     }
 
     // check that founder genotype data contains correct values
     // (for crosses with no founder_geno, just return true)
-    virtual const bool check_founder_geno_values(const IntegerMatrix& founder_geno)
+    virtual const bool check_founder_geno_values(const Rcpp::IntegerMatrix& founder_geno)
     {
         return true;
     }
 
     // matrix to convert genotype probabilities to allele probabilities
     // if no conversion necessary, it returns a matrix with 0 rows and 0 cols
-    virtual const NumericMatrix geno2allele_matrix(const bool is_x_chr)
+    virtual const Rcpp::NumericMatrix geno2allele_matrix(const bool is_x_chr)
     {
-        return NumericMatrix(0,0);
+        return Rcpp::NumericMatrix(0,0);
     }
 
 
     // check that cross_info conforms to expectation
-    virtual const bool check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
+    virtual const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr)
     {
         //const unsigned int n_col = cross_info.cols();
         //if(n_col > 0)
@@ -159,7 +159,7 @@ public:
     }
 
     // check that sex conforms to expectation
-    virtual const bool check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
+    virtual const bool check_is_female_vector(const Rcpp::LogicalVector& is_female, const bool any_x_chr)
     {
         //const unsigned int n = is_female.size();
         //if(n > 0)
@@ -181,7 +181,7 @@ public:
     }
 
     // X chromosome covariates
-    virtual const NumericMatrix get_x_covar(const LogicalVector& is_female, const IntegerMatrix& cross_info)
+    virtual const Rcpp::NumericMatrix get_x_covar(const Rcpp::LogicalVector& is_female, const Rcpp::IntegerMatrix& cross_info)
     {
         const unsigned int n_ind = is_female.size();
         unsigned int n_female=0;
@@ -189,10 +189,10 @@ public:
             if(is_female[i]) ++n_female;
 
         if(n_female==0 || n_female==n_ind) // all male or all female
-            return NumericMatrix(n_ind,0);
+            return Rcpp::NumericMatrix(n_ind,0);
 
         // some males and some females; return single-column matrix with sex indicators
-        NumericMatrix result(n_ind,1);
+        Rcpp::NumericMatrix result(n_ind,1);
         for(unsigned int i=0; i<n_ind; i++) {
             if(is_female[i]) result(i,0) = 0.0;
             else result(i,0) = 1.0;

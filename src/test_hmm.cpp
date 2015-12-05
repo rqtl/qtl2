@@ -1,8 +1,8 @@
 // functions to test basic HMM things from R
 
+#include "test_hmm.h"
 #include <Rcpp.h>
 #include "cross.h"
-#include "test_hmm.h"
 
 using namespace Rcpp;
 

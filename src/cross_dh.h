@@ -3,6 +3,7 @@
 #ifndef CROSS_DH_H
 #define CROSS_DH_H
 
+#include "cross.h"
 #include "r_message.h"
 
 class DH : public QTLCross

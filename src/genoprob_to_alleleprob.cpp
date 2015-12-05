@@ -1,9 +1,9 @@
 // convert genotype probabilities to allele probabilities
 
+#include "genoprob_to_alleleprob.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "genoprob_to_alleleprob.h"
 
 // convert genotype probabilities to allele probabilities
 // [[Rcpp::export(".genoprob_to_alleleprob")]]
