@@ -261,7 +261,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
     const int n_geno = 36;
 
     if(is_x_chr) {
-        NumericMatrix result(n_geno+n_alleles, n_alleles*2);
+        NumericMatrix result(n_geno+n_alleles, n_alleles);
         // female X
         for(int trueg=0; trueg<n_geno; trueg++) {
             IntegerVector alleles = decode_geno(trueg+1);
@@ -270,7 +270,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
         }
         // male X
         for(int trueg=0; trueg<n_geno; trueg++)
-            result(trueg+n_geno, trueg+n_alleles) = 1.0;
+            result(trueg+n_geno, trueg) = 1.0;
 
         return result;
     }

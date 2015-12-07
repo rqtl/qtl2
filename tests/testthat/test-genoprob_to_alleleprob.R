@@ -21,9 +21,9 @@ test_that("genoprob_to_alleleprob works for F2", {
         function(prob, x_chr=FALSE)
         {
             if(x_chr) {
-                prob[,1,] <- prob[,1,]+prob[,2,]/2+prob[,3,]/2
-                prob[,2,] <- prob[,4,]+prob[,2,]/2+prob[,3,]/2
-                return(prob[,-(3:4),])
+                prob[,1,] <- prob[,1,]+prob[,2,]/2+prob[,3,]/2 + prob[,5,]
+                prob[,2,] <- prob[,4,]+prob[,2,]/2+prob[,3,]/2 + prob[,6,]
+                return(prob[,1:2,])
 
             } else {
                 prob[,1,] <- prob[,1,]+prob[,2,]/2

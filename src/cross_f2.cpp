@@ -199,7 +199,7 @@ const int F2::ngen(const bool is_x_chr)
 const NumericMatrix F2::geno2allele_matrix(const bool is_x_chr)
 {
     if(is_x_chr) { // X chr
-        NumericMatrix result(6,4);
+        NumericMatrix result(6,2);
         // female X
         result(0,0) = 1.0;
         result(1,0) = result(1,1) = 0.5;
@@ -207,7 +207,8 @@ const NumericMatrix F2::geno2allele_matrix(const bool is_x_chr)
         result(3,1) = 1.0;
 
         // male X
-        result(4,2) = result(5,3) = 1.0;
+        result(4,0) = 1.0;
+        result(5,1) = 1.0;
 
         return result;
     }
