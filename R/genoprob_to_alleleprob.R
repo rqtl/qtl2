@@ -47,7 +47,7 @@ genoprob_to_alleleprob <-
         probs[[chr]] <- aperm(.genoprob_to_alleleprob(attr(probs, "crosstype"),
                                                     aperm(probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
                                                     is_x_chr[chr]),
-                            c(2, 1, 3))
+                            c(2, 1, 3)) # reorg back to ind x geno x pos
         dimnames(probs[[chr]]) <- attr_chr$dimnames
         probs[[chr]]
     }
