@@ -2,7 +2,6 @@ language: r
 
 r_github_packages:
  - rqtl/qtl2geno
- - kbroman/qtl@devel
 
 warnings_are_errors: true
 
