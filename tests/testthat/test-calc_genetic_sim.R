@@ -168,3 +168,77 @@ test_that("calc_genetic_sim works for F2", {
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
 })
+
+test_that("calc_genetic_sim chr & loco work for F2", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    sim <- calc_genetic_sim(probs)
+
+    sim_chr <- calc_genetic_sim(probs, "chr")
+    sim_loco <- calc_genetic_sim(probs, "loco")
+
+    # combine results from sim_chr and compare to sim
+    sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")
+    for(i in 2:19)
+        sim_combchr <- sim_combchr + sim_chr[[i]]*attr(sim_chr[[i]], "n_pos")
+    totpos <- sum(sapply(sim_chr[1:19], attr, "n_pos"))
+    sim_combchr <- sim_combchr/totpos
+    attr(sim_combchr, "n_pos") <- totpos
+    expect_equal(sim_combchr, sim)
+
+    # calculate results with one chromosome at a time
+    sim_alt <- vector("list", length(probs))
+    names(sim_alt) <- names(probs)
+    for(i in seq(along=probs))
+        sim_alt[[i]] <- calc_genetic_sim(probs[,i], omit_x=FALSE)
+    expect_equal(sim_alt, sim_chr)
+
+    # compare sim - sim_chr with sim_loco
+    sim_loco_alt <- vector("list", length(probs))
+    names(sim_loco_alt) <- names(probs)
+    is_x_chr <- attr(probs, "is_x_chr")
+    totpos <- attr(sim, "n_pos")
+    for(i in seq(along=probs)) {
+        if(is_x_chr[i])
+            sim_loco_alt[[i]] <- sim
+        else {
+            npos <- attr(sim_chr[[i]], "n_pos")
+            sim_loco_alt[[i]] <- (sim*totpos - sim_chr[[i]]*npos)/(totpos-npos)
+            attr(sim_loco_alt[[i]], "n_pos") <- totpos-npos
+        }
+    }
+    expect_equal(sim_loco_alt, sim_loco)
+
+})
+
+test_that("calc_genetic_sim chr & loco work for F2, when including X", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    sim <- calc_genetic_sim(probs, omit_x=FALSE) # *not* omitting X chr
+
+    sim_chr <- calc_genetic_sim(probs, "chr")
+    sim_loco <- calc_genetic_sim(probs, "loco", omit_x=FALSE) # *not* omitting X chr
+
+    # combine results from sim_chr and compare to sim
+    sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")
+    for(i in 2:20)
+        sim_combchr <- sim_combchr + sim_chr[[i]]*attr(sim_chr[[i]], "n_pos")
+    totpos <- sum(sapply(sim_chr, attr, "n_pos"))
+    sim_combchr <- sim_combchr/totpos
+    attr(sim_combchr, "n_pos") <- totpos
+    expect_equal(sim_combchr, sim)
+
+    # compare sim - sim_chr with sim_loco
+    sim_loco_alt <- vector("list", length(probs))
+    names(sim_loco_alt) <- names(probs)
+    totpos <- attr(sim, "n_pos")
+    for(i in seq(along=probs)) {
+        npos <- attr(sim_chr[[i]], "n_pos")
+        sim_loco_alt[[i]] <- (sim*totpos - sim_chr[[i]]*npos)/(totpos-npos)
+        attr(sim_loco_alt[[i]], "n_pos") <- totpos-npos
+    }
+    expect_equal(sim_loco_alt, sim_loco)
+
+})

@@ -4,18 +4,25 @@
 \alias{calc_genetic_sim}
 \title{Calculate genetic similarity among individuals}
 \usage{
-calc_genetic_sim(probs, use_grid_only = TRUE, omit_x = TRUE,
-  use_allele_probs = TRUE, quiet = TRUE, cores = 1)
+calc_genetic_sim(probs, type = c("overall", "loco", "chr"),
+  use_grid_only = TRUE, omit_x = TRUE, use_allele_probs = TRUE,
+  quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{List of three-dimensional arrays of probabilities, as
 calculated from \code{\link{calc_genoprob}}.}
 
+\item{type}{Indicates whether to calculate the overall kinship
+(\code{"overall"}, using all chromosomes), the kinship matrix
+leaving out one chromosome at a time (\code{"loco"}), or the
+kinship matrix for each chromosome (\code{"chr"}).}
+
 \item{use_grid_only}{If \code{TRUE} and \code{probs} were calculated with
 \code{stepwidth="fixed"}, reduce them to the grid using
 \code{\link{probs_to_grid}}.}
 
-\item{omit_x}{If \code{TRUE}, only use the autosomes.}
+\item{omit_x}{If \code{TRUE}, only use the autosomes; ignored when
+\code{type="chr"}.}
 
 \item{use_allele_probs}{If \code{TRUE}, assess similarity with
 allele probabilities (that is, first run
@@ -30,10 +37,13 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-A matrix of proportion of matching alleles.
+If \code{type="overall"} (the default), a matrix of
+proportion of matching alleles. Otherwise a list with one matrix
+per chromosome.
 }
 \description{
-Calculate genetic similarity among individuals from conditional genotype probabilities.
+Calculate genetic similarity among individuals (kinship matrix)
+from conditional genotype probabilities.
 }
 \details{
 If \code{use_allele_probs=TRUE} (the default), we first
