@@ -52,17 +52,11 @@ function(cross, error_prob=1e-4,
 
     map <- vector("list", length(cross$gmap))
 
-    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
-        cluster_ready <- TRUE
-        if(!quiet) message(" - Using ", length(cores), " cores.")
+    # set up cluster; make quiet=FALSE if cores>1
+    cores <- setup_cluster(cores)
+    if(!quiet && n_cores(cores) > 1) {
+        message(" - Using ", n_cores(cores), " cores.")
         quiet <- TRUE # no more messages
-    } else {
-        cluster_ready <- FALSE
-        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
-        if(cores > 1) {
-            if(!quiet) message(" - Using ", cores, " cores.")
-            quiet <- TRUE # no more messages
-        }
     }
 
     founder_geno <- cross$founder_geno
@@ -102,19 +96,7 @@ function(cross, error_prob=1e-4,
     }
 
     chrs <- seq(along=map)
-    if(!cluster_ready && cores<=1) { # no parallel processing
-        map <- lapply(chrs, by_chr_func)
-    }
-    else if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        if(!cluster_ready) {
-            cores <- parallel::makeCluster(cores)
-            on.exit(parallel::stopCluster(cores))
-        }
-        map <- parallel::clusterApply(cores, chrs, by_chr_func)
-    }
-    else {
-        map <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
-    }
+    map <- run_by_cluster(cores, chrs, by_chr_func) # if cores==1, uses lapply
 
     names(map) <- names(cross$gmap)
     attr(map, "is_x_chr") <- is_x_chr

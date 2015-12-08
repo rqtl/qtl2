@@ -97,18 +97,11 @@ calc_genetic_sim_overall <-
     result <- matrix(0, nrow=n_ind, ncol=n_ind)
     dimnames(result) <- list(ind_names, ind_names)
 
-    # set up cluster
-    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
-        cluster_ready <- TRUE
-        if(!quiet) message(" - Using ", length(cores), " cores.")
-        quiet <- TRUE # no more messages
-    } else {
-        cluster_ready <- FALSE
-        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
-        if(cores > 1) {
-            if(!quiet) message(" - Using ", cores, " cores.")
-            quiet <- TRUE # no more messages
-        }
+    # set up cluster; set quiet=TRUE if multi-core
+    cores <- setup_cluster(cores, quiet)
+    if(!quiet && n_cores(cores)>1) {
+        cat(" - Using", n_cores(cores), "cores\n")
+        quiet <- TRUE # make the rest quiet
     }
 
     # function that does the work
@@ -119,23 +112,14 @@ calc_genetic_sim_overall <-
     }
 
     # run and combine results
-    if(!cluster_ready && cores<=1) { # no parallel processing
+    if(n_cores(cores) == 1) {
         for(chr in chrs)
             result <- result + by_chr_func(chr)
     }
     else {
-        if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-            if(!cluster_ready) {
-                cores <- parallel::makeCluster(cores)
-                on.exit(parallel::stopCluster(cores))
-            }
-            by_chr_res <- parallel::clusterApply(cores, chrs, by_chr_func)
-        }
-        else {
-            by_chr_res <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
-        }
-        for(chr in seq(along=by_chr_res))
-            result <- result + by_chr_res[[chr]]
+        by_chr_res <- run_by_cluster(cores, chrs, by_chr_func)
+        for(i in seq(along=by_chr_res))
+            result <- result + by_chr_res[[i]]
     }
 
     tot_pos <- sum(vapply(probs, function(a) dim(a)[3], 0)[chrs])
@@ -151,18 +135,11 @@ calc_genetic_sim_bychr <-
     n_ind <- nrow(probs[[1]])
     ind_names <- rownames(probs[[1]])
 
-    # set up cluster
-    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
-        cluster_ready <- TRUE
-        if(!quiet) message(" - Using ", length(cores), " cores.")
-        quiet <- TRUE # no more messages
-    } else {
-        cluster_ready <- FALSE
-        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
-        if(cores > 1) {
-            if(!quiet) message(" - Using ", cores, " cores.")
-            quiet <- TRUE # no more messages
-        }
+    # set up cluster and set quiet=TRUE if multi-core
+    cores <- setup_cluster(cores, quiet)
+    if(!quiet && n_cores(cores)>1) {
+        cat(" - Using", n_cores(cores), "cores\n")
+        quiet <- TRUE # make the rest quiet
     }
 
     # function that does the work
@@ -182,21 +159,7 @@ calc_genetic_sim_bychr <-
     }
 
     # run and combine results
-    if(!cluster_ready && cores<=1) { # no parallel processing
-        result <- lapply(chrs, by_chr_func)
-    }
-    else {
-        if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-            if(!cluster_ready) {
-                cores <- parallel::makeCluster(cores)
-                on.exit(parallel::stopCluster(cores))
-            }
-            result <- parallel::clusterApply(cores, chrs, by_chr_func)
-        }
-        else {
-            result <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
-        }
-    }
+    result <- run_by_cluster(cores, chrs, by_chr_func)
 
     names(result) <- names(probs)[chrs]
     result

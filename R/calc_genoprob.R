@@ -71,26 +71,11 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     map_function <- match.arg(map_function)
     stepwidth <- match.arg(stepwidth)
 
-    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
-        cluster_ready <- TRUE
-        n_cores <- length(cores)
-        if(!quiet) message(" - Using ", n_cores, " cores.")
-        quiet <- TRUE # no more messages
-    } else {
-        cluster_ready <- FALSE
-        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
-        if(cores > 1) {
-            if(!quiet) message(" - Using ", cores, " cores.")
-            quiet <- TRUE # no more messages
-
-            if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-                n_cores <- cores
-                cores <- parallel::makeCluster(cores)
-                cluster_ready <- TRUE
-                on.exit(parallel::stopCluster(cores))
-            }
-        }
-        n_cores <- cores
+    # set up cluster; set quiet=TRUE if multi-core
+    cores <- setup_cluster(cores, quiet)
+    if(!quiet && n_cores(cores)>1) {
+        cat(" - Using", n_cores(cores), "cores\n")
+        quiet <- TRUE # make the rest quiet
     }
 
     # construct map at which to do the calculations
@@ -124,23 +109,20 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         aperm(pr, c(2,1,3))
     }
 
-    group <- vec4parallel(nrow(cross$geno[[1]]), n_cores)
+    group <- vec4parallel(nrow(cross$geno[[1]]), n_cores(cores))
     groupindex <- seq(along=group)
 
     probs <- vector("list", length(cross$geno))
     for(chr in seq(along=cross$geno)) {
         if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
 
-        if(cores<=1) { # no parallel processing
+        if(n_cores(cores) == 1) { # no parallel processing
             # calculations in one group
             probs[[chr]] <- by_group_func(1)
         }
         else {
             # calculations in parallel
-            if(cluster_ready) # Windows doesn't suport mclapply
-                temp <- parallel::clusterApply(cores, groupindex, by_group_func)
-            else
-                temp <- parallel::mclapply(groupindex, by_group_func, mc.cores=cores)
+            temp <- run_by_cluster(cores, groupindex, by_group_func)
 
             # paste them back together
             d <- vapply(temp, dim, rep(0,3))
