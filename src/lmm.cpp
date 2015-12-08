@@ -30,8 +30,12 @@ List Rcpp_eigen_decomp(const NumericMatrix& A)
 {
     const MatrixXd AA(as<Map<MatrixXd> >(A));
     const std::pair<VectorXd,MatrixXd> result = eigen_decomp(AA);
-    return List::create(Named("values") = result.first,
-                        Named("vectors") = result.second);
+
+    List result_list = List::create(Named("values") = result.first,
+                                    Named("vectors") = result.second);
+    result_list.attr("eigen_decomp") = true;
+
+    return result_list;
 }
 
 // eigen + rotation
