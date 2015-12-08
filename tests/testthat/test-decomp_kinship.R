@@ -2,6 +2,7 @@ context("eigen decomposition of kinship matrix")
 
 test_that("eigen decomposition works", {
 
+    library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 
