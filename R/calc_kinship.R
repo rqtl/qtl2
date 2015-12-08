@@ -1,5 +1,5 @@
-# calc_genetic_sim
-#' Calculate genetic similarity among individuals
+# calc_kinship
+#' Calculate kinship matrix
 #'
 #' Calculate genetic similarity among individuals (kinship matrix)
 #' from conditional genotype probabilities.
@@ -51,9 +51,9 @@
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 #' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
-#' sim <- calc_genetic_sim(probs)
+#' sim <- calc_kinship(probs)
 
-calc_genetic_sim <-
+calc_kinship <-
     function(probs, type=c("overall", "loco", "chr"),
              use_grid_only=TRUE, omit_x=TRUE,
              use_allele_probs=TRUE, quiet=TRUE, cores=1)
@@ -78,17 +78,17 @@ calc_genetic_sim <-
     }
 
     if(type=="overall")
-        return(calc_genetic_sim_overall(probs, chrs=chrs, quiet=quiet, cores=cores))
+        return(calc_kinship_overall(probs, chrs=chrs, quiet=quiet, cores=cores))
     else if(type=="chr")
-        return(calc_genetic_sim_bychr(probs, chrs=chrs, scale=TRUE, quiet=quiet, cores=cores))
+        return(calc_kinship_bychr(probs, chrs=chrs, scale=TRUE, quiet=quiet, cores=cores))
 
     # otherwise LOCO (leave one chromosome out)
-    result <- calc_genetic_sim_bychr(probs, chrs=chrs, scale=FALSE, quiet=quiet, cores=cores)
-    genetic_sim_bychr2loco(result, allchr)
+    result <- calc_kinship_bychr(probs, chrs=chrs, scale=FALSE, quiet=quiet, cores=cores)
+    kinship_bychr2loco(result, allchr)
 }
 
 # calculate an overall kinship matrix
-calc_genetic_sim_overall <-
+calc_kinship_overall <-
     function(probs, chrs, quiet=TRUE, cores=1)
 {
     n_ind <- nrow(probs[[1]])
@@ -108,7 +108,7 @@ calc_genetic_sim_overall <-
     by_chr_func <- function(chr) {
         if(!quiet) message(" - Chr ", names(probs)[chr])
         pr <- aperm(probs[[chr]], c(3,2,1)) # convert to pos x gen x ind
-        .calc_genetic_sim(pr)
+        .calc_kinship(pr)
     }
 
     # run and combine results
@@ -129,7 +129,7 @@ calc_genetic_sim_overall <-
 }
 
 # calculate kinship for each chromosome
-calc_genetic_sim_bychr <-
+calc_kinship_bychr <-
     function(probs, chrs, scale=TRUE, quiet=TRUE, cores=1)
 {
     n_ind <- nrow(probs[[1]])
@@ -150,7 +150,7 @@ calc_genetic_sim_bychr <-
 
         # aperm converts to pos x gen x ind
         pr <- aperm(probs[[chr]], c(3,2,1))
-        result <- .calc_genetic_sim(pr)
+        result <- .calc_kinship(pr)
         if(scale) result <- result/n_pos
 
         attr(result, "n_pos") <- n_pos
@@ -167,31 +167,31 @@ calc_genetic_sim_bychr <-
 
 # use kinship for each chromosome
 # to calculate kinship leaving one chromosome out at a time
-genetic_sim_bychr2loco <-
-    function(genetic_sim, allchr)
+kinship_bychr2loco <-
+    function(kinship, allchr)
 {
     # sum over chromosomes
-    overall <- genetic_sim[[1]]
-    tot_pos <- attr(genetic_sim[[1]], "n_pos")
-    if(length(genetic_sim) > 1) {
-        for(i in 2:length(genetic_sim)) {
-            overall <- overall + genetic_sim[[i]]
-            tot_pos <- tot_pos + attr(genetic_sim[[i]], "n_pos")
+    overall <- kinship[[1]]
+    tot_pos <- attr(kinship[[1]], "n_pos")
+    if(length(kinship) > 1) {
+        for(i in 2:length(kinship)) {
+            overall <- overall + kinship[[i]]
+            tot_pos <- tot_pos + attr(kinship[[i]], "n_pos")
         }
     }
     attr(overall, "n_pos") <- tot_pos
 
     for(chr in allchr) {
-        if(chr %in% names(genetic_sim)) {
-            n_pos <- attr(genetic_sim[[chr]], "n_pos")
-            genetic_sim[[chr]] <- (overall - genetic_sim[[chr]])/(tot_pos - n_pos)
-            attr(genetic_sim[[chr]], "n_pos") <- tot_pos - n_pos
+        if(chr %in% names(kinship)) {
+            n_pos <- attr(kinship[[chr]], "n_pos")
+            kinship[[chr]] <- (overall - kinship[[chr]])/(tot_pos - n_pos)
+            attr(kinship[[chr]], "n_pos") <- tot_pos - n_pos
         } else {
-            genetic_sim <- c(genetic_sim, list(overall/tot_pos))
-            names(genetic_sim)[length(genetic_sim)] <- chr
+            kinship <- c(kinship, list(overall/tot_pos))
+            names(kinship)[length(kinship)] <- chr
         }
     }
 
     # make sure it's in the right order
-    genetic_sim[allchr]
+    kinship[allchr]
 }

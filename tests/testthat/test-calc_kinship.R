@@ -1,14 +1,14 @@
-context("Calculation of genetic similarity")
+context("Calculation of kinship matrix")
 
-test_that("calc_genetic_sim works for RIL", {
+test_that("calc_kinship works for RIL", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
     probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
-    sim <- calc_genetic_sim(probs)
+    sim <- calc_kinship(probs)
 
     # pre-subset to grid
     probs_sub <- probs_to_grid(probs)
-    sim2 <- calc_genetic_sim(probs_sub)
+    sim2 <- calc_kinship(probs_sub)
     expect_equal(sim, sim2)
 
     # row and colnames okay
@@ -34,15 +34,15 @@ test_that("calc_genetic_sim works for RIL", {
 
 })
 
-test_that("calc_genetic_sim works for F2", {
+test_that("calc_kinship works for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-    sim <- calc_genetic_sim(probs)
+    sim <- calc_kinship(probs)
 
     # pre-subset to grid
     probs_sub <- probs_to_grid(probs)
-    sim2 <- calc_genetic_sim(probs_sub)
+    sim2 <- calc_kinship(probs_sub)
     expect_equal(sim, sim2)
 
     # row and colnames okay
@@ -90,8 +90,8 @@ test_that("calc_genetic_sim works for F2", {
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
     # version using genotype probabilities
-    sim <- calc_genetic_sim(probs, use_allele_probs=FALSE)
-    sim2 <- calc_genetic_sim(probs, use_allele_probs=FALSE)
+    sim <- calc_kinship(probs, use_allele_probs=FALSE)
+    sim2 <- calc_kinship(probs, use_allele_probs=FALSE)
     expect_equal(sim, sim2)
 
     # check a few values
@@ -112,10 +112,10 @@ test_that("calc_genetic_sim works for F2", {
 
 
     # also try with X chr
-    sim <- calc_genetic_sim(probs, omit_x=FALSE)
+    sim <- calc_kinship(probs, omit_x=FALSE)
 
     # pre-subset to grid
-    sim2 <- calc_genetic_sim(probs_sub, omit_x=FALSE)
+    sim2 <- calc_kinship(probs_sub, omit_x=FALSE)
     expect_equal(sim, sim2)
 
     # row and colnames okay
@@ -147,8 +147,8 @@ test_that("calc_genetic_sim works for F2", {
     }
 
     # version using genotype probabilities
-    sim <- calc_genetic_sim(probs, omit_x=FALSE, use_allele_probs=FALSE)
-    sim2 <- calc_genetic_sim(probs, omit_x=FALSE, use_allele_probs=FALSE)
+    sim <- calc_kinship(probs, omit_x=FALSE, use_allele_probs=FALSE)
+    sim2 <- calc_kinship(probs, omit_x=FALSE, use_allele_probs=FALSE)
     expect_equal(sim, sim2)
 
     # check a few values
@@ -169,14 +169,14 @@ test_that("calc_genetic_sim works for F2", {
 
 })
 
-test_that("calc_genetic_sim chr & loco work for F2", {
+test_that("calc_kinship chr & loco work for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-    sim <- calc_genetic_sim(probs)
+    sim <- calc_kinship(probs)
 
-    sim_chr <- calc_genetic_sim(probs, "chr")
-    sim_loco <- calc_genetic_sim(probs, "loco")
+    sim_chr <- calc_kinship(probs, "chr")
+    sim_loco <- calc_kinship(probs, "loco")
 
     # combine results from sim_chr and compare to sim
     sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")
@@ -191,7 +191,7 @@ test_that("calc_genetic_sim chr & loco work for F2", {
     sim_alt <- vector("list", length(probs))
     names(sim_alt) <- names(probs)
     for(i in seq(along=probs))
-        sim_alt[[i]] <- calc_genetic_sim(probs[,i], omit_x=FALSE)
+        sim_alt[[i]] <- calc_kinship(probs[,i], omit_x=FALSE)
     expect_equal(sim_alt, sim_chr)
 
     # compare sim - sim_chr with sim_loco
@@ -212,14 +212,14 @@ test_that("calc_genetic_sim chr & loco work for F2", {
 
 })
 
-test_that("calc_genetic_sim chr & loco work for F2, when including X", {
+test_that("calc_kinship chr & loco work for F2, when including X", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-    sim <- calc_genetic_sim(probs, omit_x=FALSE) # *not* omitting X chr
+    sim <- calc_kinship(probs, omit_x=FALSE) # *not* omitting X chr
 
-    sim_chr <- calc_genetic_sim(probs, "chr")
-    sim_loco <- calc_genetic_sim(probs, "loco", omit_x=FALSE) # *not* omitting X chr
+    sim_chr <- calc_kinship(probs, "chr")
+    sim_loco <- calc_kinship(probs, "loco", omit_x=FALSE) # *not* omitting X chr
 
     # combine results from sim_chr and compare to sim
     sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")

@@ -5,14 +5,14 @@
 
 using namespace Rcpp;
 
-// calc_genetic_sim
-NumericMatrix calc_genetic_sim(const NumericVector& prob_array);
-RcppExport SEXP qtl2geno_calc_genetic_sim(SEXP prob_arraySEXP) {
+// calc_kinship
+NumericMatrix calc_kinship(const NumericVector& prob_array);
+RcppExport SEXP qtl2geno_calc_kinship(SEXP prob_arraySEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
-    __result = Rcpp::wrap(calc_genetic_sim(prob_array));
+    __result = Rcpp::wrap(calc_kinship(prob_array));
     return __result;
 END_RCPP
 }

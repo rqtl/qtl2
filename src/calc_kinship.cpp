@@ -1,12 +1,12 @@
-// calculate genetic similarity from genotype probabilities
+// calculate genetic similarity (kinship matrix) from genotype probabilities
 
-#include "calc_genetic_sim.h"
+#include "calc_kinship.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 
 
-// [[Rcpp::export(".calc_genetic_sim")]]
-NumericMatrix calc_genetic_sim(const NumericVector& prob_array) // array as n_pos x n_gen x n_ind
+// [[Rcpp::export(".calc_kinship")]]
+NumericMatrix calc_kinship(const NumericVector& prob_array) // array as n_pos x n_gen x n_ind
 {
     if(Rf_isNull(prob_array.attr("dim")))
         throw std::invalid_argument("prob_array has no dimension attribute");
