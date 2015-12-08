@@ -133,26 +133,10 @@ scan1 <-
     if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
 
     # set up parallel analysis
-    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
-        cluster_ready <- TRUE
-        n_cores <- length(cores)
-        if(!quiet) message(" - Using ", n_cores, " cores.")
-        quiet <- TRUE # no more messages
-    } else {
-        cluster_ready <- FALSE
-        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
-        if(cores > 1) {
-            if(!quiet) message(" - Using ", cores, " cores.")
-            quiet <- TRUE # no more messages
-
-            if(Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-                n_cores <- cores
-                cores <- parallel::makeCluster(cores)
-                cluster_ready <- TRUE
-                on.exit(parallel::stopCluster(cores))
-            }
-        }
-        n_cores <- cores
+    cores <- setup_cluster(cores)
+    if(!quiet && n_cores(cores)>1) {
+        cat(" - Using", n_cores(cores), "cores\n")
+        quiet <- TRUE # make the rest quiet
     }
 
     # batches for analysis, to allow parallel analysis
@@ -211,7 +195,7 @@ scan1 <-
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
-    if(cores<=1) { # no parallel processing
+    if(n_cores(cores)==1) { # no parallel processing
         for(i in run_indexes) {
             chr <- run_batches$chr[i]
             chrnam <- names(genoprobs)[chr]
@@ -227,10 +211,7 @@ scan1 <-
     }
     else {
         # calculations in parallel
-        if(cluster_ready) # Windows doesn't suport mclapply
-            list_result <- parallel::clusterApply(cores, run_indexes, by_group_func)
-        else
-            list_result <- parallel::mclapply(run_indexes, by_group_func, mc.cores=cores)
+        list_result <- run_by_cluster(cores, run_indexes, by_group_func)
 
         # reorganize results
         for(i in run_indexes) {
