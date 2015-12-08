@@ -1,6 +1,7 @@
 # code related to clusters
+# (repeating this code in both qtl2geno and qtl2scan)
 
-# test if input is a prepared cluster
+# test if input is a prepared cluster (vs. just a number)
 is_cluster <-
     function(cores)
 {
@@ -25,6 +26,8 @@ setup_cluster <-
 
     if(cores > 1 && Sys.info()[1] == "Windows") { # windows doesn't support mclapply
         cores <- parallel::makeCluster(cores)
+        # the following calls on.exit() in the function that called this one
+        # see http://stackoverflow.com/a/20998531
         do.call("on.exit",
                 list(quote(parallel::stopCluster(cores))),
                 envir=parent.frame())
@@ -34,6 +37,7 @@ setup_cluster <-
 
 # run code by cluster
 # (to deal with different methods on different architectures)
+# if cores==1, just use lapply
 run_by_cluster <-
     function(cores, ...)
 {
