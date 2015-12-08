@@ -28,17 +28,11 @@ genoprob_to_alleleprob <-
 {
     is_x_chr <- attr(probs, "is_x_chr")
 
-    if("cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)) { # cluster already set
-        cluster_ready <- TRUE
-        if(!quiet) message(" - Using ", length(cores), " cores.")
+    # set up cluster; make quiet=FALSE if cores>1
+    cores <- setup_cluster(cores)
+    if(!quiet && n_cores(cores) > 1) {
+        message(" - Using ", n_cores(cores), " cores.")
         quiet <- TRUE # no more messages
-    } else {
-        cluster_ready <- FALSE
-        if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
-        if(cores > 1) {
-            if(!quiet) message(" - Using ", cores, " cores.")
-            quiet <- TRUE # no more messages
-        }
     }
 
     by_chr_func <- function(chr) {
@@ -54,19 +48,8 @@ genoprob_to_alleleprob <-
 
     chrs <- seq(along=probs)
     probs_attr <- attributes(probs)
-    if(!cluster_ready && cores<=1) { # no parallel processing
-        probs <- lapply(chrs, by_chr_func)
-    }
-    else if(cluster_ready || Sys.info()[1] == "Windows") { # Windows doesn't suport mclapply
-        if(!cluster_ready) {
-            cores <- parallel::makeCluster(cores)
-            on.exit(parallel::stopCluster(cores))
-        }
-        probs <- parallel::clusterApply(cores, chrs, by_chr_func)
-    }
-    else {
-        probs <- parallel::mclapply(chrs, by_chr_func, mc.cores=cores)
-    }
+
+    probs <- run_by_cluster(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
 
     for(at in names(probs_attr))
         attr(probs, at) <- probs_attr[[at]]
