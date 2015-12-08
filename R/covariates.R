@@ -39,15 +39,14 @@ drop_depcols <-
 {
     if(is.null(covar)) return(covar)
 
-    if(any(is.na(covar)))
-        stop("covar shouldn't contain missing values")
-
     if(!is.matrix(covar)) covar <- as.matrix(covar)
     if(intercept) covar <- cbind(rep(1, nrow(covar)), covar)
 
     if(ncol(covar) <= 1) return(covar)
 
-    depcols <- sort(find_lin_indep_cols(covar, tol))
+    # deal with NAs by omitting those rows before
+    depcols <- sort(find_lin_indep_cols(covar[complete.cases(covar),,drop=FALSE], tol))
+
     if(intercept) {
         if(depcols[1] != 1)
             message("oops in drop_depcols; I figured the intercept would always be included.")
