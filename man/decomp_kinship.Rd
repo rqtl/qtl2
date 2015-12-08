@@ -4,15 +4,15 @@
 \alias{decomp_kinship}
 \title{Calculate eigen decomposition of kinship matrix}
 \usage{
-decomp_kinship(K, cores = 1)
+decomp_kinship(kinship, cores = 1)
 }
 \arguments{
+\item{kinship}{A square matrix, or a list of square matrices.}
+
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
-
-\item{kinship}{A square matrix, or a list of square matrices.}
 }
 \value{
 The eigen values and the \bold{transposed} eigen vectors,

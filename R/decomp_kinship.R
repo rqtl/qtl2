@@ -24,16 +24,16 @@
 #'
 #' @export
 decomp_kinship <-
-    function(K, cores=1)
+    function(kinship, cores=1)
 {
     # already done?
-    if(!is.null(attr(K, "eigen_decomp"))) return(K)
+    if(!is.null(attr(kinship, "eigen_decomp"))) return(kinship)
 
-    if(is.matrix(K)) return(Rcpp_eigen_decomp(K))
+    if(is.matrix(kinship)) return(Rcpp_eigen_decomp(kinship))
 
     cores <- setup_cluster(cores)
 
-    result <- cluster_lapply(cores, K, Rcpp_eigen_decomp)
+    result <- cluster_lapply(cores, kinship, Rcpp_eigen_decomp)
     attr(result, "eigen_decomp") <- TRUE
     result
 }
