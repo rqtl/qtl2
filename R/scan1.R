@@ -211,7 +211,7 @@ scan1 <-
     }
     else {
         # calculations in parallel
-        list_result <- run_by_cluster(cores, run_indexes, by_group_func)
+        list_result <- cluster_lapply(cores, run_indexes, by_group_func)
 
         # reorganize results
         for(i in run_indexes) {
