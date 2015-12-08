@@ -110,7 +110,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
         }
         else {
             # calculations in parallel
-            temp <- run_by_cluster(cores, groupindex, by_group_func)
+            temp <- cluster_lapply(cores, groupindex, by_group_func)
 
             # paste them back together
             d <- vapply(temp, dim, rep(0,3))

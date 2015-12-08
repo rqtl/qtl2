@@ -96,7 +96,7 @@ function(cross, error_prob=1e-4,
     }
 
     chrs <- seq(along=map)
-    map <- run_by_cluster(cores, chrs, by_chr_func) # if cores==1, uses lapply
+    map <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, uses lapply
 
     names(map) <- names(cross$gmap)
     attr(map, "is_x_chr") <- is_x_chr

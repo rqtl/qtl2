@@ -49,7 +49,7 @@ genoprob_to_alleleprob <-
     chrs <- seq(along=probs)
     probs_attr <- attributes(probs)
 
-    probs <- run_by_cluster(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
+    probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
 
     for(at in names(probs_attr))
         attr(probs, at) <- probs_attr[[at]]

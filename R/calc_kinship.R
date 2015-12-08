@@ -117,7 +117,7 @@ calc_kinship_overall <-
             result <- result + by_chr_func(chr)
     }
     else {
-        by_chr_res <- run_by_cluster(cores, chrs, by_chr_func)
+        by_chr_res <- cluster_lapply(cores, chrs, by_chr_func)
         for(i in seq(along=by_chr_res))
             result <- result + by_chr_res[[i]]
     }
@@ -159,7 +159,7 @@ calc_kinship_bychr <-
     }
 
     # run and combine results
-    result <- run_by_cluster(cores, chrs, by_chr_func)
+    result <- cluster_lapply(cores, chrs, by_chr_func)
 
     names(result) <- names(probs)[chrs]
     result

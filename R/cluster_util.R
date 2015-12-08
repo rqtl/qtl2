@@ -35,10 +35,10 @@ setup_cluster <-
     cores
 }
 
-# run code by cluster
+# run code by cluster (generalizes lapply, clusterApply, and mclapply)
 # (to deal with different methods on different architectures)
 # if cores==1, just use lapply
-run_by_cluster <-
+cluster_lapply <-
     function(cores, ...)
 {
     if(is_cluster(cores)) { # cluster object; use mclapply
