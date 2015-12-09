@@ -35,3 +35,22 @@ test_that("eigen decomposition works", {
     expect_equal(Ke2, Ke)
 
 })
+
+test_that("multi-core eigen decomposition works", {
+    if(isnt_karl()) skip("this test only run locally")
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+
+    K <- calc_kinship(probs, "loco", cores=4)
+    Ke <- decomp_kinship(K)
+    Ke_multicore <- decomp_kinship(K, cores=4)
+    expect_equal(Ke_multicore, Ke)
+
+    K <- calc_kinship(probs, "chr", cores=4)
+    Ke <- decomp_kinship(K)
+    Ke_multicore <- decomp_kinship(K, cores=4)
+    expect_equal(Ke_multicore, Ke)
+
+})
