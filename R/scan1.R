@@ -205,7 +205,7 @@ scan1 <-
             this_result <- by_group_func(i)
             if(!is.null(this_result)) {
                 result[pos_index[[chr]], phecol] <- t(this_result$lod)
-                n[phecol] <- this_result$n
+                if(chr==1) n[phecol] <- this_result$n
             }
         }
     }
@@ -222,7 +222,7 @@ scan1 <-
 
             if(!is.null(list_result[[i]])) {
                 result[pos_index[[chr]], phecol] <- t(list_result[[i]]$lod)
-                n[chr, phecol] <- list_result[[i]]$n
+                if(chr==1) n[phecol] <- list_result[[i]]$n
             }
         }
     }
