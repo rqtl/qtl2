@@ -267,3 +267,22 @@ test_that("backcross autosome calc_genoprob with markers at same location", {
     expect_true( all(!is.na(pr[[1]])) )
 
 })
+
+test_that("calc_genoprob works when multi-core", {
+    if(isnt_karl()) skip("this test only run locally")
+
+    data(hyper)
+    hyper2 <- convert2cross2(hyper)
+    pr <- calc_genoprob(hyper2, error_prob=0.002)
+    pr_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=4)
+    expect_equal(pr_mc, pr)
+
+
+    data(listeria)
+    listeria2 <- convert2cross2(listeria)
+    pr <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01)
+    pr_mc <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, cores=4)
+
+    expect_equal(pr_mc, pr)
+
+})

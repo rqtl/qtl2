@@ -41,3 +41,22 @@ test_that("genoprob_to_alleleprob works for F2", {
     expect_equal(allele_probs, expected)
 
 })
+
+test_that("genoprob_to_alleleprob works when multi-core", {
+    if(isnt_karl()) skip("this test only run locally")
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+
+    allele_probs <- genoprob_to_alleleprob(probs)
+    allele_probs_mc <- genoprob_to_alleleprob(probs, cores=4)
+    expect_equal(allele_probs_mc, allele_probs)
+
+    # following shouldn't really matter, since no calculations are done
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    allele_probs <- genoprob_to_alleleprob(probs)
+    allele_probs_mc <- genoprob_to_alleleprob(probs, cores=4)
+    expect_equal(allele_probs_mc, allele_probs)
+
+})

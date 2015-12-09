@@ -179,3 +179,20 @@ test_that("est_map works in case of 2 markers in intercross", {
     expect_equal(lapply(newmap, attr, "loglik"),
                  lapply(newmap2, attr, "loglik"))
 })
+
+test_that("est_map works when multi-core", {
+    if(isnt_karl()) skip("this test only run locally")
+
+    data(hyper)
+    hyper2 <- convert2cross2(hyper)
+    newmap2 <- est_map(hyper2, err=0.002, tol=1e-8)
+    newmap2_mc <- est_map(hyper2, err=0.002, tol=1e-8, cores=4)
+    expect_equal(newmap2_mc, newmap2)
+
+    data(listeria)
+    listeria2 <- convert2cross2(listeria)
+    newmap2 <- est_map(listeria2, err=0.01, tol=1e-8)
+    newmap2_mc <- est_map(listeria2, err=0.01, tol=1e-8, cores=4)
+    expect_equal(newmap2_mc, newmap2)
+
+})
