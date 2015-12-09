@@ -307,9 +307,9 @@ test_that("scan1 works with NAs in the covariates", {
     nmis <- c(0, 5, 10, 15, 20)
     for(i in seq(along=spl)[-1])
         y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
-
-    # scan by R/qtl
     hyper$pheno <- cbind(y, hyper$pheno[,2,drop=FALSE])
+
+    # genoprobs by R/qtl
     hyper <- calc.genoprob(hyper, step=2.5)
 
     # inputs for R/qtl2
@@ -351,9 +351,9 @@ test_that("scan1 aligns the individuals", {
     nmis <- c(0, 5, 10, 15, 20)
     for(i in seq(along=spl)[-1])
         y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
-
-    # scan by R/qtl
     hyper$pheno <- cbind(y, hyper$pheno[,2,drop=FALSE])
+
+    # genoprobs from R/qtl
     hyper <- calc.genoprob(hyper, step=2.5)
 
     # inputs for R/qtl2
@@ -418,5 +418,82 @@ test_that("scan1 aligns the individuals", {
     out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),],
                       intcovar=x[sample(n_ind)], weights=w[sample(n_ind)])
     expect_equal(out_perm, out)
+
+})
+
+
+test_that("multi-core scan1 works", {
+    if(isnt_karl()) skip("this test only run locally")
+
+    set.seed(20151202)
+    library(qtl)
+    data(hyper)
+
+    # phenotypes
+    n_phe <- 15
+    n_ind <- nind(hyper)
+    y <- matrix(rnorm(n_ind*n_phe), ncol=n_phe)
+    # 5 batches
+    spl <- split(sample(n_phe), rep(1:5, 3))
+    nmis <- c(0, 5, 10, 15, 20)
+    for(i in seq(along=spl)[-1])
+        y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
+    rownames(y) <- paste(1:n_ind)
+
+    # inputs for R/qtl2
+    library(qtl2geno)
+    pr <- calc_genoprob(convert2cross2(hyper), step=2.5)
+    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+
+    # scan
+    out <- scan1(pr, y)
+    out_multicore <- scan1(pr, y, cores=4)
+    expect_equal(out_multicore, out)
+    out_multicore <- scan1(pr, y, cores=0) # maximum cores
+    expect_equal(out_multicore, out)
+
+    ##############################
+    # weighted scan
+    w <- runif(n_ind, 1, 3)
+    names(w) <- rownames(y)
+
+    out <- scan1(pr, y, weights=w)
+    out_multicore <- scan1(pr, y, weights=w, cores=4)
+    expect_equal(out_multicore, out)
+
+    ##############################
+    # additive covariate
+    x <- sample(0:1, n_ind, replace=TRUE)
+    names(x) <- rownames(y)
+
+    out <- scan1(pr, y, x)
+    out_multicore <- scan1(pr, y, x, cores=4)
+    expect_equal(out_multicore, out)
+
+    ##############################
+    # additive covariate + weights
+    out <- scan1(pr, y, x, weights=w)
+    out_multicore <- scan1(pr, y, x, weights=w, cores=4)
+    expect_equal(out_multicore, out)
+
+    ##############################
+    # interactive covariate
+    out <- scan1(pr, y, x, intcovar=x)
+    out_multicore <- scan1(pr, y, x, intcovar=x, cores=4)
+    expect_equal(out_multicore, out)
+
+    # auto add intcovar?
+    out_multicore <- scan1(pr, y, intcovar=x, cores=4)
+    expect_equal(out_multicore, out)
+
+    ##############################
+    # interactive covariate + weights
+    out <- scan1(pr, y, x, intcovar=x, weights=w)
+    out_multicore <- scan1(pr, y, x, intcovar=x, weights=w, cores=4)
+    expect_equal(out_multicore, out)
+
+    # auto add intcovar?
+    out_multicore <- scan1(pr, y, intcovar=x, weights=w, cores=4)
+    expect_equal(out_multicore, out)
 
 })
