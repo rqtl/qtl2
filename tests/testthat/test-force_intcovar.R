@@ -1,6 +1,6 @@
 context("force intcovar into addcovar")
 
-test_that("find_matchin_cols works", {
+test_that("find_matching_cols works", {
 
     set.seed(20151130)
     x <- cbind(1, sample(0:1, 200, repl=TRUE))
@@ -26,6 +26,7 @@ test_that("force_intcovar works", {
     X <- cbind(1,
                sample(0:1, n.ind, replace=TRUE),
                sample(0:1, n.ind, replace=TRUE))
+    rownames(X) <- paste(1:n.ind)
 
     expect_equal(force_intcovar(NULL, NULL), NULL)
 

@@ -17,12 +17,11 @@ force_intcovar <-
     if(!is.matrix(addcovar)) addcovar <- as.matrix(addcovar)
     if(!is.matrix(intcovar)) intcovar <- as.matrix(intcovar)
 
-    stopifnot(nrow(addcovar) == nrow(intcovar))
-    n.addcovar <- ncol(addcovar)
-    n.intcovar <- ncol(intcovar)
+    # IDs in both
+    ids <- get_common_ids(addcovar, intcovar)
 
-    # look for matching columns
-    full <- cbind(addcovar, intcovar)
+    # look for matching columns, having reduced to common individuals
+    full <- cbind(addcovar[ids,,drop=FALSE], intcovar[ids,,drop=FALSE])
     has_match <- find_matching_cols(full, tol)
     if(any(has_match > 0))
         full <- full[, has_match<0, drop=FALSE]
@@ -66,10 +65,11 @@ drop_xcovar <-
     if(!is.matrix(covar)) covar <- as.matrix(covar)
     if(!is.matrix(Xcovar)) Xcovar <- as.matrix(Xcovar)
 
-    stopifnot(nrow(covar) == nrow(Xcovar))
+    # IDs in both
+    ids <- get_common_ids(covar, Xcovar)
 
-    # find columns that match a previous column
-    matches <- find_matching_cols(cbind(covar, Xcovar), tol)[-(1:ncol(covar))]
+    # look for matching columns, having reduced to common individuals
+    matches <- find_matching_cols(cbind(covar[ids,], Xcovar[ids,]), tol)[-(1:ncol(covar))]
 
     if(all(matches > 0)) return(NULL)
 

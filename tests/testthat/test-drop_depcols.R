@@ -39,6 +39,7 @@ test_that("drop_xcovar works", {
     n <- 100
     Xcovar <- sample(0:1, n, replace=TRUE)
     int <- rep(1, n)
+    names(Xcovar) <- names(int) <- paste(1:n)
 
     expect_equal( drop_xcovar(NULL, NULL), NULL)
     expect_equal( drop_xcovar(NULL, Xcovar), Xcovar)
@@ -49,6 +50,7 @@ test_that("drop_xcovar works", {
     expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar), NULL)
 
     pgm <- sample(0:1, n, replace=TRUE)
+    names(pgm) <- paste(1:n)
     Xcovar <- cbind(Xcovar, pgm)
 
     expect_equal( drop_xcovar(NULL, Xcovar), Xcovar)
