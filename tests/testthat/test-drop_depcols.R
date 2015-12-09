@@ -80,6 +80,14 @@ test_that("drop_xcovar works with NAs", {
     expect_equal( drop_xcovar(cbind(int, Xcovar), Xcovar), NULL)
     expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar), NULL)
 
+    # try some permutations
+    o <- sample(1:n)
+    expect_equal( drop_xcovar(int, Xcovar[o]), as.matrix(Xcovar[o]))
+    expect_equal( drop_xcovar(Xcovar, Xcovar[o]), NULL)
+    expect_equal( drop_xcovar(cbind(int, Xcovar), Xcovar[o]), NULL)
+    expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar[o]), NULL)
+
+    # multiple X covar columns
     pgm <- sample(0:1, n, replace=TRUE)
     names(pgm) <- paste(1:n)
     Xcovar <- cbind(Xcovar, pgm)
@@ -96,9 +104,14 @@ test_that("drop_xcovar works with NAs", {
 
     # try some permutations
     o <- sample(1:n)
-    expect_equal( drop_xcovar(int, Xcovar[o]), as.matrix(Xcovar[o]))
-    expect_equal( drop_xcovar(Xcovar, Xcovar[o]), NULL)
-    expect_equal( drop_xcovar(cbind(int, Xcovar), Xcovar[o]), NULL)
-    expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar[o]), NULL)
+    expect_equal( drop_xcovar(int, Xcovar[o,]), Xcovar[o,])
+    expect_equal( drop_xcovar(Xcovar, Xcovar[o,]), NULL)
+    expect_equal( drop_xcovar(cbind(int, Xcovar), Xcovar[o,]), NULL)
+    expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar[o,]), NULL)
+    expect_equal( drop_xcovar(cbind(int, Xcovar[,1]), Xcovar[o,]), Xcovar[o,2,drop=FALSE])
+    expect_equal( drop_xcovar(cbind(int, Xcovar[,2]), Xcovar[o,]), Xcovar[o,1,drop=FALSE])
+    expect_equal( drop_xcovar(cbind(Xcovar, int), Xcovar[o,]), NULL)
+    expect_equal( drop_xcovar(cbind(Xcovar[,1], int), Xcovar[o,]), Xcovar[o,2,drop=FALSE])
+    expect_equal( drop_xcovar(cbind(Xcovar[,2], int), Xcovar[o,]), Xcovar[o,1,drop=FALSE])
 
 })
