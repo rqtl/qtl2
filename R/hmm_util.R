@@ -28,16 +28,3 @@ map2rf <-
 
     rf
 }
-
-# create a list of vectors, splitting 1:n into balanced groups
-# (for use with parallel analysis)
-vec4parallel <-
-    function(n, n_cores)
-{
-    n_per_core <- rep(floor(n/n_cores), n_cores)
-    d <- n - sum(n_per_core)
-    if(d >= 1)
-        n_per_core[1:d] <- n_per_core[1:d]+1
-
-    split(1:n, rep(1:n_cores, n_per_core))
-}
