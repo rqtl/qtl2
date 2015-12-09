@@ -11,6 +11,7 @@ test_that("reduce_markers works", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 
+    RNGkind("Mersenne-Twister")
     set.seed(20151205)
     # use proportion typed as weights, but randomize a bit so there are no ties
     prtyped <- lapply(grav2$geno, function(a) colMeans(!is.na(a) & a>0) + runif(ncol(a), 0, 0.1))

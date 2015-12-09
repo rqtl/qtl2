@@ -109,7 +109,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         aperm(pr, c(2,1,3))
     }
 
-    group <- vec4parallel(nrow(cross$geno[[1]]), n_cores(cores))
+    group <- parallel::splitIndices(nrow(cross$geno[[1]]), n_cores(cores))
     groupindex <- seq(along=group)
 
     probs <- vector("list", length(cross$geno))

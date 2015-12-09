@@ -96,7 +96,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
         aperm(dr, c(3,1,2))
     }
 
-    group <- vec4parallel(nrow(cross$geno[[1]]), n_cores(cores))
+    group <- parallel::splitIndices(nrow(cross$geno[[1]]), n_cores(cores))
     groupindex <- seq(along=group)
 
     draws <- vector("list", length(cross$geno))
