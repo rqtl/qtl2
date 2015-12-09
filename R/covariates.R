@@ -17,12 +17,12 @@ force_intcovar <-
     if(!is.matrix(addcovar)) addcovar <- as.matrix(addcovar)
     if(!is.matrix(intcovar)) intcovar <- as.matrix(intcovar)
 
-    stopifnot(nrow(addcovar) == nrow(intcovar))
-    n.addcovar <- ncol(addcovar)
-    n.intcovar <- ncol(intcovar)
+    # IDs in both; omitting any individuals with missing values
+    ids <- get_common_ids(addcovar[complete.cases(addcovar),,drop=FALSE],
+                          intcovar[complete.cases(intcovar),,drop=FALSE])
 
-    # look for matching columns
-    full <- cbind(addcovar, intcovar)
+    # look for matching columns, having reduced to common individuals
+    full <- cbind(addcovar[ids,,drop=FALSE], intcovar[ids,,drop=FALSE])
     has_match <- find_matching_cols(full, tol)
     if(any(has_match > 0))
         full <- full[, has_match<0, drop=FALSE]
@@ -39,15 +39,14 @@ drop_depcols <-
 {
     if(is.null(covar)) return(covar)
 
-    if(any(is.na(covar)))
-        stop("covar shouldn't contain missing values")
-
     if(!is.matrix(covar)) covar <- as.matrix(covar)
     if(intercept) covar <- cbind(rep(1, nrow(covar)), covar)
 
     if(ncol(covar) <= 1) return(covar)
 
-    depcols <- sort(find_lin_indep_cols(covar, tol))
+    # deal with NAs by omitting those rows before
+    depcols <- sort(find_lin_indep_cols(covar[complete.cases(covar),,drop=FALSE], tol))
+
     if(intercept) {
         if(depcols[1] != 1)
             message("oops in drop_depcols; I figured the intercept would always be included.")
@@ -67,10 +66,12 @@ drop_xcovar <-
     if(!is.matrix(covar)) covar <- as.matrix(covar)
     if(!is.matrix(Xcovar)) Xcovar <- as.matrix(Xcovar)
 
-    stopifnot(nrow(covar) == nrow(Xcovar))
+    # IDs in both; omitting any individuals with missing values
+    ids <- get_common_ids(covar[complete.cases(covar),,drop=FALSE],
+                          Xcovar[complete.cases(Xcovar),,drop=FALSE])
 
-    # find columns that match a previous column
-    matches <- find_matching_cols(cbind(covar, Xcovar), tol)[-(1:ncol(covar))]
+    # look for matching columns, having reduced to common individuals
+    matches <- find_matching_cols(cbind(covar[ids,], Xcovar[ids,]), tol)[-(1:ncol(covar))]
 
     if(all(matches > 0)) return(NULL)
 

@@ -21,6 +21,9 @@ lod_via_lm <-
 
     for(i in 1:p) {
         not_na <- !is.na(pheno[,i])
+        if(!is.null(addcovar)) not_na <- not_na & complete.cases(addcovar)
+        if(!is.null(intcovar)) not_na <- not_na & complete.cases(intcovar)
+
         rss0 <- sum(lm(pheno[,i] ~ -1 + addcovar, weights=wts)$resid^2*wts[not_na])
         for(j in 1:d3) {
             if(is.null(intcovar))
@@ -183,10 +186,10 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     n_ind <- nind(hyper)
     y <- matrix(rnorm(n_ind*n_phe), ncol=n_phe)
     # 5 batches
-    spl <- split(sample(1:n_phe), rep(1:5, 3))
+    spl <- split(sample(n_phe), rep(1:5, 3))
     nmis <- c(0, 5, 10, 15, 20)
     for(i in seq(along=spl)[-1])
-        y[sample(1:n_ind, nmis[i]), spl[[i]]] <- NA
+        y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
 
     # scan by R/qtl
     hyper$pheno <- cbind(y, hyper$pheno[,2,drop=FALSE])
@@ -285,5 +288,135 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, x, intcovar=x, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
+
+})
+
+
+test_that("scan1 works with NAs in the covariates", {
+
+    set.seed(20151202)
+    library(qtl)
+    data(hyper)
+
+    # phenotypes
+    n_phe <- 15
+    n_ind <- nind(hyper)
+    y <- matrix(rnorm(n_ind*n_phe), ncol=n_phe)
+    # 5 batches
+    spl <- split(sample(n_phe), rep(1:5, 3))
+    nmis <- c(0, 5, 10, 15, 20)
+    for(i in seq(along=spl)[-1])
+        y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
+
+    # scan by R/qtl
+    hyper$pheno <- cbind(y, hyper$pheno[,2,drop=FALSE])
+    hyper <- calc.genoprob(hyper, step=2.5)
+
+    # inputs for R/qtl2
+    pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
+    rownames(y) <- paste(1:n_ind)
+    for(i in seq(along=pr)) rownames(pr[[i]]) <- rownames(y)
+    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+
+    ##############################
+    # additive covariate
+    x <- sample(0:1, n_ind, replace=TRUE)
+    names(x) <- rownames(y)
+    x[5] <- NA
+
+    suppressWarnings(out <- scanone(hyper, method="hk", addcovar=x, pheno.col=1:n_phe))
+    out2 <- scan1(pr, y, x)
+    expect_equal(out2, scanone2scan1(out, colSums(!(is.na(y) | is.na(x))),
+                                     posnames, colnames(y), addcovar=x))
+
+    # cf lm() for chr 1
+    lm_rows <- which(out[,1]==18)
+    out.lm <- lod_via_lm(pr[[18]], y, x)
+    expect_equal(subset_scan1result(out2, lm_rows), out.lm)
+})
+
+
+test_that("scan1 aligns the individuals", {
+
+    set.seed(20151202)
+    library(qtl)
+    data(hyper)
+
+    # phenotypes
+    n_phe <- 15
+    n_ind <- nind(hyper)
+    y <- matrix(rnorm(n_ind*n_phe), ncol=n_phe)
+    # 5 batches
+    spl <- split(sample(n_phe), rep(1:5, 3))
+    nmis <- c(0, 5, 10, 15, 20)
+    for(i in seq(along=spl)[-1])
+        y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
+
+    # scan by R/qtl
+    hyper$pheno <- cbind(y, hyper$pheno[,2,drop=FALSE])
+    hyper <- calc.genoprob(hyper, step=2.5)
+
+    # inputs for R/qtl2
+    pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
+    rownames(y) <- paste(1:n_ind)
+    for(i in seq(along=pr)) rownames(pr[[i]]) <- rownames(y)
+    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+
+    # scan
+    out <- scan1(pr, y)
+    out_perm <- scan1(pr, y[sample(n_ind),])
+    expect_equal(out_perm, out)
+
+    class(pr) <- c("calc_genoprob", "list") # allows simpler reordering of individuals
+    out_perm <- scan1(pr[sample(n_ind),], y)
+    expect_equal(out_perm, out)
+
+    ##############################
+    # weighted scan
+    w <- runif(n_ind, 1, 3)
+    names(w) <- rownames(y)
+
+    out <- scan1(pr, y, weights=w)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], weights=w[sample(n_ind)])
+    expect_equal(out_perm, out)
+
+    ##############################
+    # additive covariate
+    x <- sample(0:1, n_ind, replace=TRUE)
+    names(x) <- rownames(y)
+
+    out <- scan1(pr, y, x)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)])
+    expect_equal(out_perm, out)
+
+    ##############################
+    # additive covariate + weights
+    out <- scan1(pr, y, x, weights=w)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)],
+                      weights=w[sample(n_ind)])
+    expect_equal(out_perm, out)
+
+    ##############################
+    # interactive covariate
+    out <- scan1(pr, y, x, intcovar=x)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)],
+                      intcovar=x[sample(n_ind)])
+    expect_equal(out_perm, out)
+
+    # auto add intcovar?
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], intcovar=x[sample(n_ind)])
+    expect_equal(out_perm, out)
+
+    ##############################
+    # interactive covariate + weights
+    out <- scan1(pr, y, x, intcovar=x, weights=w)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)],
+                      intcovar=x[sample(n_ind)], weights=w[sample(n_ind)])
+    expect_equal(out_perm, out)
+
+    # auto add intcovar?
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),],
+                      intcovar=x[sample(n_ind)], weights=w[sample(n_ind)])
+    expect_equal(out_perm, out)
 
 })
