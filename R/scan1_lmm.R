@@ -23,7 +23,7 @@
 #'
 #' @return A matrix of LOD scores, positions x phenotypes.
 #' Heritabilities (estimated under the null hypothesis, of no QTL) are
-#' included as an attribute \code{herit}. Covariate column names are
+#' included as an attribute \code{hsq}. Covariate column names are
 #' included as attributes (\code{"addcovar"}, \code{"intcovar"}, and
 #' \code{"Xcovar"}), as is a vector with the sample size for each
 #' phenotype (\code{"sample_size"})
@@ -33,10 +33,10 @@
 #' object should have an attribute \code{"is_x_chr"} that indicates
 #' which of the chromosomes is the X chromosome, if any.
 #'
-#' If \code{kinship} is a single matrix, then the \code{herit}
+#' If \code{kinship} is a single matrix, then the \code{hsq}
 #' attribute in the results is a vector of heritabilities. If
 #' \code{kinship} is a list (one matrix per chromosome), then
-#' \code{herit} is a matrix, phenotypes x chromosomes.
+#' \code{hsq} is a matrix, phenotypes x chromosomes.
 #'
 #' The \code{...} argument can contain two additional control
 #' parameters; suspended for simplicity (or confusion, depending on
