@@ -163,22 +163,11 @@ scan1_lmm <-
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # number of chr to consider under null
-    if(is.list(kinship)) {
-        n_null_chr <- length(kinship)
-        null_chrnames <- names(kinship)
-    }
-    else if(!is.null(Xcovar) && any(is_x_chr) && any(!is_x_chr)) {
-        n_null_chr <- 2
-        null_chrnames <- c(names(is_x_chr)[!is_x_chr][1],
-                           names(is_x_chr)[is_x_chr][1])
-    }
-    else {
-        n_null_chr <- 1
-        null_chrnames <- names(genoprobs)[1]
-    }
+    if(is.list(kinship)) n_null_chr <- length(kinship)
+    else if(!is.null(Xcovar)) n_null_chr <- (is_x_chr) + (!is_x_chr)
+    else n_null_chr <- 1
 
     hsq <- matrix(nrow=n_null_chr, ncol=ncol(pheno))
-    dimnames(hsq) <- list(null_chrnames, colnames(pheno))
     null_loglik <- hsq
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
@@ -238,15 +227,12 @@ calc_hsq_clean <-
 
     # if just one kinship matrix, force it to be a list
     if(!is.list(Ke[[1]])) {
-        if(any(is_x_chr) && !is.null(Xcovar)) { # X chromosome with special covariates
+        # X chromosome with special covariates
+        if(!is.null(Xcovar) && any(is_x_chr) && !any(is_x_ch)) {
             Ke <- list(Ke, Ke)
-            names(Ke) <- c(names(is_x_chr)[!is_x_chr][1],
-                           names(is_x_chr)[is_x_chr][1])
+            is_x_chr <- c(FALSE, TRUE)
         }
-        else {
-            Ke <- list(Ke)
-            names(Ke) <- names(is_x_chr)[1]
-        }
+        else { Ke <- list(Ke); is_x_chr <- FALSE }
     }
 
     # function that does the work
@@ -256,11 +242,10 @@ calc_hsq_clean <-
             # premultiply phenotypes and covariates by transposed eigenvectors
             y <- Ke[[chr]]$vectors %*% pheno
             ac <- cbind(rep(1, n), addcovar)
-            if(!is.null(Xcovar) && is_x_chr[names(Ke)[chr]]) { # add Xcovar if necessary
+            if(!is.null(Xcovar) && is_x_chr[chr]) # add Xcovar if necessary
                 ac <- drop_depcols(cbind(ac, Xcovar), FALSE, tol)
-            }
-            ac <- Ke[[chr]]$vectors %*% ac
             logdetXpX = Rcpp_calc_logdetXpX(ac)
+            ac <- Ke[[chr]]$vectors %*% ac
 
             Rcpp_fitLMM_mat(Ke[[chr]]$values, y, ac, reml, check_boundary,
                             logdetXpX, tol)
