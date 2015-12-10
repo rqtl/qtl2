@@ -345,12 +345,12 @@ scan1_lmm_clean <-
                     loglik <- scan_reml_onechr_intcovar_lowmem(pr, y, ac, ic, weights, tol)
             } else {
                 if(is.null(ic))
-                    rss <- log(scan_hk_onechr_weighted(pr, y, ac, weights, tol))
+                    rss <- scan_hk_onechr_weighted(pr, y, ac, weights, tol)
                 else if(intcovar_method=="highmem")
                     rss <- scan_hk_onechr_intcovar_weighted_highmem(pr, y, ac, ic, weights, tol)
                 else
                     rss <- scan_hk_onechr_intcovar_weighted_lowmem(pr, y, ac, ic, weights, tol)
-                loglik <- length(y)/2 * log(rss)
+                loglik <- -nrow(y)/2 * log(rss)
             }
             # turn into LOD score, need to offset by -sum(log(weights))/2 because of how nullLL was calculated
             lod <- (loglik - nullLL + 0.5*sum(log(weights^2)))/log(10)
