@@ -173,13 +173,13 @@ scan1 <-
         wts <- weights[these2keep]
 
         # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- nullrss_clean(ph, ac, wts, tol)
+        nullrss <- nullrss_clean(ph, ac, wts, add_intercept=TRUE, tol)
 
         # if X chr, paste X covariates onto additive covariates
-        if(is_x_chr[chr]) ac <- cbind(ac, Xc)
+        if(is_x_chr[chr]) ac <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
 
         # scan1 function taking clean data (with no missing values)
-        rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)
+        rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
 
         # calculate LOD score
         lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
@@ -245,10 +245,11 @@ scan1 <-
 # scan1 function taking nicely aligned data with no missing values
 scan1_clean <-
     function(genoprobs, pheno, addcovar, intcovar,
-             weights, tol, intcovar_method)
+             weights, add_intercept=TRUE, tol, intcovar_method)
 {
     n <- nrow(pheno)
-    addcovar <- cbind(rep(1,n), addcovar) # add intercept
+    if(add_intercept)
+        addcovar <- cbind(rep(1,n), addcovar) # add intercept
 
     if(is.null(intcovar)) { # no interactive covariates
 
@@ -278,10 +279,11 @@ scan1_clean <-
 
 # calculate null RSS, with nicely aligned data with no missing values
 nullrss_clean <-
-    function(pheno, addcovar, weights, tol)
+    function(pheno, addcovar, weights, add_intercept=TRUE, tol)
 {
     n <- nrow(pheno)
-    addcovar <- cbind(rep(1,n), addcovar) # add intercept
+    if(add_intercept)
+        addcovar <- cbind(rep(1,n), addcovar) # add intercept
 
     if(is.null(weights)) { # no weights
         result <- calc_rss_linreg(addcovar, pheno, tol)
