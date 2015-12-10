@@ -94,7 +94,7 @@ double calc_logdetXpX(const MatrixXd& X)
 // [[Rcpp::export]]
 double Rcpp_calc_logdetXpX(const NumericMatrix& X)
 {
-    const MatrixXd& XX(as<Map<MatrixXd> >(X));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
 
     return calc_logdetXpX(XX);
 }
@@ -187,6 +187,21 @@ struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
     ml_soln.loglik = loglik;
     return ml_soln;
 }
+
+// calculate log likelihood for fixed value of hsq
+// This version called from R, and just returns the log likelihood
+// [[Rcpp::export]]
+double Rcpp_calcLL(const double hsq, const NumericVector& Kva, const NumericVector& y,
+                   const NumericMatrix& X, const bool reml=true, const double logdetXpX=NA_REAL)
+{
+    const VectorXd KKva(as<Map<VectorXd> >(Kva));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+
+    const struct lmm_fit result = calcLL(hsq, KKva, yy, XX, reml, logdetXpX);
+    return result.loglik;
+}
+
 
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args)

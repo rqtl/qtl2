@@ -193,6 +193,22 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Rcpp_calcLL
+double Rcpp_calcLL(const double hsq, const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const double logdetXpX);
+RcppExport SEXP qtl2scan_Rcpp_calcLL(SEXP hsqSEXP, SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP logdetXpXSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const double >::type hsq(hsqSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type Kva(KvaSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const bool >::type reml(remlSEXP);
+    Rcpp::traits::input_parameter< const double >::type logdetXpX(logdetXpXSEXP);
+    __result = Rcpp::wrap(Rcpp_calcLL(hsq, Kva, y, X, reml, logdetXpX));
+    return __result;
+END_RCPP
+}
 // Rcpp_fitLMM
 List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
 RcppExport SEXP qtl2scan_Rcpp_fitLMM(SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {

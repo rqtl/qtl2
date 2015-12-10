@@ -61,6 +61,10 @@ Rcpp_calc_logdetXpX <- function(X) {
     .Call('qtl2scan_Rcpp_calc_logdetXpX', PACKAGE = 'qtl2scan', X)
 }
 
+Rcpp_calcLL <- function(hsq, Kva, y, X, reml = TRUE, logdetXpX = NA_real_) {
+    .Call('qtl2scan_Rcpp_calcLL', PACKAGE = 'qtl2scan', hsq, Kva, y, X, reml, logdetXpX)
+}
+
 Rcpp_fitLMM <- function(Kva, y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
     .Call('qtl2scan_Rcpp_fitLMM', PACKAGE = 'qtl2scan', Kva, y, X, reml, check_boundary, logdetXpX, tol)
 }

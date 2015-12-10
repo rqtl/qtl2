@@ -91,6 +91,15 @@ struct lmm_fit calcLL(const double hsq,
                       const bool reml,
                       const double logdetXpX);
 
+// calculate log likelihood for fixed value of hsq
+// This version called from R, and just returns the log likelihood
+double Rcpp_calcLL(const double hsq,
+                   const Rcpp::NumericVector& Kva,
+                   const Rcpp::NumericVector& y,
+                   const Rcpp::NumericMatrix& X,
+                   const bool reml,
+                   const double logdetXpX);
+
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args);
 
