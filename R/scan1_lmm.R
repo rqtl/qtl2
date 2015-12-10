@@ -324,22 +324,22 @@ scan1_lmm_clean <-
             # need a reml version of weighted LS
             if(reml) {
                 if(is.null(ic))
-                    loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, weights, tol)
+                    loglik <- scan_reml_onechr(pr[[chr]], y, ac, weights, tol)
                 else if(intcovar_method=="highmem")
                     loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, ic, weights, tol)
                 else
                     loglik <- scan_reml_onechr_intcovar_lowmem(pr[[chr]], y, ac, ic, weights, tol)
             } else {
                 if(is.null(ic))
-                    rss <- scan_hk_onechr_weighted(pr[[chr]], y, ac, weights, tol)
+                    rss <- log(scan_hk_onechr_weighted(pr[[chr]], y, ac, weights, tol))
                 else if(intcovar_method=="highmem")
                     rss <- scan_hk_onechr_intcovar_weighted_highmem(pr[[chr]], y, ac, ic, weights, tol)
                 else
                     rss <- scan_hk_onechr_intcovar_weighted_lowmem(pr[[chr]], y, ac, ic, weights, tol)
                 loglik <- length(y)/2 * log(rss)
             }
-            # turn into LOD score
-            lod <- (loglik - nullLL)/log(10)
+            # turn into LOD score, need to offset by -sum(log(weights))/2 because of how nullLL was calculated
+            lod <- (loglik - nullLL + 0.5*sum(log(weights)))/log(10)
         }
 
     # now do the work
