@@ -2,11 +2,11 @@
 
 // [[Rcpp::depends(RcppEigen)]]
 
-#include "scan_lmm.h"
+#include "scan1_lmm.h"
 #include <RcppEigen.h>
 #include <math.h>
 #include "lmm.h"
-#include "scan_hk.h"
+#include "scan1_hk.h"
 #include "matrix.h"
 #include "linreg.h"
 
