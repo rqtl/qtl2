@@ -173,10 +173,12 @@ scan1 <-
         wts <- weights[these2keep]
 
         # if X chr, paste X covariates onto additive covariates
-        if(is_x_chr[chr]) ac <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
+        # (only for the null)
+        if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
+        else ac0 <- ac
 
         # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- nullrss_clean(ph, ac, wts, add_intercept=TRUE, tol)
+        nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
 
         # scan1 function taking clean data (with no missing values)
         rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
