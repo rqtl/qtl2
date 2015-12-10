@@ -204,7 +204,7 @@ scan1_lmm <-
         # weighted least squares genome scan, using cluster_lapply across chromosomes
         lod <- scan1_lmm_clean(genoprobs, these2keep, Ke, ph, ac, ic, is_x_chr,
                                nullresult$hsq, nullresult$loglik, reml, cores,
-                               check_boundary, intcovar_method, tol)
+                               intcovar_method, tol)
     }
 
     # temporary result
@@ -267,7 +267,7 @@ calc_hsq_clean <-
 
 scan1_lmm_clean <-
     function(probs, ind2keep, Ke, pheno, addcovar, intcovar, is_x_chr,
-             hsq, null_loglik, reml, cores, check_boundary, intcovar_method, tol)
+             hsq, null_loglik, reml, cores, intcovar_method, tol)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
@@ -324,14 +324,11 @@ scan1_lmm_clean <-
             # need a reml version of weighted LS
             if(reml) {
                 if(is.null(ic))
-                    loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, weights,
-                                                                check_boundary, tol)
+                    loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, weights, tol)
                 else if(intcovar_method=="highmem")
-                    loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, ic, weights,
-                                                                check_boundary, tol)
+                    loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, ic, weights, tol)
                 else
-                    loglik <- scan_reml_onechr_intcovar_lowmem(pr[[chr]], y, ac, ic, weights,
-                                                               check_boundary, tol)
+                    loglik <- scan_reml_onechr_intcovar_lowmem(pr[[chr]], y, ac, ic, weights, tol)
             } else {
                 if(is.null(ic))
                     rss <- scan_hk_onechr_weighted(pr[[chr]], y, ac, weights, tol)
