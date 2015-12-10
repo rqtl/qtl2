@@ -73,7 +73,7 @@
 #' @export
 scan1_lmm <-
     function(genoprobs, pheno, kinship, addcovar=NULL, Xcovar=NULL,
-             intcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
+             intcovar=NULL, reml=TRUE, cores=1, ...)
 {
     # deal with the dot args
     dotargs <- list(...)
@@ -223,8 +223,6 @@ scan1_lmm <-
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)
-    if(!is.null(weights))
-        attr(result, "weights") <- TRUE
 
     result
 }

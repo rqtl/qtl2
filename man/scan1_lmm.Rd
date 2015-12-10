@@ -5,7 +5,7 @@
 \title{Genome scan with a single-QTL and linear mixed model}
 \usage{
 scan1_lmm(genoprobs, pheno, kinship, addcovar = NULL, Xcovar = NULL,
-  intcovar = NULL, weights = NULL, reml = TRUE, cores = 1, ...)
+  intcovar = NULL, reml = TRUE, cores = 1, ...)
 }
 \arguments{
 \item{genoprobs}{A list of 3-dimensional arrays of genotype
