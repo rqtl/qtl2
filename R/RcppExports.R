@@ -57,8 +57,16 @@ Rcpp_eigen_rotation <- function(K, y, X) {
     .Call('qtl2scan_Rcpp_eigen_rotation', PACKAGE = 'qtl2scan', K, y, X)
 }
 
+Rcpp_calc_logdetXpX <- function(X) {
+    .Call('qtl2scan_Rcpp_calc_logdetXpX', PACKAGE = 'qtl2scan', X)
+}
+
 Rcpp_fitLMM <- function(Kva, y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
     .Call('qtl2scan_Rcpp_fitLMM', PACKAGE = 'qtl2scan', Kva, y, X, reml, check_boundary, logdetXpX, tol)
+}
+
+Rcpp_fitLMM_mat <- function(Kva, Y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
+    .Call('qtl2scan_Rcpp_fitLMM_mat', PACKAGE = 'qtl2scan', Kva, Y, X, reml, check_boundary, logdetXpX, tol)
 }
 
 find_matching_cols <- function(mat, tol = 1e-12) {

@@ -182,6 +182,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Rcpp_calc_logdetXpX
+double Rcpp_calc_logdetXpX(const NumericMatrix& X);
+RcppExport SEXP qtl2scan_Rcpp_calc_logdetXpX(SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    __result = Rcpp::wrap(Rcpp_calc_logdetXpX(X));
+    return __result;
+END_RCPP
+}
 // Rcpp_fitLMM
 List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
 RcppExport SEXP qtl2scan_Rcpp_fitLMM(SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
@@ -196,6 +207,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type logdetXpX(logdetXpXSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(Rcpp_fitLMM(Kva, y, X, reml, check_boundary, logdetXpX, tol));
+    return __result;
+END_RCPP
+}
+// Rcpp_fitLMM_mat
+List Rcpp_fitLMM_mat(const NumericVector& Kva, const NumericMatrix& Y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
+RcppExport SEXP qtl2scan_Rcpp_fitLMM_mat(SEXP KvaSEXP, SEXP YSEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type Kva(KvaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const bool >::type reml(remlSEXP);
+    Rcpp::traits::input_parameter< const bool >::type check_boundary(check_boundarySEXP);
+    Rcpp::traits::input_parameter< const double >::type logdetXpX(logdetXpXSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(Rcpp_fitLMM_mat(Kva, Y, X, reml, check_boundary, logdetXpX, tol));
     return __result;
 END_RCPP
 }
