@@ -54,7 +54,7 @@ IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-
     const unsigned int ncol=mat.cols();
 
     // QR decomp with column pivoting
-    MatrixXd XX(as<Map<MatrixXd> >(mat));
+    const MatrixXd XX(as<Map<MatrixXd> >(mat));
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
     CPivQR PQR = XX;
