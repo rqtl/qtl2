@@ -172,11 +172,11 @@ scan1 <-
         ph <- pheno[these2keep,phecol,drop=FALSE]
         wts <- weights[these2keep]
 
-        # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- nullrss_clean(ph, ac, wts, add_intercept=TRUE, tol)
-
         # if X chr, paste X covariates onto additive covariates
         if(is_x_chr[chr]) ac <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
+
+        # FIX_ME: calculating null RSS multiple times :(
+        nullrss <- nullrss_clean(ph, ac, wts, add_intercept=TRUE, tol)
 
         # scan1 function taking clean data (with no missing values)
         rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
