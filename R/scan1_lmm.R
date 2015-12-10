@@ -229,7 +229,7 @@ calc_hsq_clean <-
     # if just one kinship matrix, force it to be a list
     if(!is.list(Ke[[1]])) {
         # X chromosome with special covariates
-        if(!is.null(Xcovar) && any(is_x_chr) && !any(is_x_ch)) {
+        if(!is.null(Xcovar) && any(is_x_chr) && !any(is_x_chr)) {
             Ke <- list(Ke, Ke)
             is_x_chr <- c(FALSE, TRUE)
         }
