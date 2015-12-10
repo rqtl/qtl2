@@ -23,19 +23,19 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
 
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    NumericMatrix transform = cross->geno2allele_matrix(is_x_chr);
-    const unsigned int n_allele = transform.cols();
+    const NumericMatrix transform = cross->geno2allele_matrix(is_x_chr);
+    const unsigned int n_allele = transform.cols()==0 ? n_gen : transform.cols();
 
-    if(n_allele == 0) { // no conversion needed
-        NumericVector result(clone(prob_array));
-        result.attr("dim") = Dimension(n_gen, n_ind, n_pos);
-        delete cross;
-        return result;
+    // space for result
+    NumericVector result(ind_by_pos*n_allele); // no. alleles or n
+    result.attr("dim") = Dimension(n_allele, n_ind, n_pos);
+
+    if(n_allele == n_gen) { // no conversion needed
+        std::copy(prob_array.begin(), prob_array.end(), result.begin());
     }
     else {
         if((unsigned int)transform.rows() != n_gen)
             throw std::invalid_argument("no. genotypes in prob_array doesn't match no. rows in transform matrix");
-        NumericVector result(ind_by_pos*n_allele);
 
         for(unsigned int i=0, offset_gen=0, offset_allele=0;
             i < ind_by_pos;
@@ -46,10 +46,8 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
                 }
             }
         }
-
-        result.attr("dim") = Dimension(n_allele, n_ind, n_pos);
-        delete cross;
-        return result;
     }
 
+    delete cross;
+    return result;
 }
