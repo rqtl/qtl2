@@ -112,7 +112,7 @@ scan1_lmm <-
         intcovar <- as.matrix(intcovar)
 
     # check that kinship matrices are square with same IDs
-    kinshipIDs <- check_kinship(kinship)
+    kinshipIDs <- check_kinship(kinship, length(genoprobs))
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
@@ -269,13 +269,16 @@ calc_hsq_clean <-
 #
 # returns vector of IDs
 check_kinship <-
-    function(kinship)
+    function(kinship, n_chr)
 {
     if(!is.list(kinship)) { # one kinship matrix
         stopifnot(nrow(kinship) == ncol(kinship))
         stopifnot( all(rownames(kinship) == colnames(kinship)) )
         return(rownames(kinship))
     } else {
+        if(length(kinship) != n_chr)
+            stop("length(kinship) != no. chromosomes (", n_chr, ")")
+
         kinship_square <- vapply(kinship, function(mat) nrow(mat) == ncol(mat), TRUE)
         stopifnot( all(kinship_square) )
 
