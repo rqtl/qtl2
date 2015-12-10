@@ -266,3 +266,31 @@ List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const Numeric
                         Named("sigmasq") =   result.sigmasq,
                         Named("beta") =      result.beta);
 }
+
+
+// fitLMM with matrix of phenotypes (looping over phenotype columns)
+// [[Rcpp::export]]
+List Rcpp_fitLMM_mat(const NumericVector& Kva, const NumericMatrix& Y,
+                     const NumericMatrix& X,
+                     const bool reml=true, const bool check_boundary=true,
+                     const double logdetXpX=NA_REAL, const double tol=1e-4)
+{
+    const MatrixXd eKva(as<Map<MatrixXd> >(Kva));
+    const MatrixXd eY(as<Map<MatrixXd> >(Y));
+    const MatrixXd eX(as<Map<MatrixXd> >(X));
+
+    const int nphe = Y.cols();
+
+    NumericVector hsq(nphe);
+    NumericVector loglik(nphe);
+
+    for(unsigned int i=0; i<nphe; i++) {
+        const struct lmm_fit result = fitLMM(eKva, eY.col(i), eX, reml, check_boundary,
+                                             logdetXpX, tol);
+        hsq[i] = result.hsq;
+        loglik[i] = result.loglik;
+    }
+
+    return List::create(Named("hsq") = hsq,
+                        Named("loglik") = loglik);
+}

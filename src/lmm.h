@@ -121,4 +121,10 @@ Rcpp::List Rcpp_fitLMM(const Rcpp::NumericVector& Kva,
                        const double logdetXpX,
                        const double tol);
 
+// fitLMM with matrix of phenotypes (looping over phenotype columns)
+Rcpp::List Rcpp_fitLMM_mat(const Rcpp::NumericVector& Kva, const Rcpp::NumericMatrix& Y,
+                           const Rcpp::NumericMatrix& X,
+                           const bool reml, const bool check_boundary,
+                           const double logdetXpX, const double tol);
+
 #endif // LMM_H
