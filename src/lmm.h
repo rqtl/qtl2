@@ -56,6 +56,9 @@ Rcpp::List Rcpp_eigen_rotation(const Rcpp::NumericMatrix& K,
 // calculate log det X'X
 double calc_logdetXpX(const Eigen::MatrixXd& X);
 
+// calculate log det X'X (version called from R)
+double Rcpp_calc_logdetXpX(const Rcpp::NumericMatrix& X);
+
 // getMLsoln
 // for fixed value of hsq, calculate MLEs of beta and sigmasq
 // sigmasq = total variance = sig^2_g + sig^2_e

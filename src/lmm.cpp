@@ -90,6 +90,16 @@ double calc_logdetXpX(const MatrixXd& X)
     return result;
 }
 
+// calculate log det X'X (version called from R)
+// [[Rcpp::export]]
+double Rcpp_calc_logdetXpX(const NumericMatrix& X)
+{
+    const MatrixXd& XX(as<Map<MatrixXd> >(X));
+
+    return calc_logdetXpX(XX);
+}
+
+
 // getMLsoln
 // for fixed value of hsq, calculate MLEs of beta and sigmasq
 // sigmasq = total variance = sig^2_g + sig^2_e
