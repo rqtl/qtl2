@@ -168,7 +168,6 @@ scan1_lmm <-
     else n_null_chr <- 1
 
     hsq <- matrix(nrow=n_null_chr, ncol=ncol(pheno))
-    null_loglik <- hsq
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
     # loop over batches of phenotypes with the same pattern of NAs
@@ -199,17 +198,17 @@ scan1_lmm <-
         nullresult <- calc_hsq_clean(Ke, ph, ac, Xc, is_x_chr, reml, cores,
                                        check_boundary, tol)
         hsq[, phecol] <- nullresult$hsq
-        null_loglik[, phecol] <- nullresult$loglik
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes
         lod <- scan1_lmm_clean(genoprobs, these2keep, Ke, ph, ac, ic, is_x_chr,
+                               genoprob_Xcol2drop,
                                nullresult$hsq, nullresult$loglik, reml, cores,
                                intcovar_method, tol)
+
+        result[,phecol] <- lod
     }
 
-    # temporary result
-    result <- list(hsq=hsq, null_loglik=null_loglik)
-
+    attr(result, "hsq") <- hsq
     attr(result, "sample_size") <- n
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
@@ -266,11 +265,13 @@ calc_hsq_clean <-
 }
 
 scan1_lmm_clean <-
-    function(probs, ind2keep, Ke, pheno, addcovar, intcovar, is_x_chr,
+    function(genoprobs, ind2keep, Ke, pheno, addcovar, intcovar, is_x_chr,
+             genoprob_Xcol2drop,
              hsq, null_loglik, reml, cores, intcovar_method, tol)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
+    class(genoprobs) <- "list"
 
     if(!is.list(Ke[[1]])) {
         loco <- FALSE
@@ -278,24 +279,24 @@ scan1_lmm_clean <-
         else no_x <- FALSE
     } else loco <- TRUE
 
-    batches <- list(chr=rep(seq(along=probs), ncol(pheno)),
-                    phecol=rep(1:ncol(pheno), each=length(probs)))
+    batches <- list(chr=rep(seq(along=genoprobs), ncol(pheno)),
+                    phecol=rep(1:ncol(pheno), each=length(genoprobs)))
 
     # function that does the work
     by_batch_func <-
         function(batch)
         {
             chr <- batches$chr[batch]
-            phecol <- batches$chr[batch]
+            phecol <- batches$phecol[batch]
 
             # premultiply phenotypes and covariates by transposed eigenvectors
             y <- Ke[[chr]]$vectors %*% pheno[,phecol,drop=FALSE]
             ac <- cbind(rep(1, n), addcovar)
             ac <- Ke[[chr]]$vectors %*% ac
-            if(!is.null(ic)) ic <- Ke[[chr]]$vectors %*% ic
+            ic <- intcovar; if(!is.null(ic)) ic <- Ke[[chr]]$vectors %*% ic
 
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
-            Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
+            Xcol2drop <- genoprob_Xcol2drop[[chr]]
             if(length(Xcol2drop) > 0) {
                 pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
                 pr <- pr[,-1,,drop=FALSE]
@@ -319,31 +320,44 @@ scan1_lmm_clean <-
                 }
             }
 
-            scanf(genoprobs, pheno, addcovar, intcovar, weights, tol)
-
             # need a reml version of weighted LS
             if(reml) {
-                if(is.null(ic))
-                    loglik <- scan_reml_onechr(pr[[chr]], y, ac, weights, tol)
+                if(is.null(ic)) {
+                    loglik <- scan_reml_onechr(pr, y, ac, weights, tol)
+                }
                 else if(intcovar_method=="highmem")
-                    loglik <- scan_reml_onechr_intcovar_highmem(pr[[chr]], y, ac, ic, weights, tol)
+                    loglik <- scan_reml_onechr_intcovar_highmem(pr, y, ac, ic, weights, tol)
                 else
-                    loglik <- scan_reml_onechr_intcovar_lowmem(pr[[chr]], y, ac, ic, weights, tol)
+                    loglik <- scan_reml_onechr_intcovar_lowmem(pr, y, ac, ic, weights, tol)
             } else {
                 if(is.null(ic))
-                    rss <- log(scan_hk_onechr_weighted(pr[[chr]], y, ac, weights, tol))
+                    rss <- log(scan_hk_onechr_weighted(pr, y, ac, weights, tol))
                 else if(intcovar_method=="highmem")
-                    rss <- scan_hk_onechr_intcovar_weighted_highmem(pr[[chr]], y, ac, ic, weights, tol)
+                    rss <- scan_hk_onechr_intcovar_weighted_highmem(pr, y, ac, ic, weights, tol)
                 else
-                    rss <- scan_hk_onechr_intcovar_weighted_lowmem(pr[[chr]], y, ac, ic, weights, tol)
+                    rss <- scan_hk_onechr_intcovar_weighted_lowmem(pr, y, ac, ic, weights, tol)
                 loglik <- length(y)/2 * log(rss)
             }
             # turn into LOD score, need to offset by -sum(log(weights))/2 because of how nullLL was calculated
-            lod <- (loglik - nullLL + 0.5*sum(log(weights)))/log(10)
+            lod <- (loglik - nullLL - 0.5*sum(log(weights)))/log(10)
         }
 
     # now do the work
-    cluster_lapply(cores, seq(along=batches$chr), by_batch_func)
+    lod_list <- cluster_lapply(cores, seq(along=batches$chr), by_batch_func)
+
+    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    totpos <- sum(npos_by_chr)
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
+
+    # to contain the results
+    result <- matrix(nrow=totpos, ncol=ncol(pheno))
+    for(batch in seq(along=batches$chr)) {
+        chr <- batches$chr[batch]
+        phecol <- batches$phecol[batch]
+        result[pos_index[[chr]], phecol] <- lod_list[[batch]]
+    }
+
+    result
 }
 
 # check that kinship matrices are square
