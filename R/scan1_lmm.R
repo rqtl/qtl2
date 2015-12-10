@@ -164,10 +164,11 @@ scan1_lmm <-
 
     # number of chr to consider under null
     if(is.list(kinship)) n_null_chr <- length(kinship)
-    else if(!is.null(Xcovar)) n_null_chr <- (is_x_chr) + (!is_x_chr)
+    else if(!is.null(Xcovar)) n_null_chr <- any(is_x_chr) + any(!is_x_chr)
     else n_null_chr <- 1
 
     hsq <- matrix(nrow=n_null_chr, ncol=ncol(pheno))
+    dimnames(hsq) <- hsq_dimnames(kinship, Xcovar, is_x_chr, pheno)
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
     # loop over batches of phenotypes with the same pattern of NAs
@@ -229,7 +230,7 @@ calc_hsq_clean <-
     # if just one kinship matrix, force it to be a list
     if(!is.list(Ke[[1]])) {
         # X chromosome with special covariates
-        if(!is.null(Xcovar) && any(is_x_chr) && !any(is_x_chr)) {
+        if(!is.null(Xcovar) && any(is_x_chr) && any(!is_x_chr)) {
             Ke <- list(Ke, Ke)
             is_x_chr <- c(FALSE, TRUE)
         }
@@ -289,11 +290,20 @@ scan1_lmm_clean <-
             chr <- batches$chr[batch]
             phecol <- batches$phecol[batch]
 
+            if(loco) {
+                Kevec <- Ke[[chr]]$vectors
+                Keval <- Ke[[chr]]$values
+            }
+            else {
+                Kevec <- Ke$vectors
+                Keval <- Ke$values
+            }
+
             # premultiply phenotypes and covariates by transposed eigenvectors
-            y <- Ke[[chr]]$vectors %*% pheno[,phecol,drop=FALSE]
+            y <- Kevec %*% pheno[,phecol,drop=FALSE]
             ac <- cbind(rep(1, n), addcovar)
-            ac <- Ke[[chr]]$vectors %*% ac
-            ic <- intcovar; if(!is.null(ic)) ic <- Ke[[chr]]$vectors %*% ic
+            ac <- Kevec %*% ac
+            ic <- intcovar; if(!is.null(ic)) ic <- Kevec %*% ic
 
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
             Xcol2drop <- genoprob_Xcol2drop[[chr]]
@@ -304,21 +314,25 @@ scan1_lmm_clean <-
             else
                 pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
 
+            for(i in 1:dim(pr)[3])
+                pr[,,i] <- Kevec %*% pr[,,i]
+
             # calculate weights for this chromosome
             if(loco) {
-                weights <- hsq[chr,phecol]*Ke[[chr]]$values + (1-hsq[chr,phecol])
+                weights <- 1/(hsq[chr,phecol]*Keval + (1-hsq[chr,phecol]))
                 nullLL <- null_loglik[chr,phecol]
             }
             else {
-                if(nrow(hsq)==1 || !is_x_chr[chr]) {
-                    weights <- hsq[1,phecol]*Ke$values + (1-hsq[1,phecol])
+                if(no_x || !is_x_chr[chr]) {
+                    weights <- 1/(hsq[1,phecol]*Keval + (1-hsq[1,phecol]))
                     nullLL <- null_loglik[1,phecol]
                 }
                 else {
-                    weights <- hsq[2,phecol]*Ke$values + (1-hsq[2,phecol])
+                    weights <- 1/(hsq[2,phecol]*Keval + (1-hsq[2,phecol]))
                     nullLL <- null_loglik[2,phecol]
                 }
             }
+            weights <- sqrt(weights)
 
             # need a reml version of weighted LS
             if(reml) {
@@ -339,7 +353,7 @@ scan1_lmm_clean <-
                 loglik <- length(y)/2 * log(rss)
             }
             # turn into LOD score, need to offset by -sum(log(weights))/2 because of how nullLL was calculated
-            lod <- (loglik - nullLL - 0.5*sum(log(weights)))/log(10)
+            lod <- (loglik - nullLL + 0.5*sum(log(weights^2)))/log(10)
         }
 
     # now do the work
@@ -388,4 +402,21 @@ check_kinship <-
 
         return(rownames(kinship))
     }
+}
+
+# dimnames for hsq
+# (a bit awkward due to loco or not, and xchr special or not)
+hsq_dimnames <-
+    function(kinship, Xcovar, is_x_chr, pheno)
+{
+    if(is.list(kinship)) rn <- names(kinship)
+    else if(!is.null(Xcovar) && any(is_x_chr) + any(!is_x_chr) == 2) {
+        rn <- c(names(is_x_chr)[!is_x_chr][1],
+                names(is_x_chr)[is_x_chr][1])
+    }
+    else {
+        rn <- names(is_x_chr)[!is_x_chr][1]
+    }
+
+    list(rn, colnames(pheno))
 }
