@@ -269,7 +269,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
             result(trueg,alleles[1]-1) += 0.5;
         }
         // male X
-        for(int trueg=0; trueg<n_geno; trueg++)
+        for(int trueg=0; trueg<n_alleles; trueg++)
             result(trueg+n_geno, trueg) = 1.0;
 
         return result;
