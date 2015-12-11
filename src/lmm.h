@@ -56,6 +56,9 @@ Rcpp::List Rcpp_eigen_rotation(const Rcpp::NumericMatrix& K,
 // calculate log det X'X
 double calc_logdetXpX(const Eigen::MatrixXd& X);
 
+// calculate log det X'X (version called from R)
+double Rcpp_calc_logdetXpX(const Rcpp::NumericMatrix& X);
+
 // getMLsoln
 // for fixed value of hsq, calculate MLEs of beta and sigmasq
 // sigmasq = total variance = sig^2_g + sig^2_e
@@ -88,6 +91,15 @@ struct lmm_fit calcLL(const double hsq,
                       const bool reml,
                       const double logdetXpX);
 
+// calculate log likelihood for fixed value of hsq
+// This version called from R, and just returns the log likelihood
+double Rcpp_calcLL(const double hsq,
+                   const Rcpp::NumericVector& Kva,
+                   const Rcpp::NumericVector& y,
+                   const Rcpp::NumericMatrix& X,
+                   const bool reml,
+                   const double logdetXpX);
+
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args);
 
@@ -117,5 +129,11 @@ Rcpp::List Rcpp_fitLMM(const Rcpp::NumericVector& Kva,
                        const bool check_boundary,
                        const double logdetXpX,
                        const double tol);
+
+// fitLMM with matrix of phenotypes (looping over phenotype columns)
+Rcpp::List Rcpp_fitLMM_mat(const Rcpp::NumericVector& Kva, const Rcpp::NumericMatrix& Y,
+                           const Rcpp::NumericMatrix& X,
+                           const bool reml, const bool check_boundary,
+                           const double logdetXpX, const double tol);
 
 #endif // LMM_H

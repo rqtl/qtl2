@@ -57,8 +57,20 @@ Rcpp_eigen_rotation <- function(K, y, X) {
     .Call('qtl2scan_Rcpp_eigen_rotation', PACKAGE = 'qtl2scan', K, y, X)
 }
 
+Rcpp_calc_logdetXpX <- function(X) {
+    .Call('qtl2scan_Rcpp_calc_logdetXpX', PACKAGE = 'qtl2scan', X)
+}
+
+Rcpp_calcLL <- function(hsq, Kva, y, X, reml = TRUE, logdetXpX = NA_real_) {
+    .Call('qtl2scan_Rcpp_calcLL', PACKAGE = 'qtl2scan', hsq, Kva, y, X, reml, logdetXpX)
+}
+
 Rcpp_fitLMM <- function(Kva, y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
     .Call('qtl2scan_Rcpp_fitLMM', PACKAGE = 'qtl2scan', Kva, y, X, reml, check_boundary, logdetXpX, tol)
+}
+
+Rcpp_fitLMM_mat <- function(Kva, Y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
+    .Call('qtl2scan_Rcpp_fitLMM_mat', PACKAGE = 'qtl2scan', Kva, Y, X, reml, check_boundary, logdetXpX, tol)
 }
 
 find_matching_cols <- function(mat, tol = 1e-12) {
@@ -83,6 +95,18 @@ weighted_matrix <- function(mat, weights) {
 
 weighted_3darray <- function(array, weights) {
     .Call('qtl2scan_weighted_3darray', PACKAGE = 'qtl2scan', array, weights)
+}
+
+matrix_x_matrix <- function(X, Y) {
+    .Call('qtl2scan_matrix_x_matrix', PACKAGE = 'qtl2scan', X, Y)
+}
+
+matrix_x_vector <- function(X, y) {
+    .Call('qtl2scan_matrix_x_vector', PACKAGE = 'qtl2scan', X, y)
+}
+
+matrix_x_3darray <- function(X, A) {
+    .Call('qtl2scan_matrix_x_3darray', PACKAGE = 'qtl2scan', X, A)
 }
 
 random_int <- function(n, low, high) {
@@ -135,5 +159,17 @@ scan_hk_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar,
 
 scan_hk_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
     .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+}
+
+scan_lmm_onechr <- function(genoprobs, pheno, addcovar, eigenvec, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_lmm_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, tol)
+}
+
+scan_lmm_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_lmm_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
+}
+
+scan_lmm_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_lmm_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 

@@ -90,6 +90,16 @@ double calc_logdetXpX(const MatrixXd& X)
     return result;
 }
 
+// calculate log det X'X (version called from R)
+// [[Rcpp::export]]
+double Rcpp_calc_logdetXpX(const NumericMatrix& X)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+
+    return calc_logdetXpX(XX);
+}
+
+
 // getMLsoln
 // for fixed value of hsq, calculate MLEs of beta and sigmasq
 // sigmasq = total variance = sig^2_g + sig^2_e
@@ -100,7 +110,7 @@ double calc_logdetXpX(const MatrixXd& X)
 // X     = rotated matrix of covariates
 // reml  = whether you'll be using REML (so need to calculate log det XSX)
 struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& y,
-                         const MatrixXd& X)
+                         const MatrixXd& X, bool reml)
 {
     const unsigned int n = Kva.size();
     const unsigned int p = X.cols();
@@ -133,8 +143,9 @@ struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& 
     const MatrixXd rss = ySy - XSy.transpose() * beta;
 
     // return value
+    result.hsq = hsq;
     result.rss = rss(0,0);
-    result.sigmasq = result.rss/(double)(n-p);
+    result.sigmasq = result.rss/(double)(reml ? (n-p) : n);
     result.beta = beta.col(0);
     result.logdetXSX = logdetXSX;
 
@@ -158,7 +169,7 @@ struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
     const unsigned int p = X.cols();
 
     // estimate beta and sigma^2
-    struct lmm_fit ml_soln = getMLsoln(hsq, Kva, y, X);
+    struct lmm_fit ml_soln = getMLsoln(hsq, Kva, y, X, reml);
 
     // calculate log likelihood
     double loglik = (double)n*log(ml_soln.rss);
@@ -177,6 +188,21 @@ struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
     ml_soln.loglik = loglik;
     return ml_soln;
 }
+
+// calculate log likelihood for fixed value of hsq
+// This version called from R, and just returns the log likelihood
+// [[Rcpp::export]]
+double Rcpp_calcLL(const double hsq, const NumericVector& Kva, const NumericVector& y,
+                   const NumericMatrix& X, const bool reml=true, const double logdetXpX=NA_REAL)
+{
+    const VectorXd KKva(as<Map<VectorXd> >(Kva));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+
+    const struct lmm_fit result = calcLL(hsq, KKva, yy, XX, reml, logdetXpX);
+    return result.loglik;
+}
+
 
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args)
@@ -235,6 +261,9 @@ struct lmm_fit fitLMM(const VectorXd& Kva, const VectorXd& y, const MatrixXd& X,
         }
     }
 
+    // for loglik, calculate the ML version
+    result.loglik = calcLL(result.hsq, Kva, y, X, FALSE, logdetXpX_val).loglik;
+
     return result;
 }
 
@@ -255,4 +284,32 @@ List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const Numeric
                         Named("hsq") =       result.hsq,
                         Named("sigmasq") =   result.sigmasq,
                         Named("beta") =      result.beta);
+}
+
+
+// fitLMM with matrix of phenotypes (looping over phenotype columns)
+// [[Rcpp::export]]
+List Rcpp_fitLMM_mat(const NumericVector& Kva, const NumericMatrix& Y,
+                     const NumericMatrix& X,
+                     const bool reml=true, const bool check_boundary=true,
+                     const double logdetXpX=NA_REAL, const double tol=1e-4)
+{
+    const MatrixXd eKva(as<Map<MatrixXd> >(Kva));
+    const MatrixXd eY(as<Map<MatrixXd> >(Y));
+    const MatrixXd eX(as<Map<MatrixXd> >(X));
+
+    const int nphe = Y.cols();
+
+    NumericVector hsq(nphe);
+    NumericVector loglik(nphe);
+
+    for(unsigned int i=0; i<nphe; i++) {
+        const struct lmm_fit result = fitLMM(eKva, eY.col(i), eX, reml, check_boundary,
+                                             logdetXpX, tol);
+        hsq[i] = result.hsq;
+        loglik[i] = result.loglik;
+    }
+
+    return List::create(Named("hsq") = hsq,
+                        Named("loglik") = loglik);
 }

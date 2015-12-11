@@ -1,6 +1,6 @@
 // genome scan by Haley-Knott regression
 
-#include "scan_hk.h"
+#include "scan1_hk.h"
 #include <Rcpp.h>
 
 using namespace Rcpp;

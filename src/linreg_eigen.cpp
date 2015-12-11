@@ -22,8 +22,8 @@ MatrixXd calc_XpX(const MatrixXd& X)
 // [[Rcpp::export]]
 List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    VectorXd yy(as<Map<VectorXd> >(y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
 
     const unsigned int n = XX.rows(), p=XX.cols();
     LLT<MatrixXd> llt = calc_XpX(XX);
@@ -51,8 +51,8 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 // [[Rcpp::export]]
 double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    VectorXd yy(as<Map<VectorXd> >(y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
 
     LLT<MatrixXd> llt = calc_XpX(XX);
 
@@ -67,8 +67,8 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         const double tol=1e-12)
 {
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    VectorXd yy(as<Map<VectorXd> >(y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
 
     typedef ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
@@ -130,8 +130,8 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         const double tol=1e-12)
 {
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    VectorXd yy(as<Map<VectorXd> >(y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
 
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
@@ -168,8 +168,8 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     const unsigned int ncolY = Y.cols();
     const unsigned int ncolX = X.cols();
 
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    MatrixXd YY(as<Map<MatrixXd> >(Y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
     LLT<MatrixXd> llt = calc_XpX(XX);
 
@@ -192,8 +192,8 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
                                  const double tol=1e-12)
 {
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    MatrixXd YY(as<Map<MatrixXd> >(Y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
@@ -243,8 +243,8 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     const unsigned int ncolY = Y.cols();
     const unsigned int ncolX = X.cols();
 
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    MatrixXd YY(as<Map<MatrixXd> >(Y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
     LLT<MatrixXd> llt = calc_XpX(XX);
 
@@ -268,8 +268,8 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
                                  const double tol=1e-12)
 {
-    MatrixXd XX(as<Map<MatrixXd> >(X));
-    MatrixXd YY(as<Map<MatrixXd> >(Y));
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;

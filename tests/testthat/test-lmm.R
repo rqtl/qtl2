@@ -48,12 +48,12 @@ test_that("eigen + rotation works", {
 
 test_that("fitLMM works", {
 
-    expected_reml <- structure(list(loglik = -216.197351904974, hsq = 0.0743352779641662,
+    expected_reml <- structure(list(loglik = -218.467712411475, hsq = 0.0743352779641662,
                                     sigmasq = 0.819543294059229,
                                     beta = c(0.826587328164329, 1.84713422450015)),
                                .Names = c("loglik", "hsq", "sigmasq", "beta"))
 
-    expected_ml <- structure(list(loglik = -217.87551923171, hsq = 0, sigmasq = 0.796556597792719,
+    expected_ml <- structure(list(loglik = -217.87551923171, hsq = 0, sigmasq = 0.780625465836864,
                                   beta = c(0.824833750089415, 1.84392110362325)),
                              .Names = c("loglik", "hsq", "sigmasq", "beta"))
 

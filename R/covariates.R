@@ -35,21 +35,20 @@ force_intcovar <-
 # drop linearly dependent columns
 # if intercept=TRUE, add intercept before checking and then remove afterwards
 drop_depcols <-
-    function(covar=NULL, intercept=FALSE, tol=1e-12)
+    function(covar=NULL, add_intercept=FALSE, tol=1e-12)
 {
     if(is.null(covar)) return(covar)
 
     if(!is.matrix(covar)) covar <- as.matrix(covar)
-    if(intercept) covar <- cbind(rep(1, nrow(covar)), covar)
+    if(add_intercept) covar <- cbind(rep(1, nrow(covar)), covar)
 
     if(ncol(covar) <= 1) return(covar)
 
     # deal with NAs by omitting those rows before
     depcols <- sort(find_lin_indep_cols(covar[complete.cases(covar),,drop=FALSE], tol))
 
-    if(intercept) {
-        if(depcols[1] != 1)
-            message("oops in drop_depcols; I figured the intercept would always be included.")
+    if(add_intercept) {
+        # FIX_ME: assuming here that intercept (first column) will always be included
         depcols <- depcols[-1]
     }
     if(length(depcols)==0) return(NULL)

@@ -69,25 +69,13 @@ scan1 <-
 {
     # deal with the dot args
     dotargs <- list(...)
-    if("tol" %in% names(dotargs))
-        tol <- dotargs$tol
-    else tol <- 1e-12
-
-    if("intcovar_method" %in% names(dotargs)) {
-        intcovar_method <- dotargs$intcovar_method
-        if(!(intcovar_method %in% c("highmem", "lowmem"))) {
-            warning('intcovar_method "', intcovar_method, '" not valid; using "lowmem".')
-            intcovar_method <- "lowmem"
-        }
-    } else intcovar_method <- "lowmem"
-
-    if("quiet" %in% names(dotargs))
-        quiet <- dotargs$quiet
-    else quiet <- TRUE
-
-    if("max_batch" %in% names(dotargs))
-        max_batch <- dotargs$max_batch
-    else max_batch <- NULL
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    stopifnot(tol > 0)
+    intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
+                                 c("highmem", "lowmem"))
+    quiet <- grab_dots(dotargs, "quiet", TRUE)
+    max_batch <- grab_dots(dotargs, "max_batch", NULL)
+    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
 
     # force things to be matrices
     if(!is.matrix(pheno))
@@ -172,14 +160,16 @@ scan1 <-
         ph <- pheno[these2keep,phecol,drop=FALSE]
         wts <- weights[these2keep]
 
-        # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- nullrss_clean(ph, ac, wts, tol)
-
         # if X chr, paste X covariates onto additive covariates
-        if(is_x_chr[chr]) ac <- cbind(ac, Xc)
+        # (only for the null)
+        if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
+        else ac0 <- ac
+
+        # FIX_ME: calculating null RSS multiple times :(
+        nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
 
         # scan1 function taking clean data (with no missing values)
-        rss <- scan1_clean(pr, ph, ac, ic, wts, tol, intcovar_method)
+        rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
 
         # calculate LOD score
         lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
@@ -245,10 +235,11 @@ scan1 <-
 # scan1 function taking nicely aligned data with no missing values
 scan1_clean <-
     function(genoprobs, pheno, addcovar, intcovar,
-             weights, tol, intcovar_method)
+             weights, add_intercept=TRUE, tol, intcovar_method)
 {
     n <- nrow(pheno)
-    addcovar <- cbind(rep(1,n), addcovar) # add intercept
+    if(add_intercept)
+        addcovar <- cbind(rep(1,n), addcovar) # add intercept
 
     if(is.null(intcovar)) { # no interactive covariates
 
@@ -278,10 +269,11 @@ scan1_clean <-
 
 # calculate null RSS, with nicely aligned data with no missing values
 nullrss_clean <-
-    function(pheno, addcovar, weights, tol)
+    function(pheno, addcovar, weights, add_intercept=TRUE, tol)
 {
     n <- nrow(pheno)
-    addcovar <- cbind(rep(1,n), addcovar) # add intercept
+    if(add_intercept)
+        addcovar <- cbind(rep(1,n), addcovar) # add intercept
 
     if(is.null(weights)) { # no weights
         result <- calc_rss_linreg(addcovar, pheno, tol)
