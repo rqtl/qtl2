@@ -1,0 +1,107 @@
+context("LMM genome scan by scan1_lmm")
+
+
+test_that("scan1_lmm with intercross, vs ported lmmlite code", {
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs)
+
+    out_reml <- scan1_lmm(probs, iron$pheno, kinship, reml=TRUE)
+    out_ml <- scan1_lmm(probs, iron$pheno, kinship, reml=FALSE)
+
+    # "by hand" calculation
+    y <- iron$pheno
+    X <- cbind(rep(1, nrow(iron$pheno)))
+    Ke <- decomp_kinship(kinship) # eigen decomp
+    yp <- Ke$vectors %*% y
+    Xp <- Ke$vectors %*% X
+
+    byhand1_reml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=TRUE, tol=1e-12)
+    byhand2_reml <- Rcpp_fitLMM(Ke$values, yp[,2], Xp, reml=TRUE, tol=1e-12)
+    byhand1_ml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
+    byhand2_ml <- Rcpp_fitLMM(Ke$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
+
+    # hsq the same?
+    expect_equivalent(as.numeric(attr(out_reml, "hsq")),
+                      c(byhand1_reml$hsq, byhand2_reml$hsq))
+    expect_equivalent(as.numeric(attr(out_ml, "hsq")),
+                      c(byhand1_ml$hsq, byhand2_ml$hsq))
+
+    # compare chromosome 1 LOD scores
+    d <- dim(probs[[1]])[3]
+    loglik_reml1 <- loglik_reml2 <-
+        loglik_ml1 <- loglik_ml2 <- rep(NA, 3)
+    for(i in 1:d) {
+        Xp <- Ke$vectors %*% cbind(X, probs[[1]][,-1,i])
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
+    }
+    lod_reml1 <- (loglik_reml1 - byhand1_reml$loglik)/log(10)
+    lod_reml2 <- (loglik_reml2 - byhand2_reml$loglik)/log(10)
+    lod_ml1 <- (loglik_ml1 - byhand1_ml$loglik)/log(10)
+    lod_ml2 <- (loglik_ml2 - byhand2_ml$loglik)/log(10)
+
+    expect_equivalent(out_reml[1:d,1], lod_reml1)
+    expect_equivalent(out_reml[1:d,2], lod_reml2)
+    expect_equivalent(out_ml[1:d,1], lod_ml1)
+    expect_equivalent(out_ml[1:d,2], lod_ml2)
+
+})
+
+test_that("scan1_lmm with intercross with X covariates for null", {
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs)
+    Xc <- get_x_covar(iron)
+
+    out_reml <- scan1_lmm(probs, iron$pheno, kinship, Xcovar=Xc, reml=TRUE)
+    out_ml <- scan1_lmm(probs, iron$pheno, kinship, Xcovar=Xc, reml=FALSE)
+
+    # "by hand" calculation
+    y <- iron$pheno
+    X <- cbind(rep(1, nrow(iron$pheno)))
+    Ke <- decomp_kinship(kinship) # eigen decomp
+    yp <- Ke$vectors %*% y
+    Xp <- Ke$vectors %*% X
+    Xcp <- Ke$vectors %*% Xc
+
+    byhand1_reml <- Rcpp_fitLMM(Ke$values, yp[,1], cbind(Xp, Xcp), reml=TRUE, tol=1e-12)
+    byhand2_reml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp), reml=TRUE, tol=1e-12)
+    byhand1_ml <- Rcpp_fitLMM(Ke$values, yp[,1], cbind(Xp, Xcp), reml=FALSE, tol=1e-12)
+    byhand2_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp), reml=FALSE, tol=1e-12)
+
+    # hsq the same?
+    expect_equivalent(as.numeric(attr(out_reml, "hsq")[2,]),
+                      c(byhand1_reml$hsq, byhand2_reml$hsq))
+    expect_equivalent(as.numeric(attr(out_ml, "hsq")[2,]),
+                      c(byhand1_ml$hsq, byhand2_ml$hsq))
+
+    # compare chromosome X LOD scores
+    d <- dim(probs[["X"]])[3]
+    loglik_reml1 <- loglik_reml2 <-
+        loglik_ml1 <- loglik_ml2 <- rep(NA, 3)
+    for(i in 1:d) {
+        Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
+    }
+    lod_reml1 <- (loglik_reml1 - byhand1_reml$loglik)/log(10)
+    lod_reml2 <- (loglik_reml2 - byhand2_reml$loglik)/log(10)
+    lod_ml1 <- (loglik_ml1 - byhand1_ml$loglik)/log(10)
+    lod_ml2 <- (loglik_ml2 - byhand2_ml$loglik)/log(10)
+
+    index <- nrow(out_reml) - rev(1:d) + 1
+    expect_equivalent(out_reml[index,1], lod_reml1)
+    expect_equivalent(out_reml[index,2], lod_reml2)
+    expect_equivalent(out_ml[index,1], lod_ml1)
+    expect_equivalent(out_ml[index,2], lod_ml2)
+
+})
