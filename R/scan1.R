@@ -69,25 +69,13 @@ scan1 <-
 {
     # deal with the dot args
     dotargs <- list(...)
-    if("tol" %in% names(dotargs))
-        tol <- dotargs$tol
-    else tol <- 1e-12
-
-    if("intcovar_method" %in% names(dotargs)) {
-        intcovar_method <- dotargs$intcovar_method
-        if(!(intcovar_method %in% c("highmem", "lowmem"))) {
-            warning('intcovar_method "', intcovar_method, '" not valid; using "lowmem".')
-            intcovar_method <- "lowmem"
-        }
-    } else intcovar_method <- "lowmem"
-
-    if("quiet" %in% names(dotargs))
-        quiet <- dotargs$quiet
-    else quiet <- TRUE
-
-    if("max_batch" %in% names(dotargs))
-        max_batch <- dotargs$max_batch
-    else max_batch <- NULL
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    stopifnot(tol > 0)
+    intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
+                                 c("highmem", "lowmem"))
+    quiet <- grab_dots(dotargs, "quiet", TRUE)
+    max_batch <- grab_dots(dotargs, "max_batch", NULL)
+    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
 
     # force things to be matrices
     if(!is.matrix(pheno))
