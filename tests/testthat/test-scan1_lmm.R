@@ -179,10 +179,10 @@ test_that("scan1_lmm with intercross with an additive covariate", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
-        loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
-        loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        loglik_ml1[i] <- Rcpp_calcLL(byhand1X_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_ml2[i] <- Rcpp_calcLL(byhand2X_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
     lod_reml1 <- (loglik_reml1 - byhand1X_reml$loglik)/log(10)
     lod_reml2 <- (loglik_reml2 - byhand2X_reml$loglik)/log(10)
@@ -210,18 +210,18 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
+    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                          Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="lowmem")
+    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                        Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="lowmem")
     out_reml_himem <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
                           Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="highmem")
     out_ml_himem <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
                         Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="highmem")
-    out_reml_lomem <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="lowmem")
-    out_ml_lomem <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="lowmem")
 
     # same result using "highmem" and "lowmem" methods
-    expect_equal(out_reml_himem, out_reml_lomem)
-    expect_equal(out_ml_himem, out_ml_lomem)
+    expect_equal(out_reml_himem, out_reml)
+    expect_equal(out_ml_himem, out_ml)
 
     # "by hand" calculation
     y <- iron$pheno
@@ -285,10 +285,10 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, 3)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, X, probs[["X"]][,-1,i], probs[["X"]][,-1,i]*X)
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
-        loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
-        loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        loglik_ml1[i] <- Rcpp_calcLL(byhand1X_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_ml2[i] <- Rcpp_calcLL(byhand2X_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
     lod_reml1 <- (loglik_reml1 - byhand1X_reml$loglik)/log(10)
     lod_reml2 <- (loglik_reml2 - byhand2X_reml$loglik)/log(10)
