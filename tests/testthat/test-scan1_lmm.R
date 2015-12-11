@@ -35,8 +35,9 @@ test_that("scan1_lmm with intercross, vs ported lmmlite code", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(X, probs[[1]][,-1,i])
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        # calculate likelihoods using plain ML (not the residual log likelihood)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
         loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
@@ -88,8 +89,9 @@ test_that("scan1_lmm with intercross with X covariates for null", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        # calculate likelihoods using plain ML (not the residual log likelihood)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
         loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
@@ -157,8 +159,9 @@ test_that("scan1_lmm with intercross with an additive covariate", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, X, probs[["2"]][,-1,i])
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        # calculate likelihoods using plain ML (not the residual log likelihood)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
         loglik_ml1[i] <- Rcpp_calcLL(byhand1A_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_ml2[i] <- Rcpp_calcLL(byhand2A_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
@@ -179,8 +182,9 @@ test_that("scan1_lmm with intercross with an additive covariate", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        # calculate likelihoods using plain ML (not the residual log likelihood)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
         loglik_ml1[i] <- Rcpp_calcLL(byhand1X_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_ml2[i] <- Rcpp_calcLL(byhand2X_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
@@ -261,8 +265,9 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, X, probs[["4"]][,-1,i], probs[["4"]][,-1,i]*X)
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        # calculate likelihoods using plain ML (not the residual log likelihood)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
         loglik_ml1[i] <- Rcpp_calcLL(byhand1A_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_ml2[i] <- Rcpp_calcLL(byhand2A_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }
@@ -283,8 +288,9 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
         loglik_ml1 <- loglik_ml2 <- rep(NA, 3)
     for(i in 1:d) {
         Xp <- Ke$vectors %*% cbind(1, X, probs[["X"]][,-1,i], probs[["X"]][,-1,i]*X)
-        loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=TRUE)
-        loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=TRUE)
+        # calculate likelihoods using plain ML (not the residual log likelihood)
+        loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
+        loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
         loglik_ml1[i] <- Rcpp_calcLL(byhand1X_ml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_ml2[i] <- Rcpp_calcLL(byhand2X_ml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
     }

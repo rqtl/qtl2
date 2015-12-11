@@ -38,6 +38,12 @@
 #' \code{kinship} is a list (one matrix per chromosome), then
 #' \code{hsq} is a matrix, phenotypes x chromosomes.
 #'
+#' If \code{reml=TRUE}, restricted maximum likelihood (reml) is used
+#' to estimate the heritability under the null hypothesis of no QTL,
+#' separately for each phenotype. But then in the genome scans, this
+#' is taken as fixed and known, and the usual Gaussian log likelihood
+#' is used to calculate LOD scores.
+#'
 #' The \code{...} argument can contain two additional control
 #' parameters; suspended for simplicity (or confusion, depending on
 #' your point of view). \code{tol} is used as a tolerance value for
@@ -316,13 +322,12 @@ scan1_lmm_clean <-
             }
             weights <- sqrt(weights)
 
-            # need a reml version of weighted LS
             if(is.null(ic))
-                loglik <- scan_lmm_onechr(pr, y, ac, Kevec, weights, reml, tol)
+                loglik <- scan_lmm_onechr(pr, y, ac, Kevec, weights, tol)
             else if(intcovar_method=="highmem")
-                loglik <- scan_lmm_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, weights, reml, tol)
+                loglik <- scan_lmm_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, weights, tol)
             else
-                loglik <- scan_lmm_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, weights, reml, tol)
+                loglik <- scan_lmm_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, weights, tol)
             lod <- (loglik - nullLL)/log(10)
         }
 

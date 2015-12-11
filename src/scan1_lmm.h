@@ -19,10 +19,9 @@ Rcpp::NumericVector scan_lmm_onechr(const Rcpp::NumericVector& genoprobs,
                                     const Rcpp::NumericMatrix& addcovar,
                                     const Rcpp::NumericMatrix& eigenvec,
                                     const Rcpp::NumericVector& weights,
-                                    const bool reml,
                                     const double tol);
 
-// REML scan of a single chromosome with interactive covariates
+// LMM scan of a single chromosome with interactive covariates
 // this version should be fast but requires more memory
 // (since we first expand the genotype probabilities to probs x intcovar)
 // and this one allows weights for the individuals (the same for all phenotypes)
@@ -42,7 +41,6 @@ Rcpp::NumericVector scan_lmm_onechr_intcovar_highmem(const Rcpp::NumericVector& 
                                                      const Rcpp::NumericMatrix& intcovar,
                                                      const Rcpp::NumericMatrix& eigenvec,
                                                      const Rcpp::NumericVector& weights,
-                                                     const bool reml,
                                                      const double tol);
 
 // LMM scan of a single chromosome with interactive covariates
@@ -65,11 +63,6 @@ Rcpp::NumericVector scan_lmm_onechr_intcovar_lowmem(const Rcpp::NumericVector& g
                                                     const Rcpp::NumericMatrix& intcovar,
                                                     const Rcpp::NumericMatrix& eigenvec,
                                                     const Rcpp::NumericVector& weights,
-                                                    const bool reml,
                                                     const double tol);
-
-// calculate logdetXpX many times, along positions of genotype array
-Rcpp::NumericVector calc_logdetXpX_many(const Rcpp::NumericVector& genoprobs,
-                                        const Rcpp::NumericMatrix& addcovar);
 
 #endif // SCAN_LMM_H

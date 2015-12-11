@@ -57,6 +57,12 @@ attribute in the results is a vector of heritabilities. If
 \code{kinship} is a list (one matrix per chromosome), then
 \code{hsq} is a matrix, phenotypes x chromosomes.
 
+If \code{reml=TRUE}, restricted maximum likelihood (reml) is used
+to estimate the heritability under the null hypothesis of no QTL,
+separately for each phenotype. But then in the genome scans, this
+is taken as fixed and known, and the usual Gaussian log likelihood
+is used to calculate LOD scores.
+
 The \code{...} argument can contain two additional control
 parameters; suspended for simplicity (or confusion, depending on
 your point of view). \code{tol} is used as a tolerance value for

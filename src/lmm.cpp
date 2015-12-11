@@ -110,7 +110,7 @@ double Rcpp_calc_logdetXpX(const NumericMatrix& X)
 // X     = rotated matrix of covariates
 // reml  = whether you'll be using REML (so need to calculate log det XSX)
 struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& y,
-                         const MatrixXd& X)
+                         const MatrixXd& X, bool reml)
 {
     const unsigned int n = Kva.size();
     const unsigned int p = X.cols();
@@ -143,8 +143,9 @@ struct lmm_fit getMLsoln(const double hsq, const VectorXd& Kva, const VectorXd& 
     const MatrixXd rss = ySy - XSy.transpose() * beta;
 
     // return value
+    result.hsq = hsq;
     result.rss = rss(0,0);
-    result.sigmasq = result.rss/(double)(n-p);
+    result.sigmasq = result.rss/(double)(reml ? (n-p) : n);
     result.beta = beta.col(0);
     result.logdetXSX = logdetXSX;
 
@@ -168,7 +169,7 @@ struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
     const unsigned int p = X.cols();
 
     // estimate beta and sigma^2
-    struct lmm_fit ml_soln = getMLsoln(hsq, Kva, y, X);
+    struct lmm_fit ml_soln = getMLsoln(hsq, Kva, y, X, reml);
 
     // calculate log likelihood
     double loglik = (double)n*log(ml_soln.rss);
@@ -259,6 +260,9 @@ struct lmm_fit fitLMM(const VectorXd& Kva, const VectorXd& y, const MatrixXd& X,
             result.hsq = 1.0;
         }
     }
+
+    // for loglik, calculate the ML version
+    result.loglik = calcLL(result.hsq, Kva, y, X, FALSE, logdetXpX_val).loglik;
 
     return result;
 }
