@@ -104,7 +104,7 @@ test_that("scan1_lmm with intercross with X covariates for null", {
     index <- nrow(out_reml) - rev(1:d) + 1
     dimnames(out_reml) <- dimnames(out_ml) <- NULL
     expect_equal(out_reml[index,1], lod_reml1)
-    expect_equal(out_reml[index,2], lod_reml2)
+    expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-6)
     expect_equal(out_ml[index,1], lod_ml1)
     expect_equal(out_ml[index,2], lod_ml2)
 
