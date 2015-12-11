@@ -77,10 +77,10 @@ test_that("scan1_lmm with intercross with X covariates for null", {
     byhand2_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp), reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equivalent(attr(out_reml, "hsq")[2,],
-                      c(byhand1_reml$hsq, byhand2_reml$hsq))
-    expect_equivalent(attr(out_ml, "hsq")[2,],
-                      c(byhand1_ml$hsq, byhand2_ml$hsq))
+    expect_equal(as.numeric(attr(out_reml, "hsq")[2,]),
+                 c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
+    expect_equal(as.numeric(attr(out_ml, "hsq")[2,]),
+                 c(byhand1_ml$hsq, byhand2_ml$hsq))
 
     # compare chromosome X LOD scores
     d <- dim(probs[["X"]])[3]
@@ -145,10 +145,10 @@ test_that("scan1_lmm with intercross with an additive covariate", {
     byhand2X_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp[,-1]), reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equivalent(as.numeric(attr(out_reml, "hsq")[2,]),
-                      c(byhand1X_reml$hsq, byhand2X_reml$hsq))
-    expect_equivalent(as.numeric(attr(out_ml, "hsq")[2,]),
-                      c(byhand1X_ml$hsq, byhand2X_ml$hsq))
+    expect_equal(as.numeric(attr(out_reml, "hsq")[2,]),
+                 c(byhand1X_reml$hsq, byhand2X_reml$hsq), tolerance=1e-6)
+    expect_equal(as.numeric(attr(out_ml, "hsq")[2,]),
+                 c(byhand1X_ml$hsq, byhand2X_ml$hsq))
 
 
     # compare chromosome 2 LOD scores
@@ -248,10 +248,10 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
     byhand2X_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp[,-1]), reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equivalent(as.numeric(attr(out_reml, "hsq")[2,]),
-                      c(byhand1X_reml$hsq, byhand2X_reml$hsq))
-    expect_equivalent(as.numeric(attr(out_ml, "hsq")[2,]),
-                      c(byhand1X_ml$hsq, byhand2X_ml$hsq))
+    expect_equal(as.numeric(attr(out_reml, "hsq")[2,]),
+                 c(byhand1X_reml$hsq, byhand2X_reml$hsq), tolerance=1e-6)
+    expect_equal(as.numeric(attr(out_ml, "hsq")[2,]),
+                 c(byhand1X_ml$hsq, byhand2X_ml$hsq))
 
 
     # compare chromosome 4 LOD scores
