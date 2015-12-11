@@ -321,6 +321,7 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
+    Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
@@ -410,17 +411,12 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
 
         yp <- Ke[[chr]]$vectors %*% y
         Xp <- Ke[[chr]]$vectors %*% cbind(1, X)
-        ac <- Xp
-        if(chr=="X") {
-            Xcp <- Ke[[chr]]$vectors %*% Xc
-            ac <- cbind(Xp, Xcp)
-        }
 
         # autosome null (same as w/o interactive covariate)
-        byhand1_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], ac, reml=TRUE, tol=1e-12)
-        byhand2_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], ac, reml=TRUE, tol=1e-12)
-        byhand1_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], ac, reml=FALSE, tol=1e-12)
-        byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], ac, reml=FALSE, tol=1e-12)
+        byhand1_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], Xp, reml=TRUE, tol=1e-12)
+        byhand2_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=TRUE, tol=1e-12)
+        byhand1_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
+        byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
         expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
                      c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
