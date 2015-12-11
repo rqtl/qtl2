@@ -106,3 +106,33 @@ test_that("weighted_3darray works", {
             expect_equal(result[,i,j], X[,i,j]*w)
 
 })
+
+test_that("matrix_x_matrix works", {
+    X <- matrix(rnorm(200), ncol=10)
+    Y <- matrix(rnorm(50), nrow=10)
+    expect_equal(matrix_x_matrix(X, Y), X %*% Y)
+})
+
+test_that("matrix_x_vector works", {
+    X <- matrix(rnorm(200), ncol=10)
+    Y <- matrix(rnorm(30), nrow=10)
+    expect_equal(matrix_x_vector(X, Y[,1]), (X %*% Y[,1])[,1])
+    expect_equal(matrix_x_vector(X, Y[,2]), (X %*% Y[,2])[,1])
+    expect_equal(matrix_x_vector(X, Y[,3]), (X %*% Y[,3])[,1])
+})
+
+test_that("matrix_x_3darray works", {
+    p <- 25
+    n <- 50
+    g <- 8
+    pos <- 100
+    X <- matrix(rnorm(p*n), ncol=n)
+    Y <- array(rnorm(n*g*pos), dim=c(n, g, pos))
+
+    expect <- array(dim=c(nrow(X), dim(Y)[2:3]))
+    for(i in 1:dim(expect)[3])
+        expect[,,i] <- X %*% Y[,,i]
+
+    expect_equal(matrix_x_3darray(X, Y), expect)
+
+})

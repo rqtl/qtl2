@@ -203,3 +203,68 @@ NumericVector weighted_3darray(const NumericVector& array,
 
     return result;
 }
+
+// matrix multiplication
+// [[Rcpp::export]]
+NumericMatrix matrix_x_matrix(const NumericMatrix& X,
+                              const NumericMatrix& Y)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const MatrixXd YY(as<Map<MatrixXd> >(Y));
+
+    if(XX.cols() != YY.rows())
+        throw std::range_error("ncol(X) != nrow(Y)");
+
+    NumericMatrix result(wrap(XX * YY));
+    return(result);
+}
+
+// multiply matrix by vector
+// [[Rcpp::export]]
+NumericVector matrix_x_vector(const NumericMatrix& X,
+                              const NumericVector& y)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    if(XX.cols() != yy.size())
+        throw std::range_error("ncol(X) != length(y)");
+
+    NumericVector result(wrap(XX * yy));
+    return(result);
+}
+
+// multiply matrix by array
+// [[Rcpp::export]]
+NumericVector matrix_x_3darray(const NumericMatrix& X,
+                               NumericVector& A)
+{
+    if(Rf_isNull(A.attr("dim")))
+        throw std::invalid_argument("A has no dimension attribute");
+    Dimension d = A.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("A should be 3-dimensional array");
+    const int Xrow = X.rows();
+    const int Xcol = X.cols();
+    const int Arow = d[0];
+    const int Acol = d[1];
+    const int Apos = d[2];
+    if(Xcol != Arow)
+        throw std::invalid_argument("ncol(X) != nrow(A)");
+
+    // treat as a matrix
+    A.attr("dim") = Dimension(Arow, Acol*Apos);
+
+    // cast for Eigen
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const MatrixXd AA(as<Map<MatrixXd> >(A));
+
+    // matrix multiplication
+    NumericVector result = wrap(XX*AA);
+    result.attr("dim") = Dimension(Xrow, Acol, Apos);
+
+    // fix dimension attribute of input matrix
+    A.attr("dim") = d;
+
+    return result;
+}

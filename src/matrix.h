@@ -34,4 +34,17 @@ Rcpp::NumericVector weighted_3darray(const Rcpp::NumericVector& array,
 Rcpp::NumericVector expand_genoprobs_intcovar(const Rcpp::NumericVector& probs, // 3d array ind x prob x pos
                                               const Rcpp::NumericMatrix& intcovar);
 
+
+// matrix multiplication
+Rcpp::NumericMatrix matrix_x_matrix(const Rcpp::NumericMatrix& X,
+                                    const Rcpp::NumericMatrix& Y);
+
+// multiply matrix by vector
+Rcpp::NumericVector matrix_x_vector(const Rcpp::NumericMatrix& X,
+                                    const Rcpp::NumericVector& y);
+
+// multiply matrix by array
+Rcpp::NumericVector matrix_x_3darray(const Rcpp::NumericMatrix& X,
+                                     Rcpp::NumericVector& A);
+
 #endif // MATRIX_H
