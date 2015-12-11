@@ -315,4 +315,142 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
 
 })
 
-# look at LOCO
+test_that("scan1_lmm works with LOCO, additive covariates", {
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X,
+                          Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X,
+                        Xcovar=Xc, reml=FALSE, tol=1e-12)
+
+    y <- iron$pheno
+    Ke <- decomp_kinship(kinship) # eigen decomp
+
+    # compare chromosomes 1, 6, 9, 18
+    chrs <- paste(c(1,6,9,18))
+    npos <- sapply(probs, function(a) dim(a)[[3]])
+
+    for(chr in chrs) {
+        nchr <- which(names(npos) == chr)
+        d <- npos[chr]
+
+        yp <- Ke[[chr]]$vectors %*% y
+        Xp <- Ke[[chr]]$vectors %*% cbind(1, X)
+
+        # autosome null
+        byhand1_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], Xp, reml=TRUE, tol=1e-12)
+        byhand2_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=TRUE, tol=1e-12)
+        byhand1_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
+        byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
+
+        expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
+                     c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
+        expect_equal(as.numeric(attr(out_ml, "hsq")[nchr,]),
+                     c(byhand1_ml$hsq, byhand2_ml$hsq), tolerance=1e-6)
+
+        # chromosome scan
+        loglik_reml1 <- loglik_reml2 <-
+            loglik_ml1 <- loglik_ml2 <- rep(NA, d)
+        for(i in 1:d) {
+            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs[[chr]][,-1,i])
+            # calculate likelihoods using plain ML (not the residual log likelihood)
+            loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
+            loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
+            loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
+            loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
+        }
+        lod_reml1 <- (loglik_reml1 - byhand1_reml$loglik)/log(10)
+        lod_reml2 <- (loglik_reml2 - byhand2_reml$loglik)/log(10)
+        lod_ml1 <- (loglik_ml1 - byhand1_ml$loglik)/log(10)
+        lod_ml2 <- (loglik_ml2 - byhand2_ml$loglik)/log(10)
+
+        if(nchr > 1) index <- sum(npos[1:(nchr-1)]) + 1:d
+        else index <- 1:d
+        dimnames(out_reml) <- dimnames(out_ml) <- NULL
+        expect_equal(out_reml[index,1], lod_reml1)
+        expect_equal(out_reml[index,2], lod_reml2)
+        expect_equal(out_ml[index,1], lod_ml1)
+        expect_equal(out_ml[index,2], lod_ml2)
+    }
+
+})
+
+test_that("scan1_lmm works with LOCO, interactive covariates", {
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                          Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                        Xcovar=Xc, reml=FALSE, tol=1e-12)
+
+
+    y <- iron$pheno
+    Ke <- decomp_kinship(kinship) # eigen decomp
+
+    # compare chromosomes 1, 6, 9, 18
+    chrs <- paste(c(1,6,9,18))
+    npos <- sapply(probs, function(a) dim(a)[[3]])
+
+    for(chr in chrs) {
+        nchr <- which(names(npos) == chr)
+        d <- npos[chr]
+
+        yp <- Ke[[chr]]$vectors %*% y
+        Xp <- Ke[[chr]]$vectors %*% cbind(1, X)
+        ac <- Xp
+        if(chr=="X") {
+            Xcp <- Ke[[chr]]$vectors %*% Xc
+            ac <- cbind(Xp, Xcp)
+        }
+
+        # autosome null (same as w/o interactive covariate)
+        byhand1_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], ac, reml=TRUE, tol=1e-12)
+        byhand2_reml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], ac, reml=TRUE, tol=1e-12)
+        byhand1_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], ac, reml=FALSE, tol=1e-12)
+        byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], ac, reml=FALSE, tol=1e-12)
+
+        expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
+                     c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
+        expect_equal(as.numeric(attr(out_ml, "hsq")[nchr,]),
+                     c(byhand1_ml$hsq, byhand2_ml$hsq), tolerance=1e-6)
+
+        # chromosome scan
+        loglik_reml1 <- loglik_reml2 <-
+            loglik_ml1 <- loglik_ml2 <- rep(NA, d)
+        for(i in 1:d) {
+            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs[[chr]][,-1,i], probs[[chr]][,-1,i]*X)
+            # calculate likelihoods using plain ML (not the residual log likelihood)
+            loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
+            loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
+            loglik_ml1[i] <- Rcpp_calcLL(byhand1_ml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
+            loglik_ml2[i] <- Rcpp_calcLL(byhand2_ml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
+        }
+        lod_reml1 <- (loglik_reml1 - byhand1_reml$loglik)/log(10)
+        lod_reml2 <- (loglik_reml2 - byhand2_reml$loglik)/log(10)
+        lod_ml1 <- (loglik_ml1 - byhand1_ml$loglik)/log(10)
+        lod_ml2 <- (loglik_ml2 - byhand2_ml$loglik)/log(10)
+
+        if(nchr > 1) index <- sum(npos[1:(nchr-1)]) + 1:d
+        else index <- 1:d
+        dimnames(out_reml) <- dimnames(out_ml) <- NULL
+        expect_equal(out_reml[index,1], lod_reml1)
+        expect_equal(out_reml[index,2], lod_reml2)
+        expect_equal(out_ml[index,1], lod_ml1)
+        expect_equal(out_ml[index,2], lod_ml2)
+    }
+
+
+})
