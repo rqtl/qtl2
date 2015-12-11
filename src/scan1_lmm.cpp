@@ -32,10 +32,7 @@ NumericVector scan_lmm_onechr(const NumericVector& genoprobs, const NumericMatri
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_gen = d[1];
     const unsigned int n_pos = d[2];
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int p = n_gen + n_addcovar;
     if(n_ind != d[0])
         throw std::range_error("ncol(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -104,11 +101,7 @@ NumericVector scan_lmm_onechr_intcovar_highmem(const NumericVector& genoprobs,
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_gen = d[1];
     const unsigned int n_pos = d[2];
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int n_intcovar = intcovar.cols();
-    const unsigned int p = n_gen*(n_intcovar+1) + n_addcovar;
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -182,11 +175,7 @@ NumericVector scan_lmm_onechr_intcovar_lowmem(const NumericVector& genoprobs,
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_gen = d[1];
     const unsigned int n_pos = d[2];
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int n_intcovar = intcovar.cols();
-    const unsigned int p = n_gen*(n_intcovar+1) + n_addcovar;
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
