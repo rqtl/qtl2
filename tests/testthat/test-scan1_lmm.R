@@ -190,12 +190,12 @@ test_that("scan1_lmm with intercross with an additive covariate", {
     lod_ml2 <- (loglik_ml2 - byhand2X_ml$loglik)/log(10)
 
     index <- nrow(out_reml) - rev(1:d) + 1
-    ## FIX ME
-    ## Not yet working on X chromosome, when (X, probs) is not full rank
+    ## FIX_ME
+    ## REML not yet working on X chromosome, when (X, probs) is not full rank
 #    expect_equivalent(out_reml[index,1], lod_reml1)
 #    expect_equivalent(out_reml[index,2], lod_reml2)
-#    expect_equivalent(out_ml[index,1], lod_ml1)
-#    expect_equivalent(out_ml[index,2], lod_ml2)
+    expect_equivalent(out_ml[index,1], lod_ml1)
+    expect_equivalent(out_ml[index,2], lod_ml2)
 
 })
 
@@ -272,12 +272,10 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
     lod_ml2 <- (loglik_ml2 - byhand2A_ml$loglik)/log(10)
 
     index <- sum(npos[1:3]) + 1:npos[4]
-    ## FIX ME
-    # GETTING TOTALLY DIFFERENT ANSWERS
-#    expect_equivalent(out_reml[index,1], lod_reml1)
-#    expect_equivalent(out_reml[index,2], lod_reml2)
-#    expect_equivalent(out_ml[index,1], lod_ml1)
-#    expect_equivalent(out_ml[index,2], lod_ml2)
+    expect_equivalent(out_reml[index,1], lod_reml1)
+    expect_equivalent(out_reml[index,2], lod_reml2)
+    expect_equivalent(out_ml[index,1], lod_ml1)
+    expect_equivalent(out_ml[index,2], lod_ml2)
 
     # compare chromosome X LOD scores
     d <- dim(probs[["X"]])[3]
@@ -297,6 +295,7 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
 
     index <- nrow(out_reml) - rev(1:d) + 1
     ## FIX ME
+    ## FIX_ME
     ## Not yet working on X chromosome, when (X, probs) is not full rank
 #    expect_equivalent(out_reml[index,1], lod_reml1)
 #    expect_equivalent(out_reml[index,2], lod_reml2)

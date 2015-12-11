@@ -12,57 +12,77 @@
 
 using namespace Rcpp;
 
-// REML scan of a single chromosome with additive covariates and weights
+// LMM scan of a single chromosome with additive covariates and weights
 //
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
-// pheno     = matrix with one column of numeric phenotypes
+// pheno     = vector of numeric phenotypes
 //             (no missing data allowed)
 // addcovar  = additive covariates (an intercept, at least)
+// eigenvec  = matrix of transposed eigenvectors of variance matrix
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of log restricted likelihood values, but off by -sum(log(weights))/2
+// output    = vector of log likelihood values
 //
 // [[Rcpp::export]]
-NumericVector scan_reml_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno,
-                               const NumericMatrix& addcovar, const NumericVector& weights,
-                               const double tol=1e-12)
+NumericVector scan_lmm_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno,
+                              const NumericMatrix& addcovar, const NumericMatrix& eigenvec,
+                              const NumericVector& weights, const bool reml=true,
+                              const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
+    if(pheno.cols() != 1)
+        throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
     const unsigned int n_gen = d[1];
     const unsigned int n_pos = d[2];
     const unsigned int n_addcovar = addcovar.cols();
     const unsigned int p = n_gen + n_addcovar;
     if(n_ind != d[0])
-        throw std::range_error("nrow(pheno) != nrow(genoprobs)");
+        throw std::range_error("ncol(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
-        throw std::range_error("nrow(pheno) != nrow(addcovar)");
+        throw std::range_error("ncol(pheno) != nrow(addcovar)");
     if(n_ind != weights.size())
-        throw std::range_error("nrow(pheno) != length(weights)");
-    if(pheno.cols() != 1)
-        throw std::range_error("ncol(pheno) != 1");
+        throw std::range_error("ncol(pheno) != length(weights)");
+    if(n_ind != eigenvec.rows())
+        throw std::range_error("ncol(pheno) != nrow(eigenvec)");
+    if(n_ind != eigenvec.cols())
+        throw std::range_error("ncol(pheno) != ncol(eigenvec)");
 
-    const NumericVector logdetXpX = calc_logdetXpX_many(genoprobs, addcovar);
+    // pre-multiply everything by the eigenvectors
+    NumericVector genoprobs_copy(clone(genoprobs)); // FIX_ME: would be better not to copy
+    NumericVector genoprobs_rev = matrix_x_3darray(eigenvec, genoprobs_copy);
+    NumericMatrix addcovar_rev = matrix_x_matrix(eigenvec, addcovar);
+    NumericMatrix pheno_rev = matrix_x_matrix(eigenvec, pheno);
+
+    // log determinant of X'X matrices, if necessary
+    NumericVector logdetXpX(n_pos);
+    if(reml) logdetXpX = calc_logdetXpX_many(genoprobs_rev, addcovar_rev);
 
     // multiply everything by the (square root) of the weights
     // (weights should ALREADY be the square-root of the real weights)
-    NumericMatrix addcovar_wt = weighted_matrix(addcovar, weights);
-    NumericMatrix pheno_wt = weighted_matrix(pheno, weights);
-    NumericVector genoprobs_wt = weighted_3darray(genoprobs, weights);
+    addcovar_rev = weighted_matrix(addcovar_rev, weights);
+    pheno_rev = weighted_matrix(pheno_rev, weights);
+    genoprobs_rev = weighted_3darray(genoprobs_rev, weights);
 
-    const NumericVector logdetXSX = calc_logdetXpX_many(genoprobs_wt, addcovar_wt);
+    // log determinant of X'WX matrices, if necessary
+    NumericVector logdetXSX(n_pos);
+    if(reml) logdetXSX = calc_logdetXpX_many(genoprobs_rev, addcovar_rev);
 
     // now regress out the additive covariates
-    genoprobs_wt = calc_resid_linreg_3d(addcovar_wt, genoprobs_wt, tol);
-    pheno_wt = calc_resid_linreg(addcovar_wt, pheno_wt, tol);
+    genoprobs_rev = calc_resid_linreg_3d(addcovar_rev, genoprobs_rev, tol);
+    pheno_rev = calc_resid_linreg(addcovar_rev, pheno_rev, tol);
 
     // now the scan, return RSS
-    NumericMatrix rss = scan_hk_onechr_nocovar(genoprobs_wt, pheno_wt, tol);
+    NumericMatrix rss = scan_hk_onechr_nocovar(genoprobs_rev, pheno_rev, tol);
+
+    // 0.5*sum(log(weights)) [since these are sqrt(weights)]
+    double sum_logweights = sum(log(weights));
 
     NumericVector result(n_pos);
     for(unsigned int pos=0; pos<n_pos; pos++) {
-        result[pos] = -(double)n_ind/2.0*log(rss[pos]) +
-            0.5*((double)p*log(2.0 * M_PI * rss[pos]/(double)(n_ind - p)) + logdetXpX[pos] - logdetXSX[pos]);
+        result[pos] = -(double)n_ind/2.0*log(rss[pos]) + sum_logweights;
+        if(reml)
+            result[pos] += 0.5*((double)p*log(2.0 * M_PI * rss[pos]/(double)(n_ind - p)) + logdetXpX[pos] - logdetXSX[pos]);
     }
 
     return result;
@@ -78,18 +98,24 @@ NumericVector scan_reml_onechr(const NumericVector& genoprobs, const NumericMatr
 //             (no missing data allowed)
 // addcovar  = additive covariates (an intercept, at least)
 // intcovar  = interactive covariates (should also be included in addcovar)
+// eigenvec  = matrix of transposed eigenvectors of variance matrix
+// weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
+// output    = vector of log likelihood values
 //
 // [[Rcpp::export]]
-NumericVector scan_reml_onechr_intcovar_highmem(const NumericVector& genoprobs,
-                                                       const NumericMatrix& pheno,
-                                                       const NumericMatrix& addcovar,
-                                                       const NumericMatrix& intcovar,
-                                                       const NumericVector& weights,
-                                                       const double tol=1e-12)
+NumericVector scan_lmm_onechr_intcovar_highmem(const NumericVector& genoprobs,
+                                               const NumericMatrix& pheno,
+                                               const NumericMatrix& addcovar,
+                                               const NumericMatrix& intcovar,
+                                               const NumericMatrix& eigenvec,
+                                               const NumericVector& weights,
+                                               const bool reml=true,
+                                               const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
+    if(pheno.cols() != 1)
+        throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
     const unsigned int n_gen = d[1];
     const unsigned int n_pos = d[2];
@@ -104,21 +130,32 @@ NumericVector scan_reml_onechr_intcovar_highmem(const NumericVector& genoprobs,
         throw std::range_error("nrow(pheno) != nrow(intcovar)");
     if(n_ind != weights.size())
         throw std::range_error("nrow(pheno) != length(weights)");
-    if(pheno.cols() != 1)
-        throw std::range_error("ncol(pheno) != 1");
+    if(n_ind != eigenvec.rows())
+        throw std::range_error("ncol(pheno) != nrow(eigenvec)");
+    if(n_ind != eigenvec.cols())
+        throw std::range_error("ncol(pheno) != ncol(eigenvec)");
 
     // expand genotype probabilities to include geno x interactive covariate
     NumericVector genoprobs_rev = expand_genoprobs_intcovar(genoprobs, intcovar);
 
-    const NumericVector logdetXpX = calc_logdetXpX_many(genoprobs_rev, addcovar);
+    // pre-multiply everything by eigenvectors
+    genoprobs_rev = matrix_x_3darray(eigenvec, genoprobs_rev);
+    NumericMatrix addcovar_rev = matrix_x_matrix(eigenvec, addcovar);
+    NumericMatrix pheno_rev = matrix_x_matrix(eigenvec, pheno);
+
+    // log determinant of X'X matrices, if necessary
+    NumericVector logdetXpX(n_pos);
+    if(reml) logdetXpX = calc_logdetXpX_many(genoprobs_rev, addcovar_rev);
 
     // multiply everything by the (square root) of the weights
     // (weights should ALREADY be the square-root of the real weights)
-    NumericMatrix addcovar_rev = weighted_matrix(addcovar, weights);
-    NumericMatrix pheno_rev = weighted_matrix(pheno, weights);
+    addcovar_rev = weighted_matrix(addcovar_rev, weights);
+    pheno_rev = weighted_matrix(pheno_rev, weights);
     genoprobs_rev = weighted_3darray(genoprobs_rev, weights);
 
-    const NumericVector logdetXSX = calc_logdetXpX_many(genoprobs_rev, addcovar_rev);
+    // log determinant of X'WX matrices, if necessary
+    NumericVector logdetXSX(n_pos);
+    if(reml) logdetXSX = calc_logdetXpX_many(genoprobs_rev, addcovar_rev);
 
     // regress out the additive covariates
     genoprobs_rev = calc_resid_linreg_3d(addcovar_rev, genoprobs_rev, tol);
@@ -127,16 +164,21 @@ NumericVector scan_reml_onechr_intcovar_highmem(const NumericVector& genoprobs,
     // now the scan, return RSS
     NumericMatrix rss = scan_hk_onechr_nocovar(genoprobs_rev, pheno_rev, tol);
 
+    // 0.5*sum(log(weights)) [since these are sqrt(weights)]
+    double sum_logweights = sum(log(weights));
+
+    // calculate log likelihood
     NumericVector result(n_pos);
     for(unsigned int pos=0; pos<n_pos; pos++) {
-        result[pos] = -(double)n_ind/2.0*log(rss[pos]) +
-            0.5*((double)p*log(2.0 * M_PI * rss[pos]/(double)(n_ind - p)) + logdetXpX[pos] - logdetXSX[pos]);
+        result[pos] = -(double)n_ind/2.0*log(rss[pos]) + sum_logweights;
+        if(reml)
+            result[pos] += 0.5*((double)p*log(2.0 * M_PI * rss[pos]/(double)(n_ind - p)) + logdetXpX[pos] - logdetXSX[pos]);
     }
 
     return result;
 }
 
-// REML scan of a single chromosome with interactive covariates
+// LMM scan of a single chromosome with interactive covariates
 // this version uses less memory but will be slower
 // (since we need to work with each position, one at a time)
 // and this one allows weights for the individuals (the same for all phenotypes)
@@ -146,19 +188,24 @@ NumericVector scan_reml_onechr_intcovar_highmem(const NumericVector& genoprobs,
 //             (no missing data allowed)
 // addcovar  = additive covariates (an intercept, at least)
 // intcovar  = interactive covariates (should also be included in addcovar)
+// eigenvec  = matrix of transposed eigenvectors of variance matrix
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of residual sums of squares (RSS) (phenotypes x positions)
+// output    = vector of log likelihood values
 //
 // [[Rcpp::export]]
-NumericVector scan_reml_onechr_intcovar_lowmem(const NumericVector& genoprobs,
-                                                      const NumericMatrix& pheno,
-                                                      const NumericMatrix& addcovar,
-                                                      const NumericMatrix& intcovar,
-                                                      const NumericVector& weights,
-                                                      const double tol=1e-12)
+NumericVector scan_lmm_onechr_intcovar_lowmem(const NumericVector& genoprobs,
+                                              const NumericMatrix& pheno,
+                                              const NumericMatrix& addcovar,
+                                              const NumericMatrix& intcovar,
+                                              const NumericMatrix& eigenvec,
+                                              const NumericVector& weights,
+                                              const bool reml=true,
+                                              const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
+    if(pheno.cols() != 1)
+        throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
     const unsigned int n_gen = d[1];
     const unsigned int n_pos = d[2];
@@ -171,24 +218,45 @@ NumericVector scan_reml_onechr_intcovar_lowmem(const NumericVector& genoprobs,
         throw std::range_error("nrow(pheno) != nrow(addcovar)");
     if(n_ind != intcovar.rows())
         throw std::range_error("nrow(pheno) != nrow(intcovar)");
-    if(pheno.cols() != 1)
-        throw std::range_error("ncol(pheno) != 1");
+    if(n_ind != weights.size())
+        throw std::range_error("ncol(pheno) != length(weights)");
+    if(n_ind != eigenvec.rows())
+        throw std::range_error("ncol(pheno) != nrow(eigenvec)");
+    if(n_ind != eigenvec.cols())
+        throw std::range_error("ncol(pheno) != ncol(eigenvec)");
 
     NumericVector result(n_pos);
 
-    NumericMatrix pheno_rev = weighted_matrix(pheno, weights);
+    // multiply pheno by eigenvectors and then by weights
+    NumericMatrix pheno_rev = matrix_x_matrix(eigenvec, pheno);
+    pheno_rev = weighted_matrix(pheno_rev, weights);
+
+    // 0.5*sum(log(weights)) [since these are sqrt(weights)]
+    double sum_logweights = sum(log(weights));
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
-        double logdetXpX = Rcpp_calc_logdetXpX(X);
+
+        // multiply by eigenvectors
+        X = matrix_x_matrix(eigenvec, X);
+
+        // log det X'X if needed
+        double logdetXpX;
+        if(reml) logdetXpX = Rcpp_calc_logdetXpX(X);
+
+        // multiply by weights
         X = weighted_matrix(X, weights);
-        double logdetXSX = Rcpp_calc_logdetXpX(X);
+
+        // log det X'WX if needed
+        double logdetXSX;
+        if(reml) logdetXSX = Rcpp_calc_logdetXpX(X);
 
         // do regression
         NumericVector rss = calc_rss_linreg(X, pheno_rev, tol);
-        result[pos] = -(double)n_ind/2.0*log(rss[0]) +
-            0.5*((double)p*log(2.0 * M_PI * rss[0]/(double)(n_ind - p)) + logdetXpX - logdetXSX);
+        result[pos] = -(double)n_ind/2.0*log(rss[0]) + sum_logweights;
+        if(reml)
+            result[pos] += 0.5*((double)p*log(2.0 * M_PI * rss[0]/(double)(n_ind - p)) + logdetXpX - logdetXSX);
     }
 
     return result;

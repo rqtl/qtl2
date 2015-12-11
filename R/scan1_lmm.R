@@ -286,10 +286,9 @@ scan1_lmm_clean <-
             }
 
             # premultiply phenotypes and covariates by transposed eigenvectors
-            y <- Kevec %*% pheno[,phecol,drop=FALSE]
+            y <- pheno[,phecol,drop=FALSE]
             ac <- cbind(rep(1, n), addcovar)
-            ac <- Kevec %*% ac
-            ic <- intcovar; if(!is.null(ic)) ic <- Kevec %*% ic
+            ic <- intcovar
 
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
             Xcol2drop <- genoprob_Xcol2drop[[chr]]
@@ -299,9 +298,6 @@ scan1_lmm_clean <-
             }
             else
                 pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
-
-            for(i in 1:dim(pr)[3])
-                pr[,,i] <- Kevec %*% pr[,,i]
 
             # calculate weights for this chromosome
             if(loco) {
@@ -321,25 +317,13 @@ scan1_lmm_clean <-
             weights <- sqrt(weights)
 
             # need a reml version of weighted LS
-            if(reml) {
-                if(is.null(ic)) {
-                    loglik <- scan_reml_onechr(pr, y, ac, weights, tol)
-                }
-                else if(intcovar_method=="highmem")
-                    loglik <- scan_reml_onechr_intcovar_highmem(pr, y, ac, ic, weights, tol)
-                else
-                    loglik <- scan_reml_onechr_intcovar_lowmem(pr, y, ac, ic, weights, tol)
-            } else {
-                if(is.null(ic))
-                    rss <- scan_hk_onechr_weighted(pr, y, ac, weights, tol)
-                else if(intcovar_method=="highmem")
-                    rss <- scan_hk_onechr_intcovar_weighted_highmem(pr, y, ac, ic, weights, tol)
-                else
-                    rss <- scan_hk_onechr_intcovar_weighted_lowmem(pr, y, ac, ic, weights, tol)
-                loglik <- -nrow(y)/2 * log(rss)
-            }
-            # turn into LOD score, need to offset by -sum(log(weights))/2 because of how nullLL was calculated
-            lod <- (loglik - nullLL + 0.5*sum(log(weights^2)))/log(10)
+            if(is.null(ic))
+                loglik <- scan_lmm_onechr(pr, y, ac, Kevec, weights, reml, tol)
+            else if(intcovar_method=="highmem")
+                loglik <- scan_lmm_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, weights, reml, tol)
+            else
+                loglik <- scan_lmm_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, weights, reml, tol)
+            lod <- (loglik - nullLL)/log(10)
         }
 
     # now do the work

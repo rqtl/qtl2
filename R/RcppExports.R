@@ -97,6 +97,18 @@ weighted_3darray <- function(array, weights) {
     .Call('qtl2scan_weighted_3darray', PACKAGE = 'qtl2scan', array, weights)
 }
 
+matrix_x_matrix <- function(X, Y) {
+    .Call('qtl2scan_matrix_x_matrix', PACKAGE = 'qtl2scan', X, Y)
+}
+
+matrix_x_vector <- function(X, y) {
+    .Call('qtl2scan_matrix_x_vector', PACKAGE = 'qtl2scan', X, y)
+}
+
+matrix_x_3darray <- function(X, A) {
+    .Call('qtl2scan_matrix_x_3darray', PACKAGE = 'qtl2scan', X, A)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2scan_random_int', PACKAGE = 'qtl2scan', n, low, high)
 }
@@ -149,15 +161,15 @@ scan_hk_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, 
     .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 
-scan_reml_onechr <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
-    .Call('qtl2scan_scan_reml_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
+scan_lmm_onechr <- function(genoprobs, pheno, addcovar, eigenvec, weights, reml = TRUE, tol = 1e-12) {
+    .Call('qtl2scan_scan_lmm_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, reml, tol)
 }
 
-scan_reml_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
-    .Call('qtl2scan_scan_reml_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+scan_lmm_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, reml = TRUE, tol = 1e-12) {
+    .Call('qtl2scan_scan_lmm_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, reml, tol)
 }
 
-scan_reml_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
-    .Call('qtl2scan_scan_reml_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+scan_lmm_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, reml = TRUE, tol = 1e-12) {
+    .Call('qtl2scan_scan_lmm_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, reml, tol)
 }
 
