@@ -497,3 +497,73 @@ test_that("multi-core scan1 works", {
     expect_equal(out_multicore, out)
 
 })
+
+
+test_that("scan1 LOD results don't depend on scale of x and y", {
+
+    set.seed(20151202)
+    library(qtl)
+    data(hyper)
+
+    # phenotypes
+    n_phe <- 15
+    n_ind <- nind(hyper)
+    y <- matrix(rnorm(n_ind*n_phe), ncol=n_phe)
+    # 5 batches
+    spl <- split(sample(n_phe), rep(1:5, 3))
+    nmis <- c(0, 5, 10, 15, 20)
+    for(i in seq(along=spl)[-1])
+        y[sample(n_ind, nmis[i]), spl[[i]]] <- NA
+    rownames(y) <- paste(1:n_ind)
+
+    # inputs for R/qtl2
+    library(qtl2geno)
+    pr <- calc_genoprob(convert2cross2(hyper), step=2.5)
+    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+
+    ybig <- y*100
+
+    # scan
+    out <- scan1(pr, y)
+    outbig <- scan1(pr, ybig)
+    expect_equal(outbig, out)
+
+    ##############################
+    # weighted scan
+    w <- runif(n_ind, 1, 3)
+    names(w) <- rownames(y)
+    wbig <- w*5
+
+    out <- scan1(pr, y, weights=w)
+    outbig <- scan1(pr, ybig, weights=wbig)
+    expect_equal(outbig, out)
+
+    ##############################
+    # additive covariate
+    x <- sample(0:1, n_ind, replace=TRUE)
+    names(x) <- rownames(y)
+    xbig <- x*50
+
+    out <- scan1(pr, y, x)
+    outbig <- scan1(pr, ybig, xbig)
+    expect_equal(outbig, out)
+
+    ##############################
+    # additive covariate + weights
+    out <- scan1(pr, y, x, weights=w)
+    outbig <- scan1(pr, ybig, xbig, weights=wbig)
+    expect_equal(outbig, out)
+
+    ##############################
+    # interactive covariate
+    out <- scan1(pr, y, x, intcovar=x)
+    outbig <- scan1(pr, ybig, xbig, intcovar=xbig)
+    expect_equal(outbig, out)
+
+    ##############################
+    # interactive covariate + weights
+    out <- scan1(pr, y, x, intcovar=x, weights=w)
+    outbig <- scan1(pr, ybig, xbig, intcovar=xbig, weights=wbig)
+    expect_equal(outbig, out)
+
+})
