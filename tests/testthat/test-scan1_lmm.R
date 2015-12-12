@@ -450,3 +450,30 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
 
 
 })
+
+
+test_that("scan1_lmm works with multicore", {
+    if(isnt_karl()) skip("this test only run locally")
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                          Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_reml_4core <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                                Xcovar=Xc, reml=TRUE, tol=1e-12, cores=4)
+    expect_equal(out_reml, out_reml_4core)
+
+
+    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                        Xcovar=Xc, reml=FALSE, tol=1e-12)
+    out_ml_4core <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                              Xcovar=Xc, reml=FALSE, tol=1e-12, cores=4)
+    expect_equal(out_ml, out_ml_4core)
+
+})
