@@ -26,7 +26,7 @@ assets/sampledata/grav2/grav2.yaml: assets/sampledata/scripts/grav2cross2.R
 assets/sampledata/iron/iron.yaml: assets/sampledata/scripts/iron2cross2.R
 	cd $(<D);R CMD BATCH ${R_OPTS} iron2cross2.R
 
-assets/vignettes/developer_guide.html: ../qtl2geno/vignettes/developer_guide.Rmd
+assets/vignettes/developer_guide.html: ../qtl2scan/vignettes/developer_guide.Rmd
 	cd $(<D); \
 	R $(R_OPTS) -e "rmarkdown::render('$(<F)')"; \
 	mv $(@F) ../../Web/$(@D)
@@ -36,7 +36,7 @@ assets/vignettes/input_files.html: ../qtl2geno/vignettes/input_files.Rmd
 	R $(R_OPTS) -e "rmarkdown::render('$(<F)')"; \
 	mv $(@F) ../../Web/$(@D)
 
-assets/vignettes/user_guide.html: ../qtl2geno/vignettes/user_guide.Rmd
+assets/vignettes/user_guide.html: ../qtl2scan/vignettes/user_guide.Rmd
 	cd $(<D); \
 	R $(R_OPTS) -e "rmarkdown::render('$(<F)')"; \
 	mv $(@F) ../../Web/$(@D)
