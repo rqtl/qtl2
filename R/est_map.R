@@ -38,6 +38,9 @@ function(cross, error_prob=1e-4,
          maxit=10000, tol=1e-6, quiet=TRUE,
          cores=1)
 {
+    if(!is.cross2(cross))
+        stop('Input cross must have class "cross2"')
+
     map_function <- match.arg(map_function)
     if(error_prob < 0) stop("error_prob must be >= 0")
     if(maxit < 0) stop("maxit must be >= 0")

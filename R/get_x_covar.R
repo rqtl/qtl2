@@ -33,7 +33,7 @@ get_x_covar <-
 function(cross)
 {
     # check input
-    if(class(cross) != "cross2")
+    if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')
 
     x <- .get_x_covar(cross$crosstype, cross$is_female, cross$cross_info)

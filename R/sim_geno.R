@@ -51,7 +51,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
          quiet=TRUE, cores=1)
 {
     # check inputs
-    if(class(cross) != "cross2")
+    if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')
     if(error_prob < 0)
         stop("error_prob must be > 0")

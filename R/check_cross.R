@@ -23,6 +23,9 @@ function(crosstype, give_error=TRUE)
 count_invalid_genotypes <-
 function(cross2)
 {
+    if(!is.cross2(cross2))
+        stop('Input cross must have class "cross2"')
+
     result <- matrix(nrow=nrow(cross2$geno[[1]]),
                      ncol=length(cross2$geno))
     dimnames(result) <- list(rownames(cross2$geno[[1]]),
@@ -69,6 +72,9 @@ function(cross2)
 check_cross2 <-
 function(cross2)
 {
+    if(!is.cross2(cross2))
+        stop('Input cross must have class "cross2"')
+
     result <- TRUE
 
     # required pieces

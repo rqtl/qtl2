@@ -17,7 +17,7 @@ NULL
 n_ind <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$pheno)) {
@@ -32,7 +32,7 @@ function(cross2)
 ind_ids <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$pheno)) {
@@ -47,7 +47,7 @@ function(cross2)
 n_lines <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$geno)) {
@@ -63,7 +63,7 @@ function(cross2)
 line_ids <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$geno)) {
@@ -79,7 +79,7 @@ function(cross2)
 n_chr <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$geno)) {
@@ -95,7 +95,7 @@ function(cross2)
 chr_names <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$geno)) {
@@ -119,7 +119,7 @@ function(cross2)
 n_mar <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$geno)) {
@@ -135,7 +135,7 @@ function(cross2)
 marker_names <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$geno)) {
@@ -154,7 +154,7 @@ function(cross2)
 n_pheno <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$pheno)) {
@@ -169,7 +169,7 @@ function(cross2)
 pheno_names <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$pheno)) {
@@ -184,7 +184,7 @@ function(cross2)
 n_covar <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$covar)) {
@@ -199,7 +199,7 @@ function(cross2)
 covar_names <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$covar)) {
@@ -213,7 +213,7 @@ function(cross2)
 n_phenocovar <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$phenocovar)) {
@@ -228,7 +228,7 @@ function(cross2)
 phenocovar_names <-
 function(cross2)
 {
-    if(class(cross2) != "cross2")
+    if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
     if(is.null(cross2$phenocovar)) {
@@ -326,3 +326,9 @@ function(x)
     for(i in seq(along=x))
         cat(sprintf(format, names(x)[i], x[i]))
 }
+
+# is an object a cross2 object?
+# look for "cross2" within class()
+is.cross2 <-
+    function(x)
+    "cross2" %in% class(x)
