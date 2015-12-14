@@ -73,12 +73,12 @@ test_that("sim_geno f2", {
                             4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
                             4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L),
                           .Dim = c(2L, 30L, 2L),
-                          .Dimnames = list(c("145", "146"), c("DXMit16", "cX.loc30",
-                          "cX.loc32", "cX.loc32", "cX.loc34", "cX.loc34", "cX.loc36", "cX.loc36",
-                          "cX.loc38", "cX.loc38", "cX.loc40", "cX.loc40", "cX.loc42", "cX.loc42",
-                          "cX.loc44", "cX.loc44", "cX.loc46", "cX.loc46", "cX.loc48", "cX.loc48",
-                          "cX.loc50", "cX.loc50", "cX.loc52", "cX.loc52", "cX.loc54", "cX.loc54",
-                          "cX.loc56", "cX.loc56", "cX.loc58", "DXMit186"), NULL))
+                          .Dimnames = list(c("145", "146"), c("DXMit16", "cX.loc30.5",
+                          "cX.loc31.5", "cX.loc32.5", "cX.loc33.5", "cX.loc34.5", "cX.loc35.5", "cX.loc36.5",
+                          "cX.loc37.5", "cX.loc38.5", "cX.loc39.5", "cX.loc40.5", "cX.loc41.5", "cX.loc42.5",
+                          "cX.loc43.5", "cX.loc44.5", "cX.loc45.5", "cX.loc46.5", "cX.loc47.5", "cX.loc48.5",
+                          "cX.loc49.5", "cX.loc50.5", "cX.loc51.5", "cX.loc52.5", "cX.loc53.5", "cX.loc54.5",
+                          "cX.loc55.5", "cX.loc56.5", "cX.loc57.5", "DXMit186"), NULL))
 
     expect_equal(dr[["X"]][145:146,,], expected)
 
