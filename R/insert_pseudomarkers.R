@@ -183,8 +183,18 @@ function(pmar_map, step, pmar_stem="loc")
     digits <- ceiling(-log10(step))
     digits <- ifelse(digits < 0, 0, digits)
 
-    paste0(pmar_stem, round(pmar_map, digits))
+    pmar_nam <- paste0(pmar_stem, round(pmar_map, digits))
+
+   while(any_duplicates(pmar_nam)) {
+       digits <- digits + 1
+       pmar_nam <- paste0(pmar_stem, round(pmar_map, digits))
+   }
+   pmar_nam
 }
+
+any_duplicates <-
+    function(x)
+    length(unique(x)) < length(x)
 
 
 # pseudomarker map, minimal number of pseudomarkers to add

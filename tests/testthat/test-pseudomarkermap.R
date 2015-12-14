@@ -142,3 +142,12 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
     expect_equal(names(map), names(combined_map))
 
 })
+
+test_that("insert_pseudomarkers gives distinct pseudomarker names with iron data", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    pmap <- insert_pseudomarkers(iron$gmap, step=1)
+
+    expect_true(all(vapply(pmap, function(a) !any_duplicates(names(a)), TRUE)))
+
+})
