@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8](inputenc)
 ---
 
-```{r knitr_opts}
+```{r knitr_opts, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=4)
 ```
 
@@ -172,8 +172,8 @@ The first basic task in QTL analysis is to calculate conditional
 genotype probabilities, given the observed marker data, at each
 putative QTL position. This is accomplished with the `calc_genoprob()`
 function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
-package. Unlikely the corresponding function (`calc.genoprob()`) in
-[R/qtl](http://rqtl.org), the result is not inserted back into the
+package. Unlike the corresponding function in
+[R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
 input cross object, but is returned as a list of three-dimensional
 arrays (one per chromosome). Each 3d array of probabilities is
 arranged as individuals &times; gneotypes &times; positions.
@@ -235,7 +235,7 @@ X chromosome and only use the autosomes. To include the X chromosome,
 use `omit_x=FALSE`.
 
 If, for your linear mixed model genome scan, you wish to use the
-"leave one chromosome out" (LOCO) method for kinship matrix (scan each
+"leave one chromosome out" (LOCO) method (scan each
 chromosome using a kinship matrix that is calculated using data from
 all other chromosomes), use `type="loco"` in the call to
 `calc_kinship()`.
@@ -311,6 +311,7 @@ We can now plot the LOD curves as follows:
 
 ```{r plot_lod}
 library(qtl)
+par(mar=c(5.1, 4.1, 1.1, 1.1))
 plot(out_scanone, lod=1:2, col=c("slateblue", "violetred"), ylab="LOD score", bgrect="gray92",
      bandcol="gray80")
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray92")
@@ -336,7 +337,7 @@ Again, on a multi-core machine, you can get some speed-up using the
 out_lmm <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar, cores=4)
 ```
 
-If we wish to plot the results, we again need to convert them to
+To plot the results, we again need to convert them to
 the R/qtl `scanone` format.
 
 
@@ -349,6 +350,7 @@ mixed model, for the "spleen" phenotype.
 
 ```{r plot_lod_scan1_vs_lmm}
 color <- c("violetred", "green3")
+par(mar=c(5.1, 4.1, 1.1, 1.1))
 plot(out_scanone, out_lmm_scanone, lod=2, col=color, ylab="LOD score", bgrect="gray92",
      bandcol="gray80", lty=1:2)
 legend("topleft", lwd=2, col=color, c("scan1", "scan1_lmm"), bg="gray92", lty=1:2)
