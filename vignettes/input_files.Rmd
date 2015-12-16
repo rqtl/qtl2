@@ -17,7 +17,7 @@ input file format. This document describes the details.
 
 For simple cross types, we can continue to use the file formats for
 [R/qtl](http://rqtl.org), use `qtl::read.cross()` to read in the
-data, and then use a conversion function (`qtl2::convert2cross2()`) to convert
+data, and then use a conversion function (`qtl2geno::convert2cross2()`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
