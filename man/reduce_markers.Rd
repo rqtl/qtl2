@@ -2,7 +2,7 @@
 % Please edit documentation in R/reduce_markers.R
 \name{reduce_markers}
 \alias{reduce_markers}
-\title{Reduce markers to a subset of more-evenly spaced ones}
+\title{Reduce markers to a subset of more-evenly-spaced ones}
 \usage{
 reduce_markers(map, weights, min_distance = 1)
 }

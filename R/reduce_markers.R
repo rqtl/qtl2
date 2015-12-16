@@ -1,4 +1,4 @@
-#' Reduce markers to a subset of more-evenly spaced ones
+#' Reduce markers to a subset of more-evenly-spaced ones
 #'
 #' Find the largest subset of markers such that no two adjacent
 #' markers are separated by less than some distance.
