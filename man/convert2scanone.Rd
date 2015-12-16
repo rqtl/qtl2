@@ -7,7 +7,8 @@
 convert2scanone(output, probs, map)
 }
 \arguments{
-\item{output}{Matrix of LOD scores, as calculated by \code{\link{scan1}}.}
+\item{output}{Matrix of LOD scores, as calculated by
+\code{\link{scan1}} or \code{\link{scan1_lmm}}.}
 
 \item{probs}{Genotype probabilities (calculated with the qtl2geno
 function \code{calc_genoprob}) used to calculate \code{output}. It
@@ -23,8 +24,9 @@ chromosome and position columns followed by the LOD scores in
 \code{output}.
 }
 \description{
-Convert the results of \code{\link{scan1}} to the form used by the
-R/qtl function \code{scanone}.
+Convert the results of \code{\link{scan1}} or
+\code{\link{scan1_lmm}} to the form used by the R/qtl function
+\code{scanone}.
 }
 \details{
 Provide either \code{map} or \code{probs}; the latter

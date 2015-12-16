@@ -2,10 +2,12 @@
 #
 #' Convert scan1 results to the scanone format
 #'
-#' Convert the results of \code{\link{scan1}} to the form used by the
-#' R/qtl function \code{scanone}.
+#' Convert the results of \code{\link{scan1}} or
+#' \code{\link{scan1_lmm}} to the form used by the R/qtl function
+#' \code{scanone}.
 #'
-#' @param output Matrix of LOD scores, as calculated by \code{\link{scan1}}.
+#' @param output Matrix of LOD scores, as calculated by
+#' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
 #' @param probs Genotype probabilities (calculated with the qtl2geno
 #' function \code{calc_genoprob}) used to calculate \code{output}. It
 #' includes, as an attribute, the map of positions at which the LOD
