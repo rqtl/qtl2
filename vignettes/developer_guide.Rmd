@@ -11,13 +11,12 @@ vignette: >
 [R/qtl](http://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-**We have split the package into two parts,
-  [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype
-  probability calculations, and
-  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans, but the
-  [user](http://kbroman.org/qtl2/assets/vignettes/user_guide.html) and
-  [developer](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
-  guides haven't yet been revised to reflect this.**
+We expect that basic analyses with R/qtl2 will generally be performed
+in "batch" (for example, on a cluster) rather than interactively. And
+so the software is split into two parts:
+[qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
+calculations, and [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
+scans.
 
 In this document, we'll describe the technical details of interest to
 developers wishing to contribute to R/qtl2.
@@ -33,8 +32,8 @@ There are three basic aspects to the software:
   using [RcppEigen](https://github.com/RcppCore/RcppEigen) and the
   [Eigen linear algebra library](http://eigen.tuxfamily.org/).
 - Linear mixed models for handling varying relatedness among
-  individuals. We've not yet decided on the basic implementation;
-  likely we'll follow the [lme4 package](http://github.com/lme4/lme4).
+  individuals, again using [RcppEigen](https://github.com/RcppCore/RcppEigen) and the
+  [Eigen linear algebra library](http://eigen.tuxfamily.org/).
 
 We are redefining the basic data structures to be more general (to
 handle more complex crosses, such as the Collaborative Cross, MAGIC lines, and
@@ -376,7 +375,7 @@ straightforward, with a loop over columns.
 
 For simple cross types, we can use the file formats for
 [R/qtl](http://rqtl.org), use `qtl::read.cross` to read in the
-data, and then use a conversion function (`convert2cross2`) to convert
+data, and then use a conversion function (`qtl2geno::convert2cross2`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
@@ -401,13 +400,13 @@ the encodings for the sexes) and which chromosome is the X chromosome.
 
 A key advantage of the control file scheme is that it greatly
 simplifies the function for reading in the data. That function,
-`read_cross2()`, has a _single_ argument: the name (with path) of the
+`qtl2geno::read_cross2()`, has a _single_ argument: the name (with path) of the
 control file.
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
 [zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
 all of the data files, and to read that zip file directly (with the same
-function, `read_cross2()`). The function `zip_datafiles()` can be used
+function, `qtl2geno::read_cross2()`). The function `qtl2geno::zip_datafiles()` can be used
 to create the zip file.
 
 I describe the details of the input files in a
@@ -518,7 +517,7 @@ above). For more complex crosses, it will be a matrix with the rows
 being lines, and with the first column being line IDs.
 
 For more detail, see
-[the input file format vignette](input_files.html).
+[the input file format vignette](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 
 
