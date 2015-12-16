@@ -7,17 +7,21 @@ vignette: >
   \usepackage[utf8](inputenc)
 ---
 
+```{r knitr_opts}
+knitr::opts_chunk$set(fig.width=7, fig.height=4)
+```
+
+
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](http://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-**We have split the package into two parts,
-  [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype
-  probability calculations, and
-  [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL scans, but the
-  [user](http://kbroman.org/qtl2/assets/vignettes/user_guide.html) and
-  [developer](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
-  guides haven't yet been revised to reflect this.**
+We expect that basic analyses with R/qtl2 will generally be performed
+in "batch" (for example, on a cluster) rather than interactively. And
+so the software is split into two parts:
+[qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
+calculations, and [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
+scans.
 
 
 ## Installation
@@ -52,7 +56,7 @@ The input data file formats for [R/qtl](http://rqtl.org) cannot
 handle complex crosses, and so for R/qtl2, we have defined a new
 format for the data files. We'll describe it here briefly; for
 details, see the separate
-[vignette on the input file format](input_files.html).
+[vignette on the input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 QTL mapping data consists of a set of tables of data: marker
 genotypes, phenotypes, marker maps, etc. In the new format, these
@@ -81,10 +85,9 @@ In additional to the set of CSV files with the primary data, we need a
 separate &ldquo;control&rdquo; file with various control parameters
 (or metadata), including the names of all of the other data files and
 the genotype codes used in the genotype data file. The control file is
-in a specific [YAML](http://www.yaml.org) format. YAML is a
-human-readable text file for representing relatively complex
-data. (It's much like [JSON](http://json.org), but _much_ more
-readable.)
+in a specific format using either [YAML](http://www.yaml.org) or
+[JSON](http://json.org); these are human-readable text files for
+representing relatively complex data.
 
 A big advantage of this control file scheme is that it greatly
 simplifies the function for reading in the data. That function,
@@ -109,7 +112,7 @@ zip_datafiles("~/my_data/grav2.yaml")
 This `zip_datafiles()` function will read the control file to identify
 all of the relevant data files and then zip them up into a file with
 the same name and location, but with the extension `.zip` rather than
-`.yaml`.
+`.yaml` or `.json`.
 
 To read the data back in, we use the same `read_cross2()` function,
 providing the name (and path) of the zip file rather than the control
@@ -138,17 +141,16 @@ control file in the appropriate format.
 The R/qtl2 web site includes
 [sample data files](http://kbroman.org/qtl2/pages/sampledata.html) in
 the new format. Zipped versions of these datasets are included with
-the package and can be loaded into R using the `read_cross2()`
-function.
+the [qtl2geno](https://github.com/rqtl/qtl2geno) package and can be
+loaded into R using the `read_cross2()` function.
 
-In the [qtl2geno package source](https://github.com/rqtl/qtl2geno), the sample
-zip files are
-located in
+In the [qtl2geno package source](https://github.com/rqtl/qtl2geno),
+the sample zip files are located in
 [`qtl2geno/inst/extdata`](https://github.com/rqtl/qtl2geno/tree/master/inst/extdata).
-In the installed version of the package, they are in `qtl2geno/extdata`,
-within whatever directory your R packages were installed. The R
-function `system.file()` can be used to construct the path to these
-files.
+In the installed version of the package, they are in
+`qtl2geno/extdata`, within whatever directory your R packages were
+installed. The R function `system.file()` can be used to construct the
+path to these files.
 
 For example, one of the sample data sets concerns a gravitropism
 phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from
@@ -159,4 +161,195 @@ follows:
 ```{r load_grav2, message=FALSE}
 library(qtl2geno)
 grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2geno") )
+```
+
+Additional sample data sets, including data on Diversity Outbred (DO)
+mice, are available at <https://github.com/rqtl/qtl2data>.
+
+## Calculating genotype probabilities
+
+The first basic task in QTL analysis is to calculate conditional
+genotype probabilities, given the observed marker data, at each
+putative QTL position. This is accomplished with the `calc_genoprob()`
+function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
+package. Unlikely the corresponding function (`calc.genoprob()`) in
+[R/qtl](http://rqtl.org), the result is not inserted back into the
+input cross object, but is returned as a list of three-dimensional
+arrays (one per chromosome). Each 3d array of probabilities is
+arranged as individuals &times; gneotypes &times; positions.
+
+We'll use the
+[iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
+from
+[Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
+(an intercross) as an example:
+
+```{r calc_genoprob}
+library(qtl2geno)
+iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2geno") )
+pr <- calc_genoprob(iron, step=1, err=0.002)
+```
+
+To speed up the calculations with large datasets on a multi-core
+machine, you can use the argument `cores`. With `cores=0`, the number
+of available cores will be detected via
+`parallel::detectCores()`. Otherwise, specify the number of cores as a
+positive integer.
+
+```{r calc_genoprob_multicore, eval=FALSE}
+pr <- calc_genoprob(iron, step=1, err=0.002, cores=4)
+```
+
+The genome scan functions (see below) use genotype probablities as
+well as a matrix of phenotypes.
+If you wished to perform a genome scan via an additive allele model,
+you would first convert the genotype probabilities to allele
+probabilities, using the function `genoprob_to_alleleprob()`.
+
+```{r allele_probs}
+apr <- genoprob_to_alleleprob(pr)
+```
+
+## Calculating a kinship matrix
+
+If you wish to perform a genome scan by a linear mixed model,
+accounting for the relationships among individuals (in other words,
+including a random polygenic effect), you'll need to calculate a
+kinship matrix for the individuals. This is accomplished with the
+`calc_kinship()` function in
+[qtl2geno](https://github.com/rqtl/qtl2geno).
+It takes the genotype probabilities as input.
+
+```{r calc_kinship}
+kinship <- calc_kinship(pr)
+```
+
+By default, the genotype probabilities are converted to allele
+probabilities, and the kinship matrix is calculated as the proportion
+of shared alleles. To use genotype probabilities instead, use
+`use_allele_probs=FALSE`. Also, the default is to only use the
+probabilities along the grid of pseudomarkers (defined by the `step`
+argument to `calc_genoprob()`); to use the probabilities at _all_
+positions, use `use_grid_only=FALSE`. Further, by default we omit the
+X chromosome and only use the autosomes. To include the X chromosome,
+use `omit_x=FALSE`.
+
+If, for your linear mixed model genome scan, you wish to use the
+"leave one chromosome out" (LOCO) method for kinship matrix (scan each
+chromosome using a kinship matrix that is calculated using data from
+all other chromosomes), use `type="loco"` in the call to
+`calc_kinship()`.
+
+```{r calc_kinship_loco}
+kinship_loco <- calc_kinship(pr, "loco")
+```
+
+On a multi-core machine, you can get some speed-up via the `cores`
+argument, as with `calc_genoprob()`.
+
+```{r calc_kinship_loco_multicore, eval=FALSE}
+kinship_loco <- calc_kinship(pr, "loco", cores=4)
+```
+
+
+## Special covariates for the X chromosome
+
+In a QTL scan of the X chromosome, special covariates (such as sex)
+may need to be included under the null hypothesis of no QTL, to avoid
+spurious evidence of linkage. (See
+[Broman et al. (2006) Genetics 174:2151-2158](http://www.genetics.org/content/174/4/2151.long).)
+
+The particular X chromosome covariates depends on the cross, and can
+be obtained with the [qtl2geno](https://github.com/rqtl/qtl2geno)
+function `get_x_covar()`.
+
+```{r x_covar}
+Xcovar <- get_x_covar(iron)
+```
+
+## Performing a genome scan
+
+To perform a genome scan by Haley-Knott regression
+([Haley and Knott 1992](http://www.ncbi.nlm.nih.gov/pubmed/16718932)),
+use the function `scan1()` in
+[qtl2scan](https://github.com/rqtl/qtl2scan). (The functions above
+were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
+forward, the functions are all from
+[qtl2scan](https://github.com/rqtl/qtl2scan).)
+
+`scan1()` takes as input the genotype probabilities, a matrix of
+phenotypes, and then optional additive and interactive covariates, and
+the special X chromosome covariates. Another option is to provide a
+vector of weights.
+
+```{r scan1}
+library(qtl2scan)
+out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
+```
+
+On a multi-core machine, you can get some speed-up via the `cores`
+argument, as with `calc_genoprob()` and `calc_kinship()`.
+
+```{r scan1_multicore, eval=FALSE}
+out <- scan1(pr, iron$pheno, Xcovar=Xcovar, cores=4)
+```
+
+The output of `scan1()` is a matrix of LOD scores, positions &times;
+phenotypes.
+
+Unfortunately, we don't yet have functions for displaying or
+summarizing the results of `scan1()`, but you can use the function
+`convert2scanone()` to convert the results to the format produced by
+`scanone()` in [R/qtl](http://rqtl.org), and then use the relevant
+R/qtl functions for displaying the results.
+
+```{r convert2scanone}
+out_scanone <- convert2scanone(out, pr)
+```
+
+We can now plot the LOD curves as follows:
+
+```{r plot_lod}
+library(qtl)
+plot(out_scanone, lod=1:2, col=c("slateblue", "violetred"), ylab="LOD score", bgrect="gray92",
+     bandcol="gray80")
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray92")
+```
+
+
+## Performing a genome scan with a linear mixed model
+
+To perform a genome scan using a linear mixed model, accounting for
+relationships among individuals using a random polygenic effect, use
+the function `scan1_lmm()`. It takes the same input as `scan1()` plus
+a kinship matrix (or, for the LOCO method, a list of kinship
+matrices).
+
+```{r scan1_lmm}
+out_lmm <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
+```
+
+Again, on a multi-core machine, you can get some speed-up using the
+`cores` argument.
+
+```{r scan1_lmm_multicore, eval=FALSE}
+out_lmm <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar, cores=4)
+```
+
+If we wish to plot the results, we again need to convert them to
+the R/qtl `scanone` format.
+
+
+```{r convert2scanone_lmm}
+out_lmm_scanone <- convert2scanone(out_lmm, pr)
+```
+
+Here is a plot of the LOD scores, by Haley-Knott and with the linear
+mixed model, for the "spleen" phenotype.
+
+```{r plot_lod_scan1_vs_lmm}
+color <- c("violetred", "green3")
+plot(out_scanone, out_lmm_scanone, lod=2, col=color, ylab="LOD score", bgrect="gray92",
+     bandcol="gray80", lty=1:2)
+legend("topleft", lwd=2, col=color, c("scan1", "scan1_lmm"), bg="gray92", lty=1:2)
 ```
