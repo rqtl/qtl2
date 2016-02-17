@@ -200,6 +200,7 @@ positive integer.
 pr <- calc_genoprob(iron, step=1, err=0.002, cores=4)
 ```
 
+
 The genome scan functions (see below) use genotype probablities as
 well as a matrix of phenotypes.
 If you wished to perform a genome scan via an additive allele model,
@@ -327,14 +328,22 @@ a kinship matrix (or, for the LOCO method, a list of kinship
 matrices).
 
 ```{r scan1_lmm}
-out_lmm <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
+out_lmm <- scan1_lmm(pr, iron$pheno, kinship, Xcovar=Xcovar)
 ```
 
 Again, on a multi-core machine, you can get some speed-up using the
 `cores` argument.
 
 ```{r scan1_lmm_multicore, eval=FALSE}
-out_lmm <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar, cores=4)
+out_lmm <- scan1_lmm(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
+```
+
+For the LOCO (leave one chromosome out) method, provide the list of
+kinship matrices as obtained from `calc_kinship()` with
+`method="loco"`.
+
+```{r scan1_lmm_loco}
+out_lmm_loco <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ```
 
 To plot the results, we again need to convert them to
@@ -343,15 +352,31 @@ the R/qtl `scanone` format.
 
 ```{r convert2scanone_lmm}
 out_lmm_scanone <- convert2scanone(out_lmm, pr)
+out_lmm_loco_scanone <- convert2scanone(out_lmm_loco, pr)
 ```
 
-Here is a plot of the LOD scores, by Haley-Knott and with the linear
-mixed model, for the "spleen" phenotype.
+Here is a plot of the LOD scores, by Haley-Knott regression and the linear
+mixed model using either the standard kinship matrix or the LOCO
+method.
 
 ```{r plot_lod_scan1_vs_lmm}
-color <- c("violetred", "green3")
+color <- c("slateblue", "violetred", "green3")
 par(mar=c(5.1, 4.1, 1.1, 1.1))
-plot(out_scanone, out_lmm_scanone, lod=2, col=color, ylab="LOD score", bgrect="gray92",
-     bandcol="gray80", lty=1:2)
-legend("topleft", lwd=2, col=color, c("scan1", "scan1_lmm"), bg="gray92", lty=1:2)
+for(i in 1:2) {
+  plot(out_scanone, out_lmm_scanone, out_lmm_loco_scanone, lod=i, col=color,
+       ylab="LOD score", bgrect="gray92", bandcol="gray80", lty=c(1,1,2),
+       main=phenames(iron)[i])
+  if(i==2)
+      legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray92", lty=c(1,1,2))
+}
 ```
+
+For the spleen phenotype, Haley-Knott regression and the linear mixed
+model with the LOCO method give very similar results, while the linear
+mixed model with an overall kinship matrix gives much lower LOD
+scores.
+
+For the liver phenotype, the linear mixed model with an overall
+kinship matrix again gives much lower LOD scores. However, with this
+phenotype, Haley-Knott regression and LOCO give quite different
+results, with LOCO giving higher LOD scores except on chromosome 16.
