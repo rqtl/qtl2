@@ -371,12 +371,14 @@ for(i in 1:2) {
 }
 ```
 
-For the spleen phenotype, Haley-Knott regression and the linear mixed
-model with the LOCO method give very similar results, while the linear
-mixed model with an overall kinship matrix gives much lower LOD
-scores.
+For the liver phenotype (top panel), the three methods give quite
+different results. The linear mixed model with an overall kinship
+matrix gives much lower LOD scores than the other two methods.  On
+chromosomes with some evidence of a QTL, the LOCO method gives higher
+LOD scores than Haley-Knott, except on chromosome 16 where it gives
+lower LOD scores.
 
-For the liver phenotype, the linear mixed model with an overall
-kinship matrix again gives much lower LOD scores. However, with this
-phenotype, Haley-Knott regression and LOCO give quite different
-results, with LOCO giving higher LOD scores except on chromosome 16.
+For the spleen phenotype (bottom panel), the linear mixed model with an
+overall kinship matrix again gives much lower LOD scores than the
+other two methods. However, in this case Haley-Knott regression and
+the LOCO method give quite similar results.
