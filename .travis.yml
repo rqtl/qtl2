@@ -2,8 +2,6 @@ language: r
 
 r_packages:
  - devtools
- - Rcpp
- - RcppEigen
 
 r_github_packages:
  - rqtl/qtl2geno
