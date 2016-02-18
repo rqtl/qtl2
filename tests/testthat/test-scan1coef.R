@@ -229,7 +229,7 @@ test_that("scan1coef for intercross", {
     names(covar) <- rownames(iron$covar)
     covar <- cbind(sex=covar)
     weights <- runif(n_ind(iron), 0, 5)
-    names(weights) <- names(pheno)
+    names(weights) <- names(phe)
 
     # different organization of probs for qtl2scan and lm() code
     prob <- aperm(prob2, c(1,3,2)) # rearrange as expected for lm()
@@ -313,7 +313,7 @@ test_that("scan1coef for intercross, with contrasts", {
     names(covar) <- rownames(iron$covar)
     covar <- cbind(sex=covar)
     weights <- runif(n_ind(iron), 0, 5)
-    names(weights) <- names(pheno)
+    names(weights) <- names(phe)
 
     # different organization of probs for qtl2scan and lm() code
     prob <- aperm(prob2, c(1,3,2)) # rearrange as expected for lm()
