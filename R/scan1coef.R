@@ -72,7 +72,7 @@ scan1coef <-
     if(!is.null(contrasts)) {
         ng <- ncol(genoprobs)
         if(ncol(contrasts) != ng || nrow(contrasts) != ng)
-            stop("constrasts should be a square matrix, ", ng, " x ", ng)
+            stop("contrasts should be a square matrix, ", ng, " x ", ng)
     }
 
     # find individuals in common across all arguments
@@ -107,7 +107,7 @@ scan1coef <-
     if(is.null(weights)) weights <- numeric(0)
 
     # multiply genoprobs by contrasts
-    if(!is.null(constrasts))
+    if(!is.null(contrasts))
         genoprobs <- genoprobs_by_contrasts(genoprobs, contrasts)
 
     if(se) { # also calculate SEs
@@ -155,7 +155,7 @@ genoprobs_by_contrasts <-
     dg <- dim(genoprobs)
     dc <- dim(contrasts)
     if(dc[1] != dc[2] || dc[1] != dg[2])
-        stop("constrasts should be a square matrix, ", dg[2], " x ", dg[2])
+        stop("contrasts should be a square matrix, ", dg[2], " x ", dg[2])
 
     # rearrange to put genotypes in last position
     genoprobs <- aperm(genoprobs, c(1,3,2))
