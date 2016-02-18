@@ -78,6 +78,7 @@ NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs,
     const unsigned int n_weights = weights.size();
     const unsigned int n_addcovar = addcovar.cols();
     const unsigned int x_size = n_ind * n_gen;
+    const unsigned int n_coef = n_gen + n_addcovar;
 
     if(n_ind != d[0])
         throw std::range_error("length(pheno) != nrow(genoprobs)");
@@ -86,8 +87,8 @@ NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs,
     if(n_weights > 0 && n_weights != n_ind)
         throw std::range_error("length(pheno) != length(weights)");
 
-    NumericMatrix result(n_gen, n_pos);
-    NumericMatrix X(n_ind, n_gen+n_addcovar);
+    NumericMatrix result(n_coef, n_pos);
+    NumericMatrix X(n_ind, n_coef);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
         // copy genoprobs for pos i into a matrix
