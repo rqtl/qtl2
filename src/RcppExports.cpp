@@ -31,6 +31,30 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// calc_coef_linreg_eigenchol
+NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
+RcppExport SEXP qtl2scan_calc_coef_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    __result = Rcpp::wrap(calc_coef_linreg_eigenchol(X, y));
+    return __result;
+END_RCPP
+}
+// calc_coefSE_linreg_eigenchol
+List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
+RcppExport SEXP qtl2scan_calc_coefSE_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    __result = Rcpp::wrap(calc_coefSE_linreg_eigenchol(X, y));
+    return __result;
+END_RCPP
+}
 // calc_rss_eigenchol
 double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y);
 RcppExport SEXP qtl2scan_calc_rss_eigenchol(SEXP XSEXP, SEXP ySEXP) {
@@ -53,6 +77,32 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(fit_linreg_eigenqr(X, y, tol));
+    return __result;
+END_RCPP
+}
+// calc_coef_linreg_eigenqr
+NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_calc_coef_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_coef_linreg_eigenqr(X, y, tol));
+    return __result;
+END_RCPP
+}
+// calc_coefSE_linreg_eigenqr
+List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_calc_coefSE_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_coefSE_linreg_eigenqr(X, y, tol));
     return __result;
 END_RCPP
 }
@@ -129,6 +179,32 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(calc_rss_linreg(X, Y, tol));
+    return __result;
+END_RCPP
+}
+// calc_coef_linreg
+NumericVector calc_coef_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_calc_coef_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_coef_linreg(X, y, tol));
+    return __result;
+END_RCPP
+}
+// calc_coefSE_linreg
+List calc_coefSE_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_calc_coefSE_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(calc_coefSE_linreg(X, y, tol));
     return __result;
 END_RCPP
 }

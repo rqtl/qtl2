@@ -9,12 +9,28 @@ fit_linreg_eigenchol <- function(X, y) {
     .Call('qtl2scan_fit_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }
 
+calc_coef_linreg_eigenchol <- function(X, y) {
+    .Call('qtl2scan_calc_coef_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
+}
+
+calc_coefSE_linreg_eigenchol <- function(X, y) {
+    .Call('qtl2scan_calc_coefSE_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
+}
+
 calc_rss_eigenchol <- function(X, y) {
     .Call('qtl2scan_calc_rss_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }
 
 fit_linreg_eigenqr <- function(X, y, tol = 1e-12) {
     .Call('qtl2scan_fit_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_coef_linreg_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coef_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_coefSE_linreg_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 calc_rss_eigenqr <- function(X, y, tol = 1e-12) {
@@ -39,6 +55,14 @@ calc_resid_eigenqr <- function(X, Y, tol = 1e-12) {
 
 calc_rss_linreg <- function(X, Y, tol = 1e-12) {
     .Call('qtl2scan_calc_rss_linreg', PACKAGE = 'qtl2scan', X, Y, tol)
+}
+
+calc_coef_linreg <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coef_linreg', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_coefSE_linreg <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_linreg', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 calc_resid_linreg <- function(X, Y, tol = 1e-12) {

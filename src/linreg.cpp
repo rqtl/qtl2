@@ -10,12 +10,28 @@ using namespace Eigen;
 
 #include "linreg_eigen.h"
 
-// Calculate vector of residual sum of squares (RSS) from linear regression of Y vs X
+// Calculate vector of residual sum of squares (RSS) from linear regression of Y on X
 // [[Rcpp::export]]
 NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y,
                               const double tol=1e-12)
 {
     return calc_mvrss_eigenqr(X, Y, tol);
+}
+
+// Calculate just the coefficients from linear regression of y on X
+// [[Rcpp::export]]
+NumericVector calc_coef_linreg(const NumericMatrix& X, const NumericVector& y,
+                               const double tol=1e-12)
+{
+    return calc_coef_linreg_eigenqr(X, y, tol);
+}
+
+// Calculate coefficients and SEs from linear regression of y on X
+// [[Rcpp::export]]
+List calc_coefSE_linreg(const NumericMatrix& X, const NumericVector& y,
+                        const double tol=1e-12)
+{
+    return calc_coefSE_linreg_eigenqr(X, y, tol);
 }
 
 // Calculate matrix of residuals from linear regression of Y on X

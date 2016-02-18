@@ -13,6 +13,17 @@ Rcpp::List fit_linreg_eigenchol(const Rcpp::NumericMatrix& X,
                                 const Rcpp::NumericVector& y);
 
 // least squares by "LLt" Cholesky decomposition
+// return just the coefficients
+Rcpp::NumericVector calc_coef_linreg_eigenchol(const Rcpp::NumericMatrix& X,
+                                               const Rcpp::NumericVector& y);
+
+// least squares by "LLt" Cholesky decomposition
+// this returns the coefficients and SEs
+Rcpp::List calc_coefSE_linreg_eigenchol(const Rcpp::NumericMatrix& X,
+                                        const Rcpp::NumericVector& y,
+                                        const double tol);
+
+// least squares by "LLt" Cholesky decomposition
 // return just the residual sum of squares
 // needs to be full rank
 double calc_rss_eigenchol(const Rcpp::NumericMatrix& X,
@@ -22,6 +33,18 @@ double calc_rss_eigenchol(const Rcpp::NumericMatrix& X,
 Rcpp::List fit_linreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const Rcpp::NumericVector& y,
                               const double tol);
+
+// least squares by QR decomposition with column pivoting
+// this just returns the coefficients
+Rcpp::NumericVector calc_coef_linreg_eigenqr(const Rcpp::NumericMatrix& X,
+                                             const Rcpp::NumericVector& y,
+                                             const double tol);
+
+// least squares by QR decomposition with column pivoting
+// this returns the coefficients and SEs
+Rcpp::List calc_coefSE_linreg_eigenqr(const Rcpp::NumericMatrix& X,
+                                      const Rcpp::NumericVector& y,
+                                      const double tol);
 
 // least squares by QR decomposition with column pivoting
 // return just the residual sum of squares
