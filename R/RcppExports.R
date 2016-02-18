@@ -209,3 +209,15 @@ scancoef_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, 
     .Call('qtl2scan_scancoef_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 
+scancoefSE_hk_nocovar <- function(genoprobs, pheno, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_hk_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, weights, tol)
+}
+
+scancoefSE_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
+}
+
+scancoefSE_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+}
+

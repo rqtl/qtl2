@@ -3,7 +3,7 @@ context("effect scan by scan1coef")
 # calc estimates via lm(), just one chromosome
 eff_via_lm <-
     function(probs, pheno, addcovar=NULL, intcovar=NULL, weights=NULL,
-             se=FALSE)
+             se=TRUE)
 {
     npos <- dim(probs)[2]
     nind <- length(pheno)
@@ -58,41 +58,65 @@ test_that("scan1coef for backcross", {
     prob2 <- aperm(prob, c(1,3,2)) # rearrange as in R/qtl2
     coef <- scan1coef(prob2, phe)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # no covariates, weighted
     expected <- eff_via_lm(prob, phe, weights=weights)
     coef <- scan1coef(prob2, phe, weights=weights)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, weights=weights, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # one add've covariate
     expected <- eff_via_lm(prob, phe, covar)
     coef <- scan1coef(prob2, phe, covar)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, covar, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # one add've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, weights=weights)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, covar, weights=weights, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # one int've covariate
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, covar, covar, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # one int've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, covar, covar, weights=weights, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # two int've covariate
     covar <- cbind(covar, rnorm(nind(hyper)))
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, covar, covar, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
     # one int've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights)
     expect_equivalent(coef, expected)
+    coef <- scan1coef(prob2, phe, covar, covar, weights=weights, se=TRUE)
+    expect_equivalent(coef, expected)
+    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
 
 })
