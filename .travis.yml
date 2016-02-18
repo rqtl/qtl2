@@ -1,5 +1,10 @@
 language: r
 
+r_binary_packages:
+ - devtools
+ - Rcpp
+ - RcppEigen
+
 r_github_packages:
  - rqtl/qtl2geno
 
