@@ -54,7 +54,6 @@ NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVe
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
-    const unsigned int n = XX.rows(), p=XX.cols();
     LLT<MatrixXd> llt = calc_XpX(XX);
 
     NumericVector betahat(wrap(llt.solve(XX.adjoint() * yy)));
@@ -174,7 +173,7 @@ NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVect
     typedef ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int n = XX.rows(), p = XX.cols();
+    const unsigned int p = XX.cols();
 
     CPivQR PQR( XX );
     PQR.setThreshold(tol); // set tolerance

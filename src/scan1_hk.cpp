@@ -230,7 +230,7 @@ NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs,
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
         // form X matrix
-        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
+        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, true);
 
         // do regression
         result(_,pos) = calc_rss_linreg(X, pheno, tol);
@@ -278,7 +278,7 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genop
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
         // form X matrix
-        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
+        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, true);
         X = weighted_matrix(X, weights);
 
         // do regression

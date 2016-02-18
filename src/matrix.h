@@ -20,7 +20,8 @@ Rcpp::IntegerVector find_lin_indep_cols(const Rcpp::NumericMatrix& mat,
 Rcpp::NumericMatrix formX_intcovar(const Rcpp::NumericVector& probs,
                                    const Rcpp::NumericMatrix& addcovar,
                                    const Rcpp::NumericMatrix& intcovar,
-                                   const int position);
+                                   const int position,
+                                   const bool has_intercept);
 
 // multiply each column of a matrix by a set of weights
 Rcpp::NumericMatrix weighted_matrix(const Rcpp::NumericMatrix& mat,

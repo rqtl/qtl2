@@ -148,7 +148,7 @@ NumericMatrix scancoef_hk_intcovar(const NumericVector& genoprobs,
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
         // form X matrix
-        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
+        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, false);
         if(n_weights > 0) X = weighted_matrix(X, weights);
 
         // do regression
