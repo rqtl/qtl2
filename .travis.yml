@@ -1,6 +1,6 @@
 language: r
 
-r_binary_packages:
+r_packages:
  - devtools
  - Rcpp
  - RcppEigen
