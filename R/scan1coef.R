@@ -68,6 +68,12 @@ scan1coef <-
     # square-root of weights
     weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
 
+    # genoprobs a list? then just take first chromosome
+    if(is.list(genoprobs)) {
+        message("Using only chromosome ", names(genoprobs)[1])
+        genoprobs <- genoprobs[[1]]
+    }
+
     # make sure contrasts is square n_genotypes x n_genotypes
     if(!is.null(contrasts)) {
         ng <- ncol(genoprobs)
