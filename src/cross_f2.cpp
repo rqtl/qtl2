@@ -359,12 +359,13 @@ const std::vector<std::string> F2::geno_names(const std::vector<std::string> all
         throw std::range_error("alleles must have length 2");
 
     if(is_x_chr) {
-        std::vector<std::string> result(5);
+        std::vector<std::string> result(6);
         result[0] = alleles[0] + alleles[0];
         result[1] = alleles[0] + alleles[1];
-        result[2] = alleles[1] + alleles[1];
-        result[3] = alleles[0] + "Y";
-        result[4] = alleles[1] + "Y";
+        result[2] = alleles[1] + alleles[0];
+        result[3] = alleles[1] + alleles[1];
+        result[4] = alleles[0] + "Y";
+        result[5] = alleles[1] + "Y";
         return result;
     }
     else {

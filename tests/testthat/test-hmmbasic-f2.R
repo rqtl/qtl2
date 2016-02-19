@@ -220,5 +220,5 @@ test_that("intercross step works", {
 
 test_that("geno_names works", {
     expect_equal(geno_names("f2", c("B", "R"), FALSE), c("BB", "BR", "RR"))
-    expect_equal(geno_names("f2", c("B", "R"), TRUE), c("BB", "BR", "RR", "BY", "RY"))
+    expect_equal(geno_names("f2", c("B", "R"), TRUE), c("BB", "BR", "RB", "RR", "BY", "RY"))
 })
