@@ -43,16 +43,16 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
-#' # calculate genotype probabilities just for chromosome 7
-#' probs <- calc_genoprob(iron[,7], step=1, error_prob=0.002)
+#' # calculate genotype probabilities
+#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno[,1]
 #' covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 #' names(covar) <- rownames(iron$covar)
 #'
-#' # perform genome scan
-#' coef <- scan1coef(probs[[1]], pheno, covar)
+#' # calculate coefficients for chromosome 7
+#' coef <- scan1coef(probs[,7], pheno, covar)
 #'
 #' @export
 scan1coef <-
@@ -73,8 +73,10 @@ scan1coef <-
 
     # genoprobs a list? then just take first chromosome
     if(is.list(genoprobs)) {
-        message("Using only chromosome ", names(genoprobs)[1])
+        map <- attr(genoprobs, "map")[1]
         genoprobs <- genoprobs[[1]]
+    } else {
+        map <- attr(genoprobs, "map")
     }
 
     # make sure contrasts is square n_genotypes x n_genotypes
@@ -146,7 +148,7 @@ scan1coef <-
     }
 
     # add some attributes with details on analysis
-    attr(result, "map") <- attr(genoprobs, "map")
+    attr(result, "map") <- map
     attr(result, "sample_size") <- length(ind2keep)
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)
