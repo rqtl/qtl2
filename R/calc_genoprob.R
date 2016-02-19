@@ -132,8 +132,21 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                 probs[[chr]][group[[i]],,] <- temp[[i]]
         }
 
+        # genotype names
+        alleles <- cross$alleles
+        if(is.null(alleles)) # no alleles saved; use caps
+            alleles <- LETTERS[1:ncol(probs[[chr]])]
+        gnames <- geno_names(cross$crosstype,
+                             alleles,
+                             cross$is_x_chr[chr])
+        if(length(gnames) != ncol(probs[[chr]])) {
+            warning("genotype names has length (", length(gnames),
+                    ") != genoprob dim (", ncol(probs[[chr]]), ")")
+            gnames <- NULL
+        }
+
         dimnames(probs[[chr]]) <- list(rownames(cross$geno[[chr]]),
-                                       NULL, # FIX ME: need genotype names in here
+                                       gnames,
                                        names(map[[chr]]))
 
     }
@@ -144,6 +157,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     attr(probs, "crosstype") <- cross$crosstype
     attr(probs, "sex") <- cross$sex
     attr(probs, "cross_info") <- cross$cross_info
+    attr(probs, "alleles") <- cross$alleles
 
     class(probs) <- c("calc_genoprob", "list")
 

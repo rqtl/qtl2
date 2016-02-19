@@ -1,4 +1,3 @@
-
 context("basic HMM functions in backcross")
 
 test_that("backcross check_geno works", {
@@ -150,4 +149,9 @@ test_that("backcross step works", {
     expect_equal(test_step("bc", 4, 3, rf, TRUE, FALSE, integer(0)), log(rf))
     expect_equal(test_step("bc", 4, 4, rf, TRUE, FALSE, integer(0)), log(1-rf))
 
+})
+
+test_that("geno_names works", {
+    expect_equal(geno_names("bc", c("B", "R"), FALSE), c("BB", "BR"))
+    expect_equal(geno_names("bc", c("B", "R"), TRUE), c("BB", "BR", "BY", "RY"))
 })

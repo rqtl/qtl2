@@ -143,3 +143,26 @@ const bool BC::check_is_female_vector(const LogicalVector& is_female, const bool
     }
     return result;
 }
+
+// geno_names from allele names
+const std::vector<std::string> BC::geno_names(const std::vector<std::string> alleles,
+                                              const bool is_x_chr)
+{
+    if(alleles.size() < 2)
+        throw std::range_error("alleles must have length 2");
+
+    if(is_x_chr) {
+        std::vector<std::string> result(4);
+        result[0] = alleles[0] + alleles[0];
+        result[1] = alleles[0] + alleles[1];
+        result[2] = alleles[0] + "Y";
+        result[3] = alleles[1] + "Y";
+        return result;
+    }
+    else {
+        std::vector<std::string> result(2);
+        result[0] = alleles[0] + alleles[0];
+        result[1] = alleles[0] + alleles[1];
+        return result;
+    }
+}

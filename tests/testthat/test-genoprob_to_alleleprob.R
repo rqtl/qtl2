@@ -6,8 +6,13 @@ test_that("genoprob_to_alleleprob works for RIL", {
     probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
     allele_probs <- genoprob_to_alleleprob(probs)
 
-    attr(probs, "alleles") <- TRUE # should be only difference between the two
-    expect_equal(allele_probs, probs)
+    # expected result, hardly changed
+    expected <- probs
+    attr(expected, "alleles") <- TRUE
+    for(i in 1:length(probs))
+        colnames(expected[[i]]) <- c("L", "C")
+
+    expect_equal(allele_probs, expected)
 
 })
 
@@ -21,14 +26,20 @@ test_that("genoprob_to_alleleprob works for F2", {
         function(prob, x_chr=FALSE)
         {
             if(x_chr) {
+                cn <- colnames(prob)
                 prob[,1,] <- prob[,1,]+prob[,2,]/2+prob[,3,]/2 + prob[,5,]
                 prob[,2,] <- prob[,4,]+prob[,2,]/2+prob[,3,]/2 + prob[,6,]
-                return(prob[,1:2,])
+                prob <- prob[,1:2,]
+                colnames(prob) <- substr(cn[c(1,3)], 1, 1)
+                return(prob)
 
             } else {
+                cn <- colnames(prob)
                 prob[,1,] <- prob[,1,]+prob[,2,]/2
                 prob[,2,] <- prob[,3,]+prob[,2,]/2
-                return(prob[,1:2,])
+                prob <- prob[,1:2,]
+                colnames(prob) <- substr(cn[c(1,3)], 1, 1)
+                return(prob)
             }
         }
 

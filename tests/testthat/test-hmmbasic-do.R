@@ -222,3 +222,14 @@ test_that("DO step works", {
     }
 
 })
+
+test_that("geno_names works", {
+    auto <- c("AA", "AB", "BB", "AC", "BC", "CC", "AD", "BD", "CD", "DD",
+              "AE", "BE", "CE", "DE", "EE", "AF", "BF", "CF", "DF", "EF", "FF",
+              "AG", "BG", "CG", "DG", "EG", "FG", "GG", "AH", "BH", "CH", "DH",
+              "EH", "FH", "GH", "HH")
+    X <- c(auto, paste0(LETTERS[1:8], "Y"))
+
+    expect_equal(geno_names("do", LETTERS[1:8], FALSE), auto)
+    expect_equal(geno_names("do", LETTERS[1:8], TRUE), X)
+})

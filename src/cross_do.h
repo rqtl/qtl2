@@ -53,6 +53,7 @@ class DO : public QTLCross
     const bool check_founder_geno_values(const Rcpp::IntegerMatrix& founder_geno);
     const bool need_founder_geno();
 
+    const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
 };
 
 #endif // CROSS_DO_H

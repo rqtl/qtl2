@@ -63,17 +63,17 @@ test_that("subset.calc_genoprob works", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     ironsub <- iron[,c(4,"X")]
 
-    pr <- calc_genoprob(iron, step=5, err=0.01)
+    pr <- calc_genoprob(ironsub, step=5, err=0.01)
     prsub <- pr[,"X"]
 
     at <- attributes(pr)
     expected <- unclass(pr)["X"]
     attr(expected, "is_x_chr") <- at$is_x_chr["X"]
     attr(expected, "map") <- at$map["X"]
-    attr(expected, "map") <- at$map["X"]
     attr(expected, "crosstype") <- at$crosstype
     attr(expected, "cross_info") <- at$cross_info
     attr(expected, "class") <- at$class
+    attr(expected, "alleles") <- at$alleles
 
     expect_equal(prsub, expected)
 

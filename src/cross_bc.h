@@ -36,6 +36,9 @@ class BC : public QTLCross
 
     const bool check_is_female_vector(const Rcpp::LogicalVector& is_female, const bool any_x_chr);
 
+    const std::vector<std::string> geno_names(const std::vector<std::string> alleles,
+                                              const bool is_x_chr);
+
 };
 
 #endif // CROSS_BC_H
