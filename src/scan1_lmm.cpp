@@ -200,7 +200,7 @@ NumericVector scan_lmm_onechr_intcovar_lowmem(const NumericVector& genoprobs,
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
         // form X matrix
-        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos);
+        NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, true);
 
         // multiply by eigenvectors
         X = matrix_x_matrix(eigenvec, X);

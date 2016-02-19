@@ -38,6 +38,17 @@ test_that("lin regr works for simple example", {
     linreg_resid <- calc_resid_linreg(X,Y)
     expect_equal(linreg_resid, as.matrix(resid))
 
+    # just the coefficients
+    coef <- calc_coef_linreg(X,Y)
+    expect_equal(coef, as.numeric(lm.out$coef))
+
+    # coefficients and SEs
+    coefSE <- calc_coefSE_linreg(X,Y)
+    expected <- summary(lm.out)$coef
+    expected <- list(coef=as.numeric(expected[,1]),
+                     SE=as.numeric(expected[,2]))
+    expect_equal(coefSE, expected)
+
 })
 
 test_that("lin regr works for reduced-rank example", {
@@ -76,6 +87,19 @@ test_that("lin regr works for reduced-rank example", {
     expect_equal(linreg_rss, rss)
     linreg_resid <- calc_resid_linreg(mm,Y)
     expect_equal(linreg_resid, as.matrix(resid))
+
+    # just the coefficients
+    coef <- calc_coef_linreg(mm,y)
+    expect_equal(coef, as.numeric(lm.out$coef))
+
+    # coefficients and SEs
+    coefSE <- calc_coefSE_linreg(mm,y)
+    ### a bit of effort due to one coefficient being NA
+    expected <- list(coef=as.numeric(lm.out$coef),
+                     SE=as.numeric(lm.out$coef))
+    lm.coef <- summary(lm.out)$coef
+    for(i in 1:2) expected[[i]][!is.na(coef)] <- lm.coef[,i]
+    expect_equal(coefSE, expected)
 
 })
 

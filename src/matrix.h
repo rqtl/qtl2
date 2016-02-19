@@ -17,10 +17,26 @@ Rcpp::IntegerVector find_lin_indep_cols(const Rcpp::NumericMatrix& mat,
                                         const double tol);
 
 // form X matrix with intcovar
+// has_intercept = true indicates that addcovar has an intercept
+//                 and so probs reduced by one column
+//               = false means probs has full set of columns
+//
+// This is maybe a bit confusing.
+//
+// In the has_intercept=true case, an intercept is included in the
+// addcovar matrix, and probs is missing the first column.
+// The matrix formed is [A P (P.I)] where A=addcovar, P=probs, I=intcovar
+//
+// In the has_intercept=false case, no intercept is included in the
+// addcovar matrix, and the probs have all columns (so each row sums
+// to 1). The matrix formed is [P A (P*.I)] where in the P*.I bit we
+// drop the first column of the probs when getting interactions with
+// intercovar.
 Rcpp::NumericMatrix formX_intcovar(const Rcpp::NumericVector& probs,
                                    const Rcpp::NumericMatrix& addcovar,
                                    const Rcpp::NumericMatrix& intcovar,
-                                   const int position);
+                                   const int position,
+                                   const bool has_intercept);
 
 // multiply each column of a matrix by a set of weights
 Rcpp::NumericMatrix weighted_matrix(const Rcpp::NumericMatrix& mat,

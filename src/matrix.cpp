@@ -82,11 +82,28 @@ IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-
 }
 
 // form X matrix with intcovar
+// has_intercept = true indicates that addcovar has an intercept
+//                 and so probs reduced by one column
+//               = false means probs has full set of columns
+//
+// This is maybe a bit confusing.
+//
+// In the has_intercept=true case, an intercept is included in the
+// addcovar matrix, and probs is missing the first column.
+// The matrix formed is [A P (P.I)] where A=addcovar, P=probs, I=intcovar
+//
+// In the has_intercept=false case, no intercept is included in the
+// addcovar matrix, and the probs have all columns (so each row sums
+// to 1). The matrix formed is [P A (P*.I)] where in the P*.I bit we
+// drop the first column of the probs when getting interactions with
+// intercovar.
+//
 // [[Rcpp::export]]
 NumericMatrix formX_intcovar(const NumericVector& probs,
                              const NumericMatrix& addcovar,
                              const NumericMatrix& intcovar,
-                             const int position) // with indexes starting at 0
+                             const int position, // with indexes starting at 0
+                             const bool has_intercept=true)
 {
 
     const Dimension d = probs.attr("dim");
@@ -97,7 +114,11 @@ NumericMatrix formX_intcovar(const NumericVector& probs,
     const unsigned int nadd  = addcovar.cols();
     const unsigned int nint  = intcovar.cols();
 
-    NumericMatrix result(nrow, nadd + ngen*(nint+1));
+    unsigned int totcol;
+    if(has_intercept) totcol = nadd + ngen*(nint+1);
+    else totcol = ngen + nadd + (ngen-1)*nint;
+
+    NumericMatrix result(nrow, totcol);
 
     if(position < 0 || position >= d[2])
         throw std::range_error("position out of range of 0 .. (n_pos-1)");
@@ -106,19 +127,34 @@ NumericMatrix formX_intcovar(const NumericVector& probs,
     if(intcovar.rows() != nrow)
         throw std::range_error("nrow(intcovar) != nrow(probs)");
 
-    std::copy(addcovar.begin(), addcovar.end(), result.begin());
-    std::copy(probs.begin()+offset,
-              probs.begin()+offset+recsize,
-              result.begin() + nrow*nadd);
+    if(has_intercept) {
+        std::copy(addcovar.begin(), addcovar.end(), result.begin());
+        std::copy(probs.begin()+offset,
+                  probs.begin()+offset+recsize,
+                  result.begin() + nrow*nadd);
 
-    for(unsigned int i=0, rescol=ngen+nadd; i<nint; i++) {
-        for(unsigned int j=0; j<ngen; j++, rescol++) {
-            for(unsigned int k=0; k<nrow; k++) {
-                result(k,rescol) = probs[offset + k + j*nrow] * intcovar(k,i);
+        for(unsigned int i=0, rescol=ngen+nadd; i<nint; i++) {
+            for(unsigned int j=0; j<ngen; j++, rescol++) {
+                for(unsigned int k=0; k<nrow; k++) {
+                    result(k,rescol) = probs[offset + k + j*nrow] * intcovar(k,i);
+                }
             }
         }
     }
+    else {
+        std::copy(probs.begin()+offset,
+                  probs.begin()+offset+recsize,
+                  result.begin());
+        std::copy(addcovar.begin(), addcovar.end(), result.begin() + nrow*ngen);
 
+        for(unsigned int i=0, rescol=ngen+nadd; i<nint; i++) {
+            for(unsigned int j=1; j<ngen; j++, rescol++) {
+                for(unsigned int k=0; k<nrow; k++) {
+                    result(k,rescol) = probs[offset + k + j*nrow] * intcovar(k,i);
+                }
+            }
+        }
+    }
     return result;
 }
 

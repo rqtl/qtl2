@@ -9,6 +9,16 @@ Rcpp::NumericVector calc_rss_linreg(const Rcpp::NumericMatrix& X,
                                     const Rcpp::NumericMatrix& Y,
                                     const double tol);
 
+// Calculate just the coefficients from linear regression of y on X
+Rcpp::NumericVector calc_coef_linreg(const Rcpp::NumericMatrix& X,
+                                     const Rcpp::NumericVector& y,
+                                     const double tol);
+
+// Calculate the coefficients and SEs from linear regression of y on X
+Rcpp::List calc_coefSE_linreg(const Rcpp::NumericMatrix& X,
+                              const Rcpp::NumericVector& y,
+                              const double tol);
+
 // Calculate matrix of residuals from linear regression of Y on X
 Rcpp::NumericMatrix calc_resid_linreg(const Rcpp::NumericMatrix& X,
                                       const Rcpp::NumericMatrix& Y,

@@ -9,12 +9,28 @@ fit_linreg_eigenchol <- function(X, y) {
     .Call('qtl2scan_fit_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }
 
+calc_coef_linreg_eigenchol <- function(X, y) {
+    .Call('qtl2scan_calc_coef_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
+}
+
+calc_coefSE_linreg_eigenchol <- function(X, y) {
+    .Call('qtl2scan_calc_coefSE_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
+}
+
 calc_rss_eigenchol <- function(X, y) {
     .Call('qtl2scan_calc_rss_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }
 
 fit_linreg_eigenqr <- function(X, y, tol = 1e-12) {
     .Call('qtl2scan_fit_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_coef_linreg_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coef_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_coefSE_linreg_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 calc_rss_eigenqr <- function(X, y, tol = 1e-12) {
@@ -39,6 +55,14 @@ calc_resid_eigenqr <- function(X, Y, tol = 1e-12) {
 
 calc_rss_linreg <- function(X, Y, tol = 1e-12) {
     .Call('qtl2scan_calc_rss_linreg', PACKAGE = 'qtl2scan', X, Y, tol)
+}
+
+calc_coef_linreg <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coef_linreg', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_coefSE_linreg <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_linreg', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 calc_resid_linreg <- function(X, Y, tol = 1e-12) {
@@ -81,8 +105,8 @@ find_lin_indep_cols <- function(mat, tol = 1e-12) {
     .Call('qtl2scan_find_lin_indep_cols', PACKAGE = 'qtl2scan', mat, tol)
 }
 
-formX_intcovar <- function(probs, addcovar, intcovar, position) {
-    .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar, position)
+formX_intcovar <- function(probs, addcovar, intcovar, position, has_intercept = TRUE) {
+    .Call('qtl2scan_formX_intcovar', PACKAGE = 'qtl2scan', probs, addcovar, intcovar, position, has_intercept)
 }
 
 expand_genoprobs_intcovar <- function(probs, intcovar) {
@@ -171,5 +195,29 @@ scan_lmm_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcova
 
 scan_lmm_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
     .Call('qtl2scan_scan_lmm_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
+}
+
+scancoef_hk_nocovar <- function(genoprobs, pheno, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoef_hk_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, weights, tol)
+}
+
+scancoef_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoef_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
+}
+
+scancoef_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoef_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+}
+
+scancoefSE_hk_nocovar <- function(genoprobs, pheno, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_hk_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, weights, tol)
+}
+
+scancoefSE_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
+}
+
+scancoefSE_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 

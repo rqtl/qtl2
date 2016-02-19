@@ -47,6 +47,43 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 }
 
 // least squares by "LLt" Cholesky decomposition
+// return just the coefficients
+// [[Rcpp::export]]
+NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    LLT<MatrixXd> llt = calc_XpX(XX);
+
+    NumericVector betahat(wrap(llt.solve(XX.adjoint() * yy)));
+    return betahat;
+}
+
+
+// least squares by "LLt" Cholesky decomposition
+// return the coefficients and SEs
+// [[Rcpp::export]]
+List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    const unsigned int n = XX.rows(), p=XX.cols();
+    LLT<MatrixXd> llt = calc_XpX(XX);
+
+    VectorXd betahat = llt.solve(XX.adjoint() * yy);
+    VectorXd fitted = XX * betahat;
+    VectorXd resid = yy - fitted;
+    const int df = n-p;
+    const double s = resid.norm() / std::sqrt((double)df);
+    VectorXd se = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
+
+    return List::create(Named("coef") = betahat,
+                        Named("SE") = se);
+}
+
+// least squares by "LLt" Cholesky decomposition
 // return just the residual sum of squares
 // [[Rcpp::export]]
 double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
@@ -121,6 +158,101 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         Named("sigma") = sigma,
                         Named("rank") = r,
                         Named("df") = df,
+                        Named("SE") = sigma*se);
+}
+
+// least squares by QR decomposition with column pivoting
+// this just returns the coefficients
+// [[Rcpp::export]]
+NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
+                                       const double tol=1e-12)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    typedef ColPivHouseholderQR<MatrixXd> CPivQR;
+    typedef CPivQR::PermutationType Permutation;
+
+    const unsigned int p = XX.cols();
+
+    CPivQR PQR( XX );
+    PQR.setThreshold(tol); // set tolerance
+    Permutation Pmat( PQR.colsPermutation() );
+    const unsigned int r = PQR.rank();
+
+    VectorXd betahat(p);
+
+    if(r == p) { // full rank
+        betahat = PQR.solve(yy);
+    } else {
+        MatrixXd Rinv( PQR.matrixQR().topLeftCorner(r,r).
+                       triangularView<Upper>().
+                       solve(MatrixXd::Identity(r,r)) );
+        VectorXd effects( PQR.householderQ().adjoint() * yy );
+
+        betahat.fill(::NA_REAL);
+        betahat.head(r) = Rinv * effects.head(r);
+        betahat = Pmat*betahat;
+    }
+
+    NumericVector result(wrap(betahat));
+    return result;
+}
+
+// least squares by QR decomposition with column pivoting
+// return the coefficients and SEs
+// [[Rcpp::export]]
+List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
+                                const double tol=1e-12)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    typedef ColPivHouseholderQR<MatrixXd> CPivQR;
+    typedef CPivQR::PermutationType Permutation;
+
+    const unsigned int n = XX.rows(), p = XX.cols();
+
+    CPivQR PQR( XX );
+    PQR.setThreshold(tol); // set tolerance
+    Permutation Pmat( PQR.colsPermutation() );
+    const unsigned int r = PQR.rank();
+
+    VectorXd betahat(p), fitted(n), se(p);
+
+    if(r == p) { // full rank
+        betahat = PQR.solve(yy);
+        fitted = XX * betahat;
+
+        se = Pmat * PQR.matrixQR().topRows(p).
+            triangularView<Upper>().
+            solve(MatrixXd::Identity(p, p)).
+            rowwise().norm();
+
+    } else {
+        MatrixXd Rinv( PQR.matrixQR().topLeftCorner(r,r).
+                       triangularView<Upper>().
+                       solve(MatrixXd::Identity(r,r)) );
+        VectorXd effects( PQR.householderQ().adjoint() * yy );
+
+        betahat.fill(::NA_REAL);
+        betahat.head(r) = Rinv * effects.head(r);
+        betahat = Pmat*betahat;
+
+        se.fill(::NA_REAL);
+        se.head(r) = Rinv.rowwise().norm();
+        se = Pmat * se;
+
+        effects.tail(n - r).setZero();
+        fitted = PQR.householderQ() * effects;
+    }
+
+    VectorXd resid = yy - fitted;
+    const double rss = resid.squaredNorm();
+    const int df = n - r;
+    const double sigma = std::sqrt(rss/(double)df);
+
+    return List::create(Named("coef") = betahat,
                         Named("SE") = sigma*se);
 }
 

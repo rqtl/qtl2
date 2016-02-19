@@ -1,6 +1,6 @@
 Package: qtl2scan
-Version: 0.3-19
-Date: 2016-02-16
+Version: 0.3-22
+Date: 2016-02-18
 Title: Genome Scans for QTL Experiments
 Description: Functions to calculate QTL genotype probabilities, impute
     QTL genotypes, and estimate genetic maps. Part of R/qtl2, a
