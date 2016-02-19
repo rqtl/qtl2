@@ -26,7 +26,10 @@
 #' included as an attribute \code{hsq}. Covariate column names are
 #' included as attributes (\code{"addcovar"}, \code{"intcovar"}, and
 #' \code{"Xcovar"}), as is a vector with the sample size for each
-#' phenotype (\code{"sample_size"})
+#' phenotype (\code{"sample_size"}). The map of positions at which the
+#' calculations were performed is included as an attribute
+#' \code{"map"} (taken from the corresponding attribute in the input
+#' \code{genoprobs}).
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
@@ -202,6 +205,7 @@ scan1_lmm <-
     }
 
     attr(result, "hsq") <- hsq
+    attr(result, "map") <- attr(genoprobs, "map")
     attr(result, "sample_size") <- n
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)

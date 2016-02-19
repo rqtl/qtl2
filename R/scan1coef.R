@@ -24,7 +24,10 @@
 #'
 #' @return A matrix of estimated regression coefficients, of dimension
 #' positions x number of effects. The number of effects is
-#' \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}
+#' \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}. The
+#' map of positions at which the calculations were performed is
+#' included as an attribute \code{"map"} (taken from the corresponding
+#' attribute in the input \code{genoprobs}).
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
@@ -143,6 +146,7 @@ scan1coef <-
     }
 
     # add some attributes with details on analysis
+    attr(result, "map") <- attr(genoprobs, "map")
     attr(result, "sample_size") <- length(ind2keep)
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)
