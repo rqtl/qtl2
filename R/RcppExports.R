@@ -25,6 +25,10 @@ check_handle_x_chr <- function(crosstype, any_x_chr) {
     .Call('qtl2geno_check_handle_x_chr', PACKAGE = 'qtl2geno', crosstype, any_x_chr)
 }
 
+geno_names <- function(crosstype, alleles, is_x_chr) {
+    .Call('qtl2geno_geno_names', PACKAGE = 'qtl2geno', crosstype, alleles, is_x_chr)
+}
+
 .genoprob_to_alleleprob <- function(crosstype, prob_array, is_x_chr) {
     .Call('qtl2geno_genoprob_to_alleleprob', PACKAGE = 'qtl2geno', crosstype, prob_array, is_x_chr)
 }

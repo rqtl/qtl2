@@ -1,4 +1,3 @@
-
 context("basic HMM functions in intercross")
 
 test_that("intercross check_geno works", {
@@ -217,4 +216,9 @@ test_that("intercross step works", {
     expect_equal(test_step("f2", 6, 5, rf, TRUE, FALSE, 1), log(rf))
     expect_equal(test_step("f2", 6, 6, rf, TRUE, FALSE, 1), log(1-rf))
 
+})
+
+test_that("geno_names works", {
+    expect_equal(geno_names("f2", c("B", "R"), FALSE), c("BB", "BR", "RR"))
+    expect_equal(geno_names("f2", c("B", "R"), TRUE), c("BB", "BR", "RR", "BY", "RY"))
 })

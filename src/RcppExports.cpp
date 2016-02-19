@@ -80,6 +80,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// geno_names
+std::vector<std::string> geno_names(const String& crosstype, const std::vector<std::string> alleles, const bool is_x_chr);
+RcppExport SEXP qtl2geno_geno_names(SEXP crosstypeSEXP, SEXP allelesSEXP, SEXP is_x_chrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string> >::type alleles(allelesSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP);
+    __result = Rcpp::wrap(geno_names(crosstype, alleles, is_x_chr));
+    return __result;
+END_RCPP
+}
 // genoprob_to_alleleprob
 NumericVector genoprob_to_alleleprob(const String& crosstype, const NumericVector& prob_array, const bool is_x_chr);
 RcppExport SEXP qtl2geno_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {

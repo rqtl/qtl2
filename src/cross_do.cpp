@@ -554,3 +554,32 @@ const bool DO::need_founder_geno()
 {
     return true;
 }
+
+// geno_names from allele names
+const std::vector<std::string> DO::geno_names(const std::vector<std::string> alleles,
+                                              const bool is_x_chr)
+{
+    if(alleles.size() < 8)
+        throw std::range_error("alleles must have length 8");
+
+    if(is_x_chr) {
+        std::vector<std::string> result(44);
+        for(int i=0; i<36; i++) {
+            IntegerVector allele_int = DO::decode_geno(i+1);
+            result[i] = alleles[allele_int[0]-1] + alleles[allele_int[1]-1];
+        }
+        for(int i=0; i<8; i++) {
+            result[36+i] = alleles[i] + "Y";
+        }
+
+        return result;
+    }
+    else {
+        std::vector<std::string> result(36);
+        for(int i=0; i<36; i++) {
+            IntegerVector allele_int = DO::decode_geno(i+1);
+            result[i] = alleles[allele_int[0]-1] + alleles[allele_int[1]-1];
+        }
+        return result;
+    }
+}

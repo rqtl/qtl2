@@ -27,8 +27,8 @@ class HAPLOID : public QTLCross
         return true; // most crosses can handle the X chr
     }
 
-    // the rest of the functions match the defaults,
-    // so there's no cross_dh.cpp file
+    const std::vector<std::string> geno_names(const std::vector<std::string> alleles,
+                                              const bool is_x_chr);
 };
 
 #endif // CROSS_HAPLOID_H

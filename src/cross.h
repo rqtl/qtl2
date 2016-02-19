@@ -202,6 +202,22 @@ public:
         return result;
     }
 
+    // genotype names from allele names
+    // default version is A,B -> AA,BB
+    virtual const std::vector<std::string> geno_names(const std::vector<std::string> alleles,
+                                                      const bool is_x_chr)
+    {
+        if(alleles.size() < 2)
+            throw std::range_error("alleles must have length 2");
+
+        std::vector<std::string> result(2);
+        for(int i=0; i<2; i++) {
+            result[i] = alleles[i] + alleles[i];
+        }
+        return result;
+    }
+
+
 };
 
 #endif // CROSS_H

@@ -285,3 +285,8 @@ test_that("AIL step works", {
 
 
 })
+
+test_that("geno_names works", {
+    expect_equal(geno_names("ail", c("B", "R"), FALSE), c("BB", "BR", "RR"))
+    expect_equal(geno_names("ail", c("B", "R"), TRUE), c("BB", "BR", "RR", "BY", "RY"))
+})

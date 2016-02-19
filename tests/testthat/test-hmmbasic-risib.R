@@ -1,4 +1,3 @@
-
 context("basic HMM functions in risib")
 
 test_that("risib check_geno works", {
@@ -151,4 +150,9 @@ test_that("risib step works", {
     expect_equal(test_step("risib", 2, 1, rf, TRUE, FALSE, 1), log(t12))
     expect_equal(test_step("risib", 2, 2, rf, TRUE, FALSE, 1), log(t11))
 
+})
+
+test_that("geno_names works", {
+    expect_equal(geno_names("risib", c("B", "R"), FALSE), c("BB", "RR"))
+    expect_equal(geno_names("risib", c("B", "R"), TRUE), c("BB", "RR"))
 })

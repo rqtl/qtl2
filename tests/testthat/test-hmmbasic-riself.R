@@ -1,4 +1,3 @@
-
 context("basic HMM functions in riself")
 
 test_that("riself check_geno works", {
@@ -66,4 +65,9 @@ test_that("riself step works", {
     expect_equal(test_step("riself", 2, 1, rf, FALSE, FALSE, integer(0)), log(RF))
     expect_equal(test_step("riself", 2, 2, rf, FALSE, FALSE, integer(0)), log(1-RF))
 
+})
+
+test_that("geno_names works", {
+    expect_equal(geno_names("riself", c("B", "R"), FALSE), c("BB", "RR"))
+    expect_equal(geno_names("riself", c("B", "R"), TRUE), c("BB", "RR"))
 })

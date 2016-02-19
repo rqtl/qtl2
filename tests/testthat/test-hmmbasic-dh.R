@@ -1,4 +1,3 @@
-
 context("basic HMM functions in doubled haploids")
 
 test_that("doubled haploids check_geno works", {
@@ -67,4 +66,9 @@ test_that("doubled haploids step works", {
     expect_equal(test_step("dh", 2, 1, rf, FALSE, FALSE, integer(0)), log(rf))
     expect_equal(test_step("dh", 2, 2, rf, FALSE, FALSE, integer(0)), log(1-rf))
 
+})
+
+test_that("geno_names works", {
+    expect_equal(geno_names("dh", c("B", "R"), FALSE), c("BB", "RR"))
+    expect_equal(geno_names("dh", c("B", "R"), TRUE), c("BB", "RR"))
 })

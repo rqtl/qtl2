@@ -1,4 +1,3 @@
-
 context("basic HMM functions in haploids")
 
 test_that("haploids check_geno works", {
@@ -67,4 +66,9 @@ test_that("haploids step works", {
     expect_equal(test_step("haploid", 2, 1, rf, FALSE, FALSE, integer(0)), log(rf))
     expect_equal(test_step("haploid", 2, 2, rf, FALSE, FALSE, integer(0)), log(1-rf))
 
+})
+
+test_that("geno_names works", {
+    expect_equal(geno_names("haploid", c("B", "R"), FALSE), c("B", "R"))
+    expect_equal(geno_names("haploid", c("B", "R"), TRUE), c("B", "R"))
 })
