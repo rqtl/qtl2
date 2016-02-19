@@ -88,6 +88,9 @@ function(cross)
         storage.mode(result$pheno) <- "double"
     }
 
+    # alleles
+    result$alleles <- attr(cross, "alleles")
+
     class(result) <- "cross2"
 
     check_cross2(result) # double-check
