@@ -132,9 +132,9 @@ scan1coef <-
                                              weights, tol)
 
         # move SEs to attribute
-        se <- t(result$SE) # transpose to positions x coefficients
+        SE <- t(result$SE) # transpose to positions x coefficients
         result <- result$coef
-        attr(result, "SE") <- se
+        attr(result, "SE") <- SE
 
     } else { # don't calculate SEs
 
@@ -147,6 +147,16 @@ scan1coef <-
                                              weights, tol)
     }
 
+    result <- t(result) # transpose to positions x coefficients
+
+    # add names
+    dimnames(result) <- list(dimnames(genoprobs)[[3]],
+                             scan1coef_names(genoprobs, addcovar, intcovar))
+    if(se) {
+        dimnames(SE) <- dimnames(result)
+        attr(result, "SE") <- SE
+    }
+
     # add some attributes with details on analysis
     attr(result, "map") <- map
     attr(result, "sample_size") <- length(ind2keep)
@@ -156,7 +166,7 @@ scan1coef <-
     if(!is.null(weights))
         attr(result, "weights") <- TRUE
 
-    t(result) # transpose to positions x coefficients
+    result
 }
 
 
@@ -170,6 +180,7 @@ genoprobs_by_contrasts <-
         stop("contrasts should be a square matrix, ", dg[2], " x ", dg[2])
 
     # rearrange to put genotypes in last position
+    dn <- dimnames(genoprobs)
     genoprobs <- aperm(genoprobs, c(1,3,2))
     dim(genoprobs) <- c(dg[1]*dg[3], dg[2])
 
@@ -177,5 +188,41 @@ genoprobs_by_contrasts <-
     genoprobs <- genoprobs %*% contrasts
     dim(genoprobs) <- dg[c(1,3,2)]
 
-    aperm(genoprobs, c(1,3,2))
+    genoprobs <- aperm(genoprobs, c(1,3,2))
+    dn[[2]] <- colnames(contrasts)
+    dimnames(genoprobs) <- dn
+
+    genoprobs
+}
+
+# coefficient names
+scan1coef_names <-
+    function(genoprobs, addcovar, intcovar)
+{
+    qtl_names <-colnames(genoprobs)
+    if(is.null(qtl_names))
+        qtl_names <- paste0("qtleff", 1:ncol(genoprobs))
+
+    if(is.null(addcovar)) { # no additive covariates
+        return(qtl_names)
+    }
+    else { # some additive covariates
+        add_names <- colnames(addcovar)
+        if(is.null(add_names))
+            add_names <- paste0("ac", 1:ncol(addcovar))
+
+        if(is.null(intcovar)) { # no interactive covariates
+            return(c(qtl_names, add_names))
+        }
+
+        int_names <- colnames(intcovar)
+        if(is.null(intcovar))
+            int_names <- paste0("ic", 1:ncol(intcovar))
+
+        result <- c(qtl_names, add_names)
+        for(ic in int_names)
+            result <- c(result, paste(qtl_names[-1], ic, sep=":"))
+
+        return(result)
+    }
 }
