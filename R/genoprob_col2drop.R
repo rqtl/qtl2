@@ -23,5 +23,8 @@ genoprobs_col2drop <-
     }
 
     # put genotypes first and take rowMeans
-    which(rowMeans(aperm(probs, c(2,1,3))) < tol)
+    wh <- which(rowMeans(aperm(probs, c(2,1,3))) < tol)
+
+    names(wh) <- NULL # eliminate names
+    wh
 }
