@@ -305,7 +305,7 @@ summarizing the results of `scan1()`, but you can use the function
 R/qtl functions for displaying the results.
 
 ```{r convert2scanone}
-out_scanone <- convert2scanone(out, pr)
+out_scanone <- convert2scanone(out)
 ```
 
 We can now plot the LOD curves as follows:
@@ -351,8 +351,8 @@ the R/qtl `scanone` format.
 
 
 ```{r convert2scanone_lmm}
-out_lmm_scanone <- convert2scanone(out_lmm, pr)
-out_lmm_loco_scanone <- convert2scanone(out_lmm_loco, pr)
+out_lmm_scanone <- convert2scanone(out_lmm)
+out_lmm_loco_scanone <- convert2scanone(out_lmm_loco)
 ```
 
 Here is a plot of the LOD scores, by Haley-Knott regression and the linear
