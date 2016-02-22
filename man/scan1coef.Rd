@@ -36,7 +36,10 @@ columns are linearly dependent on others and should be omitted)}
 \value{
 A matrix of estimated regression coefficients, of dimension
 positions x number of effects. The number of effects is
-\code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}
+\code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}. The
+map of positions at which the calculations were performed is
+included as an attribute \code{"map"} (taken from the corresponding
+attribute in the input \code{genoprobs}).
 }
 \description{
 Calculate QTL effects in scan along one chromosome with a
@@ -54,16 +57,16 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
-# calculate genotype probabilities just for chromosome 7
-probs <- calc_genoprob(iron[,7], step=1, error_prob=0.002)
+# calculate genotype probabilities
+probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno[,1]
 covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 
-# perform genome scan
-coef <- scan1coef(probs[[1]], pheno, covar)
+# calculate coefficients for chromosome 7
+coef <- scan1coef(probs[,7], pheno, covar)
 
 }
 \references{

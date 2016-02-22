@@ -8,12 +8,6 @@
 #'
 #' @param output Matrix of LOD scores, as calculated by
 #' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
-#' @param probs Genotype probabilities (calculated with the qtl2geno
-#' function \code{calc_genoprob}) used to calculate \code{output}. It
-#' includes, as an attribute, the map of positions at which the LOD
-#' scores were calculated.
-#' @param map Genetic map of positions at which the LOD scores were
-#' calculated. (Needed if \code{probs} is not provided.)
 #'
 #' @return A data frame with class \code{"scanone"}, containing
 #' chromosome and position columns followed by the LOD scores in
@@ -32,13 +26,13 @@
 #' Xcovar <- get_x_covar(iron)
 #' out <- scan1(probs, pheno, covar, Xcovar)
 #'
-#' out_rev <- convert2scanone(out, probs)
+#' out_rev <- convert2scanone(out)
 #'
 #' @export
 convert2scanone <-
-    function(output, probs, map)
+    function(output)
 {
-    if(missing(map)) map <- attr(probs, "map")
+    map <- attr(output, "map")
     n <- sapply(map, length)
 
     stopifnot(sum(n) == nrow(output))

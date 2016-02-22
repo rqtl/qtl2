@@ -4,19 +4,11 @@
 \alias{convert2scanone}
 \title{Convert scan1 results to the scanone format}
 \usage{
-convert2scanone(output, probs, map)
+convert2scanone(output)
 }
 \arguments{
 \item{output}{Matrix of LOD scores, as calculated by
 \code{\link{scan1}} or \code{\link{scan1_lmm}}.}
-
-\item{probs}{Genotype probabilities (calculated with the qtl2geno
-function \code{calc_genoprob}) used to calculate \code{output}. It
-includes, as an attribute, the map of positions at which the LOD
-scores were calculated.}
-
-\item{map}{Genetic map of positions at which the LOD scores were
-calculated. (Needed if \code{probs} is not provided.)}
 }
 \value{
 A data frame with class \code{"scanone"}, containing
@@ -42,7 +34,7 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 out <- scan1(probs, pheno, covar, Xcovar)
 
-out_rev <- convert2scanone(out, probs)
+out_rev <- convert2scanone(out)
 
 }
 
