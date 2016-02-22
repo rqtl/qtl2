@@ -13,7 +13,6 @@ using namespace Rcpp;
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
-// addcovar  = additive covariates (can be null)
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = matrix of coefficients (genotypes x positions)
@@ -59,7 +58,7 @@ NumericMatrix scancoef_hk_nocovar(const NumericVector& genoprobs,
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
-// addcovar  = additive covariates (can be null)
+// addcovar  = additive covariates
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = matrix of coefficients (genotypes x positions)
@@ -113,7 +112,7 @@ NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs,
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
-// addcovar  = additive covariates (can be null)
+// addcovar  = additive covariates
 // intcovar  = interactive covariates (should also be included in addcovar)
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
@@ -164,7 +163,6 @@ NumericMatrix scancoef_hk_intcovar(const NumericVector& genoprobs,
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
-// addcovar  = additive covariates (can be null)
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = matrix of coefficients (genotypes x positions)
@@ -216,7 +214,7 @@ List scancoefSE_hk_nocovar(const NumericVector& genoprobs,
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
-// addcovar  = additive covariates (can be null)
+// addcovar  = additive covariates
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = matrix of coefficients (genotypes x positions)
@@ -276,7 +274,7 @@ List scancoefSE_hk_addcovar(const NumericVector& genoprobs,
 // genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
-// addcovar  = additive covariates (can be null)
+// addcovar  = additive covariates
 // intcovar  = interactive covariates (should also be included in addcovar)
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
