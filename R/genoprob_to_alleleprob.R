@@ -26,6 +26,10 @@
 genoprob_to_alleleprob <-
     function(probs, quiet=TRUE, cores=1)
 {
+    # already converted?
+    ap_attr <- attr(probs, "alleleprobs")
+    if(!is.null(ap_attr) && ap_attr) return(probs)
+
     is_x_chr <- attr(probs, "is_x_chr")
 
     # set up cluster; make quiet=FALSE if cores>1
@@ -58,6 +62,6 @@ genoprob_to_alleleprob <-
 
     for(at in names(probs_attr))
         attr(probs, at) <- probs_attr[[at]]
-    attr(probs, "alleles") <- TRUE
+    attr(probs, "alleleprobs") <- TRUE
     probs
 }

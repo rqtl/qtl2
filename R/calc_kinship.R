@@ -73,6 +73,10 @@ calc_kinship <-
 
     # convert from genotype probabilities to allele probabilities
     if(use_allele_probs) {
+        # already converted?
+        ap_attr <- attr(probs, "alleleprobs")
+        if(!is.null(ap_attr) && ap_attr) break # already converted
+
         if(!quiet) message(" - converting to allele probs")
         probs <- genoprob_to_alleleprob(probs, quiet=quiet, cores=cores)
     }
