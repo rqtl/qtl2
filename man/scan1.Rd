@@ -36,7 +36,10 @@ produced by \code{\link[parallel]{makeCluster}}.}
 A matrix of LOD scores, positions x phenotypes.  Covariate
 column names are included as attributes (\code{"addcovar"},
 \code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
-sample size for each phenotype (\code{"sample_size"})
+sample size for each phenotype (\code{"sample_size"}). The map of
+positions at which the calculations were performed is included as
+an attribute \code{"map"} (taken from the corresponding attribute
+in the input \code{genoprobs}).
 }
 \description{
 Genome scan with a single-QTL model by Haley-Knott regression, with possible allowance for covariates.
