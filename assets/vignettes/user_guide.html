@@ -137,7 +137,7 @@ out &lt;-<span class="st"> </span><span class="kw">scan1</span>(pr, iron$pheno, 
 <pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">scan1</span>(pr, iron$pheno, <span class="dt">Xcovar=</span>Xcovar, <span class="dt">cores=</span><span class="dv">4</span>)</code></pre>
 <p>The output of <code>scan1()</code> is a matrix of LOD scores, positions × phenotypes.</p>
 <p>Unfortunately, we don’t yet have functions for displaying or summarizing the results of <code>scan1()</code>, but you can use the function <code>convert2scanone()</code> to convert the results to the format produced by <code>scanone()</code> in <a href="http://rqtl.org">R/qtl</a>, and then use the relevant R/qtl functions for displaying the results.</p>
-<pre class="sourceCode r"><code class="sourceCode r">out_scanone &lt;-<span class="st"> </span><span class="kw">convert2scanone</span>(out, pr)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">out_scanone &lt;-<span class="st"> </span><span class="kw">convert2scanone</span>(out)</code></pre>
 <p>We can now plot the LOD curves as follows:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl)
 <span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="fl">5.1</span>, <span class="fl">4.1</span>, <span class="fl">1.1</span>, <span class="fl">1.1</span>))
@@ -155,8 +155,8 @@ out &lt;-<span class="st"> </span><span class="kw">scan1</span>(pr, iron$pheno, 
 <p>For the LOCO (leave one chromosome out) method, provide the list of kinship matrices as obtained from <code>calc_kinship()</code> with <code>method=&quot;loco&quot;</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">out_lmm_loco &lt;-<span class="st"> </span><span class="kw">scan1_lmm</span>(pr, iron$pheno, kinship_loco, <span class="dt">Xcovar=</span>Xcovar)</code></pre>
 <p>To plot the results, we again need to convert them to the R/qtl <code>scanone</code> format.</p>
-<pre class="sourceCode r"><code class="sourceCode r">out_lmm_scanone &lt;-<span class="st"> </span><span class="kw">convert2scanone</span>(out_lmm, pr)
-out_lmm_loco_scanone &lt;-<span class="st"> </span><span class="kw">convert2scanone</span>(out_lmm_loco, pr)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">out_lmm_scanone &lt;-<span class="st"> </span><span class="kw">convert2scanone</span>(out_lmm)
+out_lmm_loco_scanone &lt;-<span class="st"> </span><span class="kw">convert2scanone</span>(out_lmm_loco)</code></pre>
 <p>Here is a plot of the LOD scores, by Haley-Knott regression and the linear mixed model using either the standard kinship matrix or the LOCO method.</p>
 <pre class="sourceCode r"><code class="sourceCode r">color &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;slateblue&quot;</span>, <span class="st">&quot;violetred&quot;</span>, <span class="st">&quot;green3&quot;</span>)
 <span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="fl">5.1</span>, <span class="fl">4.1</span>, <span class="fl">1.1</span>, <span class="fl">1.1</span>))
