@@ -215,7 +215,7 @@ kinship_bychr2loco <-
 }
 
 # normlize kinship as in ****
-# (suggested by Petr Simancek)
+# (suggested by Petr Simecek)
 normalize_kinship <-
     function(kinship)
 {
