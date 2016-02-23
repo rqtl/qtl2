@@ -6,7 +6,7 @@
 \usage{
 calc_kinship(probs, type = c("overall", "loco", "chr"),
   use_grid_only = TRUE, omit_x = TRUE, use_allele_probs = TRUE,
-  quiet = TRUE, cores = 1)
+  normalize = TRUE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{List of three-dimensional arrays of probabilities, as
@@ -28,6 +28,10 @@ kinship matrix for each chromosome (\code{"chr"}).}
 allele probabilities (that is, first run
 \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
 probabilities.}
+
+\item{normalize}{If \code{TRUE}, divide the kinship matrix by a
+normalizing constant (see Details), to give better estimates of
+heritability.}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
@@ -61,6 +65,10 @@ are two individuals.
 For crosses with just two possible genotypes (e.g., backcross), we
 don't convert to allele probabilities but just use the original
 genotype probabilities.
+
+If \code{normalize=TRUE}, we normalize the kinship matrix as in
+equation 5 in Kang et al. (2010) Nat Genet
+42:348-354. \href{http://doi.org/10.1038/ng.548}{doi: 10.1038/ng.548}
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

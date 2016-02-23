@@ -19,6 +19,9 @@
 #' allele probabilities (that is, first run
 #' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
 #' probabilities.
+#' @param normalize If \code{TRUE}, divide the kinship matrix by a
+#' normalizing constant (see Details), to give better estimates of
+#' heritability.
 #' @param quiet IF \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -45,6 +48,10 @@
 #' don't convert to allele probabilities but just use the original
 #' genotype probabilities.
 #'
+#' If \code{normalize=TRUE}, we normalize the kinship matrix as in
+#' equation 5 in Kang et al. (2010) Nat Genet
+#' 42:348-354. \href{http://doi.org/10.1038/ng.548}{doi: 10.1038/ng.548}
+#'
 #' @export
 #' @keywords utilities
 #'
@@ -56,7 +63,9 @@
 calc_kinship <-
     function(probs, type=c("overall", "loco", "chr"),
              use_grid_only=TRUE, omit_x=TRUE,
-             use_allele_probs=TRUE, quiet=TRUE, cores=1)
+             use_allele_probs=TRUE,
+             normalize=TRUE,
+             quiet=TRUE, cores=1)
 {
     type <- match.arg(type)
 
@@ -78,14 +87,21 @@ calc_kinship <-
         probs <- genoprob_to_alleleprob(probs, quiet=quiet, cores=cores)
     }
 
-    if(type=="overall")
-        return(calc_kinship_overall(probs, chrs=chrs, quiet=quiet, cores=cores))
-    else if(type=="chr")
-        return(calc_kinship_bychr(probs, chrs=chrs, scale=TRUE, quiet=quiet, cores=cores))
+    if(type=="overall") {
+        K <- calc_kinship_overall(probs, chrs=chrs, quiet=quiet, cores=cores)
+    }
+    else if(type=="chr") {
+        K <- calc_kinship_bychr(probs, chrs=chrs, scale=TRUE, quiet=quiet, cores=cores)
+    }
+    else {
+        # otherwise LOCO (leave one chromosome out)
+        result <- calc_kinship_bychr(probs, chrs=chrs, scale=FALSE, quiet=quiet, cores=cores)
+        K <- kinship_bychr2loco(result, allchr)
+    }
 
-    # otherwise LOCO (leave one chromosome out)
-    result <- calc_kinship_bychr(probs, chrs=chrs, scale=FALSE, quiet=quiet, cores=cores)
-    kinship_bychr2loco(result, allchr)
+    if(normalize) K <- normalize_kinship(K)
+
+    K
 }
 
 # calculate an overall kinship matrix
@@ -126,6 +142,7 @@ calc_kinship_overall <-
     tot_pos <- sum(vapply(probs, function(a) dim(a)[3], 0)[chrs])
     result <- result/tot_pos
     attr(result, "n_pos") <- tot_pos
+
     result
 }
 
@@ -195,4 +212,18 @@ kinship_bychr2loco <-
 
     # make sure it's in the right order
     kinship[allchr]
+}
+
+# normlize kinship as in ****
+# (suggested by Petr Simancek)
+normalize_kinship <-
+    function(kinship)
+{
+    if(is.list(kinship)) {
+        return(lapply(kinship, normalize_kinship))
+    }
+
+    n <- nrow(kinship)
+    norm_const <- (n - sum(kinship)/n) / (n-1)
+    kinship/norm_const
 }
