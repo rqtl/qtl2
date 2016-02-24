@@ -146,7 +146,7 @@ scan1coef_lmm <-
 
     # eigen decomposition of kinship matrix
     if(!did_decomp)
-        kinship <- decomp_kinship(kinship[ind2keep, ind2keep], cores=cores)
+        kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
     # estimate hsq if necessary
     if(missing(hsq) || is.null(hsq)) {
