@@ -8,8 +8,6 @@
 #' with dimension individuals x genotypes x positions.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship A kinship matrix.
-#' @param hsq (Optional) residual heritability
-#' @param reml If true and \code{hsq} is not provided, use REML to estimate \code{hsq}.
 #' @param addcovar An optional matrix of additive covariates.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param contrasts An optional matrix of genotype contrasts, size
@@ -18,6 +16,8 @@
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param se If TRUE, also calculate the standard errors.
+#' @param hsq (Optional) residual heritability
+#' @param reml If true and \code{hsq} is not provided, use REML to estimate \code{hsq}.
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
@@ -56,9 +56,10 @@
 #'
 #' @export
 scan1coef_lmm <-
-    function(genoprobs, pheno, kinship, hsq, reml=TRUE,
+    function(genoprobs, pheno, kinship,
              addcovar=NULL, intcovar=NULL,
-             contrasts=NULL, se=FALSE, tol=1e-12)
+             contrasts=NULL, se=FALSE,
+             hsq, reml=TRUE, tol=1e-12)
 {
     stopifnot(tol > 0)
 

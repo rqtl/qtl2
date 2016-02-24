@@ -4,8 +4,8 @@
 \alias{scan1coef_lmm}
 \title{Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM}
 \usage{
-scan1coef_lmm(genoprobs, pheno, kinship, hsq, reml = TRUE, addcovar = NULL,
-  intcovar = NULL, contrasts = NULL, se = FALSE, tol = 0.000000000001)
+scan1coef_lmm(genoprobs, pheno, kinship, addcovar = NULL, intcovar = NULL,
+  contrasts = NULL, se = FALSE, hsq, reml = TRUE, tol = 0.000000000001)
 }
 \arguments{
 \item{genoprobs}{A 3-dimensional array of genotype probabilities
@@ -14,10 +14,6 @@ with dimension individuals x genotypes x positions.}
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
 \item{kinship}{A kinship matrix.}
-
-\item{hsq}{(Optional) residual heritability}
-
-\item{reml}{If true and \code{hsq} is not provided, use REML to estimate \code{hsq}.}
 
 \item{addcovar}{An optional matrix of additive covariates.}
 
@@ -30,6 +26,10 @@ mean, additive effect, and dominance effect. The default is the
 identity matrix.}
 
 \item{se}{If TRUE, also calculate the standard errors.}
+
+\item{hsq}{(Optional) residual heritability}
+
+\item{reml}{If true and \code{hsq} is not provided, use REML to estimate \code{hsq}.}
 
 \item{tol}{Tolerance value for
 linear regression by QR decomposition (in determining whether
