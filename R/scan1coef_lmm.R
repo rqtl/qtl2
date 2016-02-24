@@ -7,7 +7,11 @@
 #' @param genoprobs A 3-dimensional array of genotype probabilities
 #' with dimension individuals x genotypes x positions.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
-#' @param kinship A kinship matrix.
+#' @param kinship A kinship matrix. Can be eigen decomposition of
+#' kinship matrix (as calculated with \code{\link{decomp_kinship}}),
+#' but it would need to be for the exact subset of individuals
+#' (following omitting those with missing genotype probabilities,
+#' phenotypes, or covariates).
 #' @param addcovar An optional matrix of additive covariates.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param contrasts An optional matrix of genotype contrasts, size
@@ -87,12 +91,19 @@ scan1coef_lmm <-
     }
 
     # check that kinship matrices are square with same IDs
-    kinshipIDs <- check_kinship(kinship, 1)
+    if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
+        kinshipIDs <- rownames(kinship$vectors)
+        did_decomp <- TRUE
+    } else {
+        kinshipIDs <- check_kinship(kinship, 1)
+        did_decomp <- FALSE
+    }
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
                                addcovar, intcovar, complete.cases=TRUE)
+
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")
@@ -101,10 +112,17 @@ scan1coef_lmm <-
                  paste(ind2keep, collapse=":"))
     }
 
+    if(did_decomp) { # if did decomposition already, make sure it was with exactly
+        if(length(kinshipIDs) != length(ind2keep) ||
+           any(sort(kinshipIDs) != sort(ind2keep)))
+            stop("Decomposed kinship matrix was with different individuals")
+        else
+            ind2keep <- kinshipIDs # force them in same order
+    }
+
     # omit individuals not in common
     genoprobs <- genoprobs[ind2keep,,,drop=FALSE]
     pheno <- pheno[ind2keep]
-    kinship <- kinship[ind2keep, ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
 
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
@@ -116,18 +134,19 @@ scan1coef_lmm <-
     addcovar <- force_intcovar(addcovar, intcovar, tol)
 
     # eigen decomposition of kinship matrix
-    Ke <- decomp_kinship(kinship, cores=cores)
+    if(!did_decomp)
+        kinship <- decomp_kinship(kinship[ind2keep, ind2keep], cores=cores)
 
     # estimate hsq if necessary
     if(missing(hsq) || is.null(hsq)) {
-        nullresult <- calc_hsq_clean(Ke, as.matrix(pheno), addcovar, NULL, FALSE,
+        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
                                      reml, cores=1, check_boundary=TRUE, tol)
         hsq <- nullresult$hsq
     }
 
-    # Kevec and weights
-    Kevec <- Ke$vectors
-    weights <- 1/sqrt(hsq*Ke$values + (1-hsq))
+    # eigen-vectors and weights
+    eigenvec <- kinship$vectors
+    weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
@@ -136,12 +155,12 @@ scan1coef_lmm <-
     if(se) { # also calculate SEs
 
         if(is.null(addcovar))      # no covariates
-            result <- scancoefSE_lmm_nocovar(genoprobs, pheno, Kevec, weights, tol)
+            result <- scancoefSE_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol)
         else if(is.null(intcovar)) # just addcovar
-            result <- scancoefSE_lmm_addcovar(genoprobs, pheno, addcovar, Kevec, weights, tol)
+            result <- scancoefSE_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
         else                       # intcovar
             result <- scancoefSE_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                              Kevec, weights, tol)
+                                              eigenvec, weights, tol)
 
         # move SEs to attribute
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -151,12 +170,12 @@ scan1coef_lmm <-
     } else { # don't calculate SEs
 
         if(is.null(addcovar))      # no covariates
-            result <- scancoef_lmm_nocovar(genoprobs, pheno, Kevec, weights, tol)
+            result <- scancoef_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol)
         else if(is.null(intcovar)) # just addcovar
-            result <- scancoef_lmm_addcovar(genoprobs, pheno, addcovar, Kevec, weights, tol)
+            result <- scancoef_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
         else                       # intcovar
             result <- scancoef_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                            Kevec, weights, tol)
+                                            eigenvec, weights, tol)
     }
 
     result <- t(result) # transpose to positions x coefficients
