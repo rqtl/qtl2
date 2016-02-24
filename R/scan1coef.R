@@ -73,7 +73,7 @@ scan1coef <-
 
     # genoprobs a list? then just take first chromosome
     if(is.list(genoprobs)) {
-        map <- attr(genoprobs, "map")[1]
+        map <- attr(genoprobs, "map")[[1]]
         genoprobs <- genoprobs[[1]]
     } else {
         map <- attr(genoprobs, "map")
