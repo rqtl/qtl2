@@ -75,8 +75,19 @@ scan1coef_lmm <-
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
 
+    # make sure pheno is a vector
+    if(is.matrix(pheno) || is.data.frame(pheno)) {
+        if(ncol(pheno) > 1)
+            warning("Considering only the first phenotype.")
+        rn <- rownames(pheno)
+        pheno <- pheno[,1]
+        names(pheno) <- rn
+    }
+
     # genoprobs a list? then just take first chromosome
     if(is.list(genoprobs)) {
+        if(length(genoprobs) > 1)
+            warning("Considering only the first chromosome.")
         map <- attr(genoprobs, "map")[[1]]
         genoprobs <- genoprobs[[1]]
     } else {
