@@ -5,7 +5,7 @@
 \title{Calculate kinship matrix}
 \usage{
 calc_kinship(probs, type = c("overall", "loco", "chr"),
-  use_grid_only = TRUE, omit_x = TRUE, use_allele_probs = TRUE,
+  use_grid_only = TRUE, omit_x = FALSE, use_allele_probs = TRUE,
   normalize = TRUE, quiet = TRUE, cores = 1)
 }
 \arguments{
@@ -53,12 +53,12 @@ from conditional genotype probabilities.
 If \code{use_allele_probs=TRUE} (the default), we first
 convert the genotype probabilities are converted to allele
 probabilities (using \code{\link{genoprob_to_alleleprob}}). This is
-recommended, as then the result is like a empirical kinship
+recommended, as then the result is twice the empirical kinship
 coefficient (e.g., the expected value for an intercross is 1/2;
 using genotype probabilities, the expected value is 3/8).
 
 We then calculate
-\eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
+\eqn{2 \sum_{kl}(p_{ikl} p_{jkl})}{2 sum_kl (p_ikl p_jkl)}
 where \eqn{k} = position, \eqn{l} = allele, and \eqn{i,j}
 are two individuals.
 

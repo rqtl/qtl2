@@ -21,9 +21,7 @@ NumericMatrix calc_kinship(const NumericVector& prob_array) // array as n_pos x 
     NumericMatrix result(n_ind, n_ind);
 
     for(unsigned int ind_i=0, offset_i=0; ind_i<n_ind; ++ind_i, offset_i += pos_by_gen) {
-        result(ind_i,ind_i) = (double)n_pos;
-
-        for(unsigned int ind_j=ind_i+1, offset_j=(ind_i+1)*pos_by_gen; ind_j<n_ind; ind_j++, offset_j += pos_by_gen) {
+        for(unsigned int ind_j=ind_i, offset_j=ind_i*pos_by_gen; ind_j<n_ind; ind_j++, offset_j += pos_by_gen) {
 
             double total = 0.0;
             for(unsigned int pos=0; pos<n_pos; pos++) {
@@ -32,7 +30,8 @@ NumericMatrix calc_kinship(const NumericVector& prob_array) // array as n_pos x 
                         prob_array[pos + gen*n_pos + offset_j];
                 }
             }
-            result(ind_i,ind_j) = result(ind_j,ind_i) = total;
+            // calculating 2*kinship = 2*Pr(random allele from i == random allele from j)
+            result(ind_i,ind_j) = result(ind_j,ind_i) = 2*total;
         }
     }
 
