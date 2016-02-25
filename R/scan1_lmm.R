@@ -295,7 +295,7 @@ scan1_lmm_clean <-
                 Keval <- Ke$values
             }
 
-            # premultiply phenotypes and covariates by transposed eigenvectors
+            # prep phenotype and covariates
             y <- pheno[,phecol,drop=FALSE]
             ac <- cbind(rep(1, n), addcovar)
             ic <- intcovar

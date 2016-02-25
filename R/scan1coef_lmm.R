@@ -1,23 +1,27 @@
-#' Calculate QTL effects in scan along one chromosome
+#' Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM
 #'
 #' Calculate QTL effects in scan along one chromosome with a
-#' single-QTL model using Haley-Knott regression, with possible
+#' single-QTL model using a linear mixed model, with possible
 #' allowance for covariates.
 #'
 #' @param genoprobs A 3-dimensional array of genotype probabilities
 #' with dimension individuals x genotypes x positions.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
+#' @param kinship A kinship matrix. Can be eigen decomposition of
+#' kinship matrix (as calculated with \code{\link{decomp_kinship}}),
+#' but it would need to be for the exact subset of individuals
+#' (following omitting those with missing genotype probabilities,
+#' phenotypes, or covariates).
 #' @param addcovar An optional matrix of additive covariates.
 #' @param intcovar An optional matrix of interactive covariates.
-#' @param weights An optional vector of positive weights for the
-#' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
 #' \code{cbind(c(1,0,0), c(-0.5, 0, 0.5), c(-0.5, 1, 0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param se If TRUE, also calculate the standard errors.
+#' @param hsq (Optional) residual heritability
+#' @param reml If true and \code{hsq} is not provided, use REML to estimate \code{hsq}.
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
@@ -32,19 +36,19 @@
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
 #'
-#' @references Haley CS, Knott SA (1992) A simple
-#' regression method for mapping quantitative trait loci in line
-#' crosses using flanking markers.  Heredity 69:315--324.
-#'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
 #' library(qtl2geno)
 #'
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' \dontshow{iron <- iron[,c(7, 8)]}
 #'
 #' # calculate genotype probabilities
 #' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#'
+#' # leave-one-chromosome-out kinship matrices
+#' kinship <- calc_kinship(probs, "loco")
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno[,1]
@@ -52,12 +56,14 @@
 #' names(covar) <- rownames(iron$covar)
 #'
 #' # calculate coefficients for chromosome 7
-#' coef <- scan1coef(probs[,7], pheno, covar)
+#' coef <- scan1coef_lmm(probs[,"7"], pheno, kinship[["7"]], addcovar=covar)
 #'
 #' @export
-scan1coef <-
-    function(genoprobs, pheno, addcovar=NULL, intcovar=NULL, weights=NULL,
-             contrasts=NULL, se=FALSE, tol=1e-12)
+scan1coef_lmm <-
+    function(genoprobs, pheno, kinship,
+             addcovar=NULL, intcovar=NULL,
+             contrasts=NULL, se=FALSE,
+             hsq, reml=TRUE, tol=1e-12)
 {
     stopifnot(tol > 0)
 
@@ -68,8 +74,6 @@ scan1coef <-
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
-    # square-root of weights
-    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
 
     # make sure pheno is a vector
     if(is.matrix(pheno) || is.data.frame(pheno)) {
@@ -97,10 +101,20 @@ scan1coef <-
             stop("contrasts should be a square matrix, ", ng, " x ", ng)
     }
 
+    # check that kinship matrices are square with same IDs
+    if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
+        kinshipIDs <- rownames(kinship$vectors)
+        did_decomp <- TRUE
+    } else {
+        kinshipIDs <- check_kinship(kinship, 1)
+        did_decomp <- FALSE
+    }
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs, pheno, addcovar, intcovar,
-                               weights, complete.cases=TRUE)
+    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
+                               addcovar, intcovar, complete.cases=TRUE)
+
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")
@@ -109,12 +123,20 @@ scan1coef <-
                  paste(ind2keep, collapse=":"))
     }
 
+    if(did_decomp) { # if did decomposition already, make sure it was with exactly
+        if(length(kinshipIDs) != length(ind2keep) ||
+           any(sort(kinshipIDs) != sort(ind2keep)))
+            stop("Decomposed kinship matrix was with different individuals")
+        else
+            ind2keep <- kinshipIDs # force them in same order
+    }
+
     # omit individuals not in common
     genoprobs <- genoprobs[ind2keep,,,drop=FALSE]
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
+
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
-    if(!is.null(weights)) weights <- weights[ind2keep]
 
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
@@ -122,11 +144,20 @@ scan1coef <-
     # make sure columns in intcovar are also in addcovar
     addcovar <- force_intcovar(addcovar, intcovar, tol)
 
-    # if weights, adjust phenotypes
-    if(!is.null(weights)) pheno <- weights * pheno
+    # eigen decomposition of kinship matrix
+    if(!did_decomp)
+        kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
-    # weights have 0 dimension if missing
-    if(is.null(weights)) weights <- numeric(0)
+    # estimate hsq if necessary
+    if(missing(hsq) || is.null(hsq)) {
+        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
+                                     reml, cores=1, check_boundary=TRUE, tol)
+        hsq <- nullresult$hsq
+    }
+
+    # eigen-vectors and weights
+    eigenvec <- kinship$vectors
+    weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
@@ -135,12 +166,12 @@ scan1coef <-
     if(se) { # also calculate SEs
 
         if(is.null(addcovar))      # no covariates
-            result <- scancoefSE_hk_nocovar(genoprobs, pheno, weights, tol)
+            result <- scancoefSE_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol)
         else if(is.null(intcovar)) # just addcovar
-            result <- scancoefSE_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+            result <- scancoefSE_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
         else                       # intcovar
-            result <- scancoefSE_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                             weights, tol)
+            result <- scancoefSE_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                              eigenvec, weights, tol)
 
         # move SEs to attribute
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -150,12 +181,12 @@ scan1coef <-
     } else { # don't calculate SEs
 
         if(is.null(addcovar))      # no covariates
-            result <- scancoef_hk_nocovar(genoprobs, pheno, weights, tol)
+            result <- scancoef_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol)
         else if(is.null(intcovar)) # just addcovar
-            result <- scancoef_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+            result <- scancoef_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
         else                       # intcovar
-            result <- scancoef_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                             weights, tol)
+            result <- scancoef_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                            eigenvec, weights, tol)
     }
 
     result <- t(result) # transpose to positions x coefficients

@@ -306,7 +306,6 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
 
     index <- nrow(out_reml) - rev(1:d) + 1
     ## FIX ME
-    ## FIX_ME
     ## Not yet working on X chromosome, when (X, probs) is not full rank
 #    expect_equal(out_reml[index,1], lod_reml1)
 #    expect_equal(out_reml[index,2], lod_reml2)
