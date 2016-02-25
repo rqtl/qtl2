@@ -350,7 +350,7 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
         byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
         expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
-                     c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
+                     c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-5)
         expect_equal(as.numeric(attr(out_ml, "hsq")[nchr,]),
                      c(byhand1_ml$hsq, byhand2_ml$hsq), tolerance=1e-6)
 
@@ -374,7 +374,7 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
         else index <- 1:d
         dimnames(out_reml) <- dimnames(out_ml) <- NULL
         expect_equal(out_reml[index,1], lod_reml1)
-        expect_equal(out_reml[index,2], lod_reml2)
+        expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-5)
         expect_equal(out_ml[index,1], lod_ml1)
         expect_equal(out_ml[index,2], lod_ml2)
     }
@@ -418,7 +418,7 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
         byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
         expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
-                     c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
+                     c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-5)
         expect_equal(as.numeric(attr(out_ml, "hsq")[nchr,]),
                      c(byhand1_ml$hsq, byhand2_ml$hsq), tolerance=1e-6)
 
@@ -442,7 +442,7 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
         else index <- 1:d
         dimnames(out_reml) <- dimnames(out_ml) <- NULL
         expect_equal(out_reml[index,1], lod_reml1)
-        expect_equal(out_reml[index,2], lod_reml2)
+        expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-6)
         expect_equal(out_ml[index,1], lod_ml1)
         expect_equal(out_ml[index,2], lod_ml2)
     }

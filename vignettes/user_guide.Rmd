@@ -382,3 +382,110 @@ For the spleen phenotype (bottom panel), the linear mixed model with an
 overall kinship matrix again gives much lower LOD scores than the
 other two methods. However, in this case Haley-Knott regression and
 the LOCO method give quite similar results.
+
+## Estimated QTL effects
+
+The `scan1()` and `scan1_lmm()` functions return only LOD scores. To
+obtain estimated QTL effects, use the functions `scan1coef()` and
+`scan1coef_lmm()`. These functions take a single phenotype and the
+genotype probabilities for a single chromosome and return a matrix
+with the estimated coefficients at each putative QTL location along
+the chromosome.
+
+For example, to get the estimated effects on chromosome 2 for the
+liver phenotype, we'd do the following:
+
+```{r est_effects_liver_c2}
+c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
+```
+
+The result is a matrix, `r nrow(c2eff)` positions &times; `r ncol(c2eff)`
+genotypes. An attribute, `"map"` contains the positions of the
+calculations. So to plot the effects, we could do the following:
+
+```{r plot_effects_liver_c2}
+par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+map <- attr(c2eff, "map")
+col <- c("slateblue", "violetred", "green3")
+plot(map, c2eff[,1], ylim=range(c2eff), xlab="Position (cM)",
+     ylab="Phenotype average", col=col[1], type="l")
+for(i in 2:ncol(c2eff))
+    lines(map, c2eff[,i], col=col[i])
+for(i in 1:ncol(c2eff))
+    axis(side=4, at=c2eff[nrow(c2eff),i], colnames(c2eff)[i],
+         tick=FALSE, col.axis=col[i])
+```
+
+The default is to provide phenotype averages for each genotype
+group. If instead you want additive and dominance effects, you can
+provide a square matrix of _contrasts_, as follows:
+
+```{r est_effects_liver_c2_contr}
+c2effB <- scan1coef(pr[,"2"], iron$pheno[,"liver"],
+                    contrasts=cbind(mu=c(1,1,1), a=c(-0.5, 0, 0.5), d=c(-0.5, 1, -0.5)))
+
+```
+
+The result will then contain the estimates of `mu`, `a`, and `d`.
+Here's a plot of the additive and dominance effects, which are in the
+second and third columns.
+
+
+```{r plot_effects_liver_c2_contr}
+par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+map <- attr(c2effB, "map")
+ymx <- max(abs(c2effB[,2:3]))
+plot(map, c2effB[,2], ylim=c(-ymx, ymx), xlab="Position (cM)",
+     ylab="QTL effect", col=col[1], type="l")
+lines(map, c2effB[,3], col=col[2])
+for(i in 1:2)
+    axis(side=4, at=c2effB[nrow(c2eff),i+1], colnames(c2effB)[i+1],
+         tick=FALSE, col.axis=col[i])
+```
+
+The `scan1coef_lmm()` function works the same way as `scan1coef()` but
+also taking a kinship matrix and fitting a linear mixed model (LMM) to
+account for a residual polygenic effect. Here's let's use the kinship
+matrix from the LOCO method.
+
+```{r est_effects_lmm_liver_c2}
+c2eff_lmm <- scan1coef_lmm(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+```
+
+Here's a plot of the estimates.
+
+```{r plot_effects_lmm_liver_c2}
+par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+map <- attr(c2eff_lmm, "map")
+col <- c("slateblue", "violetred", "green3")
+plot(map, c2eff_lmm[,1], ylim=range(c2eff_lmm), xlab="Position (cM)",
+     ylab="Phenotype average", col=col[1], type="l")
+for(i in 2:ncol(c2eff_lmm))
+    lines(map, c2eff_lmm[,i], col=col[i])
+for(i in 1:ncol(c2eff))
+    axis(side=4, at=c2eff_lmm[nrow(c2eff_lmm),i],
+         colnames(c2eff_lmm)[i],
+         tick=FALSE, col.axis=col[i])
+```
+
+You can also get estimated additive and dominance effects, using a
+matrix of contrasts.
+
+```{r est_effects_lmm_liver_c2_contr}
+c2effB_lmm <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
+                        contrasts=cbind(mu=c(1,1,1), a=c(-0.5, 0, 0.5), d=c(-0.5, 1, -0.5)))
+```
+
+Here's a plot of the results.
+
+```{r plot_effects_lmm_liver_c2_contr}
+par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+map <- attr(c2effB_lmm, "map")
+ymx <- max(abs(c2effB_lmm[,2:3]))
+plot(map, c2effB_lmm[,2], ylim=c(-ymx, ymx), xlab="Position (cM)",
+     ylab="QTL effect", col=col[1], type="l")
+lines(map, c2effB_lmm[,3], col=col[2])
+for(i in 1:2)
+    axis(side=4, at=c2effB_lmm[nrow(c2eff),i+1], colnames(c2effB_lmm)[i+1],
+         tick=FALSE, col.axis=col[i])
+```

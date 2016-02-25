@@ -33,6 +33,8 @@ NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const Numer
     NumericMatrix X(n_ind, n_gen);
 
     for(unsigned int i=0, offset=0; i<n_pos; i++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 
@@ -229,6 +231,8 @@ NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs,
     NumericMatrix result(n_phe, n_pos);
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, true);
 
@@ -277,6 +281,8 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genop
     NumericMatrix pheno_rev = weighted_matrix(pheno, weights);
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, true);
         X = weighted_matrix(X, weights);

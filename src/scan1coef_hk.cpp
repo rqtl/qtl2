@@ -39,6 +39,8 @@ NumericMatrix scancoef_hk_nocovar(const NumericVector& genoprobs,
     NumericMatrix X(n_ind, n_gen);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 
@@ -90,6 +92,8 @@ NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs,
     NumericMatrix X(n_ind, n_coef);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 
@@ -146,6 +150,8 @@ NumericMatrix scancoef_hk_intcovar(const NumericVector& genoprobs,
     NumericMatrix result(n_coef, n_pos);
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, false);
         if(n_weights > 0) X = weighted_matrix(X, weights);
@@ -190,6 +196,8 @@ List scancoefSE_hk_nocovar(const NumericVector& genoprobs,
     NumericMatrix X(n_ind, n_gen);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 
@@ -247,6 +255,8 @@ List scancoefSE_hk_addcovar(const NumericVector& genoprobs,
     NumericMatrix X(n_ind, n_coef);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + x_size, X.begin());
 
@@ -309,6 +319,8 @@ List scancoefSE_hk_intcovar(const NumericVector& genoprobs,
     NumericMatrix se(n_coef, n_pos);
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, false);
         if(n_weights > 0) X = weighted_matrix(X, weights);

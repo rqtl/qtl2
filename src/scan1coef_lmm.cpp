@@ -50,6 +50,8 @@ NumericMatrix scancoef_lmm_nocovar(const NumericVector& genoprobs,
     genoprobs_rev = weighted_3darray(genoprobs_rev, weights);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs_rev.begin() + offset, genoprobs_rev.begin() + offset + x_size, X.begin());
 
@@ -111,6 +113,8 @@ NumericMatrix scancoef_lmm_addcovar(const NumericVector& genoprobs,
     addcovar_rev = weighted_matrix(addcovar_rev, weights);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs_rev.begin() + offset, genoprobs_rev.begin() + offset + x_size, X.begin());
 
@@ -172,6 +176,8 @@ NumericMatrix scancoef_lmm_intcovar(const NumericVector& genoprobs,
     pheno_rev = pheno_rev * weights;
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, false);
 
@@ -230,6 +236,8 @@ List scancoefSE_lmm_nocovar(const NumericVector& genoprobs,
     genoprobs_rev = weighted_3darray(genoprobs_rev, weights);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs_rev.begin() + offset, genoprobs_rev.begin() + offset + x_size, X.begin());
 
@@ -297,6 +305,8 @@ List scancoefSE_lmm_addcovar(const NumericVector& genoprobs,
     addcovar_rev = weighted_matrix(addcovar_rev, weights);
 
     for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs_rev.begin() + offset, genoprobs_rev.begin() + offset + x_size, X.begin());
 
@@ -364,6 +374,8 @@ List scancoefSE_lmm_intcovar(const NumericVector& genoprobs,
     pheno_rev = pheno_rev * weights;
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, false);
 

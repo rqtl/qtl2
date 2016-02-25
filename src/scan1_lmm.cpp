@@ -199,6 +199,8 @@ NumericVector scan_lmm_onechr_intcovar_lowmem(const NumericVector& genoprobs,
     double sum_logweights = sum(log(weights));
 
     for(unsigned int pos=0; pos<n_pos; pos++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // form X matrix
         NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, pos, true);
 
