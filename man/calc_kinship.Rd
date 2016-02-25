@@ -58,7 +58,7 @@ coefficient (e.g., the expected value for an intercross is 1/2;
 using genotype probabilities, the expected value is 3/8).
 
 We then calculate
-\eqn{2 \sum_{kl}(p_{ikl} p_{jkl})}{2 sum_kl (p_ikl p_jkl)}
+\eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
 where \eqn{k} = position, \eqn{l} = allele, and \eqn{i,j}
 are two individuals.
 
@@ -66,9 +66,9 @@ For crosses with just two possible genotypes (e.g., backcross), we
 don't convert to allele probabilities but just use the original
 genotype probabilities.
 
-If \code{normalize=TRUE}, we normalize the kinship matrix as in
+If \code{normalize=TRUE} (the default), we normalize the kinship matrix as in
 equation 5 in Kang et al. (2010) Nat Genet
-42:348-354. \href{http://doi.org/10.1038/ng.548}{doi: 10.1038/ng.548}
+42:348-354. \href{http://www.ncbi.nlm.nih.gov/pubmed/20208533}{doi: 10.1038/ng.548}
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

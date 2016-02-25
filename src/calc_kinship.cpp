@@ -31,8 +31,7 @@ NumericMatrix calc_kinship(const NumericVector& prob_array) // array as n_pos x 
                         prob_array[pos + gen*n_pos + offset_j];
                 }
             }
-            // calculating 2*kinship = 2*Pr(random allele from i == random allele from j)
-            result(ind_i,ind_j) = result(ind_j,ind_i) = 2*total;
+            result(ind_i,ind_j) = result(ind_j,ind_i) = total;
         }
     }
 
