@@ -51,6 +51,8 @@ IntegerVector sim_geno(const String& crosstype,
 
     for(int ind=0; ind<n_ind; ind++) {
 
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // possible genotypes for this individual
         IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));
         int n_poss_gen = poss_gen.size();

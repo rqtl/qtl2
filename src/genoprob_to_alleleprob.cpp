@@ -40,6 +40,9 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
         for(unsigned int i=0, offset_gen=0, offset_allele=0;
             i < ind_by_pos;
             i++, offset_gen += n_gen, offset_allele += n_allele) {
+
+            Rcpp::checkUserInterrupt();  // check for ^C from user
+
             for(unsigned int j=0; j < n_allele; j++) {
                 for(unsigned int k=0; k<n_gen; k++) {
                     result[offset_allele+j] += prob_array[offset_gen+k]*transform(k,j);

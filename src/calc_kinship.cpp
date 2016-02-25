@@ -21,6 +21,7 @@ NumericMatrix calc_kinship(const NumericVector& prob_array) // array as n_pos x 
     NumericMatrix result(n_ind, n_ind);
 
     for(unsigned int ind_i=0, offset_i=0; ind_i<n_ind; ++ind_i, offset_i += pos_by_gen) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
         for(unsigned int ind_j=ind_i, offset_j=ind_i*pos_by_gen; ind_j<n_ind; ind_j++, offset_j += pos_by_gen) {
 
             double total = 0.0;

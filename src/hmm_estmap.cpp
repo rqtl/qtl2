@@ -71,6 +71,8 @@ NumericVector est_map(const String& crosstype,
 
     for(int it=0; it<max_iterations; it++) {
 
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         // zero the full_gamma array
         full_gamma.fill(0.0);
 
