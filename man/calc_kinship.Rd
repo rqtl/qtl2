@@ -68,7 +68,7 @@ genotype probabilities.
 
 If \code{normalize=TRUE} (the default), we normalize the kinship matrix as in
 equation 5 in Kang et al. (2010) Nat Genet
-42:348-354. \href{http://www.nature.com/ng/journal/v42/n4/full/ng.548.html}{doi: 10.1038/ng.548}
+42:348-354. \href{http://www.ncbi.nlm.nih.gov/pubmed/20208533}{doi: 10.1038/ng.548}
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
