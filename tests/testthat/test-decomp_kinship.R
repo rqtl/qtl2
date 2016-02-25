@@ -12,7 +12,6 @@ test_that("eigen decomposition works", {
 
     expect_equal(sort(Ke$values), sort(expected$values))
     expect_equivalent(K, t(Ke$vectors) %*% diag(Ke$values) %*% Ke$vectors)
-    expect_equivalent(solve(K), t(Ke$vectors) %*% diag(1/Ke$values) %*% Ke$vectors)
 
     # run it through again and get same answer
     Ke2 <- decomp_kinship(Ke)
@@ -27,7 +26,6 @@ test_that("eigen decomposition works", {
 
         expect_equal(sort(Ke[[i]]$values), sort(expected$values))
         expect_equivalent(K[[i]], t(Ke[[i]]$vectors) %*% diag(Ke[[i]]$values) %*% Ke[[i]]$vectors)
-        expect_equivalent(solve(K[[i]]), t(Ke[[i]]$vectors) %*% diag(1/Ke[[i]]$values) %*% Ke[[i]]$vectors)
     }
 
     # run it through again and get same answer
