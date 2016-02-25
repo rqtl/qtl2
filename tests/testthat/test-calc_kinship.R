@@ -30,7 +30,7 @@ test_that("calc_kinship works for RIL", {
     tot_pos <- 0
     for(i in seq(along=probs)) {
         for(k in seq(along=pairs))
-            expected[k] <- expected[k] + 2*sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
+            expected[k] <- expected[k] + sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
@@ -90,7 +90,7 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- 2*expected/tot_pos
+    expected <- expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
@@ -111,7 +111,7 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- 2*expected/tot_pos
+    expected <- expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
@@ -146,7 +146,7 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- 2*expected/tot_pos
+    expected <- expected/tot_pos
     for(k in seq(along=pairs)) {
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
     }
@@ -168,7 +168,7 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- 2*expected/tot_pos
+    expected <- expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
