@@ -13,7 +13,11 @@ with dimension individuals x genotypes x positions.}
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
-\item{kinship}{A kinship matrix.}
+\item{kinship}{A kinship matrix. Can be eigen decomposition of
+kinship matrix (as calculated with \code{\link{decomp_kinship}}),
+but it would need to be for the exact subset of individuals
+(following omitting those with missing genotype probabilities,
+phenotypes, or covariates).}
 
 \item{addcovar}{An optional matrix of additive covariates.}
 
