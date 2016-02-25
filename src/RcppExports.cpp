@@ -660,20 +660,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// scancoef_hk_nocovar
-NumericMatrix scancoef_hk_nocovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoef_hk_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    __result = Rcpp::wrap(scancoef_hk_nocovar(genoprobs, pheno, weights, tol));
-    return __result;
-END_RCPP
-}
 // scancoef_hk_addcovar
 NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const double tol);
 RcppExport SEXP qtl2scan_scancoef_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
@@ -702,20 +688,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(scancoef_hk_intcovar(genoprobs, pheno, addcovar, intcovar, weights, tol));
-    return __result;
-END_RCPP
-}
-// scancoefSE_hk_nocovar
-List scancoefSE_hk_nocovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoefSE_hk_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    __result = Rcpp::wrap(scancoefSE_hk_nocovar(genoprobs, pheno, weights, tol));
     return __result;
 END_RCPP
 }
@@ -750,21 +722,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// scancoef_lmm_nocovar
-NumericMatrix scancoef_lmm_nocovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoef_lmm_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type eigenvec(eigenvecSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    __result = Rcpp::wrap(scancoef_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol));
-    return __result;
-END_RCPP
-}
 // scancoef_lmm_addcovar
 NumericMatrix scancoef_lmm_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
 RcppExport SEXP qtl2scan_scancoef_lmm_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
@@ -795,21 +752,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(scancoef_lmm_intcovar(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol));
-    return __result;
-END_RCPP
-}
-// scancoefSE_lmm_nocovar
-List scancoefSE_lmm_nocovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoefSE_lmm_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type genoprobs(genoprobsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type eigenvec(eigenvecSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    __result = Rcpp::wrap(scancoefSE_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol));
     return __result;
 END_RCPP
 }

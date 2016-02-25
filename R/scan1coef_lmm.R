@@ -165,13 +165,14 @@ scan1coef_lmm <-
 
     if(se) { # also calculate SEs
 
-        if(is.null(addcovar))      # no covariates
-            result <- scancoefSE_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol)
-        else if(is.null(intcovar)) # just addcovar
+        if(is.null(intcovar)) { # just addcovar
+            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
             result <- scancoefSE_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
-        else                       # intcovar
+        }
+        else {                  # intcovar
             result <- scancoefSE_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
                                               eigenvec, weights, tol)
+        }
 
         # move SEs to attribute
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -180,13 +181,14 @@ scan1coef_lmm <-
 
     } else { # don't calculate SEs
 
-        if(is.null(addcovar))      # no covariates
-            result <- scancoef_lmm_nocovar(genoprobs, pheno, eigenvec, weights, tol)
-        else if(is.null(intcovar)) # just addcovar
+        if(is.null(intcovar)) { # just addcovar
+            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
             result <- scancoef_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
-        else                       # intcovar
+        }
+        else {                  # intcovar
             result <- scancoef_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
                                             eigenvec, weights, tol)
+        }
     }
 
     result <- t(result) # transpose to positions x coefficients

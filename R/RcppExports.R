@@ -197,20 +197,12 @@ scan_lmm_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar
     .Call('qtl2scan_scan_lmm_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
-scancoef_hk_nocovar <- function(genoprobs, pheno, weights, tol = 1e-12) {
-    .Call('qtl2scan_scancoef_hk_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, weights, tol)
-}
-
 scancoef_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
     .Call('qtl2scan_scancoef_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
 }
 
 scancoef_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
     .Call('qtl2scan_scancoef_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
-}
-
-scancoefSE_hk_nocovar <- function(genoprobs, pheno, weights, tol = 1e-12) {
-    .Call('qtl2scan_scancoefSE_hk_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, weights, tol)
 }
 
 scancoefSE_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
@@ -221,20 +213,12 @@ scancoefSE_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights
     .Call('qtl2scan_scancoefSE_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 
-scancoef_lmm_nocovar <- function(genoprobs, pheno, eigenvec, weights, tol = 1e-12) {
-    .Call('qtl2scan_scancoef_lmm_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, eigenvec, weights, tol)
-}
-
 scancoef_lmm_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, tol = 1e-12) {
     .Call('qtl2scan_scancoef_lmm_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, tol)
 }
 
 scancoef_lmm_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
     .Call('qtl2scan_scancoef_lmm_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
-}
-
-scancoefSE_lmm_nocovar <- function(genoprobs, pheno, eigenvec, weights, tol = 1e-12) {
-    .Call('qtl2scan_scancoefSE_lmm_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, eigenvec, weights, tol)
 }
 
 scancoefSE_lmm_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, tol = 1e-12) {

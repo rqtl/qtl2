@@ -134,13 +134,14 @@ scan1coef <-
 
     if(se) { # also calculate SEs
 
-        if(is.null(addcovar))      # no covariates
-            result <- scancoefSE_hk_nocovar(genoprobs, pheno, weights, tol)
-        else if(is.null(intcovar)) # just addcovar
+        if(is.null(intcovar)) { # just addcovar
+            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
             result <- scancoefSE_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
-        else                       # intcovar
+        }
+        else {                  # intcovar
             result <- scancoefSE_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
                                              weights, tol)
+        }
 
         # move SEs to attribute
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -149,13 +150,14 @@ scan1coef <-
 
     } else { # don't calculate SEs
 
-        if(is.null(addcovar))      # no covariates
-            result <- scancoef_hk_nocovar(genoprobs, pheno, weights, tol)
-        else if(is.null(intcovar)) # just addcovar
+        if(is.null(intcovar)) { # just addcovar
+            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
             result <- scancoef_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
-        else                       # intcovar
+        }
+        else {                  # intcovar
             result <- scancoef_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                             weights, tol)
+                                           weights, tol)
+        }
     }
 
     result <- t(result) # transpose to positions x coefficients
@@ -214,7 +216,7 @@ scan1coef_names <-
     if(is.null(qtl_names))
         qtl_names <- paste0("qtleff", 1:ncol(genoprobs))
 
-    if(is.null(addcovar)) { # no additive covariates
+    if(is.null(addcovar) || ncol(addcovar)==0) { # no additive covariates
         return(qtl_names)
     }
     else { # some additive covariates
