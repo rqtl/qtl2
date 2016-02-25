@@ -18,7 +18,7 @@ test_that("calc_kinship works for RIL", {
     # check unnormalized
     sim_unnorm <- calc_kinship(probs, normalize=FALSE)
     n_ind <- nrow(probs[[1]])
-    expect_equal(sim_unnorm *(n_ind-1)/(n_ind - sum(sim_unnorm)/n_ind),
+    expect_equal(sim_unnorm *(n_ind-1)/(sum(diag(sim_unnorm)) - sum(sim_unnorm)/n_ind),
                  sim)
 
     # check a few pairs, with unnormalized kinship
@@ -30,7 +30,7 @@ test_that("calc_kinship works for RIL", {
     tot_pos <- 0
     for(i in seq(along=probs)) {
         for(k in seq(along=pairs))
-            expected[k] <- expected[k] + sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
+            expected[k] <- expected[k] + 2*sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
     expected <- expected/tot_pos
@@ -43,11 +43,11 @@ test_that("calc_kinship (unnormalized) works for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-    sim <- calc_kinship(probs, normalize=FALSE)
+    sim <- calc_kinship(probs, normalize=FALSE, omit_x=TRUE)
 
     # pre-subset to grid
     probs_sub <- probs_to_grid(probs)
-    sim2 <- calc_kinship(probs_sub, normalize=FALSE)
+    sim2 <- calc_kinship(probs_sub, normalize=FALSE, omit_x=TRUE)
     expect_equal(sim, sim2)
 
     # row and colnames okay
@@ -90,13 +90,13 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- expected/tot_pos
+    expected <- 2*expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
     # version using genotype probabilities
-    sim <- calc_kinship(probs, use_allele_probs=FALSE, normalize=FALSE)
-    sim2 <- calc_kinship(probs, use_allele_probs=FALSE, normalize=FALSE)
+    sim <- calc_kinship(probs, use_allele_probs=FALSE, normalize=FALSE, omit_x=TRUE)
+    sim2 <- calc_kinship(probs, use_allele_probs=FALSE, normalize=FALSE, omit_x=TRUE)
     expect_equal(sim, sim2)
 
     # check a few values
@@ -111,16 +111,16 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- expected/tot_pos
+    expected <- 2*expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
 
-    # also try with X chr
-    sim <- calc_kinship(probs, omit_x=FALSE, normalize=FALSE)
+    # also try with X chr (now the default)
+    sim <- calc_kinship(probs, normalize=FALSE)
 
     # pre-subset to grid
-    sim2 <- calc_kinship(probs_sub, omit_x=FALSE, normalize=FALSE)
+    sim2 <- calc_kinship(probs_sub, normalize=FALSE)
     expect_equal(sim, sim2)
 
     # row and colnames okay
@@ -146,7 +146,7 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- expected/tot_pos
+    expected <- 2*expected/tot_pos
     for(k in seq(along=pairs)) {
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
     }
@@ -168,7 +168,7 @@ test_that("calc_kinship (unnormalized) works for F2", {
         }
         tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
     }
-    expected <- expected/tot_pos
+    expected <- 2*expected/tot_pos
     for(k in seq(along=pairs))
         expect_equal(sim[pairs[[k]][1],pairs[[k]][2]], expected[k])
 
@@ -178,10 +178,10 @@ test_that("calc_kinship (unnormalized) chr & loco work for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-    sim <- calc_kinship(probs, normalize=FALSE)
+    sim <- calc_kinship(probs, normalize=FALSE, omit_x=TRUE)
 
-    sim_chr <- calc_kinship(probs, "chr", normalize=FALSE)
-    sim_loco <- calc_kinship(probs, "loco", normalize=FALSE)
+    sim_chr <- calc_kinship(probs, "chr", normalize=FALSE, omit_x=TRUE)
+    sim_loco <- calc_kinship(probs, "loco", normalize=FALSE, omit_x=TRUE)
 
     # combine results from sim_chr and compare to sim
     sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")
@@ -289,7 +289,7 @@ test_that("calc_kinship normalization works", {
     sim <- calc_kinship(probs)
     sim_un <- calc_kinship(probs, normalize=FALSE)
     n <- nrow(sim)
-    sim_n <- sim_un*(n-1)/(n-sum(sim_un)/n)
+    sim_n <- sim_un*(n-1)/(sum(diag(sim_un))-sum(sim_un)/n)
     expect_equal(sim_n, sim)
 
     sim_chr <- calc_kinship(probs, "chr")
@@ -297,7 +297,7 @@ test_that("calc_kinship normalization works", {
     sim_chr_n <- lapply(sim_chr_un,
                         function(K) {
                             n <- nrow(K)
-                            K*(n-1)/(n-sum(K)/n)
+                            K*(n-1)/(sum(diag(K))-sum(K)/n)
                         })
     expect_equal(sim_chr_n, sim_chr)
 
@@ -306,7 +306,7 @@ test_that("calc_kinship normalization works", {
     sim_loco_n <- lapply(sim_loco_un,
                         function(K) {
                             n <- nrow(K)
-                            K*(n-1)/(n-sum(K)/n)
+                            K*(n-1)/(sum(diag(K))-sum(K)/n)
                         })
     expect_equal(sim_loco_n, sim_loco)
 
@@ -315,7 +315,7 @@ test_that("calc_kinship normalization works", {
     sim_loco_n <- lapply(sim_loco_un,
                         function(K) {
                             n <- nrow(K)
-                            K*(n-1)/(n-sum(K)/n)
+                            K*(n-1)/(sum(diag(K))-sum(K)/n)
                         })
     expect_equal(sim_loco_n, sim_loco)
 
@@ -327,7 +327,7 @@ test_that("calc_kinship normalization works", {
     sim <- calc_kinship(probs)
     sim_un <- calc_kinship(probs, normalize=FALSE)
     n <- nrow(sim)
-    sim_n <- sim_un*(n-1)/(n-sum(sim_un)/n)
+    sim_n <- sim_un*(n-1)/(sum(diag(sim_un))-sum(sim_un)/n)
     expect_equal(sim_n, sim)
 
     sim_chr <- calc_kinship(probs, "chr")
@@ -335,7 +335,7 @@ test_that("calc_kinship normalization works", {
     sim_chr_n <- lapply(sim_chr_un,
                         function(K) {
                             n <- nrow(K)
-                            K*(n-1)/(n-sum(K)/n)
+                            K*(n-1)/(sum(diag(K))-sum(K)/n)
                         })
     expect_equal(sim_chr_n, sim_chr)
 
@@ -344,7 +344,7 @@ test_that("calc_kinship normalization works", {
     sim_loco_n <- lapply(sim_loco_un,
                         function(K) {
                             n <- nrow(K)
-                            K*(n-1)/(n-sum(K)/n)
+                            K*(n-1)/(sum(diag(K))-sum(K)/n)
                         })
     expect_equal(sim_loco_n, sim_loco)
 
