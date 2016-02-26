@@ -29,3 +29,21 @@ test_that("interpolate_map works", {
 
 
 })
+
+test_that("find_intervals works", {
+    set.seed(11703070)
+
+    library(qtl)
+    data(hyper)
+    map <- pull.map(hyper)[[1]]
+
+    pos <- round(runif(1000, 0, 120), 1)
+    result <- find_intervals(pos, map)
+
+    expect_true(all(pos[result==-1] < min(map)))
+    expect_true(all(pos[result==length(map)-1] >= max(map)))
+    middle <- (result >= 0 & result < length(map)-1)
+    expect_true(all(pos[middle] >= map[result[middle]+1] &
+                    pos[middle] < map[result[middle]+2]))
+
+})

@@ -19,6 +19,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// find_intervals
+IntegerVector find_intervals(const NumericVector& pos, const NumericVector& map);
+RcppExport SEXP qtl2scan_find_intervals(SEXP posSEXP, SEXP mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type map(mapSEXP);
+    __result = Rcpp::wrap(find_intervals(pos, map));
+    return __result;
+END_RCPP
+}
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
 RcppExport SEXP qtl2scan_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {

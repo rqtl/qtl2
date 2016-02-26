@@ -5,6 +5,10 @@ interpolate_map <- function(oldpos, oldmap, newmap) {
     .Call('qtl2scan_interpolate_map', PACKAGE = 'qtl2scan', oldpos, oldmap, newmap)
 }
 
+find_intervals <- function(pos, map) {
+    .Call('qtl2scan_find_intervals', PACKAGE = 'qtl2scan', pos, map)
+}
+
 fit_linreg_eigenchol <- function(X, y) {
     .Call('qtl2scan_fit_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }

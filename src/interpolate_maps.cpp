@@ -57,3 +57,16 @@ NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& 
 
     return result;
 }
+
+// apply find_interval() to each of a vector of positions
+// [[Rcpp::export]]
+IntegerVector find_intervals(const NumericVector& pos, const NumericVector& map)
+{
+    const int n_pos = pos.size();
+    IntegerVector result(n_pos);
+
+    for(int i=0; i<n_pos; i++)
+        result[i] = find_interval(pos[i], map);
+
+    return result;
+}

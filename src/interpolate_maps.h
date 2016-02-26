@@ -14,4 +14,8 @@ Rcpp::NumericVector interpolate_map(const Rcpp::NumericVector& oldpos,
                                     const Rcpp::NumericVector& oldmap,
                                     const Rcpp::NumericVector& newmap);
 
+// apply find_interval() to each of a vector of positions
+Rcpp::IntegerVector find_intervals(const Rcpp::NumericVector& pos,
+                                   const Rcpp::NumericVector& map);
+
 #endif // INTERPOLATE_MAPS_H
