@@ -9,6 +9,10 @@ find_intervals <- function(pos, map) {
     .Call('qtl2scan_find_intervals', PACKAGE = 'qtl2scan', pos, map)
 }
 
+is_pos_on_map <- function(pos, map, interval, tol = 1e-12) {
+    .Call('qtl2scan_is_pos_on_map', PACKAGE = 'qtl2scan', pos, map, interval, tol)
+}
+
 fit_linreg_eigenchol <- function(X, y) {
     .Call('qtl2scan_fit_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }

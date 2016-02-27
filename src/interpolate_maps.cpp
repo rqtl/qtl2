@@ -70,3 +70,26 @@ IntegerVector find_intervals(const NumericVector& pos, const NumericVector& map)
 
     return result;
 }
+
+// For each position, having already figured out the interval it's in,
+// figure out whether it is exactly at the left location or not
+// [[Rcpp::export]]
+LogicalVector is_pos_on_map(const NumericVector& pos, const NumericVector& map,
+                            const IntegerVector& interval, double tol=1e-12)
+{
+    const int n_pos = pos.size();
+    const int n_map = map.size();
+
+    LogicalVector result(n_pos);
+    if(interval.size() != n_pos)
+        throw std::invalid_argument("length(pos) != length(interval)");
+
+    for(int i=0; i<n_pos; i++) {
+        if(interval[i] < 0 || interval[i] > n_map-1 ||
+           fabs(map[interval[i]] - pos[i]) > tol)
+            result[i] = false;
+        else result[i] = true;
+    }
+
+    return result;
+}

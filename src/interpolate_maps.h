@@ -18,4 +18,10 @@ Rcpp::NumericVector interpolate_map(const Rcpp::NumericVector& oldpos,
 Rcpp::IntegerVector find_intervals(const Rcpp::NumericVector& pos,
                                    const Rcpp::NumericVector& map);
 
+// For each position, having already figured out the interval it's in,
+// figure out whether it is exactly at the left location or not
+Rcpp::LogicalVector is_pos_on_map(const Rcpp::NumericVector& pos,
+                                  const Rcpp::NumericVector& map,
+                                  const Rcpp::IntegerVector& interval, double tol);
+
 #endif // INTERPOLATE_MAPS_H

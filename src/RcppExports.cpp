@@ -31,6 +31,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// is_pos_on_map
+LogicalVector is_pos_on_map(const NumericVector& pos, const NumericVector& map, const IntegerVector& interval, double tol);
+RcppExport SEXP qtl2scan_is_pos_on_map(SEXP posSEXP, SEXP mapSEXP, SEXP intervalSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type map(mapSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    __result = Rcpp::wrap(is_pos_on_map(pos, map, interval, tol));
+    return __result;
+END_RCPP
+}
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
 RcppExport SEXP qtl2scan_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
