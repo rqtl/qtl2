@@ -5,12 +5,8 @@ interpolate_map <- function(oldpos, oldmap, newmap) {
     .Call('qtl2scan_interpolate_map', PACKAGE = 'qtl2scan', oldpos, oldmap, newmap)
 }
 
-find_intervals <- function(pos, map) {
-    .Call('qtl2scan_find_intervals', PACKAGE = 'qtl2scan', pos, map)
-}
-
-is_pos_on_map <- function(pos, map, interval, tol = 1e-12) {
-    .Call('qtl2scan_is_pos_on_map', PACKAGE = 'qtl2scan', pos, map, interval, tol)
+find_intervals <- function(pos, map, tol = 1e-8) {
+    .Call('qtl2scan_find_intervals', PACKAGE = 'qtl2scan', pos, map, tol)
 }
 
 fit_linreg_eigenchol <- function(X, y) {

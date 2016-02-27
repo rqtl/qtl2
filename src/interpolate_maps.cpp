@@ -59,37 +59,32 @@ NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& 
 }
 
 // apply find_interval() to each of a vector of positions
+//
+// result has two columns and length(pos) rows
+//     1st column contains the intervals containing pos
+//     2nd column contains 0/1 indicators of whether pos matches left endpoint
+//         (to within tolerance tol)
+//
 // [[Rcpp::export]]
-IntegerVector find_intervals(const NumericVector& pos, const NumericVector& map)
-{
-    const int n_pos = pos.size();
-    IntegerVector result(n_pos);
-
-    for(int i=0; i<n_pos; i++)
-        result[i] = find_interval(pos[i], map);
-
-    return result;
-}
-
-// For each position, having already figured out the interval it's in,
-// figure out whether it is exactly at the left location or not
-// [[Rcpp::export]]
-LogicalVector is_pos_on_map(const NumericVector& pos, const NumericVector& map,
-                            const IntegerVector& interval, double tol=1e-12)
+IntegerMatrix find_intervals(const NumericVector& pos,
+                             const NumericVector& map,
+                             double tol=1e-8)
 {
     const int n_pos = pos.size();
     const int n_map = map.size();
-
-    LogicalVector result(n_pos);
-    if(interval.size() != n_pos)
-        throw std::invalid_argument("length(pos) != length(interval)");
+    IntegerMatrix result(n_pos,2);
 
     for(int i=0; i<n_pos; i++) {
-        if(interval[i] < 0 || interval[i] > n_map-1 ||
-           fabs(map[interval[i]] - pos[i]) > tol)
-            result[i] = false;
-        else result[i] = true;
+        int interval = find_interval(pos[i], map);
+        result(i,0) = interval;
+
+        if(interval < 0 || interval > n_map-1 ||
+           fabs(map[interval] - pos[i]) > tol)
+            result(i,1) = 0;
+        else result(i,1) = 1;
     }
+
+    colnames(result) = CharacterVector::create("interval", "on_map");
 
     return result;
 }

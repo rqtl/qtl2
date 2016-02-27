@@ -20,28 +20,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // find_intervals
-IntegerVector find_intervals(const NumericVector& pos, const NumericVector& map);
-RcppExport SEXP qtl2scan_find_intervals(SEXP posSEXP, SEXP mapSEXP) {
+IntegerMatrix find_intervals(const NumericVector& pos, const NumericVector& map, double tol);
+RcppExport SEXP qtl2scan_find_intervals(SEXP posSEXP, SEXP mapSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type map(mapSEXP);
-    __result = Rcpp::wrap(find_intervals(pos, map));
-    return __result;
-END_RCPP
-}
-// is_pos_on_map
-LogicalVector is_pos_on_map(const NumericVector& pos, const NumericVector& map, const IntegerVector& interval, double tol);
-RcppExport SEXP qtl2scan_is_pos_on_map(SEXP posSEXP, SEXP mapSEXP, SEXP intervalSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type map(mapSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type interval(intervalSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    __result = Rcpp::wrap(is_pos_on_map(pos, map, interval, tol));
+    __result = Rcpp::wrap(find_intervals(pos, map, tol));
     return __result;
 END_RCPP
 }

@@ -15,13 +15,14 @@ Rcpp::NumericVector interpolate_map(const Rcpp::NumericVector& oldpos,
                                     const Rcpp::NumericVector& newmap);
 
 // apply find_interval() to each of a vector of positions
-Rcpp::IntegerVector find_intervals(const Rcpp::NumericVector& pos,
-                                   const Rcpp::NumericVector& map);
-
-// For each position, having already figured out the interval it's in,
-// figure out whether it is exactly at the left location or not
-Rcpp::LogicalVector is_pos_on_map(const Rcpp::NumericVector& pos,
-                                  const Rcpp::NumericVector& map,
-                                  const Rcpp::IntegerVector& interval, double tol);
+//
+// result has two columns and length(pos) rows
+//     1st column contains the intervals containing pos
+//     2nd column contains 0/1 indicators of whether pos matches left endpoint
+//         (to within tolerance tol)
+//
+Rcpp::IntegerMatrix find_intervals(const Rcpp::NumericVector& pos,
+                                   const Rcpp::NumericVector& map,
+                                   double tol);
 
 #endif // INTERPOLATE_MAPS_H
