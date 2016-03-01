@@ -42,4 +42,25 @@ Rcpp::NumericVector genoprob_to_snpprob(Rcpp::NumericVector genoprob,
                                         Rcpp::IntegerVector interval,
                                         Rcpp::LogicalVector on_map);
 
+
+// convert X genotype columns to SNP columns
+//
+// n_str     Number of strains
+//    (so n_str + n_str*(n_str+1)/2 columns)
+// sdp       Strain distribution pattern for SNP
+Rcpp::IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
+
+// convert X chr genotype probabilities into SNP probabilities
+//
+// here the genotypes are the 36 female genotypes followed by the 8 male genotypes
+//
+// genoprob = individual x genotype x position
+// sdp = vector of strain distribution patterns
+// interval = map interval containing snp
+// on_map = logical vector indicating snp is at left endpoint of interval
+Rcpp::NumericVector Xgenoprob_to_snpprob(Rcpp::NumericVector genoprob,
+                                         Rcpp::IntegerVector sdp,
+                                         Rcpp::IntegerVector interval,
+                                         Rcpp::LogicalVector on_map);
+
 #endif // SNPPROBS_H

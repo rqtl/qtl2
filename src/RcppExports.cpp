@@ -852,3 +852,29 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Xgenocol_to_snpcol
+IntegerVector Xgenocol_to_snpcol(const int n_str, const int sdp);
+RcppExport SEXP qtl2scan_Xgenocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_str(n_strSEXP);
+    Rcpp::traits::input_parameter< const int >::type sdp(sdpSEXP);
+    __result = Rcpp::wrap(Xgenocol_to_snpcol(n_str, sdp));
+    return __result;
+END_RCPP
+}
+// Xgenoprob_to_snpprob
+NumericVector Xgenoprob_to_snpprob(NumericVector genoprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
+RcppExport SEXP qtl2scan_Xgenoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type genoprob(genoprobSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type on_map(on_mapSEXP);
+    __result = Rcpp::wrap(Xgenoprob_to_snpprob(genoprob, sdp, interval, on_map));
+    return __result;
+END_RCPP
+}
