@@ -56,7 +56,7 @@
 #' # show something here
 #'
 #' @export
-genoprobs_to_snpprobs <-
+genoprob_to_snpprob <-
     function(genoprobs, snpinfo, tol=1e-8)
 {
     uchr <- unique(snpinfo$chr)
