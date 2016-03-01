@@ -802,12 +802,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // calc_sdp
-IntegerVector calc_sdp(IntegerMatrix geno);
+IntegerVector calc_sdp(const IntegerMatrix& geno);
 RcppExport SEXP qtl2scan_calc_sdp(SEXP genoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type geno(genoSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
     __result = Rcpp::wrap(calc_sdp(geno));
     return __result;
 END_RCPP

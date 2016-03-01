@@ -13,6 +13,6 @@ using namespace Rcpp;
 //
 // Input is a marker x strain matrix of genotypes
 // 0 = homozygous AA, 1 = homozygous BB
-Rcpp::IntegerVector calc_sdp(Rcpp::IntegerMatrix geno);
+Rcpp::IntegerVector calc_sdp(const Rcpp::IntegerMatrix& geno);
 
 #endif // SNPPROBS_H

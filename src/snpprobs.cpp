@@ -13,7 +13,7 @@ using namespace Rcpp;
 // 0 = homozygous AA, 1 = homozygous BB
 //
 // [[Rcpp::export]]
-IntegerVector calc_sdp(IntegerMatrix geno)
+IntegerVector calc_sdp(const IntegerMatrix& geno)
 {
     const unsigned int n_mar = geno.rows();
     const unsigned int n_str = geno.cols();
