@@ -838,3 +838,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// genoprob_to_snpprob
+NumericVector genoprob_to_snpprob(NumericVector genoprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
+RcppExport SEXP qtl2scan_genoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type genoprob(genoprobSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type on_map(on_mapSEXP);
+    __result = Rcpp::wrap(genoprob_to_snpprob(genoprob, sdp, interval, on_map));
+    return __result;
+END_RCPP
+}

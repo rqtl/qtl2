@@ -31,4 +31,15 @@ Rcpp::NumericVector alleleprob_to_snpprob(Rcpp::NumericVector alleleprob,
 // sdp       Strain distribution pattern for SNP
 Rcpp::IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
 
+// convert genotype probabilities into SNP probabilities
+//
+// genoprob = individual x genotype x position
+// sdp = vector of strain distribution patterns
+// interval = map interval containing snp
+// on_map = logical vector indicating snp is at left endpoint of interval
+Rcpp::NumericVector genoprob_to_snpprob(Rcpp::NumericVector genoprob,
+                                        Rcpp::IntegerVector sdp,
+                                        Rcpp::IntegerVector interval,
+                                        Rcpp::LogicalVector on_map);
+
 #endif // SNPPROBS_H
