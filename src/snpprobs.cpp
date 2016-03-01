@@ -22,9 +22,8 @@ IntegerVector calc_sdp(const IntegerMatrix& geno)
 
     IntegerVector result(n_mar);
     for(unsigned int i=0; i<n_mar; i++) {
-        result[i] = geno(i,0);
-        for(unsigned int j=1; j<n_str; j++) {
-            result[i] += geno(i,j)*(2 << (j-1));
+        for(unsigned int j=0; j<n_str; j++) {
+            result[i] += geno(i,j)*(1 << j);
         }
     }
 
