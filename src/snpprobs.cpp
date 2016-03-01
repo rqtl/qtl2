@@ -87,3 +87,42 @@ NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
 
     return result;
 }
+
+// convert genotype columns to SNP columns
+//
+// n_str     Number of strains
+//    (so n_str*(n_str+1)/2 columns)
+// sdp       Strain distribution pattern for SNP
+//
+// [[Rcpp::export]]
+IntegerVector genocol_to_snpcol(const int n_str, const int sdp)
+{
+    const unsigned int n_gen = n_str*(n_str+1)/2;
+    if(sdp < 1 || sdp > (1 << n_str)-1)
+        throw std::invalid_argument("SDP out of range");
+
+    IntegerVector result(n_gen);
+
+    for(int a1=0, g=0; a1<n_str; a1++) {
+        for(int a2=0; a2<=a1; a2++, g++) {
+            // a1,a2 are the alleles
+            // g is the corresponding genotype code
+
+            // snp alleles for these two alleles
+            int snp1 = ((sdp & (1 << a1)) != 0);
+            int snp2 = ((sdp & (1 << a2)) != 0);
+
+            if(snp1==0 && snp2==0) { // hom 00
+                result[g] = 0;
+            }
+            else if(snp1==1 && snp2==1) { // hom 11
+                result[g] = 2;
+            }
+            else { // het
+                result[g] = 1;
+            }
+        }
+    }
+
+    return result;
+}

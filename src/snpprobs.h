@@ -23,4 +23,12 @@ Rcpp::NumericVector alleleprob_to_snpprob(Rcpp::NumericVector alleleprob,
                                           Rcpp::IntegerVector interval,
                                           Rcpp::LogicalVector on_map);
 
+
+// convert genotype columns to SNP columns
+//
+// n_str     Number of strains
+//    (so n_str*(n_str+1)/2 columns)
+// sdp       Strain distribution pattern for SNP
+Rcpp::IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
+
 #endif // SNPPROBS_H

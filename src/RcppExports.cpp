@@ -826,3 +826,15 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// genocol_to_snpcol
+IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
+RcppExport SEXP qtl2scan_genocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_str(n_strSEXP);
+    Rcpp::traits::input_parameter< const int >::type sdp(sdpSEXP);
+    __result = Rcpp::wrap(genocol_to_snpcol(n_str, sdp));
+    return __result;
+END_RCPP
+}

@@ -241,3 +241,7 @@ alleleprob_to_snpprob <- function(alleleprob, sdp, interval, on_map) {
     .Call('qtl2scan_alleleprob_to_snpprob', PACKAGE = 'qtl2scan', alleleprob, sdp, interval, on_map)
 }
 
+genocol_to_snpcol <- function(n_str, sdp) {
+    .Call('qtl2scan_genocol_to_snpcol', PACKAGE = 'qtl2scan', n_str, sdp)
+}
+
