@@ -812,3 +812,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// alleleprob_to_snpprob
+NumericVector alleleprob_to_snpprob(NumericVector alleleprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
+RcppExport SEXP qtl2scan_alleleprob_to_snpprob(SEXP alleleprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type alleleprob(alleleprobSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type on_map(on_mapSEXP);
+    __result = Rcpp::wrap(alleleprob_to_snpprob(alleleprob, sdp, interval, on_map));
+    return __result;
+END_RCPP
+}

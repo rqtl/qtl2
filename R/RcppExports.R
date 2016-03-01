@@ -237,3 +237,7 @@ calc_sdp <- function(geno) {
     .Call('qtl2scan_calc_sdp', PACKAGE = 'qtl2scan', geno)
 }
 
+alleleprob_to_snpprob <- function(alleleprob, sdp, interval, on_map) {
+    .Call('qtl2scan_alleleprob_to_snpprob', PACKAGE = 'qtl2scan', alleleprob, sdp, interval, on_map)
+}
+

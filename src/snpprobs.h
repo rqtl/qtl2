@@ -2,11 +2,7 @@
 #ifndef SNPPROBS_H
 #define SNPPROBS_H
 
-#include "snpprobs.h"
-#include <exception>
 #include <Rcpp.h>
-using namespace Rcpp;
-
 
 // calculate strain distribution pattern (SDP) from
 // SNP genotypes for a set of strains
@@ -14,5 +10,17 @@ using namespace Rcpp;
 // Input is a marker x strain matrix of genotypes
 // 0 = homozygous AA, 1 = homozygous BB
 Rcpp::IntegerVector calc_sdp(const Rcpp::IntegerMatrix& geno);
+
+// convert allele probabilities into SNP probabilities
+//
+// alleleprob = individual x allele x position
+// map = locations of alleleprob positions
+// sdp = vector of strain distribution patterns
+// interval = map interval containing snp
+// on_map = logical vector indicating snp is at left endpoint of interval
+Rcpp::NumericVector alleleprob_to_snpprob(Rcpp::NumericVector alleleprob,
+                                          Rcpp::IntegerVector sdp,
+                                          Rcpp::IntegerVector interval,
+                                          Rcpp::LogicalVector on_map);
 
 #endif // SNPPROBS_H
