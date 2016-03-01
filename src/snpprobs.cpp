@@ -37,7 +37,7 @@ IntegerVector calc_sdp(const IntegerMatrix& geno)
 // interval = map interval containing snp
 // on_map = logical vector indicating snp is at left endpoint of interval
 //
-// [[Rcpp::export]]
+// [[Rcpp::export(".alleleprob_to_snpprob")]]
 NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
                                     IntegerVector sdp,
                                     IntegerVector interval,
@@ -136,7 +136,7 @@ IntegerVector genocol_to_snpcol(const int n_str, const int sdp)
 // interval = map interval containing snp
 // on_map = logical vector indicating snp is at left endpoint of interval
 //
-// [[Rcpp::export]]
+// [[Rcpp::export(".genoprob_to_snpprob")]]
 NumericVector genoprob_to_snpprob(NumericVector genoprob,
                                   IntegerVector sdp,
                                   IntegerVector interval,

@@ -44,7 +44,7 @@ test_that("calc_sdp works", {
 })
 
 
-test_that("alleleprob_to_snpprob works in simple cases", {
+test_that(".alleleprob_to_snpprob works in simple cases", {
 
     # conversion correct, with 1 map position
     pr <- array(c(0.15, 0.03, 0.20, 0.08, 0.18, 0.09, 0.15, 0.11),
@@ -63,7 +63,7 @@ test_that("alleleprob_to_snpprob works in simple cases", {
         expected[1,2,i] <- sum(pr[1,g[,i]==1,1])
     }
 
-    expect_equal(alleleprob_to_snpprob(pr, sdp, interval, on_map),
+    expect_equal(.alleleprob_to_snpprob(pr, sdp, interval, on_map),
                  expected)
 
 
@@ -90,7 +90,7 @@ test_that("alleleprob_to_snpprob works in simple cases", {
         expected[1,2,i] <- sum(pr[1,g[,i]==1,2])
     }
 
-    expect_equal(alleleprob_to_snpprob(pr, sdp, interval, on_map),
+    expect_equal(.alleleprob_to_snpprob(pr, sdp, interval, on_map),
                  expected)
 
 })
@@ -199,7 +199,7 @@ test_that("genocol_to_snpcol works with 4 alleles", {
                  2-c(2,1,0,1,0,0,2,1,1,2))
 })
 
-test_that("genoprob_to_snpprob works with 8 alleles", {
+test_that(".genoprob_to_snpprob works with 8 alleles", {
 
     # make a fake probability matrix
     set.seed(36319176)
@@ -217,12 +217,12 @@ test_that("genoprob_to_snpprob works with 8 alleles", {
     }
 
     # errors
-    expect_error(genoprob_to_snpprob(pr[,-1,], 1, 0, TRUE)) # not enough columns
-    expect_error(genoprob_to_snpprob(pr[,-(1:2),], 1, 0, TRUE)) # not enough columns
-    expect_error(genoprob_to_snpprob(pr, c(1,0,200), c(0,1,2), c(TRUE,FALSE,FALSE))) # SDP out of range
-    expect_error(genoprob_to_snpprob(pr, c(1,2,256), c(0,1,2), c(TRUE,FALSE,FALSE))) # SDP out of range
-    expect_error(genoprob_to_snpprob(pr, c(1,255,200), c(0,1,-1), c(TRUE,FALSE,FALSE))) # snp out of map range
-    expect_error(genoprob_to_snpprob(pr, c(1,2,254), c(0,1,npos-1), c(TRUE,FALSE,FALSE)))    # snp out of map range
+    expect_error(.genoprob_to_snpprob(pr[,-1,], 1, 0, TRUE)) # not enough columns
+    expect_error(.genoprob_to_snpprob(pr[,-(1:2),], 1, 0, TRUE)) # not enough columns
+    expect_error(.genoprob_to_snpprob(pr, c(1,0,200), c(0,1,2), c(TRUE,FALSE,FALSE))) # SDP out of range
+    expect_error(.genoprob_to_snpprob(pr, c(1,2,256), c(0,1,2), c(TRUE,FALSE,FALSE))) # SDP out of range
+    expect_error(.genoprob_to_snpprob(pr, c(1,255,200), c(0,1,-1), c(TRUE,FALSE,FALSE))) # snp out of map range
+    expect_error(.genoprob_to_snpprob(pr, c(1,2,254), c(0,1,npos-1), c(TRUE,FALSE,FALSE)))    # snp out of map range
 
     nsnp <- 200
     sdp <- sample(255, nsnp, replace=TRUE)
@@ -231,7 +231,7 @@ test_that("genoprob_to_snpprob works with 8 alleles", {
     on_map[interval==npos-1] <- TRUE
 
     # calculate snp genotype probabilities
-    result <- genoprob_to_snpprob(pr, sdp, interval, on_map)
+    result <- .genoprob_to_snpprob(pr, sdp, interval, on_map)
     expect_equal(dim(result), c(nind,3,nsnp))
 
     # calculate in R
