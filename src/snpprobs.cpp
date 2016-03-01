@@ -52,6 +52,8 @@ NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
         throw std::invalid_argument("length(sdp) != length(interval)");
     if(n_snp != on_map.size())
         throw std::invalid_argument("length(sdp) != length(on_map)");
+    if(n_str < 3) // not meaningful for <3 strains
+        throw std::invalid_argument("meaningful only with >= 3 strains");
 
     NumericVector result(n_ind*2*n_snp);
     result.attr("dim") = Dimension(n_ind, 2, n_snp);
