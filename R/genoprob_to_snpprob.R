@@ -133,17 +133,26 @@ genoprob_to_snpprob <-
     ### genoprobs -> SNP genotype probs
     if(ncol(genoprobs[[uchr]]) == n_alleles) { # allele probs
         results <- .alleleprob_to_snpprob(genoprobs[[uchr]], sdp, interval, on_map)
+        coln <- c("A", "B")
     }
     else if(ncol(genoprobs[[uchr]]) == n_alleles*(n_alleles+1)/2) { # autosomal genotype probs
         results <- .genoprob_to_snpprob(genoprobs[[uchr]], sdp, interval, on_map)
+        coln <- c("AA", "AB", "BB")
     }
     else if(ncol(genoprobs[[uchr]]) == n_alleles + n_alleles*(n_alleles+1)/2) { # X chr genotype probs
         results <- .Xgenoprob_to_snpprob(genoprobs[[uchr]], sdp, interval, on_map)
+        coln <- c("AA", "AB", "BB", "AY", "BY")
     }
     else {
         stop("genoprobs has ", ncol(genoprobs[[uchr]]),
              " columns but there are ", n_alleles, " alleles")
     }
+
+    # add dimnames
+    snpnames <- snpinfo$snp[urow]
+    if(is.null(snpnames)) snpnames <- rownames(snpinfo)[urow]
+    dimnames(results) <- list(rownames(genoprobs[[uchr]]),
+                              coln, snpnames)
 
     ### add attributes
     attr(results, "snpinfo") <- snpinfo
