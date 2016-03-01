@@ -77,7 +77,7 @@ genoprob_to_snpprob <-
         results <- vector("list", length(uchr))
         names(results) <- uchr
         for(i in seq(along=uchr)) {
-            tmp <- genoprobs_to_snpprobs(genoprobs, snpinfo_spl[[i]])
+            tmp <- genoprob_to_snpprob(genoprobs, snpinfo_spl[[i]])
             results[[i]] <- tmp[[1]] # just the array
             attr(results[[i]], "snpinfo") <- attr(tmp, "snpinfo")
         }
@@ -90,7 +90,7 @@ genoprob_to_snpprob <-
         attr(results, "alleleprobs") <- attr(genoprobs, "alleleprobs")
         class(results) <- c("calc_genoprob", "list")
 
-        return(result)
+        return(results)
     }
 
     # one chromosome
