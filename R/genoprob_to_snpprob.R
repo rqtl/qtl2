@@ -18,7 +18,7 @@
 #' \item \code{sdp} - Strain distribution pattern: an integer, between
 #'     1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
 #'     binary encoding indicates the founder genotypes
-#' \item \code{marker} - Character string with SNP identifier (if
+#' \item \code{snp} - Character string with SNP identifier (if
 #'     missing, the rownames are used).
 #' }
 #' @param tol Tolerance for determining whether a SNP is exactly at a
