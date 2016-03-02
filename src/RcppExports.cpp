@@ -812,6 +812,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// invert_sdp
+IntegerMatrix invert_sdp(const IntegerVector& sdp, const int n_str);
+RcppExport SEXP qtl2scan_invert_sdp(SEXP sdpSEXP, SEXP n_strSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< const int >::type n_str(n_strSEXP);
+    __result = Rcpp::wrap(invert_sdp(sdp, n_str));
+    return __result;
+END_RCPP
+}
 // alleleprob_to_snpprob
 NumericVector alleleprob_to_snpprob(NumericVector alleleprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
 RcppExport SEXP qtl2scan_alleleprob_to_snpprob(SEXP alleleprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {

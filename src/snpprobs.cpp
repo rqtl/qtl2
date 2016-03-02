@@ -12,7 +12,7 @@ using namespace Rcpp;
 // Input is a marker x strain matrix of genotypes
 // 0 = homozygous AA, 1 = homozygous BB
 //
-// [[Rcpp::export]]
+// [[Rcpp::export(".calc_sdp")]]
 IntegerVector calc_sdp(const IntegerMatrix& geno)
 {
     const unsigned int n_mar = geno.rows();
@@ -24,6 +24,34 @@ IntegerVector calc_sdp(const IntegerMatrix& geno)
     for(unsigned int i=0; i<n_mar; i++) {
         for(unsigned int j=0; j<n_str; j++) {
             result[i] += geno(i,j)*(1 << j);
+        }
+    }
+
+    return result;
+}
+
+// calculate SNP genotypes from a set of
+// strain distribution patterns (SDPs)
+//
+// Input is a vector of SDPs + number of strains
+//
+// Output is a marker x strain matrix of genotypes
+// 0 = homozygous AA, 1 = homozygous BB
+//
+// [[Rcpp::export(".invert_sdp")]]
+IntegerMatrix invert_sdp(const IntegerVector& sdp, const int n_str)
+{
+    const unsigned int n_mar = sdp.size();
+    for(unsigned int mar=0; mar<n_mar; mar++) {
+        if(sdp[mar] < 0 || sdp[mar] > (1 << n_str) - 1)
+            throw std::invalid_argument("sdp out of range");
+    }
+
+    IntegerMatrix result(n_mar,n_str);
+
+    for(unsigned int mar=0; mar<n_mar; mar++) {
+        for(unsigned int str=0; str<n_str; str++) {
+            result(mar,str) = (sdp[mar] & (1 << str)) != 0;
         }
     }
 

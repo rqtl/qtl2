@@ -11,6 +11,15 @@
 // 0 = homozygous AA, 1 = homozygous BB
 Rcpp::IntegerVector calc_sdp(const Rcpp::IntegerMatrix& geno);
 
+// calculate SNP genotypes from a set of
+// strain distribution patterns (SDPs)
+//
+// Input is a vector of SDPs + number of strains
+//
+// Output is a marker x strain matrix of genotypes
+// 0 = homozygous AA, 1 = homozygous BB
+Rcpp::IntegerMatrix invert_sdp(const Rcpp::IntegerVector& sdp, const int n_str);
+
 // convert allele probabilities into SNP probabilities
 //
 // alleleprob = individual x allele x position

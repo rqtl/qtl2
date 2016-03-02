@@ -233,8 +233,12 @@ scancoefSE_lmm_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenv
     .Call('qtl2scan_scancoefSE_lmm_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
-calc_sdp <- function(geno) {
+.calc_sdp <- function(geno) {
     .Call('qtl2scan_calc_sdp', PACKAGE = 'qtl2scan', geno)
+}
+
+.invert_sdp <- function(sdp, n_str) {
+    .Call('qtl2scan_invert_sdp', PACKAGE = 'qtl2scan', sdp, n_str)
 }
 
 .alleleprob_to_snpprob <- function(alleleprob, sdp, interval, on_map) {

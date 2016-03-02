@@ -2,46 +2,95 @@ context("genoprobs -> snpprobs")
 
 test_that("calc_sdp works", {
 
-    expect_error(calc_sdp(rbind(0,1,0))) # should be at least two columns
+    expect_error(suppressWarnings(calc_sdp(rbind(1,3,1)))) # should be at least two columns
 
-    expect_equal(calc_sdp( rbind( c(0,0), c(1,0), c(0,1), c(1,1) ) ),
-                 c(0, 1, 2, 3) )
+    expect_equal(suppressWarnings( calc_sdp( rbind( c(1,1), c(3,1), c(1,3), c(3,3) ) ) ),
+                 c(1, 2) )
 
-    expect_equal(calc_sdp( rbind(c(1, 0, 0, 0),
-                                 c(0, 1, 0, 0),
-                                 c(0, 0, 1, 0),
-                                 c(0, 0, 0, 1),
-                                 c(1, 1, 0, 0),
-                                 c(1, 0, 1, 0),
-                                 c(1, 0, 0, 1),
-                                 c(0, 1, 1, 0),
-                                 c(0, 1, 0, 1),
-                                 c(0, 0, 1, 1),
-                                 c(1, 1, 1, 0),
-                                 c(1, 1, 0, 1),
-                                 c(1, 0, 1, 1),
-                                 c(0, 1, 1, 1),
-                                 c(1, 1, 1, 1)) ),
-                 c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14, 15) )
+    expect_equal(calc_sdp( rbind(c(3, 1, 1, 1),
+                                 c(1, 3, 1, 1),
+                                 c(1, 1, 3, 1),
+                                 c(1, 1, 1, 3),
+                                 c(3, 3, 1, 1),
+                                 c(3, 1, 3, 1),
+                                 c(3, 1, 1, 3),
+                                 c(1, 3, 3, 1),
+                                 c(1, 3, 1, 3),
+                                 c(1, 1, 3, 3),
+                                 c(3, 3, 3, 1),
+                                 c(3, 3, 1, 3),
+                                 c(3, 1, 3, 3),
+                                 c(1, 3, 3, 3)) ),
+                 c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14) )
 
-    g <- rbind(c(1,0,0,0,0,0,0,0), # 1
-               c(0,1,0,0,0,0,0,0), # 2
-               c(0,0,0,0,0,1,0,0), # 32
-               c(0,0,0,0,0,0,0,1), # 128
-               c(1,0,0,0,0,0,0,1), # 129
-               c(0,1,0,1,0,1,0,1), # 170
-               c(1,0,1,0,1,0,1,0), # 85
-               c(1,1,1,1,0,0,0,0), # 15
-               c(0,0,0,0,1,1,1,1), # 240
-               c(1,1,0,0,0,0,1,1)) # 195
+    g <- rbind(c(3,1,1,1,1,1,1,1), # 1
+               c(1,3,1,1,1,1,1,1), # 2
+               c(1,1,1,1,1,3,1,1), # 32
+               c(1,1,1,1,1,1,1,3), # 128
+               c(3,1,1,1,1,1,1,3), # 129
+               c(1,3,1,3,1,3,1,3), # 170
+               c(3,1,3,1,3,1,3,1), # 85
+               c(3,3,3,3,1,1,1,1), # 15
+               c(1,1,1,1,3,3,3,3), # 240
+               c(3,3,1,1,1,1,3,3)) # 195
 
     expect_equal(calc_sdp(g), c(1,2,32,128,129,170,85,15,240,195) )
 
     set.seed(38444584)
-    g <- matrix(sample(0:1, 8*12, replace=TRUE), ncol=8)
+    g <- matrix(sample(c(1,3), 8*12, replace=TRUE), ncol=8)
+    n_AA <- rowSums(g==1)
+    g <- g[n_AA > 0 & n_AA < 8,]
     expect_equal(calc_sdp(g),
-                 apply(g, 1, function(a) sum(a*2^(seq(along=a)-1))))
+                 apply(g, 1, function(a) sum(((a-1)/2)*2^(seq(along=a)-1))))
 })
+
+
+test_that("invert_sdp works", {
+
+    expected <- rbind(c(3,1), c(1,3)); colnames(expected) <- c("A", "B")
+    expect_equal(invert_sdp(c(1,2), c("A", "B")), expected)
+
+    g <- rbind(c(3, 1, 1, 1),
+               c(1, 3, 1, 1),
+               c(1, 1, 3, 1),
+               c(1, 1, 1, 3),
+               c(3, 3, 1, 1),
+               c(3, 1, 3, 1),
+               c(3, 1, 1, 3),
+               c(1, 3, 3, 1),
+               c(1, 3, 1, 3),
+               c(1, 1, 3, 3),
+               c(3, 3, 3, 1),
+               c(3, 3, 1, 3),
+               c(3, 1, 3, 3),
+               c(1, 3, 3, 3))
+    colnames(g) <- LETTERS[1:4]
+    expect_equal(invert_sdp(c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14), LETTERS[1:4]),
+                 g)
+
+    g <- rbind(c(3,1,1,1,1,1,1,1), # 1
+               c(1,3,1,1,1,1,1,1), # 2
+               c(1,1,1,1,1,3,1,1), # 32
+               c(1,1,1,1,1,1,1,3), # 128
+               c(3,1,1,1,1,1,1,3), # 129
+               c(1,3,1,3,1,3,1,3), # 170
+               c(3,1,3,1,3,1,3,1), # 85
+               c(3,3,3,3,1,1,1,1), # 15
+               c(1,1,1,1,3,3,3,3), # 240
+               c(3,3,1,1,1,1,3,3)) # 195
+    colnames(g) <- LETTERS[1:8]
+    expect_equal(invert_sdp(c(1,2,32,128,129,170,85,15,240,195), LETTERS[1:8]),
+                 g)
+
+    set.seed(38444584)
+    g <- matrix(sample(c(1,3), 8*12, replace=TRUE), ncol=8)
+    n_AA <- rowSums(g==1)
+    g <- g[n_AA > 0 & n_AA < 8,]
+    colnames(g) <- LETTERS[1:8]
+    expect_equal(invert_sdp(calc_sdp(g), LETTERS[1:8]),
+                 g)
+})
+
 
 
 test_that(".alleleprob_to_snpprob works in simple cases", {
