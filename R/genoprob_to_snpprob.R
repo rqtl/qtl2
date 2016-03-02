@@ -52,8 +52,32 @@
 #' strain distribution pattern.
 #'
 #' @examples
+#' \dontrun{
+#' # load example data and calculate genotype probabilities
 #' library(qtl2geno)
-#' # show something here
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/master/DO_Recla/recla.zip")
+#' recla <- read_cross2(file)
+#' recla <- recla[c(1:2,53:54), c("19","X")] # subset to 4 mice and 2 chromosomes
+#' probs <- calc_genoprob(recla, step=0, err=0.002)
+#'
+#' # insert physical map into genotype probabilities
+#' attr(probs, "map") <- recla$pmap
+#'
+#' # founder genotypes for a set of SNPs
+#' snpgeno <- rbind(m1=c(3,1,1,3,1,1,1,1),
+#'                  m2=c(1,3,1,3,1,3,1,3),
+#'                  m3=c(1,1,1,1,3,3,3,3),
+#'                  m4=c(1,3,1,3,1,3,1,3))
+#' sdp <- calc_sdp(snpgeno)
+#' snpinfo <- data.frame(chr=c("19", "19", "X", "X"),
+#'                       pos=c(40.36, 40.53, 110.91, 111.21),
+#'                       sdp=sdp,
+#'                       snp=c("m1", "m2", "m3", "m4"), stringsAsFactors=FALSE)
+#'
+#' # collapse to SNP genotype probabilities
+#' snpprobs <- genoprob_to_snpprob(probs, snpinfo)
+#' }
 #'
 #' @export
 genoprob_to_snpprob <-
