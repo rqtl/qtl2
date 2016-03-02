@@ -47,8 +47,8 @@ test_that("calc_sdp works", {
 
 test_that("invert_sdp works", {
 
-    expected <- rbind(c(3,1), c(1,3)); colnames(expected) <- c("A", "B")
-    expect_equal(invert_sdp(c(1,2), c("A", "B")), expected)
+    expected <- rbind(c(3,1), c(1,3))
+    expect_equal(invert_sdp(c(1,2), 2), expected)
 
     g <- rbind(c(3, 1, 1, 1),
                c(1, 3, 1, 1),
@@ -64,8 +64,7 @@ test_that("invert_sdp works", {
                c(3, 3, 1, 3),
                c(3, 1, 3, 3),
                c(1, 3, 3, 3))
-    colnames(g) <- LETTERS[1:4]
-    expect_equal(invert_sdp(c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14), LETTERS[1:4]),
+    expect_equal(invert_sdp(c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14), 4),
                  g)
 
     g <- rbind(c(3,1,1,1,1,1,1,1), # 1
@@ -78,16 +77,14 @@ test_that("invert_sdp works", {
                c(3,3,3,3,1,1,1,1), # 15
                c(1,1,1,1,3,3,3,3), # 240
                c(3,3,1,1,1,1,3,3)) # 195
-    colnames(g) <- LETTERS[1:8]
-    expect_equal(invert_sdp(c(1,2,32,128,129,170,85,15,240,195), LETTERS[1:8]),
+    expect_equal(invert_sdp(c(1,2,32,128,129,170,85,15,240,195), 8),
                  g)
 
     set.seed(38444584)
     g <- matrix(sample(c(1,3), 8*12, replace=TRUE), ncol=8)
     n_AA <- rowSums(g==1)
     g <- g[n_AA > 0 & n_AA < 8,]
-    colnames(g) <- LETTERS[1:8]
-    expect_equal(invert_sdp(calc_sdp(g), LETTERS[1:8]),
+    expect_equal(invert_sdp(calc_sdp(g), 8),
                  g)
 })
 
@@ -532,7 +529,7 @@ test_that("the genoprob_to_snpprob R function works", {
     for(i in 1:nrow(intX)) {
         sdp <- snpinfo$sdp[snpinfo$chr=="X"][c(3,1,2)][i] # need to reorder markers
         gencol <- genocol_to_snpcol(8, sdp)
-        yg <- invert_sdp(sdp, LETTERS[1:8])
+        yg <- invert_sdp(sdp, 8)
         gencol <- c(gencol, (yg-1)/2+3) # add hemizygous males
         for(j in 1:5) {
             if(intX[i,2]==0)
@@ -563,7 +560,7 @@ test_that("the genoprob_to_snpprob R function works", {
     # construct expected for chr 19
     expected19 <- array(dim=c(nrow(probs[["19"]]), 2, nrow(int19)))
     for(i in 1:nrow(int19)) {
-        gencol <- (invert_sdp(snpinfo$sdp[snpinfo$chr=="19"][i], LETTERS[1:8])-1)/2
+        gencol <- (invert_sdp(snpinfo$sdp[snpinfo$chr=="19"][i], 8)-1)/2
         for(j in 1:2) {
             if(int19[i,2]==0)
                 expected19[,j,i] <- rowSums((aprobs[["19"]][,gencol==j-1,int19[i,1]+1] +
@@ -579,7 +576,7 @@ test_that("the genoprob_to_snpprob R function works", {
     expectedX <- array(dim=c(nrow(probs[["X"]]), 2, nrow(int19)))
     for(i in 1:nrow(intX)) {
         sdp <- snpinfo$sdp[snpinfo$chr=="X"][c(3,1,2)][i] # need to reorder markers
-        gencol <- (invert_sdp(sdp, LETTERS[1:8])-1)/2
+        gencol <- (invert_sdp(sdp, 8)-1)/2
         for(j in 1:2) {
             if(intX[i,2]==0)
                 expectedX[,j,i] <- rowSums((aprobs[["X"]][,gencol==j-1,intX[i,1]+1] +

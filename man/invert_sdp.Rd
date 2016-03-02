@@ -4,13 +4,13 @@
 \alias{invert_sdp}
 \title{Calculate SNP genotype matrix from strain distribution patterns}
 \usage{
-invert_sdp(sdp, alleles)
+invert_sdp(sdp, n_strains)
 }
 \arguments{
 \item{sdp}{Vector of strain distribution patterns (integers between
 1 and \eqn{2^n-2} where \eqn{n} is the number of strains.}
 
-\item{alleles}{Vector of single-character allele codes}
+\item{n_strains}{Number of strains}
 }
 \value{
 Matrix of SNP genotypes, markers x strains, coded as 1
@@ -22,8 +22,7 @@ Calculate the matrix of SNP genotypes from a vector of strain distribution patte
 }
 \examples{
 sdp <- c(m1=1, m2=12, m3=240)
-alleles <- LETTERS[1:8]
-invert_sdp(sdp, alleles)
+invert_sdp(sdp, 8)
 }
 \seealso{
 \code{\link{calc_sdp}}

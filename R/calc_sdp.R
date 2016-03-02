@@ -54,7 +54,7 @@ calc_sdp <-
 #'
 #' @param sdp Vector of strain distribution patterns (integers between
 #' 1 and \eqn{2^n-2} where \eqn{n} is the number of strains.
-#' @param alleles Vector of single-character allele codes
+#' @param n_strains Number of strains
 #'
 #' @return Matrix of SNP genotypes, markers x strains, coded as 1
 #' (AA) and 3 (BB). Markers with values other than 1 or 3 are omitted,
@@ -65,15 +65,12 @@ calc_sdp <-
 #' @export
 #' @examples
 #' sdp <- c(m1=1, m2=12, m3=240)
-#' alleles <- LETTERS[1:8]
-#' invert_sdp(sdp, alleles)
+#' invert_sdp(sdp, 8)
 invert_sdp <-
-    function(sdp, alleles)
+    function(sdp, n_strains)
 {
-    n_str <- length(alleles)
-
-    geno <- .invert_sdp(sdp, n_str)
-    dimnames(geno) <- list(names(sdp), alleles)
+    geno <- .invert_sdp(sdp, n_strains)
+    rownames(geno) <- names(sdp)
     geno <- geno*2+1 # convert 0/1 to 1/3
 
     geno
