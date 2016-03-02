@@ -89,6 +89,10 @@ snpinfo <- data.frame(chr=c("19", "19", "X", "X"),
 
 # collapse to SNP genotype probabilities
 snpprobs <- genoprob_to_snpprob(probs, snpinfo)
+
+# could also first convert to allele probs
+aprobs <- genoprob_to_alleleprob(probs)
+snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 }
 
 }
