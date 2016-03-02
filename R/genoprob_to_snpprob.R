@@ -69,6 +69,8 @@ genoprob_to_snpprob <-
 
     # if more than one chromosome:
     if(length(uchr) > 1) {
+        uchr <- as.character(uchr) # convert back to character
+
         ### split snpinfo by chr, ordered as in genoprobs
         chr <- factor(snpinfo$chr, levels=uchr)
         snpinfo_spl <- split(snpinfo, chr)
@@ -96,6 +98,9 @@ genoprob_to_snpprob <-
     }
 
     # one chromosome
+
+    # make chromosome a character string again
+    uchr <- as.character(uchr)
 
     ### number of alleles
     alleles <- attr(genoprobs, "alleles")
