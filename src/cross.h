@@ -80,6 +80,11 @@ public:
         return 2;
     }
 
+    virtual const int nalleles()
+    {
+        return 2;
+    }
+
     virtual const Rcpp::IntegerVector possible_gen(const bool is_x_chr, const bool is_female,
                                                    const Rcpp::IntegerVector& cross_info)
     {

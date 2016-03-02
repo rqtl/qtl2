@@ -1,5 +1,8 @@
-
 context("basic HMM functions in phase-known intercross")
+
+test_that("p-k intercross nalleles works", {
+    expect_equal(nalleles("f2pk"), 2)
+})
 
 test_that("p-k intercross check_geno works", {
 

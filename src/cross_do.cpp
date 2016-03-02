@@ -255,6 +255,11 @@ const int DO::ngen(const bool is_x_chr)
     return n_geno;
 }
 
+const int DO::nalleles()
+{
+    return 8;
+}
+
 const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
 {
     const int n_alleles = 8;

@@ -1,5 +1,9 @@
 context("basic HMM functions in riself")
 
+test_that("riself nalleles works", {
+    expect_equal(nalleles("riself"), 2)
+})
+
 test_that("riself check_geno works", {
 
     expect_true(test_check_geno("riself", 0, TRUE, FALSE, FALSE, integer(0)))

@@ -1,5 +1,9 @@
 context("basic HMM functions in intercross")
 
+test_that("intercross nalleles works", {
+    expect_equal(nalleles("f2"), 2)
+})
+
 test_that("intercross check_geno works", {
 
     # autosome

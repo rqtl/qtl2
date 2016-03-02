@@ -1,5 +1,9 @@
 context("basic HMM functions in risib")
 
+test_that("risib nalleles works", {
+    expect_equal(nalleles("risib"), 2)
+})
+
 test_that("risib check_geno works", {
 
     # autosome

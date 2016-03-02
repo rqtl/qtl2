@@ -1,5 +1,9 @@
 context("basic HMM functions in doubled haploids")
 
+test_that("doubled haploids nalleles works", {
+    expect_equal(nalleles("dh"), 2)
+})
+
 test_that("doubled haploids check_geno works", {
 
     # autosome

@@ -93,6 +93,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// nalleles
+int nalleles(const String& crosstype);
+RcppExport SEXP qtl2geno_nalleles(SEXP crosstypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    __result = Rcpp::wrap(nalleles(crosstype));
+    return __result;
+END_RCPP
+}
 // genoprob_to_alleleprob
 NumericVector genoprob_to_alleleprob(const String& crosstype, const NumericVector& prob_array, const bool is_x_chr);
 RcppExport SEXP qtl2geno_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {

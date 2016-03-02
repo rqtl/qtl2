@@ -1,5 +1,9 @@
 context("basic HMM functions in backcross")
 
+test_that("backcross nalleles works", {
+    expect_equal(nalleles("bc"), 2)
+})
+
 test_that("backcross check_geno works", {
 
     # autosome

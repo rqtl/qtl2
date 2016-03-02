@@ -1,5 +1,9 @@
 context("basic HMM functions in phase-known AIL")
 
+test_that("phase-known AIL nalleles works", {
+    expect_equal(nalleles("ailpk"), 2)
+})
+
 test_that("phase-known AIL check_geno works", {
 
     # autosome
