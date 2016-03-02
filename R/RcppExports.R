@@ -233,3 +233,31 @@ scancoefSE_lmm_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenv
     .Call('qtl2scan_scancoefSE_lmm_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
+.calc_sdp <- function(geno) {
+    .Call('qtl2scan_calc_sdp', PACKAGE = 'qtl2scan', geno)
+}
+
+.invert_sdp <- function(sdp, n_str) {
+    .Call('qtl2scan_invert_sdp', PACKAGE = 'qtl2scan', sdp, n_str)
+}
+
+.alleleprob_to_snpprob <- function(alleleprob, sdp, interval, on_map) {
+    .Call('qtl2scan_alleleprob_to_snpprob', PACKAGE = 'qtl2scan', alleleprob, sdp, interval, on_map)
+}
+
+genocol_to_snpcol <- function(n_str, sdp) {
+    .Call('qtl2scan_genocol_to_snpcol', PACKAGE = 'qtl2scan', n_str, sdp)
+}
+
+.genoprob_to_snpprob <- function(genoprob, sdp, interval, on_map) {
+    .Call('qtl2scan_genoprob_to_snpprob', PACKAGE = 'qtl2scan', genoprob, sdp, interval, on_map)
+}
+
+Xgenocol_to_snpcol <- function(n_str, sdp) {
+    .Call('qtl2scan_Xgenocol_to_snpcol', PACKAGE = 'qtl2scan', n_str, sdp)
+}
+
+.Xgenoprob_to_snpprob <- function(genoprob, sdp, interval, on_map) {
+    .Call('qtl2scan_Xgenoprob_to_snpprob', PACKAGE = 'qtl2scan', genoprob, sdp, interval, on_map)
+}
+

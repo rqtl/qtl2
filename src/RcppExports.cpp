@@ -801,3 +801,92 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// calc_sdp
+IntegerVector calc_sdp(const IntegerMatrix& geno);
+RcppExport SEXP qtl2scan_calc_sdp(SEXP genoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
+    __result = Rcpp::wrap(calc_sdp(geno));
+    return __result;
+END_RCPP
+}
+// invert_sdp
+IntegerMatrix invert_sdp(const IntegerVector& sdp, const int n_str);
+RcppExport SEXP qtl2scan_invert_sdp(SEXP sdpSEXP, SEXP n_strSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< const int >::type n_str(n_strSEXP);
+    __result = Rcpp::wrap(invert_sdp(sdp, n_str));
+    return __result;
+END_RCPP
+}
+// alleleprob_to_snpprob
+NumericVector alleleprob_to_snpprob(NumericVector alleleprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
+RcppExport SEXP qtl2scan_alleleprob_to_snpprob(SEXP alleleprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type alleleprob(alleleprobSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type on_map(on_mapSEXP);
+    __result = Rcpp::wrap(alleleprob_to_snpprob(alleleprob, sdp, interval, on_map));
+    return __result;
+END_RCPP
+}
+// genocol_to_snpcol
+IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
+RcppExport SEXP qtl2scan_genocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_str(n_strSEXP);
+    Rcpp::traits::input_parameter< const int >::type sdp(sdpSEXP);
+    __result = Rcpp::wrap(genocol_to_snpcol(n_str, sdp));
+    return __result;
+END_RCPP
+}
+// genoprob_to_snpprob
+NumericVector genoprob_to_snpprob(NumericVector genoprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
+RcppExport SEXP qtl2scan_genoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type genoprob(genoprobSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type on_map(on_mapSEXP);
+    __result = Rcpp::wrap(genoprob_to_snpprob(genoprob, sdp, interval, on_map));
+    return __result;
+END_RCPP
+}
+// Xgenocol_to_snpcol
+IntegerVector Xgenocol_to_snpcol(const int n_str, const int sdp);
+RcppExport SEXP qtl2scan_Xgenocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type n_str(n_strSEXP);
+    Rcpp::traits::input_parameter< const int >::type sdp(sdpSEXP);
+    __result = Rcpp::wrap(Xgenocol_to_snpcol(n_str, sdp));
+    return __result;
+END_RCPP
+}
+// Xgenoprob_to_snpprob
+NumericVector Xgenoprob_to_snpprob(NumericVector genoprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
+RcppExport SEXP qtl2scan_Xgenoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type genoprob(genoprobSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type sdp(sdpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type interval(intervalSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type on_map(on_mapSEXP);
+    __result = Rcpp::wrap(Xgenoprob_to_snpprob(genoprob, sdp, interval, on_map));
+    return __result;
+END_RCPP
+}
