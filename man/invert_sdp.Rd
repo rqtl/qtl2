@@ -23,7 +23,7 @@ Calculate the matrix of SNP genotypes from a vector of strain distribution patte
 \examples{
 sdp <- c(m1=1, m2=12, m3=240)
 alleles <- LETTERS[1:8]
-invert_sdp(x, alleles)
+invert_sdp(sdp, alleles)
 }
 \seealso{
 \code{\link{calc_sdp}}

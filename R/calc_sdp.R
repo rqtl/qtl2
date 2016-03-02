@@ -66,7 +66,7 @@ calc_sdp <-
 #' @examples
 #' sdp <- c(m1=1, m2=12, m3=240)
 #' alleles <- LETTERS[1:8]
-#' invert_sdp(x, alleles)
+#' invert_sdp(sdp, alleles)
 invert_sdp <-
     function(sdp, alleles)
 {
