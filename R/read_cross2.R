@@ -213,7 +213,7 @@ function(file, quiet=TRUE)
     used_control["linemap"] <- TRUE # indicate that we used it
 
     # alleles?
-    n_alleles <- nalleles(crosstype)
+    n_alleles <- nalleles(output$crosstype)
     if("alleles" %in% names(control)) {
         output$alleles <- control$alleles
         used_control["alleles"] <- TRUE # indicate that we used it
