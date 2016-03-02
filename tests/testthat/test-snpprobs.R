@@ -542,6 +542,25 @@ test_that("the genoprob_to_snpprob R function works", {
     expect_equivalent(snpprobX, list(X=expectedX))
     expect_equivalent(snpprob, list("19"=expected19, X=expectedX))
 
+    # compare snp info
+    expect_equal(attr(snpprob[["19"]], "snpinfo"), attr(snpprob19[["19"]], "snpinfo"))
+    expect_equal(attr(snpprob[["X"]], "snpinfo"), attr(snpprobX[["X"]], "snpinfo"))
+
+    # repeat with some redundant SNPs
+    snpinfo2 <- rbind(snpinfo, data.frame(chr=c("19", "19", "X", "X"),
+                                          pos=c(40.41, 40.49, 110.99, 111.01),
+                                          sdp=c(170,9,170,240),
+                                          snp=c("m7","m8","m9","m10"),
+                                          stringsAsFactors=FALSE))
+
+    snpprob2 <- genoprob_to_snpprob(probs, snpinfo2)
+    expect_equivalent(snpprob2, snpprob)
+    snpinfo19 <- cbind(snpinfo2[snpinfo2$chr=="19",], index=c(1,2,3,2,1))
+    expect_equal(attr(snpprob2[["19"]], "snpinfo"), snpinfo19)
+    snpinfoX <- cbind(snpinfo2[snpinfo2$chr=="X",], index=c(2,3,1,3,2))
+    expect_equal(attr(snpprob2[["X"]], "snpinfo"), snpinfoX)
+
+    # convert to allele probabilities
     aprobs <- genoprob_to_alleleprob(probs)
     snpaprob <- genoprob_to_snpprob(aprobs, snpinfo)
     snpaprob19 <- genoprob_to_snpprob(aprobs, snpinfo[snpinfo$chr=="19",])
@@ -587,5 +606,13 @@ test_that("the genoprob_to_snpprob R function works", {
     }
     expect_equivalent(snpaprobX, list(X=expectedX))
     expect_equivalent(snpaprob, list("19"=expected19, X=expectedX))
+
+    # repeat with some redundant SNPs
+    snpaprob2 <- genoprob_to_snpprob(aprobs, snpinfo2)
+    expect_equivalent(snpprob2, snpprob)
+    snpinfo19 <- cbind(snpinfo2[snpinfo2$chr=="19",], index=c(1,2,3,2,1))
+    expect_equal(attr(snpaprob2[["19"]], "snpinfo"), snpinfo19)
+    snpinfoX <- cbind(snpinfo2[snpinfo2$chr=="X",], index=c(2,3,1,3,2))
+    expect_equal(attr(snpaprob2[["X"]], "snpinfo"), snpinfoX)
 
 })
