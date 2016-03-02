@@ -1,5 +1,9 @@
 context("basic HMM functions in phase-known Diversity Outcross")
 
+test_that("Phase-known DO nalleles works", {
+    expect_equal(nalleles("dopk"), 8)
+})
+
 test_that("Phase-known DO check_geno works", {
 
     # observed genotypes

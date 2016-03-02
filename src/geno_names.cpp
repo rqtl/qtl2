@@ -16,3 +16,14 @@ std::vector<std::string> geno_names(const String& crosstype,
 
     return result;
 }
+
+// [[Rcpp::export]]
+int nalleles(const String& crosstype)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+    int result = cross->nalleles();
+
+    delete cross;
+
+    return result;
+}

@@ -1,5 +1,9 @@
 context("basic HMM functions in Diversity Outcross")
 
+test_that("DO nalleles works", {
+    expect_equal(nalleles("do"), 8)
+})
+
 test_that("DO check_geno works", {
 
     # observed genotypes

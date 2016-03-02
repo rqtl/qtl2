@@ -213,9 +213,15 @@ function(file, quiet=TRUE)
     used_control["linemap"] <- TRUE # indicate that we used it
 
     # alleles?
+    n_alleles <- nalleles(crosstype)
     if("alleles" %in% names(control)) {
         output$alleles <- control$alleles
         used_control["alleles"] <- TRUE # indicate that we used it
+        if(n_alleles != length(output$alleles))
+            stop("length(alleles) [", length(output$alleles),
+                 "] != expected number [", n_alleles, "]")
+    } else {
+        output$alleles <- LETTERS[1:n_alleles]
     }
 
     class(output) <- "cross2"

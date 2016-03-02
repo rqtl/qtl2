@@ -1,5 +1,9 @@
 context("basic HMM functions in AIL")
 
+test_that("AIL nalleles works", {
+    expect_equal(nalleles("ail"), 2)
+})
+
 test_that("AIL check_geno works", {
 
     # autosome

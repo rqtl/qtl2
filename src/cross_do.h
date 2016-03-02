@@ -29,6 +29,7 @@ class DO : public QTLCross
     const Rcpp::IntegerVector possible_gen(const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
 
     const int ngen(const bool is_x_chr);
+    const int nalleles();
 
     const Rcpp::NumericMatrix geno2allele_matrix(const bool is_x_chr);
 
@@ -54,6 +55,7 @@ class DO : public QTLCross
     const bool need_founder_geno();
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
+
 };
 
 #endif // CROSS_DO_H

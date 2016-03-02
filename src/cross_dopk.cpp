@@ -274,6 +274,11 @@ const int DOPK::ngen(const bool is_x_chr)
     return n_geno;
 }
 
+const int DOPK::nalleles()
+{
+    return 8;
+}
+
 const double DOPK::nrec(const int gen_left, const int gen_right,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
