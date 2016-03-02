@@ -76,14 +76,16 @@ genoprob_to_snpprob <-
         ### loop over chromosomes, using recursion
         results <- vector("list", length(uchr))
         names(results) <- uchr
+        map <- results
         for(i in seq(along=uchr)) {
             tmp <- genoprob_to_snpprob(genoprobs, snpinfo_spl[[i]])
             results[[i]] <- tmp[[1]] # just the array
             attr(results[[i]], "snpinfo") <- attr(tmp[[1]], "snpinfo")
+            map[[i]] <- attr(tmp, "map")[[1]]
         }
 
         ### add attributes
-        attr(results, "map") <- attr(genoprobs, "map")[uchr]
+        attr(results, "map") <- map
         attr(results, "is_x_chr") <- attr(genoprobs, "is_x_chr")[uchr]
         attr(results, "crosstype") <- "snps"
         attr(results, "alleles") <- c("A", "B")
@@ -159,7 +161,10 @@ genoprob_to_snpprob <-
     results <- list(results)
     names(results) <- uchr
 
-    attr(results, "map") <- attr(genoprobs, "map")[uchr]
+    snpmap <- list(snpinfo$pos[urow])
+    names(snpmap[[1]]) <- snpnames
+    names(snpmap) <- uchr
+    attr(results, "map") <- snpmap
     attr(results, "is_x_chr") <- attr(genoprobs, "is_x_chr")[uchr]
     attr(results, "crosstype") <- "snps"
     attr(results, "alleles") <- c("A", "B")
