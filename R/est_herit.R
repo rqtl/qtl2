@@ -100,8 +100,7 @@ est_herit <-
     # to contain the results
     hsq <- rep(NA, ncol(pheno))
     names(hsq) <- colnames(pheno)
-
-    n <- hsq
+    n <- nullLL <- hsq
 
     # loop over batches of phenotypes with the same pattern of NAs
     for(batch in seq(along=phe_batches)) {
@@ -128,9 +127,11 @@ est_herit <-
         nullresult <- calc_hsq_clean(Ke, ph, ac, NULL, FALSE, reml, cores,
                                      check_boundary, tol)
         hsq[phecol] <- nullresult$hsq
+        nullLL <- nullresult$loglik
     }
 
     attr(hsq, "sample_size") <- n
+    attr(hsq, "log10lik") <- nullLL/log(10)
 
     hsq
 }
