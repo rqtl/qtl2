@@ -54,8 +54,8 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 # calculate genotype probabilities
 probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 
-# leave-one-chromosome-out kinship matrices
-kinship <- calc_kinship(probs, "loco")
+# kinship matrix
+kinship <- calc_kinship(probs)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno

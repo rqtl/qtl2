@@ -39,7 +39,7 @@
 #' # calculate genotype probabilities
 #' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 #'
-#' # kinship matrices
+#' # kinship matrix
 #' kinship <- calc_kinship(probs)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
