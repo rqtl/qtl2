@@ -309,7 +309,7 @@ par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- max(out)
 plotscan1(out, lod=1, col="slateblue", ylim=c(0, ymx*1.02))
 plotscan1(out, lod=2, col="violetred", add=TRUE)
-legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray92")
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ```
 
 
@@ -357,8 +357,8 @@ for(i in 1:2) {
               ylim=c(0, ymx*1.02))
     plotscan1(out_lmm, lod=i, col=color[2], add=TRUE)
     plotscan1(out_lmm_loco, lod=i, col=color[3], add=TRUE, lty=2)
+    legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
-legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray92", lty=c(1,1,2))
 ```
 
 For the liver phenotype (top panel), the three methods give quite
@@ -422,7 +422,7 @@ second and third columns.
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
 ymx <- max(abs(c2effB[,2:3]))
-plotcoef(c2effB, columns=2:3, col=col[2:3])
+plotcoef(c2effB, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=c2effB[nrow(c2eff),i+1], colnames(c2effB)[i+1],
          tick=FALSE, col.axis=col[i])
@@ -463,7 +463,7 @@ Here's a plot of the results.
 ```{r plot_effects_lmm_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
 ymx <- max(abs(c2effB_lmm[,2:3]))
-plotcoef(c2effB_lmm, columns=2:3, col=col[2:3])
+plotcoef(c2effB_lmm, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=c2effB_lmm[nrow(c2eff),i+1], colnames(c2effB_lmm)[i+1],
          tick=FALSE, col.axis=col[i])
