@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/rqtl/qtl2geno.png?branch=master)](https://travis-ci.org/rqtl/qtl2geno) <br>
 [R/qtl2scan](https://github.com/rqtl/qtl2scan):
 [![Build Status](https://travis-ci.org/rqtl/qtl2scan.png?branch=master)](https://travis-ci.org/rqtl/qtl2scan)
+[R/qtl2plot](https://github.com/rqtl/qtl2plot):
+[![Build Status](https://travis-ci.org/rqtl/qtl2plot.png?branch=master)](https://travis-ci.org/rqtl/qtl2plot)
 
 [Karl Broman](http://kbroman.org)
 
@@ -11,9 +13,10 @@
 the QTL analysis software [R/qtl](http://www.rqtl.org), to better
 handle high-dimensional data and complex cross designs. It is split
 into [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
-genotype probabilities, imputations, and genetic maps) and
+genotype probabilities, imputations, and genetic maps),
 [qtl2scan](https://github.com/rqtl/qtl2scan) (for QTL genome scans and
-related calculations).
+related calculations), and
+[qtl2plot](https://github.com/rqtl/qtl2plot) (for data visualization).
 
 ---
 
