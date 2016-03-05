@@ -84,7 +84,7 @@ scan1coef <-
     if(is.list(genoprobs)) {
         if(length(genoprobs) > 1)
             warning("Considering only the first chromosome.")
-        map <- attr(genoprobs, "map")[[1]]
+        map <- attr(genoprobs, "map")
         genoprobs <- genoprobs[[1]]
     } else {
         map <- attr(genoprobs, "map")

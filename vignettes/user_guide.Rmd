@@ -405,7 +405,7 @@ calculations. So to plot the effects, we could do the following:
 
 ```{r plot_effects_liver_c2}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff, "map")
+map <- attr(c2eff, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
 plot(map, c2eff[,1], ylim=range(c2eff), xlab="Position (cM)",
      ylab="Phenotype average", col=col[1], type="l")
@@ -433,7 +433,7 @@ second and third columns.
 
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2effB, "map")
+map <- attr(c2effB, "map")[[1]]
 ymx <- max(abs(c2effB[,2:3]))
 plot(map, c2effB[,2], ylim=c(-ymx, ymx), xlab="Position (cM)",
      ylab="QTL effect", col=col[1], type="l")
@@ -456,7 +456,7 @@ Here's a plot of the estimates.
 
 ```{r plot_effects_lmm_liver_c2}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_lmm, "map")
+map <- attr(c2eff_lmm, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
 plot(map, c2eff_lmm[,1], ylim=range(c2eff_lmm), xlab="Position (cM)",
      ylab="Phenotype average", col=col[1], type="l")
@@ -480,7 +480,7 @@ Here's a plot of the results.
 
 ```{r plot_effects_lmm_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2effB_lmm, "map")
+map <- attr(c2effB_lmm, "map")[[1]]
 ymx <- max(abs(c2effB_lmm[,2:3]))
 plot(map, c2effB_lmm[,2], ylim=c(-ymx, ymx), xlab="Position (cM)",
      ylab="QTL effect", col=col[1], type="l")
