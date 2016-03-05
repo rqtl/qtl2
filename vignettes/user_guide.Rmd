@@ -18,10 +18,11 @@ and complex cross designs.
 
 We expect that basic analyses with R/qtl2 will generally be performed
 in "batch" (for example, on a cluster) rather than interactively. And
-so the software is split into two parts:
+so the software is split into three parts:
 [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
-calculations, and [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
-scans.
+calculations, [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
+scans, and [qtl2plot](https://github.com/rqtl/qtl2plot) for data
+visualization.
 
 
 ## Installation
@@ -47,7 +48,7 @@ Then, install R/qtl2 using `devtools::install_github()`.
 
 ```{r install_qtl2, eval=FALSE}
 library(devtools)
-install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan"))
+install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan", "rqtl/qtl2plot"))
 ```
 
 ## Data file format
@@ -298,24 +299,17 @@ out <- scan1(pr, iron$pheno, Xcovar=Xcovar, cores=4)
 The output of `scan1()` is a matrix of LOD scores, positions &times;
 phenotypes.
 
-Unfortunately, we don't yet have functions for displaying or
-summarizing the results of `scan1()`, but you can use the function
-`convert2scanone()` to convert the results to the format produced by
-`scanone()` in [R/qtl](http://rqtl.org), and then use the relevant
-R/qtl functions for displaying the results.
-
-```{r convert2scanone}
-out_scanone <- convert2scanone(out)
-```
-
-We can now plot the LOD curves as follows:
+The function `plotscan1()` in the
+[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to
+plot the LOD curves.
 
 ```{r plot_lod}
-library(qtl)
+library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
-plot(out_scanone, lod=1:2, col=c("slateblue", "violetred"), ylab="LOD score", bgrect="gray92",
-     bandcol="gray80")
-legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray92")
+ymx <- max(out)
+plotscan1(out, lod=1, col="slateblue", ylim=c(0, ymx*1.02))
+plotscan1(out, lod=2, col="violetred", add=TRUE)
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ```
 
 
@@ -346,14 +340,9 @@ kinship matrices as obtained from `calc_kinship()` with
 out_lmm_loco <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ```
 
-To plot the results, we again need to convert them to
-the R/qtl `scanone` format.
+To plot the results, we again use `plotscan1` from the
+[qtl2plot](https://github.com/rqtl/qtl2plot) package.
 
-
-```{r convert2scanone_lmm}
-out_lmm_scanone <- convert2scanone(out_lmm)
-out_lmm_loco_scanone <- convert2scanone(out_lmm_loco)
-```
 
 Here is a plot of the LOD scores, by Haley-Knott regression and the linear
 mixed model using either the standard kinship matrix or the LOCO
@@ -362,12 +351,13 @@ method.
 ```{r plot_lod_scan1_vs_lmm}
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(5.1, 4.1, 1.1, 1.1))
+ymx <- max(rbind(out, out_lmm, out_lmm_loco))
 for(i in 1:2) {
-  plot(out_scanone, out_lmm_scanone, out_lmm_loco_scanone, lod=i, col=color,
-       ylab="LOD score", bgrect="gray92", bandcol="gray80", lty=c(1,1,2),
-       main=phenames(iron)[i])
-  if(i==2)
-      legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray92", lty=c(1,1,2))
+    plotscan1(out, lod=i, col=color[1], main=colnames(out)[i],
+              ylim=c(0, ymx*1.02))
+    plotscan1(out_lmm, lod=i, col=color[2], add=TRUE)
+    plotscan1(out_lmm_loco, lod=i, col=color[3], add=TRUE, lty=2)
+    legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
 ```
 
@@ -401,16 +391,13 @@ c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 
 The result is a matrix, `r nrow(c2eff)` positions &times; `r ncol(c2eff)`
 genotypes. An attribute, `"map"` contains the positions of the
-calculations. So to plot the effects, we could do the following:
+calculations. To plot the effects, use the function `plotcoef()` from
+the [qtl2plot](https://github.com/rqtl/qtl2plot).
 
 ```{r plot_effects_liver_c2}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff, "map")
 col <- c("slateblue", "violetred", "green3")
-plot(map, c2eff[,1], ylim=range(c2eff), xlab="Position (cM)",
-     ylab="Phenotype average", col=col[1], type="l")
-for(i in 2:ncol(c2eff))
-    lines(map, c2eff[,i], col=col[i])
+plotcoef(c2eff, columns=1:3, col=col)
 for(i in 1:ncol(c2eff))
     axis(side=4, at=c2eff[nrow(c2eff),i], colnames(c2eff)[i],
          tick=FALSE, col.axis=col[i])
@@ -418,6 +405,7 @@ for(i in 1:ncol(c2eff))
 
 The default is to provide phenotype averages for each genotype
 group. If instead you want additive and dominance effects, you can
+
 provide a square matrix of _contrasts_, as follows:
 
 ```{r est_effects_liver_c2_contr}
@@ -433,11 +421,8 @@ second and third columns.
 
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2effB, "map")
 ymx <- max(abs(c2effB[,2:3]))
-plot(map, c2effB[,2], ylim=c(-ymx, ymx), xlab="Position (cM)",
-     ylab="QTL effect", col=col[1], type="l")
-lines(map, c2effB[,3], col=col[2])
+plotcoef(c2effB, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=c2effB[nrow(c2eff),i+1], colnames(c2effB)[i+1],
          tick=FALSE, col.axis=col[i])
@@ -456,12 +441,9 @@ Here's a plot of the estimates.
 
 ```{r plot_effects_lmm_liver_c2}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_lmm, "map")
+map <- attr(c2eff_lmm, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-plot(map, c2eff_lmm[,1], ylim=range(c2eff_lmm), xlab="Position (cM)",
-     ylab="Phenotype average", col=col[1], type="l")
-for(i in 2:ncol(c2eff_lmm))
-    lines(map, c2eff_lmm[,i], col=col[i])
+plotcoef(c2eff_lmm, columns=1:3, col=col, ylab="Phenotype average")
 for(i in 1:ncol(c2eff))
     axis(side=4, at=c2eff_lmm[nrow(c2eff_lmm),i],
          colnames(c2eff_lmm)[i],
@@ -480,11 +462,8 @@ Here's a plot of the results.
 
 ```{r plot_effects_lmm_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2effB_lmm, "map")
 ymx <- max(abs(c2effB_lmm[,2:3]))
-plot(map, c2effB_lmm[,2], ylim=c(-ymx, ymx), xlab="Position (cM)",
-     ylab="QTL effect", col=col[1], type="l")
-lines(map, c2effB_lmm[,3], col=col[2])
+plotcoef(c2effB_lmm, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=c2effB_lmm[nrow(c2eff),i+1], colnames(c2effB_lmm)[i+1],
          tick=FALSE, col.axis=col[i])

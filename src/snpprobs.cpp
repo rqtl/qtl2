@@ -284,7 +284,6 @@ NumericVector Xgenoprob_to_snpprob(NumericVector genoprob,
     const unsigned int n_str = (sqrt(8*n_gen + 9) - 3)/2;
     if(n_gen != n_str*(n_str+1)/2 + n_str)
         throw std::invalid_argument("n_gen must == n + n(n+1)/2 for some n");
-    const unsigned int n_femgen = n_gen-n_str; // number of female genotypes
     const unsigned int n_pos = d[2];
     const unsigned int n_snp = sdp.size();
     if(n_snp != interval.size())
