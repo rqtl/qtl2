@@ -64,6 +64,7 @@ plotscan1 <-
     # pull out map
     map <- attr(scan1output, "map")
     if(is.null(map)) stop("No map found in the input")
+    if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
     # pull out lod scores
     lod <- scan1output[,lodcolumn]
@@ -105,7 +106,10 @@ plotscan1 <-
                 }
 
                 if(is.null(xlab)) {
-                    if(onechr) xlab <- paste("Chr", names(map), "position")
+                    if(onechr) {
+                        if(names(map) == " ") xlab <- "Position"
+                        else xlab <- paste("Chr", names(map), "position")
+                    }
                     else xlab <- "Chromosome"
                 }
 
