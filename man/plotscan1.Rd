@@ -60,5 +60,9 @@ plotscan1(out, chr=chr, ylim=ylim)
 plotscan1(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
        bg="gray90")
+
+# plot just one chromosome
+plotscan1(out, chr=8, ylim=ylim)
+plotscan1(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
 }
 

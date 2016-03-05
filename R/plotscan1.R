@@ -53,6 +53,10 @@
 #' plotscan1(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
 #' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
 #'        bg="gray90")
+#'
+#' # plot just one chromosome
+#' plotscan1(out, chr=8, ylim=ylim)
+#' plotscan1(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
 plotscan1 <-
     function(scan1output, lodcolumn=1, chr, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
@@ -100,8 +104,10 @@ plotscan1 <-
                     if(!onechr) xlim <- xlim + c(-gap/2, gap/2)
                 }
 
-                if(is.null(xlab))
-                    xlab <- ifelse(onechr, "Map position", "Chromosome")
+                if(is.null(xlab)) {
+                    if(onechr) xlab <- paste("Chr", names(map), "position")
+                    else xlab <- "Chromosome"
+                }
 
                 # margin parameters
                 if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
@@ -125,7 +131,7 @@ plotscan1 <-
                 if(onechr) {
                     axis(side=1, at=pretty(xlim), mgp=mgp.x, las=las, tick=FALSE)
                     if(!(length(vlines)==1 && is.na(vlines))) { # if vlines==NA, skip lines
-                        if(is.null(vlines)) vlines <- pretty(ylim)
+                        if(is.null(vlines)) vlines <- pretty(xlim)
                         abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
                     }
                 }
