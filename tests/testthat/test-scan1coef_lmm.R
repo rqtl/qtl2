@@ -44,6 +44,7 @@ eff_via_lm <-
 
     if(se) attr(result, "SE") <- SEs
 
+    class(result) <- c("scan1coef", "scan1", "matrix")
     result
 }
 

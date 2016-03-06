@@ -210,5 +210,6 @@ scan1coef_lmm <-
     if(!is.null(weights))
         attr(result, "weights") <- TRUE
 
+    class(result) <- c("scan1coef", "scan1", "matrix")
     result
 }

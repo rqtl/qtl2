@@ -43,6 +43,7 @@ lod_via_lm <-
     if(!is.null(weights)) attr(result, "weights") <- TRUE
     dimnames(result) <- list(dimnames(probs)[[3]], colnames(pheno))
 
+    class(result) <- c("scan1", "matrix")
     result
 }
 
@@ -54,6 +55,7 @@ subset_scan1result <-
     x <- x[rows,,drop=FALSE]
     for(i in c("addcovar", "intcovar", "sample_size", "weights"))
         attr(x, i) <- at[[i]]
+    class(x) <- c("scan1", "matrix")
     x
 }
 
@@ -69,6 +71,7 @@ scanone2scan1 <-
     attr(x, "intcovar") <- colnames4attr(intcovar)
     attr(x, "Xcovar") <- colnames4attr(Xcovar)
     attr(x, "weights") <- weights
+    class(x) <- c("scan1", "matrix")
     x
 }
 
