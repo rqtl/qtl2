@@ -11,7 +11,8 @@ plot_scan1(scan1output, lodcolumn = 1, chr, add = FALSE, gap = 25,
 \item{scan1output}{Output of \code{\link[qtl2scan]{scan1}} or
 \code{\link[qtl2scan]{scan1_lmm}}.}
 
-\item{lodcolumn}{LOD score column to plot.}
+\item{lodcolumn}{LOD score column to plot (a numeric index, or a
+character string for a column name). Only one value allowed.}
 
 \item{chr}{Selected chromosomes to plot; a vector of character
 strings.}
@@ -64,6 +65,10 @@ legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
 # plot just one chromosome
 plot_scan1(out, chr=8, ylim=ylim)
 plot_scan1(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
+
+# lodcolumn can also be a column name
+plot_scan1(out, lodcolumn="liver", ylim=ylim)
+plot_scan1(out, lodcolumn="spleen", col="violetred", add=TRUE)
 }
 \seealso{
 \code{\link{plot_coef}}, \code{\link{plot_coefCC}}, \code{\link{plot_snpasso}}

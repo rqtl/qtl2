@@ -5,7 +5,8 @@
 #' @param scan1output Output of \code{\link[qtl2scan]{scan1}} or
 #' \code{\link[qtl2scan]{scan1_lmm}}.
 #'
-#' @param lodcolumn LOD score column to plot.
+#' @param lodcolumn LOD score column to plot (a numeric index, or a
+#' character string for a column name). Only one value allowed.
 #'
 #' @param chr Selected chromosomes to plot; a vector of character
 #' strings.
@@ -59,6 +60,10 @@
 #' # plot just one chromosome
 #' plot_scan1(out, chr=8, ylim=ylim)
 #' plot_scan1(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
+#'
+#' # lodcolumn can also be a column name
+#' plot_scan1(out, lodcolumn="liver", ylim=ylim)
+#' plot_scan1(out, lodcolumn="spleen", col="violetred", add=TRUE)
 plot_scan1 <-
     function(scan1output, lodcolumn=1, chr, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
@@ -69,6 +74,18 @@ plot_scan1 <-
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
     # pull out lod scores
+    if(length(lodcolumn) > 1) { # If length > 1, take first value
+        warning("lodcolumn should have length 1; one first element used.")
+        lodcolumn <- lodcolumn[1]
+    }
+    if(is.character(lodcolumn)) { # turn column name into integer
+        tmp <- match(lodcolumn, colnames(scan1output))
+        if(is.na(tmp))
+            stop('lodcolumn "', lodcolumn, '" not found')
+        lodcolumn <- tmp
+    }
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1output))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1output), ")")
     lod <- scan1output[,lodcolumn]
 
     # subset chromosomes
@@ -131,7 +148,6 @@ plot_scan1 <-
                     for(i in seq(2, ncol(chrbound), by=2))
                         rect(chrbound[1,i], u[3], chrbound[2,i], u[4], col=altbgcolor, border=NA)
                 }
-                if(!is.null(bgcolor) || !is.null(altbgcolor)) box() # add box just in case
 
                 # add x axis
                 if(onechr) {
@@ -168,6 +184,9 @@ plot_scan1 <-
             for(i in seq(along=indexes))
                 lines(xpos[indexes[[i]]], lod[indexes[[i]]],
                            lwd=lwd, col=col, ...)
+
+            # add box just in case
+            box()
         }
 
     # make the plot
