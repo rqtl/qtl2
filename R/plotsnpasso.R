@@ -77,7 +77,8 @@ expand_snp_results <-
 
     result <- NULL
     for(i in seq(along=map)) {
-        map[[i]] <- map[[i]][snpinfo[[i]]$index]
+        map[[i]] <- snpinfo[[i]]$pos
+        names(map[[i]]) <- snpinfo[[i]]$snp
         result <- c(result, snp_results[ lodindex[[i]][ snpinfo[[i]]$index ] ])
     }
     result <- cbind(result)
