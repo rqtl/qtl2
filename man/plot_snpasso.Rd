@@ -5,7 +5,7 @@
 \title{Plot SNP associations}
 \usage{
 plot_snpasso(scan1output, show_all_snps = TRUE, drop.hilit = NA,
-  col.hilit = "violetred", col = "black", pch = 16, cex = 0.5,
+  col.hilit = "violetred", col = "darkslateblue", pch = 16, cex = 0.5,
   ylim = NULL, add = FALSE, gap = 25, bgcolor = "gray90",
   altbgcolor = "gray85", ...)
 }

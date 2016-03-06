@@ -2,7 +2,7 @@
 #'
 #' Plot estimated QTL effects along a chromosomes.
 #'
-#' @param coef Estimated QTL effects ("coefficients") as obtained from
+#' @param x Estimated QTL effects ("coefficients") as obtained from
 #' \code{\link[qtl2scan]{scan1coef}} or
 #' \code{\link[qtl2scan]{scan1coef_lmm}}.
 #'
@@ -52,13 +52,13 @@
 #' coef <- scan1coef(probs[,7], pheno, covar)
 #'
 #' # plot QTL effects
-#' plot_coef(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
+#' plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
-    function(coef, columns, col, add=FALSE, gap=25, ylim,
+    function(x, columns, col, add=FALSE, gap=25, ylim,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     if(missing(columns) || is.null(columns))
-        columns <- 1:ncol(coef)
+        columns <- 1:ncol(x)
 
     if(missing(col) || is.null(col)) {
         n_col <- length(columns)
@@ -74,20 +74,20 @@ plot_coef <-
             stop("Need at least ", length(columns), " colors")
     }
 
-    map <- attr(coef, "map")
+    map <- attr(x, "map")
     if(is.null(map)) stop("Input needs to contain a map attribute")
 
     if(missing(ylim) || is.null(ylim)) {
-        ylim <- range(coef[,columns], na.rm=TRUE)
+        ylim <- range(x[,columns], na.rm=TRUE)
         d <- diff(ylim) * 0.02 # add 2% on either side
         ylim <- ylim + c(-d, d)
     }
 
-    plot_scan1(coef, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
+    plot_scan1(x, column=columns[1], ylim=ylim, col=col[1], add=add,
                gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     if(length(columns) > 1) {
         for(i in seq(along=columns)[-1])
-            plot_scan1(coef, lodcolumn=columns[i], col=col[i], gap=gap,
+            plot_scan1(x, column=columns[i], col=col[i], gap=gap,
                        add=TRUE, ...)
     }
 }
@@ -95,9 +95,19 @@ plot_coef <-
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(coef, add=FALSE, gap=25, ylim=NULL,
+    function(x, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
-    plot_coef(coef, columns=1:8, col=qtl2plot::CCcolors, add=add, gap=gap,
+    plot_coef(x, columns=1:8, col=qtl2plot::CCcolors, add=add, gap=gap,
               ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+}
+
+#' @export
+#' @rdname plot_coef
+plot.scan1coef <-
+    function(x, columns=1, col=NULL, add=FALSE, gap=25, ylim=NULL,
+             bgcolor="gray90", altbgcolor="gray85", ...)
+{
+    plot_coef(x, columns=columns, col=col, add=add, gap=gap, ylim=ylim,
+              bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
 }

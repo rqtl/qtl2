@@ -38,7 +38,7 @@
 #'
 plot_snpasso <-
     function(scan1output, show_all_snps=TRUE, drop.hilit=NA,
-             col.hilit="violetred", col="black",
+             col.hilit="violetred", col="darkslateblue",
              pch=16, cex=0.5, ylim=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
@@ -51,7 +51,7 @@ plot_snpasso <-
     if(!is.na(drop.hilit) && !is.null(drop.hilit))
         col <- c(col, col.hilit)[(scan1output >= max(scan1output)-drop.hilit)+1]
 
-    plot_scan1(scan1output, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
+    plot_scan1(scan1output, column=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
                gap=gap, add=add, col = col, type="p", cex=cex, pch=pch)
 }
 
