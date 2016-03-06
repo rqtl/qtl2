@@ -236,6 +236,7 @@ scan1 <-
     if(!is.null(attr(genoprobs[[1]], "snpinfo")))
         attr(result, "snpinfo") <- lapply(genoprobs, attr, "snpinfo")
 
+    class(result) <- c("scan1", "matrix")
     result
 }
 

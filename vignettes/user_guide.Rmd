@@ -306,7 +306,7 @@ plot the LOD curves.
 ```{r plot_lod}
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
-ymx <- max(out)
+ymx <- max(unclass(out)) # overall maximum LOD score
 plot_scan1(out, lod=1, col="slateblue", ylim=c(0, ymx*1.02))
 plot_scan1(out, lod=2, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
