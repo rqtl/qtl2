@@ -26,11 +26,11 @@
 #' @export
 #'
 #' @details
-#' \code{plotcoefCC()} is the same as \code{plotcoef()}, but forcing
+#' \code{plot_coefCC()} is the same as \code{plot_coef()}, but forcing
 #' \code{columns=1:8} and using the Collaborative Cross colors,
 #' \code{\link{CCcolors}}.
 #'
-#' @seealso \code{\link{CCcolors}}
+#' @seealso \code{\link{CCcolors}}, \code{\link{plot_scan1}}, \code{\link{plot_snpasso}}
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -52,8 +52,8 @@
 #' coef <- scan1coef(probs[,7], pheno, covar)
 #'
 #' # plot QTL effects
-#' plotcoef(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
-plotcoef <-
+#' plot_coef(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
+plot_coef <-
     function(coef, columns, col, add=FALSE, gap=25, ylim,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
@@ -83,21 +83,21 @@ plotcoef <-
         ylim <- ylim + c(-d, d)
     }
 
-    plotscan1(coef, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
-              gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+    plot_scan1(coef, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
+               gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     if(length(columns) > 1) {
         for(i in seq(along=columns)[-1])
-            plotscan1(coef, lodcolumn=columns[i], col=col[i], gap=gap,
-                      add=TRUE, ...)
+            plot_scan1(coef, lodcolumn=columns[i], col=col[i], gap=gap,
+                       add=TRUE, ...)
     }
 }
 
 #' @export
-#' @rdname plotcoef
-plotcoefCC <-
+#' @rdname plot_coef
+plot_coefCC <-
     function(coef, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
-    plotcoef(coef, columns=1:8, col=qtl2plot::CCcolors, add=add, gap=gap,
-             ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+    plot_coef(coef, columns=1:8, col=qtl2plot::CCcolors, add=add, gap=gap,
+              ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
 }

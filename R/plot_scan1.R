@@ -21,6 +21,8 @@
 #'
 #' @param ... Additional graphics parameters.
 #'
+#' @seealso \code{\link{plot_coef}}, \code{\link{plot_coefCC}}, \code{\link{plot_snpasso}}
+#'
 #' @export
 #' @importFrom graphics plot rect lines par axis title
 #'
@@ -49,15 +51,15 @@
 #' # plot the results for selected chromosomes
 #' ylim <- c(0, max(out)*1.02)
 #' chr <- c(2,7,8,9,15,16)
-#' plotscan1(out, chr=chr, ylim=ylim)
-#' plotscan1(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
+#' plot_scan1(out, chr=chr, ylim=ylim)
+#' plot_scan1(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
 #' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
 #'        bg="gray90")
 #'
 #' # plot just one chromosome
-#' plotscan1(out, chr=8, ylim=ylim)
-#' plotscan1(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
-plotscan1 <-
+#' plot_scan1(out, chr=8, ylim=ylim)
+#' plot_scan1(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
+plot_scan1 <-
     function(scan1output, lodcolumn=1, chr, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
@@ -80,7 +82,7 @@ plotscan1 <-
 
     # internal function; trick to be able to pull things out of "..."
     #    but still have some defaults for them
-    plotscan1_internal <-
+    plot_scan1_internal <-
         function(map, lod, add=FALSE, gap,
                  bgcolor, altbgcolor,
                  lwd=2, col="darkslateblue", xlab=NULL, ylab="LOD score",
@@ -169,13 +171,13 @@ plotscan1 <-
         }
 
     # make the plot
-    plotscan1_internal(map=map, lod=lod, add=add, gap=gap,
+    plot_scan1_internal(map=map, lod=lod, add=add, gap=gap,
                        bgcolor=bgcolor, altbgcolor=altbgcolor,
                        ...)
 }
 
 
-# convert map to x-axis positions for plotscan1
+# convert map to x-axis positions for plot_scan1
 map_to_xpos <-
     function(map, gap)
 {
@@ -191,7 +193,7 @@ map_to_xpos <-
     result
 }
 
-# boundaries of chromosomes in plotscan1
+# boundaries of chromosomes in plot_scan1
 # first row: left edges
 # second row: right edges
 map_to_boundaries <-

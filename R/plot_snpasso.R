@@ -33,9 +33,10 @@
 #'
 #' @param ... Additional graphics parameters.
 #'
+#' @seealso \code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
 #' @export
 #'
-plotsnpasso <-
+plot_snpasso <-
     function(scan1output, show_all_snps=TRUE, drop.hilit=NA,
              col.hilit="violetred", col="black",
              pch=16, cex=0.5, ylim=NULL, add=FALSE, gap=25,
@@ -50,8 +51,8 @@ plotsnpasso <-
     if(!is.na(drop.hilit) && !is.null(drop.hilit))
         col <- c(col, col.hilit)[(scan1output >= max(scan1output)-drop.hilit)+1]
 
-    plotscan1(scan1output, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
-              gap=gap, add=add, col = col, type="p", cex=cex, pch=pch)
+    plot_scan1(scan1output, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
+               gap=gap, add=add, col = col, type="p", cex=cex, pch=pch)
 }
 
 
