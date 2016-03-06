@@ -5,17 +5,17 @@
 \alias{plot_scan1}
 \title{Plot a genome scan}
 \usage{
-plot_scan1(x, column = 1, chr, add = FALSE, gap = 25,
+plot_scan1(x, lodcolumn = 1, chr, add = FALSE, gap = 25,
   bgcolor = "gray90", altbgcolor = "gray85", ...)
 
-\method{plot}{scan1}(x, column = 1, chr = NULL, add = FALSE, gap = 25,
-  bgcolor = "gray90", altbgcolor = "gray85", ...)
+\method{plot}{scan1}(x, lodcolumn = 1, chr = NULL, add = FALSE,
+  gap = 25, bgcolor = "gray90", altbgcolor = "gray85", ...)
 }
 \arguments{
 \item{x}{Output of \code{\link[qtl2scan]{scan1}} or
 \code{\link[qtl2scan]{scan1_lmm}}.}
 
-\item{column}{LOD score column to plot (a numeric index, or a
+\item{lodcolumn}{LOD score column to plot (a numeric index, or a
 character string for a column name). Only one value allowed.}
 
 \item{chr}{Selected chromosomes to plot; a vector of character
@@ -62,17 +62,17 @@ out <- scan1(probs, pheno, covar, Xcovar)
 ylim <- c(0, max(unclass(out))*1.02) # need to strip class to get overall max LOD
 chr <- c(2,7,8,9,15,16)
 plot(out, chr=chr, ylim=ylim)
-plot(out, column=2, chr=chr, col="violetred", add=TRUE)
+plot(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
        bg="gray90")
 
 # plot just one chromosome
 plot(out, chr=8, ylim=ylim)
-plot(out, chr=8, column=2, col="violetred", add=TRUE)
+plot(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
 
-# column can also be a column name
-plot(out, column="liver", ylim=ylim)
-plot(out, column="spleen", col="violetred", add=TRUE)
+# lodcolumn can also be a column name
+plot(out, lodcolumn="liver", ylim=ylim)
+plot(out, lodcolumn="spleen", col="violetred", add=TRUE)
 }
 \seealso{
 \code{\link{plot_coef}}, \code{\link{plot_coefCC}}, \code{\link{plot_snpasso}}

@@ -5,7 +5,7 @@
 #' @param x Output of \code{\link[qtl2scan]{scan1}} or
 #' \code{\link[qtl2scan]{scan1_lmm}}.
 #'
-#' @param column LOD score column to plot (a numeric index, or a
+#' @param lodcolumn LOD score column to plot (a numeric index, or a
 #' character string for a column name). Only one value allowed.
 #'
 #' @param chr Selected chromosomes to plot; a vector of character
@@ -53,19 +53,19 @@
 #' ylim <- c(0, max(unclass(out))*1.02) # need to strip class to get overall max LOD
 #' chr <- c(2,7,8,9,15,16)
 #' plot(out, chr=chr, ylim=ylim)
-#' plot(out, column=2, chr=chr, col="violetred", add=TRUE)
+#' plot(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
 #' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
 #'        bg="gray90")
 #'
 #' # plot just one chromosome
 #' plot(out, chr=8, ylim=ylim)
-#' plot(out, chr=8, column=2, col="violetred", add=TRUE)
+#' plot(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
 #'
-#' # column can also be a column name
-#' plot(out, column="liver", ylim=ylim)
-#' plot(out, column="spleen", col="violetred", add=TRUE)
+#' # lodcolumn can also be a column name
+#' plot(out, lodcolumn="liver", ylim=ylim)
+#' plot(out, lodcolumn="spleen", col="violetred", add=TRUE)
 plot_scan1 <-
-    function(x, column=1, chr, add=FALSE, gap=25,
+    function(x, lodcolumn=1, chr, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     # pull out map
@@ -74,19 +74,19 @@ plot_scan1 <-
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
     # pull out lod scores
-    if(length(column) > 1) { # If length > 1, take first value
-        warning("column should have length 1; one first element used.")
-        column <- column[1]
+    if(length(lodcolumn) > 1) { # If length > 1, take first value
+        warning("lodcolumn should have length 1; one first element used.")
+        lodcolumn <- lodcolumn[1]
     }
-    if(is.character(column)) { # turn column name into integer
-        tmp <- match(column, colnames(x))
+    if(is.character(lodcolumn)) { # turn column name into integer
+        tmp <- match(lodcolumn, colnames(x))
         if(is.na(tmp))
-            stop('column "', column, '" not found')
-        column <- tmp
+            stop('lodcolumn "', lodcolumn, '" not found')
+        lodcolumn <- tmp
     }
-    if(column < 1 || column > ncol(x))
-        stop("column [", column, "] out of range (should be in 1, ..., ", ncol(x), ")")
-    lod <- x[,column]
+    if(lodcolumn < 1 || lodcolumn > ncol(x))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(x), ")")
+    lod <- x[,lodcolumn]
 
     # subset chromosomes
     if(!(missing(chr) || is.null(chr))) {
@@ -199,7 +199,7 @@ plot_scan1 <-
 #' @export
 #' @rdname plot_scan1
 plot.scan1 <-
-    function(x, column=1, chr=NULL, add=FALSE, gap=25,
+    function(x, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     # if snp asso result, use plot_snpasso() with just reduced snps; otherwise defaults
@@ -208,7 +208,7 @@ plot.scan1 <-
                      bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     }
     else { # mostly, use plot_scan1()
-        plot_scan1(x, column=column, chr=chr, add=add, gap=gap,
+        plot_scan1(x, lodcolumn=lodcolumn, chr=chr, add=add, gap=gap,
                    bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     }
 }

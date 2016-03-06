@@ -83,11 +83,11 @@ plot_coef <-
         ylim <- ylim + c(-d, d)
     }
 
-    plot_scan1(x, column=columns[1], ylim=ylim, col=col[1], add=add,
+    plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
                gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     if(length(columns) > 1) {
         for(i in seq(along=columns)[-1])
-            plot_scan1(x, column=columns[i], col=col[i], gap=gap,
+            plot_scan1(x, lodcolumn=columns[i], col=col[i], gap=gap,
                        add=TRUE, ...)
     }
 }
