@@ -27,7 +27,6 @@ test_that("interpolate_map works", {
 
     expect_equal(newpos, expected)
 
-
 })
 
 test_that("find_intervals works", {
@@ -68,5 +67,29 @@ test_that("find_intervals works", {
     # also check whether 2nd column is correct
     expect_equal(sum(on_map), 10)
     expect_equal(pos[on_map], map[interval[on_map]+1])
+
+})
+
+
+test_that("interp_map works in simplest case", {
+
+    set.seed(31728290)
+    oldmap <- list("1"=sort(runif(20, 0, 100)),
+                   "2"=sort(runif(20, 0, 80)),
+                   "3"=sort(runif(20, 0, 60)))
+
+    # newmap is just double oldmap
+    newmap <- oldmap
+    for(i in seq(along=newmap)) newmap[[i]] <- oldmap[[i]]*2
+
+    chr2 <- list("2"=c(0, 5, 20, 30))
+    chr2_doubled <- list("2"=c(0, 10, 40, 60))
+    expect_equal(interp_map(chr2, oldmap, newmap),
+                 chr2_doubled)
+
+    chr23 <- list("2"=c(0, 5, 20, 30), "3"=c(-5, 20, 40, 100))
+    chr23_doubled <- list("2"=c(0, 10, 40, 60), "3"=c(-10, 40, 80, 200))
+    expect_equal(interp_map(chr23, oldmap, newmap),
+                 chr23_doubled)
 
 })
