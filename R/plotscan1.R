@@ -179,7 +179,7 @@ plotscan1 <-
 map_to_xpos <-
     function(map, gap)
 {
-    if(length(map)==1) return(map[[1]]-min(map[[1]], na.rm=TRUE))
+    if(length(map)==1) return(map[[1]])
 
     chr_range <- vapply(map, range, c(0,1), na.rm=TRUE)
 
@@ -198,7 +198,7 @@ map_to_boundaries <-
     function(map, gap)
 {
     if(length(map)==1)
-        return(rbind(0, diff(range(map[[1]], na.rm=TRUE))))
+        return(cbind(range(map[[1]], na.rm=TRUE)))
 
     # range of each chromosome
     chr_range <- lapply(map, range, na.rm=TRUE)
@@ -216,8 +216,10 @@ map_to_boundaries <-
 map_to_index <-
     function(map)
 {
-    if(length(map)==1)
-        return(list("1"=seq(along=map[[1]])))
+    if(length(map)==1) {
+        map[[1]] <- seq(along=map[[1]])
+        return(map)
+    }
 
     lengths <- vapply(map, length, 0)
     split(1:sum(lengths), rep(seq(along=map), lengths))

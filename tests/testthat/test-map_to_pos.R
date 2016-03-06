@@ -3,10 +3,10 @@ context("Converting map to x-axis positions")
 test_that("map_to_xpos works", {
 
     # single chromosome
-    expect_equal(map_to_xpos(list("1"=1:5)), 0:4)
+    expect_equal(map_to_xpos(list("1"=1:5)), 1:5)
 
     m <- sort(runif(100, 0, 100))
-    expect_equal(map_to_xpos(list("1"=m)), m-min(m))
+    expect_equal(map_to_xpos(list("1"=m)), m)
 
     # two chromosomes
     map <- list("1"=c(10, 20, 50),
@@ -32,10 +32,10 @@ test_that("map_to_xpos works", {
 test_that("map_to_boundaries works", {
 
     # single chromosome
-    expect_equal(map_to_boundaries(list("1"=1:5)), rbind(0,4))
+    expect_equal(map_to_boundaries(list("1"=1:5)), rbind(1,5))
 
     m <- sort(runif(100, 0, 100))
-    expect_equal(map_to_boundaries(list("1"=m)), rbind(0, max(m)-min(m)))
+    expect_equal(map_to_boundaries(list("1"=m)), cbind(range(m)))
 
     # two chromosomes
     map <- list("1"=c(10, 20, 50),
