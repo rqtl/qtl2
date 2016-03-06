@@ -3,6 +3,7 @@
 export(plotcoef)
 export(plotcoefCC)
 export(plotscan1)
+export(plotsnpasso)
 importFrom(graphics,axis)
 importFrom(graphics,lines)
 importFrom(graphics,par)
