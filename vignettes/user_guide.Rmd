@@ -301,14 +301,19 @@ phenotypes.
 
 The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to
-plot the LOD curves.
+plot the LOD curves. You can just write `plot()`, as there's an S3
+method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
+Use the argument `column` to indicate which column to plot. Unlike the
+`plot.scanone()` function in [R/qtl](http://rqtl.org), the
+`plot_scan1()` function will only plot one set of LOD curves at a
+time.
 
 ```{r plot_lod}
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- max(unclass(out)) # overall maximum LOD score
-plot_scan1(out, lod=1, col="slateblue", ylim=c(0, ymx*1.02))
-plot_scan1(out, lod=2, col="violetred", add=TRUE)
+plot(out, column=1, col="slateblue", ylim=c(0, ymx*1.02))
+plot(out, column=2, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ```
 
@@ -340,9 +345,8 @@ kinship matrices as obtained from `calc_kinship()` with
 out_lmm_loco <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ```
 
-To plot the results, we again use `plot_scan1` from the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package.
-
+To plot the results, we again use `plot_scan1()` from the
+[qtl2plot](https://github.com/rqtl/qtl2plot) package, or just type `plot()`.
 
 Here is a plot of the LOD scores, by Haley-Knott regression and the linear
 mixed model using either the standard kinship matrix or the LOCO
@@ -353,10 +357,10 @@ color <- c("slateblue", "violetred", "green3")
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- max(rbind(out, out_lmm, out_lmm_loco))
 for(i in 1:2) {
-    plot_scan1(out, lod=i, col=color[1], main=colnames(out)[i],
+    plot(out, column=i, col=color[1], main=colnames(out)[i],
               ylim=c(0, ymx*1.02))
-    plot_scan1(out_lmm, lod=i, col=color[2], add=TRUE)
-    plot_scan1(out_lmm_loco, lod=i, col=color[3], add=TRUE, lty=2)
+    plot(out_lmm, column=i, col=color[2], add=TRUE)
+    plot(out_lmm_loco, column=i, col=color[3], add=TRUE, lty=2)
     legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
 ```
@@ -392,12 +396,14 @@ c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 The result is a matrix, `r nrow(c2eff)` positions &times; `r ncol(c2eff)`
 genotypes. An attribute, `"map"` contains the positions of the
 calculations. To plot the effects, use the function `plot_coef()` from
-the [qtl2plot](https://github.com/rqtl/qtl2plot).
+the [qtl2plot](https://github.com/rqtl/qtl2plot). There is again an S3
+method function `plot.scan1coef()`, so one can just type `plot()`.
+Use the argument `columns` to indicate which coefficient columns to plot.
 
 ```{r plot_effects_liver_c2}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
-plot_coef(c2eff, columns=1:3, col=col)
+plot(c2eff, columns=1:3, col=col)
 for(i in 1:ncol(c2eff))
     axis(side=4, at=c2eff[nrow(c2eff),i], colnames(c2eff)[i],
          tick=FALSE, col.axis=col[i])
@@ -422,7 +428,7 @@ second and third columns.
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
 ymx <- max(abs(c2effB[,2:3]))
-plot_coef(c2effB, columns=2:3, col=col)
+plot(c2effB, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=c2effB[nrow(c2eff),i+1], colnames(c2effB)[i+1],
          tick=FALSE, col.axis=col[i])
@@ -443,7 +449,7 @@ Here's a plot of the estimates.
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
 map <- attr(c2eff_lmm, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-plot_coef(c2eff_lmm, columns=1:3, col=col, ylab="Phenotype average")
+plot(c2eff_lmm, columns=1:3, col=col, ylab="Phenotype average")
 for(i in 1:ncol(c2eff))
     axis(side=4, at=c2eff_lmm[nrow(c2eff_lmm),i],
          colnames(c2eff_lmm)[i],
@@ -463,7 +469,7 @@ Here's a plot of the results.
 ```{r plot_effects_lmm_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
 ymx <- max(abs(c2effB_lmm[,2:3]))
-plot_coef(c2effB_lmm, columns=2:3, col=col)
+plot(c2effB_lmm, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=c2effB_lmm[nrow(c2eff),i+1], colnames(c2effB_lmm)[i+1],
          tick=FALSE, col.axis=col[i])
