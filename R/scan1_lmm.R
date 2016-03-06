@@ -211,6 +211,10 @@ scan1_lmm <-
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)
 
+    # preserve any snpinfo from genoprob_to_snpprob
+    if(!is.null(attr(genoprobs[[1]], "snpinfo")))
+        attr(result, "snpinfo") <- lapply(genoprobs, attr, "snpinfo")
+
     result
 }
 

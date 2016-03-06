@@ -232,6 +232,10 @@ scan1 <-
     if(!is.null(weights))
         attr(result, "weights") <- TRUE
 
+    # preserve any snpinfo from genoprob_to_snpprob
+    if(!is.null(attr(genoprobs[[1]], "snpinfo")))
+        attr(result, "snpinfo") <- lapply(genoprobs, attr, "snpinfo")
+
     result
 }
 
