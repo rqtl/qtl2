@@ -39,6 +39,8 @@ pos_scan1 <-
 #' @param column An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
+#' @param na.rm Ignored (take to be TRUE)
+#' @param ... Ignored
 #'
 #' @export
 #'
@@ -72,7 +74,7 @@ pos_scan1 <-
 #' # maximum of first column on chr 2
 #' max(out, chr="2")
 max_scan1 <-
-    function(scan1_output, column=1, chr)
+    function(scan1_output, column=1, chr, na.rm=TRUE, ...)
 {
     thechr <- chr_scan1(scan1_output)
     thepos <- pos_scan1(scan1_output)
@@ -115,8 +117,4 @@ max_scan1 <-
 
 #' @export
 #' @rdname max_scan1
-max.scan1 <-
-    function(object, column=1, chr=NULL, na.rm=TRUE, ...)
-{
-    max_scan1(object, column=column, chr=chr)
-}
+max.scan1 <- max_scan1
