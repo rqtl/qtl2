@@ -303,7 +303,7 @@ The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to
 plot the LOD curves. You can just write `plot()`, as there's an S3
 method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
-Use the argument `column` to indicate which column to plot. Unlike the
+Use the argument `lodcolumn` to indicate which column to plot. Unlike the
 `plot.scanone()` function in [R/qtl](http://rqtl.org), the
 `plot_scan1()` function will only plot one set of LOD curves at a
 time.
@@ -312,8 +312,8 @@ time.
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
-plot(out, column=1, col="slateblue", ylim=c(0, ymx*1.02))
-plot(out, column=2, col="violetred", add=TRUE)
+plot(out, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
+plot(out, lodcolumn=2, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ```
 
@@ -357,10 +357,10 @@ color <- c("slateblue", "violetred", "green3")
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- max(rbind(out, out_lmm, out_lmm_loco))
 for(i in 1:2) {
-    plot(out, column=i, col=color[1], main=colnames(out)[i],
+    plot(out, lodcolumn=i, col=color[1], main=colnames(out)[i],
               ylim=c(0, ymx*1.02))
-    plot(out_lmm, column=i, col=color[2], add=TRUE)
-    plot(out_lmm_loco, column=i, col=color[3], add=TRUE, lty=2)
+    plot(out_lmm, lodcolumn=i, col=color[2], add=TRUE)
+    plot(out_lmm_loco, lodcolumn=i, col=color[3], add=TRUE, lty=2)
     legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
 ```
