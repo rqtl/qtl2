@@ -45,11 +45,14 @@ plot_snpasso <-
     if(show_all_snps)
         scan1output <- expand_snp_results(scan1output)
 
+    # maximum LOD
+    maxlod <- max(scan1output[,1], na.rm=TRUE)
+
     if(is.null(ylim))
-        ylim <- c(0, max(scan1output, na.rm=TRUE)*1.02)
+        ylim <- c(0, maxlod*1.02)
 
     if(!is.na(drop.hilit) && !is.null(drop.hilit))
-        col <- c(col, col.hilit)[(scan1output >= max(scan1output)-drop.hilit)+1]
+        col <- c(col, col.hilit)[(scan1output >= maxlod-drop.hilit)+1]
 
     plot_scan1(scan1output, column=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
                gap=gap, add=add, col = col, type="p", cex=cex, pch=pch)
