@@ -4,16 +4,16 @@
 #' Reduce genotype probabilities (as calculated by
 #' \code{\link{calc_genoprob}}) to allele probabilities.
 #'
-#' @param probs List of three-dimensional arrays of probabilities, as
-#' calculated from \code{\link{calc_genoprob}}.
+#' @param probs Genotype probabilities, as calculated from
+#' \code{\link{calc_genoprob}}.
 #' @param quiet IF \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return List of three-dimensional arrays of probabilities,
-#' regarding alleles rather than genotypes.
+#' @return The \code{probs} input with probabilities
+#' collapsed to alleles rather than genotypes.
 #'
 #' @export
 #' @keywords utilities
@@ -27,10 +27,10 @@ genoprob_to_alleleprob <-
     function(probs, quiet=TRUE, cores=1)
 {
     # already converted?
-    ap_attr <- attr(probs, "alleleprobs")
-    if(!is.null(ap_attr) && ap_attr) return(probs)
+    ap <- probs$alleleprobs
+    if(!is.null(ap) && ap) return(probs)
 
-    is_x_chr <- attr(probs, "is_x_chr")
+    is_x_chr <- probs$is_x_chr
 
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
@@ -40,28 +40,25 @@ genoprob_to_alleleprob <-
     }
 
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", names(probs)[chr])
-        attr_chr <- attributes(probs[[chr]])
-        probs[[chr]] <- aperm(.genoprob_to_alleleprob(attr(probs, "crosstype"),
-                                                    aperm(probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
-                                                    is_x_chr[chr]),
-                            c(2, 1, 3)) # reorg back to ind x geno x pos
+        if(!quiet) message(" - Chr ", probs$chrID[chr])
+        result <- aperm(.genoprob_to_alleleprob(probs$crosstype,
+                                                aperm(probs$probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
+                                                is_x_chr[chr]),
+                        c(2, 1, 3)) # reorg back to ind x geno x pos
 
         # allele names
-        dn <- attr_chr$dimnames
-        dn[[2]] <- attr(probs, "alleles")
-        dimnames(probs[[chr]]) <- dn
+        dn <- dimnames(probs$probs[[chr]])
+        dn[[2]] <- probs$alleles
+        dimnames(result) <- dn
 
-        probs[[chr]]
+        result
     }
 
-    chrs <- seq(along=probs)
-    probs_attr <- attributes(probs)
+    chrs <- seq(along=probs$chrID)
 
-    probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
+    probs$probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
+    names(probs$probs) <- probs$chrID
 
-    for(at in names(probs_attr))
-        attr(probs, at) <- probs_attr[[at]]
-    attr(probs, "alleleprobs") <- TRUE
+    probs$alleleprobs <- TRUE
     probs
 }

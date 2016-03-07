@@ -29,9 +29,26 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A list of three-dimensional arrays of imputed genotypes,
-#' individuals x positions x draws.  The genetic map and cross
-#' information are included as attributes.
+#' @return A list of containing the following:
+#' \itemize{
+#' \item \code{draws} - List of three-dimensional arrays of imputed genotypes,
+#' individuals x positions x draws.
+#' \item \code{map} - The genetic map as a list of vectors of marker positions.
+#' \item \code{indID} - Vector of character strings with individual IDs
+#' \item \code{chrID} - Vector of character strings with chromosome IDs
+#' \item \code{crosstype} - The cross type of the input \code{cross}.
+#' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
+#'     are to be treated as the X chromosome or not, from input \code{cross}.
+#' \item \code{sex} - Vector of sexes of the individuals, from input
+#'     \code{cross}.
+#' \item \code{cross_info} - Matrix of cross information for the
+#'     individuals, from input \code{cross}.
+#' \item \code{alleles} - Vector of allele codes, from input
+#'     \code{cross}.
+#' \item \code{alleleprob} - Logical value (\code{FALSE}) that
+#'     indicates whether the probabilities are compressed to allele
+#'     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
+#' }
 #'
 #' @details
 #'  After performing the backward equations, we draw from
@@ -127,12 +144,15 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     }
 
     names(draws) <- names(cross$gmap)
-    attr(draws, "map") <- map
-    attr(draws, "is_x_chr") <- cross$is_x_chr
-    attr(draws, "crosstype") <- cross$crosstype
-    attr(draws, "sex") <- cross$sex
-    attr(draws, "cross_info") <- cross$cross_info
+    result <- list(draws=draws,
+                   map = map,
+                   indID = rownames(draws[[1]]),
+                   chrID = names(map),
+                   crosstype = cross$crosstype,
+                   is_x_chr = cross$is_x_chr,
+                   sex = cross$sex,
+                   cross_info = cross$cross_info)
 
-    class(draws) <- c("sim_geno", "list")
-    draws
+    class(result) <- c("sim_geno", "list")
+    result
 }

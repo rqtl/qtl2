@@ -27,10 +27,27 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A list of three-dimensional arrays of probabilities,
-#' individuals x genotypes x positions. (Note that the arrangement is
-#' different from R/qtl.) The genetic map and cross information are
-#' included as attributes.
+#' @return A list containing the following
+#' \itemize{
+#' \item \code{probs} - A list of three-dimensional arrays of probabilities,
+#'     individuals x genotypes x positions. (Note that the arrangement is
+#'     different from R/qtl.)
+#' \item \code{map} - The genetic map as a list of vectors of marker positions.
+#' \item \code{indID} - Vector of character strings with individual IDs
+#' \item \code{chrID} - Vector of character strings with chromosome IDs
+#' \item \code{crosstype} - The cross type of the input \code{cross}.
+#' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
+#'     are to be treated as the X chromosome or not, from input \code{cross}.
+#' \item \code{sex} - Vector of sexes of the individuals, from input
+#'     \code{cross}.
+#' \item \code{cross_info} - Matrix of cross information for the
+#'     individuals, from input \code{cross}.
+#' \item \code{alleles} - Vector of allele codes, from input
+#'     \code{cross}.
+#' \item \code{alleleprobs} - Logical value (\code{FALSE}) that
+#'     indicates whether the probabilities are compressed to allele
+#'     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
+#' }
 #'
 #' @details
 #'   Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
@@ -152,14 +169,18 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     }
 
     names(probs) <- names(cross$gmap)
-    attr(probs, "map") <- map
-    attr(probs, "is_x_chr") <- cross$is_x_chr
-    attr(probs, "crosstype") <- cross$crosstype
-    attr(probs, "sex") <- cross$sex
-    attr(probs, "cross_info") <- cross$cross_info
-    attr(probs, "alleles") <- cross$alleles
+    result <- list(probs=probs,
+                   map=map,
+                   indID=rownames(probs[[1]]),
+                   chrID=names(probs),
+                   crosstype=cross$crosstype,
+                   is_x_chr=cross$is_x_chr,
+                   sex=cross$sex,
+                   cross_info=cross$cross_info,
+                   alleles=cross$alleles,
+                   alleleprobs=FALSE)
 
-    class(probs) <- c("calc_genoprob", "list")
+    class(result) <- c("calc_genoprob", "list")
 
-    probs
+    result
 }

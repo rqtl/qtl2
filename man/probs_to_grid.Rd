@@ -7,7 +7,7 @@
 probs_to_grid(probs)
 }
 \arguments{
-\item{probs}{List of 3d arrays, as output from
+\item{probs}{Genotype probabilities as output from
 \code{\link{calc_genoprob}} with \code{stepwidth="fixed"}.}
 }
 \value{
@@ -27,9 +27,9 @@ the case, we omit all but the probabilities on this grid.
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
-sapply(probs, dim)
+sapply(probs$probs, dim)
 probs_sub <- probs_to_grid(probs)
-sapply(probs_sub, dim)
+sapply(probs_sub$probs, dim)
 }
 \keyword{utilities}
 
