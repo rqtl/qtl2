@@ -31,28 +31,36 @@ probs_to_grid <-
     map <- probs$map
     if(is.null(probs$map))
         stop("probs has no map attribute")
-
     # check stepwidth arg
-    stepwidth <- vapply(map, attr, "", "stepwidth")
-    if(!all(stepwidth=="fixed"))
+    stepwidth <- probs$stepwidth
+    if(is.null(stepwidth) || stepwidth != "fixed")
         stop('probs needs to be result of calc_genoprob with stepwidth="fixed"')
+
+    grid <- probs$grid
+    if(is.null(probs$grid))
+        stop("probs has no grid attribute")
 
     for(i in seq(along=probs$chrID)) {
         # grab grid vector
-        grid <- attr(map[[i]], "grid")
-        if(is.null(grid))
-            stop("grid attribute not found for chr ", probs$chrID[i])
+        if(is.null(grid[[i]])) {
+            stop("grid not found for chr ", probs$chrID[i])
+        }
+        if(length(grid[[i]]) != length(map[[i]])) {
+            stop("length(grid) [", length(grid[[i]]), "] != length(map) [",
+                 length(map[[i]]), "] for chr ", probs$chrID[i])
+        }
 
         # subset probs
-        if(!all(grid)) {
-            if(length(grid) != dim(probs$probs[[i]])[3])
-                stop("length(grid) (", length(grid), ") != ncol(probs) (",
-                     ncol(probs$probs[[i]]), ") for chr ", probs$chrID[i])
-            probs$probs[[i]] <- probs$probs[[i]][,,grid,drop=FALSE]
+        if(!all(grid[[i]])) {
+            if(length(grid[[i]]) != dim(probs$probs[[i]])[3])
+                stop("length(grid) [", length(grid[[i]]), "] != ncol(probs) [",
+                     ncol(probs$probs[[i]]), "] for chr ", probs$chrID[i])
+            probs$probs[[i]] <- probs$probs[[i]][,,grid[[i]],drop=FALSE]
         }
     }
 
-    probs$map <- map_to_grid(map)
+    probs$map <- map_to_grid(map, grid)
+    probs$grid <- NULL # don't need this anymore
 
     probs
 }
@@ -61,25 +69,15 @@ probs_to_grid <-
 #
 # input is a list; attributes include "grid"
 map_to_grid <-
-    function(map)
+    function(map, grid)
 {
+    if(is.null(grid)) stop("grid is NULL")
+
     for(i in seq(along=map)) {
-        mapat <- attributes(map[[i]])
-        grid <- mapat$grid
-        if(is.null(grid) || all(grid)) next
+        if(is.null(grid[[i]]) || all(grid[[i]])) next
 
         # subset map
-        map[[i]] <- map[[i]][grid]
-
-        mapat_ignore <- "names"
-        mapat_subset <- c("index", "grid")
-        for(att in names(mapat)) {
-            if(att %in% mapat_ignore) next
-            if(att %in% mapat_subset)
-                attr(map[[i]], att) <- mapat[[att]][grid]
-            else
-                attr(map[[i]], att) <- mapat[[att]]
-        }
+        map[[i]] <- map[[i]][grid[[i]]]
     }
 
     map

@@ -52,7 +52,7 @@ subset.calc_genoprob <-
         if(length(chr) == 0)
             stop("Must retain at least one chromosome.")
 
-        to_sub <- c("probs", "draws", "map", "is_x_chr") # draws is here, to also deal with sim_geno objects
+        to_sub <- c("probs", "draws", "map", "is_x_chr", "grid") # draws is here, to also deal with sim_geno objects
         for(a in to_sub) {
             if(a %in% names(x))
                 x[[a]] <- x[[a]][chr]

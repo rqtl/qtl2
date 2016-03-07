@@ -48,6 +48,9 @@ A list of containing the following:
 \item \code{draws} - List of three-dimensional arrays of imputed genotypes,
 individuals x positions x draws.
 \item \code{map} - The genetic map as a list of vectors of marker positions.
+\item \code{grid} - A list of logical vectors, indicating which
+    positions correspond to a grid of markers/pseudomarkers. (may be
+    absent)
 \item \code{indID} - Vector of character strings with individual IDs
 \item \code{chrID} - Vector of character strings with chromosome IDs
 \item \code{crosstype} - The cross type of the input \code{cross}.
@@ -62,6 +65,9 @@ individuals x positions x draws.
 \item \code{alleleprob} - Logical value (\code{FALSE}) that
     indicates whether the probabilities are compressed to allele
     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
+\item \code{step} - the value of the \code{step} argument.
+\item \code{off_end} - the value of the \code{off_end} argument.
+\item \code{stepwidth} - the value of the \code{stepwidth} argument.
 }
 }
 \description{

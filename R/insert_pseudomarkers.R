@@ -19,14 +19,20 @@
 #' ignored.
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
 #'
-#' @return A vector of positions of pseudomarkers and markers: the
-#' input \code{map} vector with pseudomarker positions added. An
-#' attribute \code{"index"} is an integer vector that indicates which
-#' positions are pseudomarkers (value -1) and which are markers
-#' (positive values, indicating the marker indices, (starting at 0).) If
-#' \code{stepwidth=fixed} (or if \code{pseudomarker_map} is provided), a
-#' further attribute (\code{"grid"}) is a logical vector that
-#' indicates which positions correspond to the fixed grid.
+#' @return A list containing
+#' \itemize{
+#' \item \code{map} - Input \code{map} with pseudomarkers inserted
+#' \item \code{index} - List of integer vectors that indicate which
+#'     positions are pseudomarkers (value -1) and which are markers
+#'     (positive values, indicating the marker indices, (starting at 0).)
+#' \item \code{grid} - A list of logical vectors that indicate which
+#'     positions correspond to the fixed grid. (only included if
+#'     \code{stepwidth="fixed"} or if \code{pseudomarker_map} is
+#'     provided).
+#' \item \code{step} - the value of the \code{step} argument.
+#' \item \code{off_end} - the value of the \code{off_end} argument.
+#' \item \code{stepwidth} - the value of the \code{stepwidth} argument.
+#' }
 #'
 #' @details If \code{stepwidth="fixed"}, a grid of pseudomarkers is
 #' added to the marker map.
@@ -65,14 +71,24 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
             stop("length(pseudomarker_map) != length(map)")
     }
 
-    result <- vector("list", length(map))
-    names(result) <- chr <- names(map)
+    newmap <- vector("list", length(map))
+    names(newmap) <- chr <- names(map)
+    index <- grid <- newmap
 
     for(i in seq(along=map)) {
-        result[[i]] <- insert_pseudomarkers_onechr(map[[i]], step, off_end,
+        pmap_result <- insert_pseudomarkers_onechr(map[[i]], step, off_end,
                                                    stepwidth, pseudomarker_map[[i]], tol,
                                                    paste0("c", chr[i], ".loc"))
+        newmap[[i]] <- pmap_result$map
+        index[[i]] <- pmap_result$index
+        grid[[i]] <- pmap_result$grid
     }
+
+    result <- list(map=newmap, index=index,
+                   step=step, off_end=off_end, stepwidth=stepwidth)
+
+    if(!is.null(grid) && !all(vapply(grid, is.null, TRUE)))
+        result$grid <- grid
 
     result
 }
@@ -116,18 +132,14 @@ insert_pseudomarkers_grid <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(step==0) {
-        attr(map, "index") <- seq(along=map)-1
-        map <- add_pmap_attr(map, "markers", step, off_end)
-        return(map)
+        index <- seq(along=map)-1
+        return(list(map=map, index=index))
     }
 
     # locations of pseudomarkers
     pmar <- seq(min(map)-off_end, max(map)+off_end, by=step)
 
-    map <- combine_markers_with_grid(map, pmar, tol, pmar_stem, step)
-    map <- add_pmap_attr(map, "fixed", step, off_end)
-
-    map
+    combine_markers_with_grid(map, pmar, tol, pmar_stem, step)
 }
 
 # combine the markers in "map" with the pseudomarker positions in "pmar".
@@ -146,9 +158,8 @@ function(map, pmar_map, tol=0.01, pmar_stem="loc", step)
     to_omit <- (mind < tol)
     pmar_map <- pmar_map[!to_omit]
     if(length(pmar_map) == 0) {
-        attr(map, "index") <- seq(along=map)-1
-        attr(map, "grid") <- rep(TRUE, length(map))
-        return(map)
+        return(list(map=map, index=seq(along=map)-1,
+                    grid=rep(TRUE, length(map))))
     }
 
     # markers that are on pseudomarker grid
@@ -171,9 +182,7 @@ function(map, pmar_map, tol=0.01, pmar_stem="loc", step)
     o <- order(map)
     map <- map[o]
 
-    attr(map, "index") <- index[o]-1
-    attr(map, "grid") <- grid[o]
-    map
+    list(map=map, index=index[o]-1, grid=grid[o])
 }
 
 # create names for pseudomarkers
@@ -208,9 +217,7 @@ insert_pseudomarkers_minimal <-
 function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 {
     if(step==0) {
-        attr(map, "index") <- seq(along=map)-1
-        map <- add_pmap_attr(map, "markers", step, off_end)
-        return(map)
+        return(list(map=map, index=seq(along=map)-1))
     }
 
     # distance between markers
@@ -226,9 +233,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
         map <- c(map, pmar_map)
         o <- order(map)
         map <- map[o]
-        attr(map, "index") <- index[o]-1
-        map <- add_pmap_attr(map, "max", step, off_end)
-        return(map)
+        return(list(map=map, index=index[o]-1))
     }
 
     # intervals needing pseudomarkers (d = distances between adjacent markers
@@ -239,9 +244,7 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
         seq(map[a], map[a+1], length.out=n)[-c(1, n)] })))
 
     if(length(pmar_map) == 0) {
-        attr(map, "index") <- seq(along=map)-1
-        map <- add_pmap_attr(map, "max", step, off_end)
-        return(map)
+        return(list(map=map, index=seq(along=map)-1))
     }
 
     names(pmar_map) <- create_pseudomarker_names(pmar_map, step, pmar_stem)
@@ -255,18 +258,6 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
     # sort the map
     o <- order(map)
     map <- map[o]
-    map <- add_pmap_attr(map, "max", step, off_end)
-    attr(map, "index") <- index[o]-1
 
-    map
-}
-
-# add stepwidth, step, and off_end attributes to map
-add_pmap_attr <-
-function(map, stepwidth, step, off_end)
-{
-    attr(map, "stepwidth") <- stepwidth
-    attr(map, "step") <- step
-    attr(map, "off_end") <- off_end
-    map
+    list(map=map, index=index[o]-1)
 }

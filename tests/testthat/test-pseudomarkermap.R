@@ -7,24 +7,24 @@ test_that("grid-based version works in simple case", {
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
-    pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="fixed")[[1]]
-    expect_equivalent(map, pmap)
-    expect_equal(attr(pmap, "index"), seq(along=map)-1)
-    expect_equal(attr(pmap, "grid"), rep(TRUE, length(map)))
+    pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="fixed")
+    expect_equivalent(map, pmap$map[[1]])
+    expect_equal(pmap$index[[1]], seq(along=map)-1)
+    expect_equal(pmap$grid[[1]], rep(TRUE, length(map)))
 
     # step = 1
-    pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="fixed")[[1]]
+    pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="fixed")
     pmap_qtl <- qtl::create.map(map, step=1, off.end=0)
-    expect_equivalent(pmap, pmap_qtl)
+    expect_equivalent(pmap$map[[1]], pmap_qtl)
 
     # expected index
-    index <- rep(0, length(pmap))
-    mar <- names(pmap)==""
+    index <- rep(0, length(pmap$map[[1]]))
+    mar <- names(pmap$map[[1]])==""
     index[mar] <- (1:sum(mar))
-    expect_equal(attr(pmap, "index"), index-1)
+    expect_equal(pmap$index[[1]], index-1)
 
     # expected grid
-    expect_equal(attr(pmap, "grid"), !is.na(match(pmap, seq(0, 50, by=1))))
+    expect_equal(pmap$grid[[1]], !is.na(match(pmap$map[[1]], seq(0, 50, by=1))))
 
 })
 
@@ -34,19 +34,19 @@ test_that("minimal version works in simple case", {
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
-    pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="max")[[1]]
-    expect_equivalent(map, pmap)
-    expect_equal(attr(pmap, "index"), seq(along=map)-1)
+    pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="max")
+    expect_equivalent(map, pmap$map[[1]])
+    expect_equal(pmap$index[[1]], seq(along=map)-1)
 
     # step = 1
-    pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="max")[[1]]
-    expect_equivalent(pmap, seq(0, 50, by=5/6))
+    pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="max")
+    expect_equivalent(pmap$map[[1]], seq(0, 50, by=5/6))
 
     # expected index
-    index <- rep(0, length(pmap))
-    mar <- names(pmap)==""
+    index <- rep(0, length(pmap$map[[1]]))
+    mar <- names(pmap$map[[1]])==""
     index[mar] <- (1:sum(mar))
-    expect_equal(attr(pmap, "index"), index-1)
+    expect_equal(pmap$index[[1]], index-1)
 
 })
 
@@ -55,7 +55,7 @@ test_that("minimal version works in more realistic case", {
     data(hyper)
     map <- qtl::pull.map(hyper, chr=1)
 
-    pmap <- insert_pseudomarkers(map, step=1.55, off_end=4, stepwidth="max")[[1]]
+    pmap <- insert_pseudomarkers(map, step=1.55, off_end=4, stepwidth="max")
 
     expected <- c(0.2, 1.75, 3.3, 4.79090909091818, 6.28181818183636, 7.77272727275454,
                   9.26363636367273, 10.7545454545909, 12.2454545455091, 13.7363636364273,
@@ -94,15 +94,15 @@ test_that("minimal version works in more realistic case", {
                     "c1.loc109", "c1.loc110", "c1.loc111", "c1.loc113", "c1.loc114", "D1Mit155",
                     "c1.loc117", "c1.loc119")
 
-    expect_equivalent(pmap, expected)
-    expect_equal(names(pmap), pmap_names)
+    expect_equivalent(pmap$map[[1]], expected)
+    expect_equal(names(pmap$map[[1]]), pmap_names)
 
     expected_index <- c(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
                         0, 0, 3, 0, 4, 0, 5, 0, 0, 6, 0, 7, 8, 0, 0, 0, 9, 0, 0, 0, 10,
                         0, 0, 0, 0, 0, 0, 11, 0, 0, 12, 0, 13, 0, 0, 14, 15, 0, 0, 0,
                         0, 16, 17, 18, 19, 0, 0, 20, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0)-1
-    expect_equal(attr(pmap, "index"), expected_index)
+    expect_equal(pmap$index[[1]], expected_index)
 
 })
 
@@ -122,24 +122,24 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
     combined_map <- insert_pseudomarkers(map, pseudomarker_map = pseudomarker_map)
 
     expect_equal(sapply(map, length) + sapply(pseudomarker_map, length),
-                 sapply(combined_map, length))
+                 sapply(combined_map$map, length))
 
     for(i in seq(along=map)) {
         combined_map_2 <- sort(c(map[[i]], pseudomarker_map[[i]]))
-        expect_equivalent(combined_map_2, combined_map[[i]])
-        expect_equal(names(combined_map_2), names(combined_map[[i]]))
+        expect_equivalent(combined_map_2, combined_map$map[[i]])
+        expect_equal(names(combined_map_2), names(combined_map$map[[i]]))
 
-        grid <- attr(combined_map[[i]],"grid")
-        expect_equal(grid, names(combined_map[[i]]) %in% names(pseudomarker_map[[i]]))
+        grid <- combined_map$grid[[i]]
+        expect_equal(grid, names(combined_map$map[[i]]) %in% names(pseudomarker_map[[i]]))
 
-        index <- attr(combined_map[[i]], "index")
-        expected <- match(names(combined_map[[i]]), names(map[[i]]))
+        index <- combined_map$index[[i]]
+        expected <- match(names(combined_map$map[[i]]), names(map[[i]]))
         expected[is.na(expected)] <- 0
         expected <- expected - 1
         expect_equal(index, expected)
     }
 
-    expect_equal(names(map), names(combined_map))
+    expect_equal(names(map), names(combined_map$map))
 
 })
 
@@ -148,6 +148,6 @@ test_that("insert_pseudomarkers gives distinct pseudomarker names with iron data
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     pmap <- insert_pseudomarkers(iron$gmap, step=1)
 
-    expect_true(all(vapply(pmap, function(a) !any_duplicates(names(a)), TRUE)))
+    expect_true(all(vapply(pmap$map, function(a) !any_duplicates(names(a)), TRUE)))
 
 })

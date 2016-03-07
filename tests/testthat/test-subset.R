@@ -71,6 +71,7 @@ test_that("subset.calc_genoprob works", {
     expected$is_x_chr <- pr$is_x_chr["X"]
     expected$map <- pr$map["X"]
     expected$chrID <- "X"
+    expected$grid <- pr$grid["X"]
 
     expect_equal(prsub, expected)
 
@@ -98,6 +99,7 @@ test_that("subset.sim_geno works", {
     expected$is_x_chr <- dr$is_x_chr["X"]
     expected$map <- dr$map["X"]
     expected$chrID <- "X"
+    expected$grid <- dr$grid["X"]
 
     expect_equal(drsub, expected)
 

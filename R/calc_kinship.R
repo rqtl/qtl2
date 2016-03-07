@@ -73,9 +73,7 @@ calc_kinship <-
     if(omit_x && type != "chr") chrs <- which(!probs$is_x_chr)
     else chrs <- seq(along=allchr)
 
-    stepwidth <- attr(probs$map[[1]], "stepwidth")
-    if(use_grid_only &&
-       !is.null(stepwidth) && stepwidth=="fixed") {
+    if(use_grid_only && "grid" %in% names(probs)) {
         if(!quiet) message(" - Reducing probabilities to grid")
         probs <- probs_to_grid(probs)
     }

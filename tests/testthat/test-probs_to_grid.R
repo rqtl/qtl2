@@ -19,18 +19,14 @@ test_that("probs_to_grid works", {
 
     # test results
     expected <- probs
-    for(i in seq(probs$chrID)) {
-        mapat <- attributes(map[[i]])
-        grid <- mapat$grid
+    for(i in seq(along=probs$chrID)) {
+        grid <- probs$grid[[i]]
         expected$probs[[i]] <- probs$probs[[i]][,,grid,drop=FALSE]
 
         map[[i]] <- map[[i]][grid]
-        for(j in c("grid", "index"))
-            mapat[[j]] <- mapat[[j]][grid]
-        for(j in names(mapat)[names(mapat) != "names"])
-            attr(map[[i]], j) <- mapat[[j]]
     }
 
     expected$map <- map
+    expected$grid <- NULL
     expect_equal(probs_sub, expected)
 })
