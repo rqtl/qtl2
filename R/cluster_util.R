@@ -35,14 +35,14 @@ setup_cluster <-
     cores
 }
 
-# run code by cluster (generalizes lapply, clusterApply, and mclapply)
+# run code by cluster (generalizes lapply, parLapply, and mclapply)
 # (to deal with different methods on different architectures)
 # if cores==1, just use lapply
 cluster_lapply <-
     function(cores, ...)
 {
     if(is_cluster(cores)) { # cluster object; use mclapply
-        return( parallel::clusterApply(cores, ...) )
+        return( parallel::parLapply(cores, ...) )
     } else {
         if(cores==1) return( lapply(...) )
         return( parallel::mclapply(..., mc.cores=cores) )
