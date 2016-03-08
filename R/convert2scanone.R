@@ -13,9 +13,6 @@
 #' chromosome and position columns followed by the LOD scores in
 #' \code{output}.
 #'
-#' @details Provide either \code{map} or \code{probs}; the latter
-#' contains the map as an attribute.
-#'
 #' @examples
 #' library(qtl2geno)
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -32,14 +29,21 @@
 convert2scanone <-
     function(output)
 {
-    map <- attr(output, "map")
+    map <- output$map
     n <- sapply(map, length)
 
-    stopifnot(sum(n) == nrow(output))
+    # to handle output of either scan1() or scan1coef()
+    if("lod" %in% names(output))
+        lod <- output$lod
+    else if("coef" %in% names(output))
+        lod <- output$coef
+    else stop("Neither lod nor coef found.")
+
+    stopifnot(sum(n) == nrow(lod))
 
     out <- data.frame(chr=factor(rep(names(map), n), levels=names(map)),
                       pos=unlist(map),
-                      as.data.frame(output))
+                      as.data.frame(lod))
     rownames(out) <- rownames(output)
 
     class(out) <- c("scanone", "data.frame")

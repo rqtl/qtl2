@@ -20,14 +20,26 @@ test_that("subset_scan1 works for intercross with two phenotypes", {
     # perform genome scan
     out <- scan1(probs, pheno, covar, Xcovar)
 
-    attrib <- attributes(out)
-    expected <- out[,2,drop=FALSE]
-    attrib[["sample_size"]] <- attrib[["sample_size"]][2]
-    for(i in seq(along=attrib)) {
-        nam <- names(attrib)[i]
-        if(nam %in% c("dim", "dimnames")) next
-        attr(expected, nam) <- attrib[[i]]
-    }
-    expect_equal(subset(out, column=2), expected)
+    # subset one column
+    expected <- out
+    expected$lod <- out$lod[,2,drop=FALSE]
+    expected$sample_size <- out$sample_size[2]
+    expect_equal(subset(out, lodcolumn=2), expected)
+    expect_equal(out[,2], expected)
+
+    # subset chr 2, 8, and 9
+    index <- split(1:nrow(out$lod), rep(seq(along=out$map), sapply(out$map, length)))
+    keep <- unlist(index[c(2, 8, 9)])
+    expected <- out
+    expected$lod <- out$lod[keep,,drop=FALSE]
+    expected$map <- out$map[c("2", "8", "9")]
+    expect_equal(subset(out, chr=c("2", "8", "9")), expected)
+    expect_equal(out[c("2", "8", "9"),], expected)
+
+    # subset chr 2, 8, and 9 and lodcolumn 2
+    expected$lod <- expected$lod[,2,drop=FALSE]
+    expected$sample_size <- expected$sample_size[2]
+    expect_equal(subset(out, c("2", "8", "9"), 2), expected)
+    expect_equal(out[c("2", "8", "9"),2], expected)
 
 })

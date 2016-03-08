@@ -20,10 +20,6 @@ Convert the results of \code{\link{scan1}} or
 \code{\link{scan1_lmm}} to the form used by the R/qtl function
 \code{scanone}.
 }
-\details{
-Provide either \code{map} or \code{probs}; the latter
-contains the map as an attribute.
-}
 \examples{
 library(qtl2geno)
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

@@ -4,12 +4,8 @@
 #' set of SNPs to convert founder-based genotype probabilities to SNP
 #' genotype probabilities.
 #'
-#' @param genoprobs List of 3d arrays of genotype probabilities, as
-#' calculated by \code{\link[qtl2geno]{calc_genoprob}}; each component
-#' is a chromosome. Requires an attributes \code{"map"} with map
-#' positions, \code{"alleles"} with the set of alleles, and
-#' \code{"is_x_chr"} a logical vector indicating which chromosomes are
-#' the X chromosome.
+#' @param genoprobs Genotype probabilities as
+#' calculated by \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param snpinfo Data frame with SNP information with the following columns:
 #' \itemize{
 #' \item \code{chr} - Character string or factor with chromosome
@@ -24,9 +20,9 @@
 #' @param tol Tolerance for determining whether a SNP is exactly at a
 #' position at which genotype probabilities were already calculated.
 #'
-#' @return A List of 3d arrays of SNP genotype probabilities, similar
-#' to the input. Each component (corresponding to a chromosome) has an
-#' attribute \code{"snpinfo"} containing the input \code{snpinfo} with
+#' @return An object like the \code{genoprobs} input,
+#' but with imputed genotype probabilities at the selected SNPs.
+#' An added component \code{"snpinfo"} contains the input \code{snpinfo} with
 #' an additional column, \code{index}, that is an index to the
 #' genotype probabilities. (In cases where multiple SNPs are contained
 #' in the same interval and have the same strain distribution pattern
@@ -62,7 +58,7 @@
 #' probs <- calc_genoprob(recla, step=0, err=0.002)
 #'
 #' # insert physical map into genotype probabilities
-#' attr(probs, "map") <- recla$pmap
+#' probs$map <- recla$pmap
 #'
 #' # founder genotypes for a set of SNPs
 #' snpgeno <- rbind(m1=c(3,1,1,3,1,1,1,1),
@@ -88,12 +84,12 @@ genoprob_to_snpprob <-
     function(genoprobs, snpinfo, tol=1e-8)
 {
     uchr <- unique(snpinfo$chr)
-    if(!all(uchr %in% names(genoprobs))) {
+    if(!all(uchr %in% genoprobs$chrID)) {
         mischr <- uchr[!(uchr %in% names(genoprobs))]
         stop("Not all chr found in genoprobs: ", paste(mischr, collapse=","))
     }
     # reorder
-    uchr <- factor(factor(uchr, levels=names(genoprobs)))
+    uchr <- factor(factor(uchr, levels=genoprobs$chrID))
 
     # if more than one chromosome:
     if(length(uchr) > 1) {
@@ -104,23 +100,19 @@ genoprob_to_snpprob <-
         snpinfo_spl <- split(snpinfo, chr)
 
         ### loop over chromosomes, using recursion
-        results <- vector("list", length(uchr))
-        names(results) <- uchr
-        map <- results
+        results <- genoprobs
+        results$snpinfo <- vector("list", length(uchr))
+        names(results$snpinfo) <- uchr
         for(i in seq(along=uchr)) {
             tmp <- genoprob_to_snpprob(genoprobs, snpinfo_spl[[i]])
-            results[[i]] <- tmp[[1]] # just the array
-            attr(results[[i]], "snpinfo") <- attr(tmp[[1]], "snpinfo")
-            map[[i]] <- attr(tmp, "map")[[1]]
+            results$probs[[i]] <- tmp$probs[[1]] # just the array
+            results$snpinfo[[i]] <- tmp$snpinfo[[1]]
+            results$map[[i]] <- tmp$map[[1]]
         }
 
         ### add attributes
-        attr(results, "map") <- map
-        attr(results, "is_x_chr") <- attr(genoprobs, "is_x_chr")[uchr]
-        attr(results, "crosstype") <- "snps"
-        attr(results, "alleles") <- c("A", "B")
-        attr(results, "alleleprobs") <- attr(genoprobs, "alleleprobs")
-        class(results) <- c("calc_genoprob", "list")
+        results$crosstype <- "snps"
+        results$alleles <- c("A", "B")
 
         return(results)
     }
@@ -131,11 +123,11 @@ genoprob_to_snpprob <-
     uchr <- as.character(uchr)
 
     ### number of alleles
-    alleles <- attr(genoprobs, "alleles")
+    alleles <- genoprobs$alleles
     n_alleles <- length(alleles)
 
     ### find snps in map
-    map <- attr(genoprobs, "map")[[uchr]]
+    map <- genoprobs$map[[uchr]]
     snploc <- find_intervals(snpinfo$pos, map, tol)
     interval <- snploc[,1]
     on_map <- (snploc[,2]==1)
@@ -165,44 +157,44 @@ genoprob_to_snpprob <-
     on_map <- on_map[urow]
     sdp <- snpinfo$sdp[urow]
 
+    # subset to the single chromosome
+    results <- genoprobs[,uchr]
+
     ### genoprobs -> SNP genotype probs
-    if(ncol(genoprobs[[uchr]]) == n_alleles) { # allele probs
-        results <- .alleleprob_to_snpprob(genoprobs[[uchr]], sdp, interval, on_map)
+    if(ncol(genoprobs$probs[[uchr]]) == n_alleles) { # allele probs
+        results$probs[[1]] <- .alleleprob_to_snpprob(genoprobs$probs[[uchr]], sdp, interval, on_map)
         coln <- c("A", "B")
     }
-    else if(ncol(genoprobs[[uchr]]) == n_alleles*(n_alleles+1)/2) { # autosomal genotype probs
-        results <- .genoprob_to_snpprob(genoprobs[[uchr]], sdp, interval, on_map)
+    else if(ncol(genoprobs$probs[[uchr]]) == n_alleles*(n_alleles+1)/2) { # autosomal genotype probs
+        results$probs[[1]] <- .genoprob_to_snpprob(genoprobs$probs[[uchr]], sdp, interval, on_map)
         coln <- c("AA", "AB", "BB")
     }
-    else if(ncol(genoprobs[[uchr]]) == n_alleles + n_alleles*(n_alleles+1)/2) { # X chr genotype probs
-        results <- .Xgenoprob_to_snpprob(genoprobs[[uchr]], sdp, interval, on_map)
+    else if(ncol(genoprobs$probs[[uchr]]) == n_alleles + n_alleles*(n_alleles+1)/2) { # X chr genotype probs
+        results$probs[[1]] <- .Xgenoprob_to_snpprob(genoprobs$probs[[uchr]], sdp, interval, on_map)
         coln <- c("AA", "AB", "BB", "AY", "BY")
     }
     else {
-        stop("genoprobs has ", ncol(genoprobs[[uchr]]),
+        stop("genoprobs has ", ncol(genoprobs$probs[[uchr]]),
              " columns but there are ", n_alleles, " alleles")
     }
 
     # add dimnames
     snpnames <- snpinfo$snp[urow]
     if(is.null(snpnames)) snpnames <- rownames(snpinfo)[urow]
-    dimnames(results) <- list(rownames(genoprobs[[uchr]]),
-                              coln, snpnames)
+    dimnames(results$probs[[1]]) <- list(rownames(genoprobs$probs[[uchr]]),
+                                        coln, snpnames)
 
     ### add attributes
-    attr(results, "snpinfo") <- snpinfo
-    results <- list(results)
-    names(results) <- uchr
+    results$snpinfo <- list("1"=snpinfo)
+    names(results$snpinfo) <- uchr
 
     snpmap <- list(snpinfo$pos[urow])
     names(snpmap[[1]]) <- snpnames
     names(snpmap) <- uchr
-    attr(results, "map") <- snpmap
-    attr(results, "is_x_chr") <- attr(genoprobs, "is_x_chr")[uchr]
-    attr(results, "crosstype") <- "snps"
-    attr(results, "alleles") <- c("A", "B")
-    attr(results, "alleleprobs") <- attr(genoprobs, "alleleprobs")
-    class(results) <- c("calc_genoprob", "list")
+    results$map <- snpmap
+    results$is_x_chr <- genoprobs$is_x_chr[uchr]
+    results$crosstype <- "snps"
+    results$alleles <- c("A", "B")
 
     results
 }

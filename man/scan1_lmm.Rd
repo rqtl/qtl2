@@ -8,9 +8,8 @@ scan1_lmm(genoprobs, pheno, kinship, addcovar = NULL, Xcovar = NULL,
   intcovar = NULL, reml = TRUE, cores = 1, ...)
 }
 \arguments{
-\item{genoprobs}{A list of 3-dimensional arrays of genotype
-probabilities; each component is a chromosome, and has dimension
-individuals x genotypes x positions.}
+\item{genoprobs}{Genotype probabilities as calculated by
+\code{\link[qtl2geno]{calc_genoprob}}.}
 
 \item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
 
@@ -35,15 +34,32 @@ produced by \code{\link[parallel]{makeCluster}}.}
 \item{...}{Additional control parameters; see Details.}
 }
 \value{
-A matrix of LOD scores, positions x phenotypes.
-Heritabilities (estimated under the null hypothesis, of no QTL) are
-included as an attribute \code{hsq}. Covariate column names are
-included as attributes (\code{"addcovar"}, \code{"intcovar"}, and
-\code{"Xcovar"}), as is a vector with the sample size for each
-phenotype (\code{"sample_size"}). The map of positions at which the
-calculations were performed is included as an attribute
-\code{"map"} (taken from the corresponding attribute in the input
-\code{genoprobs}).
+A list containing the following
+\itemize{
+\item \code{lod} - A matrix of LOD scores, positions x phenotypes.
+\item \code{map} - A list containing the map positions at which the
+    calculations were performed, taken from the input \code{genoprobs}.
+\item \code{hsq} - A matrix of estimated heritabilities under the
+    null hypothesis of no QTL. Columns are the phenotypes. If the
+    \code{"loco"} method was used with
+    \code{\link[qtl2geno]{calc_kinship}} to calculate a list of kinship
+    matrices, one per chromosome, the rows of \code{hsq} will be the
+    heritabilities for the different chromosomes (well, leaving out
+    each one). If \code{Xcovar} was not NULL, there will at least be an
+    autosome and X chromosome row.
+\item \code{addcovar} - Names of additive covariates that were used.
+\item \code{Xcovar} - Names of special covariates for X chromosome
+    under the null hypothesis of no QTL
+\item \code{intcovar} - Names of interactive covariates that were used.
+\item \code{sample_size} - Vector of sample sizes used for each
+    phenotype
+\item \code{snpinfo} - Present only if the input \code{genoprobs}
+    was produced by \code{\link{genoprob_to_snpprob}}, this is a list
+    of data frames giving information about all SNPs. The \code{lod}
+    matrix will contain only results for distinct SNPs. The
+    \code{index} column in \code{snpinfo} is the row index in the
+    \code{lod} matrix that corresponds to the current SNP.
+}
 }
 \description{
 Genome scan with a single-QTL and linear mixed model to account for
@@ -52,7 +68,7 @@ a random polygenic effect, with possible allowance for covariates.
 \details{
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals. The \code{genoprobs}
-object should have an attribute \code{"is_x_chr"} that indicates
+object should have a component \code{"is_x_chr"} that indicates
 which of the chromosomes is the X chromosome, if any.
 
 If \code{kinship} is a single matrix, then the \code{hsq}

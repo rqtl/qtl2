@@ -4,10 +4,10 @@
 \alias{maxlod}
 \title{Overall maximum LOD score}
 \usage{
-maxlod(scan1output, chr)
+maxlod(scan1_output, chr)
 }
 \arguments{
-\item{scan1output}{An object of class \code{"scan1"} as returned by
+\item{scan1_output}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}} or \code{\link{scan1_lmm}}.}
 
 \item{chr}{Option vector of chromosomes to consider.}

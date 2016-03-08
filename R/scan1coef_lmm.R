@@ -4,8 +4,8 @@
 #' single-QTL model using a linear mixed model, with possible
 #' allowance for covariates.
 #'
-#' @param genoprobs A 3-dimensional array of genotype probabilities
-#' with dimension individuals x genotypes x positions.
+#' @param genoprobs Genotype probabilities as calculated by
+#' \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship A kinship matrix. Can be eigen decomposition of
 #' kinship matrix (as calculated with \code{\link{decomp_kinship}}),
@@ -26,12 +26,22 @@
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
 #'
-#' @return A matrix of estimated regression coefficients, of dimension
-#' positions x number of effects. The number of effects is
-#' \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}. The
-#' map of positions at which the calculations were performed is
-#' included as an attribute \code{"map"} (taken from the corresponding
-#' attribute in the input \code{genoprobs}).
+#' @return A list containing the following
+#' \itemize{
+#' \item \code{coef} - A matrix of estimated regression coefficients, of dimension
+#'     positions x number of effects. The number of effects is
+#'     \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+#' \item \code{map} - A list containing the map positions at which the
+#'     calculations were performed, taken from the input \code{genoprobs}.
+#' \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
+#'     standard errors, of same dimension as \code{coef}.
+#' \item \code{contrasts} - The input matrix of genotype coefficient
+#'     contrasts that were used.
+#' \item \code{addcovar} - Names of additive covariates that were used.
+#' \item \code{intcovar} - Names of interactive covariates that were used.
+#' \item \code{sample_size} - Vector of sample sizes used for each
+#'     phenotype
+#' }
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
@@ -84,15 +94,11 @@ scan1coef_lmm <-
         names(pheno) <- rn
     }
 
-    # genoprobs a list? then just take first chromosome
-    if(is.list(genoprobs)) {
-        if(length(genoprobs) > 1)
-            warning("Considering only the first chromosome.")
-        map <- attr(genoprobs, "map")
-        genoprobs <- genoprobs[[1]]
-    } else {
-        map <- attr(genoprobs, "map")
-    }
+    # genoprobs has more than one chromosome?
+    if(length(genoprobs$probs) > 1)
+        warning("Using only the first chromosome, ", names(genoprobs)[1])
+    map <- genoprobs$map[[1]]
+    genoprobs <- genoprobs$probs[[1]]
 
     # make sure contrasts is square n_genotypes x n_genotypes
     if(!is.null(contrasts)) {
@@ -174,11 +180,8 @@ scan1coef_lmm <-
                                               eigenvec, weights, tol)
         }
 
-        # move SEs to attribute
         SE <- t(result$SE) # transpose to positions x coefficients
         result <- result$coef
-        attr(result, "SE") <- SE
-
     } else { # don't calculate SEs
 
         if(is.null(intcovar)) { # just addcovar
@@ -189,6 +192,7 @@ scan1coef_lmm <-
             result <- scancoef_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
                                             eigenvec, weights, tol)
         }
+        SE <- NULL
     }
 
     result <- t(result) # transpose to positions x coefficients
@@ -196,19 +200,16 @@ scan1coef_lmm <-
     # add names
     dimnames(result) <- list(dimnames(genoprobs)[[3]],
                              scan1coef_names(genoprobs, addcovar, intcovar))
-    if(se) {
-        dimnames(SE) <- dimnames(result)
-        attr(result, "SE") <- SE
-    }
+    if(se) dimnames(SE) <- dimnames(result)
 
     # add some attributes with details on analysis
-    attr(result, "map") <- map
-    attr(result, "sample_size") <- length(ind2keep)
-    attr(result, "addcovar") <- colnames4attr(addcovar)
-    attr(result, "intcovar") <- colnames4attr(intcovar)
-    attr(result, "contrasts") <- contrasts
-    if(!is.null(weights))
-        attr(result, "weights") <- TRUE
+    result <- list(coef = result,
+                   map = map,
+                   sample_size = length(ind2keep),
+                   addcovar = colnames4attr(addcovar),
+                   intcovar = colnames4attr(intcovar),
+                   contrasts = contrasts)
+    result$SE <- SE # include only if not NULL
 
     class(result) <- c("scan1coef", "scan1", "matrix")
     result
