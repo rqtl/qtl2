@@ -14,7 +14,7 @@ test_that("chromosome scan by Haley-Knott works", {
     lod0 <- out[,3]
 
     # inputs for R/qtl2
-    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)$probs[[1]][,2,,drop=FALSE]
     y <- hyper2$pheno[,1]
     n <- length(y)
 
@@ -91,7 +91,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes works", {
     dimnames(lod0) <- NULL
 
     # inputs for R/qtl2
-    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)$probs[[1]][,2,,drop=FALSE]
     y <- as.matrix(hyper$pheno[,1:n_phe])
     n <- nrow(y)
 
@@ -165,7 +165,7 @@ test_that("chromosome scan by Haley-Knott works with additive covariates", {
     lod0 <- out[,3]
 
     # inputs for R/qtl2
-    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)$probs[[1]][,2,,drop=FALSE]
     y <- hyper2$pheno[,1]
     n <- length(y)
 
@@ -224,7 +224,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an additi
     dimnames(lod0) <- NULL
 
     # inputs for R/qtl2
-    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)$probs[[1]][,2,,drop=FALSE]
     y <- as.matrix(hyper$pheno[,1:n_phe])
     n <- nrow(y)
 
@@ -280,7 +280,7 @@ test_that("chromosome scan by Haley-Knott works with interactive covariates", {
     lod0 <- out[,3]
 
     # inputs for R/qtl2
-    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)$probs[[1]][,2,,drop=FALSE]
     y <- hyper2$pheno[,1]
     n <- length(y)
 
@@ -345,7 +345,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an intera
     dimnames(lod0) <- NULL
 
     # inputs for R/qtl2
-    pr <- qtl2geno::calc_genoprob(hyper2, step=1)[[1]][,2,,drop=FALSE]
+    pr <- qtl2geno::calc_genoprob(hyper2, step=1)$probs[[1]][,2,,drop=FALSE]
     y <- as.matrix(hyper$pheno[,1:n_phe])
     n <- nrow(y)
 

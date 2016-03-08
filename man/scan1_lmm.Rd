@@ -8,9 +8,8 @@ scan1_lmm(genoprobs, pheno, kinship, addcovar = NULL, Xcovar = NULL,
   intcovar = NULL, reml = TRUE, cores = 1, ...)
 }
 \arguments{
-\item{genoprobs}{A list of 3-dimensional arrays of genotype
-probabilities; each component is a chromosome, and has dimension
-individuals x genotypes x positions.}
+\item{genoprobs}{Genotype probabilities as calculated by
+\code{\link[qtl2geno]{calc_genoprob}}.}
 
 \item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
 
@@ -42,8 +41,7 @@ included as attributes (\code{"addcovar"}, \code{"intcovar"}, and
 \code{"Xcovar"}), as is a vector with the sample size for each
 phenotype (\code{"sample_size"}). The map of positions at which the
 calculations were performed is included as an attribute
-\code{"map"} (taken from the corresponding attribute in the input
-\code{genoprobs}).
+\code{"map"} (taken from the input \code{genoprobs}).
 }
 \description{
 Genome scan with a single-QTL and linear mixed model to account for
@@ -52,7 +50,7 @@ a random polygenic effect, with possible allowance for covariates.
 \details{
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals. The \code{genoprobs}
-object should have an attribute \code{"is_x_chr"} that indicates
+object should have a component \code{"is_x_chr"} that indicates
 which of the chromosomes is the X chromosome, if any.
 
 If \code{kinship} is a single matrix, then the \code{hsq}

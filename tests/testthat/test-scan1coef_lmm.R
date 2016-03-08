@@ -59,7 +59,7 @@ test_that("scan1coef_lmm for grav", {
     phe <- grav$pheno[,"T330",drop=FALSE]
 
     est <- scan1coef_lmm(pr[,1], phe, K, se=FALSE)
-    est_lm <- eff_via_lm(pr[[1]], phe, K)
+    est_lm <- eff_via_lm(pr$probs[[1]], phe, K)
     expect_equivalent(est, est_lm)
 
     est <- scan1coef_lmm(pr[,1], phe, K, se=TRUE)
@@ -76,9 +76,9 @@ test_that("scan1coef_lmm for grav", {
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # include covariate
-    covar <- cbind(chr3=pr[[3]][,2,"CC.266L"])
+    covar <- cbind(chr3=pr$probs[[3]][,2,"CC.266L"])
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr[[1]], phe, K, covar)
+    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar)
     expect_equivalent(est, est_lm)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=TRUE)
@@ -94,7 +94,7 @@ test_that("scan1coef_lmm for grav", {
 
     # interactive covariate
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
+    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar, covar)
     expect_equivalent(est, est_lm)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=TRUE)
@@ -109,9 +109,9 @@ test_that("scan1coef_lmm for grav", {
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two covariates
-    covar <- cbind(covar, chr4=pr[[4]][,2,"CD.329C-Col"])
+    covar <- cbind(covar, chr4=pr$probs[[4]][,2,"CD.329C-Col"])
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr[[1]], phe, K, covar)
+    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar)
     expect_equivalent(est, est_lm)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=TRUE)
@@ -127,7 +127,7 @@ test_that("scan1coef_lmm for grav", {
 
     # two interactive covariates
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
+    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar, covar)
     expect_equivalent(est, est_lm)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=TRUE)

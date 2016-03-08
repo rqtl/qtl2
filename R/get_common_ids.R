@@ -48,6 +48,9 @@ get_common_ids <-
             if(complete.cases && (is.matrix(args[[i]]) || is.data.frame(args[[i]])))
                 these <- these[complete.cases(args[[i]])]
         }
+        else if(is.list(args[[i]]) && "indID" %in% names(args[[i]])) { # genoprobs
+            these <- args[[i]]$indID
+        }
         else if(is.vector(args[[i]])) {
             if(is.character(args[[i]]) && is.null(names(args[[i]])))
                 these <- args[[i]]

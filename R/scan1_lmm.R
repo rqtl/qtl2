@@ -3,9 +3,8 @@
 #' Genome scan with a single-QTL and linear mixed model to account for
 #' a random polygenic effect, with possible allowance for covariates.
 #'
-#' @param genoprobs A list of 3-dimensional arrays of genotype
-#' probabilities; each component is a chromosome, and has dimension
-#' individuals x genotypes x positions.
+#' @param genoprobs Genotype probabilities as calculated by
+#' \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param kinship A kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
@@ -28,12 +27,11 @@
 #' \code{"Xcovar"}), as is a vector with the sample size for each
 #' phenotype (\code{"sample_size"}). The map of positions at which the
 #' calculations were performed is included as an attribute
-#' \code{"map"} (taken from the corresponding attribute in the input
-#' \code{genoprobs}).
+#' \code{"map"} (taken from the input \code{genoprobs}).
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
-#' object should have an attribute \code{"is_x_chr"} that indicates
+#' object should have a component \code{"is_x_chr"} that indicates
 #' which of the chromosomes is the X chromosome, if any.
 #'
 #' If \code{kinship} is a single matrix, then the \code{hsq}
@@ -107,11 +105,11 @@ scan1_lmm <-
         intcovar <- as.matrix(intcovar)
 
     # check that kinship matrices are square with same IDs
-    kinshipIDs <- check_kinship(kinship, length(genoprobs))
+    kinshipIDs <- check_kinship(kinship, length(genoprobs$probs))
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs[[1]], addcovar, Xcovar, intcovar,
+    ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
                                kinshipIDs, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
     if(length(ind2keep)<=2) {
@@ -136,9 +134,8 @@ scan1_lmm <-
 
     # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
-    class(genoprobs) <- "list" # treat as regular list
-    is_x_chr <- attr(genoprobs, "is_x_chr")
-    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
+    is_x_chr <- genoprobs$is_x_chr
+    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs$probs))
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -148,10 +145,10 @@ scan1_lmm <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
-    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
+    pos_names <- unlist(lapply(genoprobs$probs, function(a) dimnames(a)[[3]]))
 
     # to contain the results
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
@@ -205,15 +202,15 @@ scan1_lmm <-
     }
 
     attr(result, "hsq") <- hsq
-    attr(result, "map") <- attr(genoprobs, "map")
+    attr(result, "map") <- genoprobs$map
     attr(result, "sample_size") <- n
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
     attr(result, "intcovar") <- colnames4attr(intcovar)
 
     # preserve any snpinfo from genoprob_to_snpprob
-    if(!is.null(attr(genoprobs[[1]], "snpinfo")))
-        attr(result, "snpinfo") <- lapply(genoprobs, attr, "snpinfo")
+    if("snpinfo" %in% names(genoprobs))
+        attr(result, "snpinfo") <- genoprobs$snpinfo
 
     class(result) <- c("scan1", "matrix")
     result
@@ -266,6 +263,8 @@ calc_hsq_clean <-
     list(hsq=hsq, loglik=loglik)
 }
 
+# perform the LMM scan
+# genoprobs is still a big complicated calc_genoprob object
 scan1_lmm_clean <-
     function(genoprobs, ind2keep, Ke, pheno, addcovar, intcovar, is_x_chr,
              genoprob_Xcol2drop,
@@ -273,7 +272,6 @@ scan1_lmm_clean <-
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
-    class(genoprobs) <- "list"
 
     if(!is.list(Ke[[1]])) {
         loco <- FALSE
@@ -281,8 +279,8 @@ scan1_lmm_clean <-
         else no_x <- FALSE
     } else loco <- TRUE
 
-    batches <- list(chr=rep(seq(along=genoprobs), ncol(pheno)),
-                    phecol=rep(1:ncol(pheno), each=length(genoprobs)))
+    batches <- list(chr=rep(seq(along=genoprobs$probs), ncol(pheno)),
+                    phecol=rep(1:ncol(pheno), each=length(genoprobs$probs)))
 
     # function that does the work
     by_batch_func <-
@@ -308,11 +306,11 @@ scan1_lmm_clean <-
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
             Xcol2drop <- genoprob_Xcol2drop[[chr]]
             if(length(Xcol2drop) > 0) {
-                pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
+                pr <- genoprobs$probs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
                 pr <- pr[,-1,,drop=FALSE]
             }
             else
-                pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
+                pr <- genoprobs$probs[[chr]][ind2keep,-1,,drop=FALSE]
 
             # calculate weights for this chromosome
             if(loco) {
@@ -343,9 +341,9 @@ scan1_lmm_clean <-
     # now do the work
     lod_list <- cluster_lapply(cores, seq(along=batches$chr), by_batch_func)
 
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
 
     # to contain the results
     result <- matrix(nrow=totpos, ncol=ncol(pheno))

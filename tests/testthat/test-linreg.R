@@ -208,8 +208,8 @@ test_that("calculation of residuals for 3d arrays works", {
     data(hyper)
     hyper <- hyper[1,]
     hyper2 <- qtl2geno::convert2cross2(hyper)
-    pr <- qtl2geno::calc_genoprob(hyper2, error_prob=0.002, step=1)[[1]]
-    pr <- aperm(pr, c(1,3,2)) # reorient to have genomic position last
+    pr <- qtl2geno::calc_genoprob(hyper2, error_prob=0.002, step=1)
+    pr <- aperm(pr$probs[[1]], c(1,3,2)) # reorient to have genomic position last
 
     # residuals with intercept plus the phenotype
     X <- cbind(1, hyper$pheno[,1])

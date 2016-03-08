@@ -30,11 +30,11 @@ test_that("scan1_lmm with intercross, vs ported lmmlite code", {
                  c(byhand1_ml$hsq, byhand2_ml$hsq))
 
     # compare chromosome 1 LOD scores
-    d <- dim(probs[[1]])[3]
+    d <- dim(probs$probs[[1]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(X, probs[[1]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(X, probs$probs[[1]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -85,11 +85,11 @@ test_that("scan1_lmm with intercross with X covariates for null", {
                  c(byhand1_ml$hsq, byhand2_ml$hsq))
 
     # compare chromosome X LOD scores
-    d <- dim(probs[["X"]])[3]
+    d <- dim(probs$probs[["X"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(1, probs$probs[["X"]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -156,11 +156,11 @@ test_that("scan1_lmm with intercross with an additive covariate", {
 
 
     # compare chromosome 2 LOD scores
-    d <- dim(probs[["2"]])[3]
+    d <- dim(probs$probs[["2"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, X, probs[["2"]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(1, X, probs$probs[["2"]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -172,7 +172,7 @@ test_that("scan1_lmm with intercross with an additive covariate", {
     lod_ml1 <- (loglik_ml1 - byhand1A_ml$loglik)/log(10)
     lod_ml2 <- (loglik_ml2 - byhand2A_ml$loglik)/log(10)
 
-    index <- dim(probs[["1"]])[3] + 1:dim(probs[["2"]])[3]
+    index <- dim(probs$probs[["1"]])[3] + 1:dim(probs$probs[["2"]])[3]
     dimnames(out_reml) <- dimnames(out_ml) <- NULL
     expect_equal(out_reml[index,1], lod_reml1)
     expect_equal(out_reml[index,2], lod_reml2)
@@ -180,11 +180,11 @@ test_that("scan1_lmm with intercross with an additive covariate", {
     expect_equal(out_ml[index,2], lod_ml2)
 
     # compare chromosome X LOD scores
-    d <- dim(probs[["X"]])[3]
+    d <- dim(probs$probs[["X"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(1, probs$probs[["X"]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -263,12 +263,12 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
 
 
     # compare chromosome 4 LOD scores
-    npos <- sapply(probs, function(a) dim(a)[[3]])
+    npos <- sapply(probs$probs, function(a) dim(a)[[3]])
     d <- npos["4"]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, X, probs[["4"]][,-1,i], probs[["4"]][,-1,i]*X)
+        Xp <- Ke$vectors %*% cbind(1, X, probs$probs[["4"]][,-1,i], probs$probs[["4"]][,-1,i]*X)
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -288,11 +288,11 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
     expect_equal(out_ml[index,2], lod_ml2)
 
     # compare chromosome X LOD scores
-    d <- dim(probs[["X"]])[3]
+    d <- dim(probs$probs[["X"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, 3)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, X, probs[["X"]][,-1,i], probs[["X"]][,-1,i]*X)
+        Xp <- Ke$vectors %*% cbind(1, X, probs$probs[["X"]][,-1,i], probs$probs[["X"]][,-1,i]*X)
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -334,7 +334,7 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
 
     # compare chromosomes 1, 6, 9, 18
     chrs <- paste(c(1,6,9,18))
-    npos <- sapply(probs, function(a) dim(a)[[3]])
+    npos <- sapply(probs$probs, function(a) dim(a)[[3]])
 
     for(chr in chrs) {
         nchr <- which(names(npos) == chr)
@@ -358,7 +358,7 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
         loglik_reml1 <- loglik_reml2 <-
             loglik_ml1 <- loglik_ml2 <- rep(NA, d)
         for(i in 1:d) {
-            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs[[chr]][,-1,i])
+            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs$probs[[chr]][,-1,i])
             # calculate likelihoods using plain ML (not the residual log likelihood)
             loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
             loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
@@ -402,7 +402,7 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
 
     # compare chromosomes 1, 6, 9, 18
     chrs <- paste(c(1,6,9,18))
-    npos <- sapply(probs, function(a) dim(a)[[3]])
+    npos <- sapply(probs$probs, function(a) dim(a)[[3]])
 
     for(chr in chrs) {
         nchr <- which(names(npos) == chr)
@@ -426,7 +426,7 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
         loglik_reml1 <- loglik_reml2 <-
             loglik_ml1 <- loglik_ml2 <- rep(NA, d)
         for(i in 1:d) {
-            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs[[chr]][,-1,i], probs[[chr]][,-1,i]*X)
+            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs$probs[[chr]][,-1,i], probs$probs[[chr]][,-1,i]*X)
             # calculate likelihoods using plain ML (not the residual log likelihood)
             loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
             loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)

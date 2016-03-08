@@ -2,9 +2,8 @@
 #'
 #' Genome scan with a single-QTL model by Haley-Knott regression, with possible allowance for covariates.
 #'
-#' @param genoprobs A list of 3-dimensional arrays of genotype
-#' probabilities; each component is a chromosome, and has dimension
-#' individuals x genotypes x positions.
+#' @param genoprobs Genotype probabilities as calculated by
+#' \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param addcovar An optional matrix of additive covariates.
 #' @param Xcovar An optional matrix with additional additive covariates used for
@@ -24,12 +23,11 @@
 #' \code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
 #' sample size for each phenotype (\code{"sample_size"}). The map of
 #' positions at which the calculations were performed is included as
-#' an attribute \code{"map"} (taken from the corresponding attribute
-#' in the input \code{genoprobs}).
+#' an attribute \code{"map"} (taken from the input \code{genoprobs}).
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
-#' object should have an attribute \code{"is_x_chr"} that indicates
+#' object should have a component \code{"is_x_chr"} that indicates
 #' which of the chromosomes is the X chromosome, if any.
 #'
 #' The \code{...} argument can contain two additional control
@@ -94,7 +92,7 @@ scan1 <-
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs[[1]], addcovar, Xcovar, intcovar,
+    ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
                                weights, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
     if(length(ind2keep)<=2) {
@@ -119,9 +117,8 @@ scan1 <-
 
     # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
-    class(genoprobs) <- "list" # treat as regular list
-    is_x_chr <- attr(genoprobs, "is_x_chr")
-    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
+    is_x_chr <- genoprobs$is_x_chr
+    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs$probs))
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -131,15 +128,15 @@ scan1 <-
     }
 
     # batches for analysis, to allow parallel analysis
-    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)),
-                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)))
-    run_indexes <- 1:(length(genoprobs)*length(phe_batches))
+    run_batches <- data.frame(chr=rep(seq(along=genoprobs$probs), length(phe_batches)),
+                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs$probs)))
+    run_indexes <- 1:(length(genoprobs$probs)*length(phe_batches))
 
     # the function that does the work
     by_group_func <- function(i) {
         # deal with batch information, including individuals to drop due to missing phenotypes
         chr <- run_batches$chr[i]
-        chrnam <- names(genoprobs)[chr]
+        chrnam <- names(genoprobs$probs)[chr]
         phebatch <- phe_batches[[run_batches$phe_batch[i]]]
         phecol <- phebatch$cols
         omit <- phebatch$omit
@@ -150,11 +147,11 @@ scan1 <-
         # subset the genotype probabilities: drop cols with all 0s, plus the first column
         Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
         if(length(Xcol2drop) > 0) {
-            pr <- genoprobs[[chr]][these2keep,-Xcol2drop,,drop=FALSE]
+            pr <- genoprobs$probs[[chr]][these2keep,-Xcol2drop,,drop=FALSE]
             pr <- pr[,-1,,drop=FALSE]
         }
         else
-            pr <- genoprobs[[chr]][these2keep,-1,,drop=FALSE]
+            pr <- genoprobs$probs[[chr]][these2keep,-1,,drop=FALSE]
 
         # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
@@ -180,9 +177,9 @@ scan1 <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
 
     # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
@@ -191,7 +188,7 @@ scan1 <-
     if(n_cores(cores)==1) { # no parallel processing
         for(i in run_indexes) {
             chr <- run_batches$chr[i]
-            chrnam <- names(genoprobs)[chr]
+            chrnam <- names(genoprobs$probs)[chr]
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
@@ -209,7 +206,7 @@ scan1 <-
         # reorganize results
         for(i in run_indexes) {
             chr <- run_batches$chr[i]
-            chrnam <- names(genoprobs)[chr]
+            chrnam <- names(genoprobs$probs)[chr]
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
@@ -220,11 +217,11 @@ scan1 <-
         }
     }
 
-    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    pos_names <- unlist(lapply(genoprobs$probs, function(a) dimnames(a)[[3]]))
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # add some attributes with details on analysis
-    attr(result, "map") <- attr(genoprobs, "map")
+    attr(result, "map") <- genoprobs$map
     attr(result, "sample_size") <- n
     attr(result, "addcovar") <- colnames4attr(addcovar)
     attr(result, "Xcovar") <- colnames4attr(Xcovar)
@@ -233,8 +230,8 @@ scan1 <-
         attr(result, "weights") <- TRUE
 
     # preserve any snpinfo from genoprob_to_snpprob
-    if(!is.null(attr(genoprobs[[1]], "snpinfo")))
-        attr(result, "snpinfo") <- lapply(genoprobs, attr, "snpinfo")
+    if("snpinfo" %in% names(genoprobs))
+        attr(result, "snpinfo") <- genoprobs$snpinfo
 
     class(result) <- c("scan1", "matrix")
     result
@@ -242,6 +239,8 @@ scan1 <-
 
 
 # scan1 function taking nicely aligned data with no missing values
+#
+# Here genoprobs is a plain 3d array
 scan1_clean <-
     function(genoprobs, pheno, addcovar, intcovar,
              weights, add_intercept=TRUE, tol, intcovar_method)

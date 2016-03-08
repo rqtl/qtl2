@@ -7,12 +7,8 @@
 genoprob_to_snpprob(genoprobs, snpinfo, tol = 0.00000001)
 }
 \arguments{
-\item{genoprobs}{List of 3d arrays of genotype probabilities, as
-calculated by \code{\link[qtl2geno]{calc_genoprob}}; each component
-is a chromosome. Requires an attributes \code{"map"} with map
-positions, \code{"alleles"} with the set of alleles, and
-\code{"is_x_chr"} a logical vector indicating which chromosomes are
-the X chromosome.}
+\item{genoprobs}{Genotype probabilities as
+calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
 
 \item{snpinfo}{Data frame with SNP information with the following columns:
 \itemize{
@@ -30,9 +26,9 @@ the X chromosome.}
 position at which genotype probabilities were already calculated.}
 }
 \value{
-A List of 3d arrays of SNP genotype probabilities, similar
-to the input. Each component (corresponding to a chromosome) has an
-attribute \code{"snpinfo"} containing the input \code{snpinfo} with
+An object like the \code{genoprobs} input,
+but with imputed genotype probabilities at the selected SNPs.
+An added component \code{"snpinfo"} contains the input \code{snpinfo} with
 an additional column, \code{index}, that is an index to the
 genotype probabilities. (In cases where multiple SNPs are contained
 in the same interval and have the same strain distribution pattern
@@ -74,7 +70,7 @@ recla <- recla[c(1:2,53:54), c("19","X")] # subset to 4 mice and 2 chromosomes
 probs <- calc_genoprob(recla, step=0, err=0.002)
 
 # insert physical map into genotype probabilities
-attr(probs, "map") <- recla$pmap
+probs$map <- recla$pmap
 
 # founder genotypes for a set of SNPs
 snpgeno <- rbind(m1=c(3,1,1,3,1,1,1,1),

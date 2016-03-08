@@ -63,8 +63,17 @@ subset_scan1result <-
 scanone2scan1 <-
     function(x, n=NULL, posnames=NULL, phenames=NULL, addcovar=NULL, intcovar=NULL, Xcovar=NULL, weights=NULL)
 {
+    map <- split(x[,2], factor(x[,1], levels=unique(x[,1])))
+    names(map) <- unique(x[,1])
+    if(!is.null(posnames)) {
+        mapn <- split(posnames, factor(x[,1], levels=unique(x[,1])))
+        for(i in seq(along=map)) names(map[[i]]) <- mapn[[i]]
+    }
+
     x <- as.matrix(x[,-(1:2), drop=FALSE])
     dimnames(x) <- list(posnames, phenames)
+
+    attr(x, "map") <- map
 
     attr(x, "sample_size") <- n
     attr(x, "addcovar") <- colnames4attr(addcovar)
@@ -73,6 +82,19 @@ scanone2scan1 <-
     attr(x, "weights") <- weights
     class(x) <- c("scan1", "matrix")
     x
+}
+
+convert_probs2qtl2 <-
+    function(cross)
+{
+    list(probs=lapply(cross$geno, function(a) {
+        pr <- aperm(a$prob, c(1,3,2))
+        rownames(pr) <- paste(1:nrow(pr))
+        pr }),
+         map=lapply(cross$geno, function(a) attr(a$prob, "map")),
+         indID=paste(1:qtl::nind(cross)),
+         chrID=names(cross$geno))
+
 }
 
 # now finally to some tests
@@ -86,12 +108,13 @@ test_that("scan1 for backcross with one phenotype", {
     out <- scanone(hyper, method="hk")
 
     # inputs for R/qtl2
-    pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
+    pr <- convert_probs2qtl2(hyper)
     y <- hyper$pheno[,1]
     names(y) <- paste(1:nind(hyper))
-    for(i in seq(along=pr)) rownames(pr[[i]]) <- names(y)
+    for(i in seq(along=pr)) rownames(pr$probs[[i]]) <- names(y)
     n <- length(y)
-    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+
+    posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
 
     # scan
     out2 <- scan1(pr, y)
@@ -101,7 +124,7 @@ test_that("scan1 for backcross with one phenotype", {
 
     # cf lm() for chr 18
     lm_rows <- which(out[,1]==18)
-    out.lm <- lod_via_lm(pr[[18]], y)
+    out.lm <- lod_via_lm(pr$probs[[18]], y)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -115,7 +138,7 @@ test_that("scan1 for backcross with one phenotype", {
     expect_equal(out2, scanone2scan1(out, 250, posnames, weights=TRUE))
 
     # cf lm() for chr 18
-    out.lm <- lod_via_lm(pr[[18]], y, weights=w)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
 
@@ -128,7 +151,7 @@ test_that("scan1 for backcross with one phenotype", {
     expect_equal(out2, scanone2scan1(out, 250, posnames, addcovar=x))
 
     # cf lm() for chr 18
-    out.lm <- lod_via_lm(pr[[18]], y, x)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -139,7 +162,7 @@ test_that("scan1 for backcross with one phenotype", {
                                      addcovar=x, weights=TRUE))
 
     # cf lm() for chr 18
-    out.lm <- lod_via_lm(pr[[18]], y, x, weights=w)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -156,7 +179,7 @@ test_that("scan1 for backcross with one phenotype", {
 
 
     # cf lm() for chr 18
-    out.lm <- lod_via_lm(pr[[18]], y, x, x)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x, x)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -172,7 +195,7 @@ test_that("scan1 for backcross with one phenotype", {
                                       addcovar=x, intcovar=x, weights=TRUE))
 
     # cf lm() for chr 18
-    out.lm <- lod_via_lm(pr[[18]], y, x, x, weights=w)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x, x, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
 })
@@ -200,10 +223,9 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     out <- scanone(hyper, method="hk", pheno.col=1:n_phe)
 
     # inputs for R/qtl2
-    pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
+    pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
-    for(i in seq(along=pr)) rownames(pr[[i]]) <- rownames(y)
-    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+    posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
 
     # scan
     out2 <- scan1(pr, y)
@@ -214,7 +236,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
     # cf lm() for chr 1
     lm_rows <- which(out[,1]==18)
-    out.lm <- lod_via_lm(pr[[18]], y)
+    out.lm <- lod_via_lm(pr$probs[[18]], y)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -228,7 +250,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
                                      colnames(y), weights=TRUE))
 
     # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[18]], y, weights=w)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -241,7 +263,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
                                      posnames, colnames(y), addcovar=x))
 
     # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[18]], y, x)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -253,7 +275,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
                                      weights=TRUE))
 
     # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[18]], y, x, weights=w)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -271,7 +293,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
                                       intcovar=x))
 
     # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[18]], y, x, intcovar=x)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x, intcovar=x)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
     ##############################
@@ -289,7 +311,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
                                       intcovar=x, weights=TRUE))
 
     # cf lm() for chr 1
-    out.lm <- lod_via_lm(pr[[18]], y, x, intcovar=x, weights=w)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x, intcovar=x, weights=w)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 
 })
@@ -316,10 +338,9 @@ test_that("scan1 works with NAs in the covariates", {
     hyper <- calc.genoprob(hyper, step=2.5)
 
     # inputs for R/qtl2
-    pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
+    pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
-    for(i in seq(along=pr)) rownames(pr[[i]]) <- rownames(y)
-    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+    posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
 
     ##############################
     # additive covariate
@@ -334,7 +355,7 @@ test_that("scan1 works with NAs in the covariates", {
 
     # cf lm() for chr 1
     lm_rows <- which(out[,1]==18)
-    out.lm <- lod_via_lm(pr[[18]], y, x)
+    out.lm <- lod_via_lm(pr$probs[[18]], y, x)
     expect_equal(subset_scan1result(out2, lm_rows), out.lm)
 })
 
@@ -360,10 +381,9 @@ test_that("scan1 aligns the individuals", {
     hyper <- calc.genoprob(hyper, step=2.5)
 
     # inputs for R/qtl2
-    pr <- lapply(hyper$geno, function(a) aperm(a$prob, c(1,3,2)))
+    pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
-    for(i in seq(along=pr)) rownames(pr[[i]]) <- rownames(y)
-    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+    posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
 
     # scan
     out <- scan1(pr, y)
@@ -446,7 +466,7 @@ test_that("multi-core scan1 works", {
     # inputs for R/qtl2
     library(qtl2geno)
     pr <- calc_genoprob(convert2cross2(hyper), step=2.5)
-    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+    posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
 
     # scan
     out <- scan1(pr, y)
@@ -522,7 +542,7 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
     # inputs for R/qtl2
     library(qtl2geno)
     pr <- calc_genoprob(convert2cross2(hyper), step=2.5)
-    posnames <- unlist(lapply(pr, function(a) dimnames(a)[[3]]))
+    posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
 
     ybig <- y*100
 

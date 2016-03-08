@@ -8,8 +8,8 @@ scan1coef(genoprobs, pheno, addcovar = NULL, intcovar = NULL,
   weights = NULL, contrasts = NULL, se = FALSE, tol = 0.000000000001)
 }
 \arguments{
-\item{genoprobs}{A 3-dimensional array of genotype probabilities
-with dimension individuals x genotypes x positions.}
+\item{genoprobs}{Genotype probabilities as calculated by
+\code{\link[qtl2geno]{calc_genoprob}}.}
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
@@ -38,8 +38,8 @@ A matrix of estimated regression coefficients, of dimension
 positions x number of effects. The number of effects is
 \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}. The
 map of positions at which the calculations were performed is
-included as an attribute \code{"map"} (taken from the corresponding
-attribute in the input \code{genoprobs}).
+included as an attribute \code{"map"} (taken from the
+input \code{genoprobs}).
 }
 \description{
 Calculate QTL effects in scan along one chromosome with a

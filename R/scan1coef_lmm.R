@@ -4,8 +4,8 @@
 #' single-QTL model using a linear mixed model, with possible
 #' allowance for covariates.
 #'
-#' @param genoprobs A 3-dimensional array of genotype probabilities
-#' with dimension individuals x genotypes x positions.
+#' @param genoprobs Genotype probabilities as calculated by
+#' \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship A kinship matrix. Can be eigen decomposition of
 #' kinship matrix (as calculated with \code{\link{decomp_kinship}}),
@@ -30,8 +30,8 @@
 #' positions x number of effects. The number of effects is
 #' \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}. The
 #' map of positions at which the calculations were performed is
-#' included as an attribute \code{"map"} (taken from the corresponding
-#' attribute in the input \code{genoprobs}).
+#' included as an attribute \code{"map"} (taken from the
+#' input \code{genoprobs}).
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
@@ -84,15 +84,11 @@ scan1coef_lmm <-
         names(pheno) <- rn
     }
 
-    # genoprobs a list? then just take first chromosome
-    if(is.list(genoprobs)) {
-        if(length(genoprobs) > 1)
-            warning("Considering only the first chromosome.")
-        map <- attr(genoprobs, "map")
-        genoprobs <- genoprobs[[1]]
-    } else {
-        map <- attr(genoprobs, "map")
-    }
+    # genoprobs has more than one chromosome?
+    if(length(genoprobs$probs) > 1)
+        warning("Using only the first chromosome, ", names(genoprobs)[1])
+    map <- genoprobs$map[[1]]
+    genoprobs <- genoprobs$probs[[1]]
 
     # make sure contrasts is square n_genotypes x n_genotypes
     if(!is.null(contrasts)) {
