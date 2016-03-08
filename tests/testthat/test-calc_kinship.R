@@ -17,7 +17,7 @@ test_that("calc_kinship works for RIL", {
 
     # check unnormalized
     sim_unnorm <- calc_kinship(probs, normalize=FALSE)
-    n_ind <- nrow(probs[[1]])
+    n_ind <- length(probs$indID)
     expect_equal(sim_unnorm *(n_ind-1)/(sum(diag(sim_unnorm)) - sum(sim_unnorm)/n_ind),
                  sim)
 
@@ -28,10 +28,10 @@ test_that("calc_kinship works for RIL", {
         pairs <- c(pairs, list(sample(n_ind, 2), sample(n_ind, 2)))
     expected <- rep(0, length(pairs))
     tot_pos <- 0
-    for(i in seq(along=probs)) {
+    for(i in seq(along=probs$chrID)) {
         for(k in seq(along=pairs))
-            expected[k] <- expected[k] + sum(probs_sub[[i]][pairs[[k]][1],,] * probs_sub[[i]][pairs[[k]][2],,])
-        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
+            expected[k] <- expected[k] + sum(probs_sub$prob[[i]][pairs[[k]][1],,] * probs_sub$prob[[i]][pairs[[k]][2],,])
+        tot_pos <- tot_pos + dim(probs_sub$prob[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -71,24 +71,24 @@ test_that("calc_kinship (unnormalized) works for F2", {
 
     # check a few values
     set.seed(54028069)
-    n_ind <- nrow(probs[[1]])
+    n_ind <- length(probs$indID)
     pairs <- list(c(1,2))
     for(i in 1:5)
         pairs <- c(pairs, list(sample(n_ind, 2), sample(n_ind, 2)))
     expected <- rep(0, length(pairs))
     tot_pos <- 0
-    is_x_chr <- attr(probs_sub, "is_x_chr")
+    is_x_chr <- probs_sub$is_x_chr
     for(i in which(!is_x_chr)) { # just use autosomes
         for(k in seq(along=pairs)) {
-            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
-            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+            prob_1 <- probs_sub$prob[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub$prob[[i]][pairs[[k]][2],,,drop=FALSE]
             # autosomes: convert to allele probs
             prob_1 <- f2_geno2alle(prob_1)
             prob_2 <- f2_geno2alle(prob_2)
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
+        tot_pos <- tot_pos + dim(probs_sub$prob[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -104,12 +104,12 @@ test_that("calc_kinship (unnormalized) works for F2", {
     tot_pos <- 0
     for(i in which(!is_x_chr)) { # just use autosomes
         for(k in seq(along=pairs)) {
-            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
-            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+            prob_1 <- probs_sub$prob[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub$prob[[i]][pairs[[k]][2],,,drop=FALSE]
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
+        tot_pos <- tot_pos + dim(probs_sub$prob[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -129,22 +129,22 @@ test_that("calc_kinship (unnormalized) works for F2", {
 
     # check a few values
     set.seed(54028069)
-    n_ind <- nrow(probs[[1]])
+    n_ind <- length(probs$indID)
     pairs <- list(c(1,2))
     for(i in 1:5)
         pairs <- c(pairs, list(sample(n_ind, 2), sample(n_ind, 2)))
     expected <- rep(0, length(pairs))
     tot_pos <- 0
-    for(i in seq(along=probs_sub)) {
+    for(i in seq(along=probs_sub$chrID)) {
         for(k in seq(along=pairs)) {
-            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
-            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+            prob_1 <- probs_sub$prob[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub$prob[[i]][pairs[[k]][2],,,drop=FALSE]
             prob_1 <- f2_geno2alle(prob_1, is_x_chr[i])
             prob_2 <- f2_geno2alle(prob_2, is_x_chr[i])
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
+        tot_pos <- tot_pos + dim(probs_sub$prob[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs)) {
@@ -159,14 +159,14 @@ test_that("calc_kinship (unnormalized) works for F2", {
     # check a few values
     expected <- rep(0, length(pairs))
     tot_pos <- 0
-    for(i in seq(along=probs_sub)) {
+    for(i in seq(along=probs_sub$chrID)) {
         for(k in seq(along=pairs)) {
-            prob_1 <- probs_sub[[i]][pairs[[k]][1],,,drop=FALSE]
-            prob_2 <- probs_sub[[i]][pairs[[k]][2],,,drop=FALSE]
+            prob_1 <- probs_sub$prob[[i]][pairs[[k]][1],,,drop=FALSE]
+            prob_2 <- probs_sub$prob[[i]][pairs[[k]][2],,,drop=FALSE]
 
             expected[k] <- expected[k] + sum(prob_1 * prob_2)
         }
-        tot_pos <- tot_pos + dim(probs_sub[[i]])[3]
+        tot_pos <- tot_pos + dim(probs_sub$prob[[i]])[3]
     }
     expected <- expected/tot_pos
     for(k in seq(along=pairs))
@@ -193,18 +193,18 @@ test_that("calc_kinship (unnormalized) chr & loco work for F2", {
     expect_equal(sim_combchr, sim)
 
     # calculate results with one chromosome at a time
-    sim_alt <- vector("list", length(probs))
-    names(sim_alt) <- names(probs)
-    for(i in seq(along=probs))
+    sim_alt <- vector("list", length(probs$chrID))
+    names(sim_alt) <- probs$chrID
+    for(i in probs$chrID)
         sim_alt[[i]] <- calc_kinship(probs[,i], omit_x=FALSE, normalize=FALSE)
     expect_equal(sim_alt, sim_chr)
 
     # compare sim - sim_chr with sim_loco
-    sim_loco_alt <- vector("list", length(probs))
-    names(sim_loco_alt) <- names(probs)
-    is_x_chr <- attr(probs, "is_x_chr")
+    sim_loco_alt <- vector("list", length(probs$chrID))
+    names(sim_loco_alt) <- probs$chrID
+    is_x_chr <- probs$is_x_chr
     totpos <- attr(sim, "n_pos")
-    for(i in seq(along=probs)) {
+    for(i in seq(along=probs$chrID)) {
         if(is_x_chr[i])
             sim_loco_alt[[i]] <- sim
         else {
@@ -236,10 +236,10 @@ test_that("calc_kinship (unnormalized) chr & loco work for F2, when including X"
     expect_equal(sim_combchr, sim)
 
     # compare sim - sim_chr with sim_loco
-    sim_loco_alt <- vector("list", length(probs))
-    names(sim_loco_alt) <- names(probs)
+    sim_loco_alt <- vector("list", length(probs$chrID))
+    names(sim_loco_alt) <- probs$chrID
     totpos <- attr(sim, "n_pos")
-    for(i in seq(along=probs)) {
+    for(i in seq(along=probs$chrID)) {
         npos <- attr(sim_chr[[i]], "n_pos")
         sim_loco_alt[[i]] <- (sim*totpos - sim_chr[[i]]*npos)/(totpos-npos)
         attr(sim_loco_alt[[i]], "n_pos") <- totpos-npos

@@ -53,7 +53,7 @@ test_that("sim_geno riself", {
                           "c1.loc104", "GH.127L-Col/ADH", "c1.loc105", "c1.loc106", "c1.loc107",
                           "c1.loc108", "c1.loc109", "HH.360L-Col"), NULL))
 
-    expect_equal(dr[[1]][138,,], expected)
+    expect_equal(dr$draws[[1]][138,,], expected)
 
 })
 
@@ -80,7 +80,7 @@ test_that("sim_geno f2", {
                           "cX.loc49.5", "cX.loc50.5", "cX.loc51.5", "cX.loc52.5", "cX.loc53.5", "cX.loc54.5",
                           "cX.loc55.5", "cX.loc56.5", "cX.loc57.5", "DXMit186"), NULL))
 
-    expect_equal(dr[["X"]][145:146,,], expected)
+    expect_equal(dr$draws[["X"]][145:146,,], expected)
 
 })
 

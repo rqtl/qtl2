@@ -29,9 +29,32 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A list of three-dimensional arrays of imputed genotypes,
-#' individuals x positions x draws.  The genetic map and cross
-#' information are included as attributes.
+#' @return A list of containing the following:
+#' \itemize{
+#' \item \code{draws} - List of three-dimensional arrays of imputed genotypes,
+#' individuals x positions x draws.
+#' \item \code{map} - The genetic map as a list of vectors of marker positions.
+#' \item \code{grid} - A list of logical vectors, indicating which
+#'     positions correspond to a grid of markers/pseudomarkers. (may be
+#'     absent)
+#' \item \code{indID} - Vector of character strings with individual IDs
+#' \item \code{chrID} - Vector of character strings with chromosome IDs
+#' \item \code{crosstype} - The cross type of the input \code{cross}.
+#' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
+#'     are to be treated as the X chromosome or not, from input \code{cross}.
+#' \item \code{sex} - Vector of sexes of the individuals, from input
+#'     \code{cross}.
+#' \item \code{cross_info} - Matrix of cross information for the
+#'     individuals, from input \code{cross}.
+#' \item \code{alleles} - Vector of allele codes, from input
+#'     \code{cross}.
+#' \item \code{alleleprob} - Logical value (\code{FALSE}) that
+#'     indicates whether the probabilities are compressed to allele
+#'     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
+#' \item \code{step} - the value of the \code{step} argument.
+#' \item \code{off_end} - the value of the \code{off_end} argument.
+#' \item \code{stepwidth} - the value of the \code{stepwidth} argument.
+#' }
 #'
 #' @details
 #'  After performing the backward equations, we draw from
@@ -73,6 +96,9 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     # create the combined marker/pseudomarker map
     map <- insert_pseudomarkers(cross$gmap, step, off_end, stepwidth,
                                 pseudomarker_map, tol)
+    index <- map$index
+    grid <- map$grid
+    map <- map$map
 
     probs <- vector("list", length(map))
     rf <- map2rf(map, map_function)
@@ -91,7 +117,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     by_group_func <- function(i) {
         dr <- .sim_geno(cross$crosstype, t(cross$geno[[chr]][group[[i]],,drop=FALSE]),
                         founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[group[[i]]],
-                        t(cross$cross_info[group[[i]],,drop=FALSE]), rf[[chr]], attr(map[[chr]], "index"),
+                        t(cross$cross_info[group[[i]],,drop=FALSE]), rf[[chr]], index[[chr]],
                         error_prob, n_draws)
         aperm(dr, c(3,1,2))
     }
@@ -127,12 +153,19 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     }
 
     names(draws) <- names(cross$gmap)
-    attr(draws, "map") <- map
-    attr(draws, "is_x_chr") <- cross$is_x_chr
-    attr(draws, "crosstype") <- cross$crosstype
-    attr(draws, "sex") <- cross$sex
-    attr(draws, "cross_info") <- cross$cross_info
+    result <- list(draws=draws,
+                   map = map,
+                   indID = rownames(draws[[1]]),
+                   chrID = names(map),
+                   crosstype = cross$crosstype,
+                   is_x_chr = cross$is_x_chr,
+                   sex = cross$sex,
+                   cross_info = cross$cross_info,
+                   step=step,
+                   off_end=off_end,
+                   stepwidth=stepwidth)
+    result$grid <- grid # include only if not NULL
 
-    class(draws) <- c("sim_geno", "list")
-    draws
+    class(result) <- c("sim_geno", "list")
+    result
 }

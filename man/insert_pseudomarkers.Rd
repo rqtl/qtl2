@@ -29,14 +29,20 @@ ignored.}
 \item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
 }
 \value{
-A vector of positions of pseudomarkers and markers: the
-input \code{map} vector with pseudomarker positions added. An
-attribute \code{"index"} is an integer vector that indicates which
-positions are pseudomarkers (value -1) and which are markers
-(positive values, indicating the marker indices, (starting at 0).) If
-\code{stepwidth=fixed} (or if \code{pseudomarker_map} is provided), a
-further attribute (\code{"grid"}) is a logical vector that
-indicates which positions correspond to the fixed grid.
+A list containing
+\itemize{
+\item \code{map} - Input \code{map} with pseudomarkers inserted
+\item \code{index} - List of integer vectors that indicate which
+    positions are pseudomarkers (value -1) and which are markers
+    (positive values, indicating the marker indices, (starting at 0).)
+\item \code{grid} - A list of logical vectors that indicate which
+    positions correspond to the fixed grid. (only included if
+    \code{stepwidth="fixed"} or if \code{pseudomarker_map} is
+    provided).
+\item \code{step} - the value of the \code{step} argument.
+\item \code{off_end} - the value of the \code{off_end} argument.
+\item \code{stepwidth} - the value of the \code{stepwidth} argument.
+}
 }
 \description{
 Insert pseudomarkers into a map of genetic markers, for a single chromosome.

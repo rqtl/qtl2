@@ -7,8 +7,8 @@
 genoprob_to_alleleprob(probs, quiet = TRUE, cores = 1)
 }
 \arguments{
-\item{probs}{List of three-dimensional arrays of probabilities, as
-calculated from \code{\link{calc_genoprob}}.}
+\item{probs}{Genotype probabilities, as calculated from
+\code{\link{calc_genoprob}}.}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
@@ -18,8 +18,8 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-List of three-dimensional arrays of probabilities,
-regarding alleles rather than genotypes.
+The \code{probs} input with probabilities
+collapsed to alleles rather than genotypes.
 }
 \description{
 Reduce genotype probabilities (as calculated by

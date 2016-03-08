@@ -40,10 +40,33 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-A list of three-dimensional arrays of probabilities,
-individuals x genotypes x positions. (Note that the arrangement is
-different from R/qtl.) The genetic map and cross information are
-included as attributes.
+A list containing the following
+\itemize{
+\item \code{probs} - A list of three-dimensional arrays of probabilities,
+    individuals x genotypes x positions. (Note that the arrangement is
+    different from R/qtl.)
+\item \code{map} - The genetic map as a list of vectors of marker positions.
+\item \code{grid} - A list of logical vectors, indicating which
+    positions correspond to a grid of markers/pseudomarkers. (may be
+    absent)
+\item \code{indID} - Vector of character strings with individual IDs
+\item \code{chrID} - Vector of character strings with chromosome IDs
+\item \code{crosstype} - The cross type of the input \code{cross}.
+\item \code{is_x_chr} - Logical vector indicating whether chromosomes
+    are to be treated as the X chromosome or not, from input \code{cross}.
+\item \code{sex} - Vector of sexes of the individuals, from input
+    \code{cross}.
+\item \code{cross_info} - Matrix of cross information for the
+    individuals, from input \code{cross}.
+\item \code{alleles} - Vector of allele codes, from input
+    \code{cross}.
+\item \code{alleleprobs} - Logical value (\code{FALSE}) that
+    indicates whether the probabilities are compressed to allele
+    probabilities, as from \code{\link{genoprob_to_alleleprob}}.
+\item \code{step} - the value of the \code{step} argument.
+\item \code{off_end} - the value of the \code{off_end} argument.
+\item \code{stepwidth} - the value of the \code{stepwidth} argument.
+}
 }
 \description{
 Uses a hidden Markov model to calculate the probabilities of the

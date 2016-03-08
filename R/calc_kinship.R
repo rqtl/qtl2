@@ -4,8 +4,8 @@
 #' Calculate genetic similarity among individuals (kinship matrix)
 #' from conditional genotype probabilities.
 #'
-#' @param probs List of three-dimensional arrays of probabilities, as
-#' calculated from \code{\link{calc_genoprob}}.
+#' @param probs Genotype probabilities, as calculated from
+#' \code{\link{calc_genoprob}}.
 #' @param type Indicates whether to calculate the overall kinship
 #' (\code{"overall"}, using all chromosomes), the kinship matrix
 #' leaving out one chromosome at a time (\code{"loco"}), or the
@@ -58,7 +58,7 @@
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 #' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
-#' sim <- calc_kinship(probs)
+#' K <- calc_kinship(probs)
 
 calc_kinship <-
     function(probs, type=c("overall", "loco", "chr"),
@@ -69,20 +69,18 @@ calc_kinship <-
 {
     type <- match.arg(type)
 
-    allchr <- names(probs)
-    if(omit_x && type != "chr") chrs <- which(!attr(probs, "is_x_chr"))
+    allchr <- names(probs$probs)
+    if(omit_x && type != "chr") chrs <- which(!probs$is_x_chr)
     else chrs <- seq(along=allchr)
 
-    stepwidth <- attr(attr(probs, "map")[[1]], "stepwidth")
-    if(use_grid_only &&
-       !is.null(stepwidth) && stepwidth=="fixed") {
+    if(use_grid_only && "grid" %in% names(probs)) {
         if(!quiet) message(" - Reducing probabilities to grid")
         probs <- probs_to_grid(probs)
     }
 
     # convert from genotype probabilities to allele probabilities
-    ap_attr <- attr(probs, "alleleprobs")
-    if(use_allele_probs && (is.null(ap_attr) || !ap_attr)) {
+    ap <- probs$alleleprobs
+    if(use_allele_probs && (is.null(ap) || !ap)) {
         if(!quiet) message(" - converting to allele probs")
         probs <- genoprob_to_alleleprob(probs, quiet=quiet, cores=cores)
     }
@@ -108,8 +106,8 @@ calc_kinship <-
 calc_kinship_overall <-
     function(probs, chrs, quiet=TRUE, cores=1)
 {
-    n_ind <- nrow(probs[[1]])
-    ind_names <- rownames(probs[[1]])
+    ind_names <- probs$indID
+    n_ind <- length(ind_names)
 
     result <- matrix(0, nrow=n_ind, ncol=n_ind)
     dimnames(result) <- list(ind_names, ind_names)
@@ -123,8 +121,8 @@ calc_kinship_overall <-
 
     # function that does the work
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", names(probs)[chr])
-        pr <- aperm(probs[[chr]], c(3,2,1)) # convert to pos x gen x ind
+        if(!quiet) message(" - Chr ", probs$chrID[chr])
+        pr <- aperm(probs$probs[[chr]], c(3,2,1)) # convert to pos x gen x ind
         .calc_kinship(pr)
     }
 
@@ -139,7 +137,7 @@ calc_kinship_overall <-
             result <- result + by_chr_res[[i]]
     }
 
-    tot_pos <- sum(vapply(probs, function(a) dim(a)[3], 0)[chrs])
+    tot_pos <- sum(vapply(probs$probs, function(a) dim(a)[3], 0)[chrs])
     result <- result/tot_pos
     attr(result, "n_pos") <- tot_pos
 
@@ -150,8 +148,8 @@ calc_kinship_overall <-
 calc_kinship_bychr <-
     function(probs, chrs, scale=TRUE, quiet=TRUE, cores=1)
 {
-    n_ind <- nrow(probs[[1]])
-    ind_names <- rownames(probs[[1]])
+    ind_names <- probs$indID
+    n_ind <- length(ind_names)
 
     # set up cluster and set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
@@ -162,12 +160,12 @@ calc_kinship_bychr <-
 
     # function that does the work
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", names(probs)[chr])
+        if(!quiet) message(" - Chr ", probs$chrID[chr])
 
-        n_pos <- dim(probs[[chr]])[3]
+        n_pos <- dim(probs$probs[[chr]])[3]
 
         # aperm converts to pos x gen x ind
-        pr <- aperm(probs[[chr]], c(3,2,1))
+        pr <- aperm(probs$probs[[chr]], c(3,2,1))
         result <- .calc_kinship(pr)
         if(scale) result <- result/n_pos
 
@@ -179,7 +177,7 @@ calc_kinship_bychr <-
     # run and combine results
     result <- cluster_lapply(cores, chrs, by_chr_func)
 
-    names(result) <- names(probs)[chrs]
+    names(result) <- probs$chrID[chrs]
     result
 }
 
