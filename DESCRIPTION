@@ -16,8 +16,8 @@ Suggests:
     devtools,
     testthat,
     roxygen2,
-    qtl2geno (>= 0.4-2),
-    qtl2scan (>= 0.4-2)
+    qtl2geno (>= 0.4-4),
+    qtl2scan (>= 0.4-3)
 License: GPL-3
 URL: http://kbroman.org/qtl2
 LazyData: true
