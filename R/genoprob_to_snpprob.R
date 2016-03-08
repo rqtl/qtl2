@@ -85,7 +85,7 @@ genoprob_to_snpprob <-
 {
     uchr <- unique(snpinfo$chr)
     if(!all(uchr %in% genoprobs$chrID)) {
-        mischr <- uchr[!(uchr %in% names(genoprobs))]
+        mischr <- uchr[!(uchr %in% names(genoprobs$chrID))]
         stop("Not all chr found in genoprobs: ", paste(mischr, collapse=","))
     }
     # reorder
