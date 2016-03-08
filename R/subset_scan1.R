@@ -70,7 +70,7 @@ subset_scan1 <-
         }
 
         if(!is.null(x$hsq)) {
-            if(all(chr %in% rownames(hsq)))
+            if(all(chr %in% rownames(x$hsq)))
                 x$hsq <- x$hsq[chr,,drop=FALSE]
         }
     }
