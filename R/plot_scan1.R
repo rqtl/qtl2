@@ -50,11 +50,11 @@
 #' out <- scan1(probs, pheno, covar, Xcovar)
 #'
 #' # plot the results for selected chromosomes
-#' ylim <- c(0, max(unclass(out))*1.02) # need to strip class to get overall max LOD
+#' ylim <- c(0, maxlod(out)*1.02) # need to strip class to get overall max LOD
 #' chr <- c(2,7,8,9,15,16)
 #' plot(out, chr=chr, ylim=ylim)
 #' plot(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
-#' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
+#' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out$lod),
 #'        bg="gray90")
 #'
 #' # plot just one chromosome
@@ -69,7 +69,7 @@ plot_scan1 <-
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     # pull out map
-    map <- attr(x, "map")
+    map <- x$map
     if(is.null(map)) stop("No map found in the input")
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
@@ -79,14 +79,14 @@ plot_scan1 <-
         lodcolumn <- lodcolumn[1]
     }
     if(is.character(lodcolumn)) { # turn column name into integer
-        tmp <- match(lodcolumn, colnames(x))
+        tmp <- match(lodcolumn, colnames(x$lod))
         if(is.na(tmp))
             stop('lodcolumn "', lodcolumn, '" not found')
         lodcolumn <- tmp
     }
-    if(lodcolumn < 1 || lodcolumn > ncol(x))
-        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(x), ")")
-    lod <- x[,lodcolumn]
+    if(lodcolumn < 1 || lodcolumn > ncol(x$lod))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(x$lod), ")")
+    lod <- x$lod[,lodcolumn]
 
     # subset chromosomes
     if(!(missing(chr) || is.null(chr))) {
@@ -203,7 +203,7 @@ plot.scan1 <-
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     # if snp asso result, use plot_snpasso() with just reduced snps; otherwise defaults
-    if(!is.null(attr(x, "snpinfo"))) {
+    if(!is.null(x$snpinfo)) {
         plot_snpasso(x, show_all_snps=FALSE, add=add, gap=gap,
                      bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     }

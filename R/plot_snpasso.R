@@ -46,13 +46,13 @@ plot_snpasso <-
         scan1output <- expand_snp_results(scan1output)
 
     # maximum LOD
-    maxlod <- max(scan1output[,1], na.rm=TRUE)
+    maxlod <- max(scan1output$lod[,1], na.rm=TRUE)
 
     if(is.null(ylim))
         ylim <- c(0, maxlod*1.02)
 
     if(!is.na(drop.hilit) && !is.null(drop.hilit))
-        col <- c(col, col.hilit)[(scan1output >= maxlod-drop.hilit)+1]
+        col <- c(col, col.hilit)[(scan1output$lod >= maxlod-drop.hilit)+1]
 
     plot_scan1(scan1output, lodcolumn=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
                gap=gap, add=add, col = col, type="p", cex=cex, pch=pch)
@@ -63,21 +63,20 @@ plot_snpasso <-
 expand_snp_results <-
     function(snp_results)
 {
-    snpinfo <- attr(snp_results, "snpinfo")
-    map <- attr(snp_results, "map")
-
+    snpinfo <- snp_results$snpinfo
     if(is.null(snpinfo)) stop("No snpinfo found")
+    map <- snp_results$map
     if(is.null(map)) stop("No map found")
 
     if(length(map) != length(snpinfo))
         stop("length(map) [", length(map), "] != length(snpinfo) [",
              length(snpinfo), "]")
 
-    if(length(snp_results) != length(unlist(map)))
-        stop("length(snp_results) [", length(snp_results), "] != length(unlist(map)) [",
+    if(length(snp_results$lod) != length(unlist(map)))
+        stop("length(snp_results$lod) [", length(snp_results$lod), "] != length(unlist(map)) [",
              length(unlist(map)), "]")
 
-    lodindex <- split(seq(along=snp_results), rep(names(map), vapply(map, length, 0)))
+    lodindex <- split(seq(along=snp_results$lod), rep(names(map), vapply(map, length, 0)))
 
     result <- NULL
     for(i in seq(along=map)) {
@@ -85,8 +84,7 @@ expand_snp_results <-
         names(map[[i]]) <- snpinfo[[i]]$snp
         result <- c(result, snp_results[ lodindex[[i]][ snpinfo[[i]]$index ] ])
     }
-    result <- cbind(result)
-    attr(result, "map") <- map
 
-    result
+    list(lod=result,
+         map=map)
 }
