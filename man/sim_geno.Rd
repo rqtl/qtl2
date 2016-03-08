@@ -51,8 +51,6 @@ individuals x positions x draws.
 \item \code{grid} - A list of logical vectors, indicating which
     positions correspond to a grid of markers/pseudomarkers. (may be
     absent)
-\item \code{indID} - Vector of character strings with individual IDs
-\item \code{chrID} - Vector of character strings with chromosome IDs
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
     are to be treated as the X chromosome or not, from input \code{cross}.

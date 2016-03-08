@@ -40,7 +40,7 @@ genoprob_to_alleleprob <-
     }
 
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", probs$chrID[chr])
+        if(!quiet) message(" - Chr ", names(probs$probs)[chr])
         result <- aperm(.genoprob_to_alleleprob(probs$crosstype,
                                                 aperm(probs$probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
                                                 is_x_chr[chr]),
@@ -54,10 +54,12 @@ genoprob_to_alleleprob <-
         result
     }
 
-    chrs <- seq(along=probs$chrID)
+    chrID <- names(probs$probs)
+    chrs <- seq(along=chrID)
+
 
     probs$probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
-    names(probs$probs) <- probs$chrID
+    names(probs$probs) <- chrID
 
     probs$alleleprobs <- TRUE
     probs

@@ -33,53 +33,57 @@ subset.calc_genoprob <-
        (missing(chr) || is.null(chr)))
         stop("You must specify either ind or chr.")
 
+    chrID <- names(x$probs)
+    n_chr <- length(chrID)
     if(!missing(chr) && !is.null(chr)) {
         if(is.logical(chr)) {
-            if(length(chr) != length(x$chrID)) {
+            if(length(chr) != n_chr) {
                 stop("length(chr) [", length(chr), "] != no. chr in x [",
-                     length(x$chrID), "]")
+                     n_chr, "]")
             }
-            chr <- x$chrID[chr] # convert to character strings
+            chr <- chrID[chr] # convert to character strings
         }
         else {
-            chrindex <- match(chr, x$chrID)
+            chrindex <- match(chr, chrID)
             if(any(is.na(chrindex))) {
                 stop("Some chr not found: ",
                      paste(chr[is.na(chrindex)], collapse=", "))
             }
-            chr <- x$chrID[chrindex] # character strings
+            chr <- chrID[chrindex] # character strings
         }
         if(length(chr) == 0)
             stop("Must retain at least one chromosome.")
 
         to_sub <- c("probs", "draws", "map", "is_x_chr", "grid", "snpinfo") # draws is here, to also deal with sim_geno objects
         for(a in to_sub) {
-            if(a %in% names(x))
+            if(a %in% names(x)) {
                 x[[a]] <- x[[a]][chr]
+            }
         }
-        x$chrID <- chr
     }
 
+    indID <- rownames(x$probs[[1]])
+    n_ind <- length(indID)
     if(!missing(ind) && !is.null(ind)) {
         if(is.logical(ind)) {
-            if(length(ind) != length(x$indID)) {
+            if(length(ind) != n_ind) {
                 stop("length(ind) [", length(ind), "] != no. ind in x [",
-                     length(x$indID), "]")
+                     n_ind, "]")
             }
-            ind <- x$indID[ind] # convert to character strings
+            ind <- indID[ind] # convert to character strings
         }
         else if(is.numeric(ind)) {
-            if(any(ind < 1 || ind > length(x$indID)))
-                stop("Numeric ind out of allowed range [1 - ", length(x$indID), "]")
-            ind <- x$indID[ind] # convert to character strings
+            if(any(ind < 1 || ind > n_ind))
+                stop("Numeric ind out of allowed range [1 - ", n_ind, "]")
+            ind <- indID[ind] # convert to character strings
         }
         else {
-            indindex <- match(ind, x$indID)
+            indindex <- match(ind, indID)
             if(any(is.na(indindex))) {
                 stop("Some individuals not found: ",
                      paste(ind[is.na(indindex)], collapse=", "))
             }
-            ind <- x$indID[indindex]
+            ind <- indID[indindex]
         }
         if(length(ind) == 0)
             stop("Must retain at least one individual.")
@@ -87,13 +91,12 @@ subset.calc_genoprob <-
         to_sub_mat <- c("probs", "draws") # draws is here to also handle sim_geno objects
         for(a in to_sub_mat) {
             if(a %in% names(x)) {
-                for(i in x$chrID)
+                for(i in names(x$probs)) # loop over chromosomes
                     x[[a]][[i]] <- x[[a]][[i]][ind,,,drop=FALSE]
             }
         }
         if(!is.null(x$cross_info))
             x$cross_info <- x$cross_info[ind, , drop=FALSE]
-        x$indID <- ind
     }
 
     x

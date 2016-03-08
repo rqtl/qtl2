@@ -37,8 +37,6 @@
 #' \item \code{grid} - A list of logical vectors, indicating which
 #'     positions correspond to a grid of markers/pseudomarkers. (may be
 #'     absent)
-#' \item \code{indID} - Vector of character strings with individual IDs
-#' \item \code{chrID} - Vector of character strings with chromosome IDs
 #' \item \code{crosstype} - The cross type of the input \code{cross}.
 #' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
 #'     are to be treated as the X chromosome or not, from input \code{cross}.
@@ -155,8 +153,6 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     names(draws) <- names(cross$gmap)
     result <- list(draws=draws,
                    map = map,
-                   indID = rownames(draws[[1]]),
-                   chrID = names(map),
                    crosstype = cross$crosstype,
                    is_x_chr = cross$is_x_chr,
                    sex = cross$sex,
