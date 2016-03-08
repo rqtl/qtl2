@@ -4,10 +4,10 @@
 \alias{top_snps}
 \title{Create table of top snp associations}
 \usage{
-top_snps(scan1output, drop = 1.5, show_all_snps = TRUE)
+top_snps(scan1_output, drop = 1.5, show_all_snps = TRUE)
 }
 \arguments{
-\item{scan1output}{Output of \code{\link[qtl2scan]{scan1}} or
+\item{scan1_output}{Output of \code{\link[qtl2scan]{scan1}} or
 \code{\link[qtl2scan]{scan1_lmm}}. Should contain an attribute,
 \code{"snpinfo"}, as when \code{\link[qtl2scan]{scan1}} or
 \code{\link[qtl2scan]{scan1_lmm}} are run with SNP probabilities

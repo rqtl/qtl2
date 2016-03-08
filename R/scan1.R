@@ -18,12 +18,26 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A matrix of LOD scores, positions x phenotypes.  Covariate
-#' column names are included as attributes (\code{"addcovar"},
-#' \code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
-#' sample size for each phenotype (\code{"sample_size"}). The map of
-#' positions at which the calculations were performed is included as
-#' an attribute \code{"map"} (taken from the input \code{genoprobs}).
+#' @return A list containing the following
+#' \itemize{
+#' \item \code{lod} - A matrix of LOD scores, positions x phenotypes.
+#' \item \code{map} - A list containing the map positions at which the
+#'     calculations were performed, taken from the input \code{genoprobs}.
+#' \item \code{addcovar} - Names of additive covariates that were used.
+#' \item \code{Xcovar} - Names of special covariates for X chromosome
+#'     under the null hypothesis of no QTL
+#' \item \code{intcovar} - Names of interactive covariates that were used.
+#' \item \code{sample_size} - Vector of sample sizes used for each
+#'     phenotype
+#' \item \code{weights} - Logical value indicating whether weights
+#'     were used.
+#' \item \code{snpinfo} - Present only if the input \code{genoprobs}
+#'     was produced by \code{\link{genoprob_to_snpprob}}, this is a list
+#'     of data frames giving information about all SNPs. The \code{lod}
+#'     matrix will contain only results for distinct SNPs. The
+#'     \code{index} column in \code{snpinfo} is the row index in the
+#'     \code{lod} matrix that corresponds to the current SNP.
+#' }
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
@@ -221,17 +235,17 @@ scan1 <-
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # add some attributes with details on analysis
-    attr(result, "map") <- genoprobs$map
-    attr(result, "sample_size") <- n
-    attr(result, "addcovar") <- colnames4attr(addcovar)
-    attr(result, "Xcovar") <- colnames4attr(Xcovar)
-    attr(result, "intcovar") <- colnames4attr(intcovar)
-    if(!is.null(weights))
-        attr(result, "weights") <- TRUE
+    result <- list(lod = result,
+                   map = genoprobs$map,
+                   sample_size = n,
+                   addcovar = colnames4attr(addcovar),
+                   Xcovar = colnames4attr(Xcovar),
+                   intcovar = colnames4attr(intcovar),
+                   weights = ifelse(is.null(weights), FALSE, TRUE))
 
     # preserve any snpinfo from genoprob_to_snpprob
     if("snpinfo" %in% names(genoprobs))
-        attr(result, "snpinfo") <- genoprobs$snpinfo
+        result$snpinfo <- genoprobs$snpinfo
 
     class(result) <- c("scan1", "matrix")
     result

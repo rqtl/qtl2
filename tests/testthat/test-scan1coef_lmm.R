@@ -40,9 +40,11 @@ eff_via_lm <-
         result[i,] <- lm.out$coef
         if(se) # need to deal with NAs
             SEs[i,!is.na(lm.out$coef)] <- summary(lm.out)$coef[,2]
+        else SEs <- NULL
     }
 
-    if(se) attr(result, "SE") <- SEs
+    result <- list(coef=result,
+                   SE=SEs)
 
     class(result) <- c("scan1coef", "scan1", "matrix")
     result
@@ -60,85 +62,85 @@ test_that("scan1coef_lmm for grav", {
 
     est <- scan1coef_lmm(pr[,1], phe, K, se=FALSE)
     est_lm <- eff_via_lm(pr$probs[[1]], phe, K)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
 
     est <- scan1coef_lmm(pr[,1], phe, K, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # pre-decomp kinship
     Ke <- decomp_kinship(K)
     est <- scan1coef_lmm(pr[,1], phe, Ke)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
 
     est <- scan1coef_lmm(pr[,1], phe, Ke, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # include covariate
     covar <- cbind(chr3=pr$probs[[3]][,2,"CC.266L"])
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=FALSE)
     est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # pre-computed eigen decomp
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # interactive covariate
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=FALSE)
     est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # pre-computed eigen decomp
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # two covariates
     covar <- cbind(covar, chr4=pr$probs[[4]][,2,"CD.329C-Col"])
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=FALSE)
     est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # pre-computed eigen decomp
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # two interactive covariates
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=FALSE)
     est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
 
     est <- scan1coef_lmm(pr[,1], phe, K, covar, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
     # pre-computed eigen decomp
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar, covar)
-    expect_equivalent(est, est_lm)
+    expect_equivalent(est$coef, est_lm$coef)
     est <- scan1coef_lmm(pr[,1], phe, Ke, covar, covar, se=TRUE)
-    expect_equivalent(est, est_lm)
-    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
+    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est$SE, est_lm$SE)
 
 })

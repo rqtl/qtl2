@@ -2,7 +2,7 @@
 #'
 #' Create a table of the top snp associations
 #'
-#' @param scan1output Output of \code{\link[qtl2scan]{scan1}} or
+#' @param scan1_output Output of \code{\link[qtl2scan]{scan1}} or
 #' \code{\link[qtl2scan]{scan1_lmm}}. Should contain an attribute,
 #' \code{"snpinfo"}, as when \code{\link[qtl2scan]{scan1}} or
 #' \code{\link[qtl2scan]{scan1_lmm}} are run with SNP probabilities
@@ -16,25 +16,28 @@
 #' @export
 #' @seealso \code{\link{genoprob_to_snpprob}}, \code{\link[qtl2plot]{plot_snpasso}}
 top_snps <-
-    function(scan1output, drop=1.5, show_all_snps=TRUE)
+    function(scan1_output, drop=1.5, show_all_snps=TRUE)
 {
-    map <- attr(scan1output, "map")
-    snpinfo <- attr(scan1output, "snpinfo")
-    if(is.null(snpinfo)) stop("No snpinfo found")
+    map <- scan1_output$map
     if(is.null(map)) stop("No map found")
+    snpinfo <- scan1_output$snpinfo
+    if(is.null(snpinfo)) stop("No snpinfo found")
 
     chr <- names(map)
     if(length(chr) > 1) {
         warning("Considering only chromosome ", chr)
         chr <- chr[1]
     }
+
+    # deal with possibly > 1 chr
+    lod <- subset(scan1_output, chr=chr)$lod
+
     map <- map[[chr]]
     snpinfo <- snpinfo[[chr]]
 
-    if(ncol(scan1output) > 1)
+    if(ncol(scan1_output$lod) > 1)
         warning("Considering only the first LOD score column")
 
-    lod <- scan1output[seq(along=map),1]
     keep <- which(!is.na(lod) & lod > max(lod, na.rm=TRUE) - drop)
 
     if(show_all_snps) { # expand to all related SNPs
@@ -42,7 +45,7 @@ top_snps <-
         snpinfo$lod <- lod[snpinfo$index]
     } else { # just keep the SNPs that were used
         snpinfo$lod <- lod[snpinfo$index]
-        snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1output)[keep],]
+        snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1_output)[keep],]
     }
 
     snpinfo

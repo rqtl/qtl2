@@ -5,15 +5,15 @@
 \alias{max_scan1}
 \title{Find position with maximum LOD score}
 \usage{
-max_scan1(scan1_output, column = 1, chr, na.rm = TRUE, ...)
+max_scan1(scan1_output, lodcolumn = 1, chr, na.rm = TRUE, ...)
 
-\method{max}{scan1}(scan1_output, column = 1, chr, na.rm = TRUE, ...)
+\method{max}{scan1}(scan1_output, lodcolumn = 1, chr, na.rm = TRUE, ...)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}} or \code{\link{scan1_lmm}}.}
 
-\item{column}{An integer or character string indicating the LOD
+\item{lodcolumn}{An integer or character string indicating the LOD
 score column, either as a numeric index or column name.}
 
 \item{chr}{Option vector of chromosomes to consider.}
@@ -52,7 +52,7 @@ out <- scan1(probs, pheno, covar, Xcovar)
 max(out)
 
 # maximum of spleen column
-max(out, column="spleen")
+max(out, lodcolumn="spleen")
 
 # maximum of first column on chr 2
 max(out, chr="2")

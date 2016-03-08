@@ -20,14 +20,32 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A matrix of LOD scores, positions x phenotypes.
-#' Heritabilities (estimated under the null hypothesis, of no QTL) are
-#' included as an attribute \code{hsq}. Covariate column names are
-#' included as attributes (\code{"addcovar"}, \code{"intcovar"}, and
-#' \code{"Xcovar"}), as is a vector with the sample size for each
-#' phenotype (\code{"sample_size"}). The map of positions at which the
-#' calculations were performed is included as an attribute
-#' \code{"map"} (taken from the input \code{genoprobs}).
+#' @return A list containing the following
+#' \itemize{
+#' \item \code{lod} - A matrix of LOD scores, positions x phenotypes.
+#' \item \code{map} - A list containing the map positions at which the
+#'     calculations were performed, taken from the input \code{genoprobs}.
+#' \item \code{hsq} - A matrix of estimated heritabilities under the
+#'     null hypothesis of no QTL. Columns are the phenotypes. If the
+#'     \code{"loco"} method was used with
+#'     \code{\link[qtl2geno]{calc_kinship}} to calculate a list of kinship
+#'     matrices, one per chromosome, the rows of \code{hsq} will be the
+#'     heritabilities for the different chromosomes (well, leaving out
+#'     each one). If \code{Xcovar} was not NULL, there will at least be an
+#'     autosome and X chromosome row.
+#' \item \code{addcovar} - Names of additive covariates that were used.
+#' \item \code{Xcovar} - Names of special covariates for X chromosome
+#'     under the null hypothesis of no QTL
+#' \item \code{intcovar} - Names of interactive covariates that were used.
+#' \item \code{sample_size} - Vector of sample sizes used for each
+#'     phenotype
+#' \item \code{snpinfo} - Present only if the input \code{genoprobs}
+#'     was produced by \code{\link{genoprob_to_snpprob}}, this is a list
+#'     of data frames giving information about all SNPs. The \code{lod}
+#'     matrix will contain only results for distinct SNPs. The
+#'     \code{index} column in \code{snpinfo} is the row index in the
+#'     \code{lod} matrix that corresponds to the current SNP.
+#' }
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals. The \code{genoprobs}
@@ -201,16 +219,17 @@ scan1_lmm <-
         result[,phecol] <- lod
     }
 
-    attr(result, "hsq") <- hsq
-    attr(result, "map") <- genoprobs$map
-    attr(result, "sample_size") <- n
-    attr(result, "addcovar") <- colnames4attr(addcovar)
-    attr(result, "Xcovar") <- colnames4attr(Xcovar)
-    attr(result, "intcovar") <- colnames4attr(intcovar)
+    result <- list(lod = result,
+                   map = genoprobs$map,
+                   hsq = hsq,
+                   sample_size = n,
+                   addcovar = colnames4attr(addcovar),
+                   Xcovar = colnames4attr(Xcovar),
+                   intcovar = colnames4attr(intcovar))
 
     # preserve any snpinfo from genoprob_to_snpprob
     if("snpinfo" %in% names(genoprobs))
-        attr(result, "snpinfo") <- genoprobs$snpinfo
+        result$snpinfo <- genoprobs$snpinfo
 
     class(result) <- c("scan1", "matrix")
     result

@@ -7,7 +7,7 @@
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
-#' @param column An integer or character string indicating the LOD
+#' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
 #' @param na.rm Ignored (take to be TRUE)
@@ -40,30 +40,48 @@
 #' max(out)
 #'
 #' # maximum of spleen column
-#' max(out, column="spleen")
+#' max(out, lodcolumn="spleen")
 #'
 #' # maximum of first column on chr 2
 #' max(out, chr="2")
 max_scan1 <-
-    function(scan1_output, column=1, chr, na.rm=TRUE, ...)
+    function(scan1_output, lodcolumn=1, chr, na.rm=TRUE, ...)
 {
     thechr <- chr_scan1(scan1_output)
     thepos <- pos_scan1(scan1_output)
-    mnames <- rownames(scan1_output)
+    map <- scan1_output$map
 
-    if(length(column) > 1) { # If length > 1, take first value
-        warning("column should have length 1; one first element used.")
-        column <- column[1]
+    # to handle output of either scan1() or scan1coef()
+    # for coef(), look at the sign
+    if("lod" %in% names(scan1_output)) {
+        lod <- scan1_output$lod
+        sign <- (lod >= 0)*2-1 # sign +1
     }
-    if(is.character(column)) { # turn column name into integer
-        tmp <- match(column, colnames(scan1_output))
+    else if("coef" %in% names(scan1_output)) {
+        lod <- scan1_output$coef
+        sign <- (lod >= 0)*2-1 # sign +1/-1
+        lod <- abs(lod)
+    }
+    else stop("Neither lod nor coef found.")
+
+    coln <- colnames(lod)
+
+    mnames <- rownames(lod)
+
+    if(length(lodcolumn) > 1) { # If length > 1, take first value
+        warning("lodcolumn should have length 1; one first element used.")
+        lodcolumn <- lodcolumn[1]
+    }
+    if(is.character(lodcolumn)) { # turn column name into integer
+        tmp <- match(lodcolumn, coln)
         if(is.na(tmp))
-            stop('column "', column, '" not found')
-        column <- tmp
+            stop('column "', lodcolumn, '" not found')
+        lodcolumn <- tmp
     }
-    if(column < 1 || column > ncol(scan1_output))
-        stop("column [", column, "] out of range (should be in 1, ..., ", ncol(scan1_output), ")")
-    lod <- scan1_output[,column]
+    if(lodcolumn < 1 || lodcolumn > ncol(lod))
+        stop("column [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(lod), ")")
+    lod <- lod[,lodcolumn]
+    sign <- sign[,lodcolumn]
 
     # subset chromosomes
     if(!missing(chr) && !is.null(chr)) {
@@ -71,7 +89,7 @@ max_scan1 <-
         thechr <- thechr[keep]
         thepos <- thepos[keep]
         mnames <- mnames[keep]
-        lod <- lod[keep]
+        lod <- lod[keep]*sign[keep] # sign is a kludge to handle scan1coef output
     }
 
     themax <- which.max(lod)
@@ -81,7 +99,7 @@ max_scan1 <-
                          lod=lod[themax],
                          stringsAsFactors=FALSE)
     rownames(result) <- mnames[themax]
-    names(result)[3] <- colnames(scan1_output)[column]
+    names(result)[3] <- coln[lodcolumn]
 
     result
 }
@@ -94,7 +112,7 @@ max.scan1 <- max_scan1
 #'
 #' Find overall maximum LOD score in genome scan results.
 #'
-#' @param scan1output An object of class \code{"scan1"} as returned by
+#' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
 #' @param chr Option vector of chromosomes to consider.
 #'
@@ -129,11 +147,28 @@ max.scan1 <- max_scan1
 #' max(out, "2")
 #' }
 maxlod <-
-    function(scan1output, chr)
+    function(scan1_output, chr)
 {
-    if(missing(chr) || is.null(chr))
-        return(max(unclass(scan1output), na.rm=TRUE))
+    # subset by chromosome
+    scan1_output <- subset(scan1_output, chr=chr)
 
-    # selected chromosomes
-    maxlod(subset(scan1output, chr=chr))
+    # to handle output of either scan1() or scan1coef()
+    # for coef(), look at the sign
+    if("lod" %in% names(scan1_output)) {
+        lod <- scan1_output$lod
+        return(max(lod))
+    }
+    else if("coef" %in% names(scan1_output)) {
+        coef <- scan1_output$coef
+        sign <- (coef >= 0)*2-1 # sign +1/-1
+        coef <- abs(coef)
+        maxcoef <- max(coef)
+
+        # deal with ties
+        wh <- which(coef == maxcoef)
+        if(length(wh)>1) wh <- sample(wh, 1)
+
+        return(maxcoef * sign[wh])
+    }
+    else stop("Neither lod nor coef found.")
 }

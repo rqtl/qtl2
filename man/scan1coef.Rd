@@ -34,12 +34,24 @@ linear regression by QR decomposition (in determining whether
 columns are linearly dependent on others and should be omitted)}
 }
 \value{
-A matrix of estimated regression coefficients, of dimension
-positions x number of effects. The number of effects is
-\code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}. The
-map of positions at which the calculations were performed is
-included as an attribute \code{"map"} (taken from the
-input \code{genoprobs}).
+A list containing the following
+\itemize{
+\item \code{coef} - A matrix of estimated regression coefficients, of dimension
+    positions x number of effects. The number of effects is
+    \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+\item \code{map} - A list containing the map positions at which the
+    calculations were performed, taken from the input \code{genoprobs}.
+\item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
+    standard errors, of same dimension as \code{coef}.
+\item \code{contrasts} - The input matrix of genotype coefficient
+    contrasts that were used.
+\item \code{addcovar} - Names of additive covariates that were used.
+\item \code{intcovar} - Names of interactive covariates that were used.
+\item \code{sample_size} - Vector of sample sizes used for each
+    phenotype
+\item \code{weights} - Logical value indicating whether weights
+    were used.
+}
 }
 \description{
 Calculate QTL effects in scan along one chromosome with a

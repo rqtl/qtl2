@@ -32,12 +32,26 @@ produced by \code{\link[parallel]{makeCluster}}.}
 \item{...}{Additional control parameters; see Details.}
 }
 \value{
-A matrix of LOD scores, positions x phenotypes.  Covariate
-column names are included as attributes (\code{"addcovar"},
-\code{"intcovar"}, and \code{"Xcovar"}), as is a vector with the
-sample size for each phenotype (\code{"sample_size"}). The map of
-positions at which the calculations were performed is included as
-an attribute \code{"map"} (taken from the input \code{genoprobs}).
+A list containing the following
+\itemize{
+\item \code{lod} - A matrix of LOD scores, positions x phenotypes.
+\item \code{map} - A list containing the map positions at which the
+    calculations were performed, taken from the input \code{genoprobs}.
+\item \code{addcovar} - Names of additive covariates that were used.
+\item \code{Xcovar} - Names of special covariates for X chromosome
+    under the null hypothesis of no QTL
+\item \code{intcovar} - Names of interactive covariates that were used.
+\item \code{sample_size} - Vector of sample sizes used for each
+    phenotype
+\item \code{weights} - Logical value indicating whether weights
+    were used.
+\item \code{snpinfo} - Present only if the input \code{genoprobs}
+    was produced by \code{\link{genoprob_to_snpprob}}, this is a list
+    of data frames giving information about all SNPs. The \code{lod}
+    matrix will contain only results for distinct SNPs. The
+    \code{index} column in \code{snpinfo} is the row index in the
+    \code{lod} matrix that corresponds to the current SNP.
+}
 }
 \description{
 Genome scan with a single-QTL model by Haley-Knott regression, with possible allowance for covariates.

@@ -45,9 +45,11 @@ eff_via_lm <-
         result[i,] <- lm.out$coef
         if(se) # need to deal with NAs
             SEs[i,!is.na(lm.out$coef)] <- summary(lm.out)$coef[,2]
+        else SEs <- NULL
     }
 
-    if(se) attr(result, "SE") <- SEs
+    result <- list(coef=result,
+                   SE=SEs)
 
     class(result) <- c("scan1coef", "scan1", "matrix")
     result
@@ -73,92 +75,92 @@ test_that("scan1coef for backcross", {
     # no covariates
     expected <- eff_via_lm(prob, phe)
     coef <- scan1coef(prob2, phe)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA")))
     coef <- scan1coef(prob2, phe, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(colnames(prob), c("BB", "BA")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(colnames(prob), c("BB", "BA")))
 
     # no covariates, weighted
     expected <- eff_via_lm(prob, phe, weights=weights)
     coef <- scan1coef(prob2, phe, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA")))
     coef <- scan1coef(prob2, phe, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(colnames(prob), c("BB", "BA")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(colnames(prob), c("BB", "BA")))
 
     # one add've covariate
     expected <- eff_via_lm(prob, phe, covar)
     coef <- scan1coef(prob2, phe, covar)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex")))
     coef <- scan1coef(prob2, phe, covar, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(colnames(prob), c("BB", "BA", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(colnames(prob), c("BB", "BA", "sex")))
 
     # one add've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex")))
     coef <- scan1coef(prob2, phe, covar, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(colnames(prob), c("BB", "BA", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(colnames(prob), c("BB", "BA", "sex")))
 
     # one int've covariate
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
 
     # one int've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
-    expect_equivalent(coef, expected)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
+    expect_equivalent(coef$coef, expected$coef)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, se=TRUE)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
-    expect_equivalent(coef, expected)
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(colnames(prob), c("BB", "BA", "sex", "BA:sex")))
 
     # two int've covariates
     covar <- cbind(covar, another=rnorm(nind(hyper)))
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
-    expect_equivalent(coef, expected)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
+    expect_equivalent(coef$coef, expected$coef)
     coef <- scan1coef(prob2, phe, covar, covar, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE),
                  list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
 
     # two int've covariates, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE),
                  list(colnames(prob), c("BB", "BA", "sex", "another", "BA:sex", "BA:another")))
 
 })
@@ -196,92 +198,92 @@ test_that("scan1coef for backcross, with contrasts", {
     # no covariates
     expected <- eff_via_lm(prob, phe)
     coef <- scan1coef(prob2, phe, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a")))
     coef <- scan1coef(prob2, phe, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a")))
 
     # no covariates, weighted
     expected <- eff_via_lm(prob, phe, weights=weights)
     coef <- scan1coef(prob2, phe, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a")))
     coef <- scan1coef(prob2, phe, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a")))
 
     # one add've covariate
     expected <- eff_via_lm(prob, phe, covar)
     coef <- scan1coef(prob2, phe, covar, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex")))
     coef <- scan1coef(prob2, phe, covar, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "sex")))
 
     # one add've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex")))
     coef <- scan1coef(prob2, phe, covar, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "sex")))
 
     # one int've covariate
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "a:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "a:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "a:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "sex", "a:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "a:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "sex", "a:sex")))
 
     # one int've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "a:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "a:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "a:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "sex", "a:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "a:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "sex", "a:sex")))
 
     # two int've covariates
     covar <- cbind(covar, another=rnorm(nind(hyper)))
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE),
                  list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
 
     # two int've covariates, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE),
                  list(posnames, c("mu", "a", "sex", "another", "a:sex", "a:another")))
 
 })
@@ -308,100 +310,100 @@ test_that("scan1coef for intercross", {
     # no covariates
     expected <- eff_via_lm(prob, phe)
     coef <- scan1coef(prob2, phe)
-    expect_equivalent(coef, expected)
+    expect_equivalent(coef$coef, expected$coef)
     coef <- scan1coef(prob2, phe, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equivalent(coef$SE, expected$SE)
 
     posnames <- dimnames(prob2$probs[[1]])[[3]]
 
     # no covariates, weighted
     expected <- eff_via_lm(prob, phe, weights=weights)
     coef <- scan1coef(prob2, phe, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB")))
     coef <- scan1coef(prob2, phe, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("SS", "SB", "BB")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("SS", "SB", "BB")))
 
     # one add've covariate
     expected <- eff_via_lm(prob, phe, covar)
     coef <- scan1coef(prob2, phe, covar)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex")))
     coef <- scan1coef(prob2, phe, covar, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("SS", "SB", "BB", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("SS", "SB", "BB", "sex")))
 
     # one add've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex")))
     coef <- scan1coef(prob2, phe, covar, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("SS", "SB", "BB", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("SS", "SB", "BB", "sex")))
 
     # one int've covariate
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
 
     # one int've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("SS", "SB", "BB", "sex", "SB:sex", "BB:sex")))
 
     # two int've covariates
     covar <- cbind(covar, another=rnorm(n_ind(iron)))
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar)
-    expect_equal(dimnames(coef),
+    expect_equal(dimnames(coef$coef),
                  list(posnames, c("SS", "SB", "BB", "sex", "another", "SB:sex", "BB:sex",
                                         "SB:another", "BB:another")))
-    expect_equivalent(coef, expected)
+    expect_equivalent(coef$coef, expected$coef)
     coef <- scan1coef(prob2, phe, covar, covar, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef),
                  list(posnames, c("SS", "SB", "BB", "sex", "another", "SB:sex", "BB:sex",
                                         "SB:another", "BB:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")),
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE),
                  list(posnames, c("SS", "SB", "BB", "sex", "another", "SB:sex", "BB:sex",
                                         "SB:another", "BB:another")))
 
     # two int've covariates, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef),
                  list(posnames, c("SS", "SB", "BB", "sex", "another", "SB:sex", "BB:sex",
                                         "SB:another", "BB:another")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef),
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef),
                  list(posnames, c("SS", "SB", "BB", "sex", "another", "SB:sex", "BB:sex",
                                         "SB:another", "BB:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")),
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE),
                  list(posnames, c("SS", "SB", "BB", "sex", "another", "SB:sex", "BB:sex",
                                         "SB:another", "BB:another")))
 
@@ -441,97 +443,97 @@ test_that("scan1coef for intercross, with contrasts", {
     # no covariates
     expected <- eff_via_lm(prob, phe)
     coef <- scan1coef(prob2, phe, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d")))
     coef <- scan1coef(prob2, phe, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d")))
 
     # no covariates, weighted
     expected <- eff_via_lm(prob, phe, weights=weights)
     coef <- scan1coef(prob2, phe, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d")))
     coef <- scan1coef(prob2, phe, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d")))
 
     # one add've covariate
     expected <- eff_via_lm(prob, phe, covar)
     coef <- scan1coef(prob2, phe, covar, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex")))
     coef <- scan1coef(prob2, phe, covar, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d", "sex")))
 
     # one add've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex")))
     coef <- scan1coef(prob2, phe, covar, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d", "sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d", "sex")))
 
     # one int've covariate
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
 
     # one int've covariate, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d", "sex", "a:sex", "d:sex")))
 
     # two int've covariates
     covar <- cbind(covar, another=rnorm(n_ind(iron)))
     expected <- eff_via_lm(prob, phe, covar, covar)
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "another",
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "another",
                                                               "a:sex", "d:sex", "a:another", "d:another")))
-    expect_equivalent(coef, expected)
+    expect_equivalent(coef$coef, expected$coef)
     coef <- scan1coef(prob2, phe, covar, covar, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "another",
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "another",
                                                               "a:sex", "d:sex", "a:another", "d:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d", "sex", "another",
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d", "sex", "another",
                                                               "a:sex", "d:sex", "a:another", "d:another")))
 
     # two int've covariates, weighted
     expected <- eff_via_lm(prob, phe, covar, covar, weights=weights)
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames,
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames,
                                       c("mu", "a", "d", "sex", "another", "a:sex", "d:sex",
                                         "a:another", "d:another")))
     coef <- scan1coef(prob2, phe, covar, covar, weights=weights, contrasts=contrasts, se=TRUE)
-    expect_equivalent(coef, expected)
-    expect_equal(dimnames(coef), list(posnames, c("mu", "a", "d", "sex", "another",
+    expect_equivalent(coef$coef, expected$coef)
+    expect_equal(dimnames(coef$coef), list(posnames, c("mu", "a", "d", "sex", "another",
                                                               "a:sex", "d:sex", "a:another", "d:another")))
-    expect_equivalent(attr(coef, "SE"), attr(expected, "SE"))
-    expect_equal(dimnames(attr(coef, "SE")), list(posnames, c("mu", "a", "d", "sex", "another",
+    expect_equivalent(coef$SE, expected$SE)
+    expect_equal(dimnames(coef$SE), list(posnames, c("mu", "a", "d", "sex", "another",
                                                               "a:sex", "d:sex", "a:another", "d:another")))
 
 })
