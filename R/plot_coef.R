@@ -58,7 +58,7 @@ plot_coef <-
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     if(missing(columns) || is.null(columns))
-        columns <- 1:ncol(x)
+        columns <- 1:ncol(x$coef)
 
     if(missing(col) || is.null(col)) {
         n_col <- length(columns)
@@ -74,14 +74,16 @@ plot_coef <-
             stop("Need at least ", length(columns), " colors")
     }
 
-    map <- attr(x, "map")
-    if(is.null(map)) stop("Input needs to contain a map attribute")
+    map <- x$map
+    if(is.null(map)) stop("Input needs to contain a map")
 
     if(missing(ylim) || is.null(ylim)) {
-        ylim <- range(x[,columns], na.rm=TRUE)
+        ylim <- range(x$coef[,columns], na.rm=TRUE)
         d <- diff(ylim) * 0.02 # add 2% on either side
         ylim <- ylim + c(-d, d)
     }
+
+    names(x)[names(x)=="coef"] <- "lod" # switch coef -> lod for use with plot_scan1()
 
     plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
                gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)

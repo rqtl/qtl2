@@ -59,11 +59,11 @@ library(qtl2scan)
 out <- scan1(probs, pheno, covar, Xcovar)
 
 # plot the results for selected chromosomes
-ylim <- c(0, max(unclass(out))*1.02) # need to strip class to get overall max LOD
+ylim <- c(0, maxlod(out)*1.02) # need to strip class to get overall max LOD
 chr <- c(2,7,8,9,15,16)
 plot(out, chr=chr, ylim=ylim)
 plot(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
-legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
+legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out$lod),
        bg="gray90")
 
 # plot just one chromosome
