@@ -45,7 +45,7 @@ top_snps <-
         snpinfo$lod <- lod[snpinfo$index]
     } else { # just keep the SNPs that were used
         snpinfo$lod <- lod[snpinfo$index]
-        snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1_output)[keep],]
+        snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1_output$lod)[keep],]
     }
 
     snpinfo
