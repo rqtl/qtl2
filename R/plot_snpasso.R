@@ -82,7 +82,7 @@ expand_snp_results <-
     for(i in seq(along=map)) {
         map[[i]] <- snpinfo[[i]]$pos
         names(map[[i]]) <- snpinfo[[i]]$snp
-        result <- c(result, snp_results[ lodindex[[i]][ snpinfo[[i]]$index ] ])
+        result <- rbind(result, snp_results$lod[lodindex[[i]],,drop=FALSE][snpinfo[[i]]$index,,drop=FALSE])
     }
 
     list(lod=result,
