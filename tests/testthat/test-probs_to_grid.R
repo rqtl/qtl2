@@ -19,7 +19,7 @@ test_that("probs_to_grid works", {
 
     # test results
     expected <- probs
-    for(i in seq(along=probs$chrID)) {
+    for(i in seq(along=probs$probs)) {
         grid <- probs$grid[[i]]
         expected$probs[[i]] <- probs$probs[[i]][,,grid,drop=FALSE]
 

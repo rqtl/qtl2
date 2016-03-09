@@ -70,7 +70,6 @@ test_that("subset.calc_genoprob works", {
     expected$probs <- pr$probs["X"]
     expected$is_x_chr <- pr$is_x_chr["X"]
     expected$map <- pr$map["X"]
-    expected$chrID <- "X"
     expected$grid <- pr$grid["X"]
 
     expect_equal(prsub, expected)
@@ -80,7 +79,6 @@ test_that("subset.calc_genoprob works", {
 
     expected$probs[["X"]] <- expected$probs[["X"]][ind,,,drop=FALSE]
     expected$cross_info <- expected$cross_info[ind,,drop=FALSE]
-    expected$indID <- ind
 
     expect_equal(prsub, expected)
 
@@ -98,7 +96,6 @@ test_that("subset.sim_geno works", {
     expected$draws <- dr$draws["X"]
     expected$is_x_chr <- dr$is_x_chr["X"]
     expected$map <- dr$map["X"]
-    expected$chrID <- "X"
     expected$grid <- dr$grid["X"]
 
     expect_equal(drsub, expected)
@@ -108,7 +105,6 @@ test_that("subset.sim_geno works", {
 
     expected$draws[["X"]] <- expected$draws[["X"]][ind,,,drop=FALSE]
     expected$cross_info <- expected$cross_info[ind,,drop=FALSE]
-    expected$indID <- ind
 
     expect_equal(drsub, expected)
 
