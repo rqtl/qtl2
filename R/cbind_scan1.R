@@ -15,6 +15,8 @@
 #'
 #' If \code{hsq} present but has differing numbers of rows, we omit this information.
 #'
+#' If \code{snpinfo} present, they much match.
+#'
 #' @examples
 #' library(qtl2geno)
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
@@ -34,16 +36,19 @@ cbind.scan1 <-
 
     # to cbind: lod, coef, SE
     # to c(): sample_size
-    # check if matches: map
+    # check if matches: map, snpinfo
     # drop if not matching: addcovar, Xcovar, intcovar, weights
 
     result <- args[[1]]
     if(length(args) == 1) return(result)
 
     # check that maps match
+    must_match <- c("map", "snpinfo")
     for(i in 2:length(args)) {
-        if(!is_same(result$map, args[[i]]$map))
-            stop("Input objects 1 and ", i, " have different maps")
+        for(obj in must_match) {
+            if(!is_same(result[[obj]], args[[i]][[obj]]))
+                stop("Input objects 1 and ", i, " have different ", obj)
+        }
     }
 
     # cbind the lod (don't consider coef/SE for this, and require that lod are present)
