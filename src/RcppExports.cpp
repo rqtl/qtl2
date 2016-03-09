@@ -443,6 +443,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// pick_marker_subset
+IntegerVector pick_marker_subset(const NumericVector& pos, const double min_d, const NumericVector& weights);
+RcppExport SEXP qtl2scan_pick_marker_subset(SEXP posSEXP, SEXP min_dSEXP, SEXP weightsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const double >::type min_d(min_dSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    __result = Rcpp::wrap(pick_marker_subset(pos, min_d, weights));
+    return __result;
+END_RCPP
+}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
