@@ -40,8 +40,8 @@ cbind.calc_genoprob <-
     main_stuff <- c("probs", "draws")
     for(i in 2:length(args)) {
         for(obj in c("probs", "draws")) {
-            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[2]]))) next # not present
-            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[2]])))
+            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
+            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[i]])))
                 stop(obj, " not present in all inputs")
             if(nrow(args[[1]][[obj]][[1]]) != nrow(args[[i]][[obj]][[1]]) ||
                !all(rownames(args[[1]][[obj]][[1]]) == rownames(args[[i]][[obj]][[1]])))
