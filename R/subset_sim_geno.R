@@ -26,8 +26,12 @@
 #' drsub <- dr[1:5,2]
 #' # keep just chromosome 2
 #' drsub2 <- dr[,2]
-subset.sim_geno <- subset.calc_genoprob
-#' @export
+subset.sim_geno <-
+    function(x, ind, chr, ...)
+    subset.calc_genoprob(x, ind, chr, ...)
 
+#' @export
 #' @rdname subset.sim_geno
-`[.sim_geno` <- `[.calc_genoprob`
+`[.sim_geno` <-
+    function(x, ind, chr)
+    subset(x, ind, chr)
