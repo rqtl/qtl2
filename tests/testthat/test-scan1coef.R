@@ -3,14 +3,14 @@ context("effect scan by scan1coef")
 convert_probs2qtl2 <-
     function(cross)
 {
-    list(probs=lapply(cross$geno, function(a) {
+    result <- list(probs=lapply(cross$geno, function(a) {
         pr <- aperm(a$prob, c(1,3,2))
         rownames(pr) <- paste(1:nrow(pr))
         pr }),
-         map=lapply(cross$geno, function(a) attr(a$prob, "map")),
-         indID=paste(1:qtl::nind(cross)),
-         chrID=names(cross$geno))
+                   map=lapply(cross$geno, function(a) attr(a$prob, "map")))
 
+    class(result) <- c("calc_genoprob", "list")
+    result
 }
 
 # calc estimates via lm(), just one chromosome
