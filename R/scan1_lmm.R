@@ -167,6 +167,7 @@ scan1_lmm <-
     totpos <- sum(npos_by_chr)
     pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
     pos_names <- unlist(lapply(genoprobs$probs, function(a) dimnames(a)[[3]]))
+    names(pos_names) <- NULL # this is just annoying
 
     # to contain the results
     result <- matrix(nrow=totpos, ncol=ncol(pheno))

@@ -115,6 +115,7 @@ test_that("scan1 for backcross with one phenotype", {
     n <- length(y)
 
     posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
+    names(posnames) <- NULL
 
     # scan
     out2 <- scan1(pr, y)
@@ -226,6 +227,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
     posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
+    names(posnames) <- NULL
 
     # scan
     out2 <- scan1(pr, y)
@@ -341,6 +343,7 @@ test_that("scan1 works with NAs in the covariates", {
     pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
     posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
+    names(posnames) <- NULL
 
     ##############################
     # additive covariate
@@ -384,6 +387,7 @@ test_that("scan1 aligns the individuals", {
     pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
     posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
+    names(posnames) <- NULL
 
     # scan
     out <- scan1(pr, y)
@@ -467,6 +471,7 @@ test_that("multi-core scan1 works", {
     library(qtl2geno)
     pr <- calc_genoprob(convert2cross2(hyper), step=2.5)
     posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
+    names(posnames) <- NULL
 
     # scan
     out <- scan1(pr, y)
@@ -543,6 +548,7 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
     library(qtl2geno)
     pr <- calc_genoprob(convert2cross2(hyper), step=2.5)
     posnames <- unlist(lapply(pr$probs, function(a) dimnames(a)[[3]]))
+    names(posnames) <- NULL
 
     ybig <- y*100
 

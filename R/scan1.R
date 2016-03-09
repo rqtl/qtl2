@@ -232,6 +232,7 @@ scan1 <-
     }
 
     pos_names <- unlist(lapply(genoprobs$probs, function(a) dimnames(a)[[3]]))
+    names(pos_names) <- NULL # this is just annoying
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # add some attributes with details on analysis
