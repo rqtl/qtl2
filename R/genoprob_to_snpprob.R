@@ -84,12 +84,13 @@ genoprob_to_snpprob <-
     function(genoprobs, snpinfo, tol=1e-8)
 {
     uchr <- unique(snpinfo$chr)
-    if(!all(uchr %in% genoprobs$chrID)) {
-        mischr <- uchr[!(uchr %in% names(genoprobs$chrID))]
+    chrID <- names(genoprobs$map)
+    if(!all(uchr %in% chrID)) {
+        mischr <- uchr[!(uchr %in% chrID)]
         stop("Not all chr found in genoprobs: ", paste(mischr, collapse=","))
     }
     # reorder
-    uchr <- factor(factor(uchr, levels=genoprobs$chrID))
+    uchr <- factor(factor(uchr, levels=chrID))
 
     # if more than one chromosome:
     if(length(uchr) > 1) {
