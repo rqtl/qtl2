@@ -106,7 +106,7 @@ calc_kinship <-
 calc_kinship_overall <-
     function(probs, chrs, quiet=TRUE, cores=1)
 {
-    ind_names <- probs$indID
+    ind_names <- rownames(probs$probs[[1]])
     n_ind <- length(ind_names)
 
     result <- matrix(0, nrow=n_ind, ncol=n_ind)
@@ -121,7 +121,7 @@ calc_kinship_overall <-
 
     # function that does the work
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", probs$chrID[chr])
+        if(!quiet) message(" - Chr ", names(probs$probs)[chr])
         pr <- aperm(probs$probs[[chr]], c(3,2,1)) # convert to pos x gen x ind
         .calc_kinship(pr)
     }
@@ -148,7 +148,7 @@ calc_kinship_overall <-
 calc_kinship_bychr <-
     function(probs, chrs, scale=TRUE, quiet=TRUE, cores=1)
 {
-    ind_names <- probs$indID
+    ind_names <- rownames(probs$probs[[1]])
     n_ind <- length(ind_names)
 
     # set up cluster and set quiet=TRUE if multi-core
@@ -160,7 +160,7 @@ calc_kinship_bychr <-
 
     # function that does the work
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", probs$chrID[chr])
+        if(!quiet) message(" - Chr ", names(probs$probs)[chr])
 
         n_pos <- dim(probs$probs[[chr]])[3]
 
@@ -177,7 +177,7 @@ calc_kinship_bychr <-
     # run and combine results
     result <- cluster_lapply(cores, chrs, by_chr_func)
 
-    names(result) <- probs$chrID[chrs]
+    names(result) <- names(probs$probs)[chrs]
     result
 }
 

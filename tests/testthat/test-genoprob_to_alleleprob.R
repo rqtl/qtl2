@@ -9,7 +9,7 @@ test_that("genoprob_to_alleleprob works for RIL", {
     # expected result, hardly changed
     expected <- probs
     expected$alleleprobs <- TRUE
-    for(i in seq(along=probs$chrID))
+    for(i in seq(along=probs$probs))
         colnames(expected$probs[[i]]) <- c("L", "C")
 
     expect_equal(allele_probs, expected)
@@ -45,7 +45,7 @@ test_that("genoprob_to_alleleprob works for F2", {
 
     expected <- probs
     is_x_chr <- probs$is_x_chr
-    for(i in seq(along=probs$chrID)) # loop over chromosomes
+    for(i in seq(along=probs$probs)) # loop over chromosomes
         expected$probs[[i]] <- f2_geno2alle(probs$probs[[i]], is_x_chr[i])
     expected$alleleprobs <- TRUE
 

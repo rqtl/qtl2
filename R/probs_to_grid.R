@@ -40,21 +40,22 @@ probs_to_grid <-
     if(is.null(probs$grid))
         stop("probs has no grid attribute")
 
-    for(i in seq(along=probs$chrID)) {
+    chrID <- names(probs$probs)
+    for(i in seq(along=chrID)) {
         # grab grid vector
         if(is.null(grid[[i]])) {
-            stop("grid not found for chr ", probs$chrID[i])
+            stop("grid not found for chr ", chrID[i])
         }
         if(length(grid[[i]]) != length(map[[i]])) {
             stop("length(grid) [", length(grid[[i]]), "] != length(map) [",
-                 length(map[[i]]), "] for chr ", probs$chrID[i])
+                 length(map[[i]]), "] for chr ", chrID[i])
         }
 
         # subset probs
         if(!all(grid[[i]])) {
             if(length(grid[[i]]) != dim(probs$probs[[i]])[3])
                 stop("length(grid) [", length(grid[[i]]), "] != ncol(probs) [",
-                     ncol(probs$probs[[i]]), "] for chr ", probs$chrID[i])
+                     ncol(probs$probs[[i]]), "] for chr ", chrID[i])
             probs$probs[[i]] <- probs$probs[[i]][,,grid[[i]],drop=FALSE]
         }
     }
