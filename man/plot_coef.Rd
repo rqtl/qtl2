@@ -7,13 +7,14 @@
 \title{Plot QTL effects along chromosome}
 \usage{
 plot_coef(x, columns, col, add = FALSE, gap = 25, ylim,
-  bgcolor = "gray90", altbgcolor = "gray85", ...)
+  bgcolor = "gray90", altbgcolor = "gray85", ylab = "QTL effects", ...)
 
 plot_coefCC(x, add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
-  altbgcolor = "gray85", ...)
+  altbgcolor = "gray85", ylab = "QTL effects", ...)
 
 \method{plot}{scan1coef}(x, columns = 1, col = NULL, add = FALSE,
-  gap = 25, ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85", ...)
+  gap = 25, ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
+  ylab = "QTL effects", ...)
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
@@ -34,6 +35,8 @@ chromosomes).}
 \item{bgcolor}{Background color for the plot.}
 
 \item{altbgcolor}{Background color for alternate chromosomes.}
+
+\item{ylab}{y-axis label}
 
 \item{...}{Additional graphics parameters.}
 }

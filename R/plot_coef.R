@@ -21,6 +21,8 @@
 #'
 #' @param altbgcolor Background color for alternate chromosomes.
 #'
+#' @param ylab y-axis label
+#'
 #' @param ... Additional graphics parameters.
 #'
 #' @export
@@ -55,7 +57,8 @@
 #' plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
     function(x, columns, col, add=FALSE, gap=25, ylim,
-             bgcolor="gray90", altbgcolor="gray85", ...)
+             bgcolor="gray90", altbgcolor="gray85",
+             ylab="QTL effects", ...)
 {
     if(missing(columns) || is.null(columns))
         columns <- 1:ncol(x$coef)
@@ -86,7 +89,7 @@ plot_coef <-
     names(x)[names(x)=="coef"] <- "lod" # switch coef -> lod for use with plot_scan1()
 
     plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
-               gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+               gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
     if(length(columns) > 1) {
         for(i in seq(along=columns)[-1])
             plot_scan1(x, lodcolumn=columns[i], col=col[i], gap=gap,
@@ -98,18 +101,21 @@ plot_coef <-
 #' @rdname plot_coef
 plot_coefCC <-
     function(x, add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85", ...)
+             bgcolor="gray90", altbgcolor="gray85",
+             ylab="QTL effects", ...)
 {
     plot_coef(x, columns=1:8, col=qtl2plot::CCcolors, add=add, gap=gap,
-              ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+              ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
+              ylab=ylab, ...)
 }
 
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
     function(x, columns=1, col=NULL, add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85", ...)
+             bgcolor="gray90", altbgcolor="gray85",
+             ylab="QTL effects", ...)
 {
     plot_coef(x, columns=columns, col=col, add=add, gap=gap, ylim=ylim,
-              bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+              bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
 }
