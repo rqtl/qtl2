@@ -498,7 +498,7 @@ available as part of the
 full data are in
 [`DO_Recla`](https://github.com/rqtl/qtl2data/tree/master/DO_Recla);
 the directory
-[`DOex`](https://github.com/rqtl/qtl2data/tree/master/DOEx) contains a
+[`DOex`](https://github.com/rqtl/qtl2data/tree/master/DOex) contains a
 reduced set, with just three chromosomes, one phenotype
 (`OF_immobile_pct`, percent immobile in the open field test), and a
 reduced set of markers.
