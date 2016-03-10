@@ -22,6 +22,10 @@
 calc_sdp <-
     function(geno)
 {
+    # tolerate data frames, but convert to matrix
+    if(!is.matrix(geno) && is.data.frame(geno))
+        geno <- as.matrix(geno)
+
     n_str <- ncol(geno)
 
     n_missing <- rowSums(is.na(geno) | (geno != 1 & geno != 3))
