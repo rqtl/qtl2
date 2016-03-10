@@ -137,6 +137,10 @@ matrix_x_3darray <- function(X, A) {
     .Call('qtl2scan_matrix_x_3darray', PACKAGE = 'qtl2scan', X, A)
 }
 
+.pick_marker_subset <- function(pos, min_d, weights) {
+    .Call('qtl2scan_pick_marker_subset', PACKAGE = 'qtl2scan', pos, min_d, weights)
+}
+
 random_int <- function(n, low, high) {
     .Call('qtl2scan_random_int', PACKAGE = 'qtl2scan', n, low, high)
 }
