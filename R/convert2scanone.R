@@ -44,7 +44,8 @@ convert2scanone <-
     out <- data.frame(chr=factor(rep(names(map), n), levels=names(map)),
                       pos=unlist(map),
                       as.data.frame(lod))
-    rownames(out) <- rownames(output)
+
+    rownames(out) <- rownames(output$lod)
 
     class(out) <- c("scanone", "data.frame")
     out
