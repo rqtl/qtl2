@@ -73,7 +73,7 @@ scan1coef_lmm <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, intcovar=NULL,
              contrasts=NULL, se=FALSE,
-             hsq, reml=TRUE, tol=1e-12)
+             hsq=NULL, reml=TRUE, tol=1e-12)
 {
     stopifnot(tol > 0)
 
@@ -155,7 +155,7 @@ scan1coef_lmm <-
         kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
     # estimate hsq if necessary
-    if(missing(hsq) || is.null(hsq)) {
+    if(is.null(hsq)) {
         nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
                                      reml, cores=1, check_boundary=TRUE, tol)
         hsq <- nullresult$hsq

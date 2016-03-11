@@ -45,10 +45,8 @@
 #' # subset to markers that are >= 1 cM apart
 #' gmap_sub <- pick_marker_subset(gmap, 1)
 pick_marker_subset <-
-    function(map, min_d=1, weights)
+    function(map, min_d=1, weights=NULL)
 {
-    if(missing(weights)) weights <- NULL
-
     # multiple chromosomes
     if(is.list(map)) {
         if(!is.null(weights)) {

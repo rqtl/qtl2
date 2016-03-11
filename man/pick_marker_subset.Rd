@@ -4,7 +4,7 @@
 \alias{pick_marker_subset}
 \title{Identify the largest subset of markers that are some distance apart}
 \usage{
-pick_marker_subset(map, min_d = 1, weights)
+pick_marker_subset(map, min_d = 1, weights = NULL)
 }
 \arguments{
 \item{map}{Either a vector of marker positions, or a list of such

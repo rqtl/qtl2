@@ -45,7 +45,7 @@
 #' # maximum of first column on chr 2
 #' max(out, chr="2")
 max_scan1 <-
-    function(scan1_output, lodcolumn=1, chr, na.rm=TRUE, ...)
+    function(scan1_output, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
     thechr <- chr_scan1(scan1_output)
     thepos <- pos_scan1(scan1_output)
@@ -84,7 +84,7 @@ max_scan1 <-
     sign <- sign[,lodcolumn]
 
     # subset chromosomes
-    if(!missing(chr) && !is.null(chr)) {
+    if(!is.null(chr)) {
         keep <- (thechr %in% chr)
         thechr <- thechr[keep]
         thepos <- thepos[keep]
@@ -106,7 +106,9 @@ max_scan1 <-
 
 #' @export
 #' @rdname max_scan1
-max.scan1 <- max_scan1
+max.scan1 <-
+    function(scan1_output, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
+    max_scan1(scan1_output, lodcolumn, chr, na.rm, ...)
 
 #' Overall maximum LOD score
 #'
@@ -147,7 +149,7 @@ max.scan1 <- max_scan1
 #' max(out, "2")
 #' }
 maxlod <-
-    function(scan1_output, chr)
+    function(scan1_output, chr=NULL)
 {
     # subset by chromosome
     scan1_output <- subset(scan1_output, chr=chr)
