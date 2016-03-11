@@ -5,7 +5,7 @@
 \alias{plot_scan1}
 \title{Plot a genome scan}
 \usage{
-plot_scan1(x, lodcolumn = 1, chr, add = FALSE, gap = 25,
+plot_scan1(x, lodcolumn = 1, chr = NULL, add = FALSE, gap = 25,
   bgcolor = "gray90", altbgcolor = "gray85", ...)
 
 \method{plot}{scan1}(x, lodcolumn = 1, chr = NULL, add = FALSE,

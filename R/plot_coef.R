@@ -8,14 +8,16 @@
 #'
 #' @param columns Vector of columns to plot
 #'
-#' @param col Vector of colors, same length as \code{columns}.
+#' @param col Vector of colors, same length as \code{columns}. If
+#' NULL, some default choices are made.
 #'
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
 #' @param gap Gap between chromosomes.
 #'
-#' @param ylim y-axis limits
+#' @param ylim y-axis limits. If NULL, we use the range of the plotted
+#' coefficients.
 #'
 #' @param bgcolor Background color for the plot.
 #'
@@ -56,14 +58,14 @@
 #' # plot QTL effects
 #' plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
-    function(x, columns, col, add=FALSE, gap=25, ylim,
+    function(x, columns=NULL, col=NULL, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
-    if(missing(columns) || is.null(columns))
+    if(is.null(columns))
         columns <- 1:ncol(x$coef)
 
-    if(missing(col) || is.null(col)) {
+    if(is.null(col)) {
         n_col <- length(columns)
         if(n_col == 1) col <- c("slateblue")
         else if(n_col == 2) col <- c("slateblue", "violetred")
@@ -80,7 +82,7 @@ plot_coef <-
     map <- x$map
     if(is.null(map)) stop("Input needs to contain a map")
 
-    if(missing(ylim) || is.null(ylim)) {
+    if(is.null(ylim)) {
         ylim <- range(x$coef[,columns], na.rm=TRUE)
         d <- diff(ylim) * 0.02 # add 2% on either side
         ylim <- ylim + c(-d, d)

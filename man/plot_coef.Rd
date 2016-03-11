@@ -6,8 +6,9 @@
 \alias{plot_coefCC}
 \title{Plot QTL effects along chromosome}
 \usage{
-plot_coef(x, columns, col, add = FALSE, gap = 25, ylim,
-  bgcolor = "gray90", altbgcolor = "gray85", ylab = "QTL effects", ...)
+plot_coef(x, columns = NULL, col = NULL, add = FALSE, gap = 25,
+  ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
+  ylab = "QTL effects", ...)
 
 plot_coefCC(x, add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
   altbgcolor = "gray85", ylab = "QTL effects", ...)
@@ -23,14 +24,16 @@ plot_coefCC(x, add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
 
 \item{columns}{Vector of columns to plot}
 
-\item{col}{Vector of colors, same length as \code{columns}.}
+\item{col}{Vector of colors, same length as \code{columns}. If
+NULL, some default choices are made.}
 
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
 
 \item{gap}{Gap between chromosomes.}
 
-\item{ylim}{y-axis limits}
+\item{ylim}{y-axis limits. If NULL, we use the range of the plotted
+coefficients.}
 
 \item{bgcolor}{Background color for the plot.}
 
