@@ -4,7 +4,7 @@
 \alias{maxlod}
 \title{Overall maximum LOD score}
 \usage{
-maxlod(scan1_output, chr)
+maxlod(scan1_output, chr = NULL)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by

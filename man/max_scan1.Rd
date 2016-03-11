@@ -5,9 +5,10 @@
 \alias{max_scan1}
 \title{Find position with maximum LOD score}
 \usage{
-max_scan1(scan1_output, lodcolumn = 1, chr, na.rm = TRUE, ...)
+max_scan1(scan1_output, lodcolumn = 1, chr = NULL, na.rm = TRUE, ...)
 
-\method{max}{scan1}(scan1_output, lodcolumn = 1, chr, na.rm = TRUE, ...)
+\method{max}{scan1}(scan1_output, lodcolumn = 1, chr = NULL, na.rm = TRUE,
+  ...)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by

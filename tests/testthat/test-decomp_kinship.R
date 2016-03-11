@@ -52,3 +52,14 @@ test_that("multi-core eigen decomposition works", {
     expect_equal(Ke_multicore, Ke)
 
 })
+
+
+test_that("eigen decomposition gives error with non-square matrix", {
+
+    k <- matrix(runif(100), ncol=5)
+    expect_error(decomp_eigen(k))
+
+    k <- list(k, matrix(runif(100), ncol=20))
+    expect_error(decomp_eigen(k))
+
+})

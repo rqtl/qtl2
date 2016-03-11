@@ -5,11 +5,11 @@
 # default = default value for argument
 # values  = optional vector of character strings with possible values
 grab_dots <-
-    function(dotargs, argname, default, values)
+    function(dotargs, argname, default, values=NULL)
 {
     if(argname %in% names(dotargs)) {
         arg <- dotargs[[argname]]
-        if(!missing(values) && !is.null(values) && !(arg %in% values)) {
+        if(!is.null(values) && !(arg %in% values)) {
             warning(argname, ' "', arg, '" not valid; using "',
                     default, '".')
             arg <- default

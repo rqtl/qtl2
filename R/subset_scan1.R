@@ -41,12 +41,12 @@
 #' out_c2_spleen <- subset(out, "2", "spleen")
 #' }
 subset_scan1 <-
-    function(x, chr, lodcolumn, ...)
+    function(x, chr=NULL, lodcolumn=NULL, ...)
 {
     map <- x$map
 
     # subset by chromosome
-    if(!missing(chr) && !is.null(chr)) {
+    if(!is.null(chr)) {
         # selected chromosomes
         chr_found <- chr %in% names(map)
         if(!all(chr_found))
@@ -75,7 +75,7 @@ subset_scan1 <-
         }
     }
 
-    if(!missing(lodcolumn) && !is.null(lodcolumn)) {
+    if(!is.null(lodcolumn)) {
         if(is.character(lodcolumn)) {
             if(!is.null(x$lod)) cols <- colnames(x$lod)
             else if(!is.null(x$coef)) cols <- colnames(x$coef)
@@ -107,7 +107,7 @@ subset.scan1 <- subset_scan1
 #' @export
 #' @rdname subset_scan1
 `[.scan1` <-
-    function(x, chr, lodcolumn)
+    function(x, chr=NULL, lodcolumn=NULL)
     subset(x, chr, lodcolumn)
 
 

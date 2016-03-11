@@ -5,7 +5,8 @@
 \title{Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM}
 \usage{
 scan1coef_lmm(genoprobs, pheno, kinship, addcovar = NULL, intcovar = NULL,
-  contrasts = NULL, se = FALSE, hsq, reml = TRUE, tol = 0.000000000001)
+  contrasts = NULL, se = FALSE, hsq = NULL, reml = TRUE,
+  tol = 0.000000000001)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
