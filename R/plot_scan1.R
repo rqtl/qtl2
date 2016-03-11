@@ -65,7 +65,7 @@
 #' plot(out, lodcolumn="liver", ylim=ylim)
 #' plot(out, lodcolumn="spleen", col="violetred", add=TRUE)
 plot_scan1 <-
-    function(x, lodcolumn=1, chr, add=FALSE, gap=25,
+    function(x, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
     # pull out map
@@ -89,7 +89,7 @@ plot_scan1 <-
     lod <- x$lod[,lodcolumn]
 
     # subset chromosomes
-    if(!(missing(chr) || is.null(chr))) {
+    if(!is.null(chr)) {
         chri <- match(chr, names(map))
         if(any(is.na(chri)))
             stop("Chromosomes ", paste(chr[is.na(chri)], collapse=", "), " not found")
@@ -116,7 +116,7 @@ plot_scan1 <-
             chrbound <- map_to_boundaries(map, gap)
 
             if(!add) { # new plot
-                if(missing(ylim) || is.null(ylim))
+                if(is.null(ylim))
                     ylim <- c(0, max(lod, na.rm=TRUE)*1.02)
 
                 if(is.null(xlim)) {
