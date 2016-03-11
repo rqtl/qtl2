@@ -29,7 +29,11 @@ decomp_kinship <-
     # already done?
     if(!is.null(attr(kinship, "eigen_decomp"))) return(kinship)
 
-    if(is.matrix(kinship)) return(Rcpp_eigen_decomp(kinship))
+    if(is.matrix(kinship)) {
+        if(ncol(kinship) != nrow(kinship))
+            stop("matrix must be square")
+        return(Rcpp_eigen_decomp(kinship))
+    }
 
     cores <- setup_cluster(cores)
 

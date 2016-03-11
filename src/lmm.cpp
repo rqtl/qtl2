@@ -31,6 +31,9 @@ List Rcpp_eigen_decomp(const NumericMatrix& A)
     const MatrixXd AA(as<Map<MatrixXd> >(A));
     const std::pair<VectorXd,MatrixXd> result = eigen_decomp(AA);
 
+    if(A.cols() != A.rows())
+        throw std::invalid_argument("A must be a square matrix");
+
     // set dimnames of eigenvector matrix
     NumericMatrix eigenvec(wrap(result.second));
     eigenvec.attr("dimnames") = A.attr("dimnames");
