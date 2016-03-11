@@ -6,7 +6,7 @@
 #' @param control_file Character string with path to the control file
 #' (\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON})
 #' containing all of the control information.
-#' @param zip_file Name of zip file to use. If omitted, we use the
+#' @param zip_file Name of zip file to use. If NULL, we use the
 #' stem of \code{control_file} but with a \code{.zip} extension.
 #' @param quiet If \code{FALSE}, print progress messages.
 #'
@@ -30,7 +30,7 @@
 #' zip_datafiles(control_file, "grav2.zip")
 #' }
 zip_datafiles <-
-function(control_file, zip_file, quiet=TRUE)
+function(control_file, zip_file=NULL, quiet=TRUE)
 {
     control_file <- path.expand(control_file)
     if(!(file.exists(control_file)))
@@ -38,7 +38,7 @@ function(control_file, zip_file, quiet=TRUE)
 
     dir <- dirname(control_file)
 
-    if(missing(zip_file) || is.null(zip_file))
+    if(is.null(zip_file))
         zip_file <- gsub("\\.[a-z]+$", ".zip", control_file)
 
     # read control file

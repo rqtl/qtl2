@@ -5,9 +5,9 @@
 \alias{subset.sim_geno}
 \title{Subsetting imputed genotypes}
 \usage{
-\method{subset}{sim_geno}(x, ind, chr, ...)
+\method{subset}{sim_geno}(x, ind = NULL, chr = NULL, ...)
 
-\method{[}{sim_geno}(x, ind, chr)
+\method{[}{sim_geno}(x, ind = NULL, chr = NULL)
 }
 \arguments{
 \item{x}{Imputed genotypes as output from \code{\link{sim_geno}}.}

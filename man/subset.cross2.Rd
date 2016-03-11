@@ -5,9 +5,9 @@
 \alias{subset.cross2}
 \title{Subsetting data for a QTL experiment}
 \usage{
-\method{subset}{cross2}(x, ind, chr, ...)
+\method{subset}{cross2}(x, ind = NULL, chr = NULL, ...)
 
-\method{[}{cross2}(x, ind, chr)
+\method{[}{cross2}(x, ind = NULL, chr = NULL)
 }
 \arguments{
 \item{x}{An object of class \code{"cross2"}. For details, see the

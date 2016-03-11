@@ -80,7 +80,7 @@
 #' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
 
 calc_genoprob <-
-function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map,
+function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
          quiet=TRUE, cores=1)
 {
@@ -100,8 +100,6 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     }
 
     # construct map at which to do the calculations
-    if(missing(pseudomarker_map))
-        pseudomarker_map <- NULL
     # tolerance for matching marker and pseudomarker positions
     tol <- ifelse(step==0 || step>1, 0.01, step/100)
     # create the combined marker/pseudomarker map

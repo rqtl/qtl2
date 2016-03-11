@@ -4,7 +4,7 @@
 \alias{reduce_markers}
 \title{Reduce markers to a subset of more-evenly-spaced ones}
 \usage{
-reduce_markers(map, weights, min_distance = 1)
+reduce_markers(map, weights = NULL, min_distance = 1)
 }
 \arguments{
 \item{map}{A list with each component being a vector with the

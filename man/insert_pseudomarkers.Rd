@@ -5,7 +5,7 @@
 \title{Insert pseudomarkers into a marker map}
 \usage{
 insert_pseudomarkers(map, step = 0, off_end = 0, stepwidth = c("fixed",
-  "max"), pseudomarker_map, tol = 0.01)
+  "max"), pseudomarker_map = NULL, tol = 0.01)
 }
 \arguments{
 \item{map}{A list of numeric vectors; each vector gives marker

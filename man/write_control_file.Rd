@@ -4,14 +4,17 @@
 \alias{write_control_file}
 \title{Write a control file for QTL data}
 \usage{
-write_control_file(output_file, crosstype, geno_file, founder_geno_file,
-  gmap_file, pmap_file, pheno_file, covar_file, phenocovar_file, sex_file,
-  sex_covar, sex_codes, crossinfo_file, crossinfo_covar, crossinfo_codes,
-  linemap_file, linemap_covar, geno_codes, alleles, xchr, sep = ",",
-  na.strings = c("-", "NA"), comment.char = "#", geno_transposed = FALSE,
+write_control_file(output_file, crosstype = NULL, geno_file = NULL,
+  founder_geno_file = NULL, gmap_file = NULL, pmap_file = NULL,
+  pheno_file = NULL, covar_file = NULL, phenocovar_file = NULL,
+  sex_file = NULL, sex_covar = NULL, sex_codes = NULL,
+  crossinfo_file = NULL, crossinfo_covar = NULL, crossinfo_codes = NULL,
+  linemap_file = NULL, linemap_covar = NULL, geno_codes = NULL,
+  alleles = NULL, xchr = NULL, sep = ",", na.strings = c("-", "NA"),
+  comment.char = "#", geno_transposed = FALSE,
   founder_geno_transposed = FALSE, pheno_transposed = FALSE,
-  covar_transposed = FALSE, phenocovar_transposed = FALSE, description,
-  comments)
+  covar_transposed = FALSE, phenocovar_transposed = FALSE,
+  description = NULL, comments = NULL)
 }
 \arguments{
 \item{output_file}{File name (with path) of the
