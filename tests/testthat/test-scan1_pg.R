@@ -1,15 +1,15 @@
-context("LMM genome scan by scan1_lmm")
+context("LMM genome scan by scan1 with kinship matrix")
 
 
-test_that("scan1_lmm with intercross, vs ported lmmlite code", {
+test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
     kinship <- calc_kinship(probs)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, reml=TRUE)
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, reml=FALSE)
+    out_reml <- scan1(probs, iron$pheno, kinship, reml=TRUE)
+    out_ml <- scan1(probs, iron$pheno, kinship, reml=FALSE)
 
     # "by hand" calculation
     y <- iron$pheno
@@ -54,7 +54,7 @@ test_that("scan1_lmm with intercross, vs ported lmmlite code", {
 
 })
 
-test_that("scan1_lmm with intercross with X covariates for null", {
+test_that("scan1 with intercross with X covariates for null", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -62,8 +62,8 @@ test_that("scan1_lmm with intercross with X covariates for null", {
     kinship <- calc_kinship(probs)
     Xc <- get_x_covar(iron)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, Xcovar=Xc, reml=TRUE)
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, Xcovar=Xc, reml=FALSE)
+    out_reml <- scan1(probs, iron$pheno, kinship, Xcovar=Xc, reml=TRUE)
+    out_ml <- scan1(probs, iron$pheno, kinship, Xcovar=Xc, reml=FALSE)
 
     # "by hand" calculation
     y <- iron$pheno
@@ -111,7 +111,7 @@ test_that("scan1_lmm with intercross with X covariates for null", {
 })
 
 
-test_that("scan1_lmm with intercross with an additive covariate", {
+test_that("scan1 with kinship with intercross with an additive covariate", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -121,8 +121,8 @@ test_that("scan1_lmm with intercross with an additive covariate", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, Xcovar=Xc, reml=TRUE, tol=1e-12)
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, Xcovar=Xc, reml=FALSE, tol=1e-12)
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X, Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X, Xcovar=Xc, reml=FALSE, tol=1e-12)
 
     # "by hand" calculation
     y <- iron$pheno
@@ -208,7 +208,7 @@ test_that("scan1_lmm with intercross with an additive covariate", {
 })
 
 
-test_that("scan1_lmm with intercross with an interactive covariate", {
+test_that("scan1 with kinship with intercross with an interactive covariate", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -218,14 +218,14 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="lowmem")
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="lowmem")
-    out_reml_himem <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="highmem")
-    out_ml_himem <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="highmem")
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="lowmem")
+    out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                    Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="lowmem")
+    out_reml_himem <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                            Xcovar=Xc, reml=TRUE, tol=1e-12, intcovar_method="highmem")
+    out_ml_himem <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                          Xcovar=Xc, reml=FALSE, tol=1e-12, intcovar_method="highmem")
 
     # same result using "highmem" and "lowmem" methods
     expect_equal(out_reml_himem, out_reml)
@@ -314,7 +314,7 @@ test_that("scan1_lmm with intercross with an interactive covariate", {
 
 })
 
-test_that("scan1_lmm works with LOCO, additive covariates", {
+test_that("scan1 with kinship works with LOCO, additive covariates", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -324,10 +324,10 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12)
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12)
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X,
+                    Xcovar=Xc, reml=FALSE, tol=1e-12)
 
     y <- iron$pheno
     Ke <- decomp_kinship(kinship) # eigen decomp
@@ -381,7 +381,7 @@ test_that("scan1_lmm works with LOCO, additive covariates", {
 
 })
 
-test_that("scan1_lmm works with LOCO, interactive covariates", {
+test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -391,10 +391,10 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12)
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12)
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                    Xcovar=Xc, reml=FALSE, tol=1e-12)
 
 
     y <- iron$pheno
@@ -451,7 +451,7 @@ test_that("scan1_lmm works with LOCO, interactive covariates", {
 })
 
 
-test_that("scan1_lmm works with multicore", {
+test_that("scan1 with kinship works with multicore", {
     if(isnt_karl()) skip("this test only run locally")
 
     library(qtl2geno)
@@ -462,23 +462,23 @@ test_that("scan1_lmm works with multicore", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12)
-    out_reml_4core <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                                Xcovar=Xc, reml=TRUE, tol=1e-12, cores=4)
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_reml_4core <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                            Xcovar=Xc, reml=TRUE, tol=1e-12, cores=4)
     expect_equal(out_reml, out_reml_4core)
 
 
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12)
-    out_ml_4core <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                              Xcovar=Xc, reml=FALSE, tol=1e-12, cores=4)
+    out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                    Xcovar=Xc, reml=FALSE, tol=1e-12)
+    out_ml_4core <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                          Xcovar=Xc, reml=FALSE, tol=1e-12, cores=4)
     expect_equal(out_ml, out_ml_4core)
 
 })
 
 
-test_that("scan1_lmm LOD results invariant to change in scale to pheno and covar", {
+test_that("scan1 with kinship LOD results invariant to change in scale to pheno and covar", {
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
@@ -487,17 +487,17 @@ test_that("scan1_lmm LOD results invariant to change in scale to pheno and covar
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=TRUE, tol=1e-12)
-    out_reml_scale <- scan1_lmm(probs, iron$pheno/100, kinship, addcovar=X*2, intcovar=X*2,
-                              Xcovar=Xc*2, reml=TRUE, tol=1e-12)
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12)
+    out_reml_scale <- scan1(probs, iron$pheno/100, kinship, addcovar=X*2, intcovar=X*2,
+                            Xcovar=Xc*2, reml=TRUE, tol=1e-12)
     expect_equal(out_reml, out_reml_scale, tol=1e-6)
 
 
-    out_ml <- scan1_lmm(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                        Xcovar=Xc, reml=FALSE, tol=1e-12)
-    out_ml_scale <- scan1_lmm(probs, iron$pheno/100, kinship, addcovar=X*4, intcovar=X*4,
-                            Xcovar=Xc*4, reml=FALSE, tol=1e-12)
+    out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                    Xcovar=Xc, reml=FALSE, tol=1e-12)
+    out_ml_scale <- scan1(probs, iron$pheno/100, kinship, addcovar=X*4, intcovar=X*4,
+                          Xcovar=Xc*4, reml=FALSE, tol=1e-12)
     expect_equal(out_ml, out_ml_scale, tol=1e-6)
 
 })

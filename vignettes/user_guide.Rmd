@@ -322,28 +322,28 @@ legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out$lod), bg=
 ## Performing a genome scan with a linear mixed model
 
 To perform a genome scan using a linear mixed model, accounting for
-relationships among individuals using a random polygenic effect, use
-the function `scan1_lmm()`. It takes the same input as `scan1()` plus
+relationships among individuals using a random polygenic effect, you also use
+the function `scan1`; you just need to provide the argument `kinship`,
 a kinship matrix (or, for the LOCO method, a list of kinship
 matrices).
 
-```{r scan1_lmm}
-out_lmm <- scan1_lmm(pr, iron$pheno, kinship, Xcovar=Xcovar)
+```{r scan1_pg}
+out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar)
 ```
 
 Again, on a multi-core machine, you can get some speed-up using the
 `cores` argument.
 
-```{r scan1_lmm_multicore, eval=FALSE}
-out_lmm <- scan1_lmm(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
+```{r scan1_pg_multicore, eval=FALSE}
+out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
 ```
 
 For the LOCO (leave one chromosome out) method, provide the list of
 kinship matrices as obtained from `calc_kinship()` with
 `method="loco"`.
 
-```{r scan1_lmm_loco}
-out_lmm_loco <- scan1_lmm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
+```{r scan1_pg_loco}
+out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ```
 
 To plot the results, we again use `plot_scan1()` from the
@@ -353,15 +353,15 @@ Here is a plot of the LOD scores, by Haley-Knott regression and the linear
 mixed model using either the standard kinship matrix or the LOCO
 method.
 
-```{r plot_lod_scan1_vs_lmm}
+```{r plot_lod_scan1_vs_pg}
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(5.1, 4.1, 1.1, 1.1))
-ymx <- max(rbind(out$lod, out_lmm$lod, out_lmm_loco$lod))
+ymx <- max(rbind(out$lod, out_pg$lod, out_pg_loco$lod))
 for(i in 1:2) {
     plot(out, lodcolumn=i, col=color[1], main=colnames(out)[i],
               ylim=c(0, ymx*1.02))
-    plot(out_lmm, lodcolumn=i, col=color[2], add=TRUE)
-    plot(out_lmm_loco, lodcolumn=i, col=color[3], add=TRUE, lty=2)
+    plot(out_pg, lodcolumn=i, col=color[2], add=TRUE)
+    plot(out_pg_loco, lodcolumn=i, col=color[3], add=TRUE, lty=2)
     legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
 ```
@@ -380,7 +380,7 @@ the LOCO method give quite similar results.
 
 ## Estimated QTL effects
 
-The `scan1()` and `scan1_lmm()` functions return only LOD scores. To
+The `scan1()` function return only LOD scores. To
 obtain estimated QTL effects, use the functions `scan1coef()` and
 `scan1coef_lmm()`. These functions take a single phenotype and the
 genotype probabilities for a single chromosome and return a matrix
@@ -549,7 +549,7 @@ We perform a genome scan with a linear mixed model (adjusting for
 a residual polygenic effect), with sex as an additive covariate.
 
 ```{r DOex_scan1_lmm}
-out <- scan1_lmm(apr, DOex$pheno, k, sex)
+out <- scan1(apr, DOex$pheno, k, sex)
 ```
 
 Here's a plot of the results.
@@ -699,7 +699,7 @@ the region, using the same linear mixed model. We need to be sure to
 use the correct kinship matrix.
 
 ```{r perform_snp_scan}
-out_snps <- scan1_lmm(snppr, DOex$pheno, k[["2"]], sex)
+out_snps <- scan1(snppr, DOex$pheno, k[["2"]], sex)
 ```
 
 The function `plot_snpasso()` in the qtl2plot package can be used to

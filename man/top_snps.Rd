@@ -7,10 +7,9 @@
 top_snps(scan1_output, drop = 1.5, show_all_snps = TRUE)
 }
 \arguments{
-\item{scan1_output}{Output of \code{\link[qtl2scan]{scan1}} or
-\code{\link[qtl2scan]{scan1_lmm}}. Should contain an attribute,
-\code{"snpinfo"}, as when \code{\link[qtl2scan]{scan1}} or
-\code{\link[qtl2scan]{scan1_lmm}} are run with SNP probabilities
+\item{scan1_output}{Output of \code{\link[qtl2scan]{scan1}}.
+Should contain a component \code{"snpinfo"}, as when
+\code{\link[qtl2scan]{scan1}} is run with SNP probabilities
 produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.}
 
 \item{drop}{Show all SNPs with LOD score within this amount of the

@@ -2,10 +2,9 @@
 #'
 #' Create a table of the top snp associations
 #'
-#' @param scan1_output Output of \code{\link[qtl2scan]{scan1}} or
-#' \code{\link[qtl2scan]{scan1_lmm}}. Should contain an attribute,
-#' \code{"snpinfo"}, as when \code{\link[qtl2scan]{scan1}} or
-#' \code{\link[qtl2scan]{scan1_lmm}} are run with SNP probabilities
+#' @param scan1_output Output of \code{\link[qtl2scan]{scan1}}.
+#' Should contain a component \code{"snpinfo"}, as when
+#' \code{\link[qtl2scan]{scan1}} is run with SNP probabilities
 #' produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.
 #'
 #' @param show_all_snps If TRUE, expand to show all SNPs.

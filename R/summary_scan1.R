@@ -6,7 +6,7 @@
 #' particular LOD score column
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
+#' \code{\link{scan1}}.
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
@@ -34,7 +34,7 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' out <- scan1(probs, pheno, covar, Xcovar)
+#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # maximum of first column
 #' max(out)
@@ -115,7 +115,7 @@ max.scan1 <-
 #' Find overall maximum LOD score in genome scan results.
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
+#' \code{\link{scan1}}.
 #' @param chr Option vector of chromosomes to consider.
 #'
 #' @export
@@ -140,7 +140,7 @@ max.scan1 <-
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' out <- scan1(probs, pheno, covar, Xcovar)
+#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # overall maximum
 #' maxlod(out)

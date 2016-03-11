@@ -3,8 +3,8 @@
 #' Join multiple \code{\link{scan1}} results for different
 #' chromosomes; must have the same set of lod score column.
 #'
-#' @param ... Genome scan objects as produced by \code{\link{scan1}}
-#' or \code{\link{scan1_lmm}}. Must have the same lod score columns.
+#' @param ... Genome scan objects as produced by \code{\link{scan1}}.
+#' Must have the same lod score columns.
 #'
 #' @return A single genome scan object with the results for
 #' different sets of chromosomes combined.

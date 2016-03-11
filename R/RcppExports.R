@@ -193,16 +193,16 @@ scan_hk_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, 
     .Call('qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
 }
 
-scan_lmm_onechr <- function(genoprobs, pheno, addcovar, eigenvec, weights, tol = 1e-12) {
-    .Call('qtl2scan_scan_lmm_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, tol)
+scan_pg_onechr <- function(genoprobs, pheno, addcovar, eigenvec, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_pg_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, tol)
 }
 
-scan_lmm_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
-    .Call('qtl2scan_scan_lmm_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
+scan_pg_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_pg_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
-scan_lmm_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
-    .Call('qtl2scan_scan_lmm_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
+scan_pg_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol = 1e-12) {
+    .Call('qtl2scan_scan_pg_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
 scancoef_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {

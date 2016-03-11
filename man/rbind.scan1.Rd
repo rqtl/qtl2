@@ -7,8 +7,8 @@
 rbind.scan1(...)
 }
 \arguments{
-\item{...}{Genome scan objects as produced by \code{\link{scan1}}
-or \code{\link{scan1_lmm}}. Must have the same lod score columns.}
+\item{...}{Genome scan objects as produced by \code{\link{scan1}}.
+Must have the same lod score columns.}
 }
 \value{
 A single genome scan object with the results for

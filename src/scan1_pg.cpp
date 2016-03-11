@@ -1,8 +1,8 @@
-// scan chromosome with linear mixed model
+// scan chromosome with linear mixed model for polygenic effect
 
 // [[Rcpp::depends(RcppEigen)]]
 
-#include "scan1_lmm.h"
+#include "scan1_pg.h"
 #include <RcppEigen.h>
 #include <math.h>
 #include "lmm.h"
@@ -24,9 +24,9 @@ using namespace Rcpp;
 // output    = vector of log likelihood values
 //
 // [[Rcpp::export]]
-NumericVector scan_lmm_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno,
-                              const NumericMatrix& addcovar, const NumericMatrix& eigenvec,
-                              const NumericVector& weights, const double tol=1e-12)
+NumericVector scan_pg_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno,
+                             const NumericMatrix& addcovar, const NumericMatrix& eigenvec,
+                             const NumericVector& weights, const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
     if(pheno.cols() != 1)
@@ -89,13 +89,13 @@ NumericVector scan_lmm_onechr(const NumericVector& genoprobs, const NumericMatri
 // output    = vector of log likelihood values
 //
 // [[Rcpp::export]]
-NumericVector scan_lmm_onechr_intcovar_highmem(const NumericVector& genoprobs,
-                                               const NumericMatrix& pheno,
-                                               const NumericMatrix& addcovar,
-                                               const NumericMatrix& intcovar,
-                                               const NumericMatrix& eigenvec,
-                                               const NumericVector& weights,
-                                               const double tol=1e-12)
+NumericVector scan_pg_onechr_intcovar_highmem(const NumericVector& genoprobs,
+                                              const NumericMatrix& pheno,
+                                              const NumericMatrix& addcovar,
+                                              const NumericMatrix& intcovar,
+                                              const NumericMatrix& eigenvec,
+                                              const NumericVector& weights,
+                                              const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
     if(pheno.cols() != 1)
@@ -163,13 +163,13 @@ NumericVector scan_lmm_onechr_intcovar_highmem(const NumericVector& genoprobs,
 // output    = vector of log likelihood values
 //
 // [[Rcpp::export]]
-NumericVector scan_lmm_onechr_intcovar_lowmem(const NumericVector& genoprobs,
-                                              const NumericMatrix& pheno,
-                                              const NumericMatrix& addcovar,
-                                              const NumericMatrix& intcovar,
-                                              const NumericMatrix& eigenvec,
-                                              const NumericVector& weights,
-                                              const double tol=1e-12)
+NumericVector scan_pg_onechr_intcovar_lowmem(const NumericVector& genoprobs,
+                                             const NumericMatrix& pheno,
+                                             const NumericMatrix& addcovar,
+                                             const NumericMatrix& intcovar,
+                                             const NumericMatrix& eigenvec,
+                                             const NumericVector& weights,
+                                             const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.rows();
     if(pheno.cols() != 1)

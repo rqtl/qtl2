@@ -1,6 +1,7 @@
-// scan chromosome with linear mixed model
-#ifndef SCAN_LMM_H
-#define SCAN_LMM_H
+// scan chromosome with linear mixed model for polygenic effect
+
+#ifndef SCAN_PG_H
+#define SCAN_PG_H
 
 #include <Rcpp.h>
 
@@ -14,12 +15,12 @@
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = vector of log likelihood values
-Rcpp::NumericVector scan_lmm_onechr(const Rcpp::NumericVector& genoprobs,
-                                    const Rcpp::NumericMatrix& pheno,
-                                    const Rcpp::NumericMatrix& addcovar,
-                                    const Rcpp::NumericMatrix& eigenvec,
-                                    const Rcpp::NumericVector& weights,
-                                    const double tol);
+Rcpp::NumericVector scan_pg_onechr(const Rcpp::NumericVector& genoprobs,
+                                   const Rcpp::NumericMatrix& pheno,
+                                   const Rcpp::NumericMatrix& addcovar,
+                                   const Rcpp::NumericMatrix& eigenvec,
+                                   const Rcpp::NumericVector& weights,
+                                   const double tol);
 
 // LMM scan of a single chromosome with interactive covariates
 // this version should be fast but requires more memory
@@ -35,13 +36,13 @@ Rcpp::NumericVector scan_lmm_onechr(const Rcpp::NumericVector& genoprobs,
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = vector of log likelihood values
-Rcpp::NumericVector scan_lmm_onechr_intcovar_highmem(const Rcpp::NumericVector& genoprobs,
-                                                     const Rcpp::NumericMatrix& pheno,
-                                                     const Rcpp::NumericMatrix& addcovar,
-                                                     const Rcpp::NumericMatrix& intcovar,
-                                                     const Rcpp::NumericMatrix& eigenvec,
-                                                     const Rcpp::NumericVector& weights,
-                                                     const double tol);
+Rcpp::NumericVector scan_pg_onechr_intcovar_highmem(const Rcpp::NumericVector& genoprobs,
+                                                    const Rcpp::NumericMatrix& pheno,
+                                                    const Rcpp::NumericMatrix& addcovar,
+                                                    const Rcpp::NumericMatrix& intcovar,
+                                                    const Rcpp::NumericMatrix& eigenvec,
+                                                    const Rcpp::NumericVector& weights,
+                                                    const double tol);
 
 // LMM scan of a single chromosome with interactive covariates
 // this version uses less memory but will be slower
@@ -57,12 +58,12 @@ Rcpp::NumericVector scan_lmm_onechr_intcovar_highmem(const Rcpp::NumericVector& 
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
 // output    = vector of log likelihood values
-Rcpp::NumericVector scan_lmm_onechr_intcovar_lowmem(const Rcpp::NumericVector& genoprobs,
-                                                    const Rcpp::NumericMatrix& pheno,
-                                                    const Rcpp::NumericMatrix& addcovar,
-                                                    const Rcpp::NumericMatrix& intcovar,
-                                                    const Rcpp::NumericMatrix& eigenvec,
-                                                    const Rcpp::NumericVector& weights,
-                                                    const double tol);
+Rcpp::NumericVector scan_pg_onechr_intcovar_lowmem(const Rcpp::NumericVector& genoprobs,
+                                                   const Rcpp::NumericMatrix& pheno,
+                                                   const Rcpp::NumericMatrix& addcovar,
+                                                   const Rcpp::NumericMatrix& intcovar,
+                                                   const Rcpp::NumericMatrix& eigenvec,
+                                                   const Rcpp::NumericVector& weights,
+                                                   const double tol);
 
-#endif // SCAN_LMM_H
+#endif // SCAN_PG_H

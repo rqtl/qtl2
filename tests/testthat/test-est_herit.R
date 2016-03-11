@@ -9,8 +9,8 @@ test_that("est_herit works with intercross", {
     kinship <- calc_kinship(probs)
 
     # scan just chr 19; compare est_herit to those
-    out_reml <- scan1_lmm(probs[,"19"], iron$pheno, kinship, reml=TRUE)
-    out_ml <- scan1_lmm(probs[,"19"], iron$pheno, kinship, reml=FALSE)
+    out_reml <- scan1(probs[,"19"], iron$pheno, kinship, reml=TRUE)
+    out_ml <- scan1(probs[,"19"], iron$pheno, kinship, reml=FALSE)
 
     expect_equal(est_herit(iron$pheno, kinship, reml=TRUE)[1:2], # [1:2] to strip off attributes
                  out_reml$hsq[1,]) # [1,] to convert to vector
@@ -29,8 +29,8 @@ test_that("est_herit with intercross with an additive covariate", {
     X <- match(iron$covar$sex, c("f", "m"))-1
     names(X) <- rownames(iron$covar)
 
-    out_reml <- scan1_lmm(probs[,"19"], iron$pheno, kinship, addcovar=X, reml=TRUE)
-    out_ml <- scan1_lmm(probs[,"19"], iron$pheno, kinship, addcovar=X, reml=FALSE)
+    out_reml <- scan1(probs[,"19"], iron$pheno, kinship, addcovar=X, reml=TRUE)
+    out_ml <- scan1(probs[,"19"], iron$pheno, kinship, addcovar=X, reml=FALSE)
 
     expect_equal(est_herit(iron$pheno, kinship, addcovar=X, reml=TRUE)[1:2], # [1:2] to strip off attributes
                  out_reml$hsq[1,]) # [1,] to convert to vector
