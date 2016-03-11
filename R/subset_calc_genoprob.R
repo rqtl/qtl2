@@ -27,15 +27,14 @@
 #' # keep just chromosome 2
 #' prsub2 <- pr[,2]
 subset.calc_genoprob <-
-    function(x, ind, chr, ...)
+    function(x, ind=NULL, chr=NULL, ...)
 {
-    if((missing(ind) || is.null(ind)) &&
-       (missing(chr) || is.null(chr)))
+    if(is.null(ind) && is.null(chr))
         stop("You must specify either ind or chr.")
 
     chrID <- names(x$map)
     n_chr <- length(chrID)
-    if(!missing(chr) && !is.null(chr)) {
+    if(!is.null(chr)) {
         if(is.logical(chr)) {
             if(length(chr) != n_chr) {
                 stop("length(chr) [", length(chr), "] != no. chr in x [",
@@ -69,7 +68,7 @@ subset.calc_genoprob <-
     else stop("Neither probs no draws found.")
 
     n_ind <- length(indID)
-    if(!missing(ind) && !is.null(ind)) {
+    if(!is.null(ind)) {
         if(is.logical(ind)) {
             if(length(ind) != n_ind) {
                 stop("length(ind) [", length(ind), "] != no. ind in x [",
@@ -109,5 +108,5 @@ subset.calc_genoprob <-
 #' @export
 #' @rdname subset.calc_genoprob
 `[.calc_genoprob` <-
-    function(x, ind, chr)
+    function(x, ind=NULL, chr=NULL)
     subset(x, ind, chr)

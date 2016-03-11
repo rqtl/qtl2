@@ -5,9 +5,9 @@
 \alias{subset.calc_genoprob}
 \title{Subsetting genotype probabilities}
 \usage{
-\method{subset}{calc_genoprob}(x, ind, chr, ...)
+\method{subset}{calc_genoprob}(x, ind = NULL, chr = NULL, ...)
 
-\method{[}{calc_genoprob}(x, ind, chr)
+\method{[}{calc_genoprob}(x, ind = NULL, chr = NULL)
 }
 \arguments{
 \item{x}{Genotype probabilities as output from \code{\link{calc_genoprob}}.}

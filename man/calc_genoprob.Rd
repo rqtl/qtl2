@@ -5,8 +5,9 @@
 \title{Calculate conditional genotype probabilities}
 \usage{
 calc_genoprob(cross, step = 0, off_end = 0, stepwidth = c("fixed", "max"),
-  pseudomarker_map, error_prob = 0.0001, map_function = c("haldane",
-  "kosambi", "c-f", "morgan"), quiet = TRUE, cores = 1)
+  pseudomarker_map = NULL, error_prob = 0.0001,
+  map_function = c("haldane", "kosambi", "c-f", "morgan"), quiet = TRUE,
+  cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the

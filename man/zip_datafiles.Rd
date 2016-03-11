@@ -4,14 +4,14 @@
 \alias{zip_datafiles}
 \title{Zip a set of data files}
 \usage{
-zip_datafiles(control_file, zip_file, quiet = TRUE)
+zip_datafiles(control_file, zip_file = NULL, quiet = TRUE)
 }
 \arguments{
 \item{control_file}{Character string with path to the control file
 (\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON})
 containing all of the control information.}
 
-\item{zip_file}{Name of zip file to use. If omitted, we use the
+\item{zip_file}{Name of zip file to use. If NULL, we use the
 stem of \code{control_file} but with a \code{.zip} extension.}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}

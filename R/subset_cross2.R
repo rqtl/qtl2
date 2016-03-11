@@ -31,9 +31,9 @@
 #' # keep just chromosome 1
 #' grav2_c1 <- grav2[,1]
 subset.cross2 <-
-    function(x, ind, chr, ...)
+    function(x, ind=NULL, chr=NULL, ...)
 {
-    if(missing(ind) && missing(chr))
+    if(is.null(ind) && is.null(chr))
         stop("You must specify either ind or chr.")
 
     slice_by_chr <- c("geno", "founder_geno", "gmap", "pmap", "is_x_chr")
@@ -41,7 +41,7 @@ subset.cross2 <-
     slice_by_ind <- c("geno", "is_female", "cross_info")
     slice_by_ind_linemap <- c("pheno", "covar")
 
-    if(!missing(chr)) {
+    if(!is.null(chr)) {
         for(obj in slice_by_chr) {
             if(obj %in% names(x)) {
                 x[[obj]] <- x[[obj]][chr]
@@ -49,7 +49,7 @@ subset.cross2 <-
         }
     }
 
-    if(!missing(ind)) {
+    if(!is.null(ind)) {
         for(obj in slice_by_ind) {
             if(obj %in% names(x)) {
                 # is it a list like $geno?
@@ -90,5 +90,5 @@ subset.cross2 <-
 #' @export
 #' @rdname subset.cross2
 `[.cross2` <-
-    function(x, ind, chr)
+    function(x, ind=NULL, chr=NULL)
     subset(x, ind, chr)

@@ -275,7 +275,7 @@ rqtl_getsex <-
 rqtl_getgenonames <-
     function(type=c("f2","bc","riself","risib","4way","dh","haploid","special","bcsft"),
              chrtype=c("A","X"), expandX=c("simple","standard","full"),
-             sexpgm, cross.attr)
+             sexpgm, cross.attr=NULL)
 {
     type <- match.arg(type)
     chrtype <- match.arg(chrtype)
@@ -296,7 +296,7 @@ rqtl_getgenonames <-
 
     if(type=="special") return(cross.attr$genotypes)
 
-    if(missing(cross.attr) || !("alleles" %in% names(cross.attr))) {
+    if(is.null(cross.attr) || !("alleles" %in% names(cross.attr))) {
         if(type == "4way") alleles <- LETTERS[1:4]
         else alleles <- LETTERS[1:2]
     }

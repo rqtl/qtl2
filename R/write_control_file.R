@@ -113,16 +113,16 @@
 #'                    na.strings=c("-", "NA"))
 #' }
 write_control_file <-
-function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
-         pmap_file, pheno_file, covar_file, phenocovar_file,
-         sex_file, sex_covar, sex_codes,
-         crossinfo_file, crossinfo_covar, crossinfo_codes,
-         linemap_file, linemap_covar, geno_codes, alleles, xchr,
+function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gmap_file=NULL,
+         pmap_file=NULL, pheno_file=NULL, covar_file=NULL, phenocovar_file=NULL,
+         sex_file=NULL, sex_covar=NULL, sex_codes=NULL,
+         crossinfo_file=NULL, crossinfo_covar=NULL, crossinfo_codes=NULL,
+         linemap_file=NULL, linemap_covar=NULL, geno_codes=NULL, alleles=NULL, xchr=NULL,
          sep=",", na.strings=c("-", "NA"), comment.char="#",
          geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
          phenocovar_transposed=FALSE,
-         description, comments)
+         description=NULL, comments=NULL)
 {
     output_file <- path.expand(output_file)
     if(file.exists(output_file))
@@ -132,73 +132,75 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
                    comments="", # stub to be replaced or removed
                    crosstype=crosstype, sep=sep, na.strings=na.strings,
                    comment.char=comment.char)
-    if(missing(description) || is.null(description) || description=="")
-        result$description <- NULL
-    else
+    if(!is.null(description) && description!="") {
         paste(description, collapse="\n")
+        result$description <- description
+    } else {
+        result$description <- NULL
+    }
 
-    if(!missing(geno_file))
+    if(!is.null(geno_file))
         result$geno <- geno_file
-    if(!missing(founder_geno_file))
+    if(!is.null(founder_geno_file))
         result$founder_geno <- founder_geno_file
-    if(!missing(gmap_file))
+    if(!is.null(gmap_file))
         result$gmap <- gmap_file
-    if(!missing(pmap_file))
+    if(!is.null(pmap_file))
         result$pmap <- pmap_file
-    if(!missing(pheno_file))
+    if(!is.null(pheno_file))
         result$pheno <- pheno_file
-    if(!missing(covar_file))
+    if(!is.null(covar_file))
         result$covar <- covar_file
-    if(!missing(phenocovar_file))
+    if(!is.null(phenocovar_file))
         result$phenocovar <- phenocovar_file
-    if(!missing(alleles))
+    if(!is.null(alleles))
         result$alleles <- alleles
-    if(!missing(xchr))
+    if(!is.null(xchr))
         result$x_chr <- xchr
-    if(!missing(geno_codes)) {
+    if(!is.null(geno_codes)) {
         storage.mode(geno_codes) <- "integer"
         result$genotypes <- as.list(geno_codes)
     }
 
     # transposed file?
-    if(!missing(geno_transposed) && geno_transposed)
+    if(!is.null(geno_transposed) && geno_transposed)
         result$geno_transposed <- geno_transposed
-    if(!missing(founder_geno_transposed) && founder_geno_transposed)
+    if(!is.null(founder_geno_transposed) && founder_geno_transposed)
         result$founder_geno_transposed <- founder_geno_transposed
-    if(!missing(pheno_transposed) && pheno_transposed)
+    if(!is.null(pheno_transposed) && pheno_transposed)
         result$pheno_transposed <- pheno_transposed
-    if(!missing(covar_transposed) && covar_transposed)
+    if(!is.null(covar_transposed) && covar_transposed)
         result$covar_transposed <- covar_transposed
-    if(!missing(phenocovar_transposed) && phenocovar_transposed)
+    if(!is.null(phenocovar_transposed) && phenocovar_transposed)
         result$phenocovar_transposed <- phenocovar_transposed
 
     # sex
-    if(!missing(sex_file) && !is.null(sex_file)) {
-        if(!missing(sex_covar) && !is.null(sex_covar))
+    if(!is.null(sex_file)) {
+        if(!is.null(sex_covar))
             stop("Specify just one of sex_file and sex_covar")
-        if(missing(sex_codes) || is.null(sex_codes))
+        if(is.null(sex_codes))
             stop("if sex_file is specified, sex_codes must be as well")
 
         result$sex <- c(list(file=sex_file),
                         as.list(sex_codes))
     }
-    else if(!missing(sex_covar) && !is.null(sex_covar)) {
-        if(missing(sex_codes) || is.null(sex_codes))
+    else if(!is.null(sex_covar)) {
+        if(is.null(sex_codes))
             stop("if sex_covar is specified, sex_codes must be as well")
         result$sex <- c(list(covar=sex_covar),
                         as.list(sex_codes))
     }
 
     # cross_info
-    if(!missing(crossinfo_file) && !is.null(crossinfo_file)) {
-        if(!missing(crossinfo_covar) && !is.null(crossinfo_covar))
+    if(!is.null(crossinfo_file)) {
+        if(!is.null(crossinfo_covar))
             stop("Specify just one of crossinfo_file and crossinfo_covar")
-        if(!missing(crossinfo_codes) && is.null(crossinfo_codes))
+        if(is.null(crossinfo_codes))
             warning("if crossinfo_file is specified, crossinfo_codes is ignored")
         result$cross_info <- list(file=crossinfo_file)
     }
-    else if(!missing(crossinfo_covar) && !is.null(crossinfo_covar)) {
-        if(missing(crossinfo_codes) || is.null(crossinfo_codes))
+    else if(!is.null(crossinfo_covar)) {
+        if(is.null(crossinfo_codes))
             stop("if crossinfo_covar is specified, crossinfo_codes must be as well")
         storage.mode(crossinfo_codes) <- "integer"
         result$cross_info <- c(list(covar=crossinfo_covar),
@@ -206,18 +208,18 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
     }
 
     # linemap
-    if(!missing(linemap_file) && !is.null(linemap_file)) {
-        if(!missing(linemap_covar) && !is.null(linemap_covar))
+    if(!is.null(linemap_file)) {
+        if(!is.null(linemap_covar))
             stop("Specify just one of linemap_file and linemap_covar")
         result$linemap <- linemap_file
     }
-    else if(!missing(linemap_covar) && !is.null(linemap_covar)) {
+    else if(!is.null(linemap_covar)) {
         result$linemap <- linemap_covar
     }
 
     # JSON or YAML?
     if(grepl("\\.json$", output_file)) { # assume JSON
-        if(missing(comments) || is.null(comments))
+        if(is.null(comments))
             result$comments <- NULL
         else
             result$comments <- comments
@@ -230,7 +232,7 @@ function(output_file, crosstype, geno_file, founder_geno_file, gmap_file,
         result$comments <- NULL # delete the placeholder
 
         # comments as a single string
-        if(missing(comments) || is.null(comments))
+        if(is.null(comments))
             comments <- ""
         else comments <- paste0("# ", comments, "\n", collapse="")
 

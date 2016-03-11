@@ -25,9 +25,9 @@
 #'
 #' @export
 reduce_markers <-
-    function(map, weights, min_distance=1)
+    function(map, weights=NULL, min_distance=1)
 {
-    if(missing(weights) || is.null(weights))
+    if(is.null(weights))
         weights <- lapply(map, function(a) rep(1, length(a)))
 
     stopifnot(length(map) == length(weights))

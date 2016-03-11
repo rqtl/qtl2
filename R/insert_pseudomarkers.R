@@ -58,10 +58,10 @@
 #' map_w_pmar <- insert_pseudomarkers(map, step=1)
 insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
-         pseudomarker_map, tol=0.01)
+         pseudomarker_map=NULL, tol=0.01)
 {
     stepwidth <- match.arg(stepwidth)
-    if(missing(pseudomarker_map) || is.null(pseudomarker_map)) {
+    if(is.null(pseudomarker_map)) {
         pseudomarker_map <- vector("list", length(map))
     }
     else {
@@ -97,13 +97,13 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
 
 insert_pseudomarkers_onechr <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
-         pseudomarker_map, tol=0.01, pmar_stem="loc")
+         pseudomarker_map=NULL, tol=0.01, pmar_stem="loc")
 {
     if(any(is.na(map))) stop("map values can't be missing")
 
     if(tol < 0) stop("tol should be >= 0")
 
-    if(missing(pseudomarker_map) || is.null(pseudomarker_map)) {
+    if(is.null(pseudomarker_map)) {
         stepwidth <- match.arg(stepwidth)
         if(step < 0) stop("step should be >= 0")
         if(step > 0 && tol >= step) stop("tol should be << step")
@@ -146,10 +146,8 @@ function(map, step, off_end=0, tol=0.01, pmar_stem="loc")
 # treat the positions in "pmar" as agrid, and return both the marker index
 # and a logical vector of which values in output are on the grid.
 combine_markers_with_grid <-
-function(map, pmar_map, tol=0.01, pmar_stem="loc", step)
+function(map, pmar_map, tol=0.01, pmar_stem="loc", step=0.1)
 {
-    if(missing(step) || is.null(step)) step <- 0.1
-
     # for each pseudomarker, distance to nearest marker
     d <- abs(outer(map, pmar_map, "-"))
     mind <- apply(d, 2, min)

@@ -67,7 +67,7 @@
 #' draws <- sim_geno(grav2, n_draws=4, step=1, error_prob=0.002)
 
 sim_geno <-
-function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map,
+function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
          quiet=TRUE, cores=1)
 {
@@ -87,8 +87,6 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     }
 
     # construct map at which to do the calculations
-    if(missing(pseudomarker_map))
-        pseudomarker_map <- NULL
     # tolerance for matching marker and pseudomarker positions
     tol <- ifelse(step==0 || step>1, 0.01, step/100)
     # create the combined marker/pseudomarker map
