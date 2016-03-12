@@ -2,10 +2,9 @@
 #'
 #' Plot SNP associations, with possible expansion from distinct snps to all snps.
 #'
-#' @param scan1output Output of \code{\link[qtl2scan]{scan1}} or
-#' \code{\link[qtl2scan]{scan1_lmm}}. Should contain an attribute,
-#' \code{"snpinfo"}, as when \code{\link[qtl2scan]{scan1}} or
-#' \code{\link[qtl2scan]{scan1_lmm}} are run with SNP probabilities
+#' @param scan1output Output of \code{\link[qtl2scan]{scan1}}.  Should
+#' contain an attribute, \code{"snpinfo"}, as when
+#' \code{\link[qtl2scan]{scan1}} are run with SNP probabilities
 #' produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.
 #'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
