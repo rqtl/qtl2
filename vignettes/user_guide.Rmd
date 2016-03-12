@@ -381,9 +381,9 @@ the LOCO method give quite similar results.
 ## Estimated QTL effects
 
 The `scan1()` function return only LOD scores. To
-obtain estimated QTL effects, use the functions `scan1coef()` and
-`scan1coef_lmm()`. These functions take a single phenotype and the
-genotype probabilities for a single chromosome and return a matrix
+obtain estimated QTL effects, use the function `scan1coef()`.
+This function takes a single phenotype and the
+genotype probabilities for a single chromosome and returns a matrix
 with the estimated coefficients at each putative QTL location along
 the chromosome.
 
@@ -412,7 +412,6 @@ for(i in 1:ncol(co))
 
 The default is to provide phenotype averages for each genotype
 group. If instead you want additive and dominance effects, you can
-
 provide a square matrix of _contrasts_, as follows:
 
 ```{r est_effects_liver_c2_contr}
@@ -435,22 +434,21 @@ for(i in 1:2)
     axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
 ```
 
-The `scan1coef_lmm()` function works the same way as `scan1coef()` but
-also taking a kinship matrix and fitting a linear mixed model (LMM) to
-account for a residual polygenic effect. Here's let's use the kinship
-matrix from the LOCO method.
+If you provide a kinship matrix to `scan1coef()`, it fits a linear
+mixed model (LMM) to account for a residual polygenic effect. Here
+let's use the kinship matrix from the LOCO method.
 
-```{r est_effects_lmm_liver_c2}
-c2eff_lmm <- scan1coef_lmm(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+```{r est_effects_pg_liver_c2}
+c2eff_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ```
 
 Here's a plot of the estimates.
 
-```{r plot_effects_lmm_liver_c2}
+```{r plot_effects_pg_liver_c2}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_lmm, "map")[[1]]
+map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-plot(c2eff_lmm, columns=1:3, col=col, ylab="Phenotype average")
+plot(c2eff_pg, columns=1:3, col=col, ylab="Phenotype average")
 co <- c2eff$coef
 for(i in 1:ncol(co))
     axis(side=4, at=co[nrow(co), i], colnames(co)[i], tick=FALSE, col.axis=col[i])
@@ -459,18 +457,18 @@ for(i in 1:ncol(co))
 You can also get estimated additive and dominance effects, using a
 matrix of contrasts.
 
-```{r est_effects_lmm_liver_c2_contr}
-c2effB_lmm <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
-                        contrasts=cbind(mu=c(1,1,1), a=c(-0.5, 0, 0.5), d=c(-0.5, 1, -0.5)))
+```{r est_effects_pg_liver_c2_contr}
+c2effB_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
+                       contrasts=cbind(mu=c(1,1,1), a=c(-0.5, 0, 0.5), d=c(-0.5, 1, -0.5)))
 ```
 
 Here's a plot of the results.
 
-```{r plot_effects_lmm_liver_c2_contr}
+```{r plot_effects_pg_liver_c2_contr}
 par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
-co <- c2effB_lmm$coef[,2:3]
+co <- c2effB_pg$coef[,2:3]
 ymx <- max(abs(co))
-plot(c2effB_lmm, columns=2:3, col=col)
+plot(c2effB_pg, columns=2:3, col=col)
 for(i in 1:2)
     axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
 ```
@@ -548,7 +546,7 @@ names(sex) <- rownames(DOex$covar)
 We perform a genome scan with a linear mixed model (adjusting for
 a residual polygenic effect), with sex as an additive covariate.
 
-```{r DOex_scan1_lmm}
+```{r DOex_scan1_pg}
 out <- scan1(apr, DOex$pheno, k, sex)
 ```
 
@@ -560,11 +558,11 @@ plot(out)
 ```
 
 There's a strong peak on chromosome 2. Let's look at the QTL effects.
-We estimate them with `scan1coef_lmm()`. We need to subset the allele
+We estimate them with `scan1coef()`. We need to subset the allele
 probabilities and the list of kinship matrices.
 
 ```{r DOex_effects_c2}
-coef_c2 <- scan1coef_lmm(apr[,"2"], DOex$pheno, k[["2"]], sex)
+coef_c2 <- scan1coef(apr[,"2"], DOex$pheno, k[["2"]], sex)
 ```
 
 For the DO, with 8 QTL alleles, we can use the function `plot_coefCC`
