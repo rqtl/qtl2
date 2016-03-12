@@ -19,8 +19,7 @@ plot_coefCC(x, add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
-\code{\link[qtl2scan]{scan1coef}} or
-\code{\link[qtl2scan]{scan1coef_lmm}}.}
+\code{\link[qtl2scan]{scan1coef}}.}
 
 \item{columns}{Vector of columns to plot}
 
@@ -68,7 +67,7 @@ names(covar) <- rownames(iron$covar)
 
 # calculate coefficients for chromosome 7
 library(qtl2scan)
-coef <- scan1coef(probs[,7], pheno, covar)
+coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 
 # plot QTL effects
 plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))

@@ -2,8 +2,7 @@
 #'
 #' Plot LOD curves for a genome scan
 #'
-#' @param x Output of \code{\link[qtl2scan]{scan1}} or
-#' \code{\link[qtl2scan]{scan1_lmm}}.
+#' @param x Output of \code{\link[qtl2scan]{scan1}}.
 #'
 #' @param lodcolumn LOD score column to plot (a numeric index, or a
 #' character string for a column name). Only one value allowed.
@@ -47,7 +46,7 @@
 #'
 #' # perform genome scan
 #' library(qtl2scan)
-#' out <- scan1(probs, pheno, covar, Xcovar)
+#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # plot the results for selected chromosomes
 #' ylim <- c(0, maxlod(out)*1.02) # need to strip class to get overall max LOD

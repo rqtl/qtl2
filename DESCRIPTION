@@ -1,5 +1,5 @@
 Package: qtl2plot
-Version: 0.4-5
+Version: 0.4-6
 Date: 2016-03-11
 Title: Data Visualization for QTL Experiments
 Description: Functions to plot QTL analysis results and related
@@ -17,7 +17,7 @@ Suggests:
     testthat,
     roxygen2,
     qtl2geno (>= 0.4-5),
-    qtl2scan (>= 0.4-5)
+    qtl2scan (>= 0.4-9)
 License: GPL-3
 URL: http://kbroman.org/qtl2
 LazyData: true

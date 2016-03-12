@@ -3,8 +3,7 @@
 #' Plot estimated QTL effects along a chromosomes.
 #'
 #' @param x Estimated QTL effects ("coefficients") as obtained from
-#' \code{\link[qtl2scan]{scan1coef}} or
-#' \code{\link[qtl2scan]{scan1coef_lmm}}.
+#' \code{\link[qtl2scan]{scan1coef}}.
 #'
 #' @param columns Vector of columns to plot
 #'
@@ -53,7 +52,7 @@
 #'
 #' # calculate coefficients for chromosome 7
 #' library(qtl2scan)
-#' coef <- scan1coef(probs[,7], pheno, covar)
+#' coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 #'
 #' # plot QTL effects
 #' plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
