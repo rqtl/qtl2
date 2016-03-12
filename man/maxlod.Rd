@@ -8,7 +8,7 @@ maxlod(scan1_output, chr = NULL)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}} or \code{\link{scan1_lmm}}.}
+\code{\link{scan1}}.}
 
 \item{chr}{Option vector of chromosomes to consider.}
 }
@@ -37,7 +37,7 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
 # perform genome scan
-out <- scan1(probs, pheno, covar, Xcovar)
+out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # overall maximum
 maxlod(out)

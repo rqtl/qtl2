@@ -18,7 +18,7 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     Xcovar <- get_x_covar(iron)
 
     # perform genome scan
-    out <- scan1(probs, pheno, covar, Xcovar)
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
     # maximum of first column
     expected <- data.frame(chr="16",
@@ -66,7 +66,7 @@ test_that("maxlod works for intercross with two phenotypes", {
     Xcovar <- get_x_covar(iron)
 
     # perform genome scan
-    out <- scan1(probs, pheno, covar, Xcovar)
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
     # overall max
     expect_equal(maxlod(out), max(out$lod))

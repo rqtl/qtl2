@@ -1,102 +1,7 @@
-#' Genome scan with a single-QTL and linear mixed model
-#'
-#' Genome scan with a single-QTL and linear mixed model to account for
-#' a random polygenic effect, with possible allowance for covariates.
-#'
-#' @param genoprobs Genotype probabilities as calculated by
-#' \code{\link[qtl2geno]{calc_genoprob}}.
-#' @param pheno A matrix of phenotypes, individuals x phenotypes.
-#' @param kinship A kinship matrix, or a list of kinship matrices (one
-#' per chromosome), in order to use the LOCO (leave one chromosome
-#' out) method.
-#' @param addcovar An optional matrix of additive covariates.
-#' @param Xcovar An optional matrix with additional additive covariates used for
-#' null hypothesis when scanning the X chromosome.
-#' @param intcovar An optional matrix of interactive covariates.
-#' @param reml If true, use REML; otherwise, use maximimum likelihood.
-#' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
-#' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
-#' @param ... Additional control parameters; see Details.
-#'
-#' @return A list containing the following
-#' \itemize{
-#' \item \code{lod} - A matrix of LOD scores, positions x phenotypes.
-#' \item \code{map} - A list containing the map positions at which the
-#'     calculations were performed, taken from the input \code{genoprobs}.
-#' \item \code{hsq} - A matrix of estimated heritabilities under the
-#'     null hypothesis of no QTL. Columns are the phenotypes. If the
-#'     \code{"loco"} method was used with
-#'     \code{\link[qtl2geno]{calc_kinship}} to calculate a list of kinship
-#'     matrices, one per chromosome, the rows of \code{hsq} will be the
-#'     heritabilities for the different chromosomes (well, leaving out
-#'     each one). If \code{Xcovar} was not NULL, there will at least be an
-#'     autosome and X chromosome row.
-#' \item \code{addcovar} - Names of additive covariates that were used.
-#' \item \code{Xcovar} - Names of special covariates for X chromosome
-#'     under the null hypothesis of no QTL
-#' \item \code{intcovar} - Names of interactive covariates that were used.
-#' \item \code{sample_size} - Vector of sample sizes used for each
-#'     phenotype
-#' \item \code{snpinfo} - Present only if the input \code{genoprobs}
-#'     was produced by \code{\link{genoprob_to_snpprob}}, this is a list
-#'     of data frames giving information about all SNPs. The \code{lod}
-#'     matrix will contain only results for distinct SNPs. The
-#'     \code{index} column in \code{snpinfo} is the row index in the
-#'     \code{lod} matrix that corresponds to the current SNP.
-#' }
-#'
-#' @details For each of the inputs, the row names are used as
-#' individual identifiers, to align individuals. The \code{genoprobs}
-#' object should have a component \code{"is_x_chr"} that indicates
-#' which of the chromosomes is the X chromosome, if any.
-#'
-#' If \code{kinship} is a single matrix, then the \code{hsq}
-#' attribute in the results is a vector of heritabilities. If
-#' \code{kinship} is a list (one matrix per chromosome), then
-#' \code{hsq} is a matrix, phenotypes x chromosomes.
-#'
-#' If \code{reml=TRUE}, restricted maximum likelihood (reml) is used
-#' to estimate the heritability under the null hypothesis of no QTL,
-#' separately for each phenotype. But then in the genome scans, this
-#' is taken as fixed and known, and the usual Gaussian log likelihood
-#' is used to calculate LOD scores.
-#'
-#' The \code{...} argument can contain two additional control
-#' parameters; suspended for simplicity (or confusion, depending on
-#' your point of view). \code{tol} is used as a tolerance value for
-#' linear regression by QR decomposition (in determining whether
-#' columns are linearly dependent on others and should be omitted);
-#' default \code{1e-12}. \code{intcovar_method} indicates whether to
-#' use a high-memory (but potentially faster) method or a low-memory
-#' (and possibly slower) method, with values \code{"highmem"} or
-#' \code{"lowmem"}; default \code{"lowmem"}.
-#'
-#' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
-#' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-#'
-#' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-#'
-#' # leave-one-chromosome-out kinship matrices
-#' kinship <- calc_kinship(probs, "loco")
-#'
-#' # grab phenotypes and covariates; ensure that covariates have names attribute
-#' pheno <- iron$pheno
-#' covar <- match(iron$covar$sex, c("f", "m")) # make numeric
-#' names(covar) <- rownames(iron$covar)
-#' Xcovar <- get_x_covar(iron)
-#'
-#' # perform genome scan
-#' out <- scan1_lmm(probs, pheno, kinship, covar, Xcovar)
-#'
-#' @export
-scan1_lmm <-
+# Genome scan with a single-QTL and linear mixed model
+#
+# called by scan1() when kinship() is provided.
+scan1_pg <-
     function(genoprobs, pheno, kinship, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, reml=TRUE, cores=1, ...)
 {
@@ -208,14 +113,14 @@ scan1_lmm <-
 
         # fit LMM for each phenotype, one at a time
         nullresult <- calc_hsq_clean(Ke, ph, ac, Xc, is_x_chr, reml, cores,
-                                       check_boundary, tol)
+                                     check_boundary, tol)
         hsq[, phecol] <- nullresult$hsq
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes
-        lod <- scan1_lmm_clean(genoprobs, these2keep, Ke, ph, ac, ic, is_x_chr,
-                               genoprob_Xcol2drop,
-                               nullresult$hsq, nullresult$loglik, reml, cores,
-                               intcovar_method, tol)
+        lod <- scan1_pg_clean(genoprobs, these2keep, Ke, ph, ac, ic, is_x_chr,
+                              genoprob_Xcol2drop,
+                              nullresult$hsq, nullresult$loglik, reml, cores,
+                              intcovar_method, tol)
 
         result[,phecol] <- lod
     }
@@ -285,7 +190,7 @@ calc_hsq_clean <-
 
 # perform the LMM scan
 # genoprobs is still a big complicated calc_genoprob object
-scan1_lmm_clean <-
+scan1_pg_clean <-
     function(genoprobs, ind2keep, Ke, pheno, addcovar, intcovar, is_x_chr,
              genoprob_Xcol2drop,
              hsq, null_loglik, reml, cores, intcovar_method, tol)
@@ -350,11 +255,11 @@ scan1_lmm_clean <-
             weights <- sqrt(weights)
 
             if(is.null(ic))
-                loglik <- scan_lmm_onechr(pr, y, ac, Kevec, weights, tol)
+                loglik <- scan_pg_onechr(pr, y, ac, Kevec, weights, tol)
             else if(intcovar_method=="highmem")
-                loglik <- scan_lmm_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, weights, tol)
+                loglik <- scan_pg_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, weights, tol)
             else
-                loglik <- scan_lmm_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, weights, tol)
+                loglik <- scan_pg_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, weights, tol)
             lod <- (loglik - nullLL)/log(10)
         }
 

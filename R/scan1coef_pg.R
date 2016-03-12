@@ -1,75 +1,6 @@
-#' Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM
-#'
-#' Calculate QTL effects in scan along one chromosome with a
-#' single-QTL model using a linear mixed model, with possible
-#' allowance for covariates.
-#'
-#' @param genoprobs Genotype probabilities as calculated by
-#' \code{\link[qtl2geno]{calc_genoprob}}.
-#' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
-#' @param kinship A kinship matrix. Can be eigen decomposition of
-#' kinship matrix (as calculated with \code{\link{decomp_kinship}}),
-#' but it would need to be for the exact subset of individuals
-#' (following omitting those with missing genotype probabilities,
-#' phenotypes, or covariates).
-#' @param addcovar An optional matrix of additive covariates.
-#' @param intcovar An optional matrix of interactive covariates.
-#' @param contrasts An optional matrix of genotype contrasts, size
-#' genotypes x genotypes. For an intercross, you might use
-#' \code{cbind(c(1,0,0), c(-0.5, 0, 0.5), c(-0.5, 1, 0.5))} to get
-#' mean, additive effect, and dominance effect. The default is the
-#' identity matrix.
-#' @param se If TRUE, also calculate the standard errors.
-#' @param hsq (Optional) residual heritability
-#' @param reml If true and \code{hsq} is not provided, use REML to estimate \code{hsq}.
-#' @param tol Tolerance value for
-#' linear regression by QR decomposition (in determining whether
-#' columns are linearly dependent on others and should be omitted)
-#'
-#' @return A list containing the following
-#' \itemize{
-#' \item \code{coef} - A matrix of estimated regression coefficients, of dimension
-#'     positions x number of effects. The number of effects is
-#'     \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
-#' \item \code{map} - A list containing the map positions at which the
-#'     calculations were performed, taken from the input \code{genoprobs}.
-#' \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
-#'     standard errors, of same dimension as \code{coef}.
-#' \item \code{contrasts} - The input matrix of genotype coefficient
-#'     contrasts that were used.
-#' \item \code{addcovar} - Names of additive covariates that were used.
-#' \item \code{intcovar} - Names of interactive covariates that were used.
-#' \item \code{sample_size} - Vector of sample sizes used for each
-#'     phenotype
-#' }
-#'
-#' @details For each of the inputs, the row names are used as
-#' individual identifiers, to align individuals.
-#'
-#' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
-#' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-#' \dontshow{iron <- iron[,c(7, 8)]}
-#'
-#' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-#'
-#' # leave-one-chromosome-out kinship matrices
-#' kinship <- calc_kinship(probs, "loco")
-#'
-#' # grab phenotypes and covariates; ensure that covariates have names attribute
-#' pheno <- iron$pheno[,1]
-#' covar <- match(iron$covar$sex, c("f", "m")) # make numeric
-#' names(covar) <- rownames(iron$covar)
-#'
-#' # calculate coefficients for chromosome 7
-#' coef <- scan1coef_lmm(probs[,"7"], pheno, kinship[["7"]], addcovar=covar)
-#'
-#' @export
-scan1coef_lmm <-
+# Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM
+#
+scan1coef_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, intcovar=NULL,
              contrasts=NULL, se=FALSE,
@@ -112,6 +43,11 @@ scan1coef_lmm <-
         kinshipIDs <- rownames(kinship$vectors)
         did_decomp <- TRUE
     } else {
+        if(is.list(kinship)) { # if a list of length one, take the first part
+            if(length(kinship) > 1) # if a list of length >1, give error
+                stop("kinship should be a single matrix")
+            kinship <- kinship[[1]]
+        }
         kinshipIDs <- check_kinship(kinship, 1)
         did_decomp <- FALSE
     }
@@ -173,10 +109,10 @@ scan1coef_lmm <-
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoefSE_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
+            result <- scancoefSE_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
         }
         else {                  # intcovar
-            result <- scancoefSE_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
+            result <- scancoefSE_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
                                               eigenvec, weights, tol)
         }
 
@@ -186,10 +122,10 @@ scan1coef_lmm <-
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoef_lmm_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
+            result <- scancoef_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
         }
         else {                  # intcovar
-            result <- scancoef_lmm_intcovar(genoprobs, pheno, addcovar, intcovar,
+            result <- scancoef_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
                                             eigenvec, weights, tol)
         }
         SE <- NULL

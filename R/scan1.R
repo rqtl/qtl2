@@ -1,17 +1,23 @@
-#' Genome scan with a single-QTL model by Haley-Knott regression
+#' Genome scan with a single-QTL model
 #'
-#' Genome scan with a single-QTL model by Haley-Knott regression, with possible allowance for covariates.
+#' Genome scan with a single-QTL model by Haley-Knott regression or a
+#' linear mixed model, with possible allowance for covariates.
 #'
 #' @param genoprobs Genotype probabilities as calculated by
 #' \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
+#' @param kinship Optional kinship matrix, or a list of kinship matrices (one
+#' per chromosome), in order to use the LOCO (leave one chromosome
+#' out) method.
 #' @param addcovar An optional matrix of additive covariates.
 #' @param Xcovar An optional matrix with additional additive covariates used for
 #' null hypothesis when scanning the X chromosome.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
 #' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers.
+#' for individual identifiers. Ignored if \code{kinship} is provided.
+#' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
+#' REML; otherwise maximum likelihood.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -30,7 +36,15 @@
 #' \item \code{sample_size} - Vector of sample sizes used for each
 #'     phenotype
 #' \item \code{weights} - Logical value indicating whether weights
-#'     were used.
+#'     were used (only included if \code{kinship} was not).
+#' \item \code{hsq} - Included if \code{kinship} provided: A matrix of
+#'     estimated heritabilities under the null hypothesis of no
+#'     QTL. Columns are the phenotypes. If the \code{"loco"} method was
+#'     used with \code{\link[qtl2geno]{calc_kinship}} to calculate a list
+#'     of kinship matrices, one per chromosome, the rows of \code{hsq}
+#'     will be the heritabilities for the different chromosomes (well,
+#'     leaving out each one). If \code{Xcovar} was not NULL, there will at
+#'     least be an autosome and X chromosome row.
 #' \item \code{snpinfo} - Present only if the input \code{genoprobs}
 #'     was produced by \code{\link{genoprob_to_snpprob}}, this is a list
 #'     of data frames giving information about all SNPs. The \code{lod}
@@ -54,6 +68,16 @@
 #' (and possibly slower) method, with values \code{"highmem"} or
 #' \code{"lowmem"}; default \code{"lowmem"}.
 #'
+#' If \code{kinship} is absent, Haley-Knott regression is performed.
+#' If \code{kinship} is provided, a linear mixed model is used, with a
+#' polygenic effect estimated under the null hypothesis of no (major)
+#' QTL, and then taken as fixed as known in the genome scan.
+#'
+#' If \code{kinship} is a single matrix, then the \code{hsq}
+#' in the results is a vector of heritabilities (one value for each phenotype). If
+#' \code{kinship} is a list (one matrix per chromosome), then
+#' \code{hsq} is a matrix, chromosomes x phenotypes.
+#'
 #' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line
 #' crosses using flanking markers.  Heredity 69:315--324.
@@ -75,13 +99,24 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' out <- scan1(probs, pheno, covar, Xcovar)
+#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
+#'
+#' # leave-one-chromosome-out kinship matrices
+#' kinship <- calc_kinship(probs, "loco")
+#'
+#' # genome scan with a linear mixed model
+#' out_lmm <- scan1(probs, pheno, kinship, covar, Xcovar)
 #'
 #' @export
 scan1 <-
-    function(genoprobs, pheno, addcovar=NULL, Xcovar=NULL,
-             intcovar=NULL, weights=NULL, cores=1, ...)
+    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
+             intcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
 {
+    if(!is.null(kinship)) { # fit linear mixed model
+        return(scan1_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
+                        reml, cores, ...))
+    }
+
     # deal with the dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)

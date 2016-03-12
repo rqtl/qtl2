@@ -5,7 +5,7 @@
 #' Subset the output of \code{\link{scan1}} by chromosome or column
 #'
 #' @param x An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
+#' \code{\link{scan1}}.
 #' @param chr Vector of chromosomes.
 #' @param lodcolumn Vector of integers or character strings indicating the LOD
 #' score columns, either as a numeric indexes or column names.
@@ -32,7 +32,7 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' out <- scan1(probs, pheno, covar, Xcovar)
+#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # pull out chromosome 8
 #' out-c8 <- subset(out, chr="8")

@@ -1,6 +1,6 @@
-// scan chromosome by LMM just to get coefficients
+// scan chromosome by LMM (to adjust for polygenic effect) just to get coefficients
 
-#include "scan1coef_lmm.h"
+#include "scan1coef_pg.h"
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -20,12 +20,12 @@ using namespace Rcpp;
 // output    = matrix of coefficients (genotypes x positions)
 //
 // [[Rcpp::export]]
-NumericMatrix scancoef_lmm_addcovar(const NumericVector& genoprobs,
-                                    const NumericVector& pheno,
-                                    const NumericMatrix& addcovar,
-                                    const NumericMatrix& eigenvec,
-                                    const NumericVector& weights,
-                                    const double tol=1e-12)
+NumericMatrix scancoef_pg_addcovar(const NumericVector& genoprobs,
+                                   const NumericVector& pheno,
+                                   const NumericMatrix& addcovar,
+                                   const NumericMatrix& eigenvec,
+                                   const NumericVector& weights,
+                                   const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
@@ -91,13 +91,13 @@ NumericMatrix scancoef_lmm_addcovar(const NumericVector& genoprobs,
 // output    = matrix of coefficients (genotypes x positions)
 //
 // [[Rcpp::export]]
-NumericMatrix scancoef_lmm_intcovar(const NumericVector& genoprobs,
-                                    const NumericVector& pheno,
-                                    const NumericMatrix& addcovar,
-                                    const NumericMatrix& intcovar,
-                                    const NumericMatrix& eigenvec,
-                                    const NumericVector& weights,
-                                    const double tol=1e-12)
+NumericMatrix scancoef_pg_intcovar(const NumericVector& genoprobs,
+                                   const NumericVector& pheno,
+                                   const NumericMatrix& addcovar,
+                                   const NumericMatrix& intcovar,
+                                   const NumericMatrix& eigenvec,
+                                   const NumericVector& weights,
+                                   const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
@@ -154,12 +154,12 @@ NumericMatrix scancoef_lmm_intcovar(const NumericVector& genoprobs,
 // output    = matrix of coefficients (genotypes x positions)
 //
 // [[Rcpp::export]]
-List scancoefSE_lmm_addcovar(const NumericVector& genoprobs,
-                             const NumericVector& pheno,
-                             const NumericMatrix& addcovar,
-                             const NumericMatrix& eigenvec,
-                             const NumericVector& weights,
-                             const double tol=1e-12)
+List scancoefSE_pg_addcovar(const NumericVector& genoprobs,
+                            const NumericVector& pheno,
+                            const NumericMatrix& addcovar,
+                            const NumericMatrix& eigenvec,
+                            const NumericVector& weights,
+                            const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
@@ -231,13 +231,13 @@ List scancoefSE_lmm_addcovar(const NumericVector& genoprobs,
 // output    = matrix of coefficients (genotypes x positions)
 //
 // [[Rcpp::export]]
-List scancoefSE_lmm_intcovar(const NumericVector& genoprobs,
-                             const NumericVector& pheno,
-                             const NumericMatrix& addcovar,
-                             const NumericMatrix& intcovar,
-                             const NumericMatrix& eigenvec,
-                             const NumericVector& weights,
-                             const double tol=1e-12)
+List scancoefSE_pg_intcovar(const NumericVector& genoprobs,
+                            const NumericVector& pheno,
+                            const NumericMatrix& addcovar,
+                            const NumericMatrix& intcovar,
+                            const NumericMatrix& eigenvec,
+                            const NumericVector& weights,
+                            const double tol=1e-12)
 {
     const unsigned int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");

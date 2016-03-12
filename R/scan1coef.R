@@ -7,17 +7,24 @@
 #' @param genoprobs Genotype probabilities as calculated by
 #' \code{\link[qtl2geno]{calc_genoprob}}.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
+#' @param kinship Optional kinship matrix, or a list of kinship matrices (one
+#' per chromosome), in order to use the LOCO (leave one chromosome
+#' out) method.
 #' @param addcovar An optional matrix of additive covariates.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
 #' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers.
+#' for individual identifiers. Ignored if \code{kinship} is provided.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
 #' \code{cbind(c(1,0,0), c(-0.5, 0, 0.5), c(-0.5, 1, 0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param se If TRUE, also calculate the standard errors.
+#' @param hsq (Optional) residual heritability; used only if
+#' \code{kinship} provided.
+#' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
+#' REML; otherwise maximum likelihood.
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
@@ -38,11 +45,16 @@
 #' \item \code{sample_size} - Vector of sample sizes used for each
 #'     phenotype
 #' \item \code{weights} - Logical value indicating whether weights
-#'     were used.
+#'     were used (only included if \code{kinship} was not).
 #' }
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
+#'
+#' If \code{kinship} is absent, Haley-Knott regression is performed.
+#' If \code{kinship} is provided, a linear mixed model is used, with a
+#' polygenic effect estimated under the null hypothesis of no (major)
+#' QTL, and then taken as fixed as known in the genome scan.
 #'
 #' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line
@@ -64,13 +76,25 @@
 #' names(covar) <- rownames(iron$covar)
 #'
 #' # calculate coefficients for chromosome 7
-#' coef <- scan1coef(probs[,7], pheno, covar)
+#' coef <- scan1coef(probs[,7], pheno, addcovar=covar)
+#'
+#' # leave-one-chromosome-out kinship matrix for chr 7
+#' kinship7 <- calc_kinship(probs, "loco")[[7]]
+#'
+#' # calculate coefficients for chromosome 7, adjusting for residual polygenic effect
+#' coef <- scan1coef(probs[,7], pheno, kinship7, addcovar=covar)
+#'
 #'
 #' @export
 scan1coef <-
-    function(genoprobs, pheno, addcovar=NULL, intcovar=NULL, weights=NULL,
-             contrasts=NULL, se=FALSE, tol=1e-12)
+    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, intcovar=NULL, weights=NULL,
+             contrasts=NULL, se=FALSE, hsq=NULL, reml=TRUE, tol=1e-12)
 {
+    if(!is.null(kinship)) { # use LMM; see scan1_pg.R
+        return(scan1coef_pg(genoprobs, pheno, kinship, addcovar,
+                            intcovar, contrasts, se, hsq, reml, tol))
+    }
+
     stopifnot(tol > 0)
 
     # force things to be matrices

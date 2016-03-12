@@ -4,8 +4,9 @@
 \alias{scan1coef}
 \title{Calculate QTL effects in scan along one chromosome}
 \usage{
-scan1coef(genoprobs, pheno, addcovar = NULL, intcovar = NULL,
-  weights = NULL, contrasts = NULL, se = FALSE, tol = 0.000000000001)
+scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
+  intcovar = NULL, weights = NULL, contrasts = NULL, se = FALSE,
+  hsq = NULL, reml = TRUE, tol = 0.000000000001)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -13,13 +14,17 @@ scan1coef(genoprobs, pheno, addcovar = NULL, intcovar = NULL,
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
+\item{kinship}{Optional kinship matrix, or a list of kinship matrices (one
+per chromosome), in order to use the LOCO (leave one chromosome
+out) method.}
+
 \item{addcovar}{An optional matrix of additive covariates.}
 
 \item{intcovar}{An optional matrix of interactive covariates.}
 
 \item{weights}{An optional vector of positive weights for the
 individuals. As with the other inputs, it must have \code{names}
-for individual identifiers.}
+for individual identifiers. Ignored if \code{kinship} is provided.}
 
 \item{contrasts}{An optional matrix of genotype contrasts, size
 genotypes x genotypes. For an intercross, you might use
@@ -28,6 +33,12 @@ mean, additive effect, and dominance effect. The default is the
 identity matrix.}
 
 \item{se}{If TRUE, also calculate the standard errors.}
+
+\item{hsq}{(Optional) residual heritability; used only if
+\code{kinship} provided.}
+
+\item{reml}{If \code{kinship} provided: if \code{reml=TRUE}, use
+REML; otherwise maximum likelihood.}
 
 \item{tol}{Tolerance value for
 linear regression by QR decomposition (in determining whether
@@ -50,7 +61,7 @@ A list containing the following
 \item \code{sample_size} - Vector of sample sizes used for each
     phenotype
 \item \code{weights} - Logical value indicating whether weights
-    were used.
+    were used (only included if \code{kinship} was not).
 }
 }
 \description{
@@ -61,6 +72,11 @@ allowance for covariates.
 \details{
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals.
+
+If \code{kinship} is absent, Haley-Knott regression is performed.
+If \code{kinship} is provided, a linear mixed model is used, with a
+polygenic effect estimated under the null hypothesis of no (major)
+QTL, and then taken as fixed as known in the genome scan.
 }
 \examples{
 # load qtl2geno package for data and genoprob calculation
@@ -78,7 +94,14 @@ covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 
 # calculate coefficients for chromosome 7
-coef <- scan1coef(probs[,7], pheno, covar)
+coef <- scan1coef(probs[,7], pheno, addcovar=covar)
+
+# leave-one-chromosome-out kinship matrix for chr 7
+kinship7 <- calc_kinship(probs, "loco")[[7]]
+
+# calculate coefficients for chromosome 7, adjusting for residual polygenic effect
+coef <- scan1coef(probs[,7], pheno, kinship7, addcovar=covar)
+
 
 }
 \references{

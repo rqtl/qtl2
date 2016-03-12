@@ -14,7 +14,7 @@ subset_scan1(x, chr = NULL, lodcolumn = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}} or \code{\link{scan1_lmm}}.}
+\code{\link{scan1}}.}
 
 \item{chr}{Vector of chromosomes.}
 
@@ -47,7 +47,7 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
 # perform genome scan
-out <- scan1(probs, pheno, covar, Xcovar)
+out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # pull out chromosome 8
 out-c8 <- subset(out, chr="8")

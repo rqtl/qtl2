@@ -148,7 +148,7 @@ test_that("scan1 for backcross with one phenotype", {
     x <- sample(0:1, n, replace=TRUE)
     names(x) <- names(y)
     out <- scanone(hyper, method="hk", addcovar=x)
-    out2 <- scan1(pr, y, x)
+    out2 <- scan1(pr, y, addcovar=x)
     expect_equal(out2, scanone2scan1(out, 250, posnames, addcovar=x))
 
     # cf lm() for chr 18
@@ -158,7 +158,7 @@ test_that("scan1 for backcross with one phenotype", {
     ##############################
     # additive covariate + weights
     out <- scanone(hyper, method="hk", addcovar=x, weights=w)
-    out2 <- scan1(pr, y, x, weights=w)
+    out2 <- scan1(pr, y, addcovar=x, weights=w)
     expect_equal(out2, scanone2scan1(out, 250, posnames, colnames(y),
                                      addcovar=x, weights=TRUE))
 
@@ -169,7 +169,7 @@ test_that("scan1 for backcross with one phenotype", {
     ##############################
     # interactive covariate
     out <- scanone(hyper, method="hk", addcovar=x, intcovar=x)
-    out2 <- scan1(pr, y, x, intcovar=x)
+    out2 <- scan1(pr, y, addcovar=x, intcovar=x)
     expect_equal(out2, scanone2scan1(out, 250, posnames, colnames(y),
                                      addcovar=x, intcovar=x))
 
@@ -186,7 +186,7 @@ test_that("scan1 for backcross with one phenotype", {
     ##############################
     # interactive covariate + weights
     out <- scanone(hyper, method="hk", addcovar=x, intcovar=x, weights=w)
-    out2 <- scan1(pr, y, x, intcovar=x, weights=w)
+    out2 <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
     expect_equal(out2, scanone2scan1(out, 250, posnames, colnames(y),
                                      addcovar=x, intcovar=x, weights=TRUE))
 
@@ -260,7 +260,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     x <- sample(0:1, n_ind, replace=TRUE)
     names(x) <- rownames(y)
     out <- scanone(hyper, method="hk", addcovar=x, pheno.col=1:n_phe)
-    out2 <- scan1(pr, y, x)
+    out2 <- scan1(pr, y, addcovar=x)
     expect_equal(out2, scanone2scan1(out, colSums(!is.na(y)),
                                      posnames, colnames(y), addcovar=x))
 
@@ -271,7 +271,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     ##############################
     # additive covariate + weights
     out <- scanone(hyper, method="hk", addcovar=x, weights=w, pheno.col=1:n_phe)
-    out2 <- scan1(pr, y, x, weights=w)
+    out2 <- scan1(pr, y, addcovar=x, weights=w)
     expect_equal(out2, scanone2scan1(out, colSums(!is.na(y)),
                                      posnames, colnames(y), addcovar=x,
                                      weights=TRUE))
@@ -283,7 +283,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     ##############################
     # interactive covariate
     out <- scanone(hyper, method="hk", addcovar=x, intcovar=x, pheno.col=1:n_phe)
-    out2 <- scan1(pr, y, x, intcovar=x)
+    out2 <- scan1(pr, y, addcovar=x, intcovar=x)
     expect_equal(out2, scanone2scan1(out, colSums(!is.na(y)),
                                      posnames, colnames(y), addcovar=x,
                                      intcovar=x))
@@ -301,7 +301,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     ##############################
     # interactive covariate + weights
     out <- scanone(hyper, method="hk", addcovar=x, intcovar=x, weights=w, pheno.col=1:n_phe)
-    out2 <- scan1(pr, y, x, intcovar=x, weights=w)
+    out2 <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
     expect_equal(out2, scanone2scan1(out, colSums(!is.na(y)),
                                      posnames, colnames(y), addcovar=x,
                                      intcovar=x, weights=TRUE))
@@ -352,7 +352,7 @@ test_that("scan1 works with NAs in the covariates", {
     x[5] <- NA
 
     suppressWarnings(out <- scanone(hyper, method="hk", addcovar=x, pheno.col=1:n_phe))
-    out2 <- scan1(pr, y, x)
+    out2 <- scan1(pr, y, addcovar=x)
     expect_equal(out2, scanone2scan1(out, colSums(!(is.na(y) | is.na(x))),
                                      posnames, colnames(y), addcovar=x))
 
@@ -412,21 +412,21 @@ test_that("scan1 aligns the individuals", {
     x <- sample(0:1, n_ind, replace=TRUE)
     names(x) <- rownames(y)
 
-    out <- scan1(pr, y, x)
-    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)])
+    out <- scan1(pr, y, addcovar=x)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], addcovar=x[sample(n_ind)])
     expect_equal(out_perm, out)
 
     ##############################
     # additive covariate + weights
-    out <- scan1(pr, y, x, weights=w)
-    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)],
+    out <- scan1(pr, y, addcovar=x, weights=w)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], addcovar=x[sample(n_ind)],
                       weights=w[sample(n_ind)])
     expect_equal(out_perm, out)
 
     ##############################
     # interactive covariate
-    out <- scan1(pr, y, x, intcovar=x)
-    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)],
+    out <- scan1(pr, y, addcovar=x, intcovar=x)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], addcovar=x[sample(n_ind)],
                       intcovar=x[sample(n_ind)])
     expect_equal(out_perm, out)
 
@@ -436,8 +436,8 @@ test_that("scan1 aligns the individuals", {
 
     ##############################
     # interactive covariate + weights
-    out <- scan1(pr, y, x, intcovar=x, weights=w)
-    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], x[sample(n_ind)],
+    out <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
+    out_perm <- scan1(pr[sample(n_ind),], y[sample(n_ind),], addcovar=x[sample(n_ind)],
                       intcovar=x[sample(n_ind)], weights=w[sample(n_ind)])
     expect_equal(out_perm, out)
 
@@ -494,20 +494,20 @@ test_that("multi-core scan1 works", {
     x <- sample(0:1, n_ind, replace=TRUE)
     names(x) <- rownames(y)
 
-    out <- scan1(pr, y, x)
-    out_multicore <- scan1(pr, y, x, cores=4)
+    out <- scan1(pr, y, addcovar=x)
+    out_multicore <- scan1(pr, y, addcovar=x, cores=4)
     expect_equal(out_multicore, out)
 
     ##############################
     # additive covariate + weights
-    out <- scan1(pr, y, x, weights=w)
-    out_multicore <- scan1(pr, y, x, weights=w, cores=4)
+    out <- scan1(pr, y, addcovar=x, weights=w)
+    out_multicore <- scan1(pr, y, addcovar=x, weights=w, cores=4)
     expect_equal(out_multicore, out)
 
     ##############################
     # interactive covariate
-    out <- scan1(pr, y, x, intcovar=x)
-    out_multicore <- scan1(pr, y, x, intcovar=x, cores=4)
+    out <- scan1(pr, y, addcovar=x, intcovar=x)
+    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, cores=4)
     expect_equal(out_multicore, out)
 
     # auto add intcovar?
@@ -516,8 +516,8 @@ test_that("multi-core scan1 works", {
 
     ##############################
     # interactive covariate + weights
-    out <- scan1(pr, y, x, intcovar=x, weights=w)
-    out_multicore <- scan1(pr, y, x, intcovar=x, weights=w, cores=4)
+    out <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
+    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, weights=w, cores=4)
     expect_equal(out_multicore, out)
 
     # auto add intcovar?
@@ -573,26 +573,26 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
     names(x) <- rownames(y)
     xbig <- x*50
 
-    out <- scan1(pr, y, x)
-    outbig <- scan1(pr, ybig, xbig)
+    out <- scan1(pr, y, addcovar=x)
+    outbig <- scan1(pr, ybig, addcovar=xbig)
     expect_equal(outbig, out)
 
     ##############################
     # additive covariate + weights
-    out <- scan1(pr, y, x, weights=w)
-    outbig <- scan1(pr, ybig, xbig, weights=wbig)
+    out <- scan1(pr, y, addcovar=x, weights=w)
+    outbig <- scan1(pr, ybig, addcovar=xbig, weights=wbig)
     expect_equal(outbig, out)
 
     ##############################
     # interactive covariate
-    out <- scan1(pr, y, x, intcovar=x)
-    outbig <- scan1(pr, ybig, xbig, intcovar=xbig)
+    out <- scan1(pr, y, addcovar=x, intcovar=x)
+    outbig <- scan1(pr, ybig, addcovar=xbig, intcovar=xbig)
     expect_equal(outbig, out)
 
     ##############################
     # interactive covariate + weights
-    out <- scan1(pr, y, x, intcovar=x, weights=w)
-    outbig <- scan1(pr, ybig, xbig, intcovar=xbig, weights=wbig)
+    out <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
+    outbig <- scan1(pr, ybig, addcovar=xbig, intcovar=xbig, weights=wbig)
     expect_equal(outbig, out)
 
 })

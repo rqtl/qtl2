@@ -3,8 +3,8 @@
 #' Join multiple \code{\link{scan1}} results for different phenotypes;
 #' must have the same map.
 #'
-#' @param ... Genome scan objects as produced by \code{\link{scan1}}
-#' or \code{\link{scan1_lmm}}. Must have the same map.
+#' @param ... Genome scan objects as produced by \code{\link{scan1}}.
+#' Must have the same map.
 #'
 #' @return A single genome scan object with the lod score columns
 #' combined as multiple columns.

@@ -2,12 +2,12 @@
 #
 #' Convert scan1 results to the scanone format
 #'
-#' Convert the results of \code{\link{scan1}} or
-#' \code{\link{scan1_lmm}} to the form used by the R/qtl function
+#' Convert the results of \code{\link{scan1}}
+#' to the form used by the R/qtl function
 #' \code{scanone}.
 #'
 #' @param output Matrix of LOD scores, as calculated by
-#' \code{\link{scan1}} or \code{\link{scan1_lmm}}.
+#' \code{\link{scan1}}.
 #'
 #' @return A data frame with class \code{"scanone"}, containing
 #' chromosome and position columns followed by the LOD scores in
@@ -21,7 +21,7 @@
 #' covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 #' names(covar) <- rownames(iron$covar)
 #' Xcovar <- get_x_covar(iron)
-#' out <- scan1(probs, pheno, covar, Xcovar)
+#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' out_rev <- convert2scanone(out)
 #'

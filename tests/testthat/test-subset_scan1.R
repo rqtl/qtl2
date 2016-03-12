@@ -18,7 +18,7 @@ test_that("subset_scan1 works for intercross with two phenotypes", {
     Xcovar <- get_x_covar(iron)
 
     # perform genome scan
-    out <- scan1(probs, pheno, covar, Xcovar)
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
     # subset one column
     expected <- out

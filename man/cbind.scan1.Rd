@@ -7,8 +7,8 @@
 cbind.scan1(...)
 }
 \arguments{
-\item{...}{Genome scan objects as produced by \code{\link{scan1}}
-or \code{\link{scan1_lmm}}. Must have the same map.}
+\item{...}{Genome scan objects as produced by \code{\link{scan1}}.
+Must have the same map.}
 }
 \value{
 A single genome scan object with the lod score columns
