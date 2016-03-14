@@ -250,8 +250,10 @@ scan1coef_names <-
     }
     else { # some additive covariates
         add_names <- colnames(addcovar)
-        if(is.null(add_names))
+        if(is.null(add_names) || all(add_names==""))
             add_names <- paste0("ac", 1:ncol(addcovar))
+        else if(all(add_names[-1] == "")) # all but first is empty
+            add_names[-1] <- paste0("ac", 1:(ncol(addcovar)-1))
 
         if(is.null(intcovar)) { # no interactive covariates
             return(c(qtl_names, add_names))
