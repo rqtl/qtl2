@@ -115,7 +115,7 @@ calc_kinship_overall <-
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
     if(!quiet && n_cores(cores)>1) {
-        cat(" - Using", n_cores(cores), "cores\n")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # make the rest quiet
     }
 
@@ -154,7 +154,7 @@ calc_kinship_bychr <-
     # set up cluster and set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
     if(!quiet && n_cores(cores)>1) {
-        cat(" - Using", n_cores(cores), "cores\n")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # make the rest quiet
     }
 

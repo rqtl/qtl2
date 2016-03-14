@@ -95,7 +95,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
     if(!quiet && n_cores(cores)>1) {
-        cat(" - Using", n_cores(cores), "cores\n")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # make the rest quiet
     }
 
@@ -136,7 +136,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
 
     probs <- vector("list", length(cross$geno))
     for(chr in seq(along=cross$geno)) {
-        if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
+        if(!quiet) message("Chr ", names(cross$geno)[chr])
 
         if(n_cores(cores) == 1) { # no parallel processing
             # calculations in one group

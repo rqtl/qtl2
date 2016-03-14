@@ -35,7 +35,7 @@ genoprob_to_alleleprob <-
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores) > 1) {
-        message(" - Using ", n_cores(cores), " cores.")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # no more messages
     }
 

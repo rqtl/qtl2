@@ -82,7 +82,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores) > 1) {
-        message(" - Using ", n_cores(cores), " cores.")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # no more messages
     }
 
@@ -124,7 +124,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     draws <- vector("list", length(cross$geno))
     names(draws) <- names(cross$geno)
     for(chr in seq(along=cross$geno)) {
-        if(!quiet) cat("Chr ", names(cross$geno)[chr], "\n")
+        if(!quiet) message("Chr ", names(cross$geno)[chr])
 
         if(n_cores(cores)==1) { # no parallel processing
             # calculations in one group

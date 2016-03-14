@@ -58,7 +58,7 @@ function(cross, error_prob=1e-4,
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores) > 1) {
-        message(" - Using ", n_cores(cores), " cores.")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # no more messages
     }
 
@@ -70,7 +70,7 @@ function(cross, error_prob=1e-4,
         # the following avoids a warning in R CMD check
         . <- "avoid R CMD check warning"
 
-        if(!quiet) cat(paste0("Chr ", names(cross$geno)[chr], ":\n"))
+        if(!quiet) message("Chr ", names(cross$geno)[chr])
 
         gmap <- cross$gmap[[chr]]
 
