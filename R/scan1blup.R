@@ -28,6 +28,7 @@
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
+#' @param quiet If FALSE, print message about number of cores used when multi-core.
 #'
 #' @return A list containing the following
 #' \itemize{
@@ -156,7 +157,7 @@ scan1blup <-
     # set up parallel analysis
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores)>1) {
-        cat(" - Using", n_cores(cores), "cores\n")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # make the rest quiet
     }
 

@@ -42,6 +42,8 @@ that are comparable to \code{\link{scan1coef}}.}
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
+
+\item{quiet}{If FALSE, print message about number of cores used when multi-core.}
 }
 \value{
 A list containing the following
