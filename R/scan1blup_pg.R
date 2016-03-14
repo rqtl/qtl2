@@ -94,6 +94,7 @@ scan1blup_pg <-
     weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     # rotate genoprobs, pheno, and addcovar
+    gp_dn <- dimnames(genoprobs)
     genoprobs <- matrix_x_3darray(eigenvec, genoprobs)
     addcovar <- eigenvec %*% addcovar
     pheno <- eigenvec %*% pheno
@@ -102,6 +103,7 @@ scan1blup_pg <-
     genoprobs <- weighted_3darray(genoprobs, weights)
     pheno <- pheno * weights
     addcovar <- addcovar * weights
+    dimnames(genoprobs) <- gp_dn
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
