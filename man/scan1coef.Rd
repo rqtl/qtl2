@@ -66,8 +66,9 @@ A list containing the following
 }
 \description{
 Calculate QTL effects in scan along one chromosome with a
-single-QTL model using Haley-Knott regression, with possible
-allowance for covariates.
+single-QTL model using Haley-Knott regression or a linear mixed
+model (the latter to account for a residual polygenic effect), with
+possible allowance for covariates.
 }
 \details{
 For each of the inputs, the row names are used as
@@ -100,7 +101,7 @@ coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 kinship7 <- calc_kinship(probs, "loco")[[7]]
 
 # calculate coefficients for chromosome 7, adjusting for residual polygenic effect
-coef <- scan1coef(probs[,7], pheno, kinship7, addcovar=covar)
+coef_pg <- scan1coef(probs[,7], pheno, kinship7, addcovar=covar)
 
 
 }
