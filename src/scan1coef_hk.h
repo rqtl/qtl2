@@ -47,7 +47,7 @@ Rcpp::NumericMatrix scancoef_hk_intcovar(const Rcpp::NumericVector& genoprobs,
 // addcovar  = additive covariates
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of coefficients (genotypes x positions)
+// output    = list of two matrices, of coefficients and SEs (each genotypes x positions)
 Rcpp::List scancoefSE_hk_addcovar(const Rcpp::NumericVector& genoprobs,
                                   const Rcpp::NumericVector& pheno,
                                   const Rcpp::NumericMatrix& addcovar,
@@ -64,7 +64,7 @@ Rcpp::List scancoefSE_hk_addcovar(const Rcpp::NumericVector& genoprobs,
 // intcovar  = interactive covariates (should also be included in addcovar)
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of coefficients (genotypes x positions)
+// output    = list of two matrices, of coefficients and SEs (each genotypes x positions)
 Rcpp::List scancoefSE_hk_intcovar(const Rcpp::NumericVector& genoprobs,
                                   const Rcpp::NumericVector& pheno,
                                   const Rcpp::NumericMatrix& addcovar,

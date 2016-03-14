@@ -151,7 +151,7 @@ NumericMatrix scancoef_pg_intcovar(const NumericVector& genoprobs,
 // eigenvec  = eigenvectors from eigen decomposition of kinship matrix
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of coefficients (genotypes x positions)
+// output    = list of two matrices, of coefficients and SEs (each genotypes x positions)
 //
 // [[Rcpp::export]]
 List scancoefSE_pg_addcovar(const NumericVector& genoprobs,
@@ -228,7 +228,7 @@ List scancoefSE_pg_addcovar(const NumericVector& genoprobs,
 // intcovar  = interactive covariates (should also be included in addcovar)
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //
-// output    = matrix of coefficients (genotypes x positions)
+// output    = list of two matrices, of coefficients and SEs (each genotypes x positions)
 //
 // [[Rcpp::export]]
 List scancoefSE_pg_intcovar(const NumericVector& genoprobs,
