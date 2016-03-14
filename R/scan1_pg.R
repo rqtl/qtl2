@@ -63,7 +63,7 @@ scan1_pg <-
     # set up parallel analysis
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores)>1) {
-        message(" - Using ", n_cores(cores), " cores\n")
+        message(" - Using ", n_cores(cores), " cores")
         quiet <- TRUE # make the rest quiet
     }
 
