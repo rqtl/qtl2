@@ -174,7 +174,6 @@ scan1blup <-
         if(se) SE <- t(result$SE)
         else SE <- NULL
     } else {
-        message("Multi-core")
         result <- cluster_lapply(cores, seq(along=batches), by_group_func)
         SE <- coef <- matrix(nrow=n_pos,ncol=nrow(result[[1]]$coef))
         for(i in seq(along=result)) {

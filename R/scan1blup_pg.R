@@ -128,7 +128,6 @@ scan1blup_pg <-
         else SE <- NULL
         coef <- t(result$coef)
     } else {
-        message("Multi-core")
         result <- cluster_lapply(cores, seq(along=batches), by_group_func)
         SE <- coef <- matrix(nrow=n_pos,ncol=nrow(result[[1]]$coef))
         for(i in seq(along=result)) {
