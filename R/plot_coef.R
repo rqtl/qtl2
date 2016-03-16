@@ -89,13 +89,25 @@ plot_coef <-
 
     names(x)[names(x)=="coef"] <- "lod" # switch coef -> lod for use with plot_scan1()
 
-    plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
-               gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
-    if(length(columns) > 1) {
-        for(i in seq(along=columns)[-1])
-            plot_scan1(x, lodcolumn=columns[i], col=col[i], gap=gap,
-                       add=TRUE, ...)
-    }
+    plot_coef_internal <-
+        function(x, columns, ylim, col, add, gap, bgcolor, altbgcolor, xlab=NULL, ylab, ...)
+        {
+            if(is.null(xlab)) {
+                if(is.null(x$chrid)) xlab <- "Position"
+                else xlab <- paste("Chr", x$chrid, "position")
+            }
+
+            plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
+                       gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
+                       xlab=xlab, ylab=ylab, ...)
+            if(length(columns) > 1) {
+                for(i in seq(along=columns)[-1])
+                    plot_scan1(x, lodcolumn=columns[i], col=col[i], gap=gap,
+                               add=TRUE, ...)
+            }
+        }
+    plot_coef_internal(x, columns=columns, ylim=ylim, col=col, add=add, gap=gap,
+                       bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
 }
 
 #' @export
