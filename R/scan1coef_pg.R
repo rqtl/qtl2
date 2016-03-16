@@ -29,6 +29,7 @@ scan1coef_pg <-
     if(length(genoprobs$probs) > 1)
         warning("Using only the first chromosome, ", names(genoprobs)[1])
     map <- genoprobs$map[[1]]
+    chrid <- names(genoprobs$probs)[1]
     genoprobs <- genoprobs$probs[[1]]
 
     # make sure contrasts is square n_genotypes x n_genotypes
@@ -144,7 +145,8 @@ scan1coef_pg <-
                    sample_size = length(ind2keep),
                    addcovar = colnames4attr(addcovar),
                    intcovar = colnames4attr(intcovar),
-                   contrasts = contrasts)
+                   contrasts = contrasts,
+                   chrid = chrid)
     result$SE <- SE # include only if not NULL
 
     class(result) <- c("scan1coef", "scan1", "matrix")
