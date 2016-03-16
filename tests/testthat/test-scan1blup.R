@@ -29,13 +29,13 @@ test_that("scan1blup works with no kinship matrix", {
         lmmfit <- Rcpp_fitLMM(keval, yp, Xp, tol=1e-12)
 
         beta <- lmmfit$beta
-        expect_equal(blup_int$coef[i,4], beta)
+        expect_equal(blup_int$coef[i,4], beta, tolerance=1e-6)
 
         hsq <- lmmfit$hsq
         wts <- hsq * keval + (1-hsq)
         u <- as.numeric( t(kevec %*% Z) %*% diag(hsq/wts) %*%  (yp - Xp %*% beta) )
         names(u) <- colnames(blup$coef)
-        expect_equal(blup_int$coef[i, 1:3], u, tolerance=1e-6)
+        expect_equal(blup_int$coef[i, 1:3], u, tolerance=1e-5)
     }
 
     # repeat with an additive covariate
@@ -64,7 +64,7 @@ test_that("scan1blup works with no kinship matrix", {
 
         beta <- lmmfit$beta
         names(beta) <- c("intercept", "ac1")
-        expect_equal(blup_int$coef[i,4:5], beta)
+        expect_equal(blup_int$coef[i,4:5], beta, tolerance=1e-6)
 
         hsq <- lmmfit$hsq
         wts <- hsq * keval + (1-hsq)
