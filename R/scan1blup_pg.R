@@ -83,21 +83,21 @@ scan1blup_pg <-
     if(!did_decomp)
         kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
-
-    # estimate hsq (this doesn't take intercept)
-    nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar[,-1,drop=FALSE], NULL, FALSE,
-                                 reml, cores=1, check_boundary=TRUE, tol)
-    hsq <- nullresult$hsq
-
-    # eigen-vectors and weights
+    eigenval <- kinship$values
     eigenvec <- kinship$vectors
-    weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     # rotate genoprobs, pheno, and addcovar
     gp_dn <- dimnames(genoprobs)
     genoprobs <- matrix_x_3darray(eigenvec, genoprobs)
     addcovar <- eigenvec %*% addcovar
     pheno <- eigenvec %*% pheno
+
+    # estimate hsq (this doesn't take intercept)
+    nullresult <- Rcpp_fitLMM(eigenval, pheno, addcovar, reml=reml, check_boundary=TRUE, tol=tol)
+    hsq <- nullresult$hsq
+
+    # eigen-vectors and weights
+    weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     #  multiply by weights
     genoprobs <- weighted_3darray(genoprobs, weights)
