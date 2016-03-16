@@ -1,0 +1,141 @@
+context("BLUP estimates of QTL effects")
+
+calc_blup <-
+    function(probs, pheno, kinship=NULL, addcovar=NULL, tol=1e-12,
+             quiet=TRUE)
+{
+    addcovar <- cbind(rep(1, length(pheno)), addcovar)
+    if(!is.null(kinship)) {
+        Ke <- decomp_kinship(kinship)
+        Keval <- Ke$values
+        Kevec <- Ke$vectors
+
+        pheno <- Kevec %*% pheno
+        addcovar <- Kevec %*% addcovar
+        probs <- Kevec %*% probs
+
+        lmmfit <- Rcpp_fitLMM(Keval, pheno, addcovar, tol=tol)
+        hsq <- lmmfit$hsq
+        if(!quiet) message("hsq_pg: ", hsq)
+        wts <- 1/sqrt(hsq * Keval + (1-hsq))
+
+        pheno <- wts * pheno
+        addcovar <- wts * addcovar
+        probs <- wts * probs
+    }
+
+    k <- probs %*% t(probs)
+    ke <- decomp_kinship(k)
+    keval <- ke$values
+    kevec <- ke$vectors
+
+    pheno <- kevec %*% pheno
+    addcovar <- kevec %*% addcovar
+
+    lmmfit <- Rcpp_fitLMM(keval, pheno, addcovar, tol=tol)
+    beta <- lmmfit$beta
+    hsq <- lmmfit$hsq
+    if(!quiet) message("hsq_qtl: ", hsq)
+    wts <- hsq * keval + (1-hsq)
+    u <- as.numeric( t(kevec %*% probs) %*% diag(hsq/wts) %*%  (pheno - addcovar %*% beta) )
+    c(u, beta)
+}
+
+
+library(qtl2geno)
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+phe <- iron$pheno[,1,drop=FALSE]
+
+test_that("scan1blup works with no kinship matrix", {
+
+    pr <- calc_genoprob(iron[,"16"], step=0)
+
+    blup <- scan1blup(pr, phe)
+    blup_se <- scan1blup(pr, phe, se=TRUE)
+    expect_equal(blup$coef, blup_se$coef)
+
+    # cf preserve intercept vs not
+    blup_int <- scan1blup(pr, phe, preserve_intercept=TRUE)
+    expect_equal(blup$coef, blup_int$coef[,1:3] + blup_int$coef[,4])
+
+    # brute force BLUPs
+    for(i in 1:dim(pr$probs[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe)
+        names(blup_alt) <- colnames(blup_int$coef)
+        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    }
+
+    # repeat with an additive covariate
+    sex <- as.numeric(iron$covar$sex=="m")
+    names(sex) <- rownames(iron$covar)
+
+    blup <- scan1blup(pr, phe, addcovar=sex)
+    blup_se <- scan1blup(pr, phe, addcovar=sex, se=TRUE)
+    expect_equal(blup$coef, blup_se$coef)
+
+    # cf preserve intercept vs not
+    blup_int <- scan1blup(pr, phe, addcovar=sex, preserve_intercept=TRUE)
+    expect_equal(blup$coef, blup_int$coef[,c(1:3,5)] + cbind(blup_int$coef[,c(4,4,4)], 0))
+
+    # brute force BLUPs
+    for(i in 1:dim(pr$probs[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe, addcovar=sex)
+        names(blup_alt) <- colnames(blup_int$coef)
+        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    }
+
+})
+
+test_that("scan1blup works with kinship matrix", {
+
+    pr <- calc_genoprob(iron, step=0)
+    K <- calc_kinship(pr[,c(1:15,17:19,"X")])
+    pr <- pr[,"16"]
+
+    # sex as an additive covariate
+    sex <- as.numeric(iron$covar$sex=="m")
+    names(sex) <- rownames(iron$covar)
+
+    blup <- scan1blup(pr, phe, K, sex)
+    blup_se <- scan1blup(pr, phe, K, sex, se=TRUE)
+    expect_equal(blup$coef, blup_se$coef)
+
+    # cf preserve intercept vs not
+    blup_int <- scan1blup(pr, phe, K, sex, preserve_intercept=TRUE)
+    expect_equal(blup$coef, blup_int$coef[,c(1:3,5)] + cbind(blup_int$coef[,c(4,4,4)], 0))
+
+    # brute force BLUPs
+    for(i in 1:dim(pr$probs[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe, K, sex)
+        names(blup_alt) <- colnames(blup_int$coef)
+        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    }
+
+})
+
+test_that("scan1blup works with kinship matrix on another chromosome", {
+
+    pr <- calc_genoprob(iron, step=0)
+    K <- calc_kinship(pr[,c(1:10,12:19,"X")])
+    pr <- pr[,"11"]
+
+    # sex as an additive covariate
+    sex <- as.numeric(iron$covar$sex=="m")
+    names(sex) <- rownames(iron$covar)
+
+    blup <- scan1blup(pr, phe, K, sex)
+    blup_se <- scan1blup(pr, phe, K, sex, se=TRUE)
+    expect_equal(blup$coef, blup_se$coef)
+
+    # cf preserve intercept vs not
+    blup_int <- scan1blup(pr, phe, K, sex, preserve_intercept=TRUE)
+    expect_equal(blup$coef, blup_int$coef[,c(1:3,5)] + cbind(blup_int$coef[,c(4,4,4)], 0))
+
+    # brute force BLUPs
+    for(i in 1:dim(pr$probs[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe, K, sex)
+        names(blup_alt) <- colnames(blup_int$coef)
+        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    }
+
+})

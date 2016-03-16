@@ -1,18 +1,14 @@
-# Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM
-#
-scan1coef_pg <-
-    function(genoprobs, pheno, kinship,
-             addcovar=NULL, intcovar=NULL,
-             contrasts=NULL, se=FALSE,
-             hsq=NULL, reml=TRUE, tol=1e-12)
+# Calculate BLUPs of QTL effects in scan along one chromosome, with residual polygenic effect
+scan1blup_pg <-
+    function(genoprobs, pheno, kinship, addcovar=NULL,
+             contrasts=NULL, se=FALSE, reml=TRUE, preserve_intercept=FALSE,
+             tol=1e-12, cores=1, quiet=TRUE)
 {
     stopifnot(tol > 0)
 
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
-    if(!is.null(intcovar) && !is.matrix(intcovar))
-        intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
 
@@ -55,9 +51,7 @@ scan1coef_pg <-
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
-                               addcovar, intcovar, complete.cases=TRUE)
-
+    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs, addcovar, complete.cases=TRUE)
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")
@@ -79,72 +73,85 @@ scan1coef_pg <-
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
 
-    if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
-
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
-
-    # make sure columns in intcovar are also in addcovar
-    addcovar <- force_intcovar(addcovar, intcovar, tol)
+    # add the intercept
+    addcovar <- cbind(intercept=rep(1, length(ind2keep)),
+                      addcovar)
+    rownames(addcovar) <- ind2keep
 
     # eigen decomposition of kinship matrix
     if(!did_decomp)
         kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
-    # estimate hsq if necessary
-    if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
-                                     reml, cores=1, check_boundary=TRUE, tol)
-        hsq <- nullresult$hsq
-    }
+    eigenval <- kinship$values
+    eigenvec <- kinship$vectors
+
+    # rotate genoprobs, pheno, and addcovar
+    gp_dn <- dimnames(genoprobs)
+    genoprobs <- matrix_x_3darray(eigenvec, genoprobs)
+    addcovar <- eigenvec %*% addcovar
+    pheno <- eigenvec %*% pheno
+
+    # estimate hsq (this doesn't take intercept)
+    nullresult <- Rcpp_fitLMM(eigenval, pheno, addcovar, reml=reml, check_boundary=TRUE, tol=tol)
+    hsq <- nullresult$hsq
 
     # eigen-vectors and weights
-    eigenvec <- kinship$vectors
     weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
+
+    #  multiply by weights
+    genoprobs <- weighted_3darray(genoprobs, weights)
+    pheno <- pheno * weights
+    addcovar <- addcovar * weights
+    dimnames(genoprobs) <- gp_dn
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
         genoprobs <- genoprobs_by_contrasts(genoprobs, contrasts)
 
-    if(se) { # also calculate SEs
-
-        if(is.null(intcovar)) { # just addcovar
-            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoefSE_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
-        }
-        else {                  # intcovar
-            result <- scancoefSE_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                              eigenvec, weights, tol)
-        }
-
-        SE <- t(result$SE) # transpose to positions x coefficients
-        result <- result$coef
-    } else { # don't calculate SEs
-
-        if(is.null(intcovar)) { # just addcovar
-            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoef_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
-        }
-        else {                  # intcovar
-            result <- scancoef_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                            eigenvec, weights, tol)
-        }
-        SE <- NULL
+    # set up parallel analysis
+    cores <- setup_cluster(cores)
+    if(!quiet && n_cores(cores)>1) {
+        message(" - Using ", n_cores(cores), " cores")
+        quiet <- TRUE # make the rest quiet
     }
 
-    result <- t(result) # transpose to positions x coefficients
+    # determine batches
+    n_pos <- dim(genoprobs)[[3]]
+    batches <- batch_vec(1:n_pos, ceiling(n_pos/n_cores(cores)))
+
+    by_group_func <- function(i)
+        scanblup(genoprobs[,,batches[[i]],drop=FALSE], pheno, addcovar, se, reml, preserve_intercept, tol)
+
+    # scan to get BLUPs and coefficient estimates
+    if(n_cores(cores)==1) {
+        result <- scanblup(genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol)
+        if(se) SE <- t(result$SE)
+        else SE <- NULL
+        coef <- t(result$coef)
+    } else {
+        result <- cluster_lapply(cores, seq(along=batches), by_group_func)
+        SE <- coef <- matrix(nrow=n_pos,ncol=nrow(result[[1]]$coef))
+        for(i in seq(along=result)) {
+            coef[batches[[i]],] <- t(result[[i]]$coef)
+            if(se) SE[batches[[i]],] <- t(result[[i]]$SE)
+            else SE <- NULL
+        }
+    }
 
     # add names
-    dimnames(result) <- list(dimnames(genoprobs)[[3]],
-                             scan1coef_names(genoprobs, addcovar, intcovar))
-    if(se) dimnames(SE) <- dimnames(result)
+    if(preserve_intercept)
+        coefnames <- scan1coef_names(genoprobs, addcovar, NULL)
+    else
+        coefnames <- scan1coef_names(genoprobs, addcovar[,-1,drop=FALSE], NULL)
+    dimnames(coef) <- list(dimnames(genoprobs)[[3]], coefnames)
+    if(se) dimnames(SE) <- dimnames(coef)
 
-    # add some attributes with details on analysis
-    result <- list(coef = result,
+    result <- list(coef = coef,
                    map = map,
                    sample_size = length(ind2keep),
                    addcovar = colnames4attr(addcovar),
-                   intcovar = colnames4attr(intcovar),
                    contrasts = contrasts,
                    chrid = chrid)
     result$SE <- SE # include only if not NULL

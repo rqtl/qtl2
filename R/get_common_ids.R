@@ -51,7 +51,13 @@ get_common_ids <-
         else if("calc_genoprob" %in% class(args[[i]])) {
             these <- rownames(args[[i]]$probs[[1]])
         }
+        else if(is.list(args[[1]]) && "probs" %in% names(args[[i]])) {
+            these <- rownames(args[[i]]$probs[[1]])
+        }
         else if("sim_geno" %in% class(args[[i]])) {
+            these <- rownames(args[[i]]$draws[[1]])
+        }
+        else if(is.list(args[[i]]) && "draws" %in% names(args[[i]])) {
             these <- rownames(args[[i]]$draws[[1]])
         }
         else if(is.vector(args[[i]])) {

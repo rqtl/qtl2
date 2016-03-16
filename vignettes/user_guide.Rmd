@@ -473,6 +473,37 @@ for(i in 1:2)
     axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
 ```
 
+Another option for estimating the QTL effects is to treat them as
+random effects and calculate Best Linear Unbiased Predictors
+(BLUPs). This is particularly valuable for multi-parent populations
+such as the Collaborative Cross and Diversity Outbred mice, where the
+large number of possible genotypes at a QTL lead to considerable
+variability in the effect estimates. To calculate BLUPs, use
+`scan1blup()`; it takes the same arguments as `scan1coef()`, including
+the option of a kinship matrix to account for a residual polygenic
+effect.
+
+```{r scan1blup}
+c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+```
+
+Here is a plot of the BLUPs (as dashed curves) alongside the standard
+estimates. Note that
+
+```{r plot_scan1blup}
+par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+map <- attr(c2eff_pg, "map")[[1]]
+col <- c("slateblue", "violetred", "green3")
+ylim <- range(c(c2blup$coef, c2eff$coef))+c(-1,1)
+plot(c2eff, columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
+     xlab="Chr 2 position")
+plot(c2blup, columns=1:3, col=col, add=TRUE, lty=2)
+co <- c2eff$coef
+for(i in 1:ncol(co))
+    axis(side=4, at=co[nrow(co), i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+```
+
+
 ## SNP association
 
 For multi-parent crosses, it can be useful to collapse the genotype or

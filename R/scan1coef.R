@@ -121,6 +121,7 @@ scan1coef <-
     if(length(genoprobs$probs) > 1)
         warning("Using only the first chromosome, ", names(genoprobs)[1])
     map <- genoprobs$map[[1]]
+    chrid <- names(genoprobs$probs)[1]
     genoprobs <- genoprobs$probs[[1]]
 
     # make sure contrasts is square n_genotypes x n_genotypes
@@ -204,7 +205,8 @@ scan1coef <-
                    addcovar = colnames4attr(addcovar),
                    intcovar = colnames4attr(intcovar),
                    contrasts = contrasts,
-                   weights = ifelse(is.null(weights), FALSE, TRUE))
+                   weights = ifelse(is.null(weights), FALSE, TRUE),
+                   chrid = chrid)
     result$SE <- SE # include only if not NULL
 
     class(result) <- c("scan1coef", "scan1", "matrix")
@@ -250,8 +252,10 @@ scan1coef_names <-
     }
     else { # some additive covariates
         add_names <- colnames(addcovar)
-        if(is.null(add_names))
+        if(is.null(add_names) || all(add_names==""))
             add_names <- paste0("ac", 1:ncol(addcovar))
+        else if(all(add_names[-1] == "")) # all but first is empty
+            add_names[-1] <- paste0("ac", 1:(ncol(addcovar)-1))
 
         if(is.null(intcovar)) { # no interactive covariates
             return(c(qtl_names, add_names))

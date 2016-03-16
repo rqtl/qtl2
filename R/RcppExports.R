@@ -205,6 +205,10 @@ scan_pg_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar,
     .Call('qtl2scan_scan_pg_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
+scanblup <- function(genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol = 1e-12) {
+    .Call('qtl2scan_scanblup', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol)
+}
+
 scancoef_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
     .Call('qtl2scan_scancoef_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
 }
