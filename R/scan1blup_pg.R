@@ -84,8 +84,8 @@ scan1blup_pg <-
         kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
 
-    # estimate hsq if necessary
-    nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
+    # estimate hsq (this doesn't take intercept)
+    nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar[,-1,drop=FALSE], NULL, FALSE,
                                  reml, cores=1, check_boundary=TRUE, tol)
     hsq <- nullresult$hsq
 
