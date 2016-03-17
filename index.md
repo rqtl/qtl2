@@ -13,6 +13,13 @@ genotype probabilities, imputations, and genetic maps),
 [qtl2scan](https://github.com/rqtl/qtl2scan) (for QTL genome scans and
 related calculations), and
 [qtl2plot](https://github.com/rqtl/qtl2plot) (for data visualization).
+A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
+contains functions for converting data among the R/qtl2,
+[DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
+and [R/qtl](http://rqtl.org) formats, for example to convert genotype
+probabilities produced by DOQTL to the format needed by qtl2scan, or
+to convert qtl2scan results to the format produced by `scanone` in
+R/qtl, so that they may be graphed with the R/qtl functions.
 
 ---
 
@@ -36,7 +43,7 @@ and [RcppEigen](https://github.com/RcppCore/RcppEigen).
 Then, install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
-    install_github(c("rqtl/qtl2geno", "rqtl/qtl2scan", "rqtl/qtl2plot"))
+    install_github(paste0("rqtl/qtl2", c("geno", "scan", "plot", "convert")))
 
 ---
 
@@ -77,4 +84,5 @@ Sources on [github](http://github.com):
 - The [source for the qtl2geno](https://github.com/rqtl/qtl2geno)
 - The [source for the qtl2scan](https://github.com/rqtl/qtl2scan)
 - The [source for the qtl2plot](https://github.com/rqtl/qtl2plot)
+- The [source for the qtl2convert](https://github.com/rqtl/qtl2convert)
 - The [source for the website](https://github.com/kbroman/qtl2/tree/gh-pages)
