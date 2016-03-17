@@ -51,6 +51,8 @@
 #' \item \code{step} - the value of the \code{step} argument.
 #' \item \code{off_end} - the value of the \code{off_end} argument.
 #' \item \code{stepwidth} - the value of the \code{stepwidth} argument.
+#' \item \code{error_prob} - the value of the \code{error_prob} argument.
+#' \item \code{map_function} - the value of the \code{map_function} argument.
 #' }
 #'
 #' @details
@@ -184,7 +186,9 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                    alleleprobs=FALSE,
                    step=step,
                    off_end=off_end,
-                   stepwidth=stepwidth)
+                   stepwidth=stepwidth,
+                   error_prob=error_prob,
+                   map_function=map_function)
     result$grid <- grid # include only if not NULL
 
     class(result) <- c("calc_genoprob", "list")

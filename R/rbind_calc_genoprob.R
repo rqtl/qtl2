@@ -30,7 +30,7 @@ rbind.calc_genoprob <-
     # check that things match
     nested_stuff <- c("map", "grid")
     other_stuff <- c("crosstype", "is_x_chr", "alleles", "alleleprobs",
-                     "step", "off_end", "stepwidth")
+                     "step", "off_end", "stepwidth", "error_prob", "map_function")
     for(i in 2:length(args)) {
         for(obj in other_stuff) {
             if(!is_same(args[[1]][[obj]], args[[i]][[obj]]))
