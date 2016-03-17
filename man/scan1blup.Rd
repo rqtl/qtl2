@@ -34,7 +34,8 @@ REML to estimate variance components; otherwise maximum likelihood.}
 \item{preserve_intercept}{If TRUE, the BLUPs will have mean zero
 and there will be a separate column for the intercept. If FALSE
 (the default), we'll add the intercept to the BLUPs to give results
-that are comparable to \code{\link{scan1coef}}.}
+that are comparable to \code{\link{scan1coef}}.
+Taken as TRUE if \code{contrasts} provided.}
 
 \item{tol}{Tolerance value for convergence of linear mixed model fit.}
 

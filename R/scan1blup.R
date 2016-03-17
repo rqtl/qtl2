@@ -23,6 +23,7 @@
 #'     and there will be a separate column for the intercept. If FALSE
 #'     (the default), we'll add the intercept to the BLUPs to give results
 #'     that are comparable to \code{\link{scan1coef}}.
+#'     Taken as TRUE if \code{contrasts} provided.
 #' @param tol Tolerance value for convergence of linear mixed model fit.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -92,6 +93,8 @@ scan1blup <-
              contrasts=NULL, se=FALSE, reml=TRUE, preserve_intercept=FALSE,
              tol=1e-12, cores=1, quiet=TRUE)
 {
+    if(!is.null(contrasts)) preserve_intercept <- TRUE # force preserve_intercept if using contrasts
+
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1blup_pg(genoprobs, pheno, kinship, addcovar,
                             contrasts, se, reml, preserve_intercept, tol, cores, quiet))
