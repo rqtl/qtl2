@@ -19,4 +19,16 @@ Object of same form as input \code{map} but in the units as in \code{newmap}.
 \description{
 Use interpolate to convert from one map to another
 }
+\examples{
+# load example data
+library(qtl2geno)
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
+# positions to interpolate from cM to Mbp
+tointerp <- list("7" = c(pos7.1= 5, pos7.2=15, pos7.3=25),
+                 "9" = c(pos9.1=20, pos9.2=40))
+
+interp_map(tointerp, iron$gmap, iron$pmap)
+
+}
 
