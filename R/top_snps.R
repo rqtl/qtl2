@@ -53,8 +53,8 @@
 #' # top SNPs among the distinct subset at which calculations were performed
 #' top_snps(out_snps, show_all_snps=FALSE)
 #'
-#' # top SNPs within 1.0 LOD
-#' top_snps(out_snps, 1.0)
+#' # top SNPs within 0.5 LOD of max
+#' top_snps(out_snps, 0.5)
 #' }
 #' @export
 #' @seealso \code{\link{genoprob_to_snpprob}}, \code{\link[qtl2plot]{plot_snpasso}}
