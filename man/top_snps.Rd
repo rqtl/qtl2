@@ -20,6 +20,51 @@ maximum SNP association.}
 \description{
 Create a table of the top snp associations
 }
+\examples{
+\dontrun{
+# load example DO data from web
+library(qtl2geno)
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DOex/DOex.zip")
+DOex <- read_cross2(file)
+
+# subset to chr 2
+DOex <- DOex[,"2"]
+
+# calculate genotype probabilities and convert to allele probabilities
+pr <- calc_genoprob(DOex, error_prob=0.002)
+apr <- genoprob_to_alleleprob(pr)
+
+# download snp info from web
+tmpfile <- tempfile()
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DOex/c2_snpinfo.rds")
+download.file(file, tmpfile, quiet=TRUE)
+snpinfo <- readRDS(tmpfile)
+unlink(tmpfile)
+
+# calculate strain distribution patterns
+snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
+
+# switch map in allele probabilities to Mbp
+apr$map <- DOex$pmap
+
+# convert to snp probabilities
+snppr <- genoprob_to_snpprob(apr, snpinfo)
+
+# perform SNP association analysis (here, ignoring residual kinship)
+out_snps <- scan1(snppr, DOex$pheno)
+
+# table with top SNPs
+top_snps(out_snps)
+
+# top SNPs among the distinct subset at which calculations were performed
+top_snps(out_snps, show_all_snps=FALSE)
+
+# top SNPs within 1.0 LOD
+top_snps(out_snps, 1.0)
+}
+}
 \seealso{
 \code{\link{genoprob_to_snpprob}}, \code{\link[qtl2plot]{plot_snpasso}}
 }
