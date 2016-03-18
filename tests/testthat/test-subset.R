@@ -38,6 +38,7 @@ test_that("subset.cross2 works (F2)", {
     expected <- iron
     expected$geno <- expected$geno[chr]
     expected$gmap <- expected$gmap[chr]
+    expected$pmap <- expected$pmap[chr]
     expected$is_x_chr <- expected$is_x_chr[chr]
 
     expect_equal(ironsub, expected)

@@ -33,7 +33,7 @@ test_that("can read iron data", {
     # check that it contains the same stuff
     expect_equal(sort(names(iron)),
                  c("alleles", "covar", "cross_info", "crosstype", "geno", "gmap",
-                   "is_female", "is_x_chr", "pheno", "phenocovar"))
+                   "is_female", "is_x_chr", "pheno", "phenocovar", "pmap"))
 
     # check summary
     expected <- structure(list(crosstype = "f2", nlines = 284L, nind = 284L,
