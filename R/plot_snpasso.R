@@ -72,8 +72,14 @@
 #' library(qtl2plot)
 #' plot_snpasso(out_snps)
 #'
+#' # can also just type plot()
+#' plot(out_snps)
+#'
 #' # plot just subset of distinct SNPs
 #' plot_snpasso(out_snps, show_all_snps=FALSE)
+#'
+#' # highlight the top snps (with LOD within 1.5 of max)
+#' plot(out_snps, drop.hilit=1.5)
 #' }
 #'
 #' @seealso \code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
