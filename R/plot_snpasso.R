@@ -32,6 +32,50 @@
 #'
 #' @param ... Additional graphics parameters.
 #'
+#' @examples
+#' \dontrun{
+#' # load example DO data from web
+#' library(qtl2geno)
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/master/DOex/DOex.zip")
+#' DOex <- read_cross2(file)
+#'
+#' # subset to chr 2
+#' DOex <- DOex[,"2"]
+#'
+#' # calculate genotype probabilities and convert to allele probabilities
+#' pr <- calc_genoprob(DOex, error_prob=0.002)
+#' apr <- genoprob_to_alleleprob(pr)
+#'
+#' # download snp info from web
+#' tmpfile <- tempfile()
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/master/DOex/c2_snpinfo.rds")
+#' download.file(file, tmpfile, quiet=TRUE)
+#' snpinfo <- readRDS(tmpfile)
+#' unlink(tmpfile)
+#'
+#' # calculate strain distribution patterns
+#' snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
+#'
+#' # switch map in allele probabilities to Mbp
+#' apr$map <- DOex$pmap
+#'
+#' # convert to snp probabilities
+#' snppr <- genoprob_to_snpprob(apr, snpinfo)
+#'
+#' # perform SNP association analysis (here, ignoring residual kinship)
+#' library(qtl2scan)
+#' out_snps <- scan1(snppr, DOex$pheno)
+#'
+#' # plot results
+#' library(qtl2plot)
+#' plot_snpasso(out_snps)
+#'
+#' # plot just subset of distinct SNPs
+#' plot_snpasso(out_snps, show_all_snps=FALSE)
+#' }
+#'
 #' @seealso \code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
 #' @export
 #'
