@@ -7,6 +7,7 @@ pheno: iron_pheno.csv
 phenocovar: iron_phenocovar.csv
 covar: iron_covar.csv
 gmap: iron_gmap.csv
+pmap: iron_pmap.csv
 alleles:
 - S
 - B

@@ -1,12 +1,13 @@
 ## Data from Grant et al. (2006)
 
-Sample input data files from 
+Sample input data files from
 [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
 (an intercross)
 
 - [`iron.yaml`](iron.yaml), the control file ([YAML format](http://www.yaml.org/))
 - [`iron_geno.csv`](iron_geno.csv), genotype data
 - [`iron_gmap.csv`](iron_gmap.csv), genetic map
+- [`iron_pmap.csv`](iron_pmap.csv), physical map
 - [`iron_covar.csv`](iron_covar.csv), covariate data
 - [`iron_pheno.csv`](iron_pheno.csv), phenotype data
 - [`iron_phenocovar.csv`](iron_phenocovar.csv), phenotype covariates
