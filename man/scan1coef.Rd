@@ -109,5 +109,9 @@ coef_pg <- scan1coef(probs[,7], pheno, kinship7, addcovar=covar)
 Haley CS, Knott SA (1992) A simple
 regression method for mapping quantitative trait loci in line
 crosses using flanking markers.  Heredity 69:315--324.
+
+Kang HM, Zaitlen NA, Wade CM, Kirby A, Heckerman D, Daly MJ, Eskin
+E (2008) Efficient control of population structure in model
+organism association mapping. Genetics 178:1709--1723.
 }
 
