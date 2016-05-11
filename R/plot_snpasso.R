@@ -104,7 +104,7 @@ plot_snpasso <-
         col <- c(col, col.hilit)[(scan1output$lod >= maxlod-drop.hilit)+1]
 
     plot_scan1(scan1output, lodcolumn=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
-               gap=gap, add=add, col = col, type="p", cex=cex, pch=pch)
+               gap=gap, add=add, col = col, type="p", cex=cex, pch=pch, ...)
 }
 
 
