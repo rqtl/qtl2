@@ -24,7 +24,7 @@
 #' @seealso \code{\link{plot_coef}}, \code{\link{plot_coefCC}}, \code{\link{plot_snpasso}}
 #'
 #' @export
-#' @importFrom graphics plot rect lines par axis title
+#' @importFrom graphics plot rect lines par axis title abline box
 #'
 #' @return None.
 #'
