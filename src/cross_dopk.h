@@ -50,8 +50,6 @@ class DOPK : public QTLCross
 
     const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr);
 
-    const bool is_het(const int true_gen); // is heterozygous (just for female X or autosome)
-
     // helper functions for step()
     const double step_auto(int left, int right, double r, int s,
                            Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
