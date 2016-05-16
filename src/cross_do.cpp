@@ -4,54 +4,11 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
+#include "cross_util.h"
 #include "cross_do_util.h"
 #include "r_message.h"
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
-
-const bool DO::is_het(const int true_gen)
-{
-    IntegerVector alleles = decode_geno(true_gen);
-    if(alleles[0] == alleles[1]) return false;
-    return true;
-}
-
-// alleles -> integer 1, 2, ..., 36 (phase unknown case)
-const int DO::encode_alleles(const int allele1, const int allele2)
-{
-    const int m = std::max(allele1, allele2);
-    const int d = abs(allele1 - allele2);
-
-    return (int)round(R::choose((double)(m+1), 2.0) - d);
-}
-
-// integer 1, 2, ..., 36 -> alleles (phase unknown case)
-const IntegerVector DO::decode_geno(const int true_gen)
-{
-    const int n_alleles = 8;
-    #ifndef NDEBUG
-    const int n_geno = 36;
-    if(true_gen < 0 || true_gen > n_geno)
-        throw std::range_error("genotype value not allowed");
-    #endif
-
-    IntegerVector result(2);
-
-    int last_max = 0;
-    for(int i=1; i<=n_alleles; i++) {
-        if(true_gen <= last_max+i) {
-            result[1] = i;
-            result[0] = true_gen - last_max;
-            return(result);
-        }
-        last_max += i;
-    }
-
-    result[0] = NA_INTEGER;
-    result[1] = NA_INTEGER;
-    return result;
-}
-
 
 const bool DO::check_geno(const int gen, const bool is_observed_value,
                           const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
@@ -86,7 +43,7 @@ const double DO::init(const int true_gen,
     #endif
 
     if(!is_x_chr || is_female) { // autosome or female X
-        if(is_het(true_gen)) return -log(32.0);
+        if(mpp_is_het(true_gen, 8, false)) return -log(32.0);
         else return -log(64.0);
     }
     else { // male X
@@ -107,7 +64,7 @@ const double DO::emit(const int obs_gen, const int true_gen, const double error_
     if(obs_gen==0) return 0.0; // missing
 
     if(!is_x_chr || is_female) { // autosome or female X
-        const IntegerVector true_alleles = decode_geno(true_gen);
+        const IntegerVector true_alleles = mpp_decode_geno(true_gen, 8, false);
         int f1 = founder_geno[true_alleles[0]-1];
         int f2 = founder_geno[true_alleles[1]-1];
 
@@ -269,7 +226,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
         NumericMatrix result(n_geno+n_alleles, n_alleles);
         // female X
         for(int trueg=0; trueg<n_geno; trueg++) {
-            IntegerVector alleles = decode_geno(trueg+1);
+            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, false);
             result(trueg,alleles[0]-1) += 0.5;
             result(trueg,alleles[1]-1) += 0.5;
         }
@@ -283,7 +240,7 @@ const NumericMatrix DO::geno2allele_matrix(const bool is_x_chr)
         NumericMatrix result(n_geno,n_alleles);
 
         for(int trueg=0; trueg<n_geno; trueg++) {
-            IntegerVector alleles = decode_geno(trueg+1);
+            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, false);
             result(trueg,alleles[0]-1) += 0.5;
             result(trueg,alleles[1]-1) += 0.5;
         }
@@ -377,8 +334,8 @@ const double DO::step_auto(int left, int right, double r, int s,
     #endif
 
     // pull out alleles for left and right loci
-    IntegerVector leftv = decode_geno(left);
-    IntegerVector rightv = decode_geno(right);
+    IntegerVector leftv = mpp_decode_geno(left, 8, false);
+    IntegerVector rightv = mpp_decode_geno(right, 8, false);
     int left1 = leftv[0];
     int left2 = leftv[1];
     int right1 = rightv[0];
@@ -443,8 +400,8 @@ const double DO::step_femX(int left, int right, double r, int s,
     #endif
 
     // pull out alleles for left and right loci
-    IntegerVector leftv = decode_geno(left);
-    IntegerVector rightv = decode_geno(right);
+    IntegerVector leftv = mpp_decode_geno(left, 8, false);
+    IntegerVector rightv = mpp_decode_geno(right, 8, false);
     int left1 = leftv[0];
     int left2 = leftv[1];
     int right1 = rightv[0];
@@ -564,27 +521,5 @@ const bool DO::need_founder_geno()
 const std::vector<std::string> DO::geno_names(const std::vector<std::string> alleles,
                                               const bool is_x_chr)
 {
-    if(alleles.size() < 8)
-        throw std::range_error("alleles must have length 8");
-
-    if(is_x_chr) {
-        std::vector<std::string> result(44);
-        for(int i=0; i<36; i++) {
-            IntegerVector allele_int = DO::decode_geno(i+1);
-            result[i] = alleles[allele_int[0]-1] + alleles[allele_int[1]-1];
-        }
-        for(int i=0; i<8; i++) {
-            result[36+i] = alleles[i] + "Y";
-        }
-
-        return result;
-    }
-    else {
-        std::vector<std::string> result(36);
-        for(int i=0; i<36; i++) {
-            IntegerVector allele_int = DO::decode_geno(i+1);
-            result[i] = alleles[allele_int[0]-1] + alleles[allele_int[1]-1];
-        }
-        return result;
-    }
+    return mpp_geno_names(alleles, is_x_chr);
 }

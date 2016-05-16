@@ -80,6 +80,58 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// mpp_encode_alleles
+int mpp_encode_alleles(const int allele1, const int allele2, const int n_alleles, const bool phase_known);
+RcppExport SEXP qtl2geno_mpp_encode_alleles(SEXP allele1SEXP, SEXP allele2SEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type allele1(allele1SEXP);
+    Rcpp::traits::input_parameter< const int >::type allele2(allele2SEXP);
+    Rcpp::traits::input_parameter< const int >::type n_alleles(n_allelesSEXP);
+    Rcpp::traits::input_parameter< const bool >::type phase_known(phase_knownSEXP);
+    __result = Rcpp::wrap(mpp_encode_alleles(allele1, allele2, n_alleles, phase_known));
+    return __result;
+END_RCPP
+}
+// mpp_decode_geno
+IntegerVector mpp_decode_geno(const int true_gen, const int n_alleles, const bool phase_known);
+RcppExport SEXP qtl2geno_mpp_decode_geno(SEXP true_genSEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type true_gen(true_genSEXP);
+    Rcpp::traits::input_parameter< const int >::type n_alleles(n_allelesSEXP);
+    Rcpp::traits::input_parameter< const bool >::type phase_known(phase_knownSEXP);
+    __result = Rcpp::wrap(mpp_decode_geno(true_gen, n_alleles, phase_known));
+    return __result;
+END_RCPP
+}
+// mpp_is_het
+bool mpp_is_het(const int true_gen, const int n_alleles, const bool phase_known);
+RcppExport SEXP qtl2geno_mpp_is_het(SEXP true_genSEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const int >::type true_gen(true_genSEXP);
+    Rcpp::traits::input_parameter< const int >::type n_alleles(n_allelesSEXP);
+    Rcpp::traits::input_parameter< const bool >::type phase_known(phase_knownSEXP);
+    __result = Rcpp::wrap(mpp_is_het(true_gen, n_alleles, phase_known));
+    return __result;
+END_RCPP
+}
+// mpp_geno_names
+const std::vector<std::string> mpp_geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
+RcppExport SEXP qtl2geno_mpp_geno_names(SEXP allelesSEXP, SEXP is_x_chrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const std::vector<std::string> >::type alleles(allelesSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_x_chr(is_x_chrSEXP);
+    __result = Rcpp::wrap(mpp_geno_names(alleles, is_x_chr));
+    return __result;
+END_RCPP
+}
 // geno_names
 std::vector<std::string> geno_names(const String& crosstype, const std::vector<std::string> alleles, const bool is_x_chr);
 RcppExport SEXP qtl2geno_geno_names(SEXP crosstypeSEXP, SEXP allelesSEXP, SEXP is_x_chrSEXP) {

@@ -4,77 +4,12 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
+#include "cross_util.h"
 #include "cross_do.h"
 #include "cross_do_util.h"
 #include "r_message.h"
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
-
-const bool DOPK::is_het(const int true_gen)
-{
-    IntegerVector alleles = decode_geno(true_gen);
-    if(alleles[0] == alleles[1]) return false;
-    return true;
-}
-
-// alleles -> integer 1, 2, ..., 64 (phase unknown case)
-const int DOPK::encode_alleles(const int allele1, const int allele2)
-{
-    const int n_alleles = 8;
-    const int m = std::max(allele1, allele2);
-    const int d = abs(allele1 - allele2);
-
-    if(allele1 <= allele2)
-        return (int)round(R::choose((double)(m+1), 2.0) - d);
-    else
-        return (int)round(R::choose((double)(m), 2.0) - d + 1 +
-                          R::choose((double)(n_alleles+1), 2.0));
-}
-
-// integer 1, 2, ..., 64 -> alleles (phase unknown case)
-const IntegerVector DOPK::decode_geno(const int true_gen)
-{
-    const int n_alleles = 8;
-    const int n_puk_geno = 36; // number of phase unknown genotypes
-    #ifndef NDEBUG
-    const int n_pk_geno = 64;  // number of phase known genotypes
-    if(true_gen < 0 || true_gen > n_pk_geno)
-        throw std::range_error("genotype value not allowed");
-    #endif
-
-    IntegerVector result(2);
-
-    if(true_gen <= n_puk_geno) {
-      int last_max = 0;
-      for(int i=1; i<=n_alleles; i++) {
-          if(true_gen <= last_max+i) {
-              result[1] = i;
-              result[0] = true_gen - last_max;
-              return result;
-          }
-          last_max += i;
-      }
-    }
-    else {
-        int g = true_gen - n_puk_geno;
-        int last_max = 0;
-        for(int i=1; i<=n_alleles-1; i++) {
-            if(g <= last_max+i) {
-                result[0] = i+1;
-                result[1] = g-last_max;
-                return result;
-            }
-            last_max += i;
-        }
-
-    }
-
-    result[0] = NA_INTEGER;
-    result[1] = NA_INTEGER;
-    return result;
-}
-
-
 
 const bool DOPK::check_geno(const int gen, const bool is_observed_value,
                             const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
@@ -126,7 +61,7 @@ const double DOPK::emit(const int obs_gen, const int true_gen, const double erro
     if(obs_gen==0) return 0.0; // missing
 
     if(!is_x_chr || is_female) { // autosome or female X
-        const IntegerVector true_alleles = decode_geno(true_gen);
+        const IntegerVector true_alleles = mpp_decode_geno(true_gen, 8, true);
         int f1 = founder_geno[true_alleles[0]-1];
         int f2 = founder_geno[true_alleles[1]-1];
 
@@ -304,7 +239,7 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
         NumericMatrix result(n_geno+n_alleles, n_alleles);
         // female X
         for(int trueg=0; trueg<n_geno; trueg++) {
-            IntegerVector alleles = decode_geno(trueg+1);
+            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, true);
             result(trueg,alleles[0]-1) += 0.5;
             result(trueg,alleles[1]-1) += 0.5;
         }
@@ -318,7 +253,7 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
         NumericMatrix result(n_geno,n_alleles);
 
         for(int trueg=0; trueg<n_geno; trueg++) {
-            IntegerVector alleles = decode_geno(trueg+1);
+            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, true);
             result(trueg,alleles[0]-1) += 0.5;
             result(trueg,alleles[1]-1) += 0.5;
         }
@@ -414,8 +349,8 @@ const double DOPK::step_auto(int left, int right, double r, int s,
     #endif
 
     // pull out alleles for left and right loci
-    IntegerVector leftv = decode_geno(left);
-    IntegerVector rightv = decode_geno(right);
+    IntegerVector leftv = mpp_decode_geno(left, 8, true);
+    IntegerVector rightv = mpp_decode_geno(right, 8, true);
     int left1 = leftv[0];
     int left2 = leftv[1];
     int right1 = rightv[0];
@@ -485,8 +420,8 @@ const double DOPK::step_femX(int left, int right, double r, int s,
     #endif
 
     // pull out alleles for left and right loci
-    IntegerVector leftv = decode_geno(left);
-    IntegerVector rightv = decode_geno(right);
+    IntegerVector leftv = mpp_decode_geno(left, 8, true);
+    IntegerVector rightv = mpp_decode_geno(right, 8, true);
     int left1 = leftv[0];
     int left2 = leftv[1];
     int right1 = rightv[0];

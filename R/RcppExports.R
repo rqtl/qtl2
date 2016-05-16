@@ -25,6 +25,22 @@ check_handle_x_chr <- function(crosstype, any_x_chr) {
     .Call('qtl2geno_check_handle_x_chr', PACKAGE = 'qtl2geno', crosstype, any_x_chr)
 }
 
+mpp_encode_alleles <- function(allele1, allele2, n_alleles, phase_known) {
+    .Call('qtl2geno_mpp_encode_alleles', PACKAGE = 'qtl2geno', allele1, allele2, n_alleles, phase_known)
+}
+
+mpp_decode_geno <- function(true_gen, n_alleles, phase_known) {
+    .Call('qtl2geno_mpp_decode_geno', PACKAGE = 'qtl2geno', true_gen, n_alleles, phase_known)
+}
+
+mpp_is_het <- function(true_gen, n_alleles, phase_known) {
+    .Call('qtl2geno_mpp_is_het', PACKAGE = 'qtl2geno', true_gen, n_alleles, phase_known)
+}
+
+mpp_geno_names <- function(alleles, is_x_chr) {
+    .Call('qtl2geno_mpp_geno_names', PACKAGE = 'qtl2geno', alleles, is_x_chr)
+}
+
 geno_names <- function(crosstype, alleles, is_x_chr) {
     .Call('qtl2geno_geno_names', PACKAGE = 'qtl2geno', crosstype, alleles, is_x_chr)
 }
