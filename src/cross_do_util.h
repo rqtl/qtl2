@@ -118,4 +118,40 @@ double DOrec_femX(double r, int s, Rcpp::IntegerVector precc_gen, Rcpp::NumericV
  **********************************************************************/
 double DOrec_malX(double r, int s, Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
 
+/**********************************************************************
+ * transition probability for DO, autosome
+ *
+ * left = genotype at left locus
+ * right = genotype at right locus
+ * r = recombination fraction
+ * s = generation of DO
+ *
+ * precc_alpha = proportion of preCC progenitors at generation precc_gen
+ *
+ * This calculates log Pr(right | left) for phase-unknown case
+ *
+ **********************************************************************/
+const double DOstep_auto(int left, int right, double r, int s,
+                         Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
+
+// transition probability for DO, female X chr
+const double DOstep_femX(int left, int right, double r, int s,
+                         Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
+
+// transition probability for DO, male X chr
+const double DOstep_malX(int left, int right, double r, int s,
+                         Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
+
+// transition probability for DO, autosome, phase-known case
+const double DOPKstep_auto(int left, int right, double r, int s,
+                           Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
+
+// transition probability for DO, female X chr in phase-known case
+const double DOPKstep_femX(int left, int right, double r, int s,
+                           Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
+
+// transition probability for DO, male X chr, phase-known
+const double DOPKstep_malX(int left, int right, double r, int s,
+                           Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
+
 #endif // CROSS_DO_UTIL_H

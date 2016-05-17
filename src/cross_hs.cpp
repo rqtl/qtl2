@@ -1,67 +1,70 @@
-// phase-known Diversity Outcross QTLCross class (for HMM, in particular est.map)
+// Heterogeneous Stock QTLCross class (for HMM)
 
-#include "cross_dopk.h"
+#include "cross_hs.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_util.h"
-#include "cross_do.h"
 #include "cross_do_util.h"
 #include "r_message.h"
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
 
-const bool DOPK::check_geno(const int gen, const bool is_observed_value,
-                            const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
+const bool HS::check_geno(const int gen, const bool is_observed_value,
+                          const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
+    // allow any value 0-5 for observed
     if(is_observed_value) {
         if(gen==0 || gen==A || gen==H || gen==B ||
            gen==notA || gen==notB) return true;
-        return false;
+        else return false;
     }
 
-    const int n_alleles =   8;
-    const int n_geno =  64;
+    const int n_alleles = 8;
+    const int n_geno = 36;
 
     if(!is_x_chr || is_female) { // autosome or female X
-        if(gen >= 1 && gen <= n_geno) return true;
+        if(gen>= 1 && gen <= n_geno) return true;
     }
-    else {
-        if(gen >= n_geno+1 && gen <= n_geno+n_alleles) return true;
+    else { // male X
+        if(gen>=n_geno+1 && gen <=n_geno+n_alleles) return true;
     }
+
     return false; // otherwise a problem
 }
 
-
-const double DOPK::init(const int true_gen,
-                        const bool is_x_chr, const bool is_female,
-                        const IntegerVector& cross_info)
+const double HS::init(const int true_gen,
+                      const bool is_x_chr, const bool is_female,
+                      const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(!is_x_chr || is_female) // autosome or female X
-        return(-log(64.0));
-    else
-        return(-log(8.0));
+    if(!is_x_chr || is_female) { // autosome or female X
+        if(mpp_is_het(true_gen, 8, false)) return -log(32.0);
+        else return -log(64.0);
+    }
+    else { // male X
+        return -log(8.0);
+    }
 }
 
-const double DOPK::emit(const int obs_gen, const int true_gen, const double error_prob,
-                        const IntegerVector& founder_geno, const bool is_x_chr,
-                        const bool is_female, const IntegerVector& cross_info)
+const double HS::emit(const int obs_gen, const int true_gen, const double error_prob,
+                      const IntegerVector& founder_geno, const bool is_x_chr,
+                      const bool is_female, const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
-    const int n_geno = 64;
+    const int n_geno = 36;
 
     if(obs_gen==0) return 0.0; // missing
 
     if(!is_x_chr || is_female) { // autosome or female X
-        const IntegerVector true_alleles = mpp_decode_geno(true_gen, 8, true);
+        const IntegerVector true_alleles = mpp_decode_geno(true_gen, 8, false);
         int f1 = founder_geno[true_alleles[0]-1];
         int f2 = founder_geno[true_alleles[1]-1];
 
@@ -136,16 +139,16 @@ const double DOPK::emit(const int obs_gen, const int true_gen, const double erro
             case A: case notB: return log(error_prob);
             }
         }
-        return 0.0;
+        return(0.0);
     }
 
     return NA_REAL; // shouldn't get here
 }
 
 
-const double DOPK::step(const int gen_left, const int gen_right, const double rec_frac,
-                        const bool is_x_chr, const bool is_female,
-                        const IntegerVector& cross_info)
+const double HS::step(const int gen_left, const int gen_right, const double rec_frac,
+                      const bool is_x_chr, const bool is_female,
+                      const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -153,38 +156,37 @@ const double DOPK::step(const int gen_left, const int gen_right, const double re
         throw std::range_error("genotype value not allowed");
     #endif
 
-    // info about preCC progenitors
-    const static IntegerVector precc_gen = IntegerVector::create(4,5,6,7,8,9,10,11,12);
+    // can treat HS like DO where "preCC" founders all at generation 1
+    const static IntegerVector precc_gen = IntegerVector::create(1);
     const static NumericVector precc_alpha =
-        NumericVector::create(21.0/144.0, 64.0/144.0, 24.0/144.0, 10.0/144.0, 5.0/144.0,
-                               9.0/144.0,  5.0/144.0,  3.0/144.0,  3.0/144.0);
+        NumericVector::create(1.0);
 
     // no. generations for this mouse
     int n_gen = cross_info[0];
 
     if(is_x_chr) {
         if(is_female) { // female X
-            return DOPKstep_femX(gen_left, gen_right, rec_frac, n_gen,
-                                 precc_gen, precc_alpha);
+            return DOstep_femX(gen_left, gen_right, rec_frac, n_gen,
+                               precc_gen, precc_alpha);
         }
         else { // male X
-            return DOPKstep_malX(gen_left, gen_right, rec_frac, n_gen,
-                                 precc_gen, precc_alpha);
+            return DOstep_malX(gen_left, gen_right, rec_frac, n_gen,
+                               precc_gen, precc_alpha);
         }
     }
     else { // autosome
-        return DOPKstep_auto(gen_left, gen_right, rec_frac, n_gen,
-                             precc_gen, precc_alpha);
+        return DOstep_auto(gen_left, gen_right, rec_frac, n_gen,
+                           precc_gen, precc_alpha);
     }
 
     return NA_REAL; // shouldn't get here
 }
 
-const IntegerVector DOPK::possible_gen(const bool is_x_chr, const bool is_female,
-                                       const IntegerVector& cross_info)
+const IntegerVector HS::possible_gen(const bool is_x_chr, const bool is_female,
+                                     const IntegerVector& cross_info)
 {
     int n_alleles = 8;
-    int n_geno = 64;
+    int n_geno = 36;
 
     if(is_x_chr && !is_female) { // male X chromosome
         IntegerVector result(n_alleles);
@@ -200,51 +202,35 @@ const IntegerVector DOPK::possible_gen(const bool is_x_chr, const bool is_female
     }
 }
 
-const int DOPK::ngen(const bool is_x_chr)
+const int HS::ngen(const bool is_x_chr)
 {
     int n_alleles = 8;
-    int n_geno = 64;
+    int n_geno = 36;
 
     if(is_x_chr) return n_geno+n_alleles;
     return n_geno;
 }
 
-const int DOPK::nalleles()
+const int HS::nalleles()
 {
     return 8;
 }
 
-const double DOPK::nrec(const int gen_left, const int gen_right,
-                        const bool is_x_chr, const bool is_female,
-                        const IntegerVector& cross_info)
-{
-    // need to fill in this function
-    return NA_REAL;
-}
-
-const double DOPK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
-                                const IntegerMatrix& cross_info, const int n_gen)
-{
-    Rcpp::stop("est_map not yet available for Diversity Outcross");
-
-    return NA_REAL;
-}
-
-const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
+const NumericMatrix HS::geno2allele_matrix(const bool is_x_chr)
 {
     const int n_alleles = 8;
-    const int n_geno = 64;
+    const int n_geno = 36;
 
     if(is_x_chr) {
         NumericMatrix result(n_geno+n_alleles, n_alleles);
         // female X
         for(int trueg=0; trueg<n_geno; trueg++) {
-            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, true);
+            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, false);
             result(trueg,alleles[0]-1) += 0.5;
             result(trueg,alleles[1]-1) += 0.5;
         }
         // male X
-        for(int trueg=0; trueg<n_geno; trueg++)
+        for(int trueg=0; trueg<n_alleles; trueg++)
             result(trueg+n_geno, trueg) = 1.0;
 
         return result;
@@ -253,7 +239,7 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
         NumericMatrix result(n_geno,n_alleles);
 
         for(int trueg=0; trueg<n_geno; trueg++) {
-            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, true);
+            IntegerVector alleles = mpp_decode_geno(trueg+1, 8, false);
             result(trueg,alleles[0]-1) += 0.5;
             result(trueg,alleles[1]-1) += 0.5;
         }
@@ -263,13 +249,13 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
 }
 
 // check that sex conforms to expectation
-const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
+const bool HS::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
     const unsigned int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
-            // not needed here, but don't call this an error
+            // not needed here, but don't call it an error
             result = true;
         }
     }
@@ -292,7 +278,7 @@ const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bo
 }
 
 // check that cross_info conforms to expectation
-const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
+const bool HS::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
 {
     bool result = true;
     const unsigned int n_row = cross_info.rows();
@@ -323,10 +309,8 @@ const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any
     return result;
 }
 
-
-
 // check that founder genotype data has correct no. founders and markers
-const bool DOPK::check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
+const bool HS::check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
 {
     bool result=true;
 
@@ -347,7 +331,7 @@ const bool DOPK::check_founder_geno_size(const IntegerMatrix& founder_geno, cons
 }
 
 // check that founder genotype data has correct values
-const bool DOPK::check_founder_geno_values(const IntegerMatrix& founder_geno)
+const bool HS::check_founder_geno_values(const IntegerMatrix& founder_geno)
 {
     const int fg_mar = founder_geno.cols();
     const int fg_f   = founder_geno.rows();
@@ -366,8 +350,36 @@ const bool DOPK::check_founder_geno_values(const IntegerMatrix& founder_geno)
     return true;
 }
 
-
-const bool DOPK::need_founder_geno()
+const bool HS::need_founder_geno()
 {
     return true;
+}
+
+// geno_names from allele names
+const std::vector<std::string> HS::geno_names(const std::vector<std::string> alleles,
+                                              const bool is_x_chr)
+{
+    if(alleles.size() < 8)
+        throw std::range_error("alleles must have length 8");
+
+    if(is_x_chr) {
+        std::vector<std::string> result(44);
+        for(int i=0; i<36; i++) {
+            IntegerVector allele_int = mpp_decode_geno(i+1, 8, false);
+            result[i] = alleles[allele_int[0]-1] + alleles[allele_int[1]-1];
+        }
+        for(int i=0; i<8; i++) {
+            result[36+i] = alleles[i] + "Y";
+        }
+
+        return result;
+    }
+    else {
+        std::vector<std::string> result(36);
+        for(int i=0; i<36; i++) {
+            IntegerVector allele_int = mpp_decode_geno(i+1, 8, false);
+            result[i] = alleles[allele_int[0]-1] + alleles[allele_int[1]-1];
+        }
+        return result;
+    }
 }

@@ -1,17 +1,17 @@
-// phase-known Diversity Outcross QTLCross class (for HMM, in particular est.map)
+// phase-known Heterogeneous Stock QTLCross class (for HMM, in particular est.map)
 
-#include "cross_dopk.h"
+#include "cross_hspk.h"
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
+#include "cross_hs.h"
 #include "cross_util.h"
-#include "cross_do.h"
 #include "cross_do_util.h"
 #include "r_message.h"
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
 
-const bool DOPK::check_geno(const int gen, const bool is_observed_value,
+const bool HSPK::check_geno(const int gen, const bool is_observed_value,
                             const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     if(is_observed_value) {
@@ -33,7 +33,7 @@ const bool DOPK::check_geno(const int gen, const bool is_observed_value,
 }
 
 
-const double DOPK::init(const int true_gen,
+const double HSPK::init(const int true_gen,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
@@ -48,7 +48,7 @@ const double DOPK::init(const int true_gen,
         return(-log(8.0));
 }
 
-const double DOPK::emit(const int obs_gen, const int true_gen, const double error_prob,
+const double HSPK::emit(const int obs_gen, const int true_gen, const double error_prob,
                         const IntegerVector& founder_geno, const bool is_x_chr,
                         const bool is_female, const IntegerVector& cross_info)
 {
@@ -143,7 +143,7 @@ const double DOPK::emit(const int obs_gen, const int true_gen, const double erro
 }
 
 
-const double DOPK::step(const int gen_left, const int gen_right, const double rec_frac,
+const double HSPK::step(const int gen_left, const int gen_right, const double rec_frac,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
@@ -180,7 +180,7 @@ const double DOPK::step(const int gen_left, const int gen_right, const double re
     return NA_REAL; // shouldn't get here
 }
 
-const IntegerVector DOPK::possible_gen(const bool is_x_chr, const bool is_female,
+const IntegerVector HSPK::possible_gen(const bool is_x_chr, const bool is_female,
                                        const IntegerVector& cross_info)
 {
     int n_alleles = 8;
@@ -200,7 +200,7 @@ const IntegerVector DOPK::possible_gen(const bool is_x_chr, const bool is_female
     }
 }
 
-const int DOPK::ngen(const bool is_x_chr)
+const int HSPK::ngen(const bool is_x_chr)
 {
     int n_alleles = 8;
     int n_geno = 64;
@@ -209,12 +209,12 @@ const int DOPK::ngen(const bool is_x_chr)
     return n_geno;
 }
 
-const int DOPK::nalleles()
+const int HSPK::nalleles()
 {
     return 8;
 }
 
-const double DOPK::nrec(const int gen_left, const int gen_right,
+const double HSPK::nrec(const int gen_left, const int gen_right,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
@@ -222,15 +222,15 @@ const double DOPK::nrec(const int gen_left, const int gen_right,
     return NA_REAL;
 }
 
-const double DOPK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
+const double HSPK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
                                 const IntegerMatrix& cross_info, const int n_gen)
 {
-    Rcpp::stop("est_map not yet available for Diversity Outcross");
+    Rcpp::stop("est_map not yet available for heterogeneous stock");
 
     return NA_REAL;
 }
 
-const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
+const NumericMatrix HSPK::geno2allele_matrix(const bool is_x_chr)
 {
     const int n_alleles = 8;
     const int n_geno = 64;
@@ -263,7 +263,7 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
 }
 
 // check that sex conforms to expectation
-const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
+const bool HSPK::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
     const unsigned int n = is_female.size();
@@ -292,7 +292,7 @@ const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bo
 }
 
 // check that cross_info conforms to expectation
-const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
+const bool HSPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
 {
     bool result = true;
     const unsigned int n_row = cross_info.rows();
@@ -323,10 +323,8 @@ const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any
     return result;
 }
 
-
-
 // check that founder genotype data has correct no. founders and markers
-const bool DOPK::check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
+const bool HSPK::check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
 {
     bool result=true;
 
@@ -347,7 +345,7 @@ const bool DOPK::check_founder_geno_size(const IntegerMatrix& founder_geno, cons
 }
 
 // check that founder genotype data has correct values
-const bool DOPK::check_founder_geno_values(const IntegerMatrix& founder_geno)
+const bool HSPK::check_founder_geno_values(const IntegerMatrix& founder_geno)
 {
     const int fg_mar = founder_geno.cols();
     const int fg_f   = founder_geno.rows();
@@ -367,7 +365,7 @@ const bool DOPK::check_founder_geno_values(const IntegerMatrix& founder_geno)
 }
 
 
-const bool DOPK::need_founder_geno()
+const bool HSPK::need_founder_geno()
 {
     return true;
 }

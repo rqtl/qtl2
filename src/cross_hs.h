@@ -1,19 +1,19 @@
-// Diversity Outcross QTLCross class (for HMM)
+// Heterogeneous Stock QTLCross class (for HMM)
 
-#ifndef CROSS_DO_H
-#define CROSS_DO_H
+#ifndef CROSS_HS_H
+#define CROSS_HS_H
 
 #include <Rcpp.h>
 #include "cross.h"
 
-class DO : public QTLCross
+class HS : public QTLCross
 {
  public:
-    DO(){
-        crosstype = "do";
-        phase_known_crosstype = "dopk";
+    HS(){
+        crosstype = "hs";
+        phase_known_crosstype = "hspk";
     };
-    ~DO(){};
+    ~HS(){};
 
     const bool check_geno(const int gen, const bool is_observed_value,
                           const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
@@ -37,11 +37,15 @@ class DO : public QTLCross
 
     const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr);
 
+    const bool is_het(const int true_gen); // is heterozygous (just for female X or autosome)
+
     const bool check_founder_geno_size(const Rcpp::IntegerMatrix& founder_geno, const int n_markers);
     const bool check_founder_geno_values(const Rcpp::IntegerMatrix& founder_geno);
     const bool need_founder_geno();
 
-    const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
+    const std::vector<std::string> geno_names(const std::vector<std::string> alleles,
+                                              const bool is_x_chr);
+
 };
 
-#endif // CROSS_DO_H
+#endif // CROSS_HS_H
