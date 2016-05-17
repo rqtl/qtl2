@@ -75,8 +75,8 @@ IntegerVector mpp_decode_geno(const int true_gen,
     }
     else {
         // number of phase-unknown genotypes
-        const int n_geno = n_alleles + (int)round(R::choose((double)n_alleles, 2.0));
         #ifndef NDEBUG
+        const int n_geno = n_alleles + (int)round(R::choose((double)n_alleles, 2.0));
         if(true_gen < 0 || true_gen > n_geno)
             throw std::range_error("genotype value not allowed");
         #endif

@@ -6,6 +6,7 @@
 using namespace Rcpp;
 #include "cross.h"
 #include "cross_do.h"
+#include "cross_util.h"
 
 //////////////////////////////////////////////////////////////////////
 // 1. Stuff related to partially inbred 4-way RIL
@@ -305,4 +306,333 @@ double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_
     }
 
     return( 1.0 - 8.0*result );
+}
+
+/**********************************************************************
+ * transition probability for DO, autosome
+ *
+ * left = genotype at left locus
+ * right = genotype at right locus
+ * r = recombination fraction
+ * s = generation of DO
+ *
+ * precc_alpha = proportion of preCC progenitors at generation precc_gen
+ *
+ * This calculates log Pr(right | left) for phase-unknown case
+ *
+ **********************************************************************/
+const double DOstep_auto(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // pull out alleles for left and right loci
+    IntegerVector leftv = mpp_decode_geno(left, 8, false);
+    IntegerVector rightv = mpp_decode_geno(right, 8, false);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
+
+    // probability of recombinant haplotype
+    recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
+
+    if(left1 == left2) { // AA ->
+        if(right1 == right2) {
+            if(left1 == right1) { // AA -> AA
+                return( 2.0*log(1.0 - recprob) );
+            }
+            else { // AA -> BB
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1 == right1 || left1 == right2) { // AA -> AB
+                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else { // AA -> BC
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+    else { // AB ->
+        if(right1 == right2) {
+            if(left1 == right1 || left2 == right1) { // AB -> AA
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
+            }
+            else { // AB -> CC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if((left1==right1 && left2==right2) ||
+               (left1==right2 && left2==right1)) { // AB -> AB
+                return( log(recprob*recprob/49.0 + (1-recprob)*(1-recprob)) );
+            }
+            else if(left1==right1 || left1==right2 ||
+                    left2==right1 || left2==right2) { // AB -> AC
+                return( log(recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0) );
+            }
+            else { // AB -> CD
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+
+}
+
+// transition probability for DO, female X chr
+const double DOstep_femX(int left, int right, double r, int s,
+                          IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // pull out alleles for left and right loci
+    IntegerVector leftv = mpp_decode_geno(left, 8, false);
+    IntegerVector rightv = mpp_decode_geno(right, 8, false);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
+
+    // probability of recombinant haplotype
+    recprob = DOrec_femX(r, s, precc_gen, precc_alpha);
+
+    if(left1 == left2) {
+        if(right1 == right2) {
+            if(left1 == right1) { // AA -> AA
+                return( 2.0*log(1.0 - recprob) );
+            }
+            else { // AA -> BB
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1 == right1 || left1 == right2) { // AA -> AB
+                return( log(2.0) + log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else { // AA -> BC
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+    else { // AB
+        if(right1 == right2) {
+            if(left1 == right1 || left2 == right1) { // AB -> AA
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
+            }
+            else { // AB -> CC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if((left1==right1 && left2==right2) ||
+               (left1==right2 && left2==right1)) { // AB -> AB
+                return( log(recprob*recprob/49.0 + (1-recprob)*(1-recprob)) );
+            }
+            else if(left1==right1 || left1==right2 ||
+                    left2==right1 || left2==right2) { // AB -> AC
+                return( log(recprob*(1.0-recprob)/7.0 + recprob*recprob/49.0) );
+            }
+            else { // AB -> CD
+                return( 2.0*log(recprob) + log(2.0) - log(49.0) );
+            }
+        }
+    }
+}
+
+// transition probability for DO, male X chr
+const double DOstep_malX(int left, int right, double r, int s,
+                         IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // probability of recombinant haplotype
+    recprob = DOrec_malX(r, s, precc_gen, precc_alpha);
+
+    if(left == right) return log(1.0 - recprob);
+    return log(recprob) - log(7.0);
+}
+
+/**********************************************************************
+ * transition probability for DO, autosome, phase-known case
+ *
+ * left = genotype at left locus
+ * right = genotype at right locus
+ * r = recombination fraction
+ * s = generation of DO
+ *
+ * precc_alpha = proportion of preCC progenitors at generation precc_gen
+ *
+ * This calculates log Pr(right | left) for phase-known case
+ *
+ **********************************************************************/
+const double DOPKstep_auto(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // pull out alleles for left and right loci
+    IntegerVector leftv = mpp_decode_geno(left, 8, true);
+    IntegerVector rightv = mpp_decode_geno(right, 8, true);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
+
+    // probability of recombinant haplotype
+    recprob = DOrec_auto(r, s, precc_gen, precc_alpha);
+
+    if(left1 == left2) { // AA ->
+        if(right1 == right2) {
+            if(left1 == right1) { // AA -> AA
+                return( 2.0*log(1.0 - recprob) );
+            }
+            else { // AA -> BB
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1 == right1 || left1 == right2) { // AA -> AB
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else { // AA -> BC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+    }
+    else { // AB ->
+        if(right1 == right2) {
+            if(left1 == right1 || left2 == right1) { // AB -> AA
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
+            }
+            else { // AB -> CC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1==right1 && left2==right2) { // AB -> AB
+                return( 2.0*log(1-recprob) );
+            }
+            else if(left1==right2 && left2==right1) { // AB -> BA
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else if(left1==right1 || left2==right2) { // AB -> AC
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else if(left2==right1 || left2==right2) { // AB -> CA
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else { // AB -> CD
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+    }
+}
+
+// transition probability for DO, female X chr in phase-known case
+const double DOPKstep_femX(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // pull out alleles for left and right loci
+    IntegerVector leftv = mpp_decode_geno(left, 8, true);
+    IntegerVector rightv = mpp_decode_geno(right, 8, true);
+    int left1 = leftv[0];
+    int left2 = leftv[1];
+    int right1 = rightv[0];
+    int right2 = rightv[1];
+
+    // probability of recombinant haplotype
+    recprob = DOrec_femX(r, s, precc_gen, precc_alpha);
+
+    if(left1 == left2) { // AA ->
+        if(right1 == right2) {
+            if(left1 == right1) { // AA -> AA
+                return( 2.0*log(1.0 - recprob) );
+            }
+            else { // AA -> BB
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1 == right1 || left1 == right2) { // AA -> AB
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else { // AA -> BC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+    }
+    else { // AB ->
+        if(right1 == right2) {
+            if(left1 == right1 || left2 == right1) { // AB -> AA
+                return( log(recprob) + log(1.0 - recprob) - log(7.0) );
+            }
+            else { // AB -> CC
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+        else {
+            if(left1==right1 && left2==right2) { // AB -> AB
+                return( 2.0*log(1-recprob) );
+            }
+            else if(left1==right2 && left2==right1) { // AB -> BA
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else if(left1==right1 || left2==right2) { // AB -> AC
+                return( log(recprob) + log(1.0-recprob) - log(7.0) );
+            }
+            else if(left2==right1 || left2==right2) { // AB -> CA
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+            else { // AB -> CD
+                return( 2.0*log(recprob) - log(49.0) );
+            }
+        }
+    }
+}
+
+// transition probability for DO, male X chr, phase-known
+const double DOPKstep_malX(int left, int right, double r, int s,
+                           IntegerVector precc_gen, NumericVector precc_alpha)
+{
+    double recprob;
+    #ifndef NDEBUG
+    int n_precc = precc_gen.size();
+    if(n_precc != precc_alpha.size())
+        throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
+    #endif
+
+    // probability of recombinant haplotype
+    recprob = DOrec_malX(r, s, precc_gen, precc_alpha);
+
+    if(left == right) return log(1.0 - recprob);
+    return log(recprob) - log(7.0);
 }

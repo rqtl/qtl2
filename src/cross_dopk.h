@@ -50,14 +50,6 @@ class DOPK : public QTLCross
 
     const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr);
 
-    // helper functions for step()
-    const double step_auto(int left, int right, double r, int s,
-                           Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
-    const double step_femX(int left, int right, double r, int s,
-                           Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
-    const double step_malX(int left, int right, double r, int s,
-                           Rcpp::IntegerVector precc_gen, Rcpp::NumericVector precc_alpha);
-
     const bool check_founder_geno_size(const Rcpp::IntegerMatrix& founder_geno, const int n_markers);
     const bool check_founder_geno_values(const Rcpp::IntegerMatrix& founder_geno);
     const bool need_founder_geno();
