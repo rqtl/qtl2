@@ -8,7 +8,7 @@ test_that("backcross autosome", {
     hyper <- hyper[chr,]
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, error_prob=0.002)
+    pr <- calc_genoprob(hyper, error_prob=0.002, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, error_prob=0.002, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -22,7 +22,7 @@ test_that("intercross autosome", {
     listeria <- listeria[chr,]
 
     listeria <- convert2cross2(listeria)
-    pr <- calc_genoprob(listeria, step=1, stepwidth="max", error_prob=0.01)
+    pr <- calc_genoprob(listeria, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
     pr2 <- calc_genoprob(listeria, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -38,7 +38,7 @@ test_that("risib autosome", {
     class(hyper)[1] <- "risib"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -53,7 +53,7 @@ test_that("riself autosome", {
     class(hyper)[1] <- "riself"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -66,7 +66,7 @@ test_that("f2 X chr", {
     fake.f2 <- fake.f2["X",]
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.01)
+    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
     pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -81,7 +81,7 @@ test_that("bc X chr", {
     hyper$pheno$sex <- rep(c("female", "male"), nind(hyper)/2)
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -95,7 +95,7 @@ test_that("f2 X chr all males", {
     fake.f2$pheno$sex <- 1
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -110,7 +110,7 @@ test_that("f2 X chr all females", {
     fake.f2$pheno$sex <- 0
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -125,7 +125,7 @@ test_that("f2 X chr all females forw", {
     fake.f2$pheno$pgm <- 0
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001)
+    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=TRUE)
     pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -140,7 +140,7 @@ test_that("f2 X chr all females rev", {
     fake.f2$pheno$pgm <- 1
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001)
+    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=TRUE)
     pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -153,7 +153,7 @@ test_that("bc X chr all males", {
     hyper <- hyper["X",]
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -168,7 +168,7 @@ test_that("bc X chr all females", {
     hyper$pheno$sex <- "female"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -183,7 +183,7 @@ test_that("doubled haploids", {
     class(hyper)[1] <- "dh"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -199,7 +199,7 @@ test_that("haploids calc_genoprob", {
     class(hyper)[1] <- "haploid"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02)
+    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
     pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
@@ -214,7 +214,7 @@ test_that("backcross autosome with markers at same location", {
     # put some markers at same location
     grav2$gmap[[1]][4] <- grav2$gmap[[1]][3]
 
-    pr <- calc_genoprob(grav2, err=0)
+    pr <- calc_genoprob(grav2, err=0, lowmem=TRUE)
     pr2 <- calc_genoprob(grav2, err=0, lowmem=FALSE)
 
     expect_true( all(!is.na(pr[[1]])) )
@@ -227,8 +227,8 @@ test_that("calc_genoprob works when multi-core", {
 
     data(hyper)
     hyper2 <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper2, error_prob=0.002)
-    pr_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=4)
+    pr <- calc_genoprob(hyper2, error_prob=0.002, lowmem=TRUE)
+    pr_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=4, lowmem=TRUE)
     expect_equal(pr_mc, pr)
 
     pr2 <- calc_genoprob(hyper2, error_prob=0.002, lowmem=FALSE)
@@ -238,8 +238,8 @@ test_that("calc_genoprob works when multi-core", {
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
-    pr <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01)
-    pr_mc <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, cores=4)
+    pr <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
+    pr_mc <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, cores=4, lowmem=TRUE)
     expect_equal(pr_mc, pr)
 
     pr2 <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)

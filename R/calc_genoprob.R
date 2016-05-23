@@ -88,7 +88,7 @@
 calc_genoprob <-
 function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         lowmem=TRUE, quiet=TRUE, cores=1)
+         lowmem=FALSE, quiet=TRUE, cores=1)
 {
     # check inputs
     if(!is.cross2(cross))

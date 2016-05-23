@@ -6,7 +6,7 @@
 \usage{
 calc_genoprob(cross, step = 0, off_end = 0, stepwidth = c("fixed", "max"),
   pseudomarker_map = NULL, error_prob = 0.0001,
-  map_function = c("haldane", "kosambi", "c-f", "morgan"), lowmem = TRUE,
+  map_function = c("haldane", "kosambi", "c-f", "morgan"), lowmem = FALSE,
   quiet = TRUE, cores = 1)
 }
 \arguments{
