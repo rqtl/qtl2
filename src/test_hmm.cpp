@@ -35,7 +35,7 @@ double test_emit(const String& crosstype,
 }
 
 
-// test emit functions from R
+// test step functions from R
 // [[Rcpp::export]]
 double test_step(const String& crosstype,
                  const int gen_left, const int gen_right, const double rec_frac,
@@ -108,6 +108,34 @@ bool need_founder_geno(const String& crosstype)
     QTLCross* cross = QTLCross::Create(crosstype);
 
     bool result = cross->need_founder_geno();
+    delete cross;
+    return result;
+}
+
+// test calculation of vector of emit matrices
+// [[Rcpp::export]]
+std::vector<NumericMatrix> test_emitmatrix(const String& crosstype,
+                                           const double error_prob,
+                                           const IntegerMatrix& founder_geno, const bool is_x_chr,
+                                           const bool is_female, const IntegerVector& cross_info)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    std::vector<Rcpp::NumericMatrix> result = cross->calc_emitmatrix(error_prob, founder_geno, is_x_chr, is_female, cross_info);
+    delete cross;
+    return result;
+}
+
+
+// test emit functions from R
+// [[Rcpp::export]]
+std::vector<NumericMatrix> test_stepmatrix(const String& crosstype,
+                                           const NumericVector& rec_frac,
+                                           const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    std::vector<NumericMatrix> result = cross->calc_stepmatrix(rec_frac, is_x_chr, is_female, cross_info);
     delete cross;
     return result;
 }
