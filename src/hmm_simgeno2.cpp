@@ -49,7 +49,7 @@ IntegerVector sim_geno2(const String& crosstype,
     NumericVector init_vector = cross->calc_initvector(is_X_chr, is_female, cross_info);
 
     std::vector<NumericMatrix> emit_matrix = cross->calc_emitmatrix(error_prob, founder_geno,
-                                                                   is_X_chr, is_female, cross_info);
+                                                                    is_X_chr, is_female, cross_info);
 
     std::vector<NumericMatrix> step_matrix = cross->calc_stepmatrix(rec_frac, is_X_chr, is_female, cross_info);
 
@@ -69,16 +69,16 @@ IntegerVector sim_geno2(const String& crosstype,
         for(int draw=0; draw<n_draws; draw++) {
             // first draw
             // calculate first prob (on log scale)
-            probs[0] = init_vector[0];
+            probs[0] = init_vector[0] + beta(0,0);
             if(marker_index[0] >= 0)
-                probs[0] += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), poss_gen[0]);
+                probs[0] += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), 0);
             double sumprobs = probs[0]; // to contain log(sum(probs))
 
             // calculate rest of probs
             for(int g=1; g<n_poss_gen; g++) {
-                probs[g] = init_vector[g];
+                probs[g] = init_vector[g] + beta(g,0);
                 if(marker_index[0] >= 0)
-                    probs[g] += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), poss_gen[g]);
+                    probs[g] += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), g);
                 sumprobs = addlog(sumprobs, probs[g]);
             }
 
@@ -95,10 +95,9 @@ IntegerVector sim_geno2(const String& crosstype,
 
                 // calculate probs
                 for(int g=0; g<n_poss_gen; g++) {
-                    probs[g] = step_matrix[pos-1](poss_gen[curgeno], poss_gen[g]) +
-                        beta(g,pos) - beta(curgeno, pos-1);
+                    probs[g] = step_matrix[pos-1](curgeno, g) + beta(g,pos) - beta(curgeno, pos-1);
                     if(marker_index[pos] >= 0)
-                        probs[g] += emit_matrix[marker_index[pos]](genotypes(marker_index[pos],ind), poss_gen[g]);
+                        probs[g] += emit_matrix[marker_index[pos]](genotypes(marker_index[pos],ind), g);
                     probs[g] = exp(probs[g]);
                 }
 
