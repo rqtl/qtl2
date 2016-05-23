@@ -225,7 +225,7 @@ public:
 
     // calculate a vector of emission matrices
     virtual const std::vector<Rcpp::NumericMatrix> calc_emitmatrix(const double error_prob,
-                                                                   const Rcpp::IntegerMatrix& founder_geno,
+                                                                   const Rcpp::IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
                                                                    const bool is_x_chr, const bool is_female,
                                                                    const Rcpp::IntegerVector& cross_info)
     {
@@ -233,7 +233,7 @@ public:
         const unsigned int n_true_gen = gen.size();
         const unsigned int n_obs_gen = 6;
 
-        const unsigned int n_markers = founder_geno.rows();
+        const unsigned int n_markers = founder_geno.cols();
 
         std::vector<Rcpp::NumericMatrix> result;
         for(unsigned int i=0; i<n_markers; i++) {
@@ -241,7 +241,7 @@ public:
             for(unsigned int obs_gen=0; obs_gen<n_obs_gen; obs_gen++) {
                 for(unsigned int true_gen=0; true_gen<n_true_gen; true_gen++) {
                     emitmatrix(obs_gen,true_gen) = emit(obs_gen, gen[true_gen], error_prob,
-                                                        founder_geno[i], is_x_chr, is_female, cross_info);
+                                                        founder_geno(_, i), is_x_chr, is_female, cross_info);
                 }
             }
             result.push_back(emitmatrix);
@@ -270,6 +270,21 @@ public:
                 }
             }
             result.push_back(stepmatrix);
+        }
+
+        return result;
+    }
+
+    // calculate init probabilities
+    virtual const Rcpp::NumericVector calc_initvector(const bool is_x_chr, const bool is_female,
+                                        const Rcpp::IntegerVector& cross_info)
+    {
+        Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
+        const unsigned int n_gen = gen.size();
+
+        Rcpp::NumericMatrix result(n_gen);
+        for(unsigned int g=0; g<n_gen; g++) {
+            result[g] = init(gen[g], is_x_chr, is_female, cross_info);
         }
 
         return result;

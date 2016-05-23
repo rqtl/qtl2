@@ -61,6 +61,10 @@ nalleles <- function(crosstype) {
     .Call('qtl2geno_calc_genoprob', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
 
+.calc_genoprob2 <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
+    .Call('qtl2geno_calc_genoprob2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
+}
+
 .est_map <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
     .Call('qtl2geno_est_map', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
 }
@@ -119,5 +123,9 @@ test_emitmatrix <- function(crosstype, error_prob, founder_geno, is_x_chr, is_fe
 
 test_stepmatrix <- function(crosstype, rec_frac, is_x_chr, is_female, cross_info) {
     .Call('qtl2geno_test_stepmatrix', PACKAGE = 'qtl2geno', crosstype, rec_frac, is_x_chr, is_female, cross_info)
+}
+
+test_initvector <- function(crosstype, is_x_chr, is_female, cross_info) {
+    .Call('qtl2geno_test_initvector', PACKAGE = 'qtl2geno', crosstype, is_x_chr, is_female, cross_info)
 }
 

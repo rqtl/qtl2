@@ -127,7 +127,7 @@ std::vector<NumericMatrix> test_emitmatrix(const String& crosstype,
 }
 
 
-// test emit functions from R
+// test calculation of vector of transition matrices
 // [[Rcpp::export]]
 std::vector<NumericMatrix> test_stepmatrix(const String& crosstype,
                                            const NumericVector& rec_frac,
@@ -136,6 +136,19 @@ std::vector<NumericMatrix> test_stepmatrix(const String& crosstype,
     QTLCross* cross = QTLCross::Create(crosstype);
 
     std::vector<NumericMatrix> result = cross->calc_stepmatrix(rec_frac, is_x_chr, is_female, cross_info);
+    delete cross;
+    return result;
+}
+
+
+// test calculation of init vector
+// [[Rcpp::export]]
+NumericVector test_initvector(const String& crosstype,
+                              const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    NumericVector result = cross->calc_initvector(is_x_chr, is_female, cross_info);
     delete cross;
     return result;
 }
