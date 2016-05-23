@@ -69,8 +69,8 @@ IntegerVector sim_geno(const String& crosstype,
             // calculate first prob (on log scale)
             probs[0] = cross->init(poss_gen[0], is_X_chr, is_female[ind], cross_info(_,ind)) + beta(0,0);
             if(marker_index[0] >= 0)
-                probs[0] = cross->emit(genotypes(marker_index[0],ind), poss_gen[0], error_prob,
-                                       founder_geno(_, marker_index[0]), is_X_chr, is_female[ind], cross_info(_,ind));
+                probs[0] += cross->emit(genotypes(marker_index[0],ind), poss_gen[0], error_prob,
+                                        founder_geno(_, marker_index[0]), is_X_chr, is_female[ind], cross_info(_,ind));
             double sumprobs = probs[0]; // to contain log(sum(probs))
 
             // calculate rest of probs
