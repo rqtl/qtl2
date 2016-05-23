@@ -21,6 +21,10 @@
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
+#' @param lowmem If \code{FALSE}, split individuals into groups with
+#' common sex and crossinfo and then precalculate the transition
+#' matrices for a chromosome; potentially a lot faster but using more
+#' memory.
 #' @param quiet If \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -84,7 +88,7 @@
 calc_genoprob <-
 function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         quiet=TRUE, cores=1)
+         lowmem=TRUE, quiet=TRUE, cores=1)
 {
     # check inputs
     if(!is.cross2(cross))
@@ -93,6 +97,10 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
     stepwidth <- match.arg(stepwidth)
+
+    if(!lowmem) # use other version
+        return(calc_genoprob2(cross, step, off_end, stepwidth, pseudomarker_map,
+                              error_prob, map_function, quiet, cores))
 
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
