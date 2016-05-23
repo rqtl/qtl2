@@ -7,7 +7,7 @@
 sim_geno(cross, n_draws = 1, step = 0, off_end = 0,
   stepwidth = c("fixed", "max"), pseudomarker_map = NULL,
   error_prob = 0.0001, map_function = c("haldane", "kosambi", "c-f",
-  "morgan"), quiet = TRUE, cores = 1)
+  "morgan"), lowmem = TRUE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
@@ -34,6 +34,11 @@ ignored.}
 
 \item{map_function}{Character string indicating the map function to
 use to convert genetic distances to recombination fractions.}
+
+\item{lowmem}{If \code{FALSE}, split individuals into groups with
+common sex and crossinfo and then precalculate the transition
+matrices for a chromosome; potentially a lot faster but using more
+memory.}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}
 

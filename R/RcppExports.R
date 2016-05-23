@@ -73,6 +73,10 @@ nalleles <- function(crosstype) {
     .Call('qtl2geno_sim_geno', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob, n_draws)
 }
 
+.sim_geno2 <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob, n_draws) {
+    .Call('qtl2geno_sim_geno2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob, n_draws)
+}
+
 addlog <- function(a, b) {
     .Call('qtl2geno_addlog', PACKAGE = 'qtl2geno', a, b)
 }
