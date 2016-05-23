@@ -282,7 +282,7 @@ public:
         Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
         const unsigned int n_gen = gen.size();
 
-        Rcpp::NumericMatrix result(n_gen);
+        Rcpp::NumericVector result(n_gen);
         for(unsigned int g=0; g<n_gen; g++) {
             result[g] = init(gen[g], is_x_chr, is_female, cross_info);
         }
