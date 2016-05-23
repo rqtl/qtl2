@@ -28,7 +28,7 @@ NumericMatrix forwardEquations2(const IntegerVector& genotypes,
         int g = poss_gen[i];
         alpha(i,0) = init_vector[i];
         if(marker_index[0] >= 0)
-            alpha(i,0) += emit_matrix[0](genotypes[marker_index[0]], i);
+            alpha(i,0) += emit_matrix[marker_index[0]](genotypes[marker_index[0]], i);
     }
 
     for(int pos=1; pos<n_pos; pos++) {
@@ -39,7 +39,7 @@ NumericMatrix forwardEquations2(const IntegerVector& genotypes,
                 alpha(ir,pos) = addlog(alpha(ir,pos), alpha(il,pos-1) + step_matrix[pos-1](il, ir));
 
             if(marker_index[pos]>=0)
-                alpha(ir,pos) += emit_matrix[pos](genotypes[marker_index[pos]], ir);
+                alpha(ir,pos) += emit_matrix[marker_index[pos]](genotypes[marker_index[pos]], ir);
         }
     }
 
@@ -70,7 +70,7 @@ NumericMatrix backwardEquations2(const IntegerVector& genotypes,
             for(int ir=0; ir<n_gen; ir++) {
                 double to_add = beta(ir,pos+1) + step_matrix[pos](il, ir);
                 if(marker_index[pos+1] >=0)
-                    to_add += emit_matrix[pos+1](genotypes[marker_index[pos+1]], ir);
+                    to_add += emit_matrix[marker_index[pos+1]](genotypes[marker_index[pos+1]], ir);
 
                 if(ir==0) beta(il,pos) = to_add;
                 else beta(il,pos) = addlog(beta(il,pos), to_add);
