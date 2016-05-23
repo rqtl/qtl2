@@ -99,8 +99,9 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     stepwidth <- match.arg(stepwidth)
 
     if(!lowmem) # use other version
-        return(calc_genoprob2(cross, step, off_end, stepwidth, pseudomarker_map,
-                              error_prob, map_function, quiet, cores))
+        return(calc_genoprob2(cross=cross, step=step, off_end=off_end, stepwidth=stepwidth,
+                              pseudomarker_map=pseudomarker_map, error_prob=error_prob,
+                              map_function=map_function, quiet=quiet, cores=cores))
 
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
