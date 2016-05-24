@@ -113,3 +113,35 @@ test_that("sim_geno works when multi-core", {
     # re-set RNGkind
     RNGkind("Mersenne-Twister")
 })
+
+
+test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
+
+    RNGkind("Mersenne-Twister")
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    set.seed(20150918)
+    dr <- sim_geno(grav2, n_draws=2, err=0.002, step=1, lowmem=FALSE)
+    set.seed(20150918)
+    dr2 <- sim_geno(grav2, n_draws=2, err=0.002, step=1, lowmem=TRUE)
+
+    expect_equal(dr, dr2)
+
+})
+
+test_that("sim_geno f2 gives same result for lowmem=TRUE and =FALSE", {
+
+    RNGkind("Mersenne-Twister")
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
+    # order individuals to be sure that the get run in the same order
+    p <- paste(iron$is_female, apply(iron$cross_info, 1, paste, collapse=":"), sep=":")
+    iron <- iron[order(p),]
+
+    set.seed(20150918)
+    dr <- sim_geno(iron, n_draws=2, err=0.002, step=1, lowmem=FALSE)
+    set.seed(20150918)
+    dr2 <- sim_geno(iron, n_draws=2, err=0.002, step=1, lowmem=TRUE)
+
+    expect_equal(dr, dr2)
+
+})
