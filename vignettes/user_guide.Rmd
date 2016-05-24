@@ -362,10 +362,10 @@ method.
 
 ```{r plot_lod_scan1_vs_pg}
 color <- c("slateblue", "violetred", "green3")
-par(mar=c(5.1, 4.1, 1.1, 1.1))
+par(mar=c(4.1, 4.1, 1.6, 1.1))
 ymx <- max(rbind(out$lod, out_pg$lod, out_pg_loco$lod))
 for(i in 1:2) {
-    plot(out, lodcolumn=i, col=color[1], main=colnames(out)[i],
+    plot(out, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
               ylim=c(0, ymx*1.02))
     plot(out_pg, lodcolumn=i, col=color[2], add=TRUE)
     plot(out_pg_loco, lodcolumn=i, col=color[3], add=TRUE, lty=2)
@@ -409,7 +409,7 @@ method function `plot.scan1coef()`, so one can just type `plot()`.
 Use the argument `columns` to indicate which coefficient columns to plot.
 
 ```{r plot_effects_liver_c2}
-par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
 plot(c2eff, columns=1:3, col=col)
 co <- c2eff$coef
@@ -433,7 +433,7 @@ second and third columns.
 
 
 ```{r plot_effects_liver_c2_contr}
-par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 co <- c2effB$coef[,2:3]
 ymx <- max(abs(co))
 plot(c2effB, columns=2:3, col=col)
@@ -452,7 +452,7 @@ c2eff_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 Here's a plot of the estimates.
 
 ```{r plot_effects_pg_liver_c2}
-par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
 plot(c2eff_pg, columns=1:3, col=col, ylab="Phenotype average")
@@ -472,7 +472,7 @@ c2effB_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
 Here's a plot of the results.
 
 ```{r plot_effects_pg_liver_c2_contr}
-par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 co <- c2effB_pg$coef[,2:3]
 ymx <- max(abs(co))
 plot(c2effB_pg, columns=2:3, col=col)
@@ -498,7 +498,7 @@ Here is a plot of the BLUPs (as dashed curves) alongside the standard
 estimates. Note that
 
 ```{r plot_scan1blup}
-par(mar=c(5.1, 4.1, 1.1, 2.6), las=1)
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
 ylim <- range(c(c2blup$coef, c2eff$coef))+c(-1,1)
@@ -591,7 +591,7 @@ out <- scan1(apr, DOex$pheno, k, sex)
 Here's a plot of the results.
 
 ```{r plot_DOex_scan}
-par(mar=c(5.1, 4.1, 0.6, 0.6))
+par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out)
 ```
 
@@ -613,7 +613,7 @@ included in the qtl2plot package; there's also a `CCorigcolors` object
 with the _official_ colors.
 
 ```{r plot_DOex_effects}
-par(mar=c(5.1, 4.1, 0.6, 0.6))
+par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
@@ -745,7 +745,7 @@ SNPs, but SNPs in the same interval with the same SDP will have the
 same LOD score.
 
 ```{r plot_snp_asso}
-par(mar=c(5.1, 4.1, 0.6, 0.6))
+par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps)
 ```
 
@@ -768,6 +768,6 @@ We can highlight these top SNPs in the SNP association plot using the
 `drop` argument.
 
 ```{r plot_snp_asso_hilit}
-par(mar=c(5.1, 4.1, 0.6, 0.6))
+par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps, drop=1.5)
 ```
