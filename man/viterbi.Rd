@@ -79,6 +79,20 @@ is the underlying sequence of true genotypes and O is the observed
 multipoint marker data, with possible allowance for genotyping
 errors.
 }
+\details{
+We use a hidden Markov model to find, for each individual
+on each chromosome, the most probable sequence of underlying
+genotypes given the observed marker data.
+
+Note that we break ties at random, and our method for doing this
+may introduce some bias.
+
+Consider the results with caution; the most probable sequence can
+have very low probability, and can have features that are quite
+unusual (for example, the number of recombination events can be too
+small). In most cases, the results of a single imputation with
+\code{\link{sim_geno}} will be more realistic.
+}
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 g <- viterbi(grav2, step=1, error_prob=0.002)

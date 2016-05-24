@@ -59,6 +59,19 @@
 #' \item \code{map_function} - the value of the \code{map_function} argument.
 #' }
 #'
+#' @details We use a hidden Markov model to find, for each individual
+#' on each chromosome, the most probable sequence of underlying
+#' genotypes given the observed marker data.
+#'
+#' Note that we break ties at random, and our method for doing this
+#' may introduce some bias.
+#'
+#' Consider the results with caution; the most probable sequence can
+#' have very low probability, and can have features that are quite
+#' unusual (for example, the number of recombination events can be too
+#' small). In most cases, the results of a single imputation with
+#' \code{\link{sim_geno}} will be more realistic.
+#'
 #' @export
 #' @keywords utilities
 #'
