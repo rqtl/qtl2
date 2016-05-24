@@ -41,6 +41,8 @@ IntegerVector sim_geno2(const String& crosstype,
     }
     if(!cross->check_founder_geno_size(founder_geno, n_mar))
         throw std::range_error("founder_geno is not the right size");
+    if(founder_geno.cols() != n_mar)
+        throw std::range_error("founder_geno and genotypes have different numbers of markers");
     // end of checks
 
     const int mat_size = n_pos*n_draws;
