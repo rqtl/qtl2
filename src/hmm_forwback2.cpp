@@ -25,7 +25,6 @@ NumericMatrix forwardEquations2(const IntegerVector& genotypes,
 
     // initialize alphas
     for(int i=0; i<n_gen; i++) {
-        int g = poss_gen[i];
         alpha(i,0) = init_vector[i];
         if(marker_index[0] >= 0)
             alpha(i,0) += emit_matrix[marker_index[0]](genotypes[marker_index[0]], i);
