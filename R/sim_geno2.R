@@ -60,7 +60,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     group <- split(seq(along=sex_crossinfo), sex_crossinfo)
     names(group) <- NULL
     nc <- n_cores(cores)
-    while(nc > length(group)) { # successively split biggest group in half until there are as many groups as cores
+    while(nc > length(group) && max(sapply(group, length)) > 1) { # successively split biggest group in half until there are as many groups as cores
         mx <- which.max(sapply(group, length))
         g <- group[[mx]]
         group <- c(group, list(g[seq(1, length(g), by=2)]))
