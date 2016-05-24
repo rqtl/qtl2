@@ -54,13 +54,13 @@ NumericVector calc_genoprob2(const String& crosstype,
 
     std::vector<NumericMatrix> step_matrix = cross->calc_stepmatrix(rec_frac, is_X_chr, is_female, cross_info);
 
+    // possible genotypes
+    IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female, cross_info);
+    int n_poss_gen = poss_gen.size();
+
     for(int ind=0; ind<n_ind; ind++) {
 
         Rcpp::checkUserInterrupt();  // check for ^C from user
-
-        // possible genotypes for this individual
-        IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female, cross_info);
-        int n_poss_gen = poss_gen.size();
 
         // forward/backward equations
         NumericMatrix alpha = forwardEquations2(genotypes(_,ind), init_vector, emit_matrix, step_matrix, marker_index, poss_gen);

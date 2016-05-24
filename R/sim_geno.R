@@ -108,7 +108,6 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     grid <- map$grid
     map <- map$map
 
-    probs <- vector("list", length(map))
     rf <- map2rf(map, map_function)
 
     # deal with missing information
