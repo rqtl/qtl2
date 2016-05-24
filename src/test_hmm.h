@@ -35,4 +35,19 @@ bool test_founder_geno(const Rcpp::String& crosstype, const Rcpp::IntegerMatrix&
 
 bool need_founder_geno(const Rcpp::String& crosstype);
 
+// test calculation of vector of emit matrices
+std::vector<Rcpp::NumericMatrix> test_emitmatrix(const Rcpp::String& crosstype,
+                                                 const double error_prob,
+                                                 const Rcpp::IntegerMatrix& founder_geno, const bool is_x_chr,
+                                                 const bool is_female, const Rcpp::IntegerVector& cross_info);
+
+// test calculation of vector of transition matrices
+std::vector<Rcpp::NumericMatrix> test_stepmatrix(const Rcpp::String& crosstype,
+                                                 const Rcpp::NumericVector& rec_frac,
+                                                 const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
+
+// test calculation of init vector
+Rcpp::NumericVector test_initvector(const Rcpp::String& crosstype,
+                                    const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
+
 #endif // TEST_HMM_H

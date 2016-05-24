@@ -212,7 +212,7 @@ kinship_bychr2loco <-
     kinship[allchr]
 }
 
-# normlize kinship as in ****
+# normalize kinship as in Kostem and Eskin (2013) Am J Hum Genet 92:558-564
 # (suggested by Petr Simecek)
 normalize_kinship <-
     function(kinship)

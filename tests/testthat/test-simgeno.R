@@ -9,7 +9,7 @@ test_that("sim_geno riself", {
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
     dr <- sim_geno(grav2, n_draws=2, err=0.002, step=1)
 
-    expected <- structure(c(1L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
+    expected <- structure(c(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                             1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 2L, 2L,
@@ -17,7 +17,7 @@ test_that("sim_geno riself", {
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
-                            2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 1L, 1L, 2L, 2L, 2L, 2L,
+                            2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
@@ -64,14 +64,14 @@ test_that("sim_geno f2", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     dr <- sim_geno(iron, n_draws=2, err=0.002, step=1)
 
-    expected <- structure(c(6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L,
-                            4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L, 6L, 4L),
+    expected <- structure(c(5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 6L, 4L, 6L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
+                            4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L),
                           .Dim = c(2L, 30L, 2L),
                           .Dimnames = list(c("145", "146"), c("DXMit16", "cX.loc30.5",
                           "cX.loc31.5", "cX.loc32.5", "cX.loc33.5", "cX.loc34.5", "cX.loc35.5", "cX.loc36.5",
@@ -112,4 +112,36 @@ test_that("sim_geno works when multi-core", {
 
     # re-set RNGkind
     RNGkind("Mersenne-Twister")
+})
+
+
+test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
+
+    RNGkind("Mersenne-Twister")
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    set.seed(20150918)
+    dr <- sim_geno(grav2, n_draws=2, err=0.002, step=1, lowmem=FALSE)
+    set.seed(20150918)
+    dr2 <- sim_geno(grav2, n_draws=2, err=0.002, step=1, lowmem=TRUE)
+
+    expect_equal(dr, dr2)
+
+})
+
+test_that("sim_geno f2 gives same result for lowmem=TRUE and =FALSE", {
+
+    RNGkind("Mersenne-Twister")
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
+    # order individuals to be sure that the get run in the same order
+    p <- paste(iron$is_female, apply(iron$cross_info, 1, paste, collapse=":"), sep=":")
+    iron <- iron[order(p),]
+
+    set.seed(20150918)
+    dr <- sim_geno(iron, n_draws=2, err=0.002, step=1, lowmem=FALSE)
+    set.seed(20150918)
+    dr2 <- sim_geno(iron, n_draws=2, err=0.002, step=1, lowmem=TRUE)
+
+    expect_equal(dr, dr2)
+
 })

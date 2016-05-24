@@ -223,6 +223,73 @@ public:
     }
 
 
+    // calculate a vector of emission matrices
+    virtual const std::vector<Rcpp::NumericMatrix> calc_emitmatrix(const double error_prob,
+                                                                   const Rcpp::IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
+                                                                   const bool is_x_chr, const bool is_female,
+                                                                   const Rcpp::IntegerVector& cross_info)
+    {
+        Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
+        const unsigned int n_true_gen = gen.size();
+        const unsigned int n_obs_gen = 6;
+
+        const unsigned int n_markers = founder_geno.cols();
+
+        std::vector<Rcpp::NumericMatrix> result;
+        for(unsigned int i=0; i<n_markers; i++) {
+            Rcpp::NumericMatrix emitmatrix(n_obs_gen, n_true_gen);
+            for(unsigned int obs_gen=0; obs_gen<n_obs_gen; obs_gen++) {
+                for(unsigned int true_gen=0; true_gen<n_true_gen; true_gen++) {
+                    emitmatrix(obs_gen,true_gen) = emit(obs_gen, gen[true_gen], error_prob,
+                                                        founder_geno(_, i), is_x_chr, is_female, cross_info);
+                }
+            }
+            result.push_back(emitmatrix);
+        }
+
+        return result;
+    }
+
+    // calculate a vector of transition matrices
+    virtual const std::vector<Rcpp::NumericMatrix> calc_stepmatrix(const Rcpp::NumericVector rec_frac,
+                                                                   const bool is_x_chr, const bool is_female,
+                                                                   const Rcpp::IntegerVector& cross_info)
+    {
+        Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
+        const unsigned int n_gen = gen.size();
+
+        const unsigned int n_intervals = rec_frac.size();
+
+        std::vector<Rcpp::NumericMatrix> result;
+        for(unsigned int i=0; i<n_intervals; i++) {
+            Rcpp::NumericMatrix stepmatrix(n_gen, n_gen);
+            for(unsigned int left=0; left<n_gen; left++) {
+                for(unsigned int right=0; right<n_gen; right++) {
+                    stepmatrix(left,right) = step(gen[left], gen[right], rec_frac[i],
+                                                  is_x_chr, is_female, cross_info);
+                }
+            }
+            result.push_back(stepmatrix);
+        }
+
+        return result;
+    }
+
+    // calculate init probabilities
+    virtual const Rcpp::NumericVector calc_initvector(const bool is_x_chr, const bool is_female,
+                                        const Rcpp::IntegerVector& cross_info)
+    {
+        Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
+        const unsigned int n_gen = gen.size();
+
+        Rcpp::NumericVector result(n_gen);
+        for(unsigned int g=0; g<n_gen; g++) {
+            result[g] = init(gen[g], is_x_chr, is_female, cross_info);
+        }
+
+        return result;
+    }
+
 };
 
 #endif // CROSS_H
