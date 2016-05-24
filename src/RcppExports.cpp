@@ -293,6 +293,44 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// viterbi
+IntegerMatrix viterbi(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
+RcppExport SEXP qtl2geno_viterbi(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP);
+    Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type marker_index(marker_indexSEXP);
+    Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP);
+    __result = Rcpp::wrap(viterbi(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob));
+    return __result;
+END_RCPP
+}
+// viterbi2
+IntegerMatrix viterbi2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const bool is_female, const IntegerVector& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
+RcppExport SEXP qtl2geno_viterbi2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type marker_index(marker_indexSEXP);
+    Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP);
+    __result = Rcpp::wrap(viterbi2(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob));
+    return __result;
+END_RCPP
+}
 // reduce_markers
 IntegerVector reduce_markers(const NumericVector& pos, const NumericVector& weights, const double min_dist);
 RcppExport SEXP qtl2geno_reduce_markers(SEXP posSEXP, SEXP weightsSEXP, SEXP min_distSEXP) {
