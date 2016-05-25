@@ -148,7 +148,7 @@ function(file, quiet=TRUE)
             # change genotype codes and convert phenotypes to numeric matrix
             if(section=="geno" || section=="founder_geno") {
                 if(!quiet) message(" - encoding ", section)
-                sheet <- encode_geno(sheet, genotypes)
+                sheet <- recode_geno(sheet, genotypes)
             }
             else if(section=="pheno") {
                 sheet <- pheno2matrix(sheet)
@@ -280,7 +280,7 @@ function(file, quiet=TRUE)
 # convert genotype data, using genotype encodings
 # genotypes is a list with names = code in data
 #                     and values = new numeric code
-encode_geno <-
+recode_geno <-
 function(geno, genotypes)
 {
     newgeno <- geno <- as.matrix(geno)
