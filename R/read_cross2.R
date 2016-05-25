@@ -120,19 +120,27 @@ function(file, quiet=TRUE)
                                   comment.char=control$comment.char, transpose=tr)
             }
             else { # vector of files
-                if(section=="gmap" || section=="pmap")
-                    stop(section, " shouldn't be a vector of filenames")
-
                 # add dir to paths
                 filenames <- vapply(filename, function(a) file.path(dir, a), "")
 
                 # check that the all exist
                 lapply(filenames, stop_if_no_file)
 
-                # read all of the files and cbind(), matching on row names
-                sheet <- read_mult_csv(filenames, na.strings=control$na.strings,
-                                       sep=control$sep, comment.char=control$comment.char,
-                                       transpose=tr)
+                if(section=="gmap" || section=="pmap") {
+                    # rbind the chromosomes together
+                    sheet <- NULL
+                    for(filename in filenames)
+                        sheet <- rbind(sheet,
+                                       read_csv(filename, na.strings=control$na.strings,
+                                                sep=control$sep, comment.char=control$comment.char,
+                                                transpose=tr))
+                }
+                else {
+                    # read all of the files and cbind(), matching on row names
+                    sheet <- read_mult_csv(filenames, na.strings=control$na.strings,
+                                           sep=control$sep, comment.char=control$comment.char,
+                                           transpose=tr)
+                }
             }
             if(length(unique(colnames(sheet))) != ncol(sheet))
                 warning("Duplicate column names in ", section, " data")
