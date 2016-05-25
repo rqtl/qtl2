@@ -81,6 +81,14 @@ addlog <- function(a, b) {
     .Call('qtl2geno_addlog', PACKAGE = 'qtl2geno', a, b)
 }
 
+.viterbi <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
+    .Call('qtl2geno_viterbi', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
+}
+
+.viterbi2 <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {
+    .Call('qtl2geno_viterbi2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
+}
+
 .reduce_markers <- function(pos, weights, min_dist) {
     .Call('qtl2geno_reduce_markers', PACKAGE = 'qtl2geno', pos, weights, min_dist)
 }

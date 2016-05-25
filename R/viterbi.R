@@ -1,14 +1,13 @@
-# sim_geno
-#' Simulate genotypes given observed marker data
+# viterbi
+#' Calculate most probable sequence of genotypes
 #'
-#' Uses a hidden Markov model to simulate from the joint distribution
-#' Pr(g | O) where g is the underlying sequence of true genotypes and
-#' O is the observed multipoint marker data, with possible allowance
-#' for genotyping errors.
+#' Uses a hidden Markov model to calculate arg max Pr(g | O) where g
+#' is the underlying sequence of true genotypes and O is the observed
+#' multipoint marker data, with possible allowance for genotyping
+#' errors.
 #'
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param n_draws Number of simulations to perform.
 #' @param step Distance between pseudomarkers and markers; if
 #' \code{step=0} no pseudomarkers are inserted.
 #' @param off_end Distance beyond terminal markers in which to insert
@@ -35,8 +34,8 @@
 #'
 #' @return A list of containing the following:
 #' \itemize{
-#' \item \code{draws} - List of three-dimensional arrays of imputed genotypes,
-#' individuals x positions x draws.
+#' \item \code{geno} - List of two-dimensional arrays of imputed genotypes,
+#' individuals x positions.
 #' \item \code{map} - The genetic map as a list of vectors of marker positions.
 #' \item \code{grid} - A list of logical vectors, indicating which
 #'     positions correspond to a grid of markers/pseudomarkers. (may be
@@ -60,20 +59,28 @@
 #' \item \code{map_function} - the value of the \code{map_function} argument.
 #' }
 #'
-#' @details
-#'  After performing the backward equations, we draw from
-#'  \eqn{Pr(g_1 = v | O)}{Pr(g[1] = v | O)} and then \eqn{Pr(g_{k+1} = v |
-#'    O, g_k = u)}{Pr(g[k+1] = v | O, g[k] = u)}.
+#' @details We use a hidden Markov model to find, for each individual
+#' on each chromosome, the most probable sequence of underlying
+#' genotypes given the observed marker data.
+#'
+#' Note that we break ties at random, and our method for doing this
+#' may introduce some bias.
+#'
+#' Consider the results with caution; the most probable sequence can
+#' have very low probability, and can have features that are quite
+#' unusual (for example, the number of recombination events can be too
+#' small). In most cases, the results of a single imputation with
+#' \code{\link{sim_geno}} will be more realistic.
 #'
 #' @export
 #' @keywords utilities
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' draws <- sim_geno(grav2, n_draws=4, step=1, error_prob=0.002)
+#' g <- viterbi(grav2, step=1, error_prob=0.002)
 
-sim_geno <-
-function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
+viterbi <-
+function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
          error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
          lowmem=FALSE, quiet=TRUE, cores=1)
 {
@@ -86,10 +93,10 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     stepwidth <- match.arg(stepwidth)
 
     if(!lowmem)
-        return(sim_geno2(cross=cross, n_draws=n_draws, step=step, off_end=off_end,
-                         stepwidth=stepwidth, pseudomarker_map=pseudomarker_map,
-                         error_prob=error_prob, map_function=map_function, quiet=quiet,
-                         cores=cores))
+        return(viterbi2(cross=cross, step=step, off_end=off_end,
+                        stepwidth=stepwidth, pseudomarker_map=pseudomarker_map,
+                        error_prob=error_prob, map_function=map_function, quiet=quiet,
+                        cores=cores))
 
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
@@ -108,6 +115,7 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     grid <- map$grid
     map <- map$map
 
+    probs <- vector("list", length(map))
     rf <- map2rf(map, map_function)
 
     # deal with missing information
@@ -122,45 +130,42 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
         founder_geno <- create_empty_founder_geno(cross$geno)
 
     by_group_func <- function(i) {
-        dr <- .sim_geno(cross$crosstype, t(cross$geno[[chr]][group[[i]],,drop=FALSE]),
-                        founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[group[[i]]],
-                        t(cross$cross_info[group[[i]],,drop=FALSE]), rf[[chr]], index[[chr]],
-                        error_prob, n_draws)
-        aperm(dr, c(3,1,2))
+        .viterbi(cross$crosstype, t(cross$geno[[chr]][group[[i]],,drop=FALSE]),
+                 founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[group[[i]]],
+                 t(cross$cross_info[group[[i]],,drop=FALSE]), rf[[chr]], index[[chr]],
+                 error_prob)
     }
 
     group <- parallel::splitIndices(nrow(cross$geno[[1]]), n_cores(cores))
     groupindex <- seq(along=group)
 
-    draws <- vector("list", length(cross$geno))
-    names(draws) <- names(cross$geno)
+    result <- vector("list", length(cross$geno))
+    names(result) <- names(cross$geno)
     for(chr in seq(along=cross$geno)) {
         if(!quiet) message("Chr ", names(cross$geno)[chr])
 
         if(n_cores(cores)==1) { # no parallel processing
             # calculations in one group
-            draws[[chr]] <- by_group_func(1)
+            result[[chr]] <- by_group_func(1)
         }
         else {
             # calculations in parallel
             temp <- cluster_lapply(cores, groupindex, by_group_func)
 
             # paste them back together
-            d <- vapply(temp, dim, rep(0,3))
+            d <- vapply(temp, dim, rep(0,2))
             nr <- sum(d[1,])
-            draws[[chr]] <- array(dim=c(nr, d[2,1], d[3,1]))
+            result[[chr]] <- matrix(nrow=nr, ncol=d[2,1])
             for(i in groupindex)
-                draws[[chr]][group[[i]],,] <- temp[[i]]
+                result[[chr]][group[[i]],] <- temp[[i]]
         }
 
-        dimnames(draws[[chr]]) <- list(rownames(cross$geno[[chr]]),
-                                       names(map[[chr]]),
-                                       NULL)
-
+        dimnames(result[[chr]]) <- list(rownames(cross$geno[[chr]]),
+                                        names(map[[chr]]))
     }
 
-    names(draws) <- names(cross$gmap)
-    result <- list(draws=draws,
+    names(result) <- names(cross$gmap)
+    result <- list(geno=result,
                    map = map,
                    crosstype = cross$crosstype,
                    is_x_chr = cross$is_x_chr,
@@ -173,6 +178,6 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
                    map_function=map_function)
     result$grid <- grid # include only if not NULL
 
-    class(result) <- c("sim_geno", "list")
+    class(result) <- c("viterbi", "list")
     result
 }

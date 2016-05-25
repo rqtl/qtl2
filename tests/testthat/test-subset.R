@@ -1,4 +1,4 @@
-context("subset cross2, calc_genoprob, sim_geno")
+context("subset cross2, calc_genoprob, sim_geno, viterbi")
 
 test_that("subset.cross2 works (riself)", {
 
@@ -133,5 +133,31 @@ test_that("subset.calc_genoprob works with reduction to grid and/or allele prob"
     pr_a_sub <- pr_a[ind,chr]
     pr_sub_a <- genoprob_to_alleleprob(pr_sub)
     expect_equal(pr_a_sub, pr_sub_a)
+
+})
+
+test_that("subset.viterbi works", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    ironsub <- iron[,c(4,"X")]
+
+    g <- viterbi(ironsub, step=5, err=0.01)
+    gsub <- g[,"X"]
+
+    expected <- g
+    expected$geno <- g$geno["X"]
+    expected$is_x_chr <- g$is_x_chr["X"]
+    expected$map <- g$map["X"]
+    expected$grid <- g$grid["X"]
+
+    expect_equal(gsub, expected)
+
+    ind <- c("5", "50", "55", "280")
+    gsub <- g[ind, "X"]
+
+    expected$geno[["X"]] <- expected$geno[["X"]][ind,,drop=FALSE]
+    expected$cross_info <- expected$cross_info[ind,,drop=FALSE]
+
+    expect_equal(gsub, expected)
 
 })
