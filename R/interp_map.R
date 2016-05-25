@@ -3,7 +3,7 @@
 #' Use interpolate to convert from one map to another
 #'
 #' @param map The map to be interpolated; a list of vectors.
-#' @param oldmap Map with positions in the original scale, as in \code{map_to_change}.
+#' @param oldmap Map with positions in the original scale, as in \code{map}.
 #' @param newmap Map with positions in the new scale.
 #'
 #' @return Object of same form as input \code{map} but in the units as in \code{newmap}.

@@ -9,7 +9,7 @@ interp_map(map, oldmap, newmap)
 \arguments{
 \item{map}{The map to be interpolated; a list of vectors.}
 
-\item{oldmap}{Map with positions in the original scale, as in \code{map_to_change}.}
+\item{oldmap}{Map with positions in the original scale, as in \code{map}.}
 
 \item{newmap}{Map with positions in the new scale.}
 }
