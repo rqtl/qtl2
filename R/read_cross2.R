@@ -150,8 +150,9 @@ function(file, quiet=TRUE)
                 if(!quiet) message(" - encoding ", section)
                 sheet <- encode_geno(sheet, genotypes)
             }
-            else if(section=="pheno")
+            else if(section=="pheno") {
                 sheet <- pheno2matrix(sheet)
+            }
 
             output[[section]] <- sheet
         }
@@ -318,6 +319,8 @@ function(geno, genotypes)
 pheno2matrix <-
 function(pheno)
 {
+    for(i in 1:ncol(pheno))
+        pheno[,i] <- as.numeric(pheno[,i])
     pheno <- as.matrix(pheno)
     storage.mode(pheno) <- "double"
 
