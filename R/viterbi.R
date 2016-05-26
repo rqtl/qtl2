@@ -72,8 +72,9 @@
 #' small). In most cases, the results of a single imputation with
 #' \code{\link{sim_geno}} will be more realistic.
 #'
+#' @seealso \code{\link{sim_geno}}, \code{\link{maxmarg}}
+#'
 #' @export
-#' @keywords utilities
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
