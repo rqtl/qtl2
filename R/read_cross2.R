@@ -415,6 +415,8 @@ function(sex_control, covar, sep, comment.char, dir, quiet=TRUE)
     if(is.null(sex_control)) return(NULL)
 
     if("covar" %in% names(sex_control)) { # sex within the covariates
+        if(!(sex_control$covar %in% colnames(covar)))
+            stop('sex column "', sex_control$covar, '" not found in covar')
         sex <- covar[,sex_control$covar, drop=FALSE]
     }
     else if("file" %in% names(sex_control)) { # look for file
@@ -495,6 +497,8 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
     }
     else if("covar" %in% names(cross_info_control)) { # cross_info within the covariates
+        if(!(cross_info_control$covar %in% colnames(covar)))
+            stop('cross_info column "', cross_info_control$covar, '" not found in covar')
         cross_info <- covar[,cross_info_control$covar, drop=FALSE]
     }
     else return(NULL)
