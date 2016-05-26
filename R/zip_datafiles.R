@@ -39,7 +39,7 @@ function(control_file, zip_file=NULL, quiet=TRUE)
     dir <- dirname(control_file)
 
     if(is.null(zip_file))
-        zip_file <- gsub("\\.[a-z]+$", ".zip", control_file)
+        zip_file <- sub("\\.[a-z]+$", ".zip", control_file)
 
     # read control file
     control <-  read_control_file(control_file)
@@ -68,9 +68,16 @@ function(control_file, zip_file=NULL, quiet=TRUE)
             files <- c(files, control[["linemap"]])
     }
 
-    # zip the files (with the -j flag, directory info not included in zip file)
-    zip_flags <- ifelse(quiet, "-j -q", "-j")
-    utils::zip(zip_file, file.path(dir, files), flags=zip_flags)
+    # flag for quiet
+    zip_flags <- ifelse(quiet, "-q", "")
+
+    # move to the directory with the files
+    cwd <- getwd()
+    on.exit(setwd(cwd)) # move back on exit
+    setwd(dir)
+
+    # do the zipping
+    utils::zip(zip_file, files, flags=zip_flags)
 
     invisible(zip_file)
 }

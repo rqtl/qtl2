@@ -120,3 +120,33 @@ test_that("read_pheno works", {
     unzip(phecovzipfile, exdir=dirname(phecovzipfile)) # restore file
 
 })
+
+test_that("Create zip file works", {
+
+    # unzip iron data to a temporary directory
+    ironfile <- system.file("extdata", "iron.zip", package="qtl2geno")
+    dir <- tempdir()
+    unzipped_files <- utils::unzip(ironfile, exdir=dir)
+
+    # zip the files
+    zip_datafiles(file.path(dir, "iron.yaml"))
+
+    # file created?
+    zipfile <- file.path(dir, "iron.zip")
+    expect_true( file.exists(zipfile) )
+
+    # unzip to tmp dir
+    tmp_dir <- file.path(dir, "tmp")
+    new_unzipped_files <- utils::unzip(zipfile, exdir=tmp_dir)
+
+    # sample files as originally?
+    ofiles <- sort(sub(dir, "", unzipped_files))
+    nfiles <- sort(sub(tmp_dir, "", new_unzipped_files))
+    expect_equal( ofiles, nfiles )
+
+    # read them?
+    x <- read_cross2(file.path(dir, "iron.yaml"))
+    y <- read_cross2(file.path(dir, "iron.zip"))
+    expect_equal(y, x)
+
+})
