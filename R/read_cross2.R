@@ -195,7 +195,17 @@ function(file, quiet=TRUE)
     if("x_chr" %in% names(control)) {
         x_chr <- control$x_chr # name of X chromosome
         used_control["x_chr"] <- TRUE # indicate that we used it
-        output$is_x_chr[x_chr] <- TRUE
+
+        # deal with case of multiple chromosomes, and with not all present in genotypes
+        found <- x_chr[x_chr %in% names(output$is_x_chr)]
+        output$is_x_chr[found] <- TRUE
+        notfound <- x_chr[!(x_chr %in% names(output$is_x_chr))]
+        if(length(notfound) == 1) {
+            warning('Chromosome "', notfound, '" not in genotype data but in control file as x_chr')
+        } else if(length(notfound) > 1) {
+            warning('Chromosomes ', paste0('"', notfound, '"', collapse=", "),
+                    ' not in genotype data but in control file as x_chr')
+        }
     }
 
     # sex
