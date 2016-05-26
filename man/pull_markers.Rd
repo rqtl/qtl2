@@ -10,7 +10,7 @@ pull_markers(cross, markers)
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
-\item{markers}{A vector of marker naems.}
+\item{markers}{A vector of marker names.}
 }
 \value{
 The input \code{cross} with only the specified markers.

@@ -139,7 +139,7 @@ drop_nullmarkers <-
 #'
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param markers A vector of marker naems.
+#' @param markers A vector of marker names.
 #'
 #' @return The input \code{cross} with only the specified markers.
 #'
