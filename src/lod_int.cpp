@@ -52,6 +52,67 @@ std::vector<int> lod_int_plain(const NumericVector& lod, const double drop)
     return(result);
 }
 
+// here we know the peak position and we're looking within a contained subinterval (left, right)
+//
+// input is a vector of LOD scores ordered by position along a chromosome
+// output is a pair of indexes (in 0, 1, 2, ..., lod.size()-1) with endpoints of the interval
+// followed by all the indexes where LOD == maximum
+//
+std::vector<int> lod_int_contained(const NumericVector& lod,
+                                   const double peakindex, // index in (0,1,2, ..., n-1) where n = lod.size()
+                                   const double drop,
+                                   const int start,
+                                   const int end)
+{
+    const int n = lod.size();
+
+    if(peakindex < 0 || peakindex > n-1)
+        throw std::range_error("peakindex out of range");
+    if(start < 0 || start > n-1)
+        throw std::range_error("start out of range");
+    if(end < 0 || end > n-1)
+        throw std::range_error("end out of range");
+
+    double maxlod = lod[peakindex];
+    std::vector<int> maxpos;
+    maxpos.push_back(peakindex);
+
+    const double lodmdrop = maxlod - drop;
+    int left, right;
+
+    // going to the right
+    for(int i=peakindex+1; i<=end; i++) {
+        if(lod[i] == maxlod) {
+            maxpos.push_back(i);
+        }
+        if(lod[i] > lodmdrop) right = i;
+    }
+    right++;
+
+    // going to the left
+    for(int i=peakindex-1; i>=start; i--) {
+        if(lod[i] == maxlod) {
+            maxpos.push_back(i);
+        }
+        if(lod[i] > lodmdrop) left = i;
+    }
+    left--;
+
+    if(left < 0) left = 0;
+    if(right > n-1) right = n-1;
+
+    // add to vector, at the front
+    const int n_maxpos = maxpos.size();
+    std::vector<int> result(n_maxpos + 2);
+    result[0] = left;
+    result[1] = right;
+    for(int i=0; i<n_maxpos; i++) result[i+2] = maxpos[i];
+
+    return(result);
+}
+
+
+
 // now the version to deal with a chromosome with multiple peaks
 //
 // well, first a version with a given peak

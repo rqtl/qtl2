@@ -65,12 +65,12 @@ test_that("find_peaks works", {
     # lod support intervals
     expect_equal(find_peaks(out, 4, 2, 1.5),
                  cbind(expected_4_Inf,
-                       ci_lo=c(48.1, 31.7, 16.4,  6.6,  0.0, 43.7),
+                       ci_lo=c(48.1,  1.1, 16.4,  6.6,  0.0, 43.7),
                        ci_hi=c(73.2, 53.6, 49.2, 40.4, 32.7, 61.2)))
 
     expect_equal(find_peaks(out, 4, 2, 2),
                  cbind(expected_4_Inf,
-                       ci_lo=c(48.1, 28.4, 16.4,  6.6,  0.0, 43.7),
+                       ci_lo=c(48.1,  1.1, 16.4,  6.6,  0.0, 43.7),
                        ci_hi=c(73.2, 53.6, 49.2, 40.4, 32.7, 61.2)))
 
     expect_equal(find_peaks(out, 3, 1, 0.9),

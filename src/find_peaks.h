@@ -14,6 +14,17 @@ std::vector<int> find_peaks_plain(const Rcpp::NumericVector& lod,
                                   const double threshold,
                                   const double peakdrop);
 
+// like the plain version, but also returning the locations of the valleys in-between
+//
+// input is a vector of LOD scores ordered by position along a chromosome
+// output is a vector of two vectors of indexes (in 0, 1, 2, ..., lod.size()-1)
+//    - peak locations
+//    - valleys between peaks (including 0 and n-1)
+//
+std::vector< std::vector<int> > find_peaks_valleys(const Rcpp::NumericVector& lod,
+                                                   const double threshold,
+                                                   const double peakdrop);
+
 // this version deals with ties in the LOD scores
 // ...it returns all indexes which jointly achieve the maximum LOD score
 //
