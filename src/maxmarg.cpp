@@ -19,7 +19,6 @@ IntegerMatrix maxmarg(const NumericVector& prob_array, const double minprob)
     const unsigned int n_gen = dim[0];
     const unsigned int n_pos = dim[1];
     const unsigned int n_ind = dim[2];
-    const unsigned int pos_by_gen = n_pos*n_gen;
 
     IntegerMatrix result(n_ind, n_pos);
 
