@@ -5,7 +5,8 @@
 \title{Find peaks in a set of LOD curves}
 \usage{
 find_peaks(scan1_output, threshold = 3, peakdrop = Inf, drop = NULL,
-  thresholdX = NULL, peakdropX = NULL, dropX = NULL, cores = 1)
+  thresholdX = NULL, peakdropX = NULL, dropX = NULL,
+  expand2markers = TRUE, cores = 1)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
@@ -40,6 +41,10 @@ score column in \code{scan1_output}.)}
 chromosome.  Ignored if \code{drop} is not provided. (Can be a
 vector with separate values for each lod score column in
 \code{scan1_output}.)}
+
+\item{expand2markers}{If TRUE (and if \code{drop} is provided, so
+that QTL intervals are calculated), QTL intervals are expanded so
+that their endpoints are at genetic markers.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)

@@ -29,6 +29,9 @@
 #' chromosome.  Ignored if \code{drop} is not provided. (Can be a
 #' vector with separate values for each lod score column in
 #' \code{scan1_output}.)
+#' @param expand2markers If TRUE (and if \code{drop} is provided, so
+#' that QTL intervals are calculated), QTL intervals are expanded so
+#' that their endpoints are at genetic markers.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -91,11 +94,13 @@
 #' find_peaks(out, threshold=3, peakdrop=2, drop=1.5)
 find_peaks <-
     function(scan1_output, threshold=3, peakdrop=Inf, drop=NULL,
-             thresholdX=NULL, peakdropX=NULL, dropX=NULL, cores=1)
+             thresholdX=NULL, peakdropX=NULL, dropX=NULL,
+             expand2markers=TRUE, cores=1)
 {
     if(!is.null(drop)) # also include lod support intervals
         return(find_peaks_and_lodint(scan1_output, threshold, peakdrop, drop,
-                                     thresholdX, peakdropX, dropX, cores))
+                                     thresholdX, peakdropX, dropX,
+                                     expand2markers, cores))
 
     lodnames <- colnames(scan1_output$lod)
     n_lod <- length(lodnames)

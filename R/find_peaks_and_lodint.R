@@ -4,7 +4,8 @@
 # The same input as find_peaks, which calls this function when drop is given.
 find_peaks_and_lodint <-
     function(scan1_output, threshold=3, peakdrop=Inf, drop=1.8,
-             thresholdX=NULL, peakdropX=NULL, dropX=NULL, cores=1)
+             thresholdX=NULL, peakdropX=NULL, dropX=NULL,
+             expand2markers=TRUE, cores=1)
 {
     lodnames <- colnames(scan1_output$lod)
     n_lod <- length(lodnames)
@@ -78,7 +79,10 @@ find_peaks_and_lodint <-
         # and remember that .find_peaks returns indexes starting at 0
         ci_lo <- ci_hi <- rep(0, n_peaks)
         for(i in 1:n_peaks) {
-            ci <- expand_lodint_to_markers(peaks[[i]][1:2]+1, map[[chr]])
+            if(expand2markers)
+                ci <- expand_lodint_to_markers(peaks[[i]][1:2]+1, map[[chr]])
+            else
+                ci <- map[[chr]][peaks[[i]][1:2]+1]
             ci_lo[i] <- ci[1]
             ci_hi[i] <- ci[2]
         }
