@@ -83,6 +83,8 @@ std::vector<int> lod_int_contained(const NumericVector& lod,
         throw std::range_error("start out of range");
     if(end < 0 || end > n-1)
         throw std::range_error("end out of range");
+    if(start > end)
+        throw std::range_error("should have start <= end");
 
     double maxlod = lod[peakindex];
     std::vector<int> maxpos;
