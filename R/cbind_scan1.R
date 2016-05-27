@@ -43,7 +43,7 @@ cbind.scan1 <-
     if(length(args) == 1) return(result)
 
     # check that maps match
-    must_match <- c("map", "snpinfo")
+    must_match <- c("map", "snpinfo", "is_x_chr")
     for(i in 2:length(args)) {
         for(obj in must_match) {
             if(!is_same(result[[obj]], args[[i]][[obj]]))

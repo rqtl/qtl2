@@ -5,6 +5,7 @@
 # addcovar and intcovar are two matrices
 # intcovar columns should all be within the addcovar columns
 # tol is tolerance for determining matching columns
+#' @importFrom stats complete.cases
 force_intcovar <-
     function(addcovar=NULL, intcovar=NULL, tol=1e-12)
 {
@@ -34,6 +35,7 @@ force_intcovar <-
 
 # drop linearly dependent columns
 # if intercept=TRUE, add intercept before checking and then remove afterwards
+#' @importFrom stats complete.cases
 drop_depcols <-
     function(covar=NULL, add_intercept=FALSE, tol=1e-12)
 {
@@ -57,6 +59,7 @@ drop_depcols <-
 }
 
 # drop columns from X covariates that are already in addcovar
+#' @importFrom stats complete.cases
 drop_xcovar <-
     function(covar=NULL, Xcovar=NULL, tol=1e-12)
 {

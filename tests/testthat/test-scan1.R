@@ -1,5 +1,16 @@
 context("genome scan by scan1")
 
+isx_from_map <-
+    function(map)
+{
+    isx <- rep(FALSE, length(map))
+    names(isx) <- names(map)
+    isx["X"] <- TRUE
+
+    isx
+}
+
+
 # calc lod scores via lm(), just one chromosome
 lod_via_lm <-
     function(probs, pheno, addcovar=NULL, intcovar=NULL, weights=NULL, map)
@@ -39,13 +50,16 @@ lod_via_lm <-
 
     dimnames(result) <- list(dimnames(probs)[[3]], colnames(pheno))
 
+
+
     result <- list(lod=result,
                    map=map,
                    sample_size = sample_size,
                    addcovar = colnames4attr(addcovar[,-1]), # drop intercept
                    Xcovar = NULL,
                    intcovar = colnames4attr(intcovar),
-                   weights = ifelse(is.null(weights), FALSE, TRUE))
+                   weights = ifelse(is.null(weights), FALSE, TRUE),
+                   is_x_chr = isx_from_map(map))
 
     class(result) <- c("scan1", "matrix")
     result
@@ -79,7 +93,8 @@ scanone2scan1 <-
                    addcovar=colnames4attr(addcovar),
                    Xcovar=colnames4attr(Xcovar),
                    intcovar=colnames4attr(intcovar),
-                   weights=weights)
+                   weights=weights,
+                   is_x_chr=isx_from_map(map))
     class(result) <- c("scan1", "matrix")
     result
 }
@@ -92,6 +107,8 @@ convert_probs2qtl2 <-
         rownames(pr) <- paste(1:nrow(pr))
         pr }),
          map=lapply(cross$geno, function(a) attr(a$prob, "map")))
+
+    result$is_x_chr <- isx_from_map(result$map)
 
     class(result) <- c("calc_genoprob", "list")
     result

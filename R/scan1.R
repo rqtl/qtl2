@@ -51,6 +51,8 @@
 #'     matrix will contain only results for distinct SNPs. The
 #'     \code{index} column in \code{snpinfo} is the row index in the
 #'     \code{lod} matrix that corresponds to the current SNP.
+#' \item \code{is_x_chr} - Taken from \code{genoprobs}; indicates
+#'     which chromosomes are the X chromosome.
 #' }
 #'
 #' @details For each of the inputs, the row names are used as
@@ -281,7 +283,8 @@ scan1 <-
                    addcovar = colnames4attr(addcovar),
                    Xcovar = colnames4attr(Xcovar),
                    intcovar = colnames4attr(intcovar),
-                   weights = ifelse(is.null(weights), FALSE, TRUE))
+                   weights = ifelse(is.null(weights), FALSE, TRUE),
+                   is_x_chr=genoprobs$is_x_chr)
 
     # preserve any snpinfo from genoprob_to_snpprob
     if("snpinfo" %in% names(genoprobs))

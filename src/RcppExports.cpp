@@ -6,6 +6,61 @@
 
 using namespace Rcpp;
 
+// R_bayes_int_plain
+IntegerVector R_bayes_int_plain(const NumericVector& lod, const NumericVector& pos, const double prob);
+RcppExport SEXP qtl2scan_R_bayes_int_plain(SEXP lodSEXP, SEXP posSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob(probSEXP);
+    __result = Rcpp::wrap(R_bayes_int_plain(lod, pos, prob));
+    return __result;
+END_RCPP
+}
+// R_find_peaks
+List R_find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
+RcppExport SEXP qtl2scan_R_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    __result = Rcpp::wrap(R_find_peaks(lod, threshold, peakdrop));
+    return __result;
+END_RCPP
+}
+// R_find_peaks_and_lodint
+List R_find_peaks_and_lodint(const NumericVector& lod, const double threshold, const double peakdrop, const double drop);
+RcppExport SEXP qtl2scan_R_find_peaks_and_lodint(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP dropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
+    __result = Rcpp::wrap(R_find_peaks_and_lodint(lod, threshold, peakdrop, drop));
+    return __result;
+END_RCPP
+}
+// R_find_peaks_and_bayesint
+List R_find_peaks_and_bayesint(const NumericVector& lod, const NumericVector& pos, const double threshold, const double peakdrop, const double prob);
+RcppExport SEXP qtl2scan_R_find_peaks_and_bayesint(SEXP lodSEXP, SEXP posSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob(probSEXP);
+    __result = Rcpp::wrap(R_find_peaks_and_bayesint(lod, pos, threshold, peakdrop, prob));
+    return __result;
+END_RCPP
+}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
@@ -329,6 +384,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type logdetXpX(logdetXpXSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     __result = Rcpp::wrap(Rcpp_fitLMM_mat(Kva, Y, X, reml, check_boundary, logdetXpX, tol));
+    return __result;
+END_RCPP
+}
+// R_lod_int_plain
+IntegerVector R_lod_int_plain(const NumericVector& lod, const double drop);
+RcppExport SEXP qtl2scan_R_lod_int_plain(SEXP lodSEXP, SEXP dropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
+    __result = Rcpp::wrap(R_lod_int_plain(lod, drop));
     return __result;
 END_RCPP
 }
