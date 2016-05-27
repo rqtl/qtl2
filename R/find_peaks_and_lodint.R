@@ -76,8 +76,12 @@ find_peaks_and_lodint <-
         # (this deals with ties in the LOD scores:
         #  take average of multiple positions sharing the maximum LOD score)
         # and remember that .find_peaks returns indexes starting at 0
-        ci_lo <- vapply(peaks, function(a) map[[chr]][a[1]+1], 0.0)
-        ci_hi <- vapply(peaks, function(a) map[[chr]][a[2]+1], 0.0)
+        ci_lo <- ci_hi <- rep(0, n_peaks)
+        for(i in 1:n_peaks) {
+            ci <- expand_lodint_to_markers(peaks[[i]][1:2]+1, map[[chr]])
+            ci_lo[i] <- ci[1]
+            ci_hi[i] <- ci[2]
+        }
         peak_pos <- vapply(peaks, function(a) mean(map[[chr]][a[-(1:2)]+1]), 0.0)
         peak_lod <- vapply(peaks, function(a) this_lod[a[3]+1], 0.0)
 
@@ -103,4 +107,39 @@ find_peaks_and_lodint <-
 
     rownames(result) <- NULL
     result
+}
+
+
+# expand LOD interval endpoints to be at markers
+# (rather than pseudomarkers)
+#
+# input is a pair of indexes
+# output is a pair of positions
+expand_lodint_to_markers <-
+    function(ci_index, map)
+{
+    mn <- names(map)
+    pmar_pattern <- "^c.+\\.loc-*[0-9]+(\\.[0-9]+)*$"
+    pmar <- grepl(pmar_pattern, mn)
+
+    mar_index <- seq(along=map)[!pmar]
+
+    lo_index <- ci_index[1]
+    hi_index <- ci_index[2]
+
+    if(pmar[lo_index]) {
+        mar_index <= lo_index
+        lo_index <- ifelse(any(mar_index <= lo_index),
+                           max(mar_index[mar_index <= lo_index]),
+                           1)
+    }
+
+    if(pmar[hi_index]) {
+        mar_index >= hi_index
+        hi_index <- ifelse(any(mar_index >= hi_index),
+                           min(mar_index[mar_index >= hi_index]),
+                           length(map))
+    }
+
+    map[c(lo_index, hi_index)]
 }
