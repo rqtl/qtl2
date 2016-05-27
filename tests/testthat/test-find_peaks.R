@@ -41,6 +41,25 @@ test_that("find_peaks works", {
     rownames(expected_3_1) <- NULL
     expect_equal(find_peaks(out, 3, 1), expected_3_1)
 
+    # separate X threshold
+    expect_equal(find_peaks(out, 2, 1, 1.5),
+                 rbind(expected_2_1,
+                       data.frame(lodindex=2, lodcolumn="spleen",
+                                  chr="X", pos=29.5, lod=1.65321447653698,
+                                  stringsAsFactors=FALSE)))
 
+    # column-specific thresholds
+    result <- find_peaks(out, c(4,2), 1, c(0.3, 1.5), c(0.1, 1))
+    expected <- rbind(expected_2_1[c(2,5,9,10),],
+                      data.frame(lodindex=rep(1,2), lodcolumn=rep("liver",2),
+                                 chr=rep("X",2), pos=c(29.5, 57.9),
+                                 lod=c(0.832206643447098, 0.35793505359049),
+                                 stringsAsFactors=FALSE),
+                      expected_2_1[13:15,],
+                      data.frame(lodindex=2, lodcolumn="spleen",
+                                 chr="X", pos=29.5, lod=1.65321447653698,
+                                 stringsAsFactors=FALSE))
+    rownames(expected) <- NULL
+    expect_equal(result, expected)
 
 })

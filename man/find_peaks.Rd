@@ -4,16 +4,31 @@
 \alias{find_peaks}
 \title{Find peaks in a set of LOD curves}
 \usage{
-find_peaks(scan1_output, threshold = 3, peakdrop = Inf, cores = 1)
+find_peaks(scan1_output, threshold = 3, peakdrop = Inf, thresholdX = NULL,
+  peakdropX = NULL, cores = 1)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}}.}
 
-\item{threshold}{Minimum LOD score for a peak}
+\item{threshold}{Minimum LOD score for a peak (can be a vector with
+separate thresholds for each lod score column in
+\code{scan1_output})}
 
 \item{peakdrop}{Amount that the LOD score must drop between peaks,
-if multiple peaks are to be defined on a chromosome.}
+if multiple peaks are to be defined on a chromosome. (Can be a vector with
+separate values for each lod score column in
+\code{scan1_output}.)}
+
+\item{thresholdX}{Separate threshold for the X chromosome; if
+unspecified, the same threshold is used for both autosomes and the
+X chromosome. (Like \code{threshold}, this can be a vector with
+separate thresholds for each lod score column.)}
+
+\item{peakdropX}{Like \code{peakdrop}, but for the X chromosome; if
+unspecified, the same value is used for both autosomes and the X
+chromosome.  (Can be a vector with separate values for each lod
+score column in \code{scan1_output}.)}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)

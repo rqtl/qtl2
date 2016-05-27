@@ -5,9 +5,21 @@
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}}.
-#' @param threshold Minimum LOD score for a peak
+#' @param threshold Minimum LOD score for a peak (can be a vector with
+#' separate thresholds for each lod score column in
+#' \code{scan1_output})
 #' @param peakdrop Amount that the LOD score must drop between peaks,
-#' if multiple peaks are to be defined on a chromosome.
+#' if multiple peaks are to be defined on a chromosome. (Can be a vector with
+#' separate values for each lod score column in
+#' \code{scan1_output}.)
+#' @param thresholdX Separate threshold for the X chromosome; if
+#' unspecified, the same threshold is used for both autosomes and the
+#' X chromosome. (Like \code{threshold}, this can be a vector with
+#' separate thresholds for each lod score column.)
+#' @param peakdropX Like \code{peakdrop}, but for the X chromosome; if
+#' unspecified, the same value is used for both autosomes and the X
+#' chromosome.  (Can be a vector with separate values for each lod
+#' score column in \code{scan1_output}.)
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -59,15 +71,36 @@
 #' find_peaks(out, threshold=3, peakdrop=2)
 find_peaks <-
     function(scan1_output, threshold=3, peakdrop=Inf,
-             cores=1)
+             thresholdX=NULL, peakdropX=NULL, cores=1)
 {
-    # split lod scores by column and by chromosome
     lodnames <- colnames(scan1_output$lod)
+    n_lod <- length(lodnames)
+
+    # make the thresholds have length n_lod
+    if(length(threshold)==1) threshold <- rep(threshold, n_lod)
+    if(length(threshold) != n_lod)
+        stop("threshold should have length 1 or ", n_lod)
+    if(is.null(thresholdX)) thresholdX <- threshold
+    if(length(thresholdX)==1) thresholdX <- rep(thresholdX, n_lod)
+    if(length(thresholdX) != n_lod)
+        stop("thresholdX should have length 1 or ", n_lod)
+
+    # make the peakdrops have length n_lod
+    if(length(peakdrop)==1) peakdrop <- rep(peakdrop, n_lod)
+    if(length(peakdrop) != n_lod)
+        stop("peakdrop should have length 1 or ", n_lod)
+    if(is.null(peakdropX)) peakdropX <- peakdrop
+    if(length(peakdropX)==1) peakdropX <- rep(peakdropX, n_lod)
+    if(length(peakdropX) != n_lod)
+        stop("peakdropX should have length 1 or ", n_lod)
+
+    # split lod scores by column and by chromosome
     lod <- as.list(as.data.frame(scan1_output$lod))
     map <- scan1_output$map
     chr <- rep(seq(along=map), vapply(map, length, 1))
     lod <- lapply(lod, split, chr)
 
+    # batch info for parallel-processing
     batch <- cbind(rep(seq(along=lod), vapply(lod, length, 1)),
                    unlist(lapply(lod, function(a) seq(along=a))))
     dimnames(batch) <- NULL
@@ -76,21 +109,27 @@ find_peaks <-
     # set up parallel analysis
     cores <- setup_cluster(cores)
 
+    # X chr info
+    is_x_chr <- scan1_output$is_x_chr
+
+    # function to be applied to each batch
     by_batch_func <- function(i) {
-        lodcoli <- batch[i,1]
-        chri <- batch[i,2]
+        lodcol <- batch[i,1]
+        chr <- batch[i,2]
 
-        this_lod <- lod[[lodcoli]][[chri]]
+        this_lod <- lod[[lodcol]][[chr]]
 
-        peaks <- .find_peaks(this_lod, threshold, peakdrop)
+        peaks <- .find_peaks(this_lod,
+                             ifelse(is_x_chr[chr], thresholdX[lodcol], threshold[lodcol]),
+                             ifelse(is_x_chr[chr], peakdropX[lodcol], peakdrop[lodcol]))
 
         n_peaks <- length(peaks)
         if(n_peaks==0) return(NULL)
 
-        data.frame(lodindex=rep(lodcoli,n_peaks),
-                   lodcolumn=rep(lodnames[lodcoli],n_peaks),
-                   chr=rep(names(map)[chri],n_peaks),
-                   pos=map[[chri]][peaks],
+        data.frame(lodindex=rep(lodcol,n_peaks),
+                   lodcolumn=rep(lodnames[lodcol],n_peaks),
+                   chr=rep(names(map)[chr],n_peaks),
+                   pos=map[[chr]][peaks],
                    lod=this_lod[peaks],
                    row.names=seq(along=peaks),
                    stringsAsFactors=FALSE)
