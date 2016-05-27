@@ -1,0 +1,46 @@
+context("find_peaks")
+
+test_that("find_peaks works", {
+
+    # load qtl2geno package for data and genoprob calculation
+    library(qtl2geno)
+
+    # read data
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
+    # calculate genotype probabilities
+    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+
+    # grab phenotypes and covariates; ensure that covariates have names attribute
+    pheno <- iron$pheno
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+    Xcovar <- get_x_covar(iron)
+
+    # perform genome scan
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
+
+    expected_2_1 <- structure(list(lodindex = c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 2L, 2L, 2L),
+                                   lodcolumn = c("liver", "liver", "liver", "liver", "liver", "liver", "liver",
+                                   "liver", "liver", "liver", "liver", "liver", "spleen", "spleen", "spleen"),
+                                   chr = c("1", "2", "4", "7", "7", "8", "11", "13", "15", "16", "17", "19", "8", "9", "10"),
+                                   pos = c(90.3, 56.8, 10.9, 25.1, 49.1, 41, 26, 32.5, 49.2, 28.6, 4.3, 38.3, 13.6, 56.6, 37),
+                                   lod = c(2.53157055941134, 4.85599006729575, 2.74279943572619, 3.77915164598982, 4.42062344751016,
+                                   3.49656665028876, 2.61495248604883, 3.40360749696547, 4.03706766736211, 6.35264382891418,
+                                   2.71848298281312, 3.0383533142527, 5.35976176735248, 12.5986057120873, 2.23257885452713)),
+                              .Names = c("lodindex", "lodcolumn", "chr", "pos", "lod"), row.names = c(NA, 15L),
+                              class = "data.frame")
+
+    expect_equal(find_peaks(out, 2, 1), expected_2_1)
+
+    expected_4_Inf <- expected_2_1[c(2, 5, 9, 10, 13, 14),]
+    rownames(expected_4_Inf) <- NULL
+    expect_equal(find_peaks(out, 4, Inf), expected_4_Inf)
+
+    expected_3_1 <- expected_2_1[c(2,4,5,6,8,9,10,12,13,14),]
+    rownames(expected_3_1) <- NULL
+    expect_equal(find_peaks(out, 3, 1), expected_3_1)
+
+
+
+})

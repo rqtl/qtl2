@@ -6,6 +6,19 @@
 
 using namespace Rcpp;
 
+// find_peaks
+IntegerVector find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
+RcppExport SEXP qtl2scan_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    __result = Rcpp::wrap(find_peaks(lod, threshold, peakdrop));
+    return __result;
+END_RCPP
+}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
