@@ -15,7 +15,7 @@
 #'
 #' @return A data frame with each row being a single peak on a single
 #' chromosome for a single LOD score column, and with columns
-#' \itemize {
+#' \itemize{
 #' \item \code{lodindex} - lod column index
 #' \item \code{lodcolumn} - lod column name
 #' \item \code{chr} - chromosome ID
