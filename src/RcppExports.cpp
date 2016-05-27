@@ -345,6 +345,32 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// lod_int_plain
+IntegerVector lod_int_plain(const NumericVector& lod, const double drop);
+RcppExport SEXP qtl2scan_lod_int_plain(SEXP lodSEXP, SEXP dropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
+    __result = Rcpp::wrap(lod_int_plain(lod, drop));
+    return __result;
+END_RCPP
+}
+// lod_int_peak
+IntegerVector lod_int_peak(const NumericVector& lod, const double peakindex, const double drop, const double peakdrop);
+RcppExport SEXP qtl2scan_lod_int_peak(SEXP lodSEXP, SEXP peakindexSEXP, SEXP dropSEXP, SEXP peakdropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakindex(peakindexSEXP);
+    Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    __result = Rcpp::wrap(lod_int_peak(lod, peakindex, drop, peakdrop));
+    return __result;
+END_RCPP
+}
 // find_matching_cols
 NumericVector find_matching_cols(const NumericMatrix& mat, const double tol);
 RcppExport SEXP qtl2scan_find_matching_cols(SEXP matSEXP, SEXP tolSEXP) {

@@ -105,6 +105,14 @@ Rcpp_fitLMM_mat <- function(Kva, Y, X, reml = TRUE, check_boundary = TRUE, logde
     .Call('qtl2scan_Rcpp_fitLMM_mat', PACKAGE = 'qtl2scan', Kva, Y, X, reml, check_boundary, logdetXpX, tol)
 }
 
+.lod_int_plain <- function(lod, drop) {
+    .Call('qtl2scan_lod_int_plain', PACKAGE = 'qtl2scan', lod, drop)
+}
+
+.lod_int_peak <- function(lod, peakindex, drop, peakdrop) {
+    .Call('qtl2scan_lod_int_peak', PACKAGE = 'qtl2scan', lod, peakindex, drop, peakdrop)
+}
+
 find_matching_cols <- function(mat, tol = 1e-12) {
     .Call('qtl2scan_find_matching_cols', PACKAGE = 'qtl2scan', mat, tol)
 }
