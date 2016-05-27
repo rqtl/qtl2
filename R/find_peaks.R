@@ -86,6 +86,9 @@
 #'
 #' # possibly multiple peaks per chromosome
 #' find_peaks(out, threshold=3, peakdrop=2)
+#'
+#' # possibly multiple peaks, also getting LOD support intervals
+#' find_peaks(out, threshold=3, peakdrop=2, drop=1.5)
 find_peaks <-
     function(scan1_output, threshold=3, peakdrop=Inf, drop=NULL,
              thresholdX=NULL, peakdropX=NULL, dropX=NULL, cores=1)
