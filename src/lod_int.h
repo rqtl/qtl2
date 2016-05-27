@@ -10,6 +10,11 @@
 // output is a pair of indexes (in 0, 1, 2, ..., lod.size()-1) with endpoints of the interval
 // followed by all the indexes where LOD == maximum
 //
+// The R_ version is a wrapper for R
+//
+Rcpp::IntegerVector R_lod_int_plain(const Rcpp::NumericVector &lod,
+                                    const double drop);
+
 std::vector<int> lod_int_plain(const Rcpp::NumericVector& lod,
                                const double drop);
 

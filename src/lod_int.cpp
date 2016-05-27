@@ -10,8 +10,19 @@ using namespace Rcpp;
 // output is a pair of indexes (in 0, 1, 2, ..., lod.size()-1) with endpoints of the interval
 // followed by all the indexes where LOD == maximum
 //
+// The R_ version is a wrapper for R
+//
 // [[Rcpp::export(".lod_int_plain")]]
-std::vector<int> lod_int_plain(const NumericVector& lod, const double drop)
+IntegerVector R_lod_int_plain(const NumericVector &lod,
+                              const double drop)
+{
+    std::vector<int> result = lod_int_plain(lod, drop);
+
+    return wrap(result);
+}
+
+std::vector<int> lod_int_plain(const NumericVector& lod,
+                               const double drop)
 {
     const int n = lod.size();
 
@@ -30,7 +41,7 @@ std::vector<int> lod_int_plain(const NumericVector& lod, const double drop)
         }
     }
 
-    int left, right;
+    int left=0, right=n-1;
     const double lodmdrop = maxlod - drop;
     for(int i=0, j=n-1; i<n; i++, j--) {
         if(lod[j] > lodmdrop)
@@ -78,7 +89,7 @@ std::vector<int> lod_int_contained(const NumericVector& lod,
     maxpos.push_back(peakindex);
 
     const double lodmdrop = maxlod - drop;
-    int left, right;
+    int left=0, right=n-1;
 
     // going to the right
     for(int i=peakindex+1; i<=end; i++) {
@@ -142,7 +153,7 @@ std::vector<int> lod_int_peak(const NumericVector& lod,
 
     const double lodmdrop = maxlod - drop;
     const double lodmpeakdrop = maxlod - peakdrop;
-    int left, right;
+    int left=0, right=n-1;
 
     // going to the right
     for(int i=peakindex+1; i<n; i++) {

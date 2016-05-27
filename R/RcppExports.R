@@ -2,11 +2,11 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 .find_peaks <- function(lod, threshold, peakdrop) {
-    .Call('qtl2scan_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
+    .Call('qtl2scan_R_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
 }
 
 .find_peaks_and_lodint <- function(lod, threshold, peakdrop, drop) {
-    .Call('qtl2scan_find_peaks_and_lodint', PACKAGE = 'qtl2scan', lod, threshold, peakdrop, drop)
+    .Call('qtl2scan_R_find_peaks_and_lodint', PACKAGE = 'qtl2scan', lod, threshold, peakdrop, drop)
 }
 
 interpolate_map <- function(oldpos, oldmap, newmap) {
@@ -110,7 +110,7 @@ Rcpp_fitLMM_mat <- function(Kva, Y, X, reml = TRUE, check_boundary = TRUE, logde
 }
 
 .lod_int_plain <- function(lod, drop) {
-    .Call('qtl2scan_lod_int_plain', PACKAGE = 'qtl2scan', lod, drop)
+    .Call('qtl2scan_R_lod_int_plain', PACKAGE = 'qtl2scan', lod, drop)
 }
 
 find_matching_cols <- function(mat, tol = 1e-12) {

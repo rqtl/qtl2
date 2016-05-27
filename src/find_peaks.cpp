@@ -121,7 +121,18 @@ std::vector< std::vector<int> > find_peaks_valleys(const NumericVector& lod,
 // input is a vector of LOD scores ordered by position along a chromosome
 // output is a list of vectors of indexes (in 0, 1, 2, ..., lod.size()-1) of peak locations
 //
+// The R_ version is a wrapper for R
+//
 // [[Rcpp::export(".find_peaks")]]
+List R_find_peaks(const NumericVector &lod,
+                  const double threshold,
+                  const double peakdrop)
+{
+    std::vector< std::vector<int> > result = find_peaks(lod, threshold, peakdrop);
+
+    return wrap(result);
+}
+
 std::vector< std::vector<int> > find_peaks(const NumericVector& lod,
                                            const double threshold,
                                            const double peakdrop)
@@ -164,7 +175,20 @@ std::vector< std::vector<int> > find_peaks(const NumericVector& lod,
 //     first two values are the left and right endpoints of the interval
 //     remaining values are the indexes with the maximum LOD score
 //
+// The R_ version is a wrapper for R
+//
 // [[Rcpp::export(".find_peaks_and_lodint")]]
+List R_find_peaks_and_lodint(const NumericVector &lod,
+                             const double threshold,
+                             const double peakdrop,
+                             const double drop)
+{
+    std::vector< std::vector<int> > result = find_peaks_and_lodint(lod, threshold, peakdrop, drop);
+
+    return wrap(result);
+}
+
+
 std::vector< std::vector<int> > find_peaks_and_lodint(const NumericVector& lod,
                                                       const double threshold,
                                                       const double peakdrop,
