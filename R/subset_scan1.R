@@ -47,6 +47,8 @@ subset_scan1 <-
 
     # subset by chromosome
     if(!is.null(chr)) {
+        chr <- as.character(chr)
+
         # selected chromosomes
         chr_found <- chr %in% names(map)
         if(!all(chr_found))
