@@ -6,6 +6,19 @@
 #include "util.h"
 using namespace Rcpp;
 
+
+// structures used for sorting area = 10^lod * width
+struct area {
+    double area;
+    int index;
+};
+// function for sorting the area structures by area
+struct by_area {
+    bool operator()(const area &a, const area &b) {
+        return a.area > b.area; // sorts from largest to smallest
+    }
+};
+
 // this is the "plain" version ignoring the possibility of multiple LOD peaks
 //
 // input is a vector of LOD scores ordered by position along a chromosome
@@ -85,7 +98,6 @@ std::vector<int> bayes_int_plain(const NumericVector& lod,
 // output is a pair of indexes (in 0, 1, 2, ..., lod.size()-1) with endpoints of the interval
 // followed by all the indexes where LOD == maximum
 //
-// [[Rcpp::export(".bayes_int_contained")]]
 std::vector<int> bayes_int_contained(const NumericVector& lod,
                                      const NumericVector& pos,
                                      const double peakindex, // index in (0,1,2, ..., n-1) where n = lod.size()

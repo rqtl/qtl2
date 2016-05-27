@@ -5,10 +5,6 @@
     .Call('qtl2scan_R_bayes_int_plain', PACKAGE = 'qtl2scan', lod, pos, prob)
 }
 
-.bayes_int_contained <- function(lod, pos, peakindex, prob, start, end) {
-    .Call('qtl2scan_bayes_int_contained', PACKAGE = 'qtl2scan', lod, pos, peakindex, prob, start, end)
-}
-
 .find_peaks <- function(lod, threshold, peakdrop) {
     .Call('qtl2scan_R_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
 }

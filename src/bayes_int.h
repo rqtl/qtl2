@@ -35,18 +35,4 @@ std::vector<int> bayes_int_contained(const Rcpp::NumericVector& lod,
                                      const int start,
                                      const int end);
 
-
-// structures used for sorting area = 10^lod * width
-struct area {
-    double area;
-    int index;
-};
-
-struct by_area {
-    bool operator()(const area &a, const area &b) {
-        return a.area > b.area; // sorts from largest to smallest
-    }
-};
-
-
 #endif // BAYES_INT_H
