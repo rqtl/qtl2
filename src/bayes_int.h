@@ -12,12 +12,12 @@
 //
 // The R_ version is a wrapper for R
 //
-Rcpp::IntegerVector R_bayes_int_plain(const Rcpp::NumericVector &lod,
-                                      const Rcpp::NumericVector &pos,
+Rcpp::IntegerVector R_bayes_int_plain(const Rcpp::NumericVector& lod,
+                                      const Rcpp::NumericVector& pos,
                                       const double prob);
 
 std::vector<int> bayes_int_plain(const Rcpp::NumericVector& lod,
-                                 const Rcpp::NumericVector &pos,
+                                 const Rcpp::NumericVector& pos,
                                  const double prob);
 
 // here we know the peak position and we're looking within a contained subinterval (left, right)

@@ -30,8 +30,8 @@ struct by_area {
 // The R_ version is a wrapper for R
 //
 // [[Rcpp::export(".bayes_int_plain")]]
-IntegerVector R_bayes_int_plain(const NumericVector &lod,
-                                const NumericVector &pos,
+IntegerVector R_bayes_int_plain(const NumericVector& lod,
+                                const NumericVector& pos,
                                 const double prob)
 {
     std::vector<int> result = bayes_int_plain(lod, pos, prob);
@@ -40,12 +40,14 @@ IntegerVector R_bayes_int_plain(const NumericVector &lod,
 }
 
 std::vector<int> bayes_int_plain(const NumericVector& lod,
-                                 const NumericVector &pos,
+                                 const NumericVector& pos,
                                  const double prob)
 {
     const int n = lod.size();
     if(n < 2)
         throw std::invalid_argument("Need at least 2 lod scores");
+    if(pos.size() != n)
+        throw std::invalid_argument("lod and pos should have the same length");
 
     // calculate interval widths (pos had better be sorted)
     // actually, calculate log(width)
@@ -108,6 +110,8 @@ std::vector<int> bayes_int_contained(const NumericVector& lod,
     const int n = lod.size();
     if(n < 2)
         throw std::invalid_argument("Need at least 2 lod scores");
+    if(pos.size() != n)
+        throw std::invalid_argument("lod and pos should have the same length");
 
     if(peakindex < 0 || peakindex > n-1)
         throw std::range_error("peakindex out of range");
