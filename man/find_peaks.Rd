@@ -24,7 +24,7 @@ separate values for each lod score column in
 results, and this indicates the amount to drop in the support
 interval. (Can be a vector with
 separate values for each lod score column in
-\code{scan1_output}.) Must be \le \code{peakdrop}}
+\code{scan1_output}.) Must be \eqn{\le} \code{peakdrop}}
 
 \item{thresholdX}{Separate threshold for the X chromosome; if
 unspecified, the same threshold is used for both autosomes and the
