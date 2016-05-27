@@ -1,24 +1,24 @@
-context("find_peaks")
+context("find_peaks and lod_int")
+
+# load qtl2geno package for data and genoprob calculation
+library(qtl2geno)
+
+# read data
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
+# calculate genotype probabilities
+probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+
+# grab phenotypes and covariates; ensure that covariates have names attribute
+pheno <- iron$pheno
+covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+names(covar) <- rownames(iron$covar)
+Xcovar <- get_x_covar(iron)
+
+# perform genome scan
+out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 test_that("find_peaks works", {
-
-    # load qtl2geno package for data and genoprob calculation
-    library(qtl2geno)
-
-    # read data
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-
-    # calculate genotype probabilities
-    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
-
-    # grab phenotypes and covariates; ensure that covariates have names attribute
-    pheno <- iron$pheno
-    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
-    names(covar) <- rownames(iron$covar)
-    Xcovar <- get_x_covar(iron)
-
-    # perform genome scan
-    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
     expected_2_1 <- structure(list(lodindex = c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 2L, 2L, 2L),
                                    lodcolumn = c("liver", "liver", "liver", "liver", "liver", "liver", "liver",
@@ -83,5 +83,31 @@ test_that("find_peaks works", {
                  cbind(expected_3_1,
                        ci_lo=c(53.3, 11.1, 38.1, 24.0, 20.5, 38.4, 21.6, 28.3,  8.0, 53.6),
                        ci_hi=c(66.3, 28.1, 53.6, 53.0, 40.4, 49.2, 32.6, 38.3, 17.0, 59.6)))
+
+})
+
+test_that("lod_int works", {
+
+    expected <- cbind(ci_lo=1.1, pos=49.1, ci_hi=53.6)
+    rownames(expected) <- 1
+    expect_equal(lod_int(out, 7, 1), expected)
+
+    expected[1,c(1,3)] <- c(12.1, 53.6)
+    expect_equal(lod_int(out, 7, 1, expand2markers=FALSE), expected)
+
+    expected[1,c(1,3)] <- c(37.2, 53.6)
+    expect_equal(lod_int(out, 7, 1, drop=0.5), expected)
+
+    expected2 <- rbind("1"=c(1.1,25.1,28.4), "2"=c(37.2,49.1,53.6))
+    colnames(expected2) <- colnames(expected)
+    expect_equal(lod_int(out, 7, 1, 0, 1.5, 1), expected2)
+
+    expected3 <- cbind(ci_lo=43.7, pos=56.6, ci_hi=61.2)
+    rownames(expected3) <- 1
+    expect_equal(lod_int(out, 9, 2), expected3)
+
+    expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
+    rownames(expected4) <- 1
+    expect_equal(lod_int(out, 8, 2), expected4)
 
 })
