@@ -42,14 +42,14 @@ test_that("find_peaks works", {
     expect_equal(find_peaks(out, 3, 1), expected_3_1)
 
     # separate X threshold
-    expect_equal(find_peaks(out, 2, 1, 1.5),
+    expect_equal(find_peaks(out, 2, 1, thresholdX=1.5),
                  rbind(expected_2_1,
                        data.frame(lodindex=2, lodcolumn="spleen",
                                   chr="X", pos=29.5, lod=1.65321447653698,
                                   stringsAsFactors=FALSE)))
 
     # column-specific thresholds
-    result <- find_peaks(out, c(4,2), 1, c(0.3, 1.5), c(0.1, 1))
+    result <- find_peaks(out, c(4,2), 1, thresholdX=c(0.3, 1.5), peakdropX=c(0.1, 1))
     expected <- rbind(expected_2_1[c(2,5,9,10),],
                       data.frame(lodindex=rep(1,2), lodcolumn=rep("liver",2),
                                  chr=rep("X",2), pos=c(29.5, 57.9),
@@ -61,5 +61,16 @@ test_that("find_peaks works", {
                                  stringsAsFactors=FALSE))
     rownames(expected) <- NULL
     expect_equal(result, expected)
+
+    # lod support intervals
+    expect_equal(find_peaks(out, 4, 2, 1.5),
+                 cbind(expected_4_Inf,
+                       ci_lo=c(51.3, 33.1, 34.4, 16.6,  6.0, 51.6),
+                       ci_hi=c(69.3, 53.6, 49.2, 33.6, 21.0, 59.6)))
+
+    expect_equal(find_peaks(out, 4, 2, 2),
+                 cbind(expected_4_Inf,
+                       ci_lo=c(50.3, 29.1, 31.4, 14.6,  4.0, 49.6),
+                       ci_hi=c(72.3, 53.6, 49.2, 34.6, 25.0, 60.6)))
 
 })

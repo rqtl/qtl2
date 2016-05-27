@@ -4,8 +4,8 @@
 \alias{find_peaks}
 \title{Find peaks in a set of LOD curves}
 \usage{
-find_peaks(scan1_output, threshold = 3, peakdrop = Inf, thresholdX = NULL,
-  peakdropX = NULL, cores = 1)
+find_peaks(scan1_output, threshold = 3, peakdrop = Inf, drop = NULL,
+  thresholdX = NULL, peakdropX = NULL, dropX = NULL, cores = 1)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
@@ -20,6 +20,12 @@ if multiple peaks are to be defined on a chromosome. (Can be a vector with
 separate values for each lod score column in
 \code{scan1_output}.)}
 
+\item{drop}{If provided, LOD support intervals are included in the
+results, and this indicates the amount to drop in the support
+interval. (Can be a vector with
+separate values for each lod score column in
+\code{scan1_output}.) Must be \le \code{peakdrop}}
+
 \item{thresholdX}{Separate threshold for the X chromosome; if
 unspecified, the same threshold is used for both autosomes and the
 X chromosome. (Like \code{threshold}, this can be a vector with
@@ -29,6 +35,11 @@ separate thresholds for each lod score column.)}
 unspecified, the same value is used for both autosomes and the X
 chromosome.  (Can be a vector with separate values for each lod
 score column in \code{scan1_output}.)}
+
+\item{dropX}{Amount to drop for LOD support intervals on the X
+chromosome.  Ignored if \code{drop} is not provided. (Can be a
+vector with separate values for each lod score column in
+\code{scan1_output}.)}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -45,6 +56,10 @@ chromosome for a single LOD score column, and with columns
 \item \code{pos} - peak position
 \item \code{lod} - lod score at peak
 }
+
+If \code{drop} is provided, the results will include two additional
+columns: \code{ci_lo} and \code{ci_hi}, with the endpoints of the
+LOD support intervals.
 }
 \description{
 Find peaks in a set of LOD curves (output from \code{\link{scan1}}

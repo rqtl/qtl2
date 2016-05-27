@@ -12,6 +12,11 @@
 #' if multiple peaks are to be defined on a chromosome. (Can be a vector with
 #' separate values for each lod score column in
 #' \code{scan1_output}.)
+#' @param drop If provided, LOD support intervals are included in the
+#' results, and this indicates the amount to drop in the support
+#' interval. (Can be a vector with
+#' separate values for each lod score column in
+#' \code{scan1_output}.) Must be \le \code{peakdrop}
 #' @param thresholdX Separate threshold for the X chromosome; if
 #' unspecified, the same threshold is used for both autosomes and the
 #' X chromosome. (Like \code{threshold}, this can be a vector with
@@ -20,6 +25,10 @@
 #' unspecified, the same value is used for both autosomes and the X
 #' chromosome.  (Can be a vector with separate values for each lod
 #' score column in \code{scan1_output}.)
+#' @param dropX Amount to drop for LOD support intervals on the X
+#' chromosome.  Ignored if \code{drop} is not provided. (Can be a
+#' vector with separate values for each lod score column in
+#' \code{scan1_output}.)
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -34,6 +43,10 @@
 #' \item \code{pos} - peak position
 #' \item \code{lod} - lod score at peak
 #' }
+#'
+#' If \code{drop} is provided, the results will include two additional
+#' columns: \code{ci_lo} and \code{ci_hi}, with the endpoints of the
+#' LOD support intervals.
 #'
 #' @details For each lod score column on each chromosome, we return a
 #' set of peaks defined as local maxima that exceed the specified
@@ -74,9 +87,13 @@
 #' # possibly multiple peaks per chromosome
 #' find_peaks(out, threshold=3, peakdrop=2)
 find_peaks <-
-    function(scan1_output, threshold=3, peakdrop=Inf,
-             thresholdX=NULL, peakdropX=NULL, cores=1)
+    function(scan1_output, threshold=3, peakdrop=Inf, drop=NULL,
+             thresholdX=NULL, peakdropX=NULL, dropX=NULL, cores=1)
 {
+    if(!is.null(drop)) # also include lod support intervals
+        return(find_peaks_and_lodint(scan1_output, threshold, peakdrop, drop,
+                                     thresholdX, peakdropX, dropX, cores))
+
     lodnames <- colnames(scan1_output$lod)
     n_lod <- length(lodnames)
 
