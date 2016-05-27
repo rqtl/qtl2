@@ -6,6 +6,35 @@
 
 using namespace Rcpp;
 
+// R_bayes_int_plain
+IntegerVector R_bayes_int_plain(const NumericVector& lod, const NumericVector& pos, const double prob);
+RcppExport SEXP qtl2scan_R_bayes_int_plain(SEXP lodSEXP, SEXP posSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob(probSEXP);
+    __result = Rcpp::wrap(R_bayes_int_plain(lod, pos, prob));
+    return __result;
+END_RCPP
+}
+// bayes_int_contained
+std::vector<int> bayes_int_contained(const NumericVector& lod, const NumericVector& pos, const double peakindex, const double prob, const int start, const int end);
+RcppExport SEXP qtl2scan_bayes_int_contained(SEXP lodSEXP, SEXP posSEXP, SEXP peakindexSEXP, SEXP probSEXP, SEXP startSEXP, SEXP endSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakindex(peakindexSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob(probSEXP);
+    Rcpp::traits::input_parameter< const int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< const int >::type end(endSEXP);
+    __result = Rcpp::wrap(bayes_int_contained(lod, pos, peakindex, prob, start, end));
+    return __result;
+END_RCPP
+}
 // R_find_peaks
 List R_find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
 RcppExport SEXP qtl2scan_R_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {
