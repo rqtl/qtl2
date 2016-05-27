@@ -1,5 +1,5 @@
 # lod_int
-#' Calculate LOD support intervals.
+#' Calculate LOD support intervals
 #'
 #' Calculate LOD support intervals for a single LOD curve on a single
 #' chromosome, with the ability to identify intervals for multiple LOD
@@ -40,7 +40,7 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link{scan1}}, \code{\link{find_peaks}}
+#' @seealso \code{\link{bayes_int}}, \code{\link{find_peaks}}, \code{\link{scan1}}
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -48,6 +48,7 @@
 #'
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' \dontshow{iron <- iron[,7]}
 #'
 #' # calculate genotype probabilities
 #' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
@@ -72,19 +73,19 @@ lod_int <-
         chr <- chr[1]
     }
     if(length(lodcolumn) > 1) {
-        warning("lodcolumn should have lenght 1; using the first value")
+        warning("lodcolumn should have length 1; using the first value")
         lodcolumn <- lodcolumn[1]
     }
     if(length(threshold) > 1) {
-        warning("threshold should have lenght 1; using the first value")
+        warning("threshold should have length 1; using the first value")
         threshold <- threshold[1]
     }
     if(length(peakdrop) > 1) {
-        warning("peakdrop should have lenght 1; using the first value")
+        warning("peakdrop should have length 1; using the first value")
         peakdrop <- peakdrop[1]
     }
     if(length(drop) > 1) {
-        warning("threshold should have lenght 1; using the first value")
+        warning("drop should have length 1; using the first value")
         drop <- drop[1]
     }
 
@@ -111,7 +112,7 @@ lod_int <-
     ci_lo <- ci_hi <- rep(0, n_peaks)
     for(i in 1:n_peaks) {
         if(expand2markers)
-            ci <- expand_lodint_to_markers(peaks[[i]][1:2]+1, map)
+            ci <- expand_interval_to_markers(peaks[[i]][1:2]+1, map)
         else
             ci <- map[peaks[[i]][1:2]+1]
         ci_lo[i] <- ci[1]

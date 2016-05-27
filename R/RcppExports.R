@@ -13,6 +13,10 @@
     .Call('qtl2scan_R_find_peaks_and_lodint', PACKAGE = 'qtl2scan', lod, threshold, peakdrop, drop)
 }
 
+.find_peaks_and_bayesint <- function(lod, pos, threshold, peakdrop, prob) {
+    .Call('qtl2scan_R_find_peaks_and_bayesint', PACKAGE = 'qtl2scan', lod, pos, threshold, peakdrop, prob)
+}
+
 interpolate_map <- function(oldpos, oldmap, newmap) {
     .Call('qtl2scan_interpolate_map', PACKAGE = 'qtl2scan', oldpos, oldmap, newmap)
 }

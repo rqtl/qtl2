@@ -4,6 +4,7 @@
 #include "find_peaks.h"
 #include <Rcpp.h>
 #include "lod_int.h"
+#include "bayes_int.h"
 using namespace Rcpp;
 
 // this version returns a single index for each peak
@@ -212,6 +213,60 @@ std::vector< std::vector<int> > find_peaks_and_lodint(const NumericVector& lod,
             lod_int_contained(lod, main_peaks[i], drop, valleys[i], valleys[i+1]);
 
         result.push_back(lodint);
+    }
+
+    return(result);
+}
+
+
+// this version returns both peaks and Bayes intervals
+//
+// input is a vector of LOD scores ordered by position along a chromosome
+//     plus vector of positions
+//
+// output is a list of vectors of indexes (in 0, 1, 2, ..., lod.size()-1)
+//     first two values are the left and right endpoints of the interval
+//     remaining values are the indexes with the maximum LOD score
+//
+// The R_ version is a wrapper for R
+//
+// [[Rcpp::export(".find_peaks_and_bayesint")]]
+List R_find_peaks_and_bayesint(const NumericVector &lod,
+                               const NumericVector &pos,
+                               const double threshold,
+                               const double peakdrop,
+                               const double prob)
+{
+    std::vector< std::vector<int> > result = find_peaks_and_bayesint(lod, pos, threshold, peakdrop, prob);
+
+    return wrap(result);
+}
+
+
+std::vector< std::vector<int> > find_peaks_and_bayesint(const NumericVector& lod,
+                                                        const NumericVector& pos,
+                                                        const double threshold,
+                                                        const double peakdrop,
+                                                        const double prob)
+{
+    if(lod.size() != pos.size())
+        throw std::invalid_argument("pos.size() != lod.size()");
+
+    // first find the multiple peaks (and valleys between them)
+    std::vector< std::vector<int> > peaks_valleys = find_peaks_valleys(lod, threshold, peakdrop);
+    std::vector<int> main_peaks = peaks_valleys[0];
+    std::vector<int> valleys = peaks_valleys[1];
+    const int n_peaks = main_peaks.size();
+
+    std::vector< std::vector<int> > result;
+
+    // then for each peak, find the Bayes interval
+    for(int i=0; i<n_peaks; i++) {
+        // find the Bayes interval, only looking between the adjacent valleys
+        std::vector<int> bayesint =
+            bayes_int_contained(lod, pos, main_peaks[i], prob, valleys[i], valleys[i+1]);
+
+        result.push_back(bayesint);
     }
 
     return(result);

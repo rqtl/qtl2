@@ -1,10 +1,10 @@
-# find_peaks_and_lodint
+# find_peaks_and_bayesint
 #
-# This is like find_peaks but the results also include lod support intervals.
-# The same input as find_peaks, which calls this function when drop is given.
-find_peaks_and_lodint <-
-    function(scan1_output, threshold=3, peakdrop=Inf, drop=1.8,
-             thresholdX=NULL, peakdropX=NULL, dropX=NULL,
+# This is like find_peaks but the results also include Bayes credible intervals.
+# The same input as find_peaks, which calls this function when prob is given.
+find_peaks_and_bayesint <-
+    function(scan1_output, threshold=3, peakdrop=Inf, prob=0.95,
+             thresholdX=NULL, peakdropX=NULL, probX=NULL,
              expand2markers=TRUE, cores=1)
 {
     lodnames <- colnames(scan1_output$lod)
@@ -28,17 +28,14 @@ find_peaks_and_lodint <-
     if(length(peakdropX) != n_lod)
         stop("peakdropX should have length 1 or ", n_lod)
 
-    # make the drops have length n_lod
-    if(length(drop)==1) drop <- rep(drop, n_lod)
-    if(length(drop) != n_lod)
-        stop("drop should have length 1 or ", n_lod)
-    if(is.null(dropX)) dropX <- drop
-    if(length(dropX)==1) dropX <- rep(dropX, n_lod)
-    if(length(dropX) != n_lod)
-        stop("dropX should have length 1 or ", n_lod)
-
-    if(any(drop > peakdrop | dropX > peakdropX))
-        stop("Must have drop <= peakdrop")
+    # make the probs have length n_lod
+    if(length(prob)==1) prob <- rep(prob, n_lod)
+    if(length(prob) != n_lod)
+        stop("prob should have length 1 or ", n_lod)
+    if(is.null(probX)) probX <- prob
+    if(length(probX)==1) probX <- rep(probX, n_lod)
+    if(length(probX) != n_lod)
+        stop("probX should have length 1 or ", n_lod)
 
     # split lod scores by column and by chromosome
     lod <- as.list(as.data.frame(scan1_output$lod))
@@ -65,10 +62,10 @@ find_peaks_and_lodint <-
 
         this_lod <- lod[[lodcol]][[chr]]
 
-        peaks <- .find_peaks_and_lodint(this_lod,
-                                        ifelse(is_x_chr[chr], thresholdX[lodcol], threshold[lodcol]),
-                                        ifelse(is_x_chr[chr], peakdropX[lodcol], peakdrop[lodcol]),
-                                        ifelse(is_x_chr[chr], dropX[lodcol], drop[lodcol]))
+        peaks <- .find_peaks_and_bayesint(this_lod, map[[chr]],
+                                          ifelse(is_x_chr[chr], thresholdX[lodcol], threshold[lodcol]),
+                                          ifelse(is_x_chr[chr], peakdropX[lodcol], peakdrop[lodcol]),
+                                          ifelse(is_x_chr[chr], probX[lodcol], prob[lodcol]))
 
         n_peaks <- length(peaks)
         if(n_peaks==0) return(NULL)
@@ -111,39 +108,4 @@ find_peaks_and_lodint <-
 
     rownames(result) <- NULL
     result
-}
-
-
-# expand LOD interval endpoints to be at markers
-# (rather than pseudomarkers)
-#
-# input is a pair of indexes
-# output is a pair of positions
-expand_interval_to_markers <-
-    function(ci_index, map)
-{
-    mn <- names(map)
-    pmar_pattern <- "^c.+\\.loc-*[0-9]+(\\.[0-9]+)*$"
-    pmar <- grepl(pmar_pattern, mn)
-
-    mar_index <- seq(along=map)[!pmar]
-
-    lo_index <- ci_index[1]
-    hi_index <- ci_index[2]
-
-    if(pmar[lo_index]) {
-        mar_index <= lo_index
-        lo_index <- ifelse(any(mar_index <= lo_index),
-                           max(mar_index[mar_index <= lo_index]),
-                           1)
-    }
-
-    if(pmar[hi_index]) {
-        mar_index >= hi_index
-        hi_index <- ifelse(any(mar_index >= hi_index),
-                           min(mar_index[mar_index >= hi_index]),
-                           length(map))
-    }
-
-    map[c(lo_index, hi_index)]
 }

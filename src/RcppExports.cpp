@@ -46,6 +46,21 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// R_find_peaks_and_bayesint
+List R_find_peaks_and_bayesint(const NumericVector& lod, const NumericVector& pos, const double threshold, const double peakdrop, const double prob);
+RcppExport SEXP qtl2scan_R_find_peaks_and_bayesint(SEXP lodSEXP, SEXP posSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob(probSEXP);
+    __result = Rcpp::wrap(R_find_peaks_and_bayesint(lod, pos, threshold, peakdrop, prob));
+    return __result;
+END_RCPP
+}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {

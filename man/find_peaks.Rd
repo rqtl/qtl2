@@ -5,8 +5,8 @@
 \title{Find peaks in a set of LOD curves}
 \usage{
 find_peaks(scan1_output, threshold = 3, peakdrop = Inf, drop = NULL,
-  thresholdX = NULL, peakdropX = NULL, dropX = NULL,
-  expand2markers = TRUE, cores = 1)
+  prob = NULL, thresholdX = NULL, peakdropX = NULL, dropX = NULL,
+  probX = NULL, expand2markers = TRUE, cores = 1)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
@@ -27,6 +27,12 @@ interval. (Can be a vector with
 separate values for each lod score column in
 \code{scan1_output}.) Must be \eqn{\le} \code{peakdrop}}
 
+\item{prob}{If provided, Bayes credible intervals are included in the
+results, and this indicates the nominal coverage.
+(Can be a vector with
+separate values for each lod score column in
+\code{scan1_output}.) Provide just one of \code{drop} and \code{prob}.}
+
 \item{thresholdX}{Separate threshold for the X chromosome; if
 unspecified, the same threshold is used for both autosomes and the
 X chromosome. (Like \code{threshold}, this can be a vector with
@@ -42,9 +48,14 @@ chromosome.  Ignored if \code{drop} is not provided. (Can be a
 vector with separate values for each lod score column in
 \code{scan1_output}.)}
 
-\item{expand2markers}{If TRUE (and if \code{drop} is provided, so
-that QTL intervals are calculated), QTL intervals are expanded so
-that their endpoints are at genetic markers.}
+\item{probX}{Nominal coverage for Bayes intervals on the X
+chromosome.  Ignored if \code{prob} is not provided. (Can be a
+vector with separate values for each lod score column in
+\code{scan1_output}.)}
+
+\item{expand2markers}{If TRUE (and if \code{drop} or \code{prob} is
+provided, so that QTL intervals are calculated), QTL intervals are
+expanded so that their endpoints are at genetic markers.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -62,9 +73,9 @@ chromosome for a single LOD score column, and with columns
 \item \code{lod} - lod score at peak
 }
 
-If \code{drop} is provided, the results will include two additional
-columns: \code{ci_lo} and \code{ci_hi}, with the endpoints of the
-LOD support intervals.
+If \code{drop} or \code{prob} is provided, the results will include
+two additional columns: \code{ci_lo} and \code{ci_hi}, with the
+endpoints of the LOD support intervals or Bayes credible wintervals.
 }
 \description{
 Find peaks in a set of LOD curves (output from \code{\link{scan1}}
@@ -107,8 +118,11 @@ find_peaks(out, threshold=3, peakdrop=2)
 
 # possibly multiple peaks, also getting LOD support intervals
 find_peaks(out, threshold=3, peakdrop=2, drop=1.5)
+
+# possibly multiple peaks, also getting Bayes intervals
+find_peaks(out, threshold=3, peakdrop=2, prob=0.95)
 }
 \seealso{
-\code{\link{scan1}}
+\code{\link{scan1}}, \code{\link{lod_int}}, \code{\link{bayes_int}}
 }
 

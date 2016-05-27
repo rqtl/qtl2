@@ -61,4 +61,29 @@ std::vector< std::vector<int> > find_peaks_and_lodint(const Rcpp::NumericVector&
                                                       const double peakdrop,
                                                       const double drop);
 
+
+// this version returns both peaks and Bayes intervals
+//
+// input is a vector of LOD scores ordered by position along a chromosome
+//     plus vector of positions
+//
+// output is a list of vectors of indexes (in 0, 1, 2, ..., lod.size()-1)
+//     first two values are the left and right endpoints of the interval
+//     remaining values are the indexes with the maximum LOD score
+//
+// The R_ version is a wrapper for R
+//
+Rcpp::List R_find_peaks_and_bayesint(const Rcpp::NumericVector &lod,
+                                     const Rcpp::NumericVector &pos,
+                                     const double threshold,
+                                     const double peakdrop,
+                                     const double prob);
+
+std::vector< std::vector<int> > find_peaks_and_bayesint(const Rcpp::NumericVector& lod,
+                                                        const Rcpp::NumericVector& pos,
+                                                        const double threshold,
+                                                        const double peakdrop,
+                                                        const double prob);
+
+
 #endif // FIND_PEAKS_H

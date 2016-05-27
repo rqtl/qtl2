@@ -1,4 +1,4 @@
-context("find_peaks and lod_int")
+context("find_peaks lod_int, and bayes_int")
 
 # load qtl2geno package for data and genoprob calculation
 library(qtl2geno)
@@ -84,6 +84,29 @@ test_that("find_peaks works", {
                        ci_lo=c(53.3, 11.1, 38.1, 24.0, 20.5, 38.4, 21.6, 28.3,  8.0, 53.6),
                        ci_hi=c(66.3, 28.1, 53.6, 53.0, 40.4, 49.2, 32.6, 38.3, 17.0, 59.6)))
 
+    # Bayes intervals
+    expect_equal(find_peaks(out, 4, 2, prob=0.95),
+                 cbind(expected_4_Inf,
+                       ci_lo=c(48.1, 13.1, 16.4,  6.6,  0.0, 53.6),
+                       ci_hi=c(73.2, 53.6, 49.2, 40.4, 32.7, 61.2)))
+
+    expect_equal(find_peaks(out, 4, 2, prob=0.99),
+                 cbind(expected_4_Inf,
+                       ci_lo=c(48.1,  1.1, 16.4,  6.6,  0.0, 43.7),
+                       ci_hi=c(73.2, 53.6, 49.2, 40.4, 32.7, 61.2)))
+
+    expect_equal(find_peaks(out, 3, 1, prob=0.8),
+                 cbind(expected_3_1,
+                       ci_lo=c(48.1, 13.1, 37.2, 17.3, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
+                       ci_hi=c(73.2, 28.4, 53.6, 69.9, 40.4, 49.2, 40.4, 38.3, 17.3, 61.2)))
+
+    # expand2markers=FALSE
+    expect_equal(find_peaks(out, 3, 1, 0.8, expand2markers=FALSE),
+                 cbind(expected_3_1,
+                       ci_lo=c(53.3, 12.1, 39.1, 26.0, 21.5, 39.4, 25.1, 28.3,  9.0, 53.6),
+                       ci_hi=c(65.3, 28.1, 53.6, 52.0, 40.4, 49.2, 32.6, 38.3, 17.0, 59.6)))
+
+
 })
 
 test_that("lod_int works", {
@@ -109,5 +132,32 @@ test_that("lod_int works", {
     expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
     rownames(expected4) <- 1
     expect_equal(lod_int(out, 8, 2), expected4)
+
+})
+
+
+test_that("bayes_int works", {
+
+    expected <- cbind(ci_lo=13.1, pos=49.1, ci_hi=53.6)
+    rownames(expected) <- 1
+    expect_equal(bayes_int(out, 7, 1), expected)
+
+    expected[1,c(1,3)] <- c(15.1, 53.6)
+    expect_equal(bayes_int(out, 7, 1, expand2markers=FALSE), expected)
+
+    expected[1,c(1,3)] <- c(37.2, 53.6)
+    expect_equal(bayes_int(out, 7, 1, prob=0.8), expected)
+
+    expected2 <- rbind("1"=c(1.1,25.1,28.4), "2"=c(37.2,49.1,53.6))
+    colnames(expected2) <- colnames(expected)
+    expect_equal(bayes_int(out, 7, 1, 0, 1.5, 0.95), expected2)
+
+    expected3 <- cbind(ci_lo=53.6, pos=56.6, ci_hi=61.2)
+    rownames(expected3) <- 1
+    expect_equal(bayes_int(out, 9, 2), expected3)
+
+    expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
+    rownames(expected4) <- 1
+    expect_equal(bayes_int(out, 8, 2), expected4)
 
 })

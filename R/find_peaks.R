@@ -17,6 +17,11 @@
 #' interval. (Can be a vector with
 #' separate values for each lod score column in
 #' \code{scan1_output}.) Must be \eqn{\le} \code{peakdrop}
+#' @param prob If provided, Bayes credible intervals are included in the
+#' results, and this indicates the nominal coverage.
+#' (Can be a vector with
+#' separate values for each lod score column in
+#' \code{scan1_output}.) Provide just one of \code{drop} and \code{prob}.
 #' @param thresholdX Separate threshold for the X chromosome; if
 #' unspecified, the same threshold is used for both autosomes and the
 #' X chromosome. (Like \code{threshold}, this can be a vector with
@@ -29,9 +34,13 @@
 #' chromosome.  Ignored if \code{drop} is not provided. (Can be a
 #' vector with separate values for each lod score column in
 #' \code{scan1_output}.)
-#' @param expand2markers If TRUE (and if \code{drop} is provided, so
-#' that QTL intervals are calculated), QTL intervals are expanded so
-#' that their endpoints are at genetic markers.
+#' @param probX Nominal coverage for Bayes intervals on the X
+#' chromosome.  Ignored if \code{prob} is not provided. (Can be a
+#' vector with separate values for each lod score column in
+#' \code{scan1_output}.)
+#' @param expand2markers If TRUE (and if \code{drop} or \code{prob} is
+#' provided, so that QTL intervals are calculated), QTL intervals are
+#' expanded so that their endpoints are at genetic markers.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -47,9 +56,9 @@
 #' \item \code{lod} - lod score at peak
 #' }
 #'
-#' If \code{drop} is provided, the results will include two additional
-#' columns: \code{ci_lo} and \code{ci_hi}, with the endpoints of the
-#' LOD support intervals.
+#' If \code{drop} or \code{prob} is provided, the results will include
+#' two additional columns: \code{ci_lo} and \code{ci_hi}, with the
+#' endpoints of the LOD support intervals or Bayes credible wintervals.
 #'
 #' @details For each lod score column on each chromosome, we return a
 #' set of peaks defined as local maxima that exceed the specified
@@ -63,7 +72,7 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link{scan1}}
+#' @seealso \code{\link{scan1}}, \code{\link{lod_int}}, \code{\link{bayes_int}}
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -92,15 +101,30 @@
 #'
 #' # possibly multiple peaks, also getting LOD support intervals
 #' find_peaks(out, threshold=3, peakdrop=2, drop=1.5)
+#'
+#' # possibly multiple peaks, also getting Bayes intervals
+#' find_peaks(out, threshold=3, peakdrop=2, prob=0.95)
 find_peaks <-
-    function(scan1_output, threshold=3, peakdrop=Inf, drop=NULL,
-             thresholdX=NULL, peakdropX=NULL, dropX=NULL,
+    function(scan1_output, threshold=3, peakdrop=Inf, drop=NULL, prob=NULL,
+             thresholdX=NULL, peakdropX=NULL, dropX=NULL, probX=NULL,
              expand2markers=TRUE, cores=1)
 {
+    if(!is.null(drop) && !is.null(prob))
+        stop('No more than one of "drop" and "prob" should be provided')
+
     if(!is.null(drop)) # also include lod support intervals
         return(find_peaks_and_lodint(scan1_output, threshold, peakdrop, drop,
                                      thresholdX, peakdropX, dropX,
                                      expand2markers, cores))
+    if(!is.null(prob)) # also include Bayes credible intervals
+        return(find_peaks_and_bayesint(scan1_output, threshold, peakdrop, prob,
+                                       thresholdX, peakdropX, probX,
+                                       expand2markers, cores))
+
+    if(!is.null(dropX))
+        warning("dropX ignored if drop is not provided")
+    if(!is.null(probX))
+        warning("probX ignored if prob is not provided")
 
     lodnames <- colnames(scan1_output$lod)
     n_lod <- length(lodnames)
