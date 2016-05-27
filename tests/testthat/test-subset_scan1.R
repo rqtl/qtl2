@@ -33,6 +33,7 @@ test_that("subset_scan1 works for intercross with two phenotypes", {
     expected <- out
     expected$lod <- out$lod[keep,,drop=FALSE]
     expected$map <- out$map[c("2", "8", "9")]
+    expected$is_x_chr <- out$is_x_chr[c("2", "8", "9")]
     expect_equal(subset(out, chr=c("2", "8", "9")), expected)
     expect_equal(out[c("2", "8", "9"),], expected)
 

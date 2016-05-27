@@ -63,7 +63,7 @@ subset_scan1 <-
         }
 
         # objects to subset list
-        sublist <- c("map", "snpinfo")
+        sublist <- c("map", "snpinfo", "is_x_chr")
         for(obj in sublist) {
             if(obj %in% names(x))
                 x[[obj]] <- x[[obj]][chr]

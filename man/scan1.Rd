@@ -66,6 +66,8 @@ A list containing the following
     matrix will contain only results for distinct SNPs. The
     \code{index} column in \code{snpinfo} is the row index in the
     \code{lod} matrix that corresponds to the current SNP.
+\item \code{is_x_chr} - Taken from \code{genoprobs}; indicates
+    which chromosomes are the X chromosome.
 }
 }
 \description{

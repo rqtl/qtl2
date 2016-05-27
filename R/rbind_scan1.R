@@ -31,14 +31,11 @@ rbind.scan1 <-
 {
     args <- list(...)
 
-    # to rbind: probs, sex, cross_info
-    # to pass through (must match): map, grid, crosstype, is_x_chr, alleles, alleleprobs, step, off_end, stepwidth
-
     result <- args[[1]]
     if(length(args) == 1) return(result)
 
     # to rbind: lod, coef, SE, hsq
-    # to c(): map, snpinfo
+    # to c(): map, snpinfo, is_x_chr
     # drop if not matching: addcovar, Xcovar, intcovar, weights, sample_size
 
     result <- args[[1]]
@@ -57,8 +54,8 @@ rbind.scan1 <-
         }
     }
 
-    # combine map, snpinfo
-    to_combine <- c("map", "snpinfo")
+    # combine map, snpinfo, is_x_chr
+    to_combine <- c("map", "snpinfo", "is_x_chr")
     for(i in 2:length(args)) {
         for(obj in to_combine) {
             if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
@@ -70,8 +67,10 @@ rbind.scan1 <-
 
     other_stuff <- c("addcovar", "Xcovar", "intcovar", "weights", "sample_size")
     for(i in 2:length(args)) {
-        if(!is_same(result[[obj]], args[[i]][[obj]]))
-            result[[obj]] <- NULL
+        for(obj in other_stuff) {
+            if(!is_same(result[[obj]], args[[i]][[obj]]))
+                result[[obj]] <- NULL
+        }
     }
 
     result

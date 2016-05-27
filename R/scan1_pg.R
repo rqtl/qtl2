@@ -131,7 +131,8 @@ scan1_pg <-
                    sample_size = n,
                    addcovar = colnames4attr(addcovar),
                    Xcovar = colnames4attr(Xcovar),
-                   intcovar = colnames4attr(intcovar))
+                   intcovar = colnames4attr(intcovar),
+                   is_x_chr = genoprobs$is_x_chr)
 
     # preserve any snpinfo from genoprob_to_snpprob
     if("snpinfo" %in% names(genoprobs))
