@@ -41,6 +41,10 @@
 #' dropped by at least \code{peakdrop} below the lowest of any two
 #' adjacent peaks.
 #'
+#' At a given peak, if there are ties, with multiple positions jointly
+#' achieving the maximum LOD score, we take the average of these
+#' positions as the location of the peak.
+#'
 #' @export
 #'
 #' @seealso \code{\link{scan1}}
@@ -126,11 +130,18 @@ find_peaks <-
         n_peaks <- length(peaks)
         if(n_peaks==0) return(NULL)
 
+        # calculate peak positions
+        # (this deals with ties in the LOD scores:
+        #  take average of multiple positions sharing the maximum LOD score)
+        # and remember that .find_peaks returns indexes starting at 0
+        peak_pos <- vapply(peaks, function(a) mean(map[[chr]][a+1]), 0.0)
+        peak_lod <- vapply(peaks, function(a) this_lod[a[1]+1], 0.0)
+
         data.frame(lodindex=rep(lodcol,n_peaks),
                    lodcolumn=rep(lodnames[lodcol],n_peaks),
                    chr=rep(names(map)[chr],n_peaks),
-                   pos=map[[chr]][peaks],
-                   lod=this_lod[peaks],
+                   pos=peak_pos,
+                   lod=peak_lod,
                    row.names=seq(along=peaks),
                    stringsAsFactors=FALSE)
     }

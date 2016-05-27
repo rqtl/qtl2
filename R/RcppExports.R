@@ -5,6 +5,10 @@
     .Call('qtl2scan_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
 }
 
+.find_peaks_and_lodint <- function(lod, threshold, peakdrop, drop) {
+    .Call('qtl2scan_find_peaks_and_lodint', PACKAGE = 'qtl2scan', lod, threshold, peakdrop, drop)
+}
+
 interpolate_map <- function(oldpos, oldmap, newmap) {
     .Call('qtl2scan_interpolate_map', PACKAGE = 'qtl2scan', oldpos, oldmap, newmap)
 }
@@ -107,10 +111,6 @@ Rcpp_fitLMM_mat <- function(Kva, Y, X, reml = TRUE, check_boundary = TRUE, logde
 
 .lod_int_plain <- function(lod, drop) {
     .Call('qtl2scan_lod_int_plain', PACKAGE = 'qtl2scan', lod, drop)
-}
-
-.lod_int_peak <- function(lod, peakindex, drop, peakdrop) {
-    .Call('qtl2scan_lod_int_peak', PACKAGE = 'qtl2scan', lod, peakindex, drop, peakdrop)
 }
 
 find_matching_cols <- function(mat, tol = 1e-12) {

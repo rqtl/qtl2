@@ -55,6 +55,10 @@ set of peaks defined as local maxima that exceed the specified
 \code{threshold}, with the requirement that the LOD score must have
 dropped by at least \code{peakdrop} below the lowest of any two
 adjacent peaks.
+
+At a given peak, if there are ties, with multiple positions jointly
+achieving the maximum LOD score, we take the average of these
+positions as the location of the peak.
 }
 \examples{
 # load qtl2geno package for data and genoprob calculation

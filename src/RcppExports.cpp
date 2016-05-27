@@ -7,7 +7,7 @@
 using namespace Rcpp;
 
 // find_peaks
-IntegerVector find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
+std::vector< std::vector<int> > find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
 RcppExport SEXP qtl2scan_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
@@ -16,6 +16,20 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
     Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
     __result = Rcpp::wrap(find_peaks(lod, threshold, peakdrop));
+    return __result;
+END_RCPP
+}
+// find_peaks_and_lodint
+std::vector< std::vector<int> > find_peaks_and_lodint(const NumericVector& lod, const double threshold, const double peakdrop, const double drop);
+RcppExport SEXP qtl2scan_find_peaks_and_lodint(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP dropSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
+    Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
+    __result = Rcpp::wrap(find_peaks_and_lodint(lod, threshold, peakdrop, drop));
     return __result;
 END_RCPP
 }
@@ -346,7 +360,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // lod_int_plain
-IntegerVector lod_int_plain(const NumericVector& lod, const double drop);
+std::vector<int> lod_int_plain(const NumericVector& lod, const double drop);
 RcppExport SEXP qtl2scan_lod_int_plain(SEXP lodSEXP, SEXP dropSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
@@ -354,20 +368,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
     Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
     __result = Rcpp::wrap(lod_int_plain(lod, drop));
-    return __result;
-END_RCPP
-}
-// lod_int_peak
-IntegerVector lod_int_peak(const NumericVector& lod, const double peakindex, const double drop, const double peakdrop);
-RcppExport SEXP qtl2scan_lod_int_peak(SEXP lodSEXP, SEXP peakindexSEXP, SEXP dropSEXP, SEXP peakdropSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const NumericVector& >::type lod(lodSEXP);
-    Rcpp::traits::input_parameter< const double >::type peakindex(peakindexSEXP);
-    Rcpp::traits::input_parameter< const double >::type drop(dropSEXP);
-    Rcpp::traits::input_parameter< const double >::type peakdrop(peakdropSEXP);
-    __result = Rcpp::wrap(lod_int_peak(lod, peakindex, drop, peakdrop));
     return __result;
 END_RCPP
 }
