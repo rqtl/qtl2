@@ -68,6 +68,10 @@ lod_int <-
     function(scan1_output, chr, lodcolumn=1, threshold=0,
              peakdrop=Inf, drop=1.5, expand2markers=TRUE)
 {
+    if(missing(chr) || is.null(chr)) { # just use the first chr
+        chr <- names(scan1_output$map)[1]
+    }
+
     if(length(chr) > 1) {
         warning("chr should have length 1; using the first value")
         chr <- chr[1]
@@ -94,6 +98,9 @@ lod_int <-
 
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output$lod))
         stop("lodcolumn should be between 1 and ", ncol(scan1_output$lod))
+
+    if(!(chr %in% names(scan1_output$map)))
+        stop("Chromosome ", chr, " not found")
 
     scan1_output <- scan1_output[chr, lodcolumn]
 
