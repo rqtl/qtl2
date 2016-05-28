@@ -91,7 +91,7 @@ std::vector<int> lod_int_contained(const NumericVector& lod,
     maxpos.push_back(peakindex);
 
     const double lodmdrop = maxlod - drop;
-    int left=0, right=n-1;
+    int left=peakindex, right=peakindex;
 
     // going to the right
     for(int i=peakindex+1; i<=end; i++) {
@@ -111,8 +111,8 @@ std::vector<int> lod_int_contained(const NumericVector& lod,
     }
     left--;
 
-    if(left < 0) left = 0;
-    if(right > n-1) right = n-1;
+    if(left < start) left = start;
+    if(right > end) right = end;
 
     // add to vector, at the front
     const int n_maxpos = maxpos.size();
@@ -155,7 +155,7 @@ std::vector<int> lod_int_peak(const NumericVector& lod,
 
     const double lodmdrop = maxlod - drop;
     const double lodmpeakdrop = maxlod - peakdrop;
-    int left=0, right=n-1;
+    int left=peakindex, right=peakindex;
 
     // going to the right
     for(int i=peakindex+1; i<n; i++) {

@@ -152,10 +152,10 @@ std::vector<int> bayes_int_contained(const NumericVector& lod,
     // sort values from highest to lowest
     std::sort( areas.begin(), areas.end(), by_area());
 
-    int left = n-1;
-    int right = 0;
+    int left = peakindex;
+    int right = peakindex;
     double cumsum = 0.0;
-    for(int i=0; i<n; i++) {
+    for(int i=0; i<n_used; i++) {
         cumsum += exp(areas[i].area - total);
 
         int index = areas[i].index;
