@@ -92,6 +92,9 @@ lod_int <-
     if(drop > peakdrop)
         stop("Must have drop <= peakdrop")
 
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1_output$lod))
+        stop("lodcolumn should be between 1 and ", ncol(scan1_output$lod))
+
     scan1_output <- scan1_output[chr, lodcolumn]
 
     lod <- scan1_output$lod
