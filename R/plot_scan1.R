@@ -109,6 +109,7 @@ plot_scan1 <-
                  vlines=NULL, vlines.col="white", vlines.lwd=1, vlines.lty=1,
                  ...)
         {
+            dots <- list(...)
             onechr <- (length(map)==1) # single chromosome
 
             xpos <- map_to_xpos(map, gap)
@@ -148,30 +149,39 @@ plot_scan1 <-
                         rect(chrbound[1,i], u[3], chrbound[2,i], u[4], col=altbgcolor, border=NA)
                 }
 
-                # add x axis
-                if(onechr) {
-                    axis(side=1, at=pretty(xlim), mgp=mgp.x, las=las, tick=FALSE)
-                    if(!(length(vlines)==1 && is.na(vlines))) { # if vlines==NA, skip lines
-                        if(is.null(vlines)) vlines <- pretty(xlim)
-                        abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+                # include axis labels?
+                if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
+                if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
+
+                # add x axis unless par(xaxt="n")
+                if(dots$xaxt != "n") {
+                    if(onechr) {
+                        axis(side=1, at=pretty(xlim), mgp=mgp.x, las=las, tick=FALSE)
+                        if(!(length(vlines)==1 && is.na(vlines))) { # if vlines==NA, skip lines
+                            if(is.null(vlines)) vlines <- pretty(xlim)
+                            abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+                        }
+                    }
+                    else {
+                        loc <- colMeans(chrbound)
+                        odd <- seq(1, length(map), by=2)
+                        even <- seq(2, length(map), by=2)
+                        axis(side=1, at=loc[odd], names(map)[odd],
+                             mgp=mgp.x, las=las, tick=FALSE)
+                        axis(side=1, at=loc[even], names(map)[even],
+                             mgp=mgp.x, las=las, tick=FALSE)
                     }
                 }
-                else {
-                    loc <- colMeans(chrbound)
-                    odd <- seq(1, length(map), by=2)
-                    even <- seq(2, length(map), by=2)
-                    axis(side=1, at=loc[odd], names(map)[odd],
-                         mgp=mgp.x, las=las, tick=FALSE)
-                    axis(side=1, at=loc[even], names(map)[even],
-                         mgp=mgp.x, las=las, tick=FALSE)
-                }
 
-                # add y axis
-                axis(side=2, at=pretty(ylim), mgp=mgp.y, las=las, tick=FALSE)
-                if(!(length(hlines)==1 && is.na(hlines))) { # if hlines==NA, skip lines
-                    if(is.null(hlines)) hlines <- pretty(ylim)
-                    abline(h=hlines, col=hlines.col, lwd=hlines.lwd, lty=hlines.lty)
+                # add y axis unless par(yaxt="n")
+                if(dots$yaxt != "n") {
+                    axis(side=2, at=pretty(ylim), mgp=mgp.y, las=las, tick=FALSE)
+                    if(!(length(hlines)==1 && is.na(hlines))) { # if hlines==NA, skip lines
+                        if(is.null(hlines)) hlines <- pretty(ylim)
+                        abline(h=hlines, col=hlines.col, lwd=hlines.lwd, lty=hlines.lty)
+                    }
                 }
+                dots$xaxt <- dots$yaxt <- NULL # delete those
 
                 # x and y axis labels
                 title(xlab=xlab, mgp=mgp.x)
