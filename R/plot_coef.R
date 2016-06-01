@@ -10,6 +10,10 @@
 #' @param col Vector of colors, same length as \code{columns}. If
 #' NULL, some default choices are made.
 #'
+#' @param scan1_output If provided, we make a two-panel plot with
+#' coefficients on top and LOD scores below. Should have just one LOD
+#' score column; if multiple, only the first is used.
+#'
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
@@ -57,10 +61,16 @@
 #' # plot QTL effects
 #' plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
-    function(x, columns=NULL, col=NULL, add=FALSE, gap=25, ylim=NULL,
+    function(x, columns=NULL, col=NULL, scan1_output=NULL,
+             add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
+    if(!is.null(scan1_output)) # call internal function
+        plot_coef_and_lod(x, columns=columns, col=col, scan1_output=scan1_output,
+                          gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
+                          ylab="QTL effects", xaxt=NULL, ...)
+
     if(is.null(columns))
         columns <- 1:ncol(x$coef)
 
@@ -113,11 +123,12 @@ plot_coef <-
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, add=FALSE, gap=25, ylim=NULL,
+    function(x, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
-    plot_coef(x, columns=1:8, col=qtl2plot::CCcolors, add=add, gap=gap,
+    plot_coef(x, columns=1:8, col=qtl2plot::CCcolors,
+              scan1_output=scan1_output, add=add, gap=gap,
               ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
               ylab=ylab, ...)
 }
@@ -125,10 +136,11 @@ plot_coefCC <-
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
-    function(x, columns=1, col=NULL, add=FALSE, gap=25, ylim=NULL,
+    function(x, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
-    plot_coef(x, columns=columns, col=col, add=add, gap=gap, ylim=ylim,
+    plot_coef(x, columns=columns, col=col, scan1_output=scan1_output,
+              add=add, gap=gap, ylim=ylim,
               bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
 }

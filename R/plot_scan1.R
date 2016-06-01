@@ -172,6 +172,10 @@ plot_scan1 <-
                              mgp=mgp.x, las=las, tick=FALSE)
                     }
                 }
+                else if(onechr) { # if dots$xaxt="n" but one chr and vlines explicit, plot them
+                    if(!is.null(vlines) && !(length(vlines)==1 && is.na(vlines)))
+                        abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+                }
 
                 # add y axis unless par(yaxt="n")
                 if(dots$yaxt != "n") {
