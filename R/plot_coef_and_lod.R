@@ -11,35 +11,38 @@ plot_coef_and_lod <-
              vlines=NULL, vlines.col="white", vlines.lwd=1, vlines.lty=1,
              ...)
 {
-    # assume one lod score
-    # if multiple, take first
-
-    # use same chromosomes as in coefficients
     # also, match markers and use map in coefficients object
-    # (NAs for missing markers?)
+    mar_in_coef <- rownames(x$coef)
+    mar_in_scan1 <- rownames(scan1_output$lod)
+    scan1_output$lod <- scan1_output$lod[mar_in_scan1 %in% mar_in_coef, , drop=FALSE]
+    scan1_output$map <- list("1"=x$map)
+    mis_mar <- !(mar_in_coef %in% mar_in_scan1)
+    if(any(mis_mar)) {
+        n_new <- sum(mis_mar)
+        new_lod <- matrix(NA, nrow=sum(mis_mar), ncol=scan1_output$lod)
+        rownames(new_lod) <- mar_in_coef[mis_mar]
+        scan1_output$lod <- rbind(scan1_output$lod, new_lod)[mar_in_coef,]
+    }
 
-    # 2 x 1 panels
+
+    # 2 x 1 panels; adjust margins
     old_mfrow <- par("mfrow")
-    on.exit(par(mfrow=old_mfrow))
-    par(mfrow=c(2,1))
-
-    # adjust margins
     old_mar <- par("mar")
-    on.exit(par(mar=old_mar))
+    on.exit({ cat("exiting\n"); par(mfrow=old_mfrow, mar=old_mar)})
+    par(mfrow=c(2,1))
     top_mar <- bottom_mar <- old_mar
-    top_mar[1] <- 0
-    bottom_mar[3] <- 0
+    top_mar[1] <- 0.1
+    bottom_mar[3] <- 0.1
 
     par(mar=top_mar)
-    plot_coef(x, columns=columns, col=col, scan1_output=NULL,
+    plot_coef(x, columns, col, scan1_output=NULL,
               add=FALSE, gap=gap, ylim=ylim, bgcolor=bgcolor,
               altbgcolor=altbgcolor, ylab=ylab,
-              xaxt="n", vlines=vlines, col=vlines.col, lwd=vlines.lwd,
-              lty=vlines.lty, ...)
+              xaxt="n", vlines=vlines, vlines.col=vlines.col,
+              vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 
     par(mar=bottom_mar)
-    plot_scan1(scan1_output, lodcolumn=1, chr=NULL, add=FALSE,
-               gap=gap, vlines=vlines, vlines.col=vlines.col,
+    plot_scan1(scan1_output, lodcolumn=1,
+               add=FALSE, gap=gap, vlines=vlines, vlines.col=vlines.col,
                vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
-
 }

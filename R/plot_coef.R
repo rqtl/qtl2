@@ -66,10 +66,11 @@ plot_coef <-
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
-    if(!is.null(scan1_output)) # call internal function
-        plot_coef_and_lod(x, columns=columns, col=col, scan1_output=scan1_output,
-                          gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
-                          ylab="QTL effects", xaxt=NULL, ...)
+    if(!is.null(scan1_output)) { # call internal function for both coef and LOD
+        return(plot_coef_and_lod(x, columns=columns, col=col, scan1_output=scan1_output,
+                                 gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
+                                 ylab="QTL effects", xaxt=NULL, ...))
+    }
 
     if(is.null(columns))
         columns <- 1:ncol(x$coef)
