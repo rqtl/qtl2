@@ -157,10 +157,6 @@ plot_scan1 <-
                 if(dots$xaxt != "n") {
                     if(onechr) {
                         axis(side=1, at=pretty(xlim), mgp=mgp.x, las=las, tick=FALSE)
-                        if(!(length(vlines)==1 && is.na(vlines))) { # if vlines==NA, skip lines
-                            if(is.null(vlines)) vlines <- pretty(xlim)
-                            abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
-                        }
                     }
                     else {
                         loc <- colMeans(chrbound)
@@ -176,16 +172,22 @@ plot_scan1 <-
                 # add y axis unless par(yaxt="n")
                 if(dots$yaxt != "n") {
                     axis(side=2, at=pretty(ylim), mgp=mgp.y, las=las, tick=FALSE)
-                    if(!(length(hlines)==1 && is.na(hlines))) { # if hlines==NA, skip lines
-                        if(is.null(hlines)) hlines <- pretty(ylim)
-                        abline(h=hlines, col=hlines.col, lwd=hlines.lwd, lty=hlines.lty)
-                    }
                 }
                 dots$xaxt <- dots$yaxt <- NULL # delete those
 
                 # x and y axis labels
                 title(xlab=xlab, mgp=mgp.x)
                 title(ylab=ylab, mgp=mgp.y)
+
+                # grid lines
+                if(onechr && !(length(vlines)==1 && is.na(vlines))) { # if vlines==NA (or mult chr), skip lines
+                    if(is.null(vlines)) vlines <- pretty(xlim)
+                    abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+                }
+                if(!(length(hlines)==1 && is.na(hlines))) { # if hlines==NA, skip lines
+                    if(is.null(hlines)) hlines <- pretty(ylim)
+                    abline(h=hlines, col=hlines.col, lwd=hlines.lwd, lty=hlines.lty)
+                }
             }
 
             # plot each chromosome

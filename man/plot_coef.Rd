@@ -6,16 +6,16 @@
 \alias{plot_coefCC}
 \title{Plot QTL effects along chromosome}
 \usage{
-plot_coef(x, columns = NULL, col = NULL, add = FALSE, gap = 25,
-  ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
-  ylab = "QTL effects", ...)
+plot_coef(x, columns = NULL, col = NULL, scan1_output = NULL,
+  add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
+  altbgcolor = "gray85", ylab = "QTL effects", top_panel_prop = 0.65, ...)
 
-plot_coefCC(x, add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
+plot_coefCC(x, scan1_output = NULL, add = FALSE, gap = 25, ylim = NULL,
+  bgcolor = "gray90", altbgcolor = "gray85", ylab = "QTL effects", ...)
+
+\method{plot}{scan1coef}(x, columns = 1, col = NULL, scan1_output = NULL,
+  add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
   altbgcolor = "gray85", ylab = "QTL effects", ...)
-
-\method{plot}{scan1coef}(x, columns = 1, col = NULL, add = FALSE,
-  gap = 25, ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
-  ylab = "QTL effects", ...)
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
@@ -25,6 +25,10 @@ plot_coefCC(x, add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
 
 \item{col}{Vector of colors, same length as \code{columns}. If
 NULL, some default choices are made.}
+
+\item{scan1_output}{If provided, we make a two-panel plot with
+coefficients on top and LOD scores below. Should have just one LOD
+score column; if multiple, only the first is used.}
 
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
@@ -39,6 +43,9 @@ coefficients.}
 \item{altbgcolor}{Background color for alternate chromosomes.}
 
 \item{ylab}{y-axis label}
+
+\item{top_panel_prop}{If `scan1_output` provided, this gives the
+proportion of the plot that is devoted to the top panel.}
 
 \item{...}{Additional graphics parameters.}
 }
