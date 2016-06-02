@@ -6,10 +6,11 @@
 plot_coef_and_lod <-
     function(x, columns=NULL, col=NULL, scan1_output,
              gap=25, ylim=NULL, bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", ylab_lod="LOD score", ylim_lod=NULL,
-             xlab="Chromosome", xaxt=NULL,
+             ylab="QTL effects",
+             ylab_lod="LOD score", ylim_lod=NULL, col_lod="slateblue",
+             xaxt=NULL,
              vlines=NULL, vlines.col="white", vlines.lwd=1, vlines.lty=1,
-             ...)
+             top_panel_prop=0.65, ...)
 {
     # also, match markers and use map in coefficients object
     mar_in_coef <- rownames(x$coef)
@@ -28,21 +29,21 @@ plot_coef_and_lod <-
     # 2 x 1 panels; adjust margins
     old_mfrow <- par("mfrow")
     old_mar <- par("mar")
-    on.exit({ cat("exiting\n"); par(mfrow=old_mfrow, mar=old_mar)})
-    par(mfrow=c(2,1))
+    on.exit(par(mfrow=old_mfrow, mar=old_mar))
+    layout(rbind(1,2), heights=c(top_panel_prop, 1-top_panel_prop))
     top_mar <- bottom_mar <- old_mar
     top_mar[1] <- 0.1
     bottom_mar[3] <- 0.1
 
     par(mar=top_mar)
-    plot_coef(x, columns, col, scan1_output=NULL,
+    plot_coef(x, columns=columns, col=col, scan1_output=NULL,
               add=FALSE, gap=gap, ylim=ylim, bgcolor=bgcolor,
               altbgcolor=altbgcolor, ylab=ylab,
               xaxt="n", vlines=vlines, vlines.col=vlines.col,
               vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 
     par(mar=bottom_mar)
-    plot_scan1(scan1_output, lodcolumn=1,
+    plot_scan1(scan1_output, lodcolumn=1, col=col_lod,
                add=FALSE, gap=gap, vlines=vlines, vlines.col=vlines.col,
                vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 }

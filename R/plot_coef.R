@@ -28,9 +28,13 @@
 #'
 #' @param ylab y-axis label
 #'
+#' @param top_panel_prop If `scan1_output` provided, this gives the
+#' proportion of the plot that is devoted to the top panel.
+#'
 #' @param ... Additional graphics parameters.
 #'
 #' @export
+#' @importFrom graphics layout par
 #'
 #' @details
 #' \code{plot_coefCC()} is the same as \code{plot_coef()}, but forcing
@@ -64,12 +68,13 @@ plot_coef <-
     function(x, columns=NULL, col=NULL, scan1_output=NULL,
              add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", ...)
+             ylab="QTL effects", top_panel_prop=0.65, ...)
 {
     if(!is.null(scan1_output)) { # call internal function for both coef and LOD
         return(plot_coef_and_lod(x, columns=columns, col=col, scan1_output=scan1_output,
                                  gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
-                                 ylab="QTL effects", xaxt=NULL, ...))
+                                 ylab="QTL effects", xaxt=NULL, top_panel_prop=top_panel_prop,
+                                 ...))
     }
 
     if(is.null(columns))
@@ -101,16 +106,11 @@ plot_coef <-
     names(x)[names(x)=="coef"] <- "lod" # switch coef -> lod for use with plot_scan1()
 
     plot_coef_internal <-
-        function(x, columns, ylim, col, add, gap, bgcolor, altbgcolor, xlab=NULL, ylab, ...)
+        function(x, columns, ylim, col, add, gap, bgcolor, altbgcolor, ylab, ...)
         {
-            if(is.null(xlab)) {
-                if(is.null(x$chrid)) xlab <- "Position"
-                else xlab <- paste("Chr", x$chrid, "position")
-            }
-
             plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
                        gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
-                       xlab=xlab, ylab=ylab, ...)
+                       ylab=ylab, ...)
             if(length(columns) > 1) {
                 for(i in seq(along=columns)[-1])
                     plot_scan1(x, lodcolumn=columns[i], col=col[i], gap=gap,
@@ -143,5 +143,6 @@ plot.scan1coef <-
 {
     plot_coef(x, columns=columns, col=col, scan1_output=scan1_output,
               add=add, gap=gap, ylim=ylim,
-              bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
+              bgcolor=bgcolor, altbgcolor=altbgcolor,
+              ylab=ylab, ...)
 }
