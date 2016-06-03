@@ -4,6 +4,7 @@ r_packages:
  - devtools
 
 r_github_packages:
+ - kbroman/qtl@devel
  - rqtl/qtl2geno
  - rqtl/qtl2plot
 

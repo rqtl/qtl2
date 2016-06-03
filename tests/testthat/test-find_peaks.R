@@ -97,7 +97,7 @@ test_that("find_peaks works", {
 
     expect_equal(find_peaks(out, 3, 1, prob=0.8),
                  cbind(expected_3_1,
-                       ci_lo=c(48.1, 13.1, 37.2, 17.3, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
+                       ci_lo=c(48.1, 13.1, 37.2, 32.7, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
                        ci_hi=c(73.2, 28.4, 53.6, 69.9, 40.4, 49.2, 40.4, 38.3, 17.3, 61.2)))
 
     # expand2markers=FALSE
@@ -159,5 +159,48 @@ test_that("bayes_int works", {
     expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
     rownames(expected4) <- 1
     expect_equal(bayes_int(out, 8, 2), expected4)
+
+})
+
+
+test_that("lod_int and bayes_int give same results as R/qtl", {
+
+    out_rqtl <- data.frame(chr=rep(names(out$map), sapply(out$map, length)),
+                           pos=unlist(out$map),
+                           out$lod)
+    rownames(out_rqtl) <- unlist(sapply(out$map, names))
+    class(out_rqtl) <- c("scanone", "data.frame")
+
+    # 1st lod col: chr 2, 7, 15, 16
+    # 2nd lod col: chr 8, 9
+    for(lod in 1:2) {
+        for(chr in list(c(2,7,15,16), c(8,9))[[lod]]) {
+
+            for(drop in c(1, 1.5, 2)) {
+                # expand to markers
+                li_rqtl <- qtl::lodint(out_rqtl, lod=lod, chr=chr, expandtomarkers=TRUE, drop=drop)
+                li_qtl2 <- lod_int(out, lod=lod, chr=chr, drop=drop)
+                expect_equivalent(li_rqtl[,2], as.numeric(li_qtl2))
+
+                # don't expand to markers
+                li_rqtl <- qtl::lodint(out_rqtl, lod=lod, chr=chr, drop=drop)
+                li_qtl2 <- lod_int(out, lod=lod, chr=chr, expand2markers=FALSE, drop=drop)
+                expect_equivalent(li_rqtl[,2], as.numeric(li_qtl2))
+            }
+
+            for(prob in c(0.90, 0.95, 0.99)) {
+                # expand to markers
+                bi_rqtl <- qtl::bayesint(out_rqtl, lod=lod, chr=chr, expandtomarkers=TRUE, prob=prob)
+                bi_qtl2 <- bayes_int(out, lod=lod, chr=chr, prob=prob)
+               expect_equivalent(bi_rqtl[,2], as.numeric(bi_qtl2))
+
+                # don't expand to markers
+                bi_rqtl <- qtl::bayesint(out_rqtl, lod=lod, chr=chr, prob=prob)
+                bi_qtl2 <- bayes_int(out, lod=lod, chr=chr, expand2markers=FALSE, prob=prob)
+                expect_equivalent(bi_rqtl[,2], as.numeric(bi_qtl2))
+            }
+        }
+    }
+
 
 })

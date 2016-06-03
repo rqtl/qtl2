@@ -10,12 +10,13 @@ using namespace Rcpp;
 // structures used for sorting area = 10^lod * width
 struct area {
     double area;
+    double lod;
     int index;
 };
 // function for sorting the area structures by area
 struct by_area {
     bool operator()(const area &a, const area &b) {
-        return a.area > b.area; // sorts from largest to smallest
+        return a.lod > b.lod; // sorts from largest to smallest
     }
 };
 
@@ -59,7 +60,8 @@ std::vector<int> bayes_int_plain(const NumericVector& lod,
     //  10^LOD * interval_width
     std::vector<area> areas(n);
     for(int i=0; i<n; i++) {
-        areas[i].area = (lod[i] + lwidth[i])*log(10.0);
+        areas[i].area = (lod[i]*log(10) + lwidth[i]);
+        areas[i].lod = lod[i];
         areas[i].index = i;
     }
 
@@ -140,7 +142,8 @@ std::vector<int> bayes_int_contained(const NumericVector& lod,
     for(int i=0; i<n_used; i++) {
         if(start+i != peakindex && lod[start+i] == maxlod)
             maxpos.push_back(peakindex); // finding multiple locations sharing the max LOD
-        areas[i].area = (lod[start+i] + lwidth[start+i])*log(10.0);
+        areas[i].area = (lod[start+i]*log(10) + lwidth[start+i]);
+        areas[i].lod = lod[start+i];
         areas[i].index = start + i;
     }
 
