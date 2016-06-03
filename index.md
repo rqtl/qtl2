@@ -54,6 +54,7 @@ Then, install R/qtl2 using `devtools::install_github()`.
 - [input file formats](assets/vignettes/input_files.html)
   (also see the [sample data files](pages/sampledata.html) and the
   [qtl2data repository](https://github.com/rqtl/qtl2data))
+- [differences between R/qtl and R/qtl2](assets/vignettes/rqtl_differences.html)
 - [developer guide](assets/vignettes/developer_guide.html)
 - [HMM benchmarks](assets/vignettes/hmm_benchmarks.html)
 - [linear regression benchmarks](assets/vignettes/linreg_benchmarks.html)

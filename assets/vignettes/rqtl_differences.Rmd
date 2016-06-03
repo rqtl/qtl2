@@ -1,0 +1,104 @@
+---
+title: Differences between R/qtl and R/qtl2
+output: rmarkdown::html_vignette
+---
+
+
+[R/qtl2](http://kbroman.org/qtl2) is a
+reimplementation of the QTL analysis software
+[R/qtl](http://www.rqtl.org), to better handle high-dimensional data
+and complex cross designs.
+
+There have been a number of big changes. We summarize some of them
+here in order to assist long-time R/qtl users in their transition to
+R/qtl2.
+
+## New data file formats
+
+The input file format has been completely changed. R/qtl2 allows just
+a single format, with data split across multiple CSV files, and with
+a control file (in [YAML](http://www.yaml.org) or
+[JSON](http://www.json.org) format).
+
+For more information about the new file format, see the
+[related vignette](http://kbroman.org/qtl2/assets/vignettes/input_files.html),
+as well as
+[sample input data files](http://kbroman.org/qtl2/pages/sampledata.html)
+and the [qtl2data repository](https://github.com/rqtl/qtl2data).
+
+R/qtl cross objects can be converted to the new format with the
+`qtl2geno::convert2cross2()` function, and so one can continue to use
+the R/qtl function `read.cross()` to read in data and then convert
+them to the new format:
+
+```{r convert_data, eval=FALSE}
+library(qtl)
+mycross <- read.cross("csv", file="mydata.csv")
+library(qtl2geno)
+mycross <- convert2cross2(mycross)
+```
+
+## New data structures
+
+The data structures used by R/qtl2 are completely different than those
+used by R/qtl. The new data structures are no simpler than before, but
+they tend to be a bit "flatter" (that is, less deeply nested).
+Most everything is a "list", and we're using fewer "attributes" and
+instead including such things as components at the top level.
+
+## Split into multiple packages
+
+R/qtl2 is not a single package as R/qtl is. Rather it's split into
+multiple packages:
+
+- [qtl2geno](https://github.com/rqtl/qtl2geno), for calculating
+  genotype probabilities, imputations, and genetic maps
+- [qtl2scan](https://github.com/rqtl/qtl2scan), for QTL genome scans and
+  related calculations
+- [qtl2plot](https://github.com/rqtl/qtl2plot), for data visualization
+- [qtl2convert](https://github.com/rqtl/qtl2convert), for converting
+  data among the R/qtl2, R/qtl, and
+  [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html) formats
+
+We have in mind that, for high-dimensional data, the QTL genotype
+probability calculations with qtl2geno will be performed once and
+saved, and that the genome scans with qtl2scan will be performed in
+"batch" (e.g., on a cluster) and also saved, and that interactive
+analyses will mostly be in the data visualizations with qtl2plot.
+
+If it's confusing which function is in which package, consider just
+loading all of the new packages.
+
+## New functions names
+
+The names of all of the main functions have changed, mostly with
+periods replaced by underscores. For example:
+
+- `read.cross()` → `read_cross2()`
+- `calc.genoprob()` → `calc_genoprob()`
+- `sim.geno()` → `sim_geno()`
+- `argmax.geno()` → `viterbi()`
+- `scanone()` → `scan1()`
+- `nmar()` → `n_mar()`
+- `phenames()` → `pheno_names()`
+- `markernames()` → `marker_names()`
+
+
+## Treatment of intermediate calculations
+
+We're no longer storing intermediate calculations
+as part of the cross object. For example, `calc_genoprob()`, to
+calculate QTL genotype probabilities given the observed
+marker data, returns a list that includes the probabilities and the
+related map. `scan1()`, to perform a genome scan, takes these
+probabilities plus a phenotype matrix.
+
+## Use of individual identifiers for aligning data
+
+Individual identifiers are now used to ensure the alignment of
+individuals, for example between the QTL genotype probabilties and the
+phenotype data.
+
+For example, in `scan1()`, to perform a genome scan, it's necessary
+that the phenotype data carry the corresponding individual IDs as row
+names.
