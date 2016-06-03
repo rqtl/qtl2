@@ -68,14 +68,14 @@ IntegerMatrix viterbi2(const String& crosstype,
 
             // probability of first genotype
             double s = init_vector[0];
-            if(marker_index[0] > 0)
+            if(marker_index[0] >= 0)
                 s += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), 0);
             result(ind,0) = poss_gen[0];
 
             // probability of other genotypes
             for(int g=1; g<n_poss_gen; g++) {
                 double t = init_vector[g];
-                if(marker_index[0] > 0)
+                if(marker_index[0] >= 0)
                     t += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), g);
                 // bigger or same plus flip coin...bias towards later ones
                 if(t > s || (s-t < TOL && R::runif(0.0, 1.0)<0.5)) {
@@ -91,7 +91,7 @@ IntegerMatrix viterbi2(const String& crosstype,
 
             for(int g=0; g<n_poss_gen; g++) {
                 gamma[g] = init_vector[g];
-                if(marker_index[0] > 0)
+                if(marker_index[0] >= 0)
                     gamma[g] += emit_matrix[marker_index[0]](genotypes(marker_index[0],ind), g);
             }
 

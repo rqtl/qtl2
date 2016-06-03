@@ -1,4 +1,4 @@
-context("viterbi2")
+context("viterbi")
 suppressMessages(library(qtl))
 
 test_that("backcross autosome", {
@@ -261,5 +261,76 @@ test_that("backcross autosome with markers at same location", {
 
     expect_true( all(!is.na(g[[1]])) )
     expect_equal(g, g2)
+
+})
+
+test_that("R/qtl2 gives same viterbi results as R/qtl when step=0, for backcross", {
+
+    library(qtl)
+    data(hyper)
+
+    # step=0, error_prob=0, chromosomes where everyone has *some* data
+    for(chr in c(1, 4, 7, 17)) {
+        hypersub <- hyper[chr,]
+        hyper2sub <- convert2cross2(hypersub)
+        hypersub <- argmax.geno(hypersub, err=0, step=0)
+        agm <- hypersub$geno[[1]]$argmax
+        agm2 <- viterbi(hyper2sub, step=0, err=0)$geno[[1]]
+        expect_equivalent(agm, agm2)
+
+        # lowmem version
+        agm2b <- viterbi(hyper2sub, step=0, err=0, lowmem=TRUE)$geno[[1]]
+        expect_equivalent(agm, agm2b)
+    }
+
+    # step=0, error_prob=0.002, chromosomes where everyone has *some* data
+    for(chr in c(1, 4, 7, 17)) {
+        hypersub <- hyper[chr,]
+        hyper2sub <- convert2cross2(hypersub)
+        hypersub <- argmax.geno(hypersub, err=0.002, step=0)
+        agm <- hypersub$geno[[1]]$argmax
+        agm2 <- viterbi(hyper2sub, step=0, err=0.002)$geno[[1]]
+        expect_equivalent(agm, agm2)
+
+        # lowmem version
+        agm2b <- viterbi(hyper2sub, step=0, err=0.002, lowmem=TRUE)$geno[[1]]
+        expect_equivalent(agm, agm2b)
+    }
+
+})
+
+
+test_that("R/qtl2 gives same viterbi results as R/qtl when step=0, for intercross", {
+
+    library(qtl)
+    data(listeria)
+
+    # step=0, error_prob=0, chromosomes where everyone has *some* data
+    for(chr in c(1, 4, 7, 17)) {
+        listeriasub <- listeria[chr,]
+        listeria2sub <- convert2cross2(listeriasub)
+        listeriasub <- argmax.geno(listeriasub, err=0, step=0)
+        agm <- listeriasub$geno[[1]]$argmax
+        agm2 <- viterbi(listeria2sub, step=0, err=0)$geno[[1]]
+        expect_equivalent(agm, agm2)
+
+        # lowmem version
+        agm2b <- viterbi(listeria2sub, step=0, err=0, lowmem=TRUE)$geno[[1]]
+        expect_equivalent(agm, agm2b)
+    }
+
+    # step=0, error_prob=0.002, chromosomes where everyone has *some* data
+    for(chr in c(1, 4, 7, 17)) {
+        listeriasub <- listeria[chr,]
+        listeria2sub <- convert2cross2(listeriasub)
+        listeriasub <- argmax.geno(listeriasub, err=0.002, step=0)
+        agm <- listeriasub$geno[[1]]$argmax
+        agm2 <- viterbi(listeria2sub, step=0, err=0.002)$geno[[1]]
+        expect_equivalent(agm, agm2)
+
+        # lowmem version
+        agm2b <- viterbi(listeria2sub, step=0, err=0.002, lowmem=TRUE)$geno[[1]]
+        expect_equivalent(agm, agm2b)
+    }
 
 })

@@ -62,7 +62,7 @@ IntegerMatrix viterbi(const String& crosstype,
 
             // probability of first genotype
             double s = cross->init(poss_gen[0], is_X_chr, is_female[ind], cross_info(_,ind));
-            if(marker_index[0] > 0)
+            if(marker_index[0] >= 0)
                 s += cross->emit(genotypes(marker_index[0],ind), poss_gen[0], error_prob,
                                  founder_geno(_, marker_index[0]), is_X_chr, is_female[ind], cross_info(_,ind));
             result(ind,0) = poss_gen[0];
@@ -70,7 +70,7 @@ IntegerMatrix viterbi(const String& crosstype,
             // probability of other genotypes
             for(int g=1; g<n_poss_gen; g++) {
                 double t = cross->init(poss_gen[g], is_X_chr, is_female[ind], cross_info(_,ind));
-                if(marker_index[0] > 0)
+                if(marker_index[0] >= 0)
                     t += cross->emit(genotypes(marker_index[0],ind), poss_gen[g], error_prob,
                                      founder_geno(_, marker_index[0]), is_X_chr, is_female[ind], cross_info(_,ind));
                 // bigger or same plus flip coin...bias towards later ones
@@ -87,7 +87,7 @@ IntegerMatrix viterbi(const String& crosstype,
 
             for(int g=0; g<n_poss_gen; g++) {
                 gamma[g] = cross->init(poss_gen[g], is_X_chr, is_female[ind], cross_info(_,ind));
-                if(marker_index[0] > 0)
+                if(marker_index[0] >= 0)
                     gamma[g] += cross->emit(genotypes(marker_index[0],ind), poss_gen[g], error_prob,
                                             founder_geno(_, marker_index[0]), is_X_chr, is_female[ind], cross_info(_,ind));
             }
