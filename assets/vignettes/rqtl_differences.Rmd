@@ -102,3 +102,25 @@ phenotype data.
 For example, in `scan1()`, to perform a genome scan, it's necessary
 that the phenotype data carry the corresponding individual IDs as row
 names.
+
+# Order of arguments when subsetting cross objects
+
+In R/qtl, when subsetting a cross object, you can use square brackets,
+like this:
+
+```
+library(qtl)
+mycross[chr, ind]
+```
+
+But the order of those two arguments was not very well chosen. It's
+better to think of individuals as rows and chromosomes as column, and
+so put the individuals first.
+
+And so in R/qtl2, we've switched the order of arguments:
+in bracket subsetting of cross objects, individuals now come first.
+
+```
+library(qtl2geno)
+mycross[ind, chr]
+```

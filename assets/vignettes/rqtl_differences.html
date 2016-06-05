@@ -121,6 +121,16 @@ mycross &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(myc
 <p>Individual identifiers are now used to ensure the alignment of individuals, for example between the QTL genotype probabilties and the phenotype data.</p>
 <p>For example, in <code>scan1()</code>, to perform a genome scan, it’s necessary that the phenotype data carry the corresponding individual IDs as row names.</p>
 </div>
+<div id="order-of-arguments-when-subsetting-cross-objects" class="section level1">
+<h1>Order of arguments when subsetting cross objects</h1>
+<p>In R/qtl, when subsetting a cross object, you can use square brackets, like this:</p>
+<pre><code>library(qtl)
+mycross[chr, ind]</code></pre>
+<p>But the order of those two arguments was not very well chosen. It’s better to think of individuals as rows and chromosomes as column, and so put the individuals first.</p>
+<p>And so in R/qtl2, we’ve switched the order of arguments: in bracket subsetting of cross objects, individuals now come first.</p>
+<pre><code>library(qtl2geno)
+mycross[ind, chr]</code></pre>
+</div>
 
 
 
