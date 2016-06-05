@@ -134,6 +134,11 @@ mycross[chr, ind]</code></pre>
 <pre><code>library(qtl2geno)
 mycross[ind, chr]</code></pre>
 </div>
+<div id="in-scan-of-x-chr-need-to-provide-special-covariates" class="section level1">
+<h1>In scan of X chr, need to provide special covariates</h1>
+<p>In R/qtl, when you perform a single-QTL scan of the X chromosome, it identifies appropriate covariates to include, to avoid spurious linkage due to sex and cross-direction differences.</p>
+<p>In R/qtl2, you need to provide such covariates yourself via the <code>Xcovar</code> argument to <code>scan1()</code>, There is a function in qtl2geno, <code>get_x_covar</code>, for deriving these, but you’re a bit more on your own.</p>
+</div>
 
 
 

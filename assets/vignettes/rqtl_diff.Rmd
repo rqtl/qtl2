@@ -133,3 +133,13 @@ in bracket subsetting of cross objects, individuals now come first.
 library(qtl2geno)
 mycross[ind, chr]
 ```
+
+# In scan of X chr, need to provide special covariates
+
+In R/qtl, when you perform a single-QTL scan of the X chromosome, it
+identifies appropriate covariates to include, to avoid spurious
+linkage due to sex  and cross-direction differences.
+
+In R/qtl2, you need to provide such covariates yourself via the
+`Xcovar` argument to `scan1()`, There is a function in qtl2geno,
+`get_x_covar`, for deriving these, but you're a bit more on your own.
