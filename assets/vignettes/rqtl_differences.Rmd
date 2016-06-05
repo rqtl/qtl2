@@ -103,6 +103,15 @@ For example, in `scan1()`, to perform a genome scan, it's necessary
 that the phenotype data carry the corresponding individual IDs as row
 names.
 
+As a result, when subsetting out, say, females, when calling `scan1`, you
+only need to subset one of the inputs, and the rest will be
+automatically subset for you.
+
+```
+out_all <- scan1(probs, pheno, kinship)
+out_f <- scan1(probs, pheno[sex=="female",], kinship)
+```
+
 # Order of arguments when subsetting cross objects
 
 In R/qtl, when subsetting a cross object, you can use square brackets,

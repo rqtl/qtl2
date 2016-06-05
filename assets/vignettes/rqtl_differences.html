@@ -120,6 +120,9 @@ mycross &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(myc
 <h2>Use of individual identifiers for aligning data</h2>
 <p>Individual identifiers are now used to ensure the alignment of individuals, for example between the QTL genotype probabilties and the phenotype data.</p>
 <p>For example, in <code>scan1()</code>, to perform a genome scan, it’s necessary that the phenotype data carry the corresponding individual IDs as row names.</p>
+<p>As a result, when subsetting out, say, females, when calling <code>scan1</code>, you only need to subset one of the inputs, and the rest will be automatically subset for you.</p>
+<pre><code>out_all &lt;- scan1(probs, pheno, kinship)
+out_f &lt;- scan1(probs, pheno[sex==&quot;female&quot;,], kinship)</code></pre>
 </div>
 <div id="order-of-arguments-when-subsetting-cross-objects" class="section level1">
 <h1>Order of arguments when subsetting cross objects</h1>
