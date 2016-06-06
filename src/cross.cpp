@@ -21,6 +21,7 @@
 #include "cross_ailpk.h"
 #include "cross_do.h"
 #include "cross_dopk.h"
+#include "cross_dof1.h"
 #include "cross_hs.h"
 #include "cross_hspk.h"
 
@@ -37,6 +38,7 @@ QTLCross* QTLCross::Create(const String& crosstype)
     if(crosstype=="ailpk")   return new AILPK();
     if(crosstype=="do")     return new DO();
     if(crosstype=="dopk")   return new DOPK();
+    if(crosstype=="dof1")   return new DOF1();
     if(crosstype=="hs")     return new HS();
     if(crosstype=="hspk")   return new HSPK();
 
