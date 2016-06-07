@@ -112,7 +112,7 @@ out_all <- scan1(probs, pheno, kinship)
 out_f <- scan1(probs, pheno[sex=="female",], kinship)
 ```
 
-# Order of arguments when subsetting cross objects
+## Order of arguments when subsetting cross objects
 
 In R/qtl, when subsetting a cross object, you can use square brackets,
 like this:
@@ -134,7 +134,7 @@ library(qtl2geno)
 mycross[ind, chr]
 ```
 
-# In scan of X chr, need to provide special covariates
+## In scan of X chr, need to provide special covariates
 
 In R/qtl, when you perform a single-QTL scan of the X chromosome, it
 identifies appropriate covariates to include, to avoid spurious
