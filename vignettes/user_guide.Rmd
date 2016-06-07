@@ -90,7 +90,7 @@ A few important changes in the tabular data:
   representing chromosome and physical position of genes, as well as
   gene IDs.
 
-In additional to the set of CSV files with the primary data, we need a
+In addition to the set of CSV files with the primary data, we need a
 separate &ldquo;control&rdquo; file with various control parameters
 (or metadata), including the names of all of the other data files and
 the genotype codes used in the genotype data file. The control file is
@@ -185,7 +185,10 @@ package. Unlike the corresponding function in
 [R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
 input cross object, but is returned as a list of three-dimensional
 arrays (one per chromosome). Each 3d array of probabilities is
-arranged as individuals &times; genotypes &times; positions.
+arranged as individuals &times; genotypes &times; positions. (Well,
+actually, the output is a list that includes a bunch of different
+components, including a component `"probs"` which this list of 3d arrays, but also
+including the genetic map and other details).
 
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
@@ -305,7 +308,9 @@ out <- scan1(pr, iron$pheno, Xcovar=Xcovar, cores=4)
 ```
 
 The output of `scan1()` is a matrix of LOD scores, positions &times;
-phenotypes.
+phenotypes. (Well, actually, the output is a list including
+`"lod"` which is this matrix of LOD scores, but also including the
+genetic map and other details.)
 
 The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to
@@ -324,6 +329,51 @@ plot(out, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
 plot(out, lodcolumn=2, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out$lod), bg="gray90")
 ```
+
+
+## Finding LOD peaks
+
+The function `find_peaks()` in the
+[qtl2scan](https://github.com/rqtl/qtl2scan) package can be used to
+bidentify a set of LOD peaks that exceed some threshold. It can also
+provide LOD support or Bayes credible intervals, by using the
+arguments `drop` (the amount to drop in the LOD support intervals)
+or `prob` (the nominal coverage for the Bayes credible intervals).
+
+```{r find_peaks}
+find_peaks(out, threshold=4, drop=1.5)
+```
+
+The `find_peaks()` function can also pick out multiple peaks on a
+chromosome: each peak must exceed the chosen threshold, and the
+argument `peakdrop` indicates the amount that the LOD curve must drop
+between the lowest of two adjacent peaks.  Use this feature with
+caution.
+
+```{r find_multiple_peaks}
+find_peaks(out, threshold=4, peakdrop=1.8, drop=1.5)
+```
+
+The functions `lod_int()` and `bayes_int()` can be used to derive the
+LOD support or Bayes credible intervals for QTL, for a specific
+chromosome and LOD score column. For example, to obtain the Bayes
+interval for the locus on chromosome 9 for the second phenotype
+("spleen"):
+
+```{r bayes_int}
+bayes_int(out, lodcolumn=2, chr=9, prob=0.95)
+```
+
+Both `lod_int()` and `bayes_int()` take a `peakdrop` argument, if you
+wish to try to identify multiple peaks on a chromosome. Again, use
+this feature with caution.
+
+```{r lod_int_multiple}
+lod_int(out, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
+```
+
+Each row is a different peak; the columns are the lower interval endpoint, the
+estimated QTL position, and the upper interval endpoint.
 
 
 ## Performing a genome scan with a linear mixed model
@@ -617,6 +667,7 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
+
 
 ### SNP associations
 
