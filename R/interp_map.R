@@ -42,6 +42,7 @@ interp_map <-
         if(length(om) != length(nm) || !all(names(om) == names(nm)))
             stop("Old and new maps differ on chr ", thechr)
         result[[thechr]] <- interpolate_map(map[[thechr]], om, nm)
+        names(result[[thechr]]) <- names(map[[thechr]])
     }
 
     result
