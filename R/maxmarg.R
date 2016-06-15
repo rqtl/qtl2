@@ -31,7 +31,7 @@
 #' \item \code{crosstype} - The cross type of the input \code{cross}.
 #' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
 #'     are to be treated as the X chromosome or not, from input \code{cross}.
-#' \item \code{sex} - Vector of sexes of the individuals, from input
+#' \item \code{is_female} - Vector of indicators of which individuals are female, from input
 #'     \code{cross}.
 #' \item \code{cross_info} - Matrix of cross information for the
 #'     individuals, from input \code{cross}.
