@@ -53,7 +53,6 @@ const double DOF1::emit(const int obs_gen, const int true_gen, const double erro
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
-    const int n_geno = 8;
 
     if(obs_gen==0) return 0.0; // missing
 
