@@ -21,13 +21,13 @@ cbind.viterbi <-
     args <- list(...)
 
     # to cbind: geno, map, grid, is_x_chr
-    # to pass through (must match): sex, cross_info, crosstype, alleles, alleleprobs, step, off_end, stepwidth
+    # to pass through (must match): is_female, cross_info, crosstype, alleles, alleleprobs, step, off_end, stepwidth
 
     result <- args[[1]]
     if(length(args) == 1) return(result)
 
     # check that things match
-    other_stuff <- c("sex", "cross_info", "crosstype", "alleles", "alleleprobs",
+    other_stuff <- c("is_female", "cross_info", "crosstype", "alleles", "alleleprobs",
                      "step", "off_end", "stepwidth", "error_prob", "map_function")
     for(i in 2:length(args)) {
         for(obj in other_stuff) {

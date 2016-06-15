@@ -21,7 +21,7 @@ rbind.calc_genoprob <-
 {
     args <- list(...)
 
-    # to rbind: probs, sex, cross_info
+    # to rbind: probs, is_female, cross_info
     # to pass through (must match): map, grid, crosstype, is_x_chr, alleles, alleleprobs, step, off_end, stepwidth
 
     result <- args[[1]]
@@ -71,7 +71,7 @@ rbind.calc_genoprob <-
 
     # paste stuff together
     nested_stuff <- c("probs", "draws")
-    other_stuff <- c("sex", "cross_info")
+    other_stuff <- c("is_female", "cross_info")
     for(i in 1:length(args)) {
         for(obj in c("probs", "draws")) {
             if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
@@ -91,9 +91,9 @@ rbind.calc_genoprob <-
     }
 
     for(i in 2:length(args)) {
-        if(!("sex" %in% names(result)) && !("sex" %in% names(args[[i]]))) next
-        if(!("sex" %in% names(result) && "sex" %in% names(args[[i]])))
-            stop("sex present in only some input objects")
+        if(!("is_female" %in% names(result)) && !("is_female" %in% names(args[[i]]))) next
+        if(!("is_female" %in% names(result) && "is_female" %in% names(args[[i]])))
+            stop("is_female present in only some input objects")
 
         if(!("cross_info" %in% names(result)) && !("cross_info" %in% names(args[[i]]))) next
         if(!("cross_info" %in% names(result) && "cross_info" %in% names(args[[i]])))

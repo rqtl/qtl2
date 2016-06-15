@@ -97,7 +97,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                    map = map,
                    crosstype = cross$crosstype,
                    is_x_chr = cross$is_x_chr,
-                   sex = cross$sex,
+                   is_female = cross$is_female,
                    cross_info = cross$cross_info,
                    step=step,
                    off_end=off_end,

@@ -20,7 +20,7 @@ rbind.viterbi <-
 {
     args <- list(...)
 
-    # to rbind: geno, sex, cross_info
+    # to rbind: geno, is_female, cross_info
     # to pass through (must match): map, grid, crosstype, is_x_chr, alleles, alleleprobs, step, off_end, stepwidth
 
     result <- args[[1]]
@@ -50,9 +50,9 @@ rbind.viterbi <-
     }
 
     for(i in 2:length(args)) {
-        if(!("sex" %in% names(result)) && !("sex" %in% names(args[[i]]))) next
-        if(!("sex" %in% names(result) && "sex" %in% names(args[[i]])))
-            stop("sex present in only some input objects")
+        if(!("is_female" %in% names(result)) && !("is_female" %in% names(args[[i]]))) next
+        if(!("is_female" %in% names(result) && "is_female" %in% names(args[[i]])))
+            stop("is_female present in only some input objects")
 
         if(!("cross_info" %in% names(result)) && !("cross_info" %in% names(args[[i]]))) next
         if(!("cross_info" %in% names(result) && "cross_info" %in% names(args[[i]])))

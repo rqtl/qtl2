@@ -43,7 +43,7 @@
 #' \item \code{crosstype} - The cross type of the input \code{cross}.
 #' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
 #'     are to be treated as the X chromosome or not, from input \code{cross}.
-#' \item \code{sex} - Vector of sexes of the individuals, from input
+#' \item \code{is_female} - Vector of indicators of which individuals are female, from input
 #'     \code{cross}.
 #' \item \code{cross_info} - Matrix of cross information for the
 #'     individuals, from input \code{cross}.
@@ -189,7 +189,7 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
                    map=map,
                    crosstype=cross$crosstype,
                    is_x_chr=cross$is_x_chr,
-                   sex=cross$sex,
+                   is_female=cross$is_female,
                    cross_info=cross$cross_info,
                    alleles=cross$alleles,
                    alleleprobs=FALSE,
