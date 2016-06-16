@@ -6,7 +6,7 @@
 \usage{
 calc_kinship(probs, type = c("overall", "loco", "chr"),
   use_grid_only = TRUE, omit_x = FALSE, use_allele_probs = TRUE,
-  normalize = TRUE, quiet = TRUE, cores = 1)
+  normalize = FALSE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
@@ -30,8 +30,7 @@ allele probabilities (that is, first run
 probabilities.}
 
 \item{normalize}{If \code{TRUE}, divide the kinship matrix by a
-normalizing constant (see Details), to give better estimates of
-heritability.}
+normalizing constant (see Details).}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
@@ -66,7 +65,7 @@ For crosses with just two possible genotypes (e.g., backcross), we
 don't convert to allele probabilities but just use the original
 genotype probabilities.
 
-If \code{normalize=TRUE} (the default), we normalize the kinship matrix as in
+If \code{normalize=TRUE}, we normalize the kinship matrix as in
 equation 5 in Kang et al. (2010) Nat Genet
 42:348-354. \href{http://www.ncbi.nlm.nih.gov/pubmed/20208533}{doi: 10.1038/ng.548}
 }

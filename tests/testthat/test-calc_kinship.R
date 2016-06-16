@@ -4,11 +4,11 @@ test_that("calc_kinship works for RIL", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
     probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
-    sim <- calc_kinship(probs)
+    sim <- calc_kinship(probs, normalize=TRUE)
 
     # pre-subset to grid
     probs_sub <- probs_to_grid(probs)
-    sim2 <- calc_kinship(probs_sub)
+    sim2 <- calc_kinship(probs_sub, normalize=TRUE)
     expect_equal(sim, sim2)
 
     # row and colnames okay
@@ -286,13 +286,13 @@ test_that("calc_kinship normalization works", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 
-    sim <- calc_kinship(probs)
+    sim <- calc_kinship(probs, normalize=TRUE)
     sim_un <- calc_kinship(probs, normalize=FALSE)
     n <- nrow(sim)
     sim_n <- sim_un*(n-1)/(sum(diag(sim_un))-sum(sim_un)/n)
     expect_equal(sim_n, sim)
 
-    sim_chr <- calc_kinship(probs, "chr")
+    sim_chr <- calc_kinship(probs, "chr", normalize=TRUE)
     sim_chr_un <- calc_kinship(probs, "chr", normalize=FALSE)
     sim_chr_n <- lapply(sim_chr_un,
                         function(K) {
@@ -301,7 +301,7 @@ test_that("calc_kinship normalization works", {
                         })
     expect_equal(sim_chr_n, sim_chr)
 
-    sim_loco <- calc_kinship(probs, "loco")
+    sim_loco <- calc_kinship(probs, "loco", normalize=TRUE)
     sim_loco_un <- calc_kinship(probs, "loco", normalize=FALSE)
     sim_loco_n <- lapply(sim_loco_un,
                         function(K) {
@@ -310,7 +310,7 @@ test_that("calc_kinship normalization works", {
                         })
     expect_equal(sim_loco_n, sim_loco)
 
-    sim_loco <- calc_kinship(probs, "loco", omit_x=FALSE)
+    sim_loco <- calc_kinship(probs, "loco", omit_x=FALSE, normalize=TRUE)
     sim_loco_un <- calc_kinship(probs, "loco", omit_x=FALSE, normalize=FALSE)
     sim_loco_n <- lapply(sim_loco_un,
                         function(K) {
@@ -324,13 +324,13 @@ test_that("calc_kinship normalization works", {
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
     probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
 
-    sim <- calc_kinship(probs)
+    sim <- calc_kinship(probs, normalize=TRUE)
     sim_un <- calc_kinship(probs, normalize=FALSE)
     n <- nrow(sim)
     sim_n <- sim_un*(n-1)/(sum(diag(sim_un))-sum(sim_un)/n)
     expect_equal(sim_n, sim)
 
-    sim_chr <- calc_kinship(probs, "chr")
+    sim_chr <- calc_kinship(probs, "chr", normalize=TRUE)
     sim_chr_un <- calc_kinship(probs, "chr", normalize=FALSE)
     sim_chr_n <- lapply(sim_chr_un,
                         function(K) {
@@ -339,7 +339,7 @@ test_that("calc_kinship normalization works", {
                         })
     expect_equal(sim_chr_n, sim_chr)
 
-    sim_loco <- calc_kinship(probs, "loco")
+    sim_loco <- calc_kinship(probs, "loco", normalize=TRUE)
     sim_loco_un <- calc_kinship(probs, "loco", normalize=FALSE)
     sim_loco_n <- lapply(sim_loco_un,
                         function(K) {
