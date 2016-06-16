@@ -20,8 +20,7 @@
 #' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
 #' probabilities.
 #' @param normalize If \code{TRUE}, divide the kinship matrix by a
-#' normalizing constant (see Details), to give better estimates of
-#' heritability.
+#' normalizing constant (see Details).
 #' @param quiet IF \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -48,7 +47,7 @@
 #' don't convert to allele probabilities but just use the original
 #' genotype probabilities.
 #'
-#' If \code{normalize=TRUE} (the default), we normalize the kinship matrix as in
+#' If \code{normalize=TRUE}, we normalize the kinship matrix as in
 #' equation 5 in Kang et al. (2010) Nat Genet
 #' 42:348-354. \href{http://www.ncbi.nlm.nih.gov/pubmed/20208533}{doi: 10.1038/ng.548}
 #'
@@ -64,7 +63,7 @@ calc_kinship <-
     function(probs, type=c("overall", "loco", "chr"),
              use_grid_only=TRUE, omit_x=FALSE,
              use_allele_probs=TRUE,
-             normalize=TRUE,
+             normalize=FALSE,
              quiet=TRUE, cores=1)
 {
     type <- match.arg(type)
@@ -212,7 +211,9 @@ kinship_bychr2loco <-
     kinship[allchr]
 }
 
-# normalize kinship as in Kostem and Eskin (2013) Am J Hum Genet 92:558-564
+# normalize kinship as in equation 5 in Kang et al. (2010) Nat Genet '
+# 42:348-354. http://www.ncbi.nlm.nih.gov/pubmed/20208533 (doi: 10.1038/ng.548)
+#
 # (suggested by Petr Simecek)
 normalize_kinship <-
     function(kinship)
