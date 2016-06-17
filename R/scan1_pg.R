@@ -313,7 +313,7 @@ check_kinship <-
             stop("All kinship matrices should be the same size ",
                  "and have the same row and column names")
 
-        return(rownames(kinship))
+        return(rownames(kinship[[1]]))
     }
 }
 
