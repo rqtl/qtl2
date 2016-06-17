@@ -76,7 +76,9 @@ est_herit <-
         addcovar <- as.matrix(addcovar)
 
     # check that kinship matrices are square with same IDs
-    kinshipIDs <- nrow(kinship)
+    if(!is.matrix(kinship) || nrow(kinship) != ncol(kinship) || any(rownames(kinship) != colnames(kinship)))
+        stop("kinship should be a square matrix with common row and column names")
+    kinshipIDs <- rownames(kinship)
 
     # multiply kinship matrix by 2; rest is using 2*kinship
     # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
