@@ -5,6 +5,7 @@ eff_via_lm <-
     function(probs, pheno, kinship, addcovar=NULL, intcovar=NULL,
              se=TRUE)
 {
+    kinship <- double_kinship(kinship) # need 2*kinship for LMM
     kinship <- decomp_kinship(kinship)
     eigenvec <- kinship$vectors
     hsq <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,

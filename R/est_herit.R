@@ -16,7 +16,13 @@
 #' @return A vector of estimated heritabilities, corresponding to the
 #' columns in \code{pheno}.
 #'
-#' @details For each of the inputs, the row names are used as
+#' @details
+#' We fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e} where
+#' \eqn{\epsilon}{e} is multivariate normal with mean 0 and covariance
+#' matrix \eqn{\sigma^2 [h^2 (2 K) + I]}{sigmasq*[hsq*2*K+I]} where
+#' \eqn{K} is the kinship matrix and \eqn{I} is the identity matrix.
+#'
+#' For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
 #'
 #' If \code{reml=TRUE}, restricted maximum likelihood (reml) is used
@@ -71,6 +77,10 @@ est_herit <-
 
     # check that kinship matrices are square with same IDs
     kinshipIDs <- nrow(kinship)
+
+    # multiply kinship matrix by 2; rest is using 2*kinship
+    # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+    kinship <- double_kinship(kinship)
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes

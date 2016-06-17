@@ -75,6 +75,20 @@ Genome scan with a single-QTL model by Haley-Knott regression or a
 linear mixed model, with possible allowance for covariates.
 }
 \details{
+We first fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e}
+where \eqn{X} is a matrix of covariates (or just an intercept) and
+\eqn{\epsilon}{e} is multivariate normal with mean 0 and covariance
+matrix \eqn{\sigma^2 [h^2 (2 K) + I]}{sigmasq*[hsq*2*K+I]} where
+\eqn{K} is the kinship matrix and \eqn{I} is the identity matrix.
+
+We then take \eqn{h^2}{hsq} as fixed and then scan the genome, at
+each genomic position fitting the model \eqn{y = P \alpha + X \beta
++ \epsilon}{y = Xb + e} where \eqn{P} is a matrix of genotype
+probabilities for the current position and again \eqn{X} is a
+matrix of covariates \eqn{\epsilon}{e} is multivariate normal with
+mean 0 and covariance matrix \eqn{\sigma^2 [h^2 (2 K) +
+I]}{sigmasq*[hsq*2*K+I]}, taking \eqn{h^2}{hsq} to be known.
+
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals. The \code{genoprobs}
 object should have a component \code{"is_x_chr"} that indicates

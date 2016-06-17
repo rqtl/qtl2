@@ -17,6 +17,8 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
     Ke <- decomp_kinship(kinship) # eigen decomp
     yp <- Ke$vectors %*% y
     Xp <- Ke$vectors %*% X
+    # double the eigenvalues (== kinship matrix * 2)
+    Ke$values <- Ke$values*2
 
     byhand1_reml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=TRUE, tol=1e-12)
     byhand2_reml <- Rcpp_fitLMM(Ke$values, yp[,2], Xp, reml=TRUE, tol=1e-12)
@@ -72,6 +74,8 @@ test_that("scan1 with intercross with X covariates for null", {
     yp <- Ke$vectors %*% y
     Xp <- Ke$vectors %*% X
     Xcp <- Ke$vectors %*% Xc
+    # double the eigenvalues (== kinship matrix * 2)
+    Ke$values <- Ke$values*2
 
     byhand1_reml <- Rcpp_fitLMM(Ke$values, yp[,1], cbind(Xp, Xcp), reml=TRUE, tol=1e-12)
     byhand2_reml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp), reml=TRUE, tol=1e-12)
@@ -130,6 +134,8 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
     yp <- Ke$vectors %*% y
     Xp <- Ke$vectors %*% cbind(1, X)
     Xcp <- Ke$vectors %*% Xc
+    # double the eigenvalues (== kinship matrix * 2)
+    Ke$values <- Ke$values*2
 
     # autosome null
     byhand1A_reml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=TRUE, tol=1e-12)
@@ -237,6 +243,8 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
     yp <- Ke$vectors %*% y
     Xp <- Ke$vectors %*% cbind(1, X)
     Xcp <- Ke$vectors %*% Xc
+    # double the eigenvalues (== kinship matrix * 2)
+    Ke$values <- Ke$values*2
 
     # autosome null (same as w/o interactive covariate)
     byhand1A_reml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=TRUE, tol=1e-12)
@@ -331,6 +339,8 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
 
     y <- iron$pheno
     Ke <- decomp_kinship(kinship) # eigen decomp
+    # double the eigenvalues (== kinship matrix * 2)
+    Ke <- lapply(Ke, function(a) { a$values <- 2*a$values; a})
 
     # compare chromosomes 1, 6, 9, 18
     chrs <- paste(c(1,6,9,18))
@@ -399,6 +409,8 @@ test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
     y <- iron$pheno
     Ke <- decomp_kinship(kinship) # eigen decomp
+    # double the eigenvalues (== kinship matrix * 2)
+    Ke <- lapply(Ke, function(a) { a$values <- 2*a$values; a})
 
     # compare chromosomes 1, 6, 9, 18
     chrs <- paste(c(1,6,9,18))

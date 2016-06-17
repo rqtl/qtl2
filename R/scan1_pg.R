@@ -30,6 +30,10 @@ scan1_pg <-
     # check that kinship matrices are square with same IDs
     kinshipIDs <- check_kinship(kinship, length(genoprobs$probs))
 
+    # multiply kinship matrix by 2; rest is using 2*kinship
+    # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+    kinship <- double_kinship(kinship)
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
@@ -144,6 +148,7 @@ scan1_pg <-
 
 
 # fit LMM for each of a matrix of phenotypes
+# Ke is eigendecomposition of 2*kinship
 calc_hsq_clean <-
     function(Ke, pheno, addcovar, Xcovar, is_x_chr, reml=TRUE, cores=1,
              check_boundary, tol)
@@ -311,6 +316,31 @@ check_kinship <-
         return(rownames(kinship))
     }
 }
+
+# multiply kinship matrix by 2
+# see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+#
+# This can also handle the case of "loco", and of having eigen decomposition pre-computed
+double_kinship <-
+    function(kinship)
+{
+    if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
+        if("values" %in% names(kinship)) { # just one of them
+            kinship$values <- 2*kinship$values
+        }
+        else { # a list of decomposed kinship matrices
+            kinship <- lapply(kinship, function(a) { a$values <- 2*a$values; a })
+        }
+        return(kinship)
+    }
+
+    if(is.list(kinship))
+        kinship <- lapply(kinship, function(a) a*2)
+    else kinship <- 2*kinship
+
+    kinship
+}
+
 
 # dimnames for hsq
 # (a bit awkward due to loco or not, and xchr special or not)
