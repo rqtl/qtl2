@@ -513,3 +513,31 @@ test_that("scan1 with kinship LOD results invariant to change in scale to pheno 
     expect_equal(out_ml, out_ml_scale, tol=1e-6)
 
 })
+
+test_that("scan1 deals with mismatching individuals", {
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    ind <- c(1:50, 101:150)
+    subK <- lapply(kinship, "[", ind, ind)
+    expected <- scan1(probs[ind,], iron$pheno[ind,,drop=FALSE], subK, addcovar=X[ind], intcovar=X[ind],
+                      Xcovar=Xc[ind,], reml=TRUE, tol=1e-12)
+    expect_equal(scan1(probs[ind,], iron$pheno, kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12), expected)
+    expect_equal(scan1(probs, iron$pheno[ind,], kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12), expected)
+    expect_equal(scan1(probs, iron$pheno, subK, addcovar=X, intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12), expected)
+    expect_equal(scan1(probs, iron$pheno, kinship, addcovar=X[ind], intcovar=X,
+                      Xcovar=Xc, reml=TRUE, tol=1e-12), expected)
+    expect_equal(scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X[ind],
+                      Xcovar=Xc, reml=TRUE, tol=1e-12), expected)
+    expect_equal(scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
+                      Xcovar=Xc[ind,], reml=TRUE, tol=1e-12), expected)
+
+})

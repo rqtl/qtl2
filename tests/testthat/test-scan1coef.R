@@ -537,3 +537,24 @@ test_that("scan1coef for intercross, with contrasts", {
                                                               "a:sex", "d:sex", "a:another", "d:another")))
 
 })
+
+
+
+test_that("scan1coef deals with mismatching individuals", {
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    probs <- probs[,"3"]
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    phe <- iron$pheno[,2,drop=FALSE]
+
+    ind <- c(1:50, 101:150)
+    expected <- scan1coef(probs[ind,], phe[ind,,drop=FALSE], addcovar=X[ind])
+    expect_equal(scan1coef(probs[ind,], phe, addcovar=X), expected)
+    expect_equal(scan1coef(probs, phe[ind,,drop=FALSE], addcovar=X), expected)
+    expect_equal(scan1coef(probs, phe, addcovar=X[ind]), expected)
+
+})

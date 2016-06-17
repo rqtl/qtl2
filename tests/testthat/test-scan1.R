@@ -613,3 +613,23 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
     expect_equal(outbig, out)
 
 })
+
+test_that("scan1 deals with mismatching individuals", {
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    ind <- c(1:50, 101:150)
+    expected <- scan1(probs[ind,], iron$pheno[ind,,drop=FALSE], addcovar=X[ind], intcovar=X[ind],
+                      Xcovar=Xc[ind,])
+    expect_equal(scan1(probs[ind,], iron$pheno, addcovar=X, intcovar=X, Xcovar=Xc), expected)
+    expect_equal(scan1(probs, iron$pheno[ind,], addcovar=X, intcovar=X, Xcovar=Xc), expected)
+    expect_equal(scan1(probs, iron$pheno, addcovar=X[ind], intcovar=X, Xcovar=Xc), expected)
+    expect_equal(scan1(probs, iron$pheno, addcovar=X, intcovar=X[ind], Xcovar=Xc), expected)
+    expect_equal(scan1(probs, iron$pheno, addcovar=X, intcovar=X, Xcovar=Xc[ind,]), expected)
+
+})

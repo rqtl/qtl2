@@ -154,3 +154,25 @@ test_that("scan1coef_pg for grav", {
     expect_equivalent(est$SE, est_lm$SE)
 
 })
+
+
+test_that("scan1coef deals with mismatching individuals", {
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")[["3"]]
+    probs <- probs[,"3"]
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    phe <- iron$pheno[,2,drop=FALSE]
+
+    ind <- c(1:50, 101:150)
+    expected <- scan1coef(probs[ind,], phe[ind,,drop=FALSE], kinship[ind,ind], addcovar=X[ind])
+    expect_equal(scan1coef(probs[ind,], phe, kinship, addcovar=X), expected)
+    expect_equal(scan1coef(probs, phe[ind,,drop=FALSE], kinship, addcovar=X), expected)
+    expect_equal(scan1coef(probs, phe, kinship[ind,ind], addcovar=X), expected)
+    expect_equal(scan1coef(probs, phe, kinship, addcovar=X[ind]), expected)
+
+})
