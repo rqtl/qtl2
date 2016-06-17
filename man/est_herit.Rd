@@ -31,6 +31,11 @@ Estimate the heritability of a set of traits via a linear mixed
 model, with possible allowance for covariates.
 }
 \details{
+We fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e} where
+\eqn{\epsilon}{e} is multivariate normal with mean 0 and covariance
+matrix \eqn{\sigma^2 [h^2 (2 K) + I]}{sigmasq*[hsq*2*K+I]} where
+\eqn{K} is the kinship matrix and \eqn{I} is the identity matrix.
+
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals.
 

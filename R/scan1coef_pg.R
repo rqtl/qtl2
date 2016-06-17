@@ -53,6 +53,10 @@ scan1coef_pg <-
         did_decomp <- FALSE
     }
 
+    # multiply kinship matrix by 2; rest is using 2*kinship
+    # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+    kinship <- double_kinship(kinship)
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
