@@ -151,6 +151,8 @@ scan1 <-
     # force things to be matrices
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)
+    if(is.null(colnames(pheno))) # force column names
+        colnames(pheno) <- paste0("pheno", 1:ncol(pheno))
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
     if(!is.null(Xcovar) && !is.matrix(Xcovar))

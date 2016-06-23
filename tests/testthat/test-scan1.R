@@ -16,6 +16,8 @@ lod_via_lm <-
     function(probs, pheno, addcovar=NULL, intcovar=NULL, weights=NULL, map)
 {
     if(!is.matrix(pheno)) pheno <- as.matrix(pheno)
+    if(is.null(colnames(pheno)))
+        colnames(pheno) <- paste0("pheno", 1:ncol(pheno))
 
     d3 <- dim(probs)[3]
     n <- nrow(pheno)
@@ -85,7 +87,10 @@ scanone2scan1 <-
     }
 
     x <- as.matrix(x[,-(1:2), drop=FALSE])
+    if(is.null(phenames)) phenames <- paste0("pheno", 1:ncol(x))
     dimnames(x) <- list(posnames, phenames)
+
+    if(is.null(names(n))) names(n) <- phenames
 
     result <- list(lod=x,
                    map=map,
