@@ -72,7 +72,7 @@ separate &ldquo;lines&rdquo; from &ldquo;individuals.&rdquo; Genotype
 data will be on the lines, while phenotype data will be on the
 individuals. In this case we will need a mapping from individuals to
 lines, `"linemap"` (more below). (For a cross type for which the
-phenotyped individuals are also the phenotyped ones (e.g., the
+genotyped individuals are also the phenotyped ones (e.g., the
 Diversity Outcross), think &ldquo;individual&rdquo; wherever we write
 &ldquo;line.&rdquo;)
 
