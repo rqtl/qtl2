@@ -38,12 +38,12 @@ plot_genes <-
 {
     # grab data
     start <- genes$start/10^6 # convert to Mbp
-    stop <- genes$stop/10^6   # convert to Mbp
+    end <- genes$stop/10^6   # convert to Mbp
     strand <- as.character(genes$strand)
     name <- as.character(genes$Name)
 
     if(is.null(xlim)) {
-        xlim <- range(c(start, stop), na.rm=TRUE)
+        xlim <- range(c(start, end), na.rm=TRUE)
     }
 
     internal_plot_genes <-
@@ -111,19 +111,19 @@ plot_genes <-
         n <- nrow(genes)
         y <- rep(NA, n)
         maxy <- y[1] <- 1
-        maxx <- max(c(stop[1], start[1] + strwidth(name[1], cex=text_cex)))
+        maxx <- max(c(end[1], start[1] + strwidth(name[1], cex=text_cex)))
         for(i in seq(along=y)[-1]) {
             for(j in 1:maxy) {
                 if(start[i] > maxx[j] + xpad) {
                     y[i] <- j
-                    maxx[j] <- max(c(stop[i], start[i] + strwidth(name[i], cex=text_cex)))
+                    maxx[j] <- max(c(end[i], start[i] + strwidth(name[i], cex=text_cex)))
                     break
                 }
             }
             if(is.na(y[i])) { # need new row
                 y[i] <- maxy + 1
                 maxy <- maxy + 1
-                maxx[maxy] <- max(c(stop[i], start[i] + strwidth(name[i], cex=text_cex)))
+                maxx[maxy] <- max(c(end[i], start[i] + strwidth(name[i], cex=text_cex)))
             }
         }
 
@@ -137,7 +137,7 @@ plot_genes <-
 
     colors <- rep(colors, length(y))
     for(i in seq(along=start)) {
-        rect(start[i], y[i]+(height*padding/4), stop[i], y[i]+height/2-(height*padding/4),
+        rect(start[i], y[i]+(height*padding/4), end[i], y[i]+height/2-(height*padding/4),
              col=colors[i], border=colors[i],
              lend=1, ljoin=1)
         text(start[i], y[i]+height*0.75,
