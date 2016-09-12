@@ -111,7 +111,8 @@ plot_genes <-
         space <- strwidth(' ', cex=text_cex)
 
         # figure out how to arrange genes vertically
-        #   + number of rows of genes
+        #     + number of rows of genes
+        # (function defined in src/arrange_genes.cpp)
         y <- arrange_genes(start, end + space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex))
 
         maxy <- max(c(y, minrow))
@@ -138,39 +139,4 @@ plot_genes <-
                  dir_symbol[i], adj=c(0, 0.5), col=colors[i],
                  cex=text_cex)
     }
-}
-
-
-# arrange genes vertically so they don't overlap
-arrange_genes <-
-    function(start, end)
-{
-    n <- length(start)
-    if(n==1) return(1)
-    if(n < 1) stop("need at least one gene")
-    stopifnot(n > 1)
-    stopifnot(length(start) == length(end))
-    stopifnot(!any(is.na(start)), !any(is.na(end)))
-
-    y <- rep(NA, n)
-    maxy <- y[1] <- 1
-    maxx <- end[1]
-
-    for(i in seq(along=start)[-1]) {
-        for(j in 1:maxy) {
-            if(start[i] > maxx[j]) {
-                y[i] <- j
-                maxx[j] <- end[i]
-                break
-            }
-        }
-        if(is.na(y[i])) { # need new row
-            y[i] <- maxy + 1
-            maxy <- maxy + 1
-            maxx[maxy] <- end[i]
-        }
-    }
-
-    # return vector of y values in {1, 2, 3, ...}
-    y
 }
