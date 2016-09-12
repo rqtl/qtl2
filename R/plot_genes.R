@@ -108,11 +108,11 @@ plot_genes <-
         }
 
         # horizontal padding
-        em_space <- strwidth("m", cex=text_cex)
+        space <- strwidth(' ', cex=text_cex)
 
         # figure out how to arrange genes vertically
         #   + number of rows of genes
-        y <- arrange_genes(start, end + em_space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex))
+        y <- arrange_genes(start, end + space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex))
 
         maxy <- max(c(y, minrow))
         height <- 1/maxy
@@ -130,11 +130,11 @@ plot_genes <-
              end[i],   rect_bottom[i],
              col=colors[i], border=colors[i],
              lend=1, ljoin=1)
-        text(end[i] + em_space, y[i],
+        text(end[i] + space, y[i],
              name[i], adj=c(0, 0.5), col=colors[i],
              cex=text_cex)
         if(!is.na(strand[i]) && (strand[i] == "+" || strand[i] == '-'))
-            text(end[i] + em_space + strwidth(name[i], cex=text_cex), y[i],
+            text(end[i] + space + strwidth(name[i], cex=text_cex), y[i],
                  dir_symbol[i], adj=c(0, 0.5), col=colors[i],
                  cex=text_cex)
     }
