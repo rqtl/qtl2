@@ -104,7 +104,7 @@ plot_genes <-
         }
 
         # horizontal padding
-        xpad <- strwidth("m", cex=text_cex)
+        em_space <- strwidth("m", cex=text_cex)
 
         # figure out how to arrange genes vertically
         #   + number of rows of genes
@@ -114,7 +114,7 @@ plot_genes <-
         maxx <- max(c(end[1], start[1] + strwidth(name[1], cex=text_cex)))
         for(i in seq(along=y)[-1]) {
             for(j in 1:maxy) {
-                if(start[i] > maxx[j] + xpad) {
+                if(start[i] > maxx[j] + em_space) {
                     y[i] <- j
                     maxx[j] <- max(c(end[i], start[i] + strwidth(name[i], cex=text_cex)))
                     break
