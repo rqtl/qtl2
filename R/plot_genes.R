@@ -86,17 +86,14 @@ plot_genes <-
     # missing names: use ?
     name[is.na(name)] <- "?"
 
-    # right and left arrows (unicode symbol codes)
-    right_arrow <- "\u2192"
-    left_arrow <- "\u2190"
-
-    # add direction to gene name
+    # arrow annotation re direction, to place after gene name
+    dir_symbol <- rep(' ', length(name))
     right <- !is.na(strand) & strand == "+"
-    left <- !is.na(strand) & strand == "-"
     if(any(right))
-        name[right] <- paste(name[right], right_arrow)
+        dir_symbol[right] <- expression(phantom('') %->% phantom(''))
+    left <- !is.na(strand) & strand == "-"
     if(any(left))
-        name[left] <- paste(name[left], left_arrow)
+        dir_symbol[left] <- expression(phantom('') %<-% phantom(''))
 
     # initial determination of text size
     maxy <- minrow
@@ -115,7 +112,7 @@ plot_genes <-
 
         # figure out how to arrange genes vertically
         #   + number of rows of genes
-        y <- arrange_genes(start, end + 2*em_space + strwidth(name, cex=text_cex))
+        y <- arrange_genes(start, end + em_space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex))
 
         maxy <- max(c(y, minrow))
         height <- 1/maxy
@@ -136,6 +133,10 @@ plot_genes <-
         text(end[i] + em_space, y[i],
              name[i], adj=c(0, 0.5), col=colors[i],
              cex=text_cex)
+        if(!is.na(strand[i]) && (strand[i] == "+" || strand[i] == '-'))
+            text(end[i] + em_space + strwidth(name[i], cex=text_cex), y[i],
+                 dir_symbol[i], adj=c(0, 0.5), col=colors[i],
+                 cex=text_cex)
     }
 }
 
