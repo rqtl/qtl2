@@ -36,6 +36,13 @@ plot_genes <-
              colors=c("black", "red3", "green4", "blue3", "orange"),
              ...)
 {
+    # need both 'start' and 'stop' columns with no missing values
+    stopifnot(!any(is.na(genes$start)), !any(is.na(genes$stop)))
+
+    # make sure genes are ordered by their start values
+    if(any(diff(genes$start) < 0))
+        genes <- genes[order(genes$start, genes$stop),]
+
     # grab data
     start <- genes$start/10^6 # convert to Mbp
     end <- genes$stop/10^6   # convert to Mbp
