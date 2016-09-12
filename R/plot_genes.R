@@ -36,14 +36,21 @@ plot_genes <-
              colors=c("black", "red3", "green4", "blue3", "orange"),
              ...)
 {
+    # need both 'start' and 'stop' columns with no missing values
+    stopifnot(!any(is.na(genes$start)), !any(is.na(genes$stop)))
+
+    # make sure genes are ordered by their start values
+    if(any(diff(genes$start) < 0))
+        genes <- genes[order(genes$start, genes$stop),]
+
     # grab data
     start <- genes$start/10^6 # convert to Mbp
-    stop <- genes$stop/10^6   # convert to Mbp
+    end <- genes$stop/10^6   # convert to Mbp
     strand <- as.character(genes$strand)
     name <- as.character(genes$Name)
 
     if(is.null(xlim)) {
-        xlim <- range(c(start, stop), na.rm=TRUE)
+        xlim <- range(c(start, end), na.rm=TRUE)
     }
 
     internal_plot_genes <-
@@ -79,17 +86,14 @@ plot_genes <-
     # missing names: use ?
     name[is.na(name)] <- "?"
 
-    # right and left arrows (unicode symbol codes)
-    right_arrow <- "\u2192"
-    left_arrow <- "\u2190"
-
-    # add direction to gene name
+    # arrow annotation re direction, to place after gene name
+    dir_symbol <- rep(' ', length(name))
     right <- !is.na(strand) & strand == "+"
-    left <- !is.na(strand) & strand == "-"
     if(any(right))
-        name[right] <- paste(name[right], right_arrow)
+        dir_symbol[right] <- expression(phantom('') %->% phantom(''))
+    left <- !is.na(strand) & strand == "-"
     if(any(left))
-        name[left] <- paste(name[left], left_arrow)
+        dir_symbol[left] <- expression(phantom('') %<-% phantom(''))
 
     # initial determination of text size
     maxy <- minrow
@@ -99,49 +103,74 @@ plot_genes <-
     # adjust text size and determine vertical location of genes
     for(it in 1:2) { # go through all of this twice
 
-        while(max(abs(strheight(name, cex=text_cex))) > height/2*(1-padding)) {
+        while(max(abs(strheight(name, cex=text_cex))) > height*(1-padding)) {
             text_cex <- text_cex * 0.99
         }
 
         # horizontal padding
-        xpad <- strwidth("m", cex=text_cex)
+        space <- strwidth(' ', cex=text_cex)
 
         # figure out how to arrange genes vertically
         #   + number of rows of genes
-        n <- nrow(genes)
-        y <- rep(NA, n)
-        maxy <- y[1] <- 1
-        maxx <- max(c(stop[1], start[1] + strwidth(name[1], cex=text_cex)))
-        for(i in seq(along=y)[-1]) {
-            for(j in 1:maxy) {
-                if(start[i] > maxx[j] + xpad) {
-                    y[i] <- j
-                    maxx[j] <- max(c(stop[i], start[i] + strwidth(name[i], cex=text_cex)))
-                    break
-                }
-            }
-            if(is.na(y[i])) { # need new row
-                y[i] <- maxy + 1
-                maxy <- maxy + 1
-                maxx[maxy] <- max(c(stop[i], start[i] + strwidth(name[i], cex=text_cex)))
-            }
-        }
+        y <- arrange_genes(start, end + space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex))
 
-        maxy <- max(c(maxy, minrow))
+        maxy <- max(c(y, minrow))
         height <- 1/maxy
-
     }
 
-    ypos <- seq(0, by=height, length=maxy)
+    ypos <- seq(height/2, by=height, length=maxy)
     y <- ypos[y]
+    rect_height <- height*(1-padding)
+    rect_top <- y - rect_height/2
+    rect_bottom <- y + rect_height/2
 
     colors <- rep(colors, length(y))
     for(i in seq(along=start)) {
-        rect(start[i], y[i]+(height*padding/4), stop[i], y[i]+height/2-(height*padding/4),
+        rect(start[i], rect_top[i],
+             end[i],   rect_bottom[i],
              col=colors[i], border=colors[i],
              lend=1, ljoin=1)
-        text(start[i], y[i]+height*0.75,
+        text(end[i] + space, y[i],
              name[i], adj=c(0, 0.5), col=colors[i],
              cex=text_cex)
+        if(!is.na(strand[i]) && (strand[i] == "+" || strand[i] == '-'))
+            text(end[i] + space + strwidth(name[i], cex=text_cex), y[i],
+                 dir_symbol[i], adj=c(0, 0.5), col=colors[i],
+                 cex=text_cex)
     }
+}
+
+
+# arrange genes vertically so they don't overlap
+arrange_genes <-
+    function(start, end)
+{
+    n <- length(start)
+    if(n==1) return(1)
+    if(n < 1) stop("need at least one gene")
+    stopifnot(n > 1)
+    stopifnot(length(start) == length(end))
+    stopifnot(!any(is.na(start)), !any(is.na(end)))
+
+    y <- rep(NA, n)
+    maxy <- y[1] <- 1
+    maxx <- end[1]
+
+    for(i in seq(along=start)[-1]) {
+        for(j in 1:maxy) {
+            if(start[i] > maxx[j]) {
+                y[i] <- j
+                maxx[j] <- end[i]
+                break
+            }
+        }
+        if(is.na(y[i])) { # need new row
+            y[i] <- maxy + 1
+            maxy <- maxy + 1
+            maxx[maxy] <- end[i]
+        }
+    }
+
+    # return vector of y values in {1, 2, 3, ...}
+    y
 }
