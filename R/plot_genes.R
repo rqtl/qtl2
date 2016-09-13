@@ -113,14 +113,7 @@ plot_genes <-
         # figure out how to arrange genes vertically
         #     + number of rows of genes
         # (function defined in src/arrange_genes.cpp)
-        print(end)
-        print(space)
-        print(rbind(strwidth(name, cex=text_cex),
-                    strwidth(dir_symbol, cex=text_cex)))
         y <- arrange_genes(start, end + space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex))
-        print(rbind(start,
-                    end + space + strwidth(name, cex=text_cex) + strwidth(dir_symbol, cex=text_cex),
-                    y))
 
         maxy <- max(c(y, minrow))
         height <- 1/maxy
