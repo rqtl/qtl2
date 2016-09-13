@@ -25,12 +25,12 @@ IntegerVector arrange_genes(const NumericVector& start,
         throw std::invalid_argument("Must have length(start) >= 1");
     }
 
-    int maxy = result[0] = 1;
-    std::vector<int> maxx;
+    std::vector<double> maxx;
     maxx.push_back(end[0]);
+    result[0] = 1;
 
     for(unsigned int i=1; i<n; i++) {
-        for(unsigned int j=0; j<maxy; j++) {
+        for(unsigned int j=0; j<maxx.size(); j++) {
             if(start[i] > maxx[j]) {
                 result[i] = j+1;
                 maxx[j] = end[i];
@@ -39,9 +39,8 @@ IntegerVector arrange_genes(const NumericVector& start,
         }
 
         if(result[i] == 0) {
-            result[i] = maxy + 1;
-            maxy++;
             maxx.push_back(end[i]);
+            result[i] = maxx.size();
         }
     }
 
