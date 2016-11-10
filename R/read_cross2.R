@@ -117,7 +117,8 @@ function(file, quiet=TRUE)
 
                 # read file
                 sheet <- read_csv(filename, na.strings=control$na.strings, sep=control$sep,
-                                  comment.char=control$comment.char, transpose=tr)
+                                  comment.char=control$comment.char, transpose=tr,
+                                  rownames_included=TRUE)
             }
             else { # vector of files
                 # add dir to paths
@@ -133,7 +134,7 @@ function(file, quiet=TRUE)
                         sheet <- rbind(sheet,
                                        read_csv(filename, na.strings=control$na.strings,
                                                 sep=control$sep, comment.char=control$comment.char,
-                                                transpose=tr))
+                                                transpose=tr, rownames_included=TRUE))
                 }
                 else {
                     # read all of the files and cbind(), matching on row names
@@ -423,7 +424,8 @@ function(sex_control, covar, sep, comment.char, dir, quiet=TRUE)
         if(!quiet) message(" - reading sex")
         file <- file.path(dir, sex_control$file)
         stop_if_no_file(file)
-        sex <- read_csv(file, sep=sep, na.strings=NULL, comment.char=comment.char)
+        sex <- read_csv(file, sep=sep, na.strings=NULL, comment.char=comment.char,
+                        rownames_included=TRUE)
     }
     else return(NULL)
 
@@ -491,7 +493,7 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
 
         file <- file.path(dir, cross_info_control$file)
         stop_if_no_file(file)
-        cross_info <- read_csv(file, sep=sep, comment.char=comment.char)
+        cross_info <- read_csv(file, sep=sep, comment.char=comment.char, rownames_included=TRUE)
 
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
@@ -553,7 +555,8 @@ function(linemap_control, covar, sep, comment.char, dir, quiet=TRUE)
     if("file" %in% names(linemap_control)) {
         if(!quiet) message(" - reading linemap")
         filename <- file.path(dir, linemap_control$file)
-        linemap <- read_csv(filename, sep=sep, na.strings=NULL, comment.char=comment.char)
+        linemap <- read_csv(filename, sep=sep, na.strings=NULL, comment.char=comment.char,
+                            rownames_included=TRUE)
     }
     else if("covar" %in% names(linemap_control)) { # column name in the covariate data
         linemap <- covar[,linemap_control$covar, drop=FALSE]
@@ -590,39 +593,6 @@ function(filename)
         stop('file "', filename, '" does not exist.')
 }
 
-# read a csv file
-read_csv <-
-function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE)
-{
-    # read header and extract expected number of rows and columns
-    # (number of columns includes ID column; number of rows does *not* include header row)
-    header <- read_header(filename, comment.char=comment.char)
-    expected_dim <- extract_dim_from_header(header)
-
-    # read the data
-    x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
-                           verbose=FALSE, showProgress=FALSE, data.table=FALSE,
-                           colClasses="character", skip=length(header))
-
-    # check that number of rows and columns match expected from header
-    for(i in 1:2) {
-        labels <- c("rows", "columns")
-        if(!is.na(expected_dim[i])) { # nrows given
-            if(dim(x)[i] != expected_dim[i])
-                stop('In file "', filename, '", no. ', labels[i],
-                     ' (', dim(x)[i], ') != expected (', expected_dim[i], ')')
-        }
-    }
-
-    # move first column to row names
-    x <- firstcol2rownames(x, filename)
-
-    # transpose if requested
-    if(transpose)
-        x <- as.data.frame(t(x), stringAsFactors=FALSE)
-
-    x
-}
 
 # read multiple CSV files and cbind results
 read_mult_csv <-
@@ -631,7 +601,8 @@ read_mult_csv <-
     result <- NULL
     for(file in filenames) {
         this <- read_csv(file, sep=sep, na.strings=na.strings,
-                         comment.char=comment.char, transpose=transpose)
+                         comment.char=comment.char, transpose=transpose,
+                         rownames_included=TRUE)
 
         if(is.null(result)) result <- this
         else result <- cbind_expand(result, this)
