@@ -23,6 +23,14 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 
 ---
 
+![Warning](assets/pics/warning_icon.png)
+
+We're considering revising
+many of the central data structures in R/qtl2. There is much that is
+useful here, but many of the details are likely to change.
+
+---
+
 ### Installation
 
 R/qtl2 is early in development and so is not yet available on
