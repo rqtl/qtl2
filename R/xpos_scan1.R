@@ -75,8 +75,11 @@ function(scan1_output, chr=NULL, gap=25, thechr, thepos)
     # subset chromosomes
     if(!is.null(chr)) map <- map[chr]
 
-    # start position for each chromosome (need to add gap/2 and subtract off the initial chromosome positions)
-    start <- map_to_boundaries(map, gap)[1,] - vapply(map, "[", 1, 1) + gap/2
+    # start position for each chromosome
+    start <- map_to_boundaries(map, gap)[1,] - vapply(map, "[", 1, 1)
+    # if more than one chromosome, add gap/2
+    if(length(map) > 1) start <- start + gap/2
+    # add chromosome names
     names(start) <- names(map)
 
     if(length(thechr)==1)
