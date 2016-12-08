@@ -75,7 +75,7 @@ function(scan1_output, chr=NULL, gap=25, thechr, thepos)
     # subset chromosomes
     if(!is.null(chr)) map <- map[chr]
 
-    # start position for each chromosome
+    # start position for each chromosome (need to add gap/2 and subtract off the initial chromosome positions)
     start <- map_to_boundaries(map, gap)[1,] - vapply(map, "[", 1, 1) + gap/2
     names(start) <- names(map)
 
@@ -92,5 +92,8 @@ function(scan1_output, chr=NULL, gap=25, thechr, thepos)
         stop("Unknown chromosome IDs: ",
              paste(uchr[!(uchr %in% names(start))], collapse=", "))
 
-    start[thechr] + thepos
+    result <- start[thechr] + thepos
+    names(result) <- NULL
+
+    result
 }
