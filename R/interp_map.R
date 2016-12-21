@@ -36,8 +36,6 @@ interp_map <-
              paste(chr[!chr_found], collapse=", "))
     }
 
-    print(chr)
-
     for(thechr in chr) {
         om <- oldmap[[thechr]]
         nm <- newmap[[thechr]]
