@@ -275,6 +275,11 @@ scan1 <-
         # calculations in parallel
         list_result <- cluster_lapply(cores, run_indexes, by_group_func)
 
+        # check for problems (if clusters run out of memory, they'll return NULL)
+        result_is_null <- vapply(list_result, is.null, TRUE)
+        if(any(result_is_null))
+            stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
+
         # reorganize results
         for(i in run_indexes) {
             chr <- run_batches$chr[i]

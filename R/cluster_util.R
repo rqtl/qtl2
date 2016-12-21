@@ -45,10 +45,6 @@ cluster_lapply <-
         return( parallel::parLapply(cores, ...) )
     } else {
         if(cores==1) return( lapply(...) )
-        output = parallel::mclapply(..., mc.cores=cores)
-        if (is.list(output) & all(sapply(output, is.null))) {
-          warning("All cluster outputs are NULL, maybe `mclapply` memory problem?")
-        }
-        return( output )
+        return( parallel::mclapply(..., mc.cores=cores) )
     }
 }
