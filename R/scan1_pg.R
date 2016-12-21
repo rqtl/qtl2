@@ -187,6 +187,11 @@ calc_hsq_clean <-
     # now do the work
     result <- cluster_lapply(cores, seq(along=Ke), by_chr_func)
 
+    # check for problems (if clusters run out of memory, they'll return NULL)
+    result_is_null <- vapply(result, is.null, TRUE)
+    if(any(result_is_null))
+        stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
+
     # re-arrange results
     hsq <- matrix(unlist(lapply(result, function(a) a$hsq)), byrow=TRUE,
                   ncol=nphe)
@@ -273,6 +278,11 @@ scan1_pg_clean <-
 
     # now do the work
     lod_list <- cluster_lapply(cores, seq(along=batches$chr), by_batch_func)
+
+    # check for problems (if clusters run out of memory, they'll return NULL)
+    result_is_null <- vapply(lod_list, is.null, TRUE)
+    if(any(result_is_null))
+        stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
     npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
