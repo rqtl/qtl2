@@ -19,10 +19,11 @@
 #' ignored.
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
 #'
-#' @return A list like the input \code{map} with pseudomarkers inserted.
-#' If \code{step}>0 and \code{stepwidth="fixed"}, the result will
-#' contain an attribute, \code{"grid"}, which is a list of logical
-#' vectors that indicate which positions correspond to the fixed grid.
+#' @return A list like the input \code{map} with pseudomarkers
+#' inserted. If \code{step}>0 and \code{stepwidth="fixed"}, or if
+#' \code{pseudomarker_map} is provided, the result will contain an
+#' attribute, \code{"grid"}, which is a list of logical vectors
+#' that indicate which positions correspond to the fixed grid.
 #'
 #' @details If \code{stepwidth="fixed"}, a grid of pseudomarkers is
 #' added to the marker map.

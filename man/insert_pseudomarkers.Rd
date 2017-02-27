@@ -29,10 +29,11 @@ ignored.}
 \item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
 }
 \value{
-A list like the input \code{map} with pseudomarkers inserted.
-If \code{step}>0 and \code{stepwidth="fixed"}, the result will
-contain an attribute, \code{"grid"}, which is a list of logical
-vectors that indicate which positions correspond to the fixed grid.
+A list like the input \code{map} with pseudomarkers
+inserted. If \code{step}>0 and \code{stepwidth="fixed"}, or if
+\code{pseudomarker_map} is provided, the result will contain an
+attribute, \code{"grid"}, which is a list of logical vectors
+that indicate which positions correspond to the fixed grid.
 }
 \description{
 Insert pseudomarkers into a map of genetic markers, for a single chromosome.
