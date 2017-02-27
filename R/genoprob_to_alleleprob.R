@@ -20,17 +20,18 @@
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' gmap_w_pmar <- insert_pseudomarkers(iron, step=1)
+#' probs <- calc_genoprob(iron, gmap_w_pmar, error_prob=0.002)
 #' allele_probs <- genoprob_to_alleleprob(probs)
 
 genoprob_to_alleleprob <-
     function(probs, quiet=TRUE, cores=1)
 {
     # already converted?
-    ap <- probs$alleleprobs
+    ap <- attr(probs, "alleleprobs")
     if(!is.null(ap) && ap) return(probs)
 
-    is_x_chr <- probs$is_x_chr
+    is_x_chr <- attr(probs, "is_x_chr")
 
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
@@ -39,28 +40,34 @@ genoprob_to_alleleprob <-
         quiet <- TRUE # no more messages
     }
 
+    probs_attr <- attributes(probs)
+
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", names(probs$probs)[chr])
-        result <- aperm(.genoprob_to_alleleprob(probs$crosstype,
-                                                aperm(probs$probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
+        if(!quiet) message(" - Chr ", names(probs)[chr])
+        result <- aperm(.genoprob_to_alleleprob(attr(probs, "crosstype"),
+                                                aperm(probs[[chr]], c(2, 1, 3)), # reorg -> geno x ind x pos
                                                 is_x_chr[chr]),
                         c(2, 1, 3)) # reorg back to ind x geno x pos
 
         # allele names
-        dn <- dimnames(probs$probs[[chr]])
-        dn[[2]] <- probs$alleles
+        dn <- dimnames(probs[[chr]])
+        dn[[2]] <- attr(probs, "alleles")
         dimnames(result) <- dn
 
         result
     }
 
-    chrID <- names(probs$probs)
+    chrID <- names(probs)
     chrs <- seq(along=chrID)
 
 
-    probs$probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
-    names(probs$probs) <- chrID
+    probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
+    names(probs) <- chrID
 
-    probs$alleleprobs <- TRUE
+    attr(probs, "crosstype") <- probs_attr$crosstype
+    attr(probs, "is_x_chr") <- probs_attr$is_x_chr
+    attr(probs, "alleles") <- probs_attr$alleles
+    attr(probs, "alleleprobs") <- TRUE
+
     probs
 }
