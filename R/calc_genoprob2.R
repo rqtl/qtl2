@@ -4,8 +4,8 @@
 #
 # Same input and output as calc_genoprob()
 calc_genoprob2 <-
-function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
-         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
+function(cross, pseudomarker_map=NULL, error_prob=1e-4,
+         map_function=c("haldane", "kosambi", "c-f", "morgan"),
          quiet=TRUE, cores=1)
 {
     # check inputs
@@ -14,7 +14,6 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     if(error_prob < 0)
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
-    stepwidth <- match.arg(stepwidth)
 
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
@@ -23,18 +22,12 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         quiet <- TRUE # make the rest quiet
     }
 
-    # construct map at which to do the calculations
-    # tolerance for matching marker and pseudomarker positions
-    tol <- ifelse(step==0 || step>1, 0.01, step/100)
-    # create the combined marker/pseudomarker map
-    map <- insert_pseudomarkers(cross$gmap, step, off_end, stepwidth,
-                                pseudomarker_map, tol)
-    index <- map$index
-    grid <- map$grid
-    map <- map$map
+    index <- attr(pseudomarker_map, "index")
+    if(is.null(index))
+        stop('pseudomarker_map needs to contain an "index" attribute.')
 
-    probs <- vector("list", length(map))
-    rf <- map2rf(map, map_function)
+    probs <- vector("list", length(pseudomarker_map))
+    rf <- map2rf(pseudomarker_map, map_function)
 
     # deal with missing information
     ind <- rownames(cross$geno[[1]])
@@ -103,27 +96,18 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
 
         dimnames(probs[[chr]]) <- list(rownames(cross$geno[[chr]]),
                                        gnames,
-                                       names(map[[chr]]))
+                                       names(pseudomarker_map[[chr]]))
 
     }
 
     names(probs) <- names(cross$gmap)
-    result <- list(probs=probs,
-                   map=map,
-                   crosstype=cross$crosstype,
-                   is_x_chr=cross$is_x_chr,
-                   is_female=cross$is_female,
-                   cross_info=cross$cross_info,
-                   alleles=cross$alleles,
-                   alleleprobs=FALSE,
-                   step=step,
-                   off_end=off_end,
-                   stepwidth=stepwidth,
-                   error_prob=error_prob,
-                   map_function=map_function)
-    result$grid <- grid # include only if not NULL
 
-    class(result) <- c("calc_genoprob", "list")
+    attr(probs, "crosstype") <- cross$crosstype
+    attr(probs, "is_x_chr") <- cross$is_x_chr
+    attr(probs, "alleles") <- cross$alleles
+    attr(probs, "alleleprobs") <- FALSE
 
-    result
+    class(probs) <- c("calc_genoprob", "list")
+
+    probs
 }

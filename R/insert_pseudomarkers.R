@@ -19,19 +19,16 @@
 #' ignored.
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
 #'
-#' @return A list containing
+#' @return A list like the input \code{map} with pseudomarkers inserted.
+#' Also contains two attributes:
 #' \itemize{
-#' \item \code{map} - Input \code{map} with pseudomarkers inserted
-#' \item \code{index} - List of integer vectors that indicate which
+#' \item \code{"index"} - List of integer vectors that indicate which
 #'     positions are pseudomarkers (value -1) and which are markers
 #'     (positive values, indicating the marker indices, (starting at 0).)
-#' \item \code{grid} - A list of logical vectors that indicate which
+#' \item \code{"grid"} - A list of logical vectors that indicate which
 #'     positions correspond to the fixed grid. (only included if
 #'     \code{stepwidth="fixed"} or if \code{pseudomarker_map} is
 #'     provided).
-#' \item \code{step} - the value of the \code{step} argument.
-#' \item \code{off_end} - the value of the \code{off_end} argument.
-#' \item \code{stepwidth} - the value of the \code{stepwidth} argument.
 #' }
 #'
 #' @details If \code{stepwidth="fixed"}, a grid of pseudomarkers is
@@ -52,10 +49,8 @@
 #' @keywords utilities
 #'
 #' @examples
-#' library(qtl)
-#' data(hyper)
-#' map <- pull.map(hyper)
-#' map_w_pmar <- insert_pseudomarkers(map, step=1)
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
 insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
          pseudomarker_map=NULL, tol=0.01)
@@ -84,13 +79,12 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
         grid[[i]] <- pmap_result$grid
     }
 
-    result <- list(map=newmap, index=index,
-                   step=step, off_end=off_end, stepwidth=stepwidth)
+    attr(newmap, "index") <- index
 
     if(!is.null(grid) && !all(vapply(grid, is.null, TRUE)))
-        result$grid <- grid
+        attr(newmap, "grid") <- grid
 
-    result
+    newmap
 }
 
 

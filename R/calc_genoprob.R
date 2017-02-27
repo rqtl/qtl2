@@ -7,14 +7,6 @@
 #'
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param step Distance between pseudomarkers and markers; if
-#' \code{step=0} no pseudomarkers are inserted.
-#' @param off_end Distance beyond terminal markers in which to insert
-#' pseudomarkers.
-#' @param stepwidth Indicates whether to use a fixed grid
-#' (\code{stepwidth="fixed"}) or to use the maximal distance between
-#' pseudomarkers to ensure that no two adjacent markers/pseudomarkers
-#' are more than \code{step} apart.
 #' @param pseudomarker_map A map of pseudomarker locations; if provided the
 #' \code{step}, \code{off_end}, and \code{stepwidth} arguments are
 #' ignored.
@@ -31,32 +23,18 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A list containing the following
-#' \itemize{
-#' \item \code{probs} - A list of three-dimensional arrays of probabilities,
+#' @return A list of three-dimensional arrays of probabilities,
 #'     individuals x genotypes x positions. (Note that the arrangement is
-#'     different from R/qtl.)
-#' \item \code{map} - The genetic map as a list of vectors of marker positions.
-#' \item \code{grid} - A list of logical vectors, indicating which
-#'     positions correspond to a grid of markers/pseudomarkers. (may be
-#'     absent)
+#'     different from R/qtl.) Also contains four attributes:
+#' \itemize{
 #' \item \code{crosstype} - The cross type of the input \code{cross}.
 #' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
 #'     are to be treated as the X chromosome or not, from input \code{cross}.
-#' \item \code{is_female} - Vector of indicators of which individuals are female, from input
-#'     \code{cross}.
-#' \item \code{cross_info} - Matrix of cross information for the
-#'     individuals, from input \code{cross}.
 #' \item \code{alleles} - Vector of allele codes, from input
 #'     \code{cross}.
 #' \item \code{alleleprobs} - Logical value (\code{FALSE}) that
 #'     indicates whether the probabilities are compressed to allele
 #'     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
-#' \item \code{step} - the value of the \code{step} argument.
-#' \item \code{off_end} - the value of the \code{off_end} argument.
-#' \item \code{stepwidth} - the value of the \code{stepwidth} argument.
-#' \item \code{error_prob} - the value of the \code{error_prob} argument.
-#' \item \code{map_function} - the value of the \code{map_function} argument.
 #' }
 #'
 #' @details
@@ -83,11 +61,12 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+#' gmap_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
+#' probs <- calc_genoprob(grav2, gmap_w_pmar, error_prob=0.002)
 
 calc_genoprob <-
-function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
-         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
+function(cross, pseudomarker_map=NULL, error_prob=1e-4,
+         map_function=c("haldane", "kosambi", "c-f", "morgan"),
          lowmem=FALSE, quiet=TRUE, cores=1)
 {
     # check inputs
@@ -96,12 +75,11 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     if(error_prob < 0)
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
-    stepwidth <- match.arg(stepwidth)
 
     if(!lowmem) # use other version
-        return(calc_genoprob2(cross=cross, step=step, off_end=off_end, stepwidth=stepwidth,
-                              pseudomarker_map=pseudomarker_map, error_prob=error_prob,
-                              map_function=map_function, quiet=quiet, cores=cores))
+        return(calc_genoprob2(cross=cross, pseudomarker_map=pseudomarker_map,
+                              error_prob=error_prob, map_function=map_function,
+                              quiet=quiet, cores=cores))
 
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
@@ -110,18 +88,12 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         quiet <- TRUE # make the rest quiet
     }
 
-    # construct map at which to do the calculations
-    # tolerance for matching marker and pseudomarker positions
-    tol <- ifelse(step==0 || step>1, 0.01, step/100)
-    # create the combined marker/pseudomarker map
-    map <- insert_pseudomarkers(cross$gmap, step, off_end, stepwidth,
-                                pseudomarker_map, tol)
-    index <- map$index
-    grid <- map$grid
-    map <- map$map
+    index <- attr(pseudomarker_map, "index")
+    if(is.null(index))
+        stop('pseudomarker_map needs to contain an "index" attribute.')
 
-    probs <- vector("list", length(map))
-    rf <- map2rf(map, map_function)
+    probs <- vector("list", length(pseudomarker_map))
+    rf <- map2rf(pseudomarker_map, map_function)
 
     # deal with missing information
     ind <- rownames(cross$geno[[1]])
@@ -180,27 +152,18 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
 
         dimnames(probs[[chr]]) <- list(rownames(cross$geno[[chr]]),
                                        gnames,
-                                       names(map[[chr]]))
+                                       names(pseudomarker_map[[chr]]))
 
     }
 
     names(probs) <- names(cross$gmap)
-    result <- list(probs=probs,
-                   map=map,
-                   crosstype=cross$crosstype,
-                   is_x_chr=cross$is_x_chr,
-                   is_female=cross$is_female,
-                   cross_info=cross$cross_info,
-                   alleles=cross$alleles,
-                   alleleprobs=FALSE,
-                   step=step,
-                   off_end=off_end,
-                   stepwidth=stepwidth,
-                   error_prob=error_prob,
-                   map_function=map_function)
-    result$grid <- grid # include only if not NULL
 
-    class(result) <- c("calc_genoprob", "list")
+    attr(probs, "crosstype") <- cross$crosstype
+    attr(probs, "is_x_chr") <- cross$is_x_chr
+    attr(probs, "alleles") <- cross$alleles
+    attr(probs, "alleleprobs") <- FALSE
 
-    result
+    class(probs) <- c("calc_genoprob", "list")
+
+    probs
 }

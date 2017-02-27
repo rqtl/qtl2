@@ -29,19 +29,16 @@ ignored.}
 \item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
 }
 \value{
-A list containing
+A list like the input \code{map} with pseudomarkers inserted.
+Also contains two attributes:
 \itemize{
-\item \code{map} - Input \code{map} with pseudomarkers inserted
-\item \code{index} - List of integer vectors that indicate which
+\item \code{"index"} - List of integer vectors that indicate which
     positions are pseudomarkers (value -1) and which are markers
     (positive values, indicating the marker indices, (starting at 0).)
-\item \code{grid} - A list of logical vectors that indicate which
+\item \code{"grid"} - A list of logical vectors that indicate which
     positions correspond to the fixed grid. (only included if
     \code{stepwidth="fixed"} or if \code{pseudomarker_map} is
     provided).
-\item \code{step} - the value of the \code{step} argument.
-\item \code{off_end} - the value of the \code{off_end} argument.
-\item \code{stepwidth} - the value of the \code{stepwidth} argument.
 }
 }
 \description{
@@ -63,10 +60,7 @@ If \code{pseudomarker_map} is provided, then the \code{step},
 input \code{pseudomarker_map} is taken to be a grid of pseudomarkers.
 }
 \examples{
-library(qtl)
-data(hyper)
-map <- pull.map(hyper)
-map_w_pmar <- insert_pseudomarkers(map, step=1)
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
 }
 \keyword{utilities}
-
