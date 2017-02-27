@@ -38,4 +38,3 @@ The first column is taken to be a set of row names
 \examples{
 \dontrun{mydata <- read_csv("myfile.csv", transpose=TRUE)}
 }
-

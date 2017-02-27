@@ -75,4 +75,3 @@ probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
 K <- calc_kinship(probs)
 }
 \keyword{utilities}
-

@@ -42,4 +42,3 @@ zip_datafiles(control_file, "grav2.zip")
 \code{\link{read_cross2}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 }
 \keyword{IO}
-

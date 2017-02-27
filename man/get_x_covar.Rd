@@ -36,4 +36,3 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 xcovar <- get_x_covar(iron)
 }
 \keyword{utilities}
-

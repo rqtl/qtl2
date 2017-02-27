@@ -100,4 +100,3 @@ g <- viterbi(grav2, step=1, error_prob=0.002)
 \seealso{
 \code{\link{sim_geno}}, \code{\link{maxmarg}}
 }
-

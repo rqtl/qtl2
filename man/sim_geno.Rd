@@ -91,4 +91,3 @@ grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 draws <- sim_geno(grav2, n_draws=4, step=1, error_prob=0.002)
 }
 \keyword{utilities}
-

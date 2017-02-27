@@ -4,7 +4,7 @@
 \alias{cbind.viterbi}
 \title{Join viterbi results for different chromosomes}
 \usage{
-cbind.viterbi(...)
+\method{cbind}{viterbi}(...)
 }
 \arguments{
 \item{...}{Imputed genotype objects as produced by
@@ -24,4 +24,3 @@ gB <- viterbi(grav2[1:5,3:4], step=1, error_prob=0.002)
 g <- cbind(gA, gB)
 
 }
-

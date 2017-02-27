@@ -4,7 +4,7 @@
 \alias{cbind.calc_genoprob}
 \title{Join genotype probabilities for different chromosomes}
 \usage{
-cbind.calc_genoprob(...)
+\method{cbind}{calc_genoprob}(...)
 }
 \arguments{
 \item{...}{Genotype probability objects as produced by
@@ -24,4 +24,3 @@ probsB <- calc_genoprob(grav2[1:5,3:4], step=1, error_prob=0.002)
 probs <- cbind(probsA, probsB)
 
 }
-

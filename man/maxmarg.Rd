@@ -78,4 +78,3 @@ g <- maxmarg(pr, chr=8, pos=45.5, return_char=TRUE)
 \seealso{
 \code{\link{sim_geno}}, \code{\link{viterbi}}
 }
-

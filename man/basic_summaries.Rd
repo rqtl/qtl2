@@ -2,21 +2,21 @@
 % Please edit documentation in R/summary_cross2.R
 \name{basic_summaries}
 \alias{basic_summaries}
-\alias{chr_names}
-\alias{covar_names}
-\alias{ind_ids}
-\alias{line_ids}
-\alias{marker_names}
-\alias{n_chr}
-\alias{n_covar}
 \alias{n_ind}
+\alias{ind_ids}
 \alias{n_lines}
-\alias{n_mar}
-\alias{n_pheno}
-\alias{n_phenocovar}
-\alias{pheno_names}
-\alias{phenocovar_names}
+\alias{line_ids}
+\alias{n_chr}
+\alias{chr_names}
 \alias{tot_mar}
+\alias{n_mar}
+\alias{marker_names}
+\alias{n_pheno}
+\alias{pheno_names}
+\alias{n_covar}
+\alias{covar_names}
+\alias{n_phenocovar}
+\alias{phenocovar_names}
 \title{Basic summaries of a cross2 object}
 \usage{
 n_ind(cross2)
@@ -88,8 +88,8 @@ Basic summaries of a cross2 object.
 
 \item \code{phenocovar_names}: Phenotype covariate names
 }}
+
 \seealso{
 \code{\link{summary.cross2}}
 }
 \keyword{utilities}
-

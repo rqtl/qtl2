@@ -4,7 +4,7 @@
 \alias{rbind.calc_genoprob}
 \title{Join genotype probabilities for different individuals}
 \usage{
-rbind.calc_genoprob(...)
+\method{rbind}{calc_genoprob}(...)
 }
 \arguments{
 \item{...}{Genotype probability objects as produced by
@@ -25,4 +25,3 @@ probsB <- calc_genoprob(grav2[6:12,], step=1, error_prob=0.002)
 probs <- rbind(probsA, probsB)
 
 }
-

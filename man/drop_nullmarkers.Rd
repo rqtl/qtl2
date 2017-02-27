@@ -32,4 +32,3 @@ grav2_rev <- drop_nullmarkers(grav2)
 \seealso{
 \code{\link{drop_markers}}, \code{\link{pull_markers}}
 }
-

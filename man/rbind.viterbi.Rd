@@ -4,7 +4,7 @@
 \alias{rbind.viterbi}
 \title{Join Viterbi results for different individuals}
 \usage{
-rbind.viterbi(...)
+\method{rbind}{viterbi}(...)
 }
 \arguments{
 \item{...}{Imputed genotype objects as produced by
@@ -24,4 +24,3 @@ gB <- viterbi(grav2[6:12,], step=1, error_prob=0.002)
 g <- rbind(gA, gB)
 
 }
-

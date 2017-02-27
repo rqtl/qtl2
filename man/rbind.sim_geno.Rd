@@ -4,7 +4,7 @@
 \alias{rbind.sim_geno}
 \title{Join genotype imputations for different individuals}
 \usage{
-rbind.sim_geno(...)
+\method{rbind}{sim_geno}(...)
 }
 \arguments{
 \item{...}{Genotype imputation objects as produced by
@@ -24,4 +24,3 @@ drawsB <- sim_geno(grav2[6:12,], step=1, error_prob=0.002, n_draws=4)
 draws <- rbind(drawsA, drawsB)
 
 }
-

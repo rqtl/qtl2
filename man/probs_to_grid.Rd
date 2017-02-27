@@ -32,4 +32,3 @@ probs_sub <- probs_to_grid(probs)
 sapply(probs_sub$probs, dim)
 }
 \keyword{utilities}
-

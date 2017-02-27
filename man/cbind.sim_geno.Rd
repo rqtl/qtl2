@@ -4,7 +4,7 @@
 \alias{cbind.sim_geno}
 \title{Join genotype imputations for different chromosomes}
 \usage{
-cbind.sim_geno(...)
+\method{cbind}{sim_geno}(...)
 }
 \arguments{
 \item{...}{Genotype imputation objects as produced by
@@ -25,4 +25,3 @@ drawsB <- sim_geno(grav2[1:5,3:4], step=1, error_prob=0.002, n_draws=4)
 draws <- cbind(drawsA, drawsB)
 
 }
-

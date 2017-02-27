@@ -161,4 +161,3 @@ write_control_file("~/my_data/iron.yaml",
 \url{http://kbroman.org/qtl2/pages/sampledata.html}
 }
 \keyword{utilities}
-

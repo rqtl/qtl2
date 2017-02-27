@@ -26,4 +26,3 @@ hyper2 <- convert2cross2(hyper)
 \code{\link{read_cross2}}
 }
 \keyword{utilities}
-

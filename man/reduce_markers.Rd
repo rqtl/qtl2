@@ -37,4 +37,3 @@ library(qtl)
 Broman KW, Weber JL (1999) Method for constructing
 confidently ordered linkage maps. Genet Epidemiol 16:337--343
 }
-

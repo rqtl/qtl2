@@ -31,4 +31,3 @@ probs <- calc_genoprob(iron, step=1, error_prob=0.002)
 allele_probs <- genoprob_to_alleleprob(probs)
 }
 \keyword{utilities}
-
