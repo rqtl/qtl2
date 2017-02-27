@@ -107,6 +107,7 @@ function(cross, map=NULL, error_prob=1e-4,
     attr(probs, "is_x_chr") <- cross$is_x_chr
     attr(probs, "alleles") <- cross$alleles
     attr(probs, "alleleprobs") <- FALSE
+    attr(probs, "grid") <- attr(map, "grid")
 
     class(probs) <- c("calc_genoprob", "list")
 

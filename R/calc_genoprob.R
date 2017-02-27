@@ -37,6 +37,10 @@
 #'     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
 #' }
 #'
+#' If the input \code{map} has a \code{"grid"} attribute that
+#' indicates which markers/pseudomarkers are along some grid of
+#' positions, it will also be added as an attribute to the result.
+#'
 #' @details
 #'   Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
 #'  \eqn{k}, and \eqn{g_k}{g[k]} denote the corresponding true underlying
@@ -163,6 +167,7 @@ function(cross, map=NULL, error_prob=1e-4,
     attr(probs, "is_x_chr") <- cross$is_x_chr
     attr(probs, "alleles") <- cross$alleles
     attr(probs, "alleleprobs") <- FALSE
+    attr(probs, "grid") <- attr(map, "grid")
 
     class(probs) <- c("calc_genoprob", "list")
 

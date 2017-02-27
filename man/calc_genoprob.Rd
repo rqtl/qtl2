@@ -47,6 +47,10 @@ A list of three-dimensional arrays of probabilities,
     indicates whether the probabilities are compressed to allele
     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
 }
+
+If the input \code{map} has a \code{"grid"} attribute that
+indicates which markers/pseudomarkers are along some grid of
+positions, it will also be added as an attribute to the result.
 }
 \description{
 Uses a hidden Markov model to calculate the probabilities of the
