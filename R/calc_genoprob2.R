@@ -4,7 +4,7 @@
 #
 # Same input and output as calc_genoprob()
 calc_genoprob2 <-
-function(cross, pseudomarker_map=NULL, error_prob=1e-4,
+function(cross, map=NULL, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
          quiet=TRUE, cores=1)
 {
@@ -23,14 +23,12 @@ function(cross, pseudomarker_map=NULL, error_prob=1e-4,
     }
 
     # pseudomarker map
-    if(is.null(pseudomarker_map))
-        pseudomarker_map <- insert_pseudomarkers(cross$gmap)
-    index <- attr(pseudomarker_map, "index")
-    if(is.null(index))
-        stop('pseudomarker_map needs to contain an "index" attribute.')
+    if(is.null(map))
+        map <- insert_pseudomarkers(cross$gmap)
+    index <- create_marker_index(lapply(cross$geno, colnames), map)
 
-    probs <- vector("list", length(pseudomarker_map))
-    rf <- map2rf(pseudomarker_map, map_function)
+    probs <- vector("list", length(map))
+    rf <- map2rf(map, map_function)
 
     # deal with missing information
     ind <- rownames(cross$geno[[1]])
@@ -99,7 +97,7 @@ function(cross, pseudomarker_map=NULL, error_prob=1e-4,
 
         dimnames(probs[[chr]]) <- list(rownames(cross$geno[[chr]]),
                                        gnames,
-                                       names(pseudomarker_map[[chr]]))
+                                       names(map[[chr]]))
 
     }
 

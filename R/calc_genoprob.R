@@ -7,9 +7,9 @@
 #'
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param pseudomarker_map A map of pseudomarker locations; if provided the
-#' \code{step}, \code{off_end}, and \code{stepwidth} arguments are
-#' ignored.
+#' @param map Genetic map of markers. May include pseudomarker
+#' locations (that is, locations that are not within the marker
+#' genotype data). If NULL, the genetic map in \code{cross} is used.
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
@@ -65,7 +65,7 @@
 #' probs <- calc_genoprob(grav2, gmap_w_pmar, error_prob=0.002)
 
 calc_genoprob <-
-function(cross, pseudomarker_map=NULL, error_prob=1e-4,
+function(cross, map=NULL, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
          lowmem=FALSE, quiet=TRUE, cores=1)
 {
@@ -77,7 +77,7 @@ function(cross, pseudomarker_map=NULL, error_prob=1e-4,
     map_function <- match.arg(map_function)
 
     if(!lowmem) # use other version
-        return(calc_genoprob2(cross=cross, pseudomarker_map=pseudomarker_map,
+        return(calc_genoprob2(cross=cross, map=map,
                               error_prob=error_prob, map_function=map_function,
                               quiet=quiet, cores=cores))
 
@@ -89,14 +89,12 @@ function(cross, pseudomarker_map=NULL, error_prob=1e-4,
     }
 
     # pseudomarker map
-    if(is.null(pseudomarker_map))
-        pseudomarker_map <- insert_pseudomarkers(cross$gmap)
-    index <- attr(pseudomarker_map, "index")
-    if(is.null(index))
-        stop('pseudomarker_map needs to contain an "index" attribute.')
+    if(is.null(map))
+        map <- insert_pseudomarkers(cross$gmap)
+    index <- create_marker_index(lapply(cross$geno, colnames), map)
 
-    probs <- vector("list", length(pseudomarker_map))
-    rf <- map2rf(pseudomarker_map, map_function)
+    probs <- vector("list", length(map))
+    rf <- map2rf(map, map_function)
 
     # deal with missing information
     ind <- rownames(cross$geno[[1]])
@@ -155,7 +153,7 @@ function(cross, pseudomarker_map=NULL, error_prob=1e-4,
 
         dimnames(probs[[chr]]) <- list(rownames(cross$geno[[chr]]),
                                        gnames,
-                                       names(pseudomarker_map[[chr]]))
+                                       names(map[[chr]]))
 
     }
 

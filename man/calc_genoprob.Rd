@@ -4,7 +4,7 @@
 \alias{calc_genoprob}
 \title{Calculate conditional genotype probabilities}
 \usage{
-calc_genoprob(cross, pseudomarker_map = NULL, error_prob = 0.0001,
+calc_genoprob(cross, map = NULL, error_prob = 0.0001,
   map_function = c("haldane", "kosambi", "c-f", "morgan"), lowmem = FALSE,
   quiet = TRUE, cores = 1)
 }
@@ -12,9 +12,9 @@ calc_genoprob(cross, pseudomarker_map = NULL, error_prob = 0.0001,
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
-\item{pseudomarker_map}{A map of pseudomarker locations; if provided the
-\code{step}, \code{off_end}, and \code{stepwidth} arguments are
-ignored.}
+\item{map}{Genetic map of markers. May include pseudomarker
+locations (that is, locations that are not within the marker
+genotype data). If NULL, the genetic map in \code{cross} is used.}
 
 \item{error_prob}{Assumed genotyping error probability}
 

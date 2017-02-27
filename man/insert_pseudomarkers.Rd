@@ -30,16 +30,9 @@ ignored.}
 }
 \value{
 A list like the input \code{map} with pseudomarkers inserted.
-Also contains two attributes:
-\itemize{
-\item \code{"index"} - List of integer vectors that indicate which
-    positions are pseudomarkers (value -1) and which are markers
-    (positive values, indicating the marker indices, (starting at 0).)
-\item \code{"grid"} - A list of logical vectors that indicate which
-    positions correspond to the fixed grid. (only included if
-    \code{stepwidth="fixed"} or if \code{pseudomarker_map} is
-    provided).
-}
+If \code{step}>0 and \code{stepwidth="fixed"}, the result will
+contain an attribute, \code{"grid"}, which is a list of logical
+vectors that indicate which positions correspond to the fixed grid.
 }
 \description{
 Insert pseudomarkers into a map of genetic markers, for a single chromosome.
