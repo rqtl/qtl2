@@ -88,6 +88,9 @@ function(cross, pseudomarker_map=NULL, error_prob=1e-4,
         quiet <- TRUE # make the rest quiet
     }
 
+    # pseudomarker map
+    if(is.null(pseudomarker_map))
+        pseudomarker_map <- insert_pseudomarkers(cross$gmap)
     index <- attr(pseudomarker_map, "index")
     if(is.null(index))
         stop('pseudomarker_map needs to contain an "index" attribute.')
