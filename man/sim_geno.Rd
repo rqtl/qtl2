@@ -4,31 +4,19 @@
 \alias{sim_geno}
 \title{Simulate genotypes given observed marker data}
 \usage{
-sim_geno(cross, n_draws = 1, step = 0, off_end = 0,
-  stepwidth = c("fixed", "max"), pseudomarker_map = NULL,
-  error_prob = 0.0001, map_function = c("haldane", "kosambi", "c-f",
-  "morgan"), lowmem = FALSE, quiet = TRUE, cores = 1)
+sim_geno(cross, map = NULL, n_draws = 1, error_prob = 0.0001,
+  map_function = c("haldane", "kosambi", "c-f", "morgan"), lowmem = FALSE,
+  quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
+\item{map}{Genetic map of markers. May include pseudomarker
+locations (that is, locations that are not within the marker
+genotype data). If NULL, the genetic map in \code{cross} is used.}
+
 \item{n_draws}{Number of simulations to perform.}
-
-\item{step}{Distance between pseudomarkers and markers; if
-\code{step=0} no pseudomarkers are inserted.}
-
-\item{off_end}{Distance beyond terminal markers in which to insert
-pseudomarkers.}
-
-\item{stepwidth}{Indicates whether to use a fixed grid
-(\code{stepwidth="fixed"}) or to use the maximal distance between
-pseudomarkers to ensure that no two adjacent markers/pseudomarkers
-are more than \code{step} apart.}
-
-\item{pseudomarker_map}{A map of pseudomarker locations; if provided the
-\code{step}, \code{off_end}, and \code{stepwidth} arguments are
-ignored.}
 
 \item{error_prob}{Assumed genotyping error probability}
 
@@ -48,31 +36,14 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-A list of containing the following:
+A list of three-dimensional arrays of imputed genotypes,
+individuals x positions x draws. Also contains three attributes:
 \itemize{
-\item \code{draws} - List of three-dimensional arrays of imputed genotypes,
-individuals x positions x draws.
-\item \code{map} - The genetic map as a list of vectors of marker positions.
-\item \code{grid} - A list of logical vectors, indicating which
-    positions correspond to a grid of markers/pseudomarkers. (may be
-    absent)
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
     are to be treated as the X chromosome or not, from input \code{cross}.
-\item \code{is_female} - Vector of indicators of which individuals are female, from input
-    \code{cross}.
-\item \code{cross_info} - Matrix of cross information for the
-    individuals, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
     \code{cross}.
-\item \code{alleleprob} - Logical value (\code{FALSE}) that
-    indicates whether the probabilities are compressed to allele
-    probabilities, as from \code{\link{genoprob_to_alleleprob}}.
-\item \code{step} - the value of the \code{step} argument.
-\item \code{off_end} - the value of the \code{off_end} argument.
-\item \code{stepwidth} - the value of the \code{stepwidth} argument.
-\item \code{error_prob} - the value of the \code{error_prob} argument.
-\item \code{map_function} - the value of the \code{map_function} argument.
 }
 }
 \description{
@@ -88,6 +59,7 @@ After performing the backward equations, we draw from
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-draws <- sim_geno(grav2, n_draws=4, step=1, error_prob=0.002)
+map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
+draws <- sim_geno(grav2, map_w_pmar, n_draws=4, error_prob=0.002)
 }
 \keyword{utilities}

@@ -7,7 +7,8 @@ test_that("sim_geno riself", {
     RNGkind("Mersenne-Twister")
     set.seed(20150918)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    dr <- sim_geno(grav2, n_draws=2, err=0.002, step=1)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    dr <- sim_geno(grav2, map, n_draws=2, err=0.002)
 
     expected <- structure(c(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                             2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
@@ -53,7 +54,7 @@ test_that("sim_geno riself", {
                           "c1.loc104", "GH.127L-Col/ADH", "c1.loc105", "c1.loc106", "c1.loc107",
                           "c1.loc108", "c1.loc109", "HH.360L-Col"), NULL))
 
-    expect_equal(dr$draws[[1]][138,,], expected)
+    expect_equal(dr[[1]][138,,], expected)
 
 })
 
@@ -62,7 +63,8 @@ test_that("sim_geno f2", {
     RNGkind("Mersenne-Twister")
     set.seed(20150918)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    dr <- sim_geno(iron, n_draws=2, err=0.002, step=1)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    dr <- sim_geno(iron, map, n_draws=2, err=0.002)
 
     expected <- structure(c(5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
                             4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L, 4L, 5L,
@@ -80,7 +82,7 @@ test_that("sim_geno f2", {
                           "cX.loc49.5", "cX.loc50.5", "cX.loc51.5", "cX.loc52.5", "cX.loc53.5", "cX.loc54.5",
                           "cX.loc55.5", "cX.loc56.5", "cX.loc57.5", "DXMit186"), NULL))
 
-    expect_equal(dr$draws[["X"]][145:146,,], expected)
+    expect_equal(dr[["X"]][145:146,,], expected)
 
 })
 
@@ -119,10 +121,11 @@ test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
 
     RNGkind("Mersenne-Twister")
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
     set.seed(20150918)
-    dr <- sim_geno(grav2, n_draws=2, err=0.002, step=1, lowmem=FALSE)
+    dr <- sim_geno(grav2, map, n_draws=2, err=0.002, lowmem=FALSE)
     set.seed(20150918)
-    dr2 <- sim_geno(grav2, n_draws=2, err=0.002, step=1, lowmem=TRUE)
+    dr2 <- sim_geno(grav2, map, n_draws=2, err=0.002, lowmem=TRUE)
 
     expect_equal(dr, dr2)
 
@@ -137,10 +140,12 @@ test_that("sim_geno f2 gives same result for lowmem=TRUE and =FALSE", {
     p <- paste(iron$is_female, apply(iron$cross_info, 1, paste, collapse=":"), sep=":")
     iron <- iron[order(p),]
 
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+
     set.seed(20150918)
-    dr <- sim_geno(iron, n_draws=2, err=0.002, step=1, lowmem=FALSE)
+    dr <- sim_geno(iron, map, n_draws=2, err=0.002, lowmem=FALSE)
     set.seed(20150918)
-    dr2 <- sim_geno(iron, n_draws=2, err=0.002, step=1, lowmem=TRUE)
+    dr2 <- sim_geno(iron, map, n_draws=2, err=0.002, lowmem=TRUE)
 
     expect_equal(dr, dr2)
 
