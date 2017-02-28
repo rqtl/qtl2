@@ -64,22 +64,23 @@ test_that("subset.calc_genoprob works", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     ironsub <- iron[,c(4,"X")]
 
-    pr <- calc_genoprob(ironsub, step=5, err=0.01)
+    map <- insert_pseudomarkers(iron$gmap, step=5)
+
+    pr <- calc_genoprob(iron, map, err=0.01)
     prsub <- pr[,"X"]
 
-    expected <- pr
-    expected$probs <- pr$probs["X"]
-    expected$is_x_chr <- pr$is_x_chr["X"]
-    expected$map <- pr$map["X"]
-    expected$grid <- pr$grid["X"]
+    expected <- unclass(pr)["X"]
+    class(expected) <- class(pr)
+    attr(expected, "is_x_chr") <- attr(pr, "is_x_chr")["X"]
+    for(obj in c("alleles", "alleleprobs", "crosstype"))
+        attr(expected, obj) <- attr(pr, obj)
 
     expect_equal(prsub, expected)
 
     ind <- c("5", "50", "55", "280")
     prsub <- pr[ind, "X"]
 
-    expected$probs[["X"]] <- expected$probs[["X"]][ind,,,drop=FALSE]
-    expected$cross_info <- expected$cross_info[ind,,drop=FALSE]
+    expected[["X"]] <- expected[["X"]][ind,,,drop=FALSE]
 
     expect_equal(prsub, expected)
 
@@ -90,22 +91,23 @@ test_that("subset.sim_geno works", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     ironsub <- iron[,c(4,"X")]
 
-    dr <- sim_geno(iron, step=5, err=0.01)
+    map <- insert_pseudomarkers(iron$gmap, step=5)
+
+    dr <- sim_geno(iron, map, err=0.01)
     drsub <- dr[,"X"]
 
-    expected <- dr
-    expected$draws <- dr$draws["X"]
-    expected$is_x_chr <- dr$is_x_chr["X"]
-    expected$map <- dr$map["X"]
-    expected$grid <- dr$grid["X"]
+    expected <- unclass(dr)["X"]
+    class(expected) <- class(dr)
+    attr(expected, "is_x_chr") <- attr(dr, "is_x_chr")["X"]
+    for(obj in c("alleles", "crosstype"))
+        attr(expected, obj) <- attr(dr, obj)
 
     expect_equal(drsub, expected)
 
     ind <- c("5", "50", "55", "280")
     drsub <- dr[ind, "X"]
 
-    expected$draws[["X"]] <- expected$draws[["X"]][ind,,,drop=FALSE]
-    expected$cross_info <- expected$cross_info[ind,,drop=FALSE]
+    expected[["X"]] <- expected[["X"]][ind,,,drop=FALSE]
 
     expect_equal(drsub, expected)
 
@@ -116,9 +118,12 @@ test_that("subset.calc_genoprob works with reduction to grid and/or allele prob"
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     ironsub <- iron[,c(5,8,"X")]
 
-    pr <- calc_genoprob(ironsub, step=2.5, err=0.002)
+    map <- insert_pseudomarkers(ironsub$gmap, step=2.5)
 
-    pr_grid <- probs_to_grid(pr)
+    pr <- calc_genoprob(ironsub, map, err=0.002)
+
+    grid <- calc_grid(ironsub$gmap, step=2.5)
+    pr_grid <- probs_to_grid(pr, grid)
     pr_a <- genoprob_to_alleleprob(pr)
 
     set.seed(20150918)
@@ -127,7 +132,7 @@ test_that("subset.calc_genoprob works with reduction to grid and/or allele prob"
     pr_sub <- pr[ind,chr]
 
     pr_grid_sub <- pr_grid[ind,chr]
-    pr_sub_grid <- probs_to_grid(pr_sub)
+    pr_sub_grid <- probs_to_grid(pr_sub, grid[chr])
     expect_equal(pr_grid_sub, pr_sub_grid)
 
     pr_a_sub <- pr_a[ind,chr]
@@ -141,22 +146,22 @@ test_that("subset.viterbi works", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     ironsub <- iron[,c(4,"X")]
 
-    g <- viterbi(ironsub, step=5, err=0.01)
+    map <- insert_pseudomarkers(iron$gmap, step=5)
+    g <- viterbi(iron, map, err=0.01)
     gsub <- g[,"X"]
 
-    expected <- g
-    expected$geno <- g$geno["X"]
-    expected$is_x_chr <- g$is_x_chr["X"]
-    expected$map <- g$map["X"]
-    expected$grid <- g$grid["X"]
+    expected <- unclass(g)["X"]
+    class(expected) <- class(g)
+    attr(expected, "is_x_chr") <- attr(g, "is_x_chr")["X"]
+    attr(expected, "crosstype") <- attr(g, "crosstype")
+    attr(expected, "alleles") <- attr(g, "alleles")
 
     expect_equal(gsub, expected)
 
     ind <- c("5", "50", "55", "280")
     gsub <- g[ind, "X"]
 
-    expected$geno[["X"]] <- expected$geno[["X"]][ind,,drop=FALSE]
-    expected$cross_info <- expected$cross_info[ind,,drop=FALSE]
+    expected[["X"]] <- expected[["X"]][ind,,drop=FALSE]
 
     expect_equal(gsub, expected)
 

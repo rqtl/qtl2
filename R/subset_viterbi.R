@@ -32,7 +32,11 @@ subset.viterbi <-
     if(is.null(ind) && is.null(chr))
         stop("You must specify either ind or chr.")
 
-    chrID <- names(x$map)
+    x_attr <- attributes(x)
+    x_attrnam <- names(x_attr)
+    x_class <- class(x)
+
+    chrID <- names(x)
     n_chr <- length(chrID)
     if(!is.null(chr)) {
         if(is.logical(chr)) {
@@ -53,15 +57,16 @@ subset.viterbi <-
         if(length(chr) == 0)
             stop("Must retain at least one chromosome.")
 
-        to_sub <- c("geno", "map", "is_x_chr", "grid", "snpinfo") # draws is here, to also deal with sim_geno objects
-        for(a in to_sub) {
-            if(a %in% names(x)) {
-                x[[a]] <- x[[a]][chr]
-            }
+        x <- unclass(x)[chr]
+        to_sub <- "is_x_chr"
+        for(obj in to_sub) {
+            if(obj %in% x_attrnam)
+                x_attr[[obj]] <- x_attr[[obj]][chr]
         }
+
     }
 
-    indID <- rownames(x$geno[[1]])
+    indID <- rownames(x[[1]])
 
     n_ind <- length(indID)
     if(!is.null(ind)) {
@@ -88,15 +93,13 @@ subset.viterbi <-
         if(length(ind) == 0)
             stop("Must retain at least one individual.")
 
-        for(a in "geno") {
-            if(a %in% names(x)) {
-                for(i in names(x$map)) # loop over chromosomes
-                    x[[a]][[i]] <- x[[a]][[i]][ind,,drop=FALSE]
-            }
-        }
-        if(!is.null(x$cross_info))
-            x$cross_info <- x$cross_info[ind, , drop=FALSE]
+        for(i in names(x)) # loop over chromosomes
+            x[[i]] <- unclass(x)[[i]][ind,,drop=FALSE]
     }
+
+    for(obj in c("alleles", "is_x_chr", "crosstype"))
+        attr(x, obj) <- x_attr[[obj]]
+    class(x) <- x_class
 
     x
 }

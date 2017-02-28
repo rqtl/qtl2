@@ -4,9 +4,9 @@
 #
 # Same input and output as viterbi()
 viterbi2 <-
-function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
-         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         quiet=TRUE, cores=1)
+    function(cross, map=NULL, error_prob=1e-4,
+             map_function=c("haldane", "kosambi", "c-f", "morgan"),
+             quiet=TRUE, cores=1)
 {
     # check inputs
     if(!is.cross2(cross))
@@ -14,7 +14,6 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     if(error_prob < 0)
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
-    stepwidth <- match.arg(stepwidth)
 
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
@@ -23,17 +22,11 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         quiet <- TRUE # no more messages
     }
 
-    # construct map at which to do the calculations
-    # tolerance for matching marker and pseudomarker positions
-    tol <- ifelse(step==0 || step>1, 0.01, step/100)
-    # create the combined marker/pseudomarker map
-    map <- insert_pseudomarkers(cross$gmap, step, off_end, stepwidth,
-                                pseudomarker_map, tol)
-    index <- map$index
-    grid <- map$grid
-    map <- map$map
+    # pseudomarker map
+    if(is.null(map))
+        map <- insert_pseudomarkers(cross$gmap)
+    index <- create_marker_index(lapply(cross$geno, colnames), map)
 
-    probs <- vector("list", length(map))
     rf <- map2rf(map, map_function)
 
     # deal with missing information
@@ -93,18 +86,9 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     }
 
     names(result) <- names(cross$gmap)
-    result <- list(geno=result,
-                   map = map,
-                   crosstype = cross$crosstype,
-                   is_x_chr = cross$is_x_chr,
-                   is_female = cross$is_female,
-                   cross_info = cross$cross_info,
-                   step=step,
-                   off_end=off_end,
-                   stepwidth=stepwidth,
-                   error_prob=error_prob,
-                   map_function=map_function)
-    result$grid <- grid # include only if not NULL
+    attr(result, "crosstype") <- cross$crosstype
+    attr(result, "is_x_chr") <- cross$is_x_chr
+    attr(result, "alleles") <- cross$alleles
 
     class(result) <- c("viterbi", "list")
     result

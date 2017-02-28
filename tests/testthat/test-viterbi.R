@@ -24,10 +24,11 @@ test_that("intercross autosome", {
     listeria <- listeria[chr,]
 
     listeria <- convert2cross2(listeria)
+    map <- insert_pseudomarkers(listeria$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(listeria, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
+    g <- viterbi(listeria, map, error_prob=0.01, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(listeria, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
+    g2 <- viterbi(listeria, map, error_prob=0.01, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -42,10 +43,11 @@ test_that("risib autosome", {
     class(hyper)[1] <- "risib"
 
     hyper <- convert2cross2(hyper)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.002, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.002, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -59,10 +61,11 @@ test_that("riself autosome", {
     class(hyper)[1] <- "riself"
 
     hyper <- convert2cross2(hyper)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.002, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.002, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -80,10 +83,12 @@ test_that("f2 X chr", {
     o <- order(sexcr)
     fake.f2 <- fake.f2[o,]
 
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
+
     set.seed(20150524)
-    g <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
+    g <- viterbi(fake.f2, map, error_prob=0.01, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
+    g2 <- viterbi(fake.f2, map, error_prob=0.01, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -103,10 +108,12 @@ test_that("bc X chr", {
     o <- order(sexcr)
     hyper <- hyper[o,]
 
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -119,10 +126,11 @@ test_that("f2 X chr all males", {
     fake.f2$pheno$sex <- 1
 
     fake.f2 <- convert2cross2(fake.f2)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(fake.f2, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(fake.f2, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -136,10 +144,11 @@ test_that("f2 X chr all females", {
     fake.f2$pheno$sex <- 0
 
     fake.f2 <- convert2cross2(fake.f2)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(fake.f2, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(fake.f2, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -153,10 +162,11 @@ test_that("f2 X chr all females forw", {
     fake.f2$pheno$pgm <- 0
 
     fake.f2 <- convert2cross2(fake.f2)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=TRUE)
+    g <- viterbi(fake.f2, map, error_prob=0.0001, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=FALSE)
+    g2 <- viterbi(fake.f2, map, error_prob=0.0001, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -170,10 +180,11 @@ test_that("f2 X chr all females rev", {
     fake.f2$pheno$pgm <- 1
 
     fake.f2 <- convert2cross2(fake.f2)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=TRUE)
+    g <- viterbi(fake.f2, map, error_prob=0.0001, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=FALSE)
+    g2 <- viterbi(fake.f2, map, error_prob=0.0001, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -185,10 +196,11 @@ test_that("bc X chr all males", {
     hyper <- hyper["X",]
 
     hyper <- convert2cross2(hyper)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -202,10 +214,11 @@ test_that("bc X chr all females", {
     hyper$pheno$sex <- "female"
 
     hyper <- convert2cross2(hyper)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -219,10 +232,11 @@ test_that("doubled haploids", {
     class(hyper)[1] <- "dh"
 
     hyper <- convert2cross2(hyper)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -237,10 +251,11 @@ test_that("haploids viterbi", {
     class(hyper)[1] <- "haploid"
 
     hyper <- convert2cross2(hyper)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
     set.seed(20150524)
-    g <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
+    g <- viterbi(hyper, map, error_prob=0.02, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    g2 <- viterbi(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(g, g2)
 
@@ -255,9 +270,9 @@ test_that("backcross autosome with markers at same location", {
     grav2$gmap[[1]][4] <- grav2$gmap[[1]][3]
 
     set.seed(20150524)
-    g <- viterbi(grav2, err=0, lowmem=TRUE)
+    g <- viterbi(grav2, error_prob=0, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(grav2, err=0, lowmem=FALSE)
+    g2 <- viterbi(grav2, error_prob=0, lowmem=FALSE)
 
     expect_true( all(!is.na(g[[1]])) )
     expect_equal(g, g2)
@@ -273,13 +288,13 @@ test_that("R/qtl2 gives same viterbi results as R/qtl when step=0, for backcross
     for(chr in c(1, 4, 7, 17)) {
         hypersub <- hyper[chr,]
         hyper2sub <- convert2cross2(hypersub)
-        hypersub <- argmax.geno(hypersub, err=0, step=0)
+        hypersub <- argmax.geno(hypersub, step=0, error.prob=0)
         agm <- hypersub$geno[[1]]$argmax
-        agm2 <- viterbi(hyper2sub, step=0, err=0)$geno[[1]]
+        agm2 <- viterbi(hyper2sub, error_prob=0)[[1]]
         expect_equivalent(agm, agm2)
 
         # lowmem version
-        agm2b <- viterbi(hyper2sub, step=0, err=0, lowmem=TRUE)$geno[[1]]
+        agm2b <- viterbi(hyper2sub, error_prob=0, lowmem=TRUE)[[1]]
         expect_equivalent(agm, agm2b)
     }
 
@@ -287,13 +302,13 @@ test_that("R/qtl2 gives same viterbi results as R/qtl when step=0, for backcross
     for(chr in c(1, 4, 7, 17)) {
         hypersub <- hyper[chr,]
         hyper2sub <- convert2cross2(hypersub)
-        hypersub <- argmax.geno(hypersub, err=0.002, step=0)
+        hypersub <- argmax.geno(hypersub, step=0, error.prob=0.002)
         agm <- hypersub$geno[[1]]$argmax
-        agm2 <- viterbi(hyper2sub, step=0, err=0.002)$geno[[1]]
+        agm2 <- viterbi(hyper2sub, error_prob=0.002)[[1]]
         expect_equivalent(agm, agm2)
 
         # lowmem version
-        agm2b <- viterbi(hyper2sub, step=0, err=0.002, lowmem=TRUE)$geno[[1]]
+        agm2b <- viterbi(hyper2sub, error_prob=0.002, lowmem=TRUE)[[1]]
         expect_equivalent(agm, agm2b)
     }
 
@@ -309,13 +324,13 @@ test_that("R/qtl2 gives same viterbi results as R/qtl when step=0, for intercros
     for(chr in c(1, 4, 7, 17)) {
         listeriasub <- listeria[chr,]
         listeria2sub <- convert2cross2(listeriasub)
-        listeriasub <- argmax.geno(listeriasub, err=0, step=0)
+        listeriasub <- argmax.geno(listeriasub, step=0, error.prob=0)
         agm <- listeriasub$geno[[1]]$argmax
-        agm2 <- viterbi(listeria2sub, step=0, err=0)$geno[[1]]
+        agm2 <- viterbi(listeria2sub, error_prob=0)[[1]]
         expect_equivalent(agm, agm2)
 
         # lowmem version
-        agm2b <- viterbi(listeria2sub, step=0, err=0, lowmem=TRUE)$geno[[1]]
+        agm2b <- viterbi(listeria2sub, error_prob=0, lowmem=TRUE)[[1]]
         expect_equivalent(agm, agm2b)
     }
 
@@ -323,13 +338,13 @@ test_that("R/qtl2 gives same viterbi results as R/qtl when step=0, for intercros
     for(chr in c(1, 4, 7, 17)) {
         listeriasub <- listeria[chr,]
         listeria2sub <- convert2cross2(listeriasub)
-        listeriasub <- argmax.geno(listeriasub, err=0.002, step=0)
+        listeriasub <- argmax.geno(listeriasub, step=0, error.prob=0.002)
         agm <- listeriasub$geno[[1]]$argmax
-        agm2 <- viterbi(listeria2sub, step=0, err=0.002)$geno[[1]]
+        agm2 <- viterbi(listeria2sub, error_prob=0.002)[[1]]
         expect_equivalent(agm, agm2)
 
         # lowmem version
-        agm2b <- viterbi(listeria2sub, step=0, err=0.002, lowmem=TRUE)$geno[[1]]
+        agm2b <- viterbi(listeria2sub, error_prob=0.002, lowmem=TRUE)[[1]]
         expect_equivalent(agm, agm2b)
     }
 

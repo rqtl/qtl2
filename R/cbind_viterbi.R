@@ -20,46 +20,45 @@ cbind.viterbi <-
 {
     args <- list(...)
 
-    # to cbind: geno, map, grid, is_x_chr
-    # to pass through (must match): is_female, cross_info, crosstype, alleles, alleleprobs, step, off_end, stepwidth
+    # to cbind: the data itself, is_x_chr
+    # to pass through (must match): crosstype, alleles
 
     result <- args[[1]]
     if(length(args) == 1) return(result)
 
-    # check that things match
-    other_stuff <- c("is_female", "cross_info", "crosstype", "alleles", "alleleprobs",
-                     "step", "off_end", "stepwidth", "error_prob", "map_function")
+    # paste stuff together
+    for(i in 2:length(args)) {
+        if(nrow(args[[1]][[1]]) != nrow(args[[i]][[1]]) ||
+           !all(rownames(args[[1]][[1]]) == rownames(args[[i]][[1]])))
+            stop("Input objects 1 and ", i, " have different individuals")
+
+        result <- c(result, args[[i]])
+    }
+
+    other_stuff <- "is_x_chr"
+    for(obj in other_stuff)
+        attr(result, obj) <- attr(args[[1]], obj)
     for(i in 2:length(args)) {
         for(obj in other_stuff) {
-            if(!is_same(args[[1]][[obj]], args[[i]][[obj]]))
+            if(is.null(attr(args[[1]], obj)) && is.null(attr(args[[i]], obj))) next # not present
+            if(is.null(attr(args[[1]], obj)) || is.null(attr(args[[i]], obj)))
+                stop(obj, " not present in all inputs")
+            attr(result, obj) <- c(attr(result, obj), attr(args[[i]], obj))
+        }
+    }
+
+    # check that things match
+    other_stuff <- c("crosstype", "alleles")
+    for(i in 2:length(args)) {
+        for(obj in other_stuff) {
+            if(!is_same(attr(args[[1]], obj), attr(args[[i]], obj)))
                 stop("Input objects 1 and ", i, " differ in their ", obj)
         }
     }
+    for(obj in other_stuff)
+        attr(result, obj) <- attr(args[[1]], obj)
 
-    # paste stuff together
-    main_stuff <- "geno"
-    for(i in 2:length(args)) {
-        for(obj in "geno") {
-            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
-            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[i]])))
-                stop(obj, " not present in all inputs")
-            if(nrow(args[[1]][[obj]][[1]]) != nrow(args[[i]][[obj]][[1]]) ||
-               !all(rownames(args[[1]][[obj]][[1]]) == rownames(args[[i]][[obj]][[1]])))
-                stop("Input objects 1 and ", i, " have different individuals")
-
-            result[[obj]] <- c(result[[obj]], args[[i]][[obj]])
-        }
-    }
-
-    other_stuff <- c("map", "grid", "is_x_chr")
-    for(i in 2:length(args)) {
-        for(obj in other_stuff) {
-            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
-            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[i]])))
-                stop(obj, " not present in all inputs")
-            result[[obj]] <- c(result[[obj]], args[[i]][[obj]])
-        }
-    }
+    class(result) <- class(args[[1]])
 
     result
 }

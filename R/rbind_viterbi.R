@@ -20,53 +20,30 @@ rbind.viterbi <-
 {
     args <- list(...)
 
-    # to rbind: geno, is_female, cross_info
-    # to pass through (must match): map, grid, crosstype, is_x_chr, alleles, alleleprobs, step, off_end, stepwidth
+    # to rbind: the data itself
+    # to pass through (must match): crosstype, is_x_chr, alleles
 
     result <- args[[1]]
     if(length(args) == 1) return(result)
 
     # check that things match
-    nested_stuff <- c("map", "grid")
-    other_stuff <- c("crosstype", "is_x_chr", "alleles", "alleleprobs",
-                     "step", "off_end", "stepwidth", "error_prob", "map_function")
+    other_stuff <- c("crosstype", "is_x_chr", "alleles")
     for(i in 2:length(args)) {
         for(obj in other_stuff) {
-            if(!is_same(args[[1]][[obj]], args[[i]][[obj]]))
+            if(!is_same(attr(args[[1]], obj), attr(args[[i]], obj)))
                 stop("Input objects 1 and ", i, " differ in their ", obj)
-        }
-        for(obj in nested_stuff) {
-            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
-            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[i]])))
-                stop(obj, " not prsent in all inputs")
-            if(!is_same(names(args[[1]][[obj]]), names(args[[i]][[obj]])))
-                stop("Input objects 1 and ", i, " differ in their ", obj)
-            for(chr in seq(along=args[[1]][[obj]])) {
-                if(!is_same(args[[1]][[obj]][[chr]], args[[i]][[obj]][[chr]]))
-                    stop("Input objects 1 and ", i, " differ in their ", obj,
-                         " on chromosome ", chr)
-            }
         }
     }
 
     for(i in 2:length(args)) {
-        if(!("is_female" %in% names(result)) && !("is_female" %in% names(args[[i]]))) next
-        if(!("is_female" %in% names(result) && "is_female" %in% names(args[[i]])))
-            stop("is_female present in only some input objects")
+        if(length(result) != length(args[[i]]) ||
+           !all(names(result) == names(args[[i]])))
+            stop("Input arguments have different chromosomes")
 
-        if(!("cross_info" %in% names(result)) && !("cross_info" %in% names(args[[i]]))) next
-        if(!("cross_info" %in% names(result) && "cross_info" %in% names(args[[i]])))
-            stop("cross_info present in only some input objects")
-        if(!is_same(ncol(result$cross_info), ncol(args[[i]]$cross_info)))
-            stop("input objects have varying numbers of cross_info columns")
-        result$cross_info <- rbind(result$cross_info, args[[i]]$cross_info)
-
-        if(!("geno" %in% names(result) && "geno" %in% names(args[[i]])))
-            stop("geno present in only some input objects")
-        for(s in seq(along=result$geno)) {
-            if(!is_same(ncol(result$geno[[s]]), ncol(args[[i]]$geno[[s]])))
-                stop("input objects have varying numbers of geno columns on chr ", names(result$geno)[s])
-            result$geno[[s]] <- rbind(result$geno[[s]], args[[i]]$geno[[s]])
+        for(s in seq(along=result)) {
+            if(!is_same(ncol(result[[s]]), ncol(args[[i]][[s]])))
+                stop("input objects have varying numbers of geno columns on chr ", names(result)[s])
+            result[[s]] <- rbind(result[[s]], args[[i]][[s]])
         }
     }
 
