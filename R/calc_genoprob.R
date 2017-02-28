@@ -92,6 +92,14 @@ function(cross, map=NULL, error_prob=1e-4,
     # pseudomarker map
     if(is.null(map))
         map <- insert_pseudomarkers(cross$gmap)
+    # possibly subset the map
+    if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
+        chr <- names(cross$geno)
+        if(!all(chr %in% names(map)))
+            stop("map doesn't contain all of the necessary chromosomes")
+        map <- map[chr]
+    }
+    # calculate marker index object
     index <- create_marker_index(lapply(cross$geno, colnames), map)
 
     probs <- vector("list", length(map))

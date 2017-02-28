@@ -19,8 +19,9 @@ Join multiple viterbi objects, as produced by
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-gA <- viterbi(grav2[1:5,1:2], step=1, error_prob=0.002)
-gB <- viterbi(grav2[1:5,3:4], step=1, error_prob=0.002)
+map <- insert_pseudomarkers(grav2$gmap, step=1)
+gA <- viterbi(grav2[1:5,1:2], map, error_prob=0.002)
+gB <- viterbi(grav2[1:5,3:4], map, error_prob=0.002)
 g <- cbind(gA, gB)
 
 }

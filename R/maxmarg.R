@@ -61,6 +61,14 @@ maxmarg <-
             pos <- pos[1]
         }
 
+        # possibly subset the map
+        if(length(map) != length(probs) || !all(names(map) == names(probs))) {
+            chr <- names(probs)
+            if(!all(chr %in% names(map)))
+                stop("map doesn't contain all of the necessary chromosomes")
+            map <- map[chr]
+        }
+
         chr <- as.character(chr)
         marker <- find_marker(map, chr, pos)
 

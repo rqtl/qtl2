@@ -54,7 +54,7 @@
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 #' map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
-#' g <- viterbi(grav2, map, error_prob=0.002)
+#' g <- viterbi(grav2, map_w_pmar, error_prob=0.002)
 
 viterbi <-
     function(cross, map=NULL, error_prob=1e-4,
@@ -84,6 +84,14 @@ viterbi <-
     # pseudomarker map
     if(is.null(map))
         map <- insert_pseudomarkers(cross$gmap)
+    # possibly subset the map
+    if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
+        chr <- names(cross$geno)
+        if(!all(chr %in% names(map)))
+            stop("map doesn't contain all of the necessary chromosomes")
+        map <- map[chr]
+    }
+    # calculate marker index object
     index <- create_marker_index(lapply(cross$geno, colnames), map)
 
     rf <- map2rf(map, map_function)
