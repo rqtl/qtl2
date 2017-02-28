@@ -48,6 +48,15 @@ insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
          pseudomarker_map=NULL, tol=0.01)
 {
+    # is input not a map but a cross2 object?
+    cl <- class(map)
+    if(length(cl)==1 && cl=="cross2") {
+        map <- map$gmap
+        if(is.null(map))
+            stop("Input is a cross2 object, but no genetic map found.")
+    }
+
+    # check inputs
     stepwidth <- match.arg(stepwidth)
     if(is.null(pseudomarker_map)) {
         pseudomarker_map <- vector("list", length(map))

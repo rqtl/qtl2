@@ -43,6 +43,14 @@
 calc_grid <-
 function(map, step=0, off_end=0, tol=0.01)
 {
+    # is input not a map but a cross2 object?
+    cl <- class(map)
+    if(length(cl)==1 && cl=="cross2") {
+        map <- map$gmap
+        if(is.null(map))
+            stop("Input is a cross2 object, but no genetic map found.")
+    }
+
     grid <- map
     chr <- names(grid) <- names(map)
     for(i in seq(along=map)) {
