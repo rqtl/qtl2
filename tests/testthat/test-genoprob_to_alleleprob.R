@@ -3,14 +3,15 @@ context("Conversion of genotype probabilities to allele probabilities")
 test_that("genoprob_to_alleleprob works for RIL", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
     allele_probs <- genoprob_to_alleleprob(probs)
 
     # expected result, hardly changed
     expected <- probs
-    expected$alleleprobs <- TRUE
-    for(i in seq(along=probs$probs))
-        colnames(expected$probs[[i]]) <- c("L", "C")
+    attr(expected, "alleleprobs") <- TRUE
+    for(i in seq(along=probs))
+        colnames(expected[[i]]) <- c("L", "C")
 
     expect_equal(allele_probs, expected)
 
@@ -19,7 +20,8 @@ test_that("genoprob_to_alleleprob works for RIL", {
 test_that("genoprob_to_alleleprob works for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     allele_probs <- genoprob_to_alleleprob(probs)
 
     f2_geno2alle <-
@@ -44,10 +46,10 @@ test_that("genoprob_to_alleleprob works for F2", {
         }
 
     expected <- probs
-    is_x_chr <- probs$is_x_chr
-    for(i in seq(along=probs$probs)) # loop over chromosomes
-        expected$probs[[i]] <- f2_geno2alle(probs$probs[[i]], is_x_chr[i])
-    expected$alleleprobs <- TRUE
+    is_x_chr <- attr(probs, "is_x_chr")
+    for(i in seq(along=probs)) # loop over chromosomes
+        expected[[i]] <- f2_geno2alle(probs[[i]], is_x_chr[i])
+    attr(expected, "alleleprobs") <- TRUE
 
     expect_equal(allele_probs, expected)
 
@@ -57,7 +59,8 @@ test_that("genoprob_to_alleleprob works when multi-core", {
     if(isnt_karl()) skip("this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
 
     allele_probs <- genoprob_to_alleleprob(probs)
     allele_probs_mc <- genoprob_to_alleleprob(probs, cores=4)
@@ -65,7 +68,8 @@ test_that("genoprob_to_alleleprob works when multi-core", {
 
     # following shouldn't really matter, since no calculations are done
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
     allele_probs <- genoprob_to_alleleprob(probs)
     allele_probs_mc <- genoprob_to_alleleprob(probs, cores=4)
     expect_equal(allele_probs_mc, allele_probs)

@@ -68,6 +68,7 @@ genoprob_to_alleleprob <-
     attr(probs, "is_x_chr") <- probs_attr$is_x_chr
     attr(probs, "alleles") <- probs_attr$alleles
     attr(probs, "alleleprobs") <- TRUE
+    class(probs) <- c("calc_genoprob", "list")
 
     probs
 }
