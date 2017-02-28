@@ -22,8 +22,9 @@ test_that("intercross autosome", {
     listeria <- listeria[chr,]
 
     listeria <- convert2cross2(listeria)
-    pr <- calc_genoprob(listeria, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
-    pr2 <- calc_genoprob(listeria, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
+    map <- insert_pseudomarkers(listeria$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(listeria, map, error_prob=0.01, lowmem=TRUE)
+    pr2 <- calc_genoprob(listeria, map, error_prob=0.01, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -38,8 +39,9 @@ test_that("risib autosome", {
     class(hyper)[1] <- "risib"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.002, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.002, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -53,8 +55,9 @@ test_that("riself autosome", {
     class(hyper)[1] <- "riself"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.002, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.002, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.002, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -66,8 +69,9 @@ test_that("f2 X chr", {
     fake.f2 <- fake.f2["X",]
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
-    pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(fake.f2, map, error_prob=0.01, lowmem=TRUE)
+    pr2 <- calc_genoprob(fake.f2, map, error_prob=0.01, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -81,8 +85,9 @@ test_that("bc X chr", {
     hyper$pheno$sex <- rep(c("female", "male"), nind(hyper)/2)
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -95,8 +100,9 @@ test_that("f2 X chr all males", {
     fake.f2$pheno$sex <- 1
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(fake.f2, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(fake.f2, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -110,8 +116,9 @@ test_that("f2 X chr all females", {
     fake.f2$pheno$sex <- 0
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(fake.f2, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(fake.f2, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -125,8 +132,9 @@ test_that("f2 X chr all females forw", {
     fake.f2$pheno$pgm <- 0
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=TRUE)
-    pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=FALSE)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(fake.f2, map, error_prob=0.0001, lowmem=TRUE)
+    pr2 <- calc_genoprob(fake.f2, map, error_prob=0.0001, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -140,8 +148,9 @@ test_that("f2 X chr all females rev", {
     fake.f2$pheno$pgm <- 1
 
     fake.f2 <- convert2cross2(fake.f2)
-    pr <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=TRUE)
-    pr2 <- calc_genoprob(fake.f2, step=1, stepwidth="max", error_prob=0.0001, lowmem=FALSE)
+    map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(fake.f2, map, error_prob=0.0001, lowmem=TRUE)
+    pr2 <- calc_genoprob(fake.f2, map, error_prob=0.0001, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -153,8 +162,9 @@ test_that("bc X chr all males", {
     hyper <- hyper["X",]
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -168,8 +178,9 @@ test_that("bc X chr all females", {
     hyper$pheno$sex <- "female"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -183,8 +194,9 @@ test_that("doubled haploids", {
     class(hyper)[1] <- "dh"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -199,8 +211,9 @@ test_that("haploids calc_genoprob", {
     class(hyper)[1] <- "haploid"
 
     hyper <- convert2cross2(hyper)
-    pr <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=TRUE)
-    pr2 <- calc_genoprob(hyper, step=1, stepwidth="max", error_prob=0.02, lowmem=FALSE)
+    map <- insert_pseudomarkers(hyper$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=TRUE)
+    pr2 <- calc_genoprob(hyper, map, error_prob=0.02, lowmem=FALSE)
 
     expect_equal(pr, pr2)
 
@@ -238,13 +251,14 @@ test_that("calc_genoprob works when multi-core", {
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
-    pr <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, lowmem=TRUE)
-    pr_mc <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, cores=4, lowmem=TRUE)
+    map <- insert_pseudomarkers(listeria2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(listeria2, map, error_prob=0.01, lowmem=TRUE)
+    pr_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=4, lowmem=TRUE)
     expect_equal(pr_mc, pr)
 
-    pr2 <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, lowmem=FALSE)
+    pr2 <- calc_genoprob(listeria2, map, error_prob=0.01, lowmem=FALSE)
     expect_equal(pr2, pr)
-    pr2_mc <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, cores=4, lowmem=FALSE)
+    pr2_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=4, lowmem=FALSE)
     expect_equal(pr2_mc, pr)
 
 })
