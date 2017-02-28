@@ -14,7 +14,7 @@ test_that("backcross autosome calc_genoprob matches R/qtl", {
     pr <- grab_prob_rqtl(hyper)
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, error_prob=0.002)$prob
+    pr2 <- calc_genoprob(hyper2, error_prob=0.002)
 
     expect_equivalent(pr, pr2)
 
@@ -30,7 +30,8 @@ test_that("intercross autosome calc_genoprob matches R/qtl", {
     pr <- grab_prob_rqtl(listeria)
 
     listeria2 <- convert2cross2(listeria)
-    pr2 <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01)$prob
+    map <- insert_pseudomarkers(listeria2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(listeria2, map, error_prob=0.01)
 
     expect_equivalent(pr, pr2)
 
@@ -48,7 +49,8 @@ test_that("risib autosome calc_genoprob matches R/qtl", {
     pr <- grab_prob_rqtl(hyper)
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.002)$prob
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.002)
 
     expect_equivalent(pr, pr2)
 
@@ -65,7 +67,8 @@ test_that("riself autosome calc_genoprob matches R/qtl", {
     pr <- grab_prob_rqtl(hyper)
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.002)$prob
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.002)
 
     expect_equivalent(pr, pr2)
 
@@ -82,7 +85,8 @@ test_that("f2 X chr calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.01)$prob[[1]]
+    map <- insert_pseudomarkers(fake.f2.2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(fake.f2.2, map, error_prob=0.01)[[1]]
 
     expect_equivalent(pr, pr2)
 
@@ -101,7 +105,8 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]]
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.02)[[1]]
 
     expect_equivalent(pr, pr2)
 
@@ -118,7 +123,8 @@ test_that("f2 X chr all males calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]][,5:6,]
+    map <- insert_pseudomarkers(fake.f2.2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(fake.f2.2, map, error_prob=0.02)[[1]][,5:6,]
 
     expect_equivalent(pr, pr2)
 
@@ -136,7 +142,8 @@ test_that("f2 X chr all females calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]]
+    map <- insert_pseudomarkers(fake.f2.2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(fake.f2.2, map, error_prob=0.02)[[1]]
     pr2 <- pr2[,1:2,] + pr2[,4:3,] # recode as in R/qtl
 
     expect_equivalent(pr, pr2)
@@ -155,7 +162,8 @@ test_that("f2 X chr all females forw calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.0001)$prob[[1]][,1:2,]
+    map <- insert_pseudomarkers(fake.f2.2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(fake.f2.2, map, error_prob=0.0001)[[1]][,1:2,]
 
     expect_equivalent(pr, pr2)
 
@@ -172,7 +180,8 @@ test_that("f2 X chr all females rev calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     fake.f2.2 <- convert2cross2(fake.f2)
-    pr2 <- calc_genoprob(fake.f2.2, step=1, stepwidth="max", error_prob=0.0001)$prob[[1]][,4:3,]
+    map <- insert_pseudomarkers(fake.f2.2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(fake.f2.2, map, error_prob=0.0001)[[1]][,4:3,]
 
     expect_equivalent(pr, pr2)
 
@@ -190,7 +199,8 @@ test_that("bc X chr all males calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]][,3:4,]
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.02)[[1]][,3:4,]
 
     expect_equivalent(pr, pr2)
 
@@ -209,7 +219,8 @@ test_that("bc X chr all females calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]]
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.02)[[1]]
     pr2 <- pr2[,1:2,] + pr2[,3:4,]
 
     expect_equivalent(pr, pr2)
@@ -228,7 +239,8 @@ test_that("doubled haploids calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]]
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.02)[[1]]
 
     expect_equivalent(pr, pr2)
 
@@ -247,7 +259,8 @@ test_that("haploids calc_genoprob matches R/qtl", {
     pr <- aperm(pr, c(1,3,2))
 
     hyper2 <- convert2cross2(hyper)
-    pr2 <- calc_genoprob(hyper2, step=1, stepwidth="max", error_prob=0.02)$prob[[1]]
+    map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
+    pr2 <- calc_genoprob(hyper2, map, error_prob=0.02)[[1]]
 
     expect_equivalent(pr, pr2)
 
@@ -279,8 +292,9 @@ test_that("calc_genoprob works when multi-core", {
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
-    pr <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01)
-    pr_mc <- calc_genoprob(listeria2, step=1, stepwidth="max", error_prob=0.01, cores=4)
+    map <- insert_pseudomarkers(listeria2$gmap, step=1, stepwidth="max")
+    pr <- calc_genoprob(listeria2, map, error_prob=0.01)
+    pr_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=4)
 
     expect_equal(pr_mc, pr)
 
