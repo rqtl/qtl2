@@ -131,6 +131,7 @@ function(cross, map=NULL, n_draws=1, error_prob=1e-4,
     names(draws) <- names(cross$gmap)
     attr(draws, "crosstype") <- cross$crosstype
     attr(draws, "is_x_chr") <- cross$is_x_chr
+    attr(draws, "alleles") <- cross$alleles
 
     class(draws) <- c("sim_geno", "list")
     draws

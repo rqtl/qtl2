@@ -93,6 +93,7 @@ sim_geno2 <-
 
     attr(draws, "crosstype") <- cross$crosstype
     attr(draws, "is_x_chr") <- cross$is_x_chr
+    attr(draws, "alleles") <- cross$alleles
 
     class(draws) <- c("sim_geno", "list")
     draws
