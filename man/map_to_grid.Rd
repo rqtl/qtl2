@@ -4,19 +4,17 @@
 \alias{map_to_grid}
 \title{Subset a map to positions on a grid}
 \usage{
-map_to_grid(map, grid = NULL)
+map_to_grid(map, grid)
 }
 \arguments{
 \item{map}{A list of vectors of marker positions.}
 
-\item{grid}{A list of vectors of logical values (aligned with
-\code{map}), with TRUE indicating the position is on the grid.
-If missing, we look in \code{map} for an attribute
-\code{"grid"}.}
+\item{grid}{A list of logical vectors (aligned with
+\code{map}), with TRUE indicating the position is on the grid.}
 }
 \value{
 Same list as input, but subset to just include
-pseudomarkers along a grid. The map attribute is similarly subset.
+pseudomarkers along a grid.
 }
 \description{
 Subset a map object to the locations on some grid.
@@ -31,7 +29,11 @@ along each chromosome.
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 sapply(map_w_pmar, length)
-map_sub <- map_to_grid(map_w_pmar)
+grid <- calc_grid(grav2$gmap, step=1)
+map_sub <- map_to_grid(map_w_pmar, grid)
 sapply(map_sub, length)
+}
+\seealso{
+\code{\link{calc_grid}}, \code{\link{probs_to_grid}}
 }
 \keyword{utilities}

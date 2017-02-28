@@ -3,21 +3,17 @@ suppressMessages(library(qtl))
 
 test_that("grid-based version works in simple case", {
 
-    #equally-spaced map
+    # equally-spaced map
     map <- seq(0, 50, by=2.5)
 
     # step = marker distance
     pmap <- insert_pseudomarkers(list("1"=map), step=2.5, off_end=0, stepwidth="fixed")
     expect_equivalent(map, pmap[[1]])
-    expect_equal(attr(pmap, "grid")[[1]], rep(TRUE, length(map)))
 
     # step = 1
     pmap <- insert_pseudomarkers(list("1"=map), step=1, off_end=0, stepwidth="fixed")
     pmap_qtl <- qtl::create.map(map, step=1, off.end=0)
     expect_equivalent(pmap[[1]], pmap_qtl)
-
-    # expected grid
-    expect_equal(attr(pmap, "grid")[[1]], !is.na(match(pmap[[1]], seq(0, 50, by=1))))
 
 })
 
@@ -106,9 +102,6 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
         combined_map_2 <- sort(c(map[[i]], pseudomarker_map[[i]]))
         expect_equivalent(combined_map_2, combined_map[[i]])
         expect_equal(names(combined_map_2), names(combined_map[[i]]))
-
-        grid <- attr(combined_map, "grid")[[i]]
-        expect_equal(grid, names(combined_map[[i]]) %in% names(pseudomarker_map[[i]]))
     }
 
     expect_equal(names(map), names(combined_map))

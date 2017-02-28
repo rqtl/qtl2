@@ -4,13 +4,11 @@
 #' Subset a map object to the locations on some grid.
 #'
 #' @param map A list of vectors of marker positions.
-#' @param grid A list of vectors of logical values (aligned with
+#' @param grid A list of logical vectors (aligned with
 #' \code{map}), with TRUE indicating the position is on the grid.
-#' If missing, we look in \code{map} for an attribute
-#' \code{"grid"}.
 #'
 #' @return Same list as input, but subset to just include
-#' pseudomarkers along a grid. The map attribute is similarly subset.
+#' pseudomarkers along a grid.
 #'
 #' @details This is generally for the case of a map created with
 #' \code{\link{insert_pseudomarkers}} with \code{step}>0 and
@@ -19,20 +17,19 @@
 #'
 #' @export
 #' @keywords utilities
+#' @seealso \code{\link{calc_grid}}, \code{\link{probs_to_grid}}
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 #' map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 #' sapply(map_w_pmar, length)
-#' map_sub <- map_to_grid(map_w_pmar)
+#' grid <- calc_grid(grav2$gmap, step=1)
+#' map_sub <- map_to_grid(map_w_pmar, grid)
 #' sapply(map_sub, length)
 
 map_to_grid <-
-    function(map, grid=NULL)
+    function(map, grid)
 {
-    if(is.null(grid))
-        grid <- attr(map, "grid")
-
     if(length(map) != length(grid))
         stop("length(grid) [", length(grid), "] != length(map) [", length(map), "]")
 

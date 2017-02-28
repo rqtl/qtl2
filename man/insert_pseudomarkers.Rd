@@ -30,10 +30,7 @@ ignored.}
 }
 \value{
 A list like the input \code{map} with pseudomarkers
-inserted. If \code{step}>0 and \code{stepwidth="fixed"}, or if
-\code{pseudomarker_map} is provided, the result will contain an
-attribute, \code{"grid"}, which is a list of logical vectors
-that indicate which positions correspond to the fixed grid.
+inserted.
 }
 \description{
 Insert pseudomarkers into a map of genetic markers, for a single chromosome.
@@ -51,10 +48,14 @@ equally-spaced pseudomarkers will be added.
 
 If \code{pseudomarker_map} is provided, then the \code{step},
 \code{off_end}, and \code{stepwidth} arguments are ignored, and the
-input \code{pseudomarker_map} is taken to be a grid of pseudomarkers.
+input \code{pseudomarker_map} is taken to be the set of
+pseudomarker positions.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
+}
+\seealso{
+\code{\link{calc_genoprob}}, \code{\link{calc_grid}}
 }
 \keyword{utilities}

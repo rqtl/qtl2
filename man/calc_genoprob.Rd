@@ -47,10 +47,6 @@ A list of three-dimensional arrays of probabilities,
     indicates whether the probabilities are compressed to allele
     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
 }
-
-If the input \code{map} has a \code{"grid"} attribute that
-indicates which markers/pseudomarkers are along some grid of
-positions, it will also be added as an attribute to the result.
 }
 \description{
 Uses a hidden Markov model to calculate the probabilities of the
@@ -80,5 +76,8 @@ Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 gmap_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, gmap_w_pmar, error_prob=0.002)
+}
+\seealso{
+\code{\link{insert_pseudomarkers}}
 }
 \keyword{utilities}
