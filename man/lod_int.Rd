@@ -4,12 +4,15 @@
 \alias{lod_int}
 \title{Calculate LOD support intervals}
 \usage{
-lod_int(scan1_output, chr, lodcolumn = 1, threshold = 0, peakdrop = Inf,
-  drop = 1.5, expand2markers = TRUE)
+lod_int(scan1_output, map, chr, lodcolumn = 1, threshold = 0,
+  peakdrop = Inf, drop = 1.5, expand2markers = TRUE)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}}.}
+
+\item{map}{A list of vectors of marker positions, as produced by
+\code{\link[qtl2geno]{insert_pseudomarkers}}.}
 
 \item{chr}{Chromosome ID to consider (must be a single value).}
 
@@ -62,8 +65,11 @@ library(qtl2geno)
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 \dontshow{iron <- iron[,7]}
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno
@@ -75,7 +81,7 @@ Xcovar <- get_x_covar(iron)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # 1.5-LOD support interval for QTL on chr 7, first phenotype
-lod_int(out, chr=7, lodcolum=1)
+lod_int(out, map, chr=7, lodcolum=1)
 }
 \seealso{
 \code{\link{bayes_int}}, \code{\link{find_peaks}}, \code{\link{scan1}}
