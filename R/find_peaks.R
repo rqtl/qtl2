@@ -5,6 +5,8 @@
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}}.
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
 #' @param threshold Minimum LOD score for a peak (can be a vector with
 #' separate thresholds for each lod score column in
 #' \code{scan1_output})
@@ -81,8 +83,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -94,18 +99,18 @@
 #' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # find just the highest peak on each chromosome
-#' find_peaks(out, threshold=3, peakdrop=Inf)
+#' find_peaks(out, map, threshold=3, peakdrop=Inf)
 #'
 #' # possibly multiple peaks per chromosome
-#' find_peaks(out, threshold=3, peakdrop=2)
+#' find_peaks(out, map, threshold=3, peakdrop=2)
 #'
 #' # possibly multiple peaks, also getting LOD support intervals
-#' find_peaks(out, threshold=3, peakdrop=2, drop=1.5)
+#' find_peaks(out, map, threshold=3, peakdrop=2, drop=1.5)
 #'
 #' # possibly multiple peaks, also getting Bayes intervals
-#' find_peaks(out, threshold=3, peakdrop=2, prob=0.95)
+#' find_peaks(out, map, threshold=3, peakdrop=2, prob=0.95)
 find_peaks <-
-    function(scan1_output, threshold=3, peakdrop=Inf, drop=NULL, prob=NULL,
+    function(scan1_output, map, threshold=3, peakdrop=Inf, drop=NULL, prob=NULL,
              thresholdX=NULL, peakdropX=NULL, dropX=NULL, probX=NULL,
              expand2markers=TRUE, cores=1)
 {
@@ -113,11 +118,11 @@ find_peaks <-
         stop('No more than one of "drop" and "prob" should be provided')
 
     if(!is.null(drop)) # also include lod support intervals
-        return(find_peaks_and_lodint(scan1_output, threshold, peakdrop, drop,
+        return(find_peaks_and_lodint(scan1_output, map, threshold, peakdrop, drop,
                                      thresholdX, peakdropX, dropX,
                                      expand2markers, cores))
     if(!is.null(prob)) # also include Bayes credible intervals
-        return(find_peaks_and_bayesint(scan1_output, threshold, peakdrop, prob,
+        return(find_peaks_and_bayesint(scan1_output, map, threshold, peakdrop, prob,
                                        thresholdX, peakdropX, probX,
                                        expand2markers, cores))
 
@@ -126,7 +131,7 @@ find_peaks <-
     if(!is.null(probX))
         warning("probX ignored if prob is not provided")
 
-    lodnames <- colnames(scan1_output$lod)
+    lodnames <- colnames(scan1_output)
     n_lod <- length(lodnames)
 
     # make the thresholds have length n_lod
@@ -148,8 +153,7 @@ find_peaks <-
         stop("peakdropX should have length 1 or ", n_lod)
 
     # split lod scores by column and by chromosome
-    lod <- as.list(as.data.frame(scan1_output$lod))
-    map <- scan1_output$map
+    lod <- as.list(as.data.frame(unclass(scan1_output)))
     chr <- rep(seq(along=map), vapply(map, length, 1))
     lod <- lapply(lod, split, chr)
 
@@ -163,7 +167,9 @@ find_peaks <-
     cores <- setup_cluster(cores)
 
     # X chr info
-    is_x_chr <- scan1_output$is_x_chr
+    is_x_chr <- attr(map, "is_x_chr")
+    if(is.null(is_x_chr))
+        is_x_chr <- rep(FALSE, length(map))
 
     # function to be applied to each batch
     by_batch_func <- function(i) {

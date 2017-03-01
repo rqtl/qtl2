@@ -3,11 +3,11 @@
 # This is like find_peaks but the results also include lod support intervals.
 # The same input as find_peaks, which calls this function when drop is given.
 find_peaks_and_lodint <-
-    function(scan1_output, threshold=3, peakdrop=Inf, drop=1.8,
+    function(scan1_output, map, threshold=3, peakdrop=Inf, drop=1.8,
              thresholdX=NULL, peakdropX=NULL, dropX=NULL,
              expand2markers=TRUE, cores=1)
 {
-    lodnames <- colnames(scan1_output$lod)
+    lodnames <- colnames(scan1_output)
     n_lod <- length(lodnames)
 
     # make the thresholds have length n_lod
@@ -41,8 +41,7 @@ find_peaks_and_lodint <-
         stop("Must have drop <= peakdrop")
 
     # split lod scores by column and by chromosome
-    lod <- as.list(as.data.frame(scan1_output$lod))
-    map <- scan1_output$map
+    lod <- as.list(as.data.frame(unclass(scan1_output)))
     chr <- rep(seq(along=map), vapply(map, length, 1))
     lod <- lapply(lod, split, chr)
 
@@ -56,7 +55,9 @@ find_peaks_and_lodint <-
     cores <- setup_cluster(cores)
 
     # X chr info
-    is_x_chr <- scan1_output$is_x_chr
+    is_x_chr <- attr(map, "is_x_chr")
+    if(is.null(is_x_chr))
+        is_x_chr <- rep(FALSE, length(map))
 
     # function to be applied to each batch
     by_batch_func <- function(i) {
