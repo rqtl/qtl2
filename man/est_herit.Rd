@@ -56,8 +56,11 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # kinship matrix
 kinship <- calc_kinship(probs)
