@@ -4,7 +4,7 @@
 \alias{cbind.scan1}
 \title{Join genome scan results for different phenotypes.}
 \usage{
-cbind.scan1(...)
+\method{cbind}{scan1}(...)
 }
 \arguments{
 \item{...}{Genome scan objects as produced by \code{\link{scan1}}.
@@ -39,4 +39,3 @@ out2 <- scan1(probs, phe2) # phenotype 2
 out <- cbind(out1, out2)
 
 }
-

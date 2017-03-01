@@ -46,4 +46,3 @@ maxlod(out)
 max(out, "2")
 }
 }
-

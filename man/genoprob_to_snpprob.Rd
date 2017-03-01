@@ -92,4 +92,3 @@ snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 }
 
 }
-

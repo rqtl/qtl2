@@ -71,4 +71,3 @@ names(covar) <- rownames(iron$covar)
 hsq <- est_herit(pheno, kinship, covar)
 
 }
-

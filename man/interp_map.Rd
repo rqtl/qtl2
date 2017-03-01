@@ -31,4 +31,3 @@ tointerp <- list("7" = c(pos7.1= 5, pos7.2=15, pos7.3=25),
 interp_map(tointerp, iron$gmap, iron$pmap)
 
 }
-

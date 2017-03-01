@@ -68,4 +68,3 @@ top_snps(out_snps, 0.5)
 \seealso{
 \code{\link{genoprob_to_snpprob}}, \code{\link[qtl2plot]{plot_snpasso}}
 }
-

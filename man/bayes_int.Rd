@@ -79,4 +79,3 @@ bayes_int(out, chr=7, lodcolum=1)
 \seealso{
 \code{\link{lod_int}}, \code{\link{find_peaks}}, \code{\link{scan1}}
 }
-

@@ -4,7 +4,7 @@
 \alias{rbind.scan1}
 \title{Join genome scan results for different chromosomes.}
 \usage{
-rbind.scan1(...)
+\method{rbind}{scan1}(...)
 }
 \arguments{
 \item{...}{Genome scan objects as produced by \code{\link{scan1}}.
@@ -36,4 +36,3 @@ out2 <- scan1(probs[,5], phe) # chr 5
 out <- rbind(out1, out2)
 
 }
-

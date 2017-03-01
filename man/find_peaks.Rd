@@ -125,4 +125,3 @@ find_peaks(out, threshold=3, peakdrop=2, prob=0.95)
 \seealso{
 \code{\link{scan1}}, \code{\link{lod_int}}, \code{\link{bayes_int}}
 }
-

@@ -115,4 +115,3 @@ organism association mapping. Genetics 178:1709--1723.
 Robinson GK (1991) That BLUP is a good thing: The estimation of
 random effects. Statist Sci 6:15--32.
 }
-
