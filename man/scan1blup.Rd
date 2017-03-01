@@ -47,18 +47,15 @@ produced by \code{\link[parallel]{makeCluster}}.}
 \item{quiet}{If FALSE, print message about number of cores used when multi-core.}
 }
 \value{
-A list containing the following
-\itemize{
-\item \code{coef} - A matrix of estimated regression coefficients, of dimension
+A matrix of estimated regression coefficients, of dimension
     positions x number of effects. The number of effects is
     \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
-\item \code{map} - A list containing the map positions at which the
-    calculations were performed, taken from the input \code{genoprobs}.
+May also contain the following attributes:
+\itemize{
 \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
     standard errors, of same dimension as \code{coef}.
-\item \code{contrasts} - The input matrix of genotype coefficient
-    contrasts that were used.
-\item \code{addcovar} - Names of additive covariates that were used.
+\item \code{sample_size} - Vector of sample sizes used for each
+    phenotype
 }
 }
 \description{
@@ -82,8 +79,11 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # convert to allele probabilities
 aprobs <- genoprob_to_alleleprob(probs)

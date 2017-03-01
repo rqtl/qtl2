@@ -30,7 +30,7 @@ scan1_pg <-
         intcovar <- as.matrix(intcovar)
 
     # check that kinship matrices are square with same IDs
-    kinshipIDs <- check_kinship(kinship, length(genoprobs$probs))
+    kinshipIDs <- check_kinship(kinship, length(genoprobs))
 
     # multiply kinship matrix by 2; rest is using 2*kinship
     # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
@@ -63,8 +63,8 @@ scan1_pg <-
 
     # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
-    is_x_chr <- genoprobs$is_x_chr
-    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs$probs))
+    is_x_chr <- attr(genoprobs, "is_x_chr")
+    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -74,10 +74,10 @@ scan1_pg <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
+    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
-    pos_names <- unlist(lapply(genoprobs$probs, function(a) dimnames(a)[[3]]))
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
+    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
     names(pos_names) <- NULL # this is just annoying
 
     # to contain the results
@@ -131,18 +131,10 @@ scan1_pg <-
         result[,phecol] <- lod
     }
 
-    result <- list(lod = result,
-                   map = genoprobs$map,
-                   hsq = hsq,
-                   sample_size = n,
-                   addcovar = colnames4attr(addcovar),
-                   Xcovar = colnames4attr(Xcovar),
-                   intcovar = colnames4attr(intcovar),
-                   is_x_chr = genoprobs$is_x_chr)
-
-    # preserve any snpinfo from genoprob_to_snpprob
-    if("snpinfo" %in% names(genoprobs))
-        result$snpinfo <- genoprobs$snpinfo
+    # add attributes
+    attr(result, "hsq") <- hsq
+    attr(result, "sample_size") <- n
+    attr(result, "snpinfo") <- attr(genoprobs, "snpinfo")
 
     class(result) <- c("scan1", "matrix")
     result
@@ -217,8 +209,8 @@ scan1_pg_clean <-
         else no_x <- FALSE
     } else loco <- TRUE
 
-    batches <- list(chr=rep(seq(along=genoprobs$probs), ncol(pheno)),
-                    phecol=rep(1:ncol(pheno), each=length(genoprobs$probs)))
+    batches <- list(chr=rep(seq(along=genoprobs), ncol(pheno)),
+                    phecol=rep(1:ncol(pheno), each=length(genoprobs)))
 
     # function that does the work
     by_batch_func <-
@@ -244,11 +236,11 @@ scan1_pg_clean <-
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
             Xcol2drop <- genoprob_Xcol2drop[[chr]]
             if(length(Xcol2drop) > 0) {
-                pr <- genoprobs$probs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
+                pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
                 pr <- pr[,-1,,drop=FALSE]
             }
             else
-                pr <- genoprobs$probs[[chr]][ind2keep,-1,,drop=FALSE]
+                pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
 
             # calculate weights for this chromosome
             if(loco) {
@@ -284,9 +276,9 @@ scan1_pg_clean <-
     if(any(result_is_null))
         stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
-    npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
+    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
     # to contain the results
     result <- matrix(nrow=totpos, ncol=ncol(pheno))

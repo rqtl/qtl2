@@ -31,18 +31,15 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #' @param quiet If FALSE, print message about number of cores used when multi-core.
 #'
-#' @return A list containing the following
-#' \itemize{
-#' \item \code{coef} - A matrix of estimated regression coefficients, of dimension
+#' @return A matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
 #'     \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
-#' \item \code{map} - A list containing the map positions at which the
-#'     calculations were performed, taken from the input \code{genoprobs}.
+#' May also contain the following attributes:
+#' \itemize{
 #' \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
 #'     standard errors, of same dimension as \code{coef}.
-#' \item \code{contrasts} - The input matrix of genotype coefficient
-#'     contrasts that were used.
-#' \item \code{addcovar} - Names of additive covariates that were used.
+#' \item \code{sample_size} - Vector of sample sizes used for each
+#'     phenotype
 #' }
 #'
 #' @details For each of the inputs, the row names are used as
@@ -71,8 +68,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # convert to allele probabilities
 #' aprobs <- genoprob_to_alleleprob(probs)
@@ -122,11 +122,9 @@ scan1blup <-
     }
 
     # genoprobs has more than one chromosome?
-    if(length(genoprobs$probs) > 1)
+    if(length(genoprobs) > 1)
         warning("Using only the first chromosome, ", names(genoprobs)[1])
-    map <- genoprobs$map[[1]]
-    chrid <- names(genoprobs$probs)[1]
-    genoprobs <- genoprobs$probs[[1]]
+    genoprobs <- genoprobs[[1]]
 
     # make sure contrasts is square n_genotypes x n_genotypes
     if(!is.null(contrasts)) {
@@ -206,13 +204,11 @@ scan1blup <-
     dimnames(coef) <- list(dimnames(genoprobs)[[3]], coefnames)
     if(se) dimnames(SE) <- dimnames(coef)
 
-    result <- list(coef = coef,
-                   map = map,
-                   sample_size = length(ind2keep),
-                   addcovar = colnames4attr(addcovar),
-                   contrasts = contrasts,
-                   chrid = chrid)
-    result$SE <- SE # include only if not NULL
+    result <- coef
+
+    # add some attributes with details on analysis
+    attr(result, "sample_size") <- length(ind2keep)
+    attr(result, "SE") <- SE # include only if not NULL
 
     class(result) <- c("scan1coef", "scan1", "matrix")
     result

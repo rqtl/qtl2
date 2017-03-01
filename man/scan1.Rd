@@ -39,19 +39,11 @@ produced by \code{\link[parallel]{makeCluster}}.}
 \item{...}{Additional control parameters; see Details.}
 }
 \value{
-A list containing the following
+A matrix of LOD scores, positions x phenotypes.
+Also contains one or more of the following attributes:
 \itemize{
-\item \code{lod} - A matrix of LOD scores, positions x phenotypes.
-\item \code{map} - A list containing the map positions at which the
-    calculations were performed, taken from the input \code{genoprobs}.
-\item \code{addcovar} - Names of additive covariates that were used.
-\item \code{Xcovar} - Names of special covariates for X chromosome
-    under the null hypothesis of no QTL
-\item \code{intcovar} - Names of interactive covariates that were used.
 \item \code{sample_size} - Vector of sample sizes used for each
     phenotype
-\item \code{weights} - Logical value indicating whether weights
-    were used (only included if \code{kinship} was not).
 \item \code{hsq} - Included if \code{kinship} provided: A matrix of
     estimated heritabilities under the null hypothesis of no
     QTL. Columns are the phenotypes. If the \code{"loco"} method was
@@ -66,8 +58,6 @@ A list containing the following
     matrix will contain only results for distinct SNPs. The
     \code{index} column in \code{snpinfo} is the row index in the
     \code{lod} matrix that corresponds to the current SNP.
-\item \code{is_x_chr} - Taken from \code{genoprobs}; indicates
-    which chromosomes are the X chromosome.
 }
 }
 \description{
@@ -121,8 +111,11 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno

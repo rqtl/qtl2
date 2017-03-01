@@ -6,15 +6,18 @@
 \alias{[.scan1}
 \title{Subset scan1 output}
 \usage{
-subset_scan1(x, chr = NULL, lodcolumn = NULL, ...)
+subset_scan1(x, map, chr = NULL, lodcolumn = NULL, ...)
 
-\method{subset}{scan1}(x, chr = NULL, lodcolumn = NULL, ...)
+\method{subset}{scan1}(x, map, chr = NULL, lodcolumn = NULL, ...)
 
-\method{[}{scan1}(x, chr = NULL, lodcolumn = NULL)
+\method{[}{scan1}(x, map, chr = NULL, lodcolumn = NULL)
 }
 \arguments{
 \item{x}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}}.}
+
+\item{map}{A list of vectors of marker positions, as produced by
+\code{\link[qtl2geno]{insert_pseudomarkers}}.}
 
 \item{chr}{Vector of chromosomes.}
 
@@ -37,8 +40,11 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno
@@ -50,9 +56,21 @@ Xcovar <- get_x_covar(iron)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # pull out chromosome 8
-out-c8 <- subset(out, chr="8")
+out_c8 <- subset(out, map, chr="8")
+
+# can also use bracket notation; need to provide map in first slot
+out_c8 <- out[map,"8",]
 
 # just the second column on chromosome 2
-out_c2_spleen <- subset(out, "2", "spleen")
+out_c2_spleen <- subset(out, map, "2", "spleen")
+
+# again, in bracket notation
+out_c2_spleen <- out[map, "2", "spleen"]
+
+# all positions, but just the "liver" column
+out_spleen <- subset(out, map, lodcolumn="spleen")
+
+# bracket notation
+out_spleen <- out[map,,"spleen"]
 }
 }
