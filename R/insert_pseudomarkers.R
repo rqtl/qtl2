@@ -20,7 +20,8 @@
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
 #'
 #' @return A list like the input \code{map} with pseudomarkers
-#' inserted.
+#' inserted. Will also have an attribute \code{"is_x_chr"}, taken
+#' from the input \code{map}.
 #'
 #' @details If \code{stepwidth="fixed"}, a grid of pseudomarkers is
 #' added to the marker map.
@@ -77,6 +78,7 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
                                                    paste0("c", chr[i], ".loc"))
     }
 
+    attr(newmap, "is_x_chr") <- attr(map, "is_x_chr")
     newmap
 }
 
