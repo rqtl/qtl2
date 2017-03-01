@@ -64,7 +64,7 @@ rbind.scan1 <-
     # rbind attributes
     to_rbind <- c("hsq", "SE")
     for(i in 2:length(args)) {
-        for(obj in to_combine) {
+        for(obj in to_rbind) {
             if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next # not present
             if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
                 stop(obj, " not present in all inputs")
