@@ -72,8 +72,10 @@ Then, install R/qtl2 using `devtools::install_github()`.
 ### License
 
 The [qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan), and
-[qtl2plot](https://github.com/rqtl/qtl2plot) packages are free
+[qtl2scan](https://github.com/rqtl/qtl2scan),
+[qtl2plot](https://github.com/rqtl/qtl2plot), and
+[qtl2convert](https://github.com/rqtl/qtl2convert)
+packages are free
 software; you can redistribute them and/or modify them under the terms
 of the GNU General Public License, version 3, as published by the Free
 Software Foundation.
