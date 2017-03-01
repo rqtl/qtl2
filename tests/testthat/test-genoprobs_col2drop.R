@@ -13,11 +13,11 @@ test_that("genoprobs_cols2drop works", {
     pr <- calc_genoprob(fake.f2)
 
     # just X chromosome
-    expect_equal(genoprobs_col2drop(pr$probs$X), numeric(0))
+    expect_equal(genoprobs_col2drop(pr$X), numeric(0))
 
     # all chromosomes
-    expected <- vector("list", length(pr$probs))
-    names(expected) <- names(pr$probs)
+    expected <- vector("list", length(pr))
+    names(expected) <- names(pr)
     for(i in seq(along=expected)) expected[[i]] <- numeric(0)
     expect_equal(genoprobs_col2drop(pr), expected)
     expect_equal(genoprobs_col2drop(pr, FALSE), expected)
@@ -28,7 +28,7 @@ test_that("genoprobs_cols2drop works", {
     pr <- calc_genoprob(fake.f2)
 
     # just X chromosome
-    expect_equal(genoprobs_col2drop(pr$probs$X), 1:4)
+    expect_equal(genoprobs_col2drop(pr$X), 1:4)
 
     # all chromosomes
     expected$X <- 1:4
@@ -38,7 +38,7 @@ test_that("genoprobs_cols2drop works", {
     # test Xonly=FALSE
     expected2 <- expected;expected2$X <- numeric(0)
     prA <- pr
-    prA$is_x_chr <- rep(FALSE, length(prA))
+    attr(prA, "is_x_chr") <- rep(FALSE, length(prA))
     expect_equal(genoprobs_col2drop(prA), expected2)
     expect_equal(genoprobs_col2drop(prA, FALSE), expected)
 
@@ -48,7 +48,7 @@ test_that("genoprobs_cols2drop works", {
     pr <- calc_genoprob(fake.f2)
 
     # just X chromosome
-    expect_equal(genoprobs_col2drop(pr$probs$X), 5:6)
+    expect_equal(genoprobs_col2drop(pr$X), 5:6)
 
     # all chromosomes
     expected$X <- 5:6
@@ -58,7 +58,7 @@ test_that("genoprobs_cols2drop works", {
     # test Xonly=FALSE
     expected2 <- expected;expected2$X <- numeric(0)
     prA <- pr
-    prA$is_x_chr <- rep(FALSE, length(prA))
+    attr(prA, "is_x_chr") <- rep(FALSE, length(prA))
     expect_equal(genoprobs_col2drop(prA), expected2)
     expect_equal(genoprobs_col2drop(prA, FALSE), expected)
 
