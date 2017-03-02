@@ -4,7 +4,7 @@
 \alias{plot_snpasso}
 \title{Plot SNP associations}
 \usage{
-plot_snpasso(scan1output, show_all_snps = TRUE, drop.hilit = NA,
+plot_snpasso(scan1output, map, show_all_snps = TRUE, drop.hilit = NA,
   col.hilit = "violetred", col = "darkslateblue", pch = 16, cex = 0.5,
   ylim = NULL, add = FALSE, gap = 25, bgcolor = "gray90",
   altbgcolor = "gray85", ...)
@@ -14,6 +14,9 @@ plot_snpasso(scan1output, show_all_snps = TRUE, drop.hilit = NA,
 contain an attribute, \code{"snpinfo"}, as when
 \code{\link[qtl2scan]{scan1}} are run with SNP probabilities
 produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.}
+
+\item{map}{A list of vectors of marker positions; generally this would be the
+\code{"map"} component of the output of \code{\link[qtl2scan]{genoprob_to_snpprob}}.}
 
 \item{show_all_snps}{If TRUE, expand to show all SNPs.}
 
@@ -69,28 +72,25 @@ unlink(tmpfile)
 # calculate strain distribution patterns
 snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 
-# switch map in allele probabilities to Mbp
-apr$map <- DOex$pmap
-
 # convert to snp probabilities
-snppr <- genoprob_to_snpprob(apr, snpinfo)
+snp_pr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
 
 # perform SNP association analysis (here, ignoring residual kinship)
 library(qtl2scan)
-out_snps <- scan1(snppr, DOex$pheno)
+out_snps <- scan1(snp_pr$probs, DOex$pheno)
 
 # plot results
 library(qtl2plot)
-plot_snpasso(out_snps)
+plot_snpasso(out_snps, snp_pr$map)
 
 # can also just type plot()
-plot(out_snps)
+plot(out_snps, snp_pr$map)
 
 # plot just subset of distinct SNPs
-plot_snpasso(out_snps, show_all_snps=FALSE)
+plot_snpasso(out_snps, snp_pr$map, show_all_snps=FALSE)
 
 # highlight the top snps (with LOD within 1.5 of max)
-plot(out_snps, drop.hilit=1.5)
+plot(out_snps, snp_pr$map, drop.hilit=1.5)
 }
 
 }
