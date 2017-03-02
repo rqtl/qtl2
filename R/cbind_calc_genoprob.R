@@ -21,8 +21,8 @@ cbind.calc_genoprob <-
 {
     args <- list(...)
 
-    # to cbind: probs, map, grid, is_x_chr
-    # to pass through (must match): is_female, cross_info, crosstype, alleles, alleleprobs, step, off_end, stepwidth
+    # to cbind: probs, is_x_chr, snpinfo
+    # to pass through (must match): crosstype, alleles, alleleprobs
 
     result <- args[[1]]
     if(length(args) == 1) return(result)
@@ -36,7 +36,7 @@ cbind.calc_genoprob <-
         result <- c(result, args[[i]])
     }
 
-    other_stuff <- "is_x_chr"
+    other_stuff <- c("is_x_chr", "snpinfo")
     for(obj in other_stuff)
         attr(result, obj) <- attr(args[[1]], obj)
     for(i in 2:length(args)) {
@@ -56,9 +56,9 @@ cbind.calc_genoprob <-
                 stop("Input objects 1 and ", i, " differ in their ", obj)
         }
     }
-
     for(obj in other_stuff)
         attr(result, obj) <- attr(args[[1]], obj)
+
     class(result) <- class(args[[1]])
 
     result
