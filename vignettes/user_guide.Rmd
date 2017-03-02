@@ -629,7 +629,8 @@ DOex <- read_cross2(file)
 Let's quickly whip through a basic analysis.
 
 We first calculate genotype probabilities and convert them to allele
-probabilities.
+probabilities. We'll just use marker locations and not insert any
+pseudomarkers.
 
 ```{r DOex_calc_genoprob, eval=FALSE}
 pr <- calc_genoprob(DOex, error_prob=0.002)
@@ -671,7 +672,7 @@ Here's a plot of the results.
 
 ```{r plot_DOex_scan}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot(out)
+plot(out, DOex$gmap)
 ```
 
 There's a strong peak on chromosome 2. Let's look at the QTL effects.
@@ -693,7 +694,7 @@ with the _official_ colors.
 
 ```{r plot_DOex_effects}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_coefCC(coef_c2, bgcolor="gray95")
+plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
 
@@ -712,7 +713,7 @@ marker positions, and so we need to find the peak marker and then
 find it's physical location:
 
 ```{r DOex_find_peak_in_Mbp}
-marker <- rownames(max(out, chr="2"))
+marker <- rownames(max(out, DOex$gmap, chr="2"))
 peak_Mbp <- DOex$pmap[["2"]][marker]
 ```
 
@@ -788,34 +789,30 @@ which takes the allele probabilities (or the full genotype
 probabilities, if you want to use a full 3-genotype model at each
 SNP), plus the SNP information table (including the SDP column).
 
-**But** there's one other problem: the map connected to our allele
-probabilities is in cM, but our SNP information is in Mbp. But we can
-plug in the physical map which is contained in the `DOex` object.
-
-```{r switch_to_Mbp}
-apr_Mbp <- apr
-apr_Mbp$map <- DOex$pmap
-```
-
-We can do it like this because we'd calculated the allele
+We need the physical map of markers, which we take from the `DOex`
+object. We can use this map directly, as we'd calculated the allele
 probabilities only at the observed markers. If we'd also calculated
 probabilities at pseudomarker positions between markers, we'd need to
-use interpolation to get the Mbp positions of the
+use interpolation to get Mbp positions for the
 pseudomarkers. There's a function `interp_map()` for assisting with
 that.
 
 So now we can calculate the SNP probabilities.
 
 ```{r calc_snpprobs}
-snppr <- genoprob_to_snpprob(apr_Mbp, snpinfo)
+snp_pr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
 ```
+
+The output of this function, `snp_pr`, is a list with two components:
+\code{"probs"} contains the SNP allele probabilities, and \code{"map"}
+contains a map of the SNPs. We'll need each of these, but separately.
 
 We can then use the object to perform the SNP association analysis in
 the region, using the same linear mixed model. We need to be sure to
 use the correct kinship matrix.
 
 ```{r perform_snp_scan}
-out_snps <- scan1(snppr, DOex$pheno, k[["2"]], sex)
+out_snps <- scan1(snp_pr$probs, DOex$pheno, k[["2"]], sex)
 ```
 
 The function `plot_snpasso()` in the qtl2plot package can be used to
@@ -826,7 +823,7 @@ same LOD score.
 
 ```{r plot_snp_asso}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps)
+plot_snpasso(out_snps, snp_pr$map)
 ```
 
 To get a table of the SNPs with the largest LOD scores, use the
@@ -834,7 +831,7 @@ function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
 
 ```{r top_snps}
-top_snps(out_snps)
+top_snps(out_snps, snp_pr$map)
 ```
 
 The top SNPs all have NZO and CAST with a common allele, different
@@ -849,5 +846,5 @@ We can highlight these top SNPs in the SNP association plot using the
 
 ```{r plot_snp_asso_hilit}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps, drop=1.5)
+plot_snpasso(out_snps, snp_pr$map, drop=1.5)
 ```
