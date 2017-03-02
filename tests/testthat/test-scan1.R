@@ -358,6 +358,8 @@ test_that("scan1 works with NAs in the covariates", {
     expect_equal(out2, scanone2scan1(out, colSums(!(is.na(y) | is.na(x))),
                                      posnames, colnames(y), addcovar=x))
 
+    map <- lapply(hyper$geno, function(a) attr(a$prob, "map"))
+
     # cf lm() for chr 1
     out.lm <- lod_via_lm(pr[[18]], y, x, map=map)
     expect_equal(out2[map,"18",], out.lm)
