@@ -10,7 +10,9 @@ genoprob_to_snpprob(genoprobs, snpinfo, tol = 0.00000001)
 \item{genoprobs}{Genotype probabilities as
 calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
 
-\item{snpinfo}{Data frame with SNP information with the following columns:
+\item{snpinfo}{Data frame with SNP information with the following
+    columns (the last three are generally derived from with
+    \code{\link{index_snps}}):
 \itemize{
 \item \code{chr} - Character string or factor with chromosome
 \item \code{pos} - Position (in same units as in the \code{"map"}
@@ -20,8 +22,12 @@ calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
     binary encoding indicates the founder genotypes
 \item \code{snp} - Character string with SNP identifier (if
     missing, the rownames are used).
-\item \code{index} - Column of indices that indicate equivalent
+\item \code{index} - Indices that indicate equivalent
     groups of SNPs, calculated by \code{\link{index_snps}}.
+\item \code{intervals} - Indexes that indicate which marker
+    intervals the SNPs reside.
+\item \code{on_map} - Indicate whether SNP coincides with a marker
+    in the \code{genoprobs}
 }}
 }
 \value{

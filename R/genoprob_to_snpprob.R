@@ -6,7 +6,10 @@
 #'
 #' @param genoprobs Genotype probabilities as
 #' calculated by \code{\link[qtl2geno]{calc_genoprob}}.
-#' @param snpinfo Data frame with SNP information with the following columns:
+#'
+#' @param snpinfo Data frame with SNP information with the following
+#'     columns (the last three are generally derived from with
+#'     \code{\link{index_snps}}):
 #' \itemize{
 #' \item \code{chr} - Character string or factor with chromosome
 #' \item \code{pos} - Position (in same units as in the \code{"map"}
@@ -16,10 +19,14 @@
 #'     binary encoding indicates the founder genotypes
 #' \item \code{snp} - Character string with SNP identifier (if
 #'     missing, the rownames are used).
-#' \item \code{index} - Column of indices that indicate equivalent
+#' \item \code{index} - Indices that indicate equivalent
 #'     groups of SNPs, calculated by \code{\link{index_snps}}.
+#' \item \code{intervals} - Indexes that indicate which marker
+#'     intervals the SNPs reside.
+#' \item \code{on_map} - Indicate whether SNP coincides with a marker
+#'     in the \code{genoprobs}
 #' }
-
+#'
 #' @return An object like the \code{genoprobs} input, but with imputed
 #' genotype probabilities at the selected SNPs indicated in
 #' \code{snpinfo$index}.
@@ -131,6 +138,14 @@ genoprob_to_snpprob <-
     sdp <- snpinfo$sdp
     interval <- snpinfo$interval
     on_map <- snpinfo$on_map
+
+    if(any(interval < 0 | interval > dim(genoprobs[[uchr]])[3]-1))
+        stop("interval values outside of the range [0, ",
+             dim(genoprobs[[uchr]])[3]-1, "].")
+
+    if(any(sdp < 1 | sdp > 2^n_alleles-1))
+        stop("sdp values outside of the range [1, ",
+             2^n_alleles-1, "].")
 
     # subset to the single chromosome
     results <- vector("list", 1)
