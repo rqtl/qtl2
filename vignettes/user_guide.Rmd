@@ -346,15 +346,16 @@ method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
 Use the argument `lodcolumn` to indicate which column to plot. Unlike the
 `plot.scanone()` function in [R/qtl](http://rqtl.org), the
 `plot_scan1()` function will only plot one set of LOD curves at a
-time.
+time, and you need to provide the marker/pseudomarker map (created by
+`insert_pseudomarkers()`).
 
 ```{r plot_lod}
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
-plot(out, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
-plot(out, lodcolumn=2, col="violetred", add=TRUE)
-legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out$lod), bg="gray90")
+plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
+plot(out, map, lodcolumn=2, col="violetred", add=TRUE)
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ```
 
 
@@ -362,13 +363,16 @@ legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out$lod), bg=
 
 The function `find_peaks()` in the
 [qtl2scan](https://github.com/rqtl/qtl2scan) package can be used to
-bidentify a set of LOD peaks that exceed some threshold. It can also
+identify a set of LOD peaks that exceed some threshold. It can also
 provide LOD support or Bayes credible intervals, by using the
 arguments `drop` (the amount to drop in the LOD support intervals)
 or `prob` (the nominal coverage for the Bayes credible intervals).
 
+You need to provide both the `scan1()` output as well as the
+marker/pseudomarker map.
+
 ```{r find_peaks}
-find_peaks(out, threshold=4, drop=1.5)
+find_peaks(out, map, threshold=4, drop=1.5)
 ```
 
 The `find_peaks()` function can also pick out multiple peaks on a
@@ -378,7 +382,7 @@ between the lowest of two adjacent peaks.  Use this feature with
 caution.
 
 ```{r find_multiple_peaks}
-find_peaks(out, threshold=4, peakdrop=1.8, drop=1.5)
+find_peaks(out, map, threshold=4, peakdrop=1.8, drop=1.5)
 ```
 
 The functions `lod_int()` and `bayes_int()` can be used to derive the
@@ -388,7 +392,7 @@ interval for the locus on chromosome 9 for the second phenotype
 ("spleen"):
 
 ```{r bayes_int}
-bayes_int(out, lodcolumn=2, chr=9, prob=0.95)
+bayes_int(out, map, lodcolumn=2, chr=9, prob=0.95)
 ```
 
 Both `lod_int()` and `bayes_int()` take a `peakdrop` argument, if you
@@ -396,7 +400,7 @@ wish to try to identify multiple peaks on a chromosome. Again, use
 this feature with caution.
 
 ```{r lod_int_multiple}
-lod_int(out, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
+lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
 ```
 
 Each row is a different peak; the columns are the lower interval endpoint, the
@@ -440,12 +444,12 @@ method.
 ```{r plot_lod_scan1_vs_pg}
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(4.1, 4.1, 1.6, 1.1))
-ymx <- max(rbind(out$lod, out_pg$lod, out_pg_loco$lod))
+ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))
 for(i in 1:2) {
-    plot(out, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
+    plot(out, map, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
               ylim=c(0, ymx*1.02))
-    plot(out_pg, lodcolumn=i, col=color[2], add=TRUE)
-    plot(out_pg_loco, lodcolumn=i, col=color[3], add=TRUE, lty=2)
+    plot(out_pg, map, lodcolumn=i, col=color[2], add=TRUE)
+    plot(out_pg_loco, map, lodcolumn=i, col=color[3], add=TRUE, lty=2)
     legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
 ```
@@ -488,10 +492,10 @@ Use the argument `columns` to indicate which coefficient columns to plot.
 ```{r plot_effects_liver_c2}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
-plot(c2eff, columns=1:3, col=col)
-co <- c2eff$coef
-for(i in 1:ncol(co))
-    axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2eff, map["2"], columns=1:3, col=col)
+last_coef <- unclass(c2eff)[nrow(c2eff),] # pull out last coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 The default is to provide phenotype averages for each genotype
@@ -511,11 +515,11 @@ second and third columns.
 
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-co <- c2effB$coef[,2:3]
 ymx <- max(abs(co))
-plot(c2effB, columns=2:3, col=col)
-for(i in 1:2)
-    axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2effB, map["2"], columns=2:3, col=col)
+last_coef <- unclass(c2effB)[nrow(c2effB),2:3] # last two coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 If you provide a kinship matrix to `scan1coef()`, it fits a linear
@@ -530,12 +534,11 @@ Here's a plot of the estimates.
 
 ```{r plot_effects_pg_liver_c2}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-plot(c2eff_pg, columns=1:3, col=col, ylab="Phenotype average")
-co <- c2eff$coef
-for(i in 1:ncol(co))
-    axis(side=4, at=co[nrow(co), i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2eff_pg, map["2"], columns=1:3, col=col, ylab="Phenotype average")
+last_coef <- unclass(c2eff_pg)[nrow(c2eff_pg),]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 You can also get estimated additive and dominance effects, using a
@@ -550,11 +553,11 @@ Here's a plot of the results.
 
 ```{r plot_effects_pg_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-co <- c2effB_pg$coef[,2:3]
 ymx <- max(abs(co))
-plot(c2effB_pg, columns=2:3, col=col)
-for(i in 1:2)
-    axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2effB_pg, map["2"], columns=2:3, col=col)
+last_coef <- unclass(c2effB_pg)[nrow(c2effB_pg),2:3]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 Another option for estimating the QTL effects is to treat them as
@@ -576,15 +579,14 @@ estimates. Note that
 
 ```{r plot_scan1blup}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-ylim <- range(c(c2blup$coef, c2eff$coef))+c(-1,1)
-plot(c2eff, columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
+ylim <- range(c(c2blup, c2eff))+c(-1,1)
+plot(c2eff, map["2"], columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
      xlab="Chr 2 position")
-plot(c2blup, columns=1:3, col=col, add=TRUE, lty=2)
-co <- c2eff$coef
-for(i in 1:ncol(co))
-    axis(side=4, at=co[nrow(co), i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2blup, map["2"], columns=1:3, col=col, add=TRUE, lty=2)
+last_coef <- unclass(c2eff)[nrow(c2eff),]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 
