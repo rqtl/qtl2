@@ -5,6 +5,9 @@
 #' @param x Estimated QTL effects ("coefficients") as obtained from
 #' \code{\link[qtl2scan]{scan1coef}}.
 #'
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#'
 #' @param columns Vector of columns to plot
 #'
 #' @param col Vector of colors, same length as \code{columns}. If
@@ -50,8 +53,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno[,1]
@@ -62,23 +68,27 @@
 #' library(qtl2scan)
 #' coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 #'
-#' # plot QTL effects
-#' plot(coef, columns=1:3, col=c("slateblue", "violetred", "green3"))
+#' # plot QTL effects (note the need to subset the map object, for chromosome 7)
+#' plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
-    function(x, columns=NULL, col=NULL, scan1_output=NULL,
+    function(x, map, columns=NULL, col=NULL, scan1_output=NULL,
              add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", top_panel_prop=0.65, ...)
 {
+    if(nrow(x) != length(unlist(map)))
+        stop("nrow(x) [", nrow(x), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     if(!is.null(scan1_output)) { # call internal function for both coef and LOD
-        return(plot_coef_and_lod(x, columns=columns, col=col, scan1_output=scan1_output,
+        return(plot_coef_and_lod(x, map, columns=columns, col=col, scan1_output=scan1_output,
                                  gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
                                  ylab="QTL effects", xaxt=NULL, top_panel_prop=top_panel_prop,
                                  ...))
     }
 
     if(is.null(columns))
-        columns <- 1:ncol(x$coef)
+        columns <- 1:ncol(x)
 
     if(is.null(col)) {
         n_col <- length(columns)
@@ -94,41 +104,36 @@ plot_coef <-
             stop("Need at least ", length(columns), " colors")
     }
 
-    map <- x$map
-    if(is.null(map)) stop("Input needs to contain a map")
-
     if(is.null(ylim)) {
-        ylim <- range(x$coef[,columns], na.rm=TRUE)
+        ylim <- range(unclass(x)[,columns], na.rm=TRUE)
         d <- diff(ylim) * 0.02 # add 2% on either side
         ylim <- ylim + c(-d, d)
     }
 
-    names(x)[names(x)=="coef"] <- "lod" # switch coef -> lod for use with plot_scan1()
-
     plot_coef_internal <-
-        function(x, columns, ylim, col, add, gap, bgcolor, altbgcolor, ylab, ...)
+        function(x, map, columns, ylim, col, add, gap, bgcolor, altbgcolor, ylab, ...)
         {
-            plot_scan1(x, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
+            plot_scan1(x, map, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
                        gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
                        ylab=ylab, ...)
             if(length(columns) > 1) {
                 for(i in seq(along=columns)[-1])
-                    plot_scan1(x, lodcolumn=columns[i], col=col[i], gap=gap,
+                    plot_scan1(x, map, lodcolumn=columns[i], col=col[i], gap=gap,
                                add=TRUE, ...)
             }
         }
-    plot_coef_internal(x, columns=columns, ylim=ylim, col=col, add=add, gap=gap,
+    plot_coef_internal(unclass(x), map, columns=columns, ylim=ylim, col=col, add=add, gap=gap,
                        bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
 }
 
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
+    function(x, map, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
-    plot_coef(x, columns=1:8, col=qtl2plot::CCcolors,
+    plot_coef(x, map, columns=1:8, col=qtl2plot::CCcolors,
               scan1_output=scan1_output, add=add, gap=gap,
               ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
               ylab=ylab, ...)
@@ -137,11 +142,11 @@ plot_coefCC <-
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
-    function(x, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
+    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
              bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects", ...)
 {
-    plot_coef(x, columns=columns, col=col, scan1_output=scan1_output,
+    plot_coef(x, map, columns=columns, col=col, scan1_output=scan1_output,
               add=add, gap=gap, ylim=ylim,
               bgcolor=bgcolor, altbgcolor=altbgcolor,
               ylab=ylab, ...)
