@@ -70,13 +70,13 @@ snpinfo <- readRDS(tmpfile)
 unlink(tmpfile)
 
 # calculate strain distribution patterns
+library(qtl2scan)
 snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 
 # convert to snp probabilities
 snp_pr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
 
 # perform SNP association analysis (here, ignoring residual kinship)
-library(qtl2scan)
 out_snps <- scan1(snp_pr$probs, DOex$pheno)
 
 # plot results
