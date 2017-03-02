@@ -220,9 +220,9 @@ plot.scan1 <-
     function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
-    # if snp asso result, use plot_snpasso() with just reduced snps; otherwise defaults
-    if(!is.null(attr(x, "snpinfo"))) {
-        plot_snpasso(x, map=map, add=add, gap=gap, bgcolor=bgcolor,
+    # if map looks like snpinfo, assume this is a snp asso result and use plot_snpasso()
+    if(is.data.frame(map) && "index" %in% names(map)) {
+        plot_snpasso(x, snpinfo=map, add=add, gap=gap, bgcolor=bgcolor,
                      altbgcolor=altbgcolor, ...)
     }
     else { # mostly, use plot_scan1()
