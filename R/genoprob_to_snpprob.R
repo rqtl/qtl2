@@ -90,8 +90,8 @@ genoprob_to_snpprob <-
     if(length(genoprobs) != length(map) || any(names(genoprobs) != names(map)))
         stop("genoprobs and map have different chromosomes.")
     nmar_genoprobs <- vapply(genoprobs, function(a) dim(a)[3], 1)
-    nmar_map <- vapply(map, length, 1))
-    if(any(nmar_genoprobs != nmar_map)
+    nmar_map <- vapply(map, length, 1)
+    if(any(nmar_genoprobs != nmar_map))
         stop("genoprobs and map have different numbers of markers on chr ",
              paste(names(map)[nmar_genoprobs != nmar_map], sep=", "))
 
