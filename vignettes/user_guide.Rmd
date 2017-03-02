@@ -185,21 +185,37 @@ package. Unlike the corresponding function in
 [R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
 input cross object, but is returned as a list of three-dimensional
 arrays (one per chromosome). Each 3d array of probabilities is
-arranged as individuals &times; genotypes &times; positions. (Well,
-actually, the output is a list that includes a bunch of different
-components, including a component `"probs"` which this list of 3d arrays, but also
-including the genetic map and other details).
+arranged as individuals &times; genotypes &times; positions.
+
+If we wish to perform QTL calculations at positions between markers
+(so called "pseudomarkers"), we first need to insert such positions
+into the genetic map with the function `insert_pseudomarkers()`.
+Unlike [R/qtl], the map is kept separate from the genotype
+probabilities.
 
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
 from
 [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
-(an intercross) as an example:
+(an intercross) as an example. We first load the data:
 
-```{r calc_genoprob}
+```{r load_data}
 library(qtl2geno)
 iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2geno") )
-pr <- calc_genoprob(iron, step=1, err=0.002)
+```
+
+We then use `insert_pseudomarkers()` to insert pseudomarkers into the
+genetic map, which we grab from the `iron` object as `iron$gmap`:
+
+```{r insert_pseudomarkers}
+map <- insert_pseudomarkers(iron$gmap, step=1)
+```
+
+And next we use `calc_genoprob()` to calculate the QTL genotype
+probabilities.
+
+```{r calc_genoprob}
+pr <- calc_genoprob(iron, map, err=0.002)
 ```
 
 To speed up the calculations with large datasets on a multi-core
@@ -209,7 +225,7 @@ of available cores will be detected via
 positive integer.
 
 ```{r calc_genoprob_multicore, eval=FALSE}
-pr <- calc_genoprob(iron, step=1, err=0.002, cores=4)
+pr <- calc_genoprob(iron, map, err=0.002, cores=4)
 ```
 
 
@@ -240,12 +256,23 @@ kinship <- calc_kinship(pr)
 By default, the genotype probabilities are converted to allele
 probabilities, and the kinship matrix is calculated as the proportion
 of shared alleles. To use genotype probabilities instead, use
-`use_allele_probs=FALSE`. Also, the default is to only use the
-probabilities along the grid of pseudomarkers (defined by the `step`
-argument to `calc_genoprob()`); to use the probabilities at _all_
-positions, use `use_grid_only=FALSE`. Further, by default we omit the
+`use_allele_probs=FALSE`. Further, by default we omit the
 X chromosome and only use the autosomes. To include the X chromosome,
 use `omit_x=FALSE`.
+
+In calculating the kinship matrix, one may wish to eliminate the effect of varying marker density across
+the genome, and only use the
+probabilities along the grid of pseudomarkers (defined by the `step`
+argument to `insert_pseudomarkers()`. To do so, we need to first use
+`calc_grid()` to determine the grid of pseudomarkers, and then
+`probs_to_grid()` to probabilities for positions that are not on the
+grid.
+
+```{r calc_kinship_grid}
+grid <- calc_grid(iron$gmap, step=1)
+pr_grid <- probs_to_grid(pr, grid)
+kinship_grid <- calc_kinship(pr_grid)
+```
 
 If, for your linear mixed model genome scan, you wish to use the
 "leave one chromosome out" (LOCO) method (scan each
