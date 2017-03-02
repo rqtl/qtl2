@@ -19,7 +19,7 @@ Suggests:
     devtools,
     roxygen2,
     qtl,
-    qtl2geno (>= 0.4-5),
+    qtl2geno (>= 0.5-3),
     qtl2plot (>= 0.4-1)
 License: GPL-3
 URL: http://kbroman.org/qtl2
