@@ -30,7 +30,8 @@ ignored.}
 }
 \value{
 A list like the input \code{map} with pseudomarkers
-inserted.
+inserted. Will also have an attribute \code{"is_x_chr"}, taken
+from the input \code{map}.
 }
 \description{
 Insert pseudomarkers into a map of genetic markers, for a single chromosome.
