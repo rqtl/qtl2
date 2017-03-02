@@ -21,7 +21,7 @@ cbind.calc_genoprob <-
 {
     args <- list(...)
 
-    # to cbind: probs, is_x_chr, snpinfo
+    # to cbind: probs, is_x_chr
     # to pass through (must match): crosstype, alleles, alleleprobs
 
     result <- args[[1]]
@@ -36,7 +36,7 @@ cbind.calc_genoprob <-
         result <- c(result, args[[i]])
     }
 
-    other_stuff <- c("is_x_chr", "snpinfo")
+    other_stuff <- c("is_x_chr")
     for(obj in other_stuff)
         attr(result, obj) <- attr(args[[1]], obj)
     for(i in 2:length(args)) {

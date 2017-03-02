@@ -56,7 +56,7 @@ subset.calc_genoprob <-
         cl <- class(x)
         class(x) <- "list"
 
-        attr_to_sub <- c("is_x_chr", "snpinfo") # draws is here, to also deal with sim_geno objects
+        attr_to_sub <- c("is_x_chr")
         attr_to_keep <- c("crosstype", "alleles", "alleleprobs")
         x_attr <- attributes(x)
         x_attrnam <- names(x_attr)

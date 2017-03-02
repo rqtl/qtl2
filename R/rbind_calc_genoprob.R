@@ -22,8 +22,8 @@ rbind.calc_genoprob <-
 {
     args <- list(...)
 
-    # to rbind: probs, is_female, cross_info
-    # to pass through (must match): map, grid, crosstype, is_x_chr, alleles, alleleprobs, step, off_end, stepwidth
+    # to rbind: the data
+    # to pass through (must match): crosstype, is_x_chr, alleles, alleleprobs
 
     result <- args[[1]]
     if(length(args) == 1) return(result)
