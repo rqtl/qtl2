@@ -78,13 +78,6 @@ subset_scan1 <-
 
         x <- unclass(x)[row,,drop=FALSE]
 
-        # attributes to subset list
-        sublist <- c("snpinfo")
-        for(obj in sublist) {
-            if(obj %in% x_attrnam)
-                x_attr[[obj]] <- x_attr[[obj]][chr]
-        }
-
         # attributes to subset by row
         for(obj in c("SE", "hsq")) {
             if(obj %in% x_attrnam) {
@@ -125,7 +118,7 @@ subset_scan1 <-
     }
 
     # restore attributes
-    for(obj in c("SE", "hsq", "snpinfo", "sample_size"))
+    for(obj in c("SE", "hsq", "sample_size"))
         attr(x, obj) <- x_attr[[obj]]
     class(x) <- x_class
 

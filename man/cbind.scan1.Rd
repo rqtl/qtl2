@@ -24,8 +24,6 @@ If components \code{addcovar}, \code{Xcovar},
 omit this information.
 
 If \code{hsq} present but has differing numbers of rows, we omit this information.
-
-If \code{snpinfo} present, they much match.
 }
 \examples{
 library(qtl2geno)

@@ -134,7 +134,6 @@ scan1_pg <-
     # add attributes
     attr(result, "hsq") <- hsq
     attr(result, "sample_size") <- n
-    attr(result, "snpinfo") <- attr(genoprobs, "snpinfo")
 
     class(result) <- c("scan1", "matrix")
     result

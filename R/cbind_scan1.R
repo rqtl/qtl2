@@ -15,8 +15,6 @@
 #'
 #' If \code{hsq} present but has differing numbers of rows, we omit this information.
 #'
-#' If \code{snpinfo} present, they much match.
-#'
 #' @examples
 #' library(qtl2geno)
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
@@ -38,21 +36,11 @@ cbind.scan1 <-
 
     # to cbind: main data, attributes SE, hsq
     # to c(): attribute sample_size
-    # check if matches: attribute snpinfo
 
     # grab attributes
     args_attr <- lapply(args, attributes)
 
     result <- unclass(args[[1]])
-
-    # check that maps match
-    must_match <- c("snpinfo")
-    for(i in 2:length(args)) {
-        for(obj in must_match) {
-            if(!is_same(args_attr[[1]][[obj]], args_attr[[i]][[obj]]))
-                stop("Input objects 1 and ", i, " have different ", obj)
-        }
-    }
 
     # cbind the data
     for(i in 2:length(args)) {
@@ -86,7 +74,7 @@ cbind.scan1 <-
         }
     }
 
-    for(obj in c("sample_size", "hsq", "SE", "snpinfo"))
+    for(obj in c("sample_size", "hsq", "SE"))
         attr(result, obj) <- args_attr[[1]][[obj]]
     class(result) <- class(args[[1]])
 

@@ -1,4 +1,4 @@
-## qtl2scan 0.5-1
+## qtl2scan 0.5-2
 
 ### New features
 
@@ -8,3 +8,8 @@
   Functions like `max_scan1`, `find_peaks`, `lod_int`, and `bayes_int`
   now need you to provide a map. Similarly, to subset `scan1` results
   by chromosome, you need to provide a map to the subsetting function.
+
+- Pulled the `"snpinfo"` attribute out of the `scan1` object. Now you
+  need to use `index_snps` to identify groups of equivalent SNPs prior
+  to running `genoprob_to_snpprob`. `index_snps` adds some new columns
+  to the `snpinfo` data frame, which are then needed by `top_snps`.

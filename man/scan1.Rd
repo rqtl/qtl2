@@ -52,12 +52,6 @@ Also contains one or more of the following attributes:
     will be the heritabilities for the different chromosomes (well,
     leaving out each one). If \code{Xcovar} was not NULL, there will at
     least be an autosome and X chromosome row.
-\item \code{snpinfo} - Present only if the input \code{genoprobs}
-    was produced by \code{\link{genoprob_to_snpprob}}, this is a list
-    of data frames giving information about all SNPs. The \code{lod}
-    matrix will contain only results for distinct SNPs. The
-    \code{index} column in \code{snpinfo} is the row index in the
-    \code{lod} matrix that corresponds to the current SNP.
 }
 }
 \description{

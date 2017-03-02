@@ -35,7 +35,6 @@ rbind.scan1 <-
 
 
     # to rbind: main data, attributes SE, hsq
-    # to c(): snpinfo
     # drop if not matching: sample_size
 
     # grab attributes
@@ -48,17 +47,6 @@ rbind.scan1 <-
         if(!is_same(colnames(result), colnames(args[[i]])))
            stop("Input objects 1 and ", i, " have different columns.")
            result <- rbind(result, unclass(args[[i]]))
-    }
-
-    # combine snpinfo
-    to_combine <- c("snpinfo")
-    for(i in 2:length(args)) {
-        for(obj in to_combine) {
-            if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next # not present
-            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
-                stop(obj, " not present in all inputs")
-            args_attr[[1]][[obj]] <- c(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
-        }
     }
 
     # rbind attributes
@@ -82,7 +70,7 @@ rbind.scan1 <-
     }
 
     # copy attributes
-    for(obj in c("sample_size", "hsq", "SE", "snpinfo"))
+    for(obj in c("sample_size", "hsq", "SE"))
         attr(result, obj) <- args_attr[[1]][[obj]]
     class(result) <- class(args[[1]])
 
