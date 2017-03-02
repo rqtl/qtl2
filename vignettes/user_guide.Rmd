@@ -515,7 +515,6 @@ second and third columns.
 
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-ymx <- max(abs(co))
 plot(c2effB, map["2"], columns=2:3, col=col)
 last_coef <- unclass(c2effB)[nrow(c2effB),2:3] # last two coefficients
 for(i in seq(along=last_coef))
@@ -553,7 +552,6 @@ Here's a plot of the results.
 
 ```{r plot_effects_pg_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-ymx <- max(abs(co))
 plot(c2effB_pg, map["2"], columns=2:3, col=col)
 last_coef <- unclass(c2effB_pg)[nrow(c2effB_pg),2:3]
 for(i in seq(along=last_coef))
