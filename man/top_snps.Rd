@@ -4,13 +4,17 @@
 \alias{top_snps}
 \title{Create table of top snp associations}
 \usage{
-top_snps(scan1_output, drop = 1.5, show_all_snps = TRUE)
+top_snps(scan1_output, map, drop = 1.5, show_all_snps = TRUE)
 }
 \arguments{
 \item{scan1_output}{Output of \code{\link[qtl2scan]{scan1}}.
 Should contain a component \code{"snpinfo"}, as when
 \code{\link[qtl2scan]{scan1}} is run with SNP probabilities
 produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.}
+
+\item{map}{A list of vectors of SNP locations; generally this would
+be the \code{"map"} component of the result produced by
+\code{\link{genoprob_to_snpprob}}.}
 
 \item{drop}{Show all SNPs with LOD score within this amount of the
 maximum SNP association.}
@@ -46,23 +50,20 @@ unlink(tmpfile)
 # calculate strain distribution patterns
 snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 
-# switch map in allele probabilities to Mbp
-apr$map <- DOex$pmap
-
 # convert to snp probabilities
-snppr <- genoprob_to_snpprob(apr, snpinfo)
+snppr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
 
 # perform SNP association analysis (here, ignoring residual kinship)
-out_snps <- scan1(snppr, DOex$pheno)
+out_snps <- scan1(snppr$probs, DOex$pheno)
 
 # table with top SNPs
-top_snps(out_snps)
+top_snps(out_snps, snppr$map)
 
 # top SNPs among the distinct subset at which calculations were performed
-top_snps(out_snps, show_all_snps=FALSE)
+top_snps(out_snps, snppr$map, show_all_snps=FALSE)
 
 # top SNPs within 0.5 LOD of max
-top_snps(out_snps, 0.5)
+top_snps(out_snps, snppr$map, 0.5)
 }
 }
 \seealso{

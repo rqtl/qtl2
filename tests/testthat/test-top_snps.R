@@ -31,13 +31,13 @@ test_that("top_snps() works", {
     apr$map <- DOex$pmap
 
     # convert to snp probabilities
-    snppr <- genoprob_to_snpprob(apr, snpinfo)
+    snppr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
 
     # perform SNP association analysis (here, ignoring residual kinship)
-    out_snps <- scan1(snppr, DOex$pheno)
+    out_snps <- scan1(snppr$probs, DOex$pheno)
 
     # table with top SNPs
-    result <- top_snps(out_snps)
+    result <- top_snps(out_snps, snppr$map)
 
     expected <- structure(list(snp_id = c("rs212414861", "rs229578122", "rs254318131",
                                "rs217679969", "rs238404461", "rs262749925", "rs231282689", "rs260286709",
@@ -89,11 +89,11 @@ test_that("top_snps() works", {
     expect_equal(result, expected)
 
     # top SNPs among the distinct subset at which calculations were performed
-    result <- top_snps(out_snps, show_all_snps=FALSE)
+    result <- top_snps(out_snps, snppr$map, show_all_snps=FALSE)
     expect_equal(result, expected[c(1,13),])
 
     # top SNPs within 1.0 LOD
-    result <- top_snps(out_snps, 0.5)
+    result <- top_snps(out_snps, snppr$map, 0.5)
     expect_equal(result, expected[1:12,])
 
 })

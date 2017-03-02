@@ -6,6 +6,10 @@
 #' Should contain a component \code{"snpinfo"}, as when
 #' \code{\link[qtl2scan]{scan1}} is run with SNP probabilities
 #' produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.
+
+#' @param map A list of vectors of SNP locations; generally this would
+#' be the \code{"map"} component of the result produced by
+#' \code{\link{genoprob_to_snpprob}}.
 #'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
@@ -38,32 +42,28 @@
 #' # calculate strain distribution patterns
 #' snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 #'
-#' # switch map in allele probabilities to Mbp
-#' apr$map <- DOex$pmap
-#'
 #' # convert to snp probabilities
-#' snppr <- genoprob_to_snpprob(apr, snpinfo)
+#' snppr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
 #'
 #' # perform SNP association analysis (here, ignoring residual kinship)
-#' out_snps <- scan1(snppr, DOex$pheno)
+#' out_snps <- scan1(snppr$probs, DOex$pheno)
 #'
 #' # table with top SNPs
-#' top_snps(out_snps)
+#' top_snps(out_snps, snppr$map)
 #'
 #' # top SNPs among the distinct subset at which calculations were performed
-#' top_snps(out_snps, show_all_snps=FALSE)
+#' top_snps(out_snps, snppr$map, show_all_snps=FALSE)
 #'
 #' # top SNPs within 0.5 LOD of max
-#' top_snps(out_snps, 0.5)
+#' top_snps(out_snps, snppr$map, 0.5)
 #' }
 #' @export
 #' @seealso \code{\link{genoprob_to_snpprob}}, \code{\link[qtl2plot]{plot_snpasso}}
 top_snps <-
-    function(scan1_output, drop=1.5, show_all_snps=TRUE)
+    function(scan1_output, map, drop=1.5, show_all_snps=TRUE)
 {
-    map <- scan1_output$map
     if(is.null(map)) stop("No map found")
-    snpinfo <- scan1_output$snpinfo
+    snpinfo <- attr(scan1_output, "snpinfo")
     if(is.null(snpinfo)) stop("No snpinfo found")
 
     chr <- names(map)
@@ -73,22 +73,22 @@ top_snps <-
     }
 
     # deal with possibly > 1 chr
-    lod <- subset(scan1_output, chr=chr)$lod
+    lod <- unclass(scan1_output[map, chr, ])
 
     map <- map[[chr]]
     snpinfo <- snpinfo[[chr]]
 
-    if(ncol(scan1_output$lod) > 1)
+    if(ncol(scan1_output) > 1)
         warning("Considering only the first LOD score column")
 
-    keep <- which(!is.na(lod) & lod > max(lod, na.rm=TRUE) - drop)
+    keep <- which(!is.na(lod) & lod >= max(lod, na.rm=TRUE) - drop)
 
     if(show_all_snps) { # expand to all related SNPs
         snpinfo <- snpinfo[snpinfo$index %in% keep,]
         snpinfo$lod <- lod[snpinfo$index]
     } else { # just keep the SNPs that were used
         snpinfo$lod <- lod[snpinfo$index]
-        snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1_output$lod)[keep],]
+        snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1_output)[keep],]
     }
 
     snpinfo
