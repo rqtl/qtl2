@@ -477,10 +477,7 @@ test_that("the genoprob_to_snpprob R function works", {
                    "qtl2data/master/DO_Recla/recla.zip")
     recla <- read_cross2(file)
     recla <- recla[c(1:2,53:54), c("19","X")] # subset to 4 mice and 2 chromosomes
-    probs <- calc_genoprob(recla, step=0, err=0.002)
-
-    # insert physical map into genotype probabilities
-    probs$map <- recla$pmap
+    probs <- calc_genoprob(recla, err=0.002)
 
     # founder genotypes for a set of SNPs
     snpgeno <- rbind(m1=c(3,1,1,3,1,1,1,1),
@@ -495,38 +492,36 @@ test_that("the genoprob_to_snpprob R function works", {
                           sdp=sdp,
                           snp=c("m1", "m2", "m3", "m4", "m5", "m6"), stringsAsFactors=FALSE)
 
-    snpprob <- genoprob_to_snpprob(probs, snpinfo)
-    snpprob19 <- genoprob_to_snpprob(probs, snpinfo[snpinfo$chr=="19",])
-    snpprobX <- genoprob_to_snpprob(probs, snpinfo[snpinfo$chr=="X",])
+    snpprob <- genoprob_to_snpprob(probs, recla$pmap, snpinfo)
+    snpprob19 <- genoprob_to_snpprob(probs, recla$pmap, snpinfo[snpinfo$chr=="19",])
+    snpprobX <- genoprob_to_snpprob(probs, recla$pmap, snpinfo[snpinfo$chr=="X",])
 
     # test combination
     combined <- snpprob19
-    combined$probs <- c(snpprob19$probs, snpprobX$probs)
+    combined$probs <- cbind(snpprob19$probs, snpprobX$probs)
     combined$map <- c(snpprob19$map, snpprobX$map)
-    combined$chrID <- c(snpprob19$chrID, snpprobX$chrID)
-    combined$snpinfo <- c(snpprob19$snpinfo, snpprobX$snpinfo)
-    combined$is_x_chr <- c(snpprob19$is_x_chr, snpprobX$is_x_chr)
+    attr(combined$map, "is_x_chr") <- attr(combined$probs, "is_x_chr")
     expect_equal(snpprob, combined)
 
     # construct expected for chr 19
-    int19 <- find_intervals(snpinfo$pos[snpinfo$chr=="19"], probs$map[["19"]])
-    expected19 <- array(dim=c(nrow(probs$probs[["19"]]), 3, nrow(int19)))
+    int19 <- find_intervals(snpinfo$pos[snpinfo$chr=="19"], recla$pmap[["19"]])
+    expected19 <- array(dim=c(nrow(probs[["19"]]), 3, nrow(int19)))
     for(i in 1:nrow(int19)) {
         gencol <- genocol_to_snpcol(8, snpinfo$sdp[snpinfo$chr=="19"][i])
         for(j in 1:3) {
             if(int19[i,2]==0)
-                expected19[,j,i] <- rowSums((probs$probs[["19"]][,gencol==j-1,int19[i,1]+1] +
-                                           probs$probs[["19"]][,gencol==j-1,int19[i,1]+2])/2)
+                expected19[,j,i] <- rowSums((probs[["19"]][,gencol==j-1,int19[i,1]+1] +
+                                           probs[["19"]][,gencol==j-1,int19[i,1]+2])/2)
             else
-                expected19[,j,i] <- rowSums(probs$probs[["19"]][,gencol==j-1,int19[i,1]+1])
+                expected19[,j,i] <- rowSums(probs[["19"]][,gencol==j-1,int19[i,1]+1])
         }
     }
     dimnames(expected19) <- dimnames(snpprob19$probs[["19"]])
     expect_equivalent(snpprob19$probs[["19"]], expected19)
 
     # need to deal with a reordering of the markers
-    intX <- find_intervals(snpinfo$pos[snpinfo$chr=="X"], probs$map$X)[c(3,1,2),]
-    expectedX <- array(dim=c(nrow(probs$probs[["X"]]), 5, nrow(intX)))
+    intX <- find_intervals(snpinfo$pos[snpinfo$chr=="X"], recla$pmap$X)[c(3,1,2),]
+    expectedX <- array(dim=c(nrow(probs[["X"]]), 5, nrow(intX)))
     for(i in 1:nrow(intX)) {
         sdp <- snpinfo$sdp[snpinfo$chr=="X"][c(3,1,2)][i] # need to reorder markers
         gencol <- genocol_to_snpcol(8, sdp)
@@ -534,18 +529,19 @@ test_that("the genoprob_to_snpprob R function works", {
         gencol <- c(gencol, (yg-1)/2+3) # add hemizygous males
         for(j in 1:5) {
             if(intX[i,2]==0)
-                expectedX[,j,i] <- rowSums((probs$probs[["X"]][,gencol==j-1,intX[i,1]+1] +
-                                             probs$probs[["X"]][,gencol==j-1,intX[i,1]+2])/2)
+                expectedX[,j,i] <- rowSums((probs[["X"]][,gencol==j-1,intX[i,1]+1] +
+                                             probs[["X"]][,gencol==j-1,intX[i,1]+2])/2)
             else
-                expectedX[,j,i] <- rowSums(probs$probs[["X"]][,gencol==j-1,intX[i,1]+1])
+                expectedX[,j,i] <- rowSums(probs[["X"]][,gencol==j-1,intX[i,1]+1])
         }
     }
+    dimnames(expectedX) <- dimnames(snpprob$probs$X)
     expect_equivalent(snpprobX$probs$X, expectedX)
     expect_equivalent(snpprob$probs, list("19"=expected19, X=expectedX))
 
     # compare snp info
-    expect_equal(snpprob[["19"]]$snpinfo, snpprob19[["19"]]$snpinfo)
-    expect_equal(snpprob[["X"]]$snpinfo, snpprobX[["X"]]$snpinfo)
+    expect_equal(attr(snpprob$probs, "snpinfo")["19"], attr(snpprob19$probs, "snpinfo"))
+    expect_equal(attr(snpprob$probs, "snpinfo")["X"], attr(snpprobX$probs, "snpinfo"))
 
     # repeat with some redundant SNPs
     snpinfo2 <- rbind(snpinfo, data.frame(chr=c("19", "19", "X", "X"),
@@ -554,65 +550,63 @@ test_that("the genoprob_to_snpprob R function works", {
                                           snp=c("m7","m8","m9","m10"),
                                           stringsAsFactors=FALSE))
 
-    snpprob2 <- genoprob_to_snpprob(probs, snpinfo2)
-    expect_equal(snpprob2$probs, snpprob$probs)
+    snpprob2 <- genoprob_to_snpprob(probs, recla$pmap, snpinfo2)
+    expect_equivalent(snpprob2$probs, snpprob$probs)
     snpinfo19 <- cbind(snpinfo2[snpinfo2$chr=="19",], index=c(1,2,3,2,1))
-    expect_equal(snpprob2$snpinfo[["19"]], snpinfo19)
+    expect_equal(attr(snpprob2$probs, "snpinfo")[["19"]], snpinfo19)
     snpinfoX <- cbind(snpinfo2[snpinfo2$chr=="X",], index=c(2,3,1,3,2))
-    expect_equal(snpprob2$snpinfo$X, snpinfoX)
+    expect_equal(attr(snpprob2$probs, "snpinfo")$X, snpinfoX)
 
     # convert to allele probabilities
     aprobs <- genoprob_to_alleleprob(probs)
-    snpaprob <- genoprob_to_snpprob(aprobs, snpinfo)
-    snpaprob19 <- genoprob_to_snpprob(aprobs, snpinfo[snpinfo$chr=="19",])
-    snpaprobX <- genoprob_to_snpprob(aprobs, snpinfo[snpinfo$chr=="X",])
+    snpaprob <- genoprob_to_snpprob(aprobs, recla$pmap, snpinfo)
+    snpaprob19 <- genoprob_to_snpprob(aprobs, recla$pmap, snpinfo[snpinfo$chr=="19",])
+    snpaprobX <- genoprob_to_snpprob(aprobs, recla$pmap, snpinfo[snpinfo$chr=="X",])
 
     # test combination
     combined <- snpaprob19
-    combined$probs <- c(snpaprob19$probs, snpaprobX$probs)
+    combined$probs <- cbind(snpaprob19$probs, snpaprobX$probs)
     combined$map <- c(snpaprob19$map, snpaprobX$map)
-    combined$chrID <- c(snpaprob19$chrID, snpaprobX$chrID)
-    combined$is_x_chr <- c(snpaprob19$is_x_chr, snpaprobX$is_x_chr)
-    combined$snpinfo <- c(snpaprob19$snpinfo, snpaprobX$snpinfo)
+    attr(combined$map, "is_x_chr") <- attr(combined$probs, "is_x_chr")
     expect_equal(snpaprob, combined)
 
     # construct expected for chr 19
-    expected19 <- array(dim=c(nrow(probs$probs[["19"]]), 2, nrow(int19)))
+    expected19 <- array(dim=c(nrow(probs[["19"]]), 2, nrow(int19)))
     for(i in 1:nrow(int19)) {
         gencol <- (invert_sdp(snpinfo$sdp[snpinfo$chr=="19"][i], 8)-1)/2
         for(j in 1:2) {
             if(int19[i,2]==0)
-                expected19[,j,i] <- rowSums((aprobs$probs[["19"]][,gencol==j-1,int19[i,1]+1] +
-                                             aprobs$probs[["19"]][,gencol==j-1,int19[i,1]+2])/2)
+                expected19[,j,i] <- rowSums((aprobs[["19"]][,gencol==j-1,int19[i,1]+1] +
+                                             aprobs[["19"]][,gencol==j-1,int19[i,1]+2])/2)
             else
-                expected19[,j,i] <- rowSums(aprobs$probs[["19"]][,gencol==j-1,int19[i,1]+1])
+                expected19[,j,i] <- rowSums(aprobs[["19"]][,gencol==j-1,int19[i,1]+1])
         }
     }
     expect_equivalent(snpaprob19$probs, list("19"=expected19))
 
     # need to deal with a reordering of the markers
-    intX <- find_intervals(snpinfo$pos[snpinfo$chr=="X"], probs$map$X)[c(3,1,2),]
-    expectedX <- array(dim=c(nrow(probs$probs[["X"]]), 2, nrow(int19)))
+    intX <- find_intervals(snpinfo$pos[snpinfo$chr=="X"], recla$pmap$X)[c(3,1,2),]
+    expectedX <- array(dim=c(nrow(probs[["X"]]), 2, nrow(int19)))
     for(i in 1:nrow(intX)) {
         sdp <- snpinfo$sdp[snpinfo$chr=="X"][c(3,1,2)][i] # need to reorder markers
         gencol <- (invert_sdp(sdp, 8)-1)/2
         for(j in 1:2) {
             if(intX[i,2]==0)
-                expectedX[,j,i] <- rowSums((aprobs$probs[["X"]][,gencol==j-1,intX[i,1]+1] +
-                                            aprobs$probs[["X"]][,gencol==j-1,intX[i,1]+2])/2)
+                expectedX[,j,i] <- rowSums((aprobs[["X"]][,gencol==j-1,intX[i,1]+1] +
+                                            aprobs[["X"]][,gencol==j-1,intX[i,1]+2])/2)
             else
-                expectedX[,j,i] <- rowSums(aprobs$probs[["X"]][,gencol==j-1,intX[i,1]+1])
+                expectedX[,j,i] <- rowSums(aprobs[["X"]][,gencol==j-1,intX[i,1]+1])
         }
     }
     expect_equivalent(snpaprobX$probs, list(X=expectedX))
     expect_equivalent(snpaprob$probs, list("19"=expected19, X=expectedX))
 
     # repeat with some redundant SNPs
-    snpaprob2 <- genoprob_to_snpprob(aprobs, snpinfo2)
+    snpaprob2 <- genoprob_to_snpprob(aprobs, recla$pmap, snpinfo2)
     expect_equivalent(snpprob2$probs, snpprob$probs)
     snpinfo19 <- cbind(snpinfo2[snpinfo2$chr=="19",], index=c(1,2,3,2,1))
-    expect_equal(snpaprob2$snpinfo[["19"]], snpinfo19)
+    expect_equal(attr(snpaprob2$probs, "snpinfo")[["19"]], snpinfo19)
     snpinfoX <- cbind(snpinfo2[snpinfo2$chr=="X",], index=c(2,3,1,3,2))
-    expect_equal(snpaprob2$snpinfo$X, snpinfoX)
+    expect_equal(attr(snpaprob2$probs, "snpinfo")$X, snpinfoX)
 
 })

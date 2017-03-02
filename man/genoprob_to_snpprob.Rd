@@ -4,11 +4,14 @@
 \alias{genoprob_to_snpprob}
 \title{Convert genotype probabilities to SNP probabilities}
 \usage{
-genoprob_to_snpprob(genoprobs, snpinfo, tol = 0.00000001)
+genoprob_to_snpprob(genoprobs, map, snpinfo, tol = 0.00000001)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as
 calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
+
+\item{map}{Physical map of markers and pseudomarkers in the
+\code{genoprobs} object.}
 
 \item{snpinfo}{Data frame with SNP information with the following columns:
 \itemize{
@@ -26,19 +29,24 @@ calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
 position at which genotype probabilities were already calculated.}
 }
 \value{
-An object like the \code{genoprobs} input,
+A list with two components:
+\itemize{
+\item \code{probs} - An object like the \code{genoprobs} input,
 but with imputed genotype probabilities at the selected SNPs.
-An added component \code{"snpinfo"} contains the input \code{snpinfo} with
+An added attribute \code{"snpinfo"} contains the input \code{snpinfo} with
 an additional column, \code{index}, that is an index to the
 genotype probabilities. (In cases where multiple SNPs are contained
 in the same interval and have the same strain distribution pattern
 (SDP), the probabilities would be all the same and so the results
 contain the probabilities for just one of them.)
+\item \code{map} - An object like the \code{map} input, but
+including the positions of imputed SNPs.
+}
 
 If the input \code{genoprobs} is for allele probabilities, the
-output has just two probability columns (for the two SNP
+\code{probs} output has just two probability columns (for the two SNP
 alleles). If the input has a full set of \eqn{n(n+1)/2}
-probabilities for \eqn{n} strains, the output has 3 probabilities
+probabilities for \eqn{n} strains, the \code{probs} output has 3 probabilities
 (for the three SNP genotypes). If the input has full genotype
 probabilities for the X chromosome (\eqn{n(n+1)/2} genotypes for
 the females followed by \eqn{n} hemizygous genotypes for the
@@ -67,10 +75,7 @@ file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")
 recla <- read_cross2(file)
 recla <- recla[c(1:2,53:54), c("19","X")] # subset to 4 mice and 2 chromosomes
-probs <- calc_genoprob(recla, step=0, err=0.002)
-
-# insert physical map into genotype probabilities
-probs$map <- recla$pmap
+probs <- calc_genoprob(recla, error_prob=0.002)
 
 # founder genotypes for a set of SNPs
 snpgeno <- rbind(m1=c(3,1,1,3,1,1,1,1),
@@ -84,11 +89,11 @@ snpinfo <- data.frame(chr=c("19", "19", "X", "X"),
                       snp=c("m1", "m2", "m3", "m4"), stringsAsFactors=FALSE)
 
 # collapse to SNP genotype probabilities
-snpprobs <- genoprob_to_snpprob(probs, snpinfo)
+snpprobs <- genoprob_to_snpprob(probs, recla$pmap, snpinfo)
 
 # could also first convert to allele probs
 aprobs <- genoprob_to_alleleprob(probs)
-snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
+snpaprobs <- genoprob_to_snpprob(aprobs, recla$pmap, snpinfo)
 }
 
 }
