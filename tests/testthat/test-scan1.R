@@ -224,6 +224,8 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
     hyper <- calc.genoprob(hyper, step=2.5)
     out <- scanone(hyper, method="hk", pheno.col=1:n_phe)
 
+    map <- lapply(hyper$geno, function(a) attr(a$prob, "map"))
+
     # inputs for R/qtl2
     pr <- convert_probs2qtl2(hyper)
     rownames(y) <- paste(1:n_ind)
