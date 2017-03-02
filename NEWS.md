@@ -1,4 +1,4 @@
-## qtl2geno 0.5-1
+## qtl2geno 0.5-4
 
 ### New features
 
