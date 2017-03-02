@@ -42,4 +42,3 @@ genes <- data.frame(chr = c("6", "6", "6", "6", "6", "6", "6", "6"),
 plot_genes(genes, xlim=c(140, 146))
 }
 \keyword{hgraphics}
-

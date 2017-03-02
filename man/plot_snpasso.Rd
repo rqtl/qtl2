@@ -97,4 +97,3 @@ plot(out_snps, drop.hilit=1.5)
 \seealso{
 \code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
 }
-

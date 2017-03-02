@@ -78,4 +78,3 @@ ptcolor <- c("darkslateblue", "violetred")[match(peaks$lodcolumn, c("liver", "sp
 # plot points
 points(xpos, peaks$lod, pch=21, bg=ptcolor)
 }
-
