@@ -114,6 +114,10 @@ find_peaks <-
              thresholdX=NULL, peakdropX=NULL, dropX=NULL, probX=NULL,
              expand2markers=TRUE, cores=1)
 {
+    if(nrow(scan1_output) != length(unlist(map)))
+        stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     if(!is.null(drop) && !is.null(prob))
         stop('No more than one of "drop" and "prob" should be provided')
 

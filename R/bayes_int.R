@@ -72,6 +72,10 @@ bayes_int <-
     function(scan1_output, map, chr, lodcolumn=1, threshold=0,
              peakdrop=Inf, prob=0.95, expand2markers=TRUE)
 {
+    if(nrow(scan1_output) != length(unlist(map)))
+        stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     if(missing(chr) || is.null(chr)) { # just use the first chr
         chr <- names(map)[1]
     }
