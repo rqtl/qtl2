@@ -48,21 +48,21 @@ phe <- iron$pheno[,1,drop=FALSE]
 
 test_that("scan1blup works with no kinship matrix", {
 
-    pr <- calc_genoprob(iron[,"16"], step=0)
+    pr <- calc_genoprob(iron[,"16"])
 
     blup <- scan1blup(pr, phe)
     blup_se <- scan1blup(pr, phe, se=TRUE)
-    expect_equal(blup$coef, blup_se$coef)
+    expect_equivalent(blup, blup_se)
 
     # cf preserve intercept vs not
     blup_int <- scan1blup(pr, phe, preserve_intercept=TRUE)
-    expect_equal(blup$coef, blup_int$coef[,1:3] + blup_int$coef[,4])
+    expect_equivalent(unclass(blup), unclass(blup_int)[,1:3] + unclass(blup_int)[,4])
 
     # brute force BLUPs
-    for(i in 1:dim(pr$probs[[1]])[[3]]) {
-        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe)
-        names(blup_alt) <- colnames(blup_int$coef)
-        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    for(i in 1:dim(pr[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr[[1]][,,i], phe)
+        names(blup_alt) <- colnames(blup_int)
+        expect_equal(unclass(blup_int)[i,], blup_alt, tol=1e-6)
     }
 
     # repeat with an additive covariate
@@ -71,24 +71,24 @@ test_that("scan1blup works with no kinship matrix", {
 
     blup <- scan1blup(pr, phe, addcovar=sex)
     blup_se <- scan1blup(pr, phe, addcovar=sex, se=TRUE)
-    expect_equal(blup$coef, blup_se$coef)
+    expect_equivalent(blup, blup_se)
 
     # cf preserve intercept vs not
     blup_int <- scan1blup(pr, phe, addcovar=sex, preserve_intercept=TRUE)
-    expect_equal(blup$coef, blup_int$coef[,c(1:3,5)] + cbind(blup_int$coef[,c(4,4,4)], 0))
+    expect_equivalent(unclass(blup), unclass(blup_int)[,c(1:3,5)] + cbind(unclass(blup_int)[,c(4,4,4)], 0))
 
     # brute force BLUPs
-    for(i in 1:dim(pr$probs[[1]])[[3]]) {
-        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe, addcovar=sex)
-        names(blup_alt) <- colnames(blup_int$coef)
-        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    for(i in 1:dim(pr[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr[[1]][,,i], phe, addcovar=sex)
+        names(blup_alt) <- colnames(blup_int)
+        expect_equal(unclass(blup_int)[i,], blup_alt, tolerance=1e-5)
     }
 
 })
 
 test_that("scan1blup works with kinship matrix", {
 
-    pr <- calc_genoprob(iron, step=0)
+    pr <- calc_genoprob(iron)
     K <- calc_kinship(pr[,c(1:15,17:19,"X")])
     pr <- pr[,"16"]
 
@@ -98,24 +98,24 @@ test_that("scan1blup works with kinship matrix", {
 
     blup <- scan1blup(pr, phe, K, sex)
     blup_se <- scan1blup(pr, phe, K, sex, se=TRUE)
-    expect_equal(blup$coef, blup_se$coef)
+    expect_equivalent(blup, blup_se)
 
     # cf preserve intercept vs not
     blup_int <- scan1blup(pr, phe, K, sex, preserve_intercept=TRUE)
-    expect_equal(blup$coef, blup_int$coef[,c(1:3,5)] + cbind(blup_int$coef[,c(4,4,4)], 0))
+    expect_equivalent(unclass(blup), unclass(blup_int)[,c(1:3,5)] + cbind(unclass(blup_int)[,c(4,4,4)], 0))
 
     # brute force BLUPs
-    for(i in 1:dim(pr$probs[[1]])[[3]]) {
-        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe, K, sex)
-        names(blup_alt) <- colnames(blup_int$coef)
-        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    for(i in 1:dim(pr[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr[[1]][,,i], phe, K, sex)
+        names(blup_alt) <- colnames(blup_int)
+        expect_equal(unclass(blup_int)[i,], blup_alt, tolerance=1e-5)
     }
 
 })
 
 test_that("scan1blup works with kinship matrix on another chromosome", {
 
-    pr <- calc_genoprob(iron, step=0)
+    pr <- calc_genoprob(iron)
     K <- calc_kinship(pr[,c(1:10,12:19,"X")])
     pr <- pr[,"11"]
 
@@ -125,17 +125,17 @@ test_that("scan1blup works with kinship matrix on another chromosome", {
 
     blup <- scan1blup(pr, phe, K, sex)
     blup_se <- scan1blup(pr, phe, K, sex, se=TRUE)
-    expect_equal(blup$coef, blup_se$coef)
+    expect_equivalent(blup, blup_se)
 
     # cf preserve intercept vs not
     blup_int <- scan1blup(pr, phe, K, sex, preserve_intercept=TRUE)
-    expect_equal(blup$coef, blup_int$coef[,c(1:3,5)] + cbind(blup_int$coef[,c(4,4,4)], 0))
+    expect_equivalent(unclass(blup), unclass(blup_int)[,c(1:3,5)] + cbind(unclass(blup_int)[,c(4,4,4)], 0))
 
     # brute force BLUPs
-    for(i in 1:dim(pr$probs[[1]])[[3]]) {
-        blup_alt <- calc_blup(pr$probs[[1]][,,i], phe, K, sex)
-        names(blup_alt) <- colnames(blup_int$coef)
-        expect_equal(blup_int$coef[i,], blup_alt, tolerance=1e-5)
+    for(i in 1:dim(pr[[1]])[[3]]) {
+        blup_alt <- calc_blup(pr[[1]][,,i], phe, K, sex)
+        names(blup_alt) <- colnames(blup_int)
+        expect_equal(unclass(blup_int)[i,], blup_alt, tolerance=1e-5)
     }
 
 })
@@ -143,7 +143,8 @@ test_that("scan1blup works with kinship matrix on another chromosome", {
 test_that("scan1blup deals with mismatching individuals", {
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")[["3"]]
     probs <- probs[,"3"]
     Xc <- get_x_covar(iron)
