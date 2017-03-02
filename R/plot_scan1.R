@@ -75,6 +75,10 @@ plot_scan1 <-
 {
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
+    if(nrow(x) != length(unlist(map)))
+        stop("nrow(x) [", nrow(x), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     # subset chromosomes
     if(!is.null(chr)) {
         chri <- match(chr, names(map))
