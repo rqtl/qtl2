@@ -228,7 +228,6 @@ positive integer.
 pr <- calc_genoprob(iron, map, err=0.002, cores=4)
 ```
 
-
 The genome scan functions (see below) use genotype probabilities as
 well as a matrix of phenotypes.
 If you wished to perform a genome scan via an additive allele model,
@@ -782,46 +781,58 @@ constant in intervals. With this assumption, we then:
 We further create a look-up table relating the full set of SNPs to the
 reduced set (one of each observed SDP in each interval).
 
-The process is performed with the function `genoprob_to_snpprob()`,
-which takes the allele probabilities (or the full genotype
-probabilities, if you want to use a full 3-genotype model at each
-SNP), plus the SNP information table (including the SDP column).
-
-We need the physical map of markers, which we take from the `DOex`
-object. We can use this map directly, as we'd calculated the allele
+We first need to identify the equivalent SNPs, using the function
+`index_snps()`. This requires a physical map of the
+markers/pseudomarkers used to calculate the genotype probabilities.
+We take this directly from the `DOex`
+object, as we'd calculated the allele
 probabilities only at the observed markers. If we'd also calculated
 probabilities at pseudomarker positions between markers, we'd need to
 use interpolation to get Mbp positions for the
 pseudomarkers. There's a function `interp_map()` for assisting with
 that.
 
-So now we can calculate the SNP probabilities.
+The `index_snps()` function takes the physical map and the `snpinfo`
+data frame, include the strain distribution patterns we calculated above.
+It inserts three new columns into the data frame (`"index"`,
+`"interval"`, and `"on_map"`: indexes to a set of non-equivalent SNPs,
+map intervals in which the SNPs lie, and whether the SNPs correspond
+to marker/pseudomarker positions).
 
-```{r calc_snpprobs}
-snp_pr <- genoprob_to_snpprob(apr, DOex$pmap, snpinfo)
+```{r index_snps}
+snpinfo <- index_snps(DOex$pmap, snpinfo)
 ```
 
-The output of this function, `snp_pr`, is a list with two components:
-\code{"probs"} contains the SNP allele probabilities, and \code{"map"}
-contains a map of the SNPs. We'll need each of these, but separately.
+We can then use the function `genoprob_to_snpprob()`,
+which takes the allele probabilities (or the full genotype
+probabilities, if you want to use a full 3-genotype model at each
+SNP), to collapse the genotype probabilities to SNP genotype
+probabilities.
 
-We can then use the object to perform the SNP association analysis in
-the region, using the same linear mixed model. We need to be sure to
-use the correct kinship matrix.
+```{r calc_snpprobs}
+snp_pr <- genoprob_to_snpprob(apr, snpinfo)
+```
+
+The output of this function, `snp_pr`, has the same form as the input
+`apr` object with allele probabilities, and can be used directly in a
+call to `scan1()`. And so we can now use the object to perform the SNP
+association analysis in the region, using the same linear mixed model.
+We need to be sure to use the correct kinship matrix.
 
 ```{r perform_snp_scan}
-out_snps <- scan1(snp_pr$probs, DOex$pheno, k[["2"]], sex)
+out_snps <- scan1(snp_pr, DOex$pheno, k[["2"]], sex)
 ```
 
 The function `plot_snpasso()` in the qtl2plot package can be used to
 plot the results, with points at each of the SNPs. The default is to
 plot **all** SNPs: We calculated LOD scores only at a set of distinct
 SNPs, but SNPs in the same interval with the same SDP will have the
-same LOD score.
+same LOD score. It takes the `scan1()` output plus the `snpinfo` data
+frame.
 
 ```{r plot_snp_asso}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps, snp_pr$map)
+plot_snpasso(out_snps, snpinfo)
 ```
 
 To get a table of the SNPs with the largest LOD scores, use the
@@ -829,7 +840,7 @@ function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
 
 ```{r top_snps}
-top_snps(out_snps, snp_pr$map)
+top_snps(out_snps, snpinfo)
 ```
 
 The top SNPs all have NZO and CAST with a common allele, different
@@ -844,5 +855,5 @@ We can highlight these top SNPs in the SNP association plot using the
 
 ```{r plot_snp_asso_hilit}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps, snp_pr$map, drop=1.5)
+plot_snpasso(out_snps, snpinfo, drop=1.5)
 ```
