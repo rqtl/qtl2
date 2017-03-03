@@ -114,8 +114,8 @@ plot_snpasso <-
     if(length(uindex) != nrow(scan1output))
         stop("Something is wrong with snpinfo$index.\n",
              "      length(unique(snpinfo$index)) [",
-             length(unique(snpinfo$index)), "] != nrow(scan1_output) [",
-             nrow(scan1_output), "].")
+             length(unique(snpinfo$index)), "] != nrow(scan1output) [",
+             nrow(scan1output), "].")
 
     if(any(snpinfo$index[uindex] != uindex))
         stop("Something is wrong with snpinfo$index.\n",
