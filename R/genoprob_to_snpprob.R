@@ -84,7 +84,7 @@
 #' @seealso \code{\link{index_snps}}, \code{\link[qtl2geno]{calc_genoprob}}
 #' @export
 genoprob_to_snpprob <-
-    function(genoprobs, snpinfo, tol=1e-8)
+    function(genoprobs, snpinfo)
 {
     uchr <- unique(snpinfo$chr)
     chrID <- names(genoprobs)

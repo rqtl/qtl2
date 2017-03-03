@@ -4,7 +4,7 @@
 \alias{genoprob_to_snpprob}
 \title{Convert genotype probabilities to SNP probabilities}
 \usage{
-genoprob_to_snpprob(genoprobs, snpinfo, tol = 0.00000001)
+genoprob_to_snpprob(genoprobs, snpinfo)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as
