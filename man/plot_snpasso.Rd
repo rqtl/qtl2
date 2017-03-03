@@ -27,7 +27,7 @@ SNP probabilities derived by
 \item \code{snp} - Character string with SNP identifier (if
     missing, the rownames are used).
 \item \code{index} - Indices that indicate equivalent
-    groups of SNPs, calculated by \code{\link{index_snps}}.
+    groups of SNPs.
 \item \code{intervals} - Indexes that indicate which marker
     intervals the SNPs reside.
 \item \code{on_map} - Indicate whether SNP coincides with a marker
