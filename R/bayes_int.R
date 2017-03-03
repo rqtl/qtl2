@@ -104,6 +104,9 @@ bayes_int <-
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output))
         stop("lodcolumn should be between 1 and ", ncol(scan1_output))
 
+    # for chr to be character string
+    chr <- as.character(chr)
+
     if(!(chr %in% names(map)))
         stop("Chromosome ", chr, " not found")
 

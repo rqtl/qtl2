@@ -83,7 +83,7 @@ lod_int <-
 
     if(length(chr) > 1) {
         warning("chr should have length 1; using the first value")
-        chr <- chr[1]
+        chr <- as.character(chr[1])
     }
     if(length(lodcolumn) > 1) {
         warning("lodcolumn should have length 1; using the first value")
@@ -107,6 +107,9 @@ lod_int <-
 
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output))
         stop("lodcolumn should be between 1 and ", ncol(scan1_output))
+
+    # for chr to be character string
+    chr <- as.character(chr)
 
     if(!(chr %in% names(map)))
         stop("Chromosome ", chr, " not found")
