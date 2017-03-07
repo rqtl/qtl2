@@ -84,7 +84,7 @@ plot_scan1 <-
         chri <- match(chr, names(map))
         if(any(is.na(chri)))
             stop("Chromosomes ", paste(chr[is.na(chri)], collapse=", "), " not found")
-        x <- x[map,chr,]
+        x <- subset(x, map, chr)
         map <- map[chri]
     }
 
