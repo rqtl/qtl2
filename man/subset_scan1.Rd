@@ -3,14 +3,11 @@
 \name{subset_scan1}
 \alias{subset_scan1}
 \alias{subset.scan1}
-\alias{[.scan1}
 \title{Subset scan1 output}
 \usage{
-subset_scan1(x, map, chr = NULL, lodcolumn = NULL, ...)
+subset_scan1(x, map = NULL, chr = NULL, lodcolumn = NULL, ...)
 
-\method{subset}{scan1}(x, map, chr = NULL, lodcolumn = NULL, ...)
-
-\method{[}{scan1}(x, map, chr = NULL, lodcolumn = NULL)
+\method{subset}{scan1}(x, map = NULL, chr = NULL, lodcolumn = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"scan1"} as returned by

@@ -26,7 +26,6 @@ test_that("subset_scan1 works for intercross with two phenotypes", {
     attr(expected, "sample_size") <- attr(out, "sample_size")[2]
     class(expected) <- c("scan1", "matrix")
     expect_equal(subset(out, map, lodcolumn=2), expected)
-    expect_equal(out[map,,2], expected)
 
     # subset chr 2, 8, and 9
     keep <- (map2chr(map) %in% c("2", "8", "9"))
@@ -34,13 +33,11 @@ test_that("subset_scan1 works for intercross with two phenotypes", {
     attr(expected, "sample_size") <- attr(out, "sample_size")
     class(expected) <- c("scan1", "matrix")
     expect_equal(subset(out, map, chr=c("2", "8", "9")), expected)
-    expect_equal(out[map, c("2", "8", "9"),], expected)
 
     # subset chr 2, 8, and 9 and lodcolumn 2
     expected <- unclass(expected)[,2,drop=FALSE]
     attr(expected, "sample_size") <- attr(out, "sample_size")[2]
     class(expected) <- c("scan1", "matrix")
     expect_equal(subset(out, map, c("2", "8", "9"), 2), expected)
-    expect_equal(out[map, c("2", "8", "9"),2], expected)
 
 })

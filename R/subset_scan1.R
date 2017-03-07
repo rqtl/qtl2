@@ -42,30 +42,41 @@
 #' # pull out chromosome 8
 #' out_c8 <- subset(out, map, chr="8")
 #'
-#' # can also use bracket notation; need to provide map in first slot
-#' out_c8 <- out[map,"8",]
-#'
 #' # just the second column on chromosome 2
 #' out_c2_spleen <- subset(out, map, "2", "spleen")
 #'
-#' # again, in bracket notation
-#' out_c2_spleen <- out[map, "2", "spleen"]
-#'
 #' # all positions, but just the "liver" column
 #' out_spleen <- subset(out, map, lodcolumn="spleen")
-#'
-#' # bracket notation
-#' out_spleen <- out[map,,"spleen"]
 #' }
 subset_scan1 <-
-    function(x, map, chr=NULL, lodcolumn=NULL, ...)
+    function(x, map=NULL, chr=NULL, lodcolumn=NULL, ...)
 {
     x_attr <- attributes(x)
     x_attrnam <- names(x_attr)
     x_class <- class(x)
 
+    # subset to markers within map
+    if(!is.null(map)) {
+        map_mnames <- map2markernames(map)
+        x_mnames <- rownames(x)
+
+        if(!all(x_mnames %in% map_mnames)) {
+            x <- x[x_mnames %in% map_mnames,,drop=FALSE]
+            x_mnames <- rownames(x)
+        }
+        if(!all(map_mnames %in% x_mnames)) {
+            for(i in seq(along=map)) {
+                mn <- names(map[[i]])
+                map[[i]] <- map[[i]][mn %in% x_mnames]
+            }
+        }
+    }
+
     # subset by chromosome
     if(!is.null(chr)) {
+        if(is.null(map))
+            stop("To subset by chromosome, you need to provide map object.")
+
         chr <- as.character(chr)
 
         # selected chromosomes
@@ -76,7 +87,7 @@ subset_scan1 <-
         # rows to keep
         row <- map2chr(map) %in% chr
 
-        x <- unclass(x)[row,,drop=FALSE]
+        x <- x[row,,drop=FALSE]
 
         # attributes to subset by row
         for(obj in c("SE", "hsq")) {
@@ -88,6 +99,7 @@ subset_scan1 <-
 
     }
 
+    # subset by column
     if(!is.null(lodcolumn)) {
         if(is.character(lodcolumn)) {
             cols <- colnames(x)
@@ -100,7 +112,7 @@ subset_scan1 <-
         if(is.logical(lodcolumn) && length(lodcolumn) != length(cols))
             stop("lodcolumn is logical but not the correct length (", length(cols), ")")
 
-        x <- unclass(x)[,lodcolumn,drop=FALSE]
+        x <- x[,lodcolumn,drop=FALSE]
 
         # attributes to subset list
         sublist <- c("sample_size")
@@ -129,12 +141,6 @@ subset_scan1 <-
 #' @rdname subset_scan1
 subset.scan1 <- subset_scan1
 
-
-#' @export
-#' @rdname subset_scan1
-`[.scan1` <-
-    function(x, map, chr=NULL, lodcolumn=NULL)
-    subset(x, map, chr, lodcolumn)
 
 # grab marker names as a vector
 map2markernames <-

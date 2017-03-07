@@ -114,7 +114,7 @@ lod_int <-
     if(!(chr %in% names(map)))
         stop("Chromosome ", chr, " not found")
 
-    scan1_output <- scan1_output[map, chr, lodcolumn]
+    scan1_output <- subset_scan1(scan1_output, map, chr, lodcolumn)
 
     lod <- unclass(scan1_output)
     map <- map[[chr]]

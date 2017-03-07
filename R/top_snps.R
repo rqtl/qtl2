@@ -101,7 +101,7 @@ top_snps <-
     }
 
     # deal with possibly > 1 chr
-    lod <- unclass(scan1_output[map, chr, ])
+    lod <- unclass(subset(scan1_output, map, chr))
 
     map <- map[[chr]]
     snpinfo <- snpinfo[snpinfo$chr==chr,,drop=FALSE]
