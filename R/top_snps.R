@@ -99,15 +99,15 @@ top_snps <-
         warning("Considering only chromosome ", chr)
         chr <- chr[1]
     }
-
-    # deal with possibly > 1 chr
-    lod <- unclass(subset(scan1_output, map, chr))
-
     map <- map[[chr]]
     snpinfo <- snpinfo[snpinfo$chr==chr,,drop=FALSE]
 
-    if(ncol(scan1_output) > 1)
+    # deal with possibly > 1 chr
+    lod <- unclass(subset(scan1_output, map, chr))
+    if(ncol(lod) > 1) {
         warning("Considering only the first LOD score column")
+        lod <- lod[,1,drop=FALSE]
+    }
 
     keep <- which(!is.na(lod) & lod >= max(lod, na.rm=TRUE) - drop)
 
