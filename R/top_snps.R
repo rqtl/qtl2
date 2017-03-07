@@ -99,7 +99,7 @@ top_snps <-
         warning("Considering only chromosome ", chr)
         chr <- chr[1]
     }
-    map <- map[[chr]]
+    map <- map[chr]
     snpinfo <- snpinfo[snpinfo$chr==chr,,drop=FALSE]
 
     # deal with possibly > 1 chr
