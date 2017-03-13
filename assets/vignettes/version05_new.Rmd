@@ -1,7 +1,7 @@
 ---
-layout: page
 title: Changes in R/qtl2 version 0.5
 description: Changes to the data structures in R/qtl2 version 0.5
+output: rmarkdown::html_vignette
 ---
 
 The internal data structures for [R/qtl2](http://kbroman.org/qtl2)

@@ -4,7 +4,7 @@ all: vignettes data external_vignettes extdata
 # R_OPTS: --vanilla without --no-environ
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 
-VIGNETTES = assets/vignettes/linreg_benchmarks.html assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html
+VIGNETTES = assets/vignettes/linreg_benchmarks.html assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/version05_new.html
 vignettes: ${VIGNETTES}
 
 EXTERNAL_VIGNETTES = assets/vignettes/developer_guide.html assets/vignettes/input_files.html assets/vignettes/user_guide.html
@@ -16,6 +16,9 @@ assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
 	R $(R_OPTS) -e "devtools::install_github('rqtl/qtl2scan')" # re-install latest version
 
 assets/vignettes/hmm_benchmarks.html: assets/vignettes/hmm_benchmarks.Rmd
+	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
+
+assets/vignettes/version05_new.html: assets/vignettes/version05_new.Rmd
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
 
 assets/vignettes/rqtl_diff.html: assets/vignettes/rqtl_diff.Rmd
