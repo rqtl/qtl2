@@ -4,6 +4,11 @@ description: Changes to the data structures in R/qtl2 version 0.5
 output: rmarkdown::html_vignette
 ---
 
+```{r change_width, include=FALSE}
+knitr::opts_chunk$set(fig.width=7, fig.height=4)
+options(width=100)
+```
+
 The internal data structures for [R/qtl2](http://kbroman.org/qtl2)
 version 0.5 have undergone major changes. In addition, in several
 places, QTL analysis now requires additional steps and the need to
