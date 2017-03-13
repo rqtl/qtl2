@@ -4,13 +4,15 @@
 \alias{genoprob_to_snpprob}
 \title{Convert genotype probabilities to SNP probabilities}
 \usage{
-genoprob_to_snpprob(genoprobs, snpinfo, tol = 0.00000001)
+genoprob_to_snpprob(genoprobs, snpinfo)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as
 calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
 
-\item{snpinfo}{Data frame with SNP information with the following columns:
+\item{snpinfo}{Data frame with SNP information with the following
+    columns (the last three are generally derived from with
+    \code{\link{index_snps}}):
 \itemize{
 \item \code{chr} - Character string or factor with chromosome
 \item \code{pos} - Position (in same units as in the \code{"map"}
@@ -20,25 +22,23 @@ calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
     binary encoding indicates the founder genotypes
 \item \code{snp} - Character string with SNP identifier (if
     missing, the rownames are used).
+\item \code{index} - Indices that indicate equivalent
+    groups of SNPs, calculated by \code{\link{index_snps}}.
+\item \code{intervals} - Indexes that indicate which marker
+    intervals the SNPs reside.
+\item \code{on_map} - Indicate whether SNP coincides with a marker
+    in the \code{genoprobs}
 }}
-
-\item{tol}{Tolerance for determining whether a SNP is exactly at a
-position at which genotype probabilities were already calculated.}
 }
 \value{
-An object like the \code{genoprobs} input,
-but with imputed genotype probabilities at the selected SNPs.
-An added component \code{"snpinfo"} contains the input \code{snpinfo} with
-an additional column, \code{index}, that is an index to the
-genotype probabilities. (In cases where multiple SNPs are contained
-in the same interval and have the same strain distribution pattern
-(SDP), the probabilities would be all the same and so the results
-contain the probabilities for just one of them.)
+An object like the \code{genoprobs} input, but with imputed
+genotype probabilities at the selected SNPs indicated in
+\code{snpinfo$index}.
 
 If the input \code{genoprobs} is for allele probabilities, the
-output has just two probability columns (for the two SNP
+\code{probs} output has just two probability columns (for the two SNP
 alleles). If the input has a full set of \eqn{n(n+1)/2}
-probabilities for \eqn{n} strains, the output has 3 probabilities
+probabilities for \eqn{n} strains, the \code{probs} output has 3 probabilities
 (for the three SNP genotypes). If the input has full genotype
 probabilities for the X chromosome (\eqn{n(n+1)/2} genotypes for
 the females followed by \eqn{n} hemizygous genotypes for the
@@ -51,12 +51,12 @@ set of SNPs to convert founder-based genotype probabilities to SNP
 genotype probabilities.
 }
 \details{
-We first split the SNPs by chromosome and identify the
-intervals in the genotype probabilities that contain each. For SNPs
-within \code{tol} of a position at which the genotype probabilities
-were calculated, we use those probabilities. For SNPs contained
-within an interval, we use the average of the probabilities for the
-two endpoints. We then collapse the probabilities according to the
+We first split the SNPs by chromosome and use
+\code{snpinfo$index} to subset to non-equivalent SNPs.
+\code{snpinfo$interval} indicates the intervals in the genotype
+probabilities that contain each. For SNPs contained within an
+interval, we use the average of the probabilities for the two
+endpoints. We then collapse the probabilities according to the
 strain distribution pattern.
 }
 \examples{
@@ -67,10 +67,7 @@ file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")
 recla <- read_cross2(file)
 recla <- recla[c(1:2,53:54), c("19","X")] # subset to 4 mice and 2 chromosomes
-probs <- calc_genoprob(recla, step=0, err=0.002)
-
-# insert physical map into genotype probabilities
-probs$map <- recla$pmap
+probs <- calc_genoprob(recla, error_prob=0.002)
 
 # founder genotypes for a set of SNPs
 snpgeno <- rbind(m1=c(3,1,1,3,1,1,1,1),
@@ -83,6 +80,9 @@ snpinfo <- data.frame(chr=c("19", "19", "X", "X"),
                       sdp=sdp,
                       snp=c("m1", "m2", "m3", "m4"), stringsAsFactors=FALSE)
 
+# identify groups of equivalent SNPs
+snpinfo <- index_snps(recla$pmap, snpinfo)
+
 # collapse to SNP genotype probabilities
 snpprobs <- genoprob_to_snpprob(probs, snpinfo)
 
@@ -92,4 +92,6 @@ snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 }
 
 }
-
+\seealso{
+\code{\link{index_snps}}, \code{\link[qtl2geno]{calc_genoprob}}
+}

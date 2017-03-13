@@ -29,4 +29,3 @@ calc_sdp(x)
 \seealso{
 \code{\link{invert_sdp}}
 }
-

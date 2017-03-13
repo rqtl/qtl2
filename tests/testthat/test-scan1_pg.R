@@ -5,7 +5,8 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
 
     out_reml <- scan1(probs, iron$pheno, kinship, reml=TRUE)
@@ -26,17 +27,17 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
     byhand2_ml <- Rcpp_fitLMM(Ke$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equal(as.numeric(out_reml$hsq[1,]),
+    expect_equal(as.numeric(attr(out_reml, "hsq")[1,]),
                  c(byhand1_reml$hsq, byhand2_reml$hsq))
-    expect_equal(as.numeric(out_ml$hsq[1,]),
+    expect_equal(as.numeric(attr(out_ml, "hsq")[1,]),
                  c(byhand1_ml$hsq, byhand2_ml$hsq))
 
     # compare chromosome 1 LOD scores
-    d <- dim(probs$probs[[1]])[3]
+    d <- dim(probs[[1]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(X, probs$probs[[1]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(X, probs[[1]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -48,11 +49,13 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
     lod_ml1 <- (loglik_ml1 - byhand1_ml$loglik)/log(10)
     lod_ml2 <- (loglik_ml2 - byhand2_ml$loglik)/log(10)
 
-    dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
-    expect_equal(out_reml$lod[1:d,1], lod_reml1)
-    expect_equal(out_reml$lod[1:d,2], lod_reml2)
-    expect_equal(out_ml$lod[1:d,1], lod_ml1)
-    expect_equal(out_ml$lod[1:d,2], lod_ml2)
+    out_reml <- unclass(out_reml)
+    out_ml <- unclass(out_ml)
+    dimnames(out_reml) <- dimnames(out_ml) <- NULL
+    expect_equal(out_reml[1:d,1], lod_reml1)
+    expect_equal(out_reml[1:d,2], lod_reml2)
+    expect_equal(out_ml[1:d,1], lod_ml1)
+    expect_equal(out_ml[1:d,2], lod_ml2)
 
 })
 
@@ -60,7 +63,8 @@ test_that("scan1 with intercross with X covariates for null", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
     Xc <- get_x_covar(iron)
 
@@ -83,17 +87,17 @@ test_that("scan1 with intercross with X covariates for null", {
     byhand2_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp), reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equal(as.numeric(out_reml$hsq[2,]),
+    expect_equal(as.numeric(attr(out_reml, "hsq")[2,]),
                  c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-6)
-    expect_equal(as.numeric(out_ml$hsq[2,]),
+    expect_equal(as.numeric(attr(out_ml, "hsq")[2,]),
                  c(byhand1_ml$hsq, byhand2_ml$hsq))
 
     # compare chromosome X LOD scores
-    d <- dim(probs$probs[["X"]])[3]
+    d <- dim(probs[["X"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, probs$probs[["X"]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -105,12 +109,14 @@ test_that("scan1 with intercross with X covariates for null", {
     lod_ml1 <- (loglik_ml1 - byhand1_ml$loglik)/log(10)
     lod_ml2 <- (loglik_ml2 - byhand2_ml$loglik)/log(10)
 
-    index <- nrow(out_reml$lod) - rev(1:d) + 1
-    dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
-    expect_equal(out_reml$lod[index,1], lod_reml1)
-    expect_equal(out_reml$lod[index,2], lod_reml2, tolerance=1e-6)
-    expect_equal(out_ml$lod[index,1], lod_ml1)
-    expect_equal(out_ml$lod[index,2], lod_ml2)
+    index <- nrow(out_reml) - rev(1:d) + 1
+    out_reml <- unclass(out_reml)
+    out_ml <- unclass(out_ml)
+    dimnames(out_reml) <- dimnames(out_ml) <- NULL
+    expect_equal(out_reml[index,1], lod_reml1)
+    expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-6)
+    expect_equal(out_ml[index,1], lod_ml1)
+    expect_equal(out_ml[index,2], lod_ml2)
 
 })
 
@@ -119,7 +125,8 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
@@ -143,9 +150,9 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
     byhand1A_ml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
     byhand2A_ml <- Rcpp_fitLMM(Ke$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
-    expect_equal(as.numeric(out_reml$hsq[1,]),
+    expect_equal(as.numeric(attr(out_reml, "hsq")[1,]),
                  c(byhand1A_reml$hsq, byhand2A_reml$hsq))
-    expect_equal(as.numeric(out_ml$hsq[1,]),
+    expect_equal(as.numeric(attr(out_ml, "hsq")[1,]),
                  c(byhand1A_ml$hsq, byhand2A_ml$hsq))
 
     # X chr null
@@ -155,18 +162,18 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
     byhand2X_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp[,-1]), reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equal(as.numeric(out_reml$hsq[2,]),
+    expect_equal(as.numeric(attr(out_reml, "hsq")[2,]),
                  c(byhand1X_reml$hsq, byhand2X_reml$hsq), tolerance=1e-6)
-    expect_equal(as.numeric(out_ml$hsq[2,]),
+    expect_equal(as.numeric(attr(out_ml, "hsq")[2,]),
                  c(byhand1X_ml$hsq, byhand2X_ml$hsq))
 
 
     # compare chromosome 2 LOD scores
-    d <- dim(probs$probs[["2"]])[3]
+    d <- dim(probs[["2"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, X, probs$probs[["2"]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(1, X, probs[["2"]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -178,19 +185,21 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
     lod_ml1 <- (loglik_ml1 - byhand1A_ml$loglik)/log(10)
     lod_ml2 <- (loglik_ml2 - byhand2A_ml$loglik)/log(10)
 
-    index <- dim(probs$probs[["1"]])[3] + 1:dim(probs$probs[["2"]])[3]
-    dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
-    expect_equal(out_reml$lod[index,1], lod_reml1)
-    expect_equal(out_reml$lod[index,2], lod_reml2)
-    expect_equal(out_ml$lod[index,1], lod_ml1)
-    expect_equal(out_ml$lod[index,2], lod_ml2)
+    index <- dim(probs[["1"]])[3] + 1:dim(probs[["2"]])[3]
+    out_reml <- unclass(out_reml)
+    out_ml <- unclass(out_ml)
+    dimnames(out_reml) <- dimnames(out_ml) <- NULL
+    expect_equal(out_reml[index,1], lod_reml1)
+    expect_equal(out_reml[index,2], lod_reml2)
+    expect_equal(out_ml[index,1], lod_ml1)
+    expect_equal(out_ml[index,2], lod_ml2)
 
     # compare chromosome X LOD scores
-    d <- dim(probs$probs[["X"]])[3]
+    d <- dim(probs[["X"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, probs$probs[["X"]][,-1,i])
+        Xp <- Ke$vectors %*% cbind(1, probs[["X"]][,-1,i])
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -202,14 +211,16 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
     lod_ml1 <- (loglik_ml1 - byhand1X_ml$loglik)/log(10)
     lod_ml2 <- (loglik_ml2 - byhand2X_ml$loglik)/log(10)
 
-    index <- nrow(out_reml$lod) - rev(1:d) + 1
-    dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
+    index <- nrow(out_reml) - rev(1:d) + 1
+    out_reml <- unclass(out_reml)
+    out_ml <- unclass(out_ml)
+    dimnames(out_reml) <- dimnames(out_ml) <- NULL
     ## FIX_ME
     ## REML not yet working on X chromosome, when (X, probs) is not full rank
 #    expect_equal(out_reml[index,1], lod_reml1)
 #    expect_equal(out_reml[index,2], lod_reml2)
-    expect_equal(out_ml$lod[index,1], lod_ml1)
-    expect_equal(out_ml$lod[index,2], lod_ml2)
+    expect_equal(out_ml[index,1], lod_ml1)
+    expect_equal(out_ml[index,2], lod_ml2)
 
 })
 
@@ -218,7 +229,8 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
@@ -252,9 +264,9 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
     byhand1A_ml <- Rcpp_fitLMM(Ke$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
     byhand2A_ml <- Rcpp_fitLMM(Ke$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
-    expect_equal(as.numeric(out_reml$hsq[1,]),
+    expect_equal(as.numeric(attr(out_reml, "hsq")[1,]),
                  c(byhand1A_reml$hsq, byhand2A_reml$hsq))
-    expect_equal(as.numeric(out_ml$hsq[1,]),
+    expect_equal(as.numeric(attr(out_ml, "hsq")[1,]),
                  c(byhand1A_ml$hsq, byhand2A_ml$hsq))
 
     # X chr null (same as w/o interactive covariate)
@@ -264,19 +276,19 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
     byhand2X_ml <- Rcpp_fitLMM(Ke$values, yp[,2], cbind(Xp, Xcp[,-1]), reml=FALSE, tol=1e-12)
 
     # hsq the same?
-    expect_equal(as.numeric(out_reml$hsq[2,]),
+    expect_equal(as.numeric(attr(out_reml, "hsq")[2,]),
                  c(byhand1X_reml$hsq, byhand2X_reml$hsq), tolerance=1e-6)
-    expect_equal(as.numeric(out_ml$hsq[2,]),
+    expect_equal(as.numeric(attr(out_ml, "hsq")[2,]),
                  c(byhand1X_ml$hsq, byhand2X_ml$hsq))
 
 
     # compare chromosome 4 LOD scores
-    npos <- sapply(probs$probs, function(a) dim(a)[[3]])
+    npos <- sapply(probs, function(a) dim(a)[[3]])
     d <- npos["4"]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, d)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, X, probs$probs[["4"]][,-1,i], probs$probs[["4"]][,-1,i]*X)
+        Xp <- Ke$vectors %*% cbind(1, X, probs[["4"]][,-1,i], probs[["4"]][,-1,i]*X)
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1A_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2A_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -289,18 +301,20 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
     lod_ml2 <- (loglik_ml2 - byhand2A_ml$loglik)/log(10)
 
     index <- sum(npos[1:3]) + 1:npos[4]
-    dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
-    expect_equal(out_reml$lod[index,1], lod_reml1)
-    expect_equal(out_reml$lod[index,2], lod_reml2)
-    expect_equal(out_ml$lod[index,1], lod_ml1)
-    expect_equal(out_ml$lod[index,2], lod_ml2)
+    out_reml <- unclass(out_reml)
+    out_ml <- unclass(out_ml)
+    dimnames(out_reml) <- dimnames(out_ml) <- NULL
+    expect_equal(out_reml[index,1], lod_reml1)
+    expect_equal(out_reml[index,2], lod_reml2)
+    expect_equal(out_ml[index,1], lod_ml1)
+    expect_equal(out_ml[index,2], lod_ml2)
 
     # compare chromosome X LOD scores
-    d <- dim(probs$probs[["X"]])[3]
+    d <- dim(probs[["X"]])[3]
     loglik_reml1 <- loglik_reml2 <-
         loglik_ml1 <- loglik_ml2 <- rep(NA, 3)
     for(i in 1:d) {
-        Xp <- Ke$vectors %*% cbind(1, X, probs$probs[["X"]][,-1,i], probs$probs[["X"]][,-1,i]*X)
+        Xp <- Ke$vectors %*% cbind(1, X, probs[["X"]][,-1,i], probs[["X"]][,-1,i]*X)
         # calculate likelihoods using plain ML (not the residual log likelihood)
         loglik_reml1[i] <- Rcpp_calcLL(byhand1X_reml$hsq, Ke$values, yp[,1], Xp, reml=FALSE)
         loglik_reml2[i] <- Rcpp_calcLL(byhand2X_reml$hsq, Ke$values, yp[,2], Xp, reml=FALSE)
@@ -326,7 +340,8 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
@@ -344,7 +359,7 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
 
     # compare chromosomes 1, 6, 9, 18
     chrs <- paste(c(1,6,9,18))
-    npos <- sapply(probs$probs, function(a) dim(a)[[3]])
+    npos <- sapply(probs, function(a) dim(a)[[3]])
 
     for(chr in chrs) {
         nchr <- which(names(npos) == chr)
@@ -359,16 +374,16 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
         byhand1_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
         byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
-        expect_equal(as.numeric(out_reml$hsq[nchr,]),
+        expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
                      c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-5)
-        expect_equal(as.numeric(out_ml$hsq[nchr,]),
+        expect_equal(as.numeric(attr(out_ml, "hsq")[nchr,]),
                      c(byhand1_ml$hsq, byhand2_ml$hsq), tolerance=1e-6)
 
         # chromosome scan
         loglik_reml1 <- loglik_reml2 <-
             loglik_ml1 <- loglik_ml2 <- rep(NA, d)
         for(i in 1:d) {
-            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs$probs[[chr]][,-1,i])
+            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs[[chr]][,-1,i])
             # calculate likelihoods using plain ML (not the residual log likelihood)
             loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
             loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
@@ -382,11 +397,13 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
 
         if(nchr > 1) index <- sum(npos[1:(nchr-1)]) + 1:d
         else index <- 1:d
-        dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
-        expect_equal(out_reml$lod[index,1], lod_reml1)
-        expect_equal(out_reml$lod[index,2], lod_reml2, tolerance=1e-5)
-        expect_equal(out_ml$lod[index,1], lod_ml1)
-        expect_equal(out_ml$lod[index,2], lod_ml2)
+        out_reml <- unclass(out_reml)
+        out_ml <- unclass(out_ml)
+        dimnames(out_reml) <- dimnames(out_ml) <- NULL
+        expect_equal(out_reml[index,1], lod_reml1)
+        expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-5)
+        expect_equal(out_ml[index,1], lod_ml1)
+        expect_equal(out_ml[index,2], lod_ml2)
     }
 
 })
@@ -395,7 +412,8 @@ test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
@@ -414,7 +432,7 @@ test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
     # compare chromosomes 1, 6, 9, 18
     chrs <- paste(c(1,6,9,18))
-    npos <- sapply(probs$probs, function(a) dim(a)[[3]])
+    npos <- sapply(probs, function(a) dim(a)[[3]])
 
     for(chr in chrs) {
         nchr <- which(names(npos) == chr)
@@ -429,16 +447,16 @@ test_that("scan1 with kinship works with LOCO, interactive covariates", {
         byhand1_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,1], Xp, reml=FALSE, tol=1e-12)
         byhand2_ml <- Rcpp_fitLMM(Ke[[chr]]$values, yp[,2], Xp, reml=FALSE, tol=1e-12)
 
-        expect_equal(as.numeric(out_reml$hsq[nchr,]),
+        expect_equal(as.numeric(attr(out_reml, "hsq")[nchr,]),
                      c(byhand1_reml$hsq, byhand2_reml$hsq), tolerance=1e-5)
-        expect_equal(as.numeric(out_ml$hsq[nchr,]),
+        expect_equal(as.numeric(attr(out_ml, "hsq")[nchr,]),
                      c(byhand1_ml$hsq, byhand2_ml$hsq), tolerance=1e-6)
 
         # chromosome scan
         loglik_reml1 <- loglik_reml2 <-
             loglik_ml1 <- loglik_ml2 <- rep(NA, d)
         for(i in 1:d) {
-            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs$probs[[chr]][,-1,i], probs$probs[[chr]][,-1,i]*X)
+            Xp <- Ke[[chr]]$vectors %*% cbind(1, X, probs[[chr]][,-1,i], probs[[chr]][,-1,i]*X)
             # calculate likelihoods using plain ML (not the residual log likelihood)
             loglik_reml1[i] <- Rcpp_calcLL(byhand1_reml$hsq, Ke[[chr]]$values, yp[,1], Xp, reml=FALSE)
             loglik_reml2[i] <- Rcpp_calcLL(byhand2_reml$hsq, Ke[[chr]]$values, yp[,2], Xp, reml=FALSE)
@@ -452,11 +470,13 @@ test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
         if(nchr > 1) index <- sum(npos[1:(nchr-1)]) + 1:d
         else index <- 1:d
-        dimnames(out_reml$lod) <- dimnames(out_ml$lod) <- NULL
-        expect_equal(out_reml$lod[index,1], lod_reml1)
-        expect_equal(out_reml$lod[index,2], lod_reml2, tolerance=1e-6)
-        expect_equal(out_ml$lod[index,1], lod_ml1)
-        expect_equal(out_ml$lod[index,2], lod_ml2)
+        out_reml <- unclass(out_reml)
+        out_ml <- unclass(out_ml)
+        dimnames(out_reml) <- dimnames(out_ml) <- NULL
+        expect_equal(out_reml[index,1], lod_reml1)
+        expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-6)
+        expect_equal(out_ml[index,1], lod_ml1)
+        expect_equal(out_ml[index,2], lod_ml2)
     }
 
 
@@ -468,7 +488,8 @@ test_that("scan1 with kinship works with multicore", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
@@ -493,7 +514,8 @@ test_that("scan1 with kinship works with multicore", {
 test_that("scan1 with kinship LOD results invariant to change in scale to pheno and covar", {
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1
@@ -517,7 +539,8 @@ test_that("scan1 with kinship LOD results invariant to change in scale to pheno 
 test_that("scan1 deals with mismatching individuals", {
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
     Xc <- get_x_covar(iron)
     X <- match(iron$covar$sex, c("f", "m"))-1

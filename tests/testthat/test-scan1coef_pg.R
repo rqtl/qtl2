@@ -44,8 +44,7 @@ eff_via_lm <-
         else SEs <- NULL
     }
 
-    result <- list(coef=result,
-                   SE=SEs)
+    attr(result, "SE") <- SEs
 
     class(result) <- c("scan1coef", "scan1", "matrix")
     result
@@ -57,101 +56,102 @@ test_that("scan1coef_pg for grav", {
 
     library(qtl2geno)
     grav <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    pr <- calc_genoprob(grav, step=1)
+    map <- insert_pseudomarkers(grav$gmap, step=1)
+    pr <- calc_genoprob(grav, map)
     K <- calc_kinship(pr)
     phe <- grav$pheno[,"T330",drop=FALSE]
 
     est <- scan1coef(pr[,1], phe, K, se=FALSE)
-    est_lm <- eff_via_lm(pr$probs[[1]], phe, K)
-    expect_equivalent(est$coef, est_lm$coef)
+    est_lm <- eff_via_lm(pr[[1]], phe, K)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, K, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-decomp kinship
     Ke <- decomp_kinship(K)
     est <- scan1coef(pr[,1], phe, Ke)
-    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, Ke, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # kinship is a list of length 1
     Klist <- list("1"=K)
     est <- scan1coef(pr[,1], phe, Klist)
-    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, Klist, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # include covariate
-    covar <- cbind(chr3=pr$probs[[3]][,2,"CC.266L"])
+    covar <- cbind(chr3=pr[[3]][,2,"CC.266L"])
     est <- scan1coef(pr[,1], phe, K, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    est_lm <- eff_via_lm(pr[[1]], phe, K, covar)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, K, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
     est <- scan1coef(pr[,1], phe, Ke, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est, est_lm)
     est <- scan1coef(pr[,1], phe, Ke, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # interactive covariate
     est <- scan1coef(pr[,1], phe, K, covar, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, K, covar, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
     est <- scan1coef(pr[,1], phe, Ke, covar, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est, est_lm)
     est <- scan1coef(pr[,1], phe, Ke, covar, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two covariates
-    covar <- cbind(covar, chr4=pr$probs[[4]][,2,"CD.329C-Col"])
+    covar <- cbind(covar, chr4=pr[[4]][,2,"CD.329C-Col"])
     est <- scan1coef(pr[,1], phe, K, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    est_lm <- eff_via_lm(pr[[1]], phe, K, covar)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, K, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
     est <- scan1coef(pr[,1], phe, Ke, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est, est_lm)
     est <- scan1coef(pr[,1], phe, Ke, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two interactive covariates
     est <- scan1coef(pr[,1], phe, K, covar, covar, se=FALSE)
-    est_lm <- eff_via_lm(pr$probs[[1]], phe, K, covar, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,1], phe, K, covar, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
     est <- scan1coef(pr[,1], phe, Ke, covar, covar)
-    expect_equivalent(est$coef, est_lm$coef)
+    expect_equivalent(est, est_lm)
     est <- scan1coef(pr[,1], phe, Ke, covar, covar, se=TRUE)
-    expect_equivalent(est$coef, est_lm$coef)
-    expect_equivalent(est$SE, est_lm$SE)
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
 })
 
@@ -159,7 +159,8 @@ test_that("scan1coef_pg for grav", {
 test_that("scan1coef deals with mismatching individuals", {
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=2.5, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")[["3"]]
     probs <- probs[,"3"]
     Xc <- get_x_covar(iron)

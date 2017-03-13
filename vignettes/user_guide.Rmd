@@ -185,21 +185,37 @@ package. Unlike the corresponding function in
 [R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
 input cross object, but is returned as a list of three-dimensional
 arrays (one per chromosome). Each 3d array of probabilities is
-arranged as individuals &times; genotypes &times; positions. (Well,
-actually, the output is a list that includes a bunch of different
-components, including a component `"probs"` which this list of 3d arrays, but also
-including the genetic map and other details).
+arranged as individuals &times; genotypes &times; positions.
+
+If we wish to perform QTL calculations at positions between markers
+(so called "pseudomarkers"), we first need to insert such positions
+into the genetic map with the function `insert_pseudomarkers()`.
+Unlike [R/qtl], the map is kept separate from the genotype
+probabilities.
 
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
 from
 [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
-(an intercross) as an example:
+(an intercross) as an example. We first load the data:
 
-```{r calc_genoprob}
+```{r load_data}
 library(qtl2geno)
 iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2geno") )
-pr <- calc_genoprob(iron, step=1, err=0.002)
+```
+
+We then use `insert_pseudomarkers()` to insert pseudomarkers into the
+genetic map, which we grab from the `iron` object as `iron$gmap`:
+
+```{r insert_pseudomarkers}
+map <- insert_pseudomarkers(iron$gmap, step=1)
+```
+
+And next we use `calc_genoprob()` to calculate the QTL genotype
+probabilities.
+
+```{r calc_genoprob}
+pr <- calc_genoprob(iron, map, err=0.002)
 ```
 
 To speed up the calculations with large datasets on a multi-core
@@ -209,9 +225,8 @@ of available cores will be detected via
 positive integer.
 
 ```{r calc_genoprob_multicore, eval=FALSE}
-pr <- calc_genoprob(iron, step=1, err=0.002, cores=4)
+pr <- calc_genoprob(iron, map, err=0.002, cores=4)
 ```
-
 
 The genome scan functions (see below) use genotype probabilities as
 well as a matrix of phenotypes.
@@ -240,12 +255,23 @@ kinship <- calc_kinship(pr)
 By default, the genotype probabilities are converted to allele
 probabilities, and the kinship matrix is calculated as the proportion
 of shared alleles. To use genotype probabilities instead, use
-`use_allele_probs=FALSE`. Also, the default is to only use the
-probabilities along the grid of pseudomarkers (defined by the `step`
-argument to `calc_genoprob()`); to use the probabilities at _all_
-positions, use `use_grid_only=FALSE`. Further, by default we omit the
+`use_allele_probs=FALSE`. Further, by default we omit the
 X chromosome and only use the autosomes. To include the X chromosome,
 use `omit_x=FALSE`.
+
+In calculating the kinship matrix, one may wish to eliminate the effect of varying marker density across
+the genome, and only use the
+probabilities along the grid of pseudomarkers (defined by the `step`
+argument to `insert_pseudomarkers()`. To do so, we need to first use
+`calc_grid()` to determine the grid of pseudomarkers, and then
+`probs_to_grid()` to probabilities for positions that are not on the
+grid.
+
+```{r calc_kinship_grid}
+grid <- calc_grid(iron$gmap, step=1)
+pr_grid <- probs_to_grid(pr, grid)
+kinship_grid <- calc_kinship(pr_grid)
+```
 
 If, for your linear mixed model genome scan, you wish to use the
 "leave one chromosome out" (LOCO) method (scan each
@@ -319,15 +345,16 @@ method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
 Use the argument `lodcolumn` to indicate which column to plot. Unlike the
 `plot.scanone()` function in [R/qtl](http://rqtl.org), the
 `plot_scan1()` function will only plot one set of LOD curves at a
-time.
+time, and you need to provide the marker/pseudomarker map (created by
+`insert_pseudomarkers()`).
 
 ```{r plot_lod}
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
-plot(out, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
-plot(out, lodcolumn=2, col="violetred", add=TRUE)
-legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out$lod), bg="gray90")
+plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
+plot(out, map, lodcolumn=2, col="violetred", add=TRUE)
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ```
 
 
@@ -335,13 +362,16 @@ legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out$lod), bg=
 
 The function `find_peaks()` in the
 [qtl2scan](https://github.com/rqtl/qtl2scan) package can be used to
-bidentify a set of LOD peaks that exceed some threshold. It can also
+identify a set of LOD peaks that exceed some threshold. It can also
 provide LOD support or Bayes credible intervals, by using the
 arguments `drop` (the amount to drop in the LOD support intervals)
 or `prob` (the nominal coverage for the Bayes credible intervals).
 
+You need to provide both the `scan1()` output as well as the
+marker/pseudomarker map.
+
 ```{r find_peaks}
-find_peaks(out, threshold=4, drop=1.5)
+find_peaks(out, map, threshold=4, drop=1.5)
 ```
 
 The `find_peaks()` function can also pick out multiple peaks on a
@@ -351,7 +381,7 @@ between the lowest of two adjacent peaks.  Use this feature with
 caution.
 
 ```{r find_multiple_peaks}
-find_peaks(out, threshold=4, peakdrop=1.8, drop=1.5)
+find_peaks(out, map, threshold=4, peakdrop=1.8, drop=1.5)
 ```
 
 The functions `lod_int()` and `bayes_int()` can be used to derive the
@@ -361,7 +391,7 @@ interval for the locus on chromosome 9 for the second phenotype
 ("spleen"):
 
 ```{r bayes_int}
-bayes_int(out, lodcolumn=2, chr=9, prob=0.95)
+bayes_int(out, map, lodcolumn=2, chr=9, prob=0.95)
 ```
 
 Both `lod_int()` and `bayes_int()` take a `peakdrop` argument, if you
@@ -369,7 +399,7 @@ wish to try to identify multiple peaks on a chromosome. Again, use
 this feature with caution.
 
 ```{r lod_int_multiple}
-lod_int(out, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
+lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
 ```
 
 Each row is a different peak; the columns are the lower interval endpoint, the
@@ -413,12 +443,12 @@ method.
 ```{r plot_lod_scan1_vs_pg}
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(4.1, 4.1, 1.6, 1.1))
-ymx <- max(rbind(out$lod, out_pg$lod, out_pg_loco$lod))
+ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))
 for(i in 1:2) {
-    plot(out, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
+    plot(out, map, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
               ylim=c(0, ymx*1.02))
-    plot(out_pg, lodcolumn=i, col=color[2], add=TRUE)
-    plot(out_pg_loco, lodcolumn=i, col=color[3], add=TRUE, lty=2)
+    plot(out_pg, map, lodcolumn=i, col=color[2], add=TRUE)
+    plot(out_pg_loco, map, lodcolumn=i, col=color[3], add=TRUE, lty=2)
     legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
 ```
@@ -461,10 +491,10 @@ Use the argument `columns` to indicate which coefficient columns to plot.
 ```{r plot_effects_liver_c2}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
-plot(c2eff, columns=1:3, col=col)
-co <- c2eff$coef
-for(i in 1:ncol(co))
-    axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2eff, map["2"], columns=1:3, col=col)
+last_coef <- unclass(c2eff)[nrow(c2eff),] # pull out last coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 The default is to provide phenotype averages for each genotype
@@ -484,11 +514,10 @@ second and third columns.
 
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-co <- c2effB$coef[,2:3]
-ymx <- max(abs(co))
-plot(c2effB, columns=2:3, col=col)
-for(i in 1:2)
-    axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2effB, map["2"], columns=2:3, col=col)
+last_coef <- unclass(c2effB)[nrow(c2effB),2:3] # last two coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 If you provide a kinship matrix to `scan1coef()`, it fits a linear
@@ -503,12 +532,11 @@ Here's a plot of the estimates.
 
 ```{r plot_effects_pg_liver_c2}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-plot(c2eff_pg, columns=1:3, col=col, ylab="Phenotype average")
-co <- c2eff$coef
-for(i in 1:ncol(co))
-    axis(side=4, at=co[nrow(co), i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2eff_pg, map["2"], columns=1:3, col=col, ylab="Phenotype average")
+last_coef <- unclass(c2eff_pg)[nrow(c2eff_pg),]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 You can also get estimated additive and dominance effects, using a
@@ -523,11 +551,10 @@ Here's a plot of the results.
 
 ```{r plot_effects_pg_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-co <- c2effB_pg$coef[,2:3]
-ymx <- max(abs(co))
-plot(c2effB_pg, columns=2:3, col=col)
-for(i in 1:2)
-    axis(side=4, at=co[nrow(co),i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2effB_pg, map["2"], columns=2:3, col=col)
+last_coef <- unclass(c2effB_pg)[nrow(c2effB_pg),2:3]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 Another option for estimating the QTL effects is to treat them as
@@ -549,15 +576,14 @@ estimates. Note that
 
 ```{r plot_scan1blup}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
-map <- attr(c2eff_pg, "map")[[1]]
 col <- c("slateblue", "violetred", "green3")
-ylim <- range(c(c2blup$coef, c2eff$coef))+c(-1,1)
-plot(c2eff, columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
+ylim <- range(c(c2blup, c2eff))+c(-1,1)
+plot(c2eff, map["2"], columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
      xlab="Chr 2 position")
-plot(c2blup, columns=1:3, col=col, add=TRUE, lty=2)
-co <- c2eff$coef
-for(i in 1:ncol(co))
-    axis(side=4, at=co[nrow(co), i], colnames(co)[i], tick=FALSE, col.axis=col[i])
+plot(c2blup, map["2"], columns=1:3, col=col, add=TRUE, lty=2)
+last_coef <- unclass(c2eff)[nrow(c2eff),]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
 
@@ -600,7 +626,8 @@ DOex <- read_cross2(file)
 Let's quickly whip through a basic analysis.
 
 We first calculate genotype probabilities and convert them to allele
-probabilities.
+probabilities. We'll just use marker locations and not insert any
+pseudomarkers.
 
 ```{r DOex_calc_genoprob, eval=FALSE}
 pr <- calc_genoprob(DOex, error_prob=0.002)
@@ -642,7 +669,7 @@ Here's a plot of the results.
 
 ```{r plot_DOex_scan}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot(out)
+plot(out, DOex$gmap)
 ```
 
 There's a strong peak on chromosome 2. Let's look at the QTL effects.
@@ -664,7 +691,7 @@ with the _official_ colors.
 
 ```{r plot_DOex_effects}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_coefCC(coef_c2, bgcolor="gray95")
+plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
 
@@ -677,13 +704,13 @@ of the locus.
 
 Well, actually, we first need to find the location of the inferred
 QTL.  The peak LOD score on chromosome 2 occurs at
-`r round(max(out, chr="2")$pos, 1)` cM. But to find nearby SNPs, we really want
+`r round(max(out, map, chr="2")$pos, 1)` cM. But to find nearby SNPs, we really want
 to know the Mbp position. The calculations were only performed at the
 marker positions, and so we need to find the peak marker and then
 find it's physical location:
 
 ```{r DOex_find_peak_in_Mbp}
-marker <- rownames(max(out, chr="2"))
+marker <- rownames(max(out, DOex$gmap, chr="2"))
 peak_Mbp <- DOex$pmap[["2"]][marker]
 ```
 
@@ -754,50 +781,58 @@ constant in intervals. With this assumption, we then:
 We further create a look-up table relating the full set of SNPs to the
 reduced set (one of each observed SDP in each interval).
 
-The process is performed with the function `genoprob_to_snpprob()`,
-which takes the allele probabilities (or the full genotype
-probabilities, if you want to use a full 3-genotype model at each
-SNP), plus the SNP information table (including the SDP column).
-
-**But** there's one other problem: the map connected to our allele
-probabilities is in cM, but our SNP information is in Mbp. But we can
-plug in the physical map which is contained in the `DOex` object.
-
-```{r switch_to_Mbp}
-apr_Mbp <- apr
-apr_Mbp$map <- DOex$pmap
-```
-
-We can do it like this because we'd calculated the allele
+We first need to identify the equivalent SNPs, using the function
+`index_snps()`. This requires a physical map of the
+markers/pseudomarkers used to calculate the genotype probabilities.
+We take this directly from the `DOex`
+object, as we'd calculated the allele
 probabilities only at the observed markers. If we'd also calculated
 probabilities at pseudomarker positions between markers, we'd need to
-use interpolation to get the Mbp positions of the
+use interpolation to get Mbp positions for the
 pseudomarkers. There's a function `interp_map()` for assisting with
 that.
 
-So now we can calculate the SNP probabilities.
+The `index_snps()` function takes the physical map and the `snpinfo`
+data frame, include the strain distribution patterns we calculated above.
+It inserts three new columns into the data frame (`"index"`,
+`"interval"`, and `"on_map"`: indexes to a set of non-equivalent SNPs,
+map intervals in which the SNPs lie, and whether the SNPs correspond
+to marker/pseudomarker positions).
 
-```{r calc_snpprobs}
-snppr <- genoprob_to_snpprob(apr_Mbp, snpinfo)
+```{r index_snps}
+snpinfo <- index_snps(DOex$pmap, snpinfo)
 ```
 
-We can then use the object to perform the SNP association analysis in
-the region, using the same linear mixed model. We need to be sure to
-use the correct kinship matrix.
+We can then use the function `genoprob_to_snpprob()`,
+which takes the allele probabilities (or the full genotype
+probabilities, if you want to use a full 3-genotype model at each
+SNP), to collapse the genotype probabilities to SNP genotype
+probabilities.
+
+```{r calc_snpprobs}
+snp_pr <- genoprob_to_snpprob(apr, snpinfo)
+```
+
+The output of this function, `snp_pr`, has the same form as the input
+`apr` object with allele probabilities, and can be used directly in a
+call to `scan1()`. And so we can now use the object to perform the SNP
+association analysis in the region, using the same linear mixed model.
+We need to be sure to use the correct kinship matrix.
 
 ```{r perform_snp_scan}
-out_snps <- scan1(snppr, DOex$pheno, k[["2"]], sex)
+out_snps <- scan1(snp_pr, DOex$pheno, k[["2"]], sex)
 ```
 
 The function `plot_snpasso()` in the qtl2plot package can be used to
 plot the results, with points at each of the SNPs. The default is to
 plot **all** SNPs: We calculated LOD scores only at a set of distinct
 SNPs, but SNPs in the same interval with the same SDP will have the
-same LOD score.
+same LOD score. It takes the `scan1()` output plus the `snpinfo` data
+frame.
 
 ```{r plot_snp_asso}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps)
+plot_snpasso(out_snps, snpinfo)
 ```
 
 To get a table of the SNPs with the largest LOD scores, use the
@@ -805,7 +840,7 @@ function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
 
 ```{r top_snps}
-top_snps(out_snps)
+top_snps(out_snps, snpinfo)
 ```
 
 The top SNPs all have NZO and CAST with a common allele, different
@@ -820,5 +855,5 @@ We can highlight these top SNPs in the SNP association plot using the
 
 ```{r plot_snp_asso_hilit}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps, drop=1.5)
+plot_snpasso(out_snps, snpinfo, drop=1.5)
 ```

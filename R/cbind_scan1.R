@@ -15,12 +15,11 @@
 #'
 #' If \code{hsq} present but has differing numbers of rows, we omit this information.
 #'
-#' If \code{snpinfo} present, they much match.
-#'
 #' @examples
 #' library(qtl2geno)
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+#' map <- insert_pseudomarkers(grav2$gmap, step=1)
+#' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' phe1 <- grav2$pheno[,1,drop=FALSE]
 #' phe2 <- grav2$pheno[,2,drop=FALSE]
 #'
@@ -33,54 +32,51 @@ cbind.scan1 <-
     function(...)
 {
     args <- list(...)
-
-    # to cbind: lod, coef, SE
-    # to c(): sample_size
-    # check if matches: map, snpinfo
-    # drop if not matching: addcovar, Xcovar, intcovar, weights
-
-    result <- args[[1]]
     if(length(args) == 1) return(result)
 
-    # check that maps match
-    must_match <- c("map", "snpinfo", "is_x_chr")
-    for(i in 2:length(args)) {
-        for(obj in must_match) {
-            if(!is_same(result[[obj]], args[[i]][[obj]]))
-                stop("Input objects 1 and ", i, " have different ", obj)
-        }
-    }
+    # to cbind: main data, attributes SE, hsq
+    # to c(): attribute sample_size
 
-    # cbind the lod (don't consider coef/SE for this, and require that lod are present)
+    # grab attributes
+    args_attr <- lapply(args, attributes)
+
+    result <- unclass(args[[1]])
+
+    # cbind the data
     for(i in 2:length(args)) {
-        if(!("lod" %in% names(args[[1]])) || !("lod" %in% names(args[[i]])))
-            stop("Not all inputs have LOD score columns")
-        if(!is_same(rownames(result$lod), rownames(args[[i]]$lod)))
-            stop("Input objects 1 and ", i, " have different lod rownames.")
-        result$lod <- cbind(result$lod, args[[i]]$lod)
+        if(!is_same(rownames(result), rownames(args[[i]])))
+            stop("Input objects 1 and ", i, " have different rownames.")
+        result <- cbind(result, unclass(args[[i]]))
     }
 
     # combine sample_size
-    for(i in 2:length(args))
-        result$sample_size <- c(result$sample_size, args[[i]]$sample_size)
-
-    other_stuff <- c("addcovar", "Xcovar", "intcovar", "weights")
     for(i in 2:length(args)) {
-        for(obj in other_stuff) {
-            if(!is_same(result[[obj]], args[[i]][[obj]]))
-                result[[obj]] <- NULL
+        for(obj in c("sample_size")) {
+            if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next
+            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
+                stop("attribute ", obj, " not present in all objects")
+
+            args_attr[[1]][[obj]] <- c(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
         }
     }
 
-    # hsq must have same rows or is omitted
+    # attributes to combine by cbind()
     for(i in 2:length(args)) {
-        if(!("hsq" %in% names(args[[1]])) && !("hsq" %in% names(args[[i]]))) next # not present
-        if(!("hsq" %in% names(args[[1]])) || !("hsq" %in% names(args[[i]])))
-            result$hsq <- NULL
-        if(!is_same(rownames(result$hsq), rownames(args[[i]]$hsq)))
-            result$hsq <- NULL
-        result$hsq <- cbind(result$hsq, args[[i]]$hsq)
+        for(obj in c("hsq", "SE")) {
+            if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next
+            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
+                stop("attribute ", obj, " not present in all objects")
+
+            if(!is_same(rownames(args_attr[[1]][[obj]]), rownames(args_attr[[i]][[obj]])))
+                stop("attribute ", obj, " have differences in rownames")
+
+            args_attr[[1]][[obj]] <- cbind(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+        }
     }
+
+    for(obj in c("sample_size", "hsq", "SE"))
+        attr(result, obj) <- args_attr[[1]][[obj]]
+    class(result) <- class(args[[1]])
 
     result
 }

@@ -4,12 +4,15 @@
 \alias{bayes_int}
 \title{Calculate Bayes credible intervals}
 \usage{
-bayes_int(scan1_output, chr, lodcolumn = 1, threshold = 0, peakdrop = Inf,
-  prob = 0.95, expand2markers = TRUE)
+bayes_int(scan1_output, map, chr, lodcolumn = 1, threshold = 0,
+  peakdrop = Inf, prob = 0.95, expand2markers = TRUE)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}}.}
+
+\item{map}{A list of vectors of marker positions, as produced by
+\code{\link[qtl2geno]{insert_pseudomarkers}}.}
 
 \item{chr}{Chromosome ID to consider (must be a single value).}
 
@@ -61,8 +64,11 @@ library(qtl2geno)
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 \dontshow{iron <- iron[,7]}
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno
@@ -74,9 +80,8 @@ Xcovar <- get_x_covar(iron)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # 95\% Bayes credible interval for QTL on chr 7, first phenotype
-bayes_int(out, chr=7, lodcolum=1)
+bayes_int(out, map, chr=7, lodcolum=1)
 }
 \seealso{
 \code{\link{lod_int}}, \code{\link{find_peaks}}, \code{\link{scan1}}
 }
-

@@ -4,7 +4,8 @@ test_that("eigen decomposition works", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
 
     K <- calc_kinship(probs)
     Ke <- decomp_kinship(K)
@@ -39,7 +40,8 @@ test_that("multi-core eigen decomposition works", {
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
 
     K <- calc_kinship(probs, "loco", cores=4)
     Ke <- decomp_kinship(K)

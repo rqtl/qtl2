@@ -4,7 +4,7 @@
 \alias{cbind.scan1}
 \title{Join genome scan results for different phenotypes.}
 \usage{
-cbind.scan1(...)
+\method{cbind}{scan1}(...)
 }
 \arguments{
 \item{...}{Genome scan objects as produced by \code{\link{scan1}}.
@@ -24,13 +24,12 @@ If components \code{addcovar}, \code{Xcovar},
 omit this information.
 
 If \code{hsq} present but has differing numbers of rows, we omit this information.
-
-If \code{snpinfo} present, they much match.
 }
 \examples{
 library(qtl2geno)
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+map <- insert_pseudomarkers(grav2$gmap, step=1)
+probs <- calc_genoprob(grav2, map, error_prob=0.002)
 phe1 <- grav2$pheno[,1,drop=FALSE]
 phe2 <- grav2$pheno[,2,drop=FALSE]
 
@@ -39,4 +38,3 @@ out2 <- scan1(probs, phe2) # phenotype 2
 out <- cbind(out1, out2)
 
 }
-

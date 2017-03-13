@@ -27,4 +27,3 @@ invert_sdp(sdp, 8)
 \seealso{
 \code{\link{calc_sdp}}
 }
-

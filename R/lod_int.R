@@ -7,6 +7,8 @@
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}}.
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
 #' @param chr Chromosome ID to consider (must be a single value).
 #' @param lodcolumn LOD score column to consider (must be a single value).
 #' @param threshold Minimum LOD score for a peak.
@@ -50,8 +52,11 @@
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #' \dontshow{iron <- iron[,7]}
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -63,18 +68,22 @@
 #' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # 1.5-LOD support interval for QTL on chr 7, first phenotype
-#' lod_int(out, chr=7, lodcolum=1)
+#' lod_int(out, map, chr=7, lodcolum=1)
 lod_int <-
-    function(scan1_output, chr, lodcolumn=1, threshold=0,
+    function(scan1_output, map, chr, lodcolumn=1, threshold=0,
              peakdrop=Inf, drop=1.5, expand2markers=TRUE)
 {
+    if(nrow(scan1_output) != length(unlist(map)))
+        stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     if(missing(chr) || is.null(chr)) { # just use the first chr
-        chr <- names(scan1_output$map)[1]
+        chr <- names(map)[1]
     }
 
     if(length(chr) > 1) {
         warning("chr should have length 1; using the first value")
-        chr <- chr[1]
+        chr <- as.character(chr[1])
     }
     if(length(lodcolumn) > 1) {
         warning("lodcolumn should have length 1; using the first value")
@@ -96,16 +105,19 @@ lod_int <-
     if(drop > peakdrop)
         stop("Must have drop <= peakdrop")
 
-    if(lodcolumn < 1 || lodcolumn > ncol(scan1_output$lod))
-        stop("lodcolumn should be between 1 and ", ncol(scan1_output$lod))
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1_output))
+        stop("lodcolumn should be between 1 and ", ncol(scan1_output))
 
-    if(!(chr %in% names(scan1_output$map)))
+    # for chr to be character string
+    chr <- as.character(chr)
+
+    if(!(chr %in% names(map)))
         stop("Chromosome ", chr, " not found")
 
-    scan1_output <- scan1_output[chr, lodcolumn]
+    scan1_output <- subset_scan1(scan1_output, map, chr, lodcolumn)
 
-    lod <- scan1_output$lod
-    map <- scan1_output$map[[1]]
+    lod <- unclass(scan1_output)
+    map <- map[[chr]]
 
     peaks <- .find_peaks_and_lodint(lod, threshold, peakdrop, drop)
     n_peaks <- length(peaks)

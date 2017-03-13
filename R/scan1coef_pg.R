@@ -26,11 +26,9 @@ scan1coef_pg <-
     }
 
     # genoprobs has more than one chromosome?
-    if(length(genoprobs$probs) > 1)
+    if(length(genoprobs) > 1)
         warning("Using only the first chromosome, ", names(genoprobs)[1])
-    map <- genoprobs$map[[1]]
-    chrid <- names(genoprobs$probs)[1]
-    genoprobs <- genoprobs$probs[[1]]
+    genoprobs <- genoprobs[[1]]
 
     # make sure contrasts is square n_genotypes x n_genotypes
     if(!is.null(contrasts)) {
@@ -144,14 +142,8 @@ scan1coef_pg <-
     if(se) dimnames(SE) <- dimnames(result)
 
     # add some attributes with details on analysis
-    result <- list(coef = result,
-                   map = map,
-                   sample_size = length(ind2keep),
-                   addcovar = colnames4attr(addcovar),
-                   intcovar = colnames4attr(intcovar),
-                   contrasts = contrasts,
-                   chrid = chrid)
-    result$SE <- SE # include only if not NULL
+    attr(result, "sample_size") <- length(ind2keep)
+    attr(result, "SE") <- SE # include only if not NULL
 
     class(result) <- c("scan1coef", "scan1", "matrix")
     result

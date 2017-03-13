@@ -18,7 +18,8 @@
 #' @examples
 #' library(qtl2geno)
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+#' map <- insert_pseudomarkers(grav2$gmap, step=1)
+#' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' phe <- grav2$pheno[,1,drop=FALSE]
 #'
 #' out1 <- scan1(probs[,1], phe) # chr 1
@@ -30,48 +31,48 @@ rbind.scan1 <-
     function(...)
 {
     args <- list(...)
-
-    result <- args[[1]]
     if(length(args) == 1) return(result)
 
-    # to rbind: lod, coef, SE, hsq
-    # to c(): map, snpinfo, is_x_chr
-    # drop if not matching: addcovar, Xcovar, intcovar, weights, sample_size
 
-    result <- args[[1]]
-    if(length(args) == 1) return(result)
+    # to rbind: main data, attributes SE, hsq
+    # drop if not matching: sample_size
 
-    # cbind the lod, coef, SE
-    main_stuff <- c("lod", "coef", "SE", "hsq")
+    # grab attributes
+    args_attr <- lapply(args, attributes)
+
+    result <- unclass(args[[1]])
+
+    # cbind the main data
     for(i in 2:length(args)) {
-        for(obj in main_stuff) {
-            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
-            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[i]])))
+        if(!is_same(colnames(result), colnames(args[[i]])))
+           stop("Input objects 1 and ", i, " have different columns.")
+           result <- rbind(result, unclass(args[[i]]))
+    }
+
+    # rbind attributes
+    to_rbind <- c("hsq", "SE")
+    for(i in 2:length(args)) {
+        for(obj in to_rbind) {
+            if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next # not present
+            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
                 stop(obj, " not present in all inputs")
-            if(!is_same(colnames(result[[obj]]), colnames(args[[i]][[obj]])))
-                stop("Input objects 1 and ", i, " have different ", obj, " columns.")
-            result[[obj]] <- rbind(result[[obj]], args[[i]][[obj]])
+            args_attr[[1]][[obj]] <- rbind(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
         }
     }
 
-    # combine map, snpinfo, is_x_chr
-    to_combine <- c("map", "snpinfo", "is_x_chr")
-    for(i in 2:length(args)) {
-        for(obj in to_combine) {
-            if(!(obj %in% names(args[[1]])) && !(obj %in% names(args[[i]]))) next # not present
-            if(!(obj %in% names(args[[1]])) || !(obj %in% names(args[[i]])))
-                stop(obj, " not present in all inputs")
-            result[[obj]] <- c(result[[obj]], args[[i]][[obj]])
-        }
-    }
-
-    other_stuff <- c("addcovar", "Xcovar", "intcovar", "weights", "sample_size")
+    # drop if not matching
+    other_stuff <- c("sample_size")
     for(i in 2:length(args)) {
         for(obj in other_stuff) {
-            if(!is_same(result[[obj]], args[[i]][[obj]]))
-                result[[obj]] <- NULL
+            if(!is_same(args_attr[[1]][[obj]], args_attr[[i]][[obj]]))
+                args_attr[[1]][[obj]] <- NULL
         }
     }
+
+    # copy attributes
+    for(obj in c("sample_size", "hsq", "SE"))
+        attr(result, obj) <- args_attr[[1]][[obj]]
+    class(result) <- class(args[[1]])
 
     result
 }

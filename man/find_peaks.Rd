@@ -4,13 +4,16 @@
 \alias{find_peaks}
 \title{Find peaks in a set of LOD curves}
 \usage{
-find_peaks(scan1_output, threshold = 3, peakdrop = Inf, drop = NULL,
+find_peaks(scan1_output, map, threshold = 3, peakdrop = Inf, drop = NULL,
   prob = NULL, thresholdX = NULL, peakdropX = NULL, dropX = NULL,
   probX = NULL, expand2markers = TRUE, cores = 1)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
 \code{\link{scan1}}.}
+
+\item{map}{A list of vectors of marker positions, as produced by
+\code{\link[qtl2geno]{insert_pseudomarkers}}.}
 
 \item{threshold}{Minimum LOD score for a peak (can be a vector with
 separate thresholds for each lod score column in
@@ -98,8 +101,11 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno
@@ -111,18 +117,17 @@ Xcovar <- get_x_covar(iron)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # find just the highest peak on each chromosome
-find_peaks(out, threshold=3, peakdrop=Inf)
+find_peaks(out, map, threshold=3, peakdrop=Inf)
 
 # possibly multiple peaks per chromosome
-find_peaks(out, threshold=3, peakdrop=2)
+find_peaks(out, map, threshold=3, peakdrop=2)
 
 # possibly multiple peaks, also getting LOD support intervals
-find_peaks(out, threshold=3, peakdrop=2, drop=1.5)
+find_peaks(out, map, threshold=3, peakdrop=2, drop=1.5)
 
 # possibly multiple peaks, also getting Bayes intervals
-find_peaks(out, threshold=3, peakdrop=2, prob=0.95)
+find_peaks(out, map, threshold=3, peakdrop=2, prob=0.95)
 }
 \seealso{
 \code{\link{scan1}}, \code{\link{lod_int}}, \code{\link{bayes_int}}
 }
-

@@ -1,6 +1,6 @@
 Package: qtl2scan
-Version: 0.4-25
-Date: 2016-12-21
+Version: 0.5-4
+Date: 2017-03-07
 Title: Genome Scans for QTL Experiments
 Description: Functions to perform QTL analysis.  Part of R/qtl2, a
     reimplementation of the R/qtl package to better handle
@@ -19,11 +19,11 @@ Suggests:
     devtools,
     roxygen2,
     qtl,
-    qtl2geno (>= 0.4-5),
-    qtl2plot (>= 0.4-1)
+    qtl2geno (>= 0.5-4),
+    qtl2plot (>= 0.5-3)
 License: GPL-3
 URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppEigen
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

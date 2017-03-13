@@ -27,17 +27,17 @@ test_that("top_snps() works", {
     # calculate strain distribution patterns
     snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 
-    # switch map in allele probabilities to Mbp
-    apr$map <- DOex$pmap
+    # identify equivalent SNPs
+    snpinfo <- index_snps(DOex$pmap, snpinfo)
 
     # convert to snp probabilities
-    snppr <- genoprob_to_snpprob(apr, snpinfo)
+    snp_pr <- genoprob_to_snpprob(apr, snpinfo)
 
     # perform SNP association analysis (here, ignoring residual kinship)
-    out_snps <- scan1(snppr, DOex$pheno)
+    out_snps <- scan1(snp_pr, DOex$pheno)
 
     # table with top SNPs
-    result <- top_snps(out_snps)
+    result <- top_snps(out_snps, snpinfo)
 
     expected <- structure(list(snp_id = c("rs212414861", "rs229578122", "rs254318131",
                                "rs217679969", "rs238404461", "rs262749925", "rs231282689", "rs260286709",
@@ -68,8 +68,10 @@ test_that("top_snps() works", {
                                WSB =   c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                                sdp = c(48L, 48L, 48L, 48L, 48L, 48L, 48L, 48L, 48L, 48L, 48L, 48L, 16L,
                                16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L),
-                               index = c(31L, 31L, 31L, 31L, 31L, 31L, 31L, 31L, 31L, 31L, 31L, 31L,
-                               100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L, 100L),
+                               index = c(3264L, 3264L, 3264L, 3264L, 3264L, 3264L, 3264L, 3264L, 3264L, 3264L, 3264L, 3264L,
+                               16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L, 16182L),
+                               interval = rep(c(64L,65L),c(12,15)),
+                               on_map=rep(FALSE, 27),
                                lod = c(6.59628910475167, 6.59628910475167, 6.59628910475167, 6.59628910475167, 6.59628910475167,
                                6.59628910475167, 6.59628910475167, 6.59628910475167, 6.59628910475167,
                                6.59628910475167, 6.59628910475167, 6.59628910475167, 5.81902562740654,
@@ -79,7 +81,7 @@ test_that("top_snps() works", {
                                5.81902562740654, 5.81902562740654)),
                           .Names = c("snp_id",
                           "chr", "pos_Mbp", "alleles", "AJ", "B6", "129", "NOD", "NZO",
-                          "CAST", "PWK", "WSB", "sdp", "index", "lod"),
+                          "CAST", "PWK", "WSB", "sdp", "index", "interval", "on_map", "lod"),
                           row.names = c(3264L,
                           3265L, 3266L, 3267L, 3268L, 3269L, 3271L, 3274L, 3275L, 3283L,
                           3288L, 3289L, 16182L, 22474L, 23017L, 23184L, 23186L, 23360L,
@@ -89,11 +91,11 @@ test_that("top_snps() works", {
     expect_equal(result, expected)
 
     # top SNPs among the distinct subset at which calculations were performed
-    result <- top_snps(out_snps, show_all_snps=FALSE)
+    result <- top_snps(out_snps, snpinfo, show_all_snps=FALSE)
     expect_equal(result, expected[c(1,13),])
 
     # top SNPs within 1.0 LOD
-    result <- top_snps(out_snps, 0.5)
+    result <- top_snps(out_snps, snpinfo, 0.5)
     expect_equal(result, expected[1:12,])
 
 })

@@ -6,6 +6,8 @@
 #'
 #' @param x An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}}.
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
 #' @param chr Vector of chromosomes.
 #' @param lodcolumn Vector of integers or character strings indicating the LOD
 #' score columns, either as a numeric indexes or column names.
@@ -22,8 +24,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -35,18 +40,43 @@
 #' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # pull out chromosome 8
-#' out-c8 <- subset(out, chr="8")
+#' out_c8 <- subset(out, map, chr="8")
 #'
 #' # just the second column on chromosome 2
-#' out_c2_spleen <- subset(out, "2", "spleen")
+#' out_c2_spleen <- subset(out, map, "2", "spleen")
+#'
+#' # all positions, but just the "liver" column
+#' out_spleen <- subset(out, map, lodcolumn="spleen")
 #' }
 subset_scan1 <-
-    function(x, chr=NULL, lodcolumn=NULL, ...)
+    function(x, map=NULL, chr=NULL, lodcolumn=NULL, ...)
 {
-    map <- x$map
+    x_attr <- attributes(x)
+    x_attrnam <- names(x_attr)
+    x_class <- class(x)
+
+    # subset to markers within map
+    if(!is.null(map)) {
+        map_mnames <- map2markernames(map)
+        x_mnames <- rownames(x)
+
+        if(!all(x_mnames %in% map_mnames)) {
+            x <- x[x_mnames %in% map_mnames,,drop=FALSE]
+            x_mnames <- rownames(x)
+        }
+        if(!all(map_mnames %in% x_mnames)) {
+            for(i in seq(along=map)) {
+                mn <- names(map[[i]])
+                map[[i]] <- map[[i]][mn %in% x_mnames]
+            }
+        }
+    }
 
     # subset by chromosome
     if(!is.null(chr)) {
+        if(is.null(map))
+            stop("To subset by chromosome, you need to provide map object.")
+
         chr <- as.character(chr)
 
         # selected chromosomes
@@ -55,33 +85,24 @@ subset_scan1 <-
             stop("Not all chr found: ", paste(chr[!chr_found], collapse=", "))
 
         # rows to keep
-        row <- chr_scan1(x) %in% chr
+        row <- map2chr(map) %in% chr
 
-        # objects to subset rows
-        subrows <- c("lod", "coef", "SE")
-        for(obj in subrows) {
-            if(obj %in% names(x))
-                x[[obj]] <- x[[obj]][row,,drop=FALSE]
+        x <- x[row,,drop=FALSE]
+
+        # attributes to subset by row
+        for(obj in c("SE", "hsq")) {
+            if(obj %in% x_attrnam) {
+                if(all(chr %in% rownames(x_attr[[obj]])))
+                    x_attr[[obj]] <- x_attr[[obj]][chr,,drop=FALSE]
+            }
         }
 
-        # objects to subset list
-        sublist <- c("map", "snpinfo", "is_x_chr")
-        for(obj in sublist) {
-            if(obj %in% names(x))
-                x[[obj]] <- x[[obj]][chr]
-        }
-
-        if(!is.null(x$hsq)) {
-            if(all(chr %in% rownames(x$hsq)))
-                x$hsq <- x$hsq[chr,,drop=FALSE]
-        }
     }
 
+    # subset by column
     if(!is.null(lodcolumn)) {
         if(is.character(lodcolumn)) {
-            if(!is.null(x$lod)) cols <- colnames(x$lod)
-            else if(!is.null(x$coef)) cols <- colnames(x$coef)
-            else stop("Neither lod nor coef found.")
+            cols <- colnames(x)
 
             tmp <- match(lodcolumn, cols)
             if(any(is.na(tmp)))
@@ -91,13 +112,27 @@ subset_scan1 <-
         if(is.logical(lodcolumn) && length(lodcolumn) != length(cols))
             stop("lodcolumn is logical but not the correct length (", length(cols), ")")
 
-        subcol <- c("coef", "lod", "SE", "hsq")
-        for(obj in subcol) {
-            if(obj %in% names(x))
-                x[[obj]] <- x[[obj]][,lodcolumn,drop=FALSE]
+        x <- x[,lodcolumn,drop=FALSE]
+
+        # attributes to subset list
+        sublist <- c("sample_size")
+        for(obj in sublist) {
+            if(obj %in% x_attrnam)
+                x_attr[[obj]] <- x_attr[[obj]][lodcolumn]
         }
-        x$sample_size <- x$sample_size[lodcolumn]
+
+        # attributes to subset by column
+        for(obj in c("SE", "hsq")) {
+            if(obj %in% x_attrnam) {
+                x_attr[[obj]] <- x_attr[[obj]][,lodcolumn,drop=FALSE]
+            }
+        }
     }
+
+    # restore attributes
+    for(obj in c("SE", "hsq", "sample_size"))
+        attr(x, obj) <- x_attr[[obj]]
+    class(x) <- x_class
 
     x
 }
@@ -106,50 +141,30 @@ subset_scan1 <-
 #' @rdname subset_scan1
 subset.scan1 <- subset_scan1
 
-#' @export
-#' @rdname subset_scan1
-`[.scan1` <-
-    function(x, chr=NULL, lodcolumn=NULL)
-    subset(x, chr, lodcolumn)
 
-
-# chr_scan1: grab chromosome IDs as a vector
-chr_scan1 <-
-    function(scan1_output)
+# grab marker names as a vector
+map2markernames <-
+    function(map)
 {
-    map <- scan1_output$map
+    nam <- unlist(lapply(map, names))
+    names(nam) <- NULL
+    nam
+}
 
-    if(is.null(map))
-        stop("No map found.")
-
+# grab chromosome IDs as a vector
+map2chr <-
+    function(map)
+{
     chr <- rep(names(map), vapply(map, length, 0))
-
-    if("lod" %in% names(scan1_output))
-        names(chr) <- rownames(scan1_output$lod)
-    else if("coef" %in% names(scan1_output))
-        names(chr) <- rownames(scan1_output$coef)
-    else stop("Neither lod nor coef found in scan1_output.")
-
+    names(chr) <- map2markernames(map)
     chr
 }
 
-
-# pos_scan1: grab positions as a vector
-pos_scan1 <-
-    function(scan1_output)
+# grab positions as a vector
+map2pos <-
+    function(map)
 {
-    map <- scan1_output$map
-
-    if(is.null(map))
-        stop("No map found.")
-
     pos <- unlist(map)
-
-    if("lod" %in% names(scan1_output))
-        names(pos) <- rownames(scan1_output$lod)
-    else if("coef" %in% names(scan1_output))
-        names(pos) <- rownames(scan1_output$coef)
-    else stop("Neither lod nor coef found in scan1_output.")
-
+    names(pos) <- map2markernames(map)
     pos
 }

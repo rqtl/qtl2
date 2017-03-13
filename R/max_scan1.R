@@ -7,6 +7,8 @@
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}}.
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
@@ -24,8 +26,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -37,35 +42,28 @@
 #' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # maximum of first column
-#' max(out)
+#' max(out, map)
 #'
 #' # maximum of spleen column
-#' max(out, lodcolumn="spleen")
+#' max(out, map, lodcolumn="spleen")
 #'
 #' # maximum of first column on chr 2
-#' max(out, chr="2")
+#' max(out, map, chr="2")
 max_scan1 <-
-    function(scan1_output, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
+    function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
-    thechr <- chr_scan1(scan1_output)
-    thepos <- pos_scan1(scan1_output)
-    map <- scan1_output$map
+    thechr <- map2chr(map)
+    thepos <- map2pos(map)
 
     # to handle output of either scan1() or scan1coef()
     # for coef(), look at the sign
-    if("lod" %in% names(scan1_output)) {
-        lod <- scan1_output$lod
-        sign <- (lod >= 0)*2-1 # sign +1
-    }
-    else if("coef" %in% names(scan1_output)) {
-        lod <- scan1_output$coef
-        sign <- (lod >= 0)*2-1 # sign +1/-1
+    lod <- unclass(scan1_output)
+    sign <- (lod >= 0)*2-1 # sign +1
+
+    if("scan1coef" %in% class(scan1_output))
         lod <- abs(lod)
-    }
-    else stop("Neither lod nor coef found.")
 
     coln <- colnames(lod)
-
     mnames <- rownames(lod)
 
     if(length(lodcolumn) > 1) { # If length > 1, take first value
@@ -107,15 +105,17 @@ max_scan1 <-
 #' @export
 #' @rdname max_scan1
 max.scan1 <-
-    function(scan1_output, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
-    max_scan1(scan1_output, lodcolumn, chr, na.rm, ...)
+    function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
+    max_scan1(scan1_output, map, lodcolumn, chr, na.rm, ...)
 
 #' Overall maximum LOD score
 #'
-#' Find overall maximum LOD score in genome scan results.
+#' Find overall maximum LOD score in genome scan results, across all positions and columns.
 #'
 #' @param scan1_output An object of class \code{"scan1"} as returned by
 #' \code{\link{scan1}}.
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
 #' @param chr Option vector of chromosomes to consider.
 #'
 #' @export
@@ -130,8 +130,11 @@ max.scan1 <-
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -146,22 +149,24 @@ max.scan1 <-
 #' maxlod(out)
 #'
 #' # maximum on chromosome 2
-#' max(out, "2")
+#' maxlod(out, map, "2")
 #' }
 maxlod <-
-    function(scan1_output, chr=NULL)
+    function(scan1_output, map=NULL, chr=NULL)
 {
-    # subset by chromosome
-    scan1_output <- subset(scan1_output, chr=chr)
+    if(is.null(map) || is.null(chr)) {
+        if(!is.null(map) || !is.null(chr))
+            stop("Provide both map and chr, or neither.")
+    }
+    else {
+        # subset by chromosome
+        scan1_output <- subset(scan1_output, map=map, chr=chr)
+    }
 
     # to handle output of either scan1() or scan1coef()
     # for coef(), look at the sign
-    if("lod" %in% names(scan1_output)) {
-        lod <- scan1_output$lod
-        return(max(lod))
-    }
-    else if("coef" %in% names(scan1_output)) {
-        coef <- scan1_output$coef
+    if("scan1coef" %in% class(scan1_output)) {
+        coef <- unclass(scan1_output)
         sign <- (coef >= 0)*2-1 # sign +1/-1
         coef <- abs(coef)
         maxcoef <- max(coef)
@@ -172,5 +177,8 @@ maxlod <-
 
         return(maxcoef * sign[wh])
     }
-    else stop("Neither lod nor coef found.")
+    else {
+        lod <- unclass(scan1_output)
+        return(max(lod))
+    }
 }

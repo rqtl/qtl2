@@ -24,19 +24,11 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A list containing the following
+#' @return A matrix of LOD scores, positions x phenotypes.
+#' Also contains one or more of the following attributes:
 #' \itemize{
-#' \item \code{lod} - A matrix of LOD scores, positions x phenotypes.
-#' \item \code{map} - A list containing the map positions at which the
-#'     calculations were performed, taken from the input \code{genoprobs}.
-#' \item \code{addcovar} - Names of additive covariates that were used.
-#' \item \code{Xcovar} - Names of special covariates for X chromosome
-#'     under the null hypothesis of no QTL
-#' \item \code{intcovar} - Names of interactive covariates that were used.
 #' \item \code{sample_size} - Vector of sample sizes used for each
 #'     phenotype
-#' \item \code{weights} - Logical value indicating whether weights
-#'     were used (only included if \code{kinship} was not).
 #' \item \code{hsq} - Included if \code{kinship} provided: A matrix of
 #'     estimated heritabilities under the null hypothesis of no
 #'     QTL. Columns are the phenotypes. If the \code{"loco"} method was
@@ -45,14 +37,6 @@
 #'     will be the heritabilities for the different chromosomes (well,
 #'     leaving out each one). If \code{Xcovar} was not NULL, there will at
 #'     least be an autosome and X chromosome row.
-#' \item \code{snpinfo} - Present only if the input \code{genoprobs}
-#'     was produced by \code{\link{genoprob_to_snpprob}}, this is a list
-#'     of data frames giving information about all SNPs. The \code{lod}
-#'     matrix will contain only results for distinct SNPs. The
-#'     \code{index} column in \code{snpinfo} is the row index in the
-#'     \code{lod} matrix that corresponds to the current SNP.
-#' \item \code{is_x_chr} - Taken from \code{genoprobs}; indicates
-#'     which chromosomes are the X chromosome.
 #' }
 #'
 #' @details
@@ -110,8 +94,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -189,8 +176,8 @@ scan1 <-
 
     # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
-    is_x_chr <- genoprobs$is_x_chr
-    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs$probs))
+    is_x_chr <- attr(genoprobs, "is_x_chr")
+    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -200,15 +187,15 @@ scan1 <-
     }
 
     # batches for analysis, to allow parallel analysis
-    run_batches <- data.frame(chr=rep(seq(along=genoprobs$probs), length(phe_batches)),
-                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs$probs)))
-    run_indexes <- 1:(length(genoprobs$probs)*length(phe_batches))
+    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)),
+                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)))
+    run_indexes <- 1:(length(genoprobs)*length(phe_batches))
 
     # the function that does the work
     by_group_func <- function(i) {
         # deal with batch information, including individuals to drop due to missing phenotypes
         chr <- run_batches$chr[i]
-        chrnam <- names(genoprobs$probs)[chr]
+        chrnam <- names(genoprobs)[chr]
         phebatch <- phe_batches[[run_batches$phe_batch[i]]]
         phecol <- phebatch$cols
         omit <- phebatch$omit
@@ -219,11 +206,11 @@ scan1 <-
         # subset the genotype probabilities: drop cols with all 0s, plus the first column
         Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
         if(length(Xcol2drop) > 0) {
-            pr <- genoprobs$probs[[chr]][these2keep,-Xcol2drop,,drop=FALSE]
+            pr <- genoprobs[[chr]][these2keep,-Xcol2drop,,drop=FALSE]
             pr <- pr[,-1,,drop=FALSE]
         }
         else
-            pr <- genoprobs$probs[[chr]][these2keep,-1,,drop=FALSE]
+            pr <- genoprobs[[chr]][these2keep,-1,,drop=FALSE]
 
         # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
@@ -249,9 +236,9 @@ scan1 <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs$probs, function(a) dim(a)[3], 1)
+    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs$probs), npos_by_chr))
+    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
     # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
@@ -260,7 +247,7 @@ scan1 <-
     if(n_cores(cores)==1) { # no parallel processing
         for(i in run_indexes) {
             chr <- run_batches$chr[i]
-            chrnam <- names(genoprobs$probs)[chr]
+            chrnam <- names(genoprobs)[chr]
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
@@ -283,7 +270,7 @@ scan1 <-
         # reorganize results
         for(i in run_indexes) {
             chr <- run_batches$chr[i]
-            chrnam <- names(genoprobs$probs)[chr]
+            chrnam <- names(genoprobs)[chr]
             phebatch <- phe_batches[[run_batches$phe_batch[i]]]
             phecol <- phebatch$cols
 
@@ -294,23 +281,12 @@ scan1 <-
         }
     }
 
-    pos_names <- unlist(lapply(genoprobs$probs, function(a) dimnames(a)[[3]]))
+    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
     names(pos_names) <- NULL # this is just annoying
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # add some attributes with details on analysis
-    result <- list(lod = result,
-                   map = genoprobs$map,
-                   sample_size = n,
-                   addcovar = colnames4attr(addcovar),
-                   Xcovar = colnames4attr(Xcovar),
-                   intcovar = colnames4attr(intcovar),
-                   weights = ifelse(is.null(weights), FALSE, TRUE),
-                   is_x_chr=genoprobs$is_x_chr)
-
-    # preserve any snpinfo from genoprob_to_snpprob
-    if("snpinfo" %in% names(genoprobs))
-        result$snpinfo <- genoprobs$snpinfo
+    attr(result, "sample_size") <- n
 
     class(result) <- c("scan1", "matrix")
     result

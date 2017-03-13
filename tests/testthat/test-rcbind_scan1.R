@@ -4,7 +4,8 @@ test_that("cbind.scan1() works for scan1() results", {
 
     library(qtl2geno)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
 
     out1 <- scan1(probs, grav2$pheno[,1,drop=FALSE])
     out2 <- scan1(probs, grav2$pheno[,2,drop=FALSE])
@@ -18,7 +19,8 @@ test_that("cbind.scan1() works for scan1/LMM results", {
 
     library(qtl2geno)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
     k <- calc_kinship(probs)
     kloco <- calc_kinship(probs, "loco")
 
@@ -38,7 +40,8 @@ test_that("rbind.scan1() works for scan1() results", {
 
     library(qtl2geno)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
 
     phe <- grav2$pheno[,1,drop=FALSE]
     out1 <- scan1(probs[,1], phe)
@@ -59,7 +62,8 @@ test_that("rbind.scan1() works for scan1() results with multiple columns", {
 
     library(qtl2geno)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
 
     phe <- grav2$pheno[,15:18,drop=FALSE]
     out1 <- scan1(probs[,1], phe)
@@ -80,7 +84,8 @@ test_that("rbind.scan1() works for scan1() results", {
 
     library(qtl2geno)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
     k <- calc_kinship(probs)
     kloco <- calc_kinship(probs, "loco")
 
@@ -89,11 +94,11 @@ test_that("rbind.scan1() works for scan1() results", {
     out2 <- scan1(probs[,2:3], phe, k)
     out3 <- scan1(probs[,5], phe, k)
     out12 <- scan1(probs[,1:3], phe, k)
-    out12$hsq <- rbind(out1$hsq, out2$hsq) # small adjustment
+    attr(out12, "hsq") <- rbind(attr(out1, "hsq"), attr(out2, "hsq")) # small adjustment
     out123 <- scan1(probs[,c(1:3,5)], phe, k)
-    out123$hsq <- rbind(out1$hsq, out2$hsq, out3$hsq) # small adjustment
+    attr(out123, "hsq") <- rbind(attr(out1, "hsq"), attr(out2, "hsq"), attr(out3, "hsq")) # small adjustment
     out2123 <- scan1(probs[,c(2:3,1,2:3,5)], phe, k)
-    out2123$hsq <- rbind(out2$hsq, out1$hsq, out2$hsq, out3$hsq) # small adjustment
+    attr(out2123, "hsq") <- rbind(attr(out2, "hsq"), attr(out1, "hsq"), attr(out2, "hsq"), attr(out3, "hsq")) # small adjustment
 
     expect_equal(rbind(out1, out2), out12)
     expect_equal(rbind(out1, out2, out3), out123)
@@ -117,7 +122,8 @@ test_that("rbind.scan1() works for scan1() results with multiple columns", {
 
     library(qtl2geno)
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
     k <- calc_kinship(probs)
     kloco <- calc_kinship(probs, "loco")
 
@@ -126,11 +132,11 @@ test_that("rbind.scan1() works for scan1() results with multiple columns", {
     out2 <- scan1(probs[,2:3], phe, k)
     out3 <- scan1(probs[,5], phe, k)
     out12 <- scan1(probs[,1:3], phe, k)
-    out12$hsq <- rbind(out1$hsq, out2$hsq) # small adjustment
+    attr(out12, "hsq") <- rbind(attr(out1, "hsq"), attr(out2, "hsq")) # small adjustment
     out123 <- scan1(probs[,c(1:3,5)], phe, k)
-    out123$hsq <- rbind(out1$hsq, out2$hsq, out3$hsq) # small adjustment
+    attr(out123, "hsq") <- rbind(attr(out1, "hsq"), attr(out2, "hsq"), attr(out3, "hsq")) # small adjustment
     out2123 <- scan1(probs[,c(2:3,1,2:3,5)], phe, k)
-    out2123$hsq <- rbind(out2$hsq, out1$hsq, out2$hsq, out3$hsq) # small adjustment
+    attr(out2123, "hsq") <- rbind(attr(out2, "hsq"), attr(out1, "hsq"), attr(out2, "hsq"), attr(out3, "hsq")) # small adjustment
 
     expect_equal(rbind(out1, out2), out12)
     expect_equal(rbind(out1, out2, out3), out123)
