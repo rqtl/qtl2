@@ -1,4 +1,6 @@
 language: r
+sudo: false
+cache: packages
 
 r_packages:
  - devtools
@@ -10,8 +12,6 @@ r_github_packages:
  - rqtl/qtl2plot
 
 warnings_are_errors: true
-
-sudo: required
 
 notifications:
   email:
