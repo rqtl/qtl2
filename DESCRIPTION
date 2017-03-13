@@ -1,6 +1,6 @@
 Package: qtl2scan
-Version: 0.5-4
-Date: 2017-03-07
+Version: 0.5-5
+Date: 2017-03-13
 Title: Genome Scans for QTL Experiments
 Description: Functions to perform QTL analysis.  Part of R/qtl2, a
     reimplementation of the R/qtl package to better handle

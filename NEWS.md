@@ -1,4 +1,4 @@
-## qtl2scan 0.5-4
+## qtl2scan 0.5-5
 
 ### New features
 

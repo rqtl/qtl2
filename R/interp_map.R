@@ -36,16 +36,43 @@ interp_map <-
              paste(chr[!chr_found], collapse=", "))
     }
 
+    dropped_old <- dropped_new <- NULL
     for(thechr in chr) {
         om <- oldmap[[thechr]]
         nm <- newmap[[thechr]]
         nom <- names(om)
         nnm <- names(nm)
-        if(length(om) != length(nm) || !all(!is.na(om) & !is.na(nm) & nom == nnm))
-            stop("Old and new maps differ on chr ", thechr)
+
+        # markers in oldmap that aren't in newmap?
+        drop_om <- !(nom %in% nnm)
+        if(any(drop_om)) {
+            dropped_old <- c(dropped_old, nom[drop_om])
+            om <- om[!drop_om]
+            nom <- names(om)
+        }
+
+        # markers in newmap that aren't in oldmap?
+        drop_nm <- !(nnm %in% nom)
+        if(any(drop_nm)) {
+            dropped_new <- c(dropped_new, nnm[drop_nm])
+            nm <- nm[!drop_nm]
+            nnm <- names(nm)
+        }
+
+        # need at least two markers left, and need them to be in the same order
+        if(length(nm) < 2 || length(om) < 2)
+            stop("Less than 2 matching markers on chr ", thechr)
+        if(length(om) != length(nm) || !all(nom == nnm))
+            stop("Old and new maps not aligned on chr ", thechr)
+
         result[[thechr]] <- interpolate_map(map[[thechr]], om, nm)
         names(result[[thechr]]) <- names(map[[thechr]])
     }
+
+    if(length(dropped_old) > 1)
+        warning("Dropped ", length(dropped_old), " markers not present in new map")
+    if(length(dropped_new) > 1)
+        warning("Dropped ", length(dropped_new), " markers not present in old map")
 
     result
 }
