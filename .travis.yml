@@ -5,8 +5,8 @@ r_packages:
 
 r_github_packages:
  - kbroman/qtl@devel
- - kbroman/qtl2geno@refactor
- - kbroman/qtl2plot@refactor
+ - rqtl/qtl2geno
+ - rqtl/qtl2plot
 
 warnings_are_errors: true
 
