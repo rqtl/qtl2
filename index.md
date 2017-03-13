@@ -25,9 +25,14 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 
 ![Warning](assets/pics/warning_icon.png)
 
-We're considering revising
-many of the central data structures in R/qtl2. There is much that is
-useful here, but many of the details are likely to change.
+In R/qtl2 version 0.5, we have made major revisions to some of the
+central data structures, and a number of steps in QTL analyses have
+changed. See the revised
+[user guide](assets/vignettes/user_guide.html), or
+[this description of the changes in version 0.5](pages/version05_new.html).
+A couple of functions for converting objects from the format for
+Rqtl2 version 0.4 and the new format are in
+[`convert_04_to_05.R`](assets/convert_04_to_05.R).
 
 ---
 
