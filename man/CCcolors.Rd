@@ -20,4 +20,3 @@ data(CCcolors)
 data(CCorigcolors)
 }
 \keyword{datasets}
-

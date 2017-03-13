@@ -4,7 +4,7 @@
 # calls plot_coef and plot_scan1
 # internal function that is called by plot_coef
 plot_coef_and_lod <-
-    function(x, columns=NULL, col=NULL, scan1_output,
+    function(x, map, columns=NULL, col=NULL, scan1_output,
              gap=25, ylim=NULL, bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects",
              ylab_lod="LOD score", ylim_lod=NULL, col_lod="slateblue",
@@ -12,19 +12,21 @@ plot_coef_and_lod <-
              vlines=NULL, vlines.col="white", vlines.lwd=1, vlines.lty=1,
              top_panel_prop=0.65, ...)
 {
+    if(nrow(x) != length(unlist(map)))
+        stop("nrow(x) [", nrow(x), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     # also, match markers and use map in coefficients object
-    mar_in_coef <- rownames(x$coef)
-    mar_in_scan1 <- rownames(scan1_output$lod)
-    scan1_output$lod <- scan1_output$lod[mar_in_scan1 %in% mar_in_coef, , drop=FALSE]
-    scan1_output$map <- list("1"=x$map)
+    mar_in_coef <- rownames(x)
+    mar_in_scan1 <- rownames(scan1_output)
+    scan1_output <- unclass(scan1_output)[mar_in_scan1 %in% mar_in_coef, , drop=FALSE]
     mis_mar <- !(mar_in_coef %in% mar_in_scan1)
     if(any(mis_mar)) {
         n_new <- sum(mis_mar)
         new_lod <- matrix(NA, nrow=sum(mis_mar), ncol=scan1_output$lod)
         rownames(new_lod) <- mar_in_coef[mis_mar]
-        scan1_output$lod <- rbind(scan1_output$lod, new_lod)[mar_in_coef,]
+        scan1_output <- rbind(scan1_output, new_lod)[mar_in_coef,]
     }
-
 
     # 2 x 1 panels; adjust margins
     old_mfrow <- par("mfrow")
@@ -36,14 +38,14 @@ plot_coef_and_lod <-
     bottom_mar[3] <- 0.1
 
     par(mar=top_mar)
-    plot_coef(x, columns=columns, col=col, scan1_output=NULL,
+    plot_coef(x, map, columns=columns, col=col, scan1_output=NULL,
               add=FALSE, gap=gap, ylim=ylim, bgcolor=bgcolor,
               altbgcolor=altbgcolor, ylab=ylab,
               xaxt="n", vlines=vlines, vlines.col=vlines.col,
               vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 
     par(mar=bottom_mar)
-    plot_scan1(scan1_output, lodcolumn=1, col=col_lod,
+    plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod,
                add=FALSE, gap=gap, vlines=vlines, vlines.col=vlines.col,
                vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 }

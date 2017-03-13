@@ -4,12 +4,11 @@
 \alias{xpos_scan1}
 \title{Get x-axis position for genomic location}
 \usage{
-xpos_scan1(scan1_output, chr = NULL, gap = 25, thechr, thepos)
+xpos_scan1(map, chr = NULL, gap = 25, thechr, thepos)
 }
 \arguments{
-\item{scan1_output}{Output of \code{\link[qtl2scan]{scan1}} that
-was used in the call to \code{\link{plot_scan1}}. This can also be
-a map object (a list of vectors of positions).}
+\item{map}{A list of vectors of marker positions, as produced by
+\code{\link[qtl2geno]{insert_pseudomarkers}}.}
 
 \item{chr}{Selected chromosomes that were plotted (if used in the
 call to \code{\link{plot_scan1}}).}
@@ -41,8 +40,11 @@ library(qtl2geno)
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
+# insert pseudomarkers into map
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+probs <- calc_genoprob(iron, map, error_prob=0.002)
 
 # grab phenotypes and covariates; ensure that covariates have names attribute
 pheno <- iron$pheno
@@ -57,20 +59,20 @@ out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 # plot the results for selected chromosomes
 ylim <- c(0, maxlod(out)*1.02) # need to strip class to get overall max LOD
 chr <- c(2,7,8,9,15,16)
-plot(out, chr=chr, ylim=ylim)
-plot(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
-legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out$lod),
+plot(out, map, chr=chr, ylim=ylim)
+plot(out, map, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
+legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
        bg="gray90")
 
 # Use xpos_scan1 to add points at the peaks
 # first find the peaks with LOD > 3
-peaks <- find_peaks(out)
+peaks <- find_peaks(out, map)
 
 # keep just the peaks for chromosomes that were plotted
 peaks <- peaks[peaks$chr \%in\% chr,]
 
 # find x-axis positions
-xpos <- xpos_scan1(out, chr=chr, thechr=peaks$chr, thepos=peaks$pos)
+xpos <- xpos_scan1(map, chr=chr, thechr=peaks$chr, thepos=peaks$pos)
 
 # point colors
 ptcolor <- c("darkslateblue", "violetred")[match(peaks$lodcolumn, c("liver", "spleen"))]
@@ -78,4 +80,3 @@ ptcolor <- c("darkslateblue", "violetred")[match(peaks$lodcolumn, c("liver", "sp
 # plot points
 points(xpos, peaks$lod, pch=21, bg=ptcolor)
 }
-

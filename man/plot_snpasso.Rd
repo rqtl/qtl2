@@ -4,16 +4,35 @@
 \alias{plot_snpasso}
 \title{Plot SNP associations}
 \usage{
-plot_snpasso(scan1output, show_all_snps = TRUE, drop.hilit = NA,
+plot_snpasso(scan1output, snpinfo, show_all_snps = TRUE, drop.hilit = NA,
   col.hilit = "violetred", col = "darkslateblue", pch = 16, cex = 0.5,
   ylim = NULL, add = FALSE, gap = 25, bgcolor = "gray90",
   altbgcolor = "gray85", ...)
 }
 \arguments{
-\item{scan1output}{Output of \code{\link[qtl2scan]{scan1}}.  Should
-contain an attribute, \code{"snpinfo"}, as when
-\code{\link[qtl2scan]{scan1}} are run with SNP probabilities
-produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.}
+\item{scan1output}{Output of \code{\link[qtl2scan]{scan1}} using
+SNP probabilities derived by
+\code{\link[qtl2scan]{genoprob_to_snpprob}}.}
+
+\item{snpinfo}{Data frame with SNP information with the following
+    columns (the last three are generally derived from with
+    \code{\link[qtl2scan]{index_snps}}):
+\itemize{
+\item \code{chr} - Character string or factor with chromosome
+\item \code{pos} - Position (in same units as in the \code{"map"}
+    attribute in \code{genoprobs}.
+\item \code{sdp} - Strain distribution pattern: an integer, between
+    1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
+    binary encoding indicates the founder genotypes
+\item \code{snp} - Character string with SNP identifier (if
+    missing, the rownames are used).
+\item \code{index} - Indices that indicate equivalent
+    groups of SNPs.
+\item \code{intervals} - Indexes that indicate which marker
+    intervals the SNPs reside.
+\item \code{on_map} - Indicate whether SNP coincides with a marker
+    in the \code{genoprobs}
+}}
 
 \item{show_all_snps}{If TRUE, expand to show all SNPs.}
 
@@ -67,34 +86,33 @@ snpinfo <- readRDS(tmpfile)
 unlink(tmpfile)
 
 # calculate strain distribution patterns
+library(qtl2scan)
 snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 
-# switch map in allele probabilities to Mbp
-apr$map <- DOex$pmap
+# identify equivalent snps
+snpinfo <- index_snps(DOex$pmap, snpinfo)
 
 # convert to snp probabilities
-snppr <- genoprob_to_snpprob(apr, snpinfo)
+snp_pr <- genoprob_to_snpprob(apr, snpinfo)
 
 # perform SNP association analysis (here, ignoring residual kinship)
-library(qtl2scan)
-out_snps <- scan1(snppr, DOex$pheno)
+out_snps <- scan1(snp_pr, DOex$pheno)
 
 # plot results
 library(qtl2plot)
-plot_snpasso(out_snps)
+plot_snpasso(out_snps, snpinfo)
 
 # can also just type plot()
-plot(out_snps)
+plot(out_snps, snpinfo)
 
 # plot just subset of distinct SNPs
-plot_snpasso(out_snps, show_all_snps=FALSE)
+plot_snpasso(out_snps, snpinfo, show_all_snps=FALSE)
 
 # highlight the top snps (with LOD within 1.5 of max)
-plot(out_snps, drop.hilit=1.5)
+plot(out_snps, snpinfo, drop.hilit=1.5)
 }
 
 }
 \seealso{
 \code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
 }
-

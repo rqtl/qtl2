@@ -4,6 +4,9 @@
 #'
 #' @param x Output of \code{\link[qtl2scan]{scan1}}.
 #'
+#' @param map A list of vectors of marker positions, as produced by
+#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#'
 #' @param lodcolumn LOD score column to plot (a numeric index, or a
 #' character string for a column name). Only one value allowed.
 #'
@@ -25,6 +28,7 @@
 #'
 #' @export
 #' @importFrom graphics plot rect lines par axis title abline box
+#' @importFrom qtl2scan subset_scan1
 #'
 #' @return None.
 #'
@@ -35,8 +39,11 @@
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
 #' # calculate genotype probabilities
-#' probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno
@@ -51,26 +58,36 @@
 #' # plot the results for selected chromosomes
 #' ylim <- c(0, maxlod(out)*1.02) # need to strip class to get overall max LOD
 #' chr <- c(2,7,8,9,15,16)
-#' plot(out, chr=chr, ylim=ylim)
-#' plot(out, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
-#' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out$lod),
+#' plot(out, map, chr=chr, ylim=ylim)
+#' plot(out, map, lodcolumn=2, chr=chr, col="violetred", add=TRUE)
+#' legend("topleft", lwd=2, col=c("darkslateblue", "violetred"), colnames(out),
 #'        bg="gray90")
 #'
 #' # plot just one chromosome
-#' plot(out, chr=8, ylim=ylim)
-#' plot(out, chr=8, lodcolumn=2, col="violetred", add=TRUE)
+#' plot(out, map, chr=8, ylim=ylim)
+#' plot(out, map, chr=8, lodcolumn=2, col="violetred", add=TRUE)
 #'
 #' # lodcolumn can also be a column name
-#' plot(out, lodcolumn="liver", ylim=ylim)
-#' plot(out, lodcolumn="spleen", col="violetred", add=TRUE)
+#' plot(out, map, lodcolumn="liver", ylim=ylim)
+#' plot(out, map, lodcolumn="spleen", col="violetred", add=TRUE)
 plot_scan1 <-
-    function(x, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
+    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
-    # pull out map
-    map <- x$map
-    if(is.null(map)) stop("No map found in the input")
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
+
+    if(nrow(x) != length(unlist(map)))
+        stop("nrow(x) [", nrow(x), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
+    # subset chromosomes
+    if(!is.null(chr)) {
+        chri <- match(chr, names(map))
+        if(any(is.na(chri)))
+            stop("Chromosomes ", paste(chr[is.na(chri)], collapse=", "), " not found")
+        x <- qtl2scan::subset_scan1(x, map, chr)
+        map <- map[chri]
+    }
 
     # pull out lod scores
     if(length(lodcolumn) > 1) { # If length > 1, take first value
@@ -78,23 +95,14 @@ plot_scan1 <-
         lodcolumn <- lodcolumn[1]
     }
     if(is.character(lodcolumn)) { # turn column name into integer
-        tmp <- match(lodcolumn, colnames(x$lod))
+        tmp <- match(lodcolumn, colnames(x))
         if(is.na(tmp))
             stop('lodcolumn "', lodcolumn, '" not found')
         lodcolumn <- tmp
     }
-    if(lodcolumn < 1 || lodcolumn > ncol(x$lod))
-        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(x$lod), ")")
-    lod <- x$lod[,lodcolumn]
-
-    # subset chromosomes
-    if(!is.null(chr)) {
-        chri <- match(chr, names(map))
-        if(any(is.na(chri)))
-            stop("Chromosomes ", paste(chr[is.na(chri)], collapse=", "), " not found")
-        map <- map[chri]
-        lod <- lod[unlist(lapply(map, names))]
-    }
+    if(lodcolumn < 1 || lodcolumn > ncol(x))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(x), ")")
+    lod <- unclass(x)[,lodcolumn]
 
     # internal function; trick to be able to pull things out of "..."
     #    but still have some defaults for them
@@ -210,16 +218,16 @@ plot_scan1 <-
 #' @export
 #' @rdname plot_scan1
 plot.scan1 <-
-    function(x, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
+    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
-    # if snp asso result, use plot_snpasso() with just reduced snps; otherwise defaults
-    if(!is.null(x$snpinfo)) {
-        plot_snpasso(x, add=add, gap=gap, bgcolor=bgcolor,
+    # if map looks like snpinfo, assume this is a snp asso result and use plot_snpasso()
+    if(is.data.frame(map) && "index" %in% names(map)) {
+        plot_snpasso(x, snpinfo=map, add=add, gap=gap, bgcolor=bgcolor,
                      altbgcolor=altbgcolor, ...)
     }
     else { # mostly, use plot_scan1()
-        plot_scan1(x, lodcolumn=lodcolumn, chr=chr, add=add, gap=gap,
+        plot_scan1(x, map=map, lodcolumn=lodcolumn, chr=chr, add=add, gap=gap,
                    bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
     }
 }
