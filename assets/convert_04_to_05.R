@@ -9,8 +9,8 @@ convert_probs <-
 {
     attr(probs$probs, "is_x_chr") <- probs$is_x_chr
     attr(probs$probs, "crosstype") <- probs$crosstype
-    attr(probs$alleles, "alleles") <- probs$alleles
-    attr(probs$alleleprobs, "alleles") <- probs$alleleprobs
+    attr(probs$probs, "alleles") <- probs$alleles
+    attr(probs$probs, "alleleprobs") <- probs$alleleprobs
     class(probs$probs) <- class(probs)
 
     probs$probs
