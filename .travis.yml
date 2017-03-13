@@ -4,8 +4,8 @@ r_packages:
  - devtools
 
 r_github_packages:
- - kbroman/qtl2geno@refactor
- - kbroman/qtl2scan@refactor
+ - rqtl/qtl2geno
+ - rqtl/qtl2scan
 
 warnings_are_errors: true
 
