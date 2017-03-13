@@ -10,9 +10,6 @@
 #' (\code{"overall"}, using all chromosomes), the kinship matrix
 #' leaving out one chromosome at a time (\code{"loco"}), or the
 #' kinship matrix for each chromosome (\code{"chr"}).
-#' @param use_grid_only If \code{TRUE} and \code{probs} were calculated with
-#' \code{stepwidth="fixed"}, reduce them to the grid using
-#' \code{\link{probs_to_grid}}.
 #' @param omit_x If \code{TRUE}, only use the autosomes; ignored when
 #' \code{type="chr"}.
 #' @param use_allele_probs If \code{TRUE}, assess similarity with
@@ -56,29 +53,30 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+#' map <- insert_pseudomarkers(grav2$gmap, step=1)
+#' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' K <- calc_kinship(probs)
+#'
+#' # using only markers/pseudomarkers on the grid
+#' grid <- calc_grid(grav2$gmap, step=1)
+#' probs_sub <- probs_to_grid(probs, grid)
+#' K_grid <- calc_kinship(probs_sub)
+
 
 calc_kinship <-
     function(probs, type=c("overall", "loco", "chr"),
-             use_grid_only=TRUE, omit_x=FALSE,
-             use_allele_probs=TRUE,
+             omit_x=FALSE, use_allele_probs=TRUE,
              normalize=FALSE,
              quiet=TRUE, cores=1)
 {
     type <- match.arg(type)
 
-    allchr <- names(probs$probs)
-    if(omit_x && type != "chr") chrs <- which(!probs$is_x_chr)
+    allchr <- names(probs)
+    if(omit_x && type != "chr") chrs <- which(!attr(probs, "is_x_chr"))
     else chrs <- seq(along=allchr)
 
-    if(use_grid_only && "grid" %in% names(probs)) {
-        if(!quiet) message(" - Reducing probabilities to grid")
-        probs <- probs_to_grid(probs)
-    }
-
     # convert from genotype probabilities to allele probabilities
-    ap <- probs$alleleprobs
+    ap <- attr(probs, "alleleprobs")
     if(use_allele_probs && (is.null(ap) || !ap)) {
         if(!quiet) message(" - converting to allele probs")
         probs <- genoprob_to_alleleprob(probs, quiet=quiet, cores=cores)
@@ -105,7 +103,7 @@ calc_kinship <-
 calc_kinship_overall <-
     function(probs, chrs, quiet=TRUE, cores=1)
 {
-    ind_names <- rownames(probs$probs[[1]])
+    ind_names <- rownames(probs[[1]])
     n_ind <- length(ind_names)
 
     result <- matrix(0, nrow=n_ind, ncol=n_ind)
@@ -120,8 +118,8 @@ calc_kinship_overall <-
 
     # function that does the work
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", names(probs$probs)[chr])
-        pr <- aperm(probs$probs[[chr]], c(3,2,1)) # convert to pos x gen x ind
+        if(!quiet) message(" - Chr ", names(probs)[chr])
+        pr <- aperm(probs[[chr]], c(3,2,1)) # convert to pos x gen x ind
         .calc_kinship(pr)
     }
 
@@ -136,7 +134,7 @@ calc_kinship_overall <-
             result <- result + by_chr_res[[i]]
     }
 
-    tot_pos <- sum(vapply(probs$probs, function(a) dim(a)[3], 0)[chrs])
+    tot_pos <- sum(vapply(probs, function(a) dim(a)[3], 0)[chrs])
     result <- result/tot_pos
     attr(result, "n_pos") <- tot_pos
 
@@ -147,7 +145,7 @@ calc_kinship_overall <-
 calc_kinship_bychr <-
     function(probs, chrs, scale=TRUE, quiet=TRUE, cores=1)
 {
-    ind_names <- rownames(probs$probs[[1]])
+    ind_names <- rownames(probs[[1]])
     n_ind <- length(ind_names)
 
     # set up cluster and set quiet=TRUE if multi-core
@@ -159,12 +157,12 @@ calc_kinship_bychr <-
 
     # function that does the work
     by_chr_func <- function(chr) {
-        if(!quiet) message(" - Chr ", names(probs$probs)[chr])
+        if(!quiet) message(" - Chr ", names(probs)[chr])
 
-        n_pos <- dim(probs$probs[[chr]])[3]
+        n_pos <- dim(probs[[chr]])[3]
 
         # aperm converts to pos x gen x ind
-        pr <- aperm(probs$probs[[chr]], c(3,2,1))
+        pr <- aperm(probs[[chr]], c(3,2,1))
         result <- .calc_kinship(pr)
         if(scale) result <- result/n_pos
 
@@ -176,7 +174,7 @@ calc_kinship_bychr <-
     # run and combine results
     result <- cluster_lapply(cores, chrs, by_chr_func)
 
-    names(result) <- names(probs$probs)[chrs]
+    names(result) <- names(probs)[chrs]
     result
 }
 

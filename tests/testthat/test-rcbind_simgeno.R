@@ -3,7 +3,8 @@ context("rbind and cbind sim_geno")
 test_that("rbind.sim_geno works for grav", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    draws <- sim_geno(grav2, step=1, error_prob=0.002, n_draws=8)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    draws <- sim_geno(grav2, map, error_prob=0.002, n_draws=8)
     drawsA <- draws[1:5,]
     drawsB <- draws[6:12,]
     drawsC <- draws[13:20,]
@@ -21,7 +22,8 @@ test_that("rbind.sim_geno works for grav", {
 test_that("rbind.sim_geno works for iron", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    draws <- sim_geno(iron, step=1, error_prob=0.002, n_draws=5)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    draws <- sim_geno(iron, map, error_prob=0.002, n_draws=5)
     drawsA <- draws[2:20,]
     drawsB <- draws[41:60,]
     drawsC <- draws[102:201,]
@@ -38,7 +40,8 @@ test_that("rbind.sim_geno works for iron", {
 test_that("cbind.calc_genoprob works for grav", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    draws <- sim_geno(grav2[1:10,], step=1, error_prob=0.002, n_draws=8)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    draws <- sim_geno(grav2[1:10,], map, error_prob=0.002, n_draws=8)
     drawsA <- draws[,1:2]
     drawsB <- draws[,5]
     drawsC <- draws[,3:4]
@@ -56,7 +59,8 @@ test_that("cbind.calc_genoprob works for grav", {
 test_that("cbind.sim_geno works for iron", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    draws <- sim_geno(iron[6:21,], step=1, error_prob=0.002, n_draws=6)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    draws <- sim_geno(iron[6:21,], map, error_prob=0.002, n_draws=6)
     drawsA <- draws[,2:3]
     drawsB <- draws[,c(4,5,8)]
     drawsC <- draws[,c(19,"X")]

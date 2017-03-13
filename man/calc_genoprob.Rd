@@ -4,8 +4,7 @@
 \alias{calc_genoprob}
 \title{Calculate conditional genotype probabilities}
 \usage{
-calc_genoprob(cross, step = 0, off_end = 0, stepwidth = c("fixed", "max"),
-  pseudomarker_map = NULL, error_prob = 0.0001,
+calc_genoprob(cross, map = NULL, error_prob = 0.0001,
   map_function = c("haldane", "kosambi", "c-f", "morgan"), lowmem = FALSE,
   quiet = TRUE, cores = 1)
 }
@@ -13,20 +12,9 @@ calc_genoprob(cross, step = 0, off_end = 0, stepwidth = c("fixed", "max"),
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
-\item{step}{Distance between pseudomarkers and markers; if
-\code{step=0} no pseudomarkers are inserted.}
-
-\item{off_end}{Distance beyond terminal markers in which to insert
-pseudomarkers.}
-
-\item{stepwidth}{Indicates whether to use a fixed grid
-(\code{stepwidth="fixed"}) or to use the maximal distance between
-pseudomarkers to ensure that no two adjacent markers/pseudomarkers
-are more than \code{step} apart.}
-
-\item{pseudomarker_map}{A map of pseudomarker locations; if provided the
-\code{step}, \code{off_end}, and \code{stepwidth} arguments are
-ignored.}
+\item{map}{Genetic map of markers. May include pseudomarker
+locations (that is, locations that are not within the marker
+genotype data). If NULL, the genetic map in \code{cross} is used.}
 
 \item{error_prob}{Assumed genotyping error probability}
 
@@ -46,32 +34,18 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-A list containing the following
-\itemize{
-\item \code{probs} - A list of three-dimensional arrays of probabilities,
+A list of three-dimensional arrays of probabilities,
     individuals x genotypes x positions. (Note that the arrangement is
-    different from R/qtl.)
-\item \code{map} - The genetic map as a list of vectors of marker positions.
-\item \code{grid} - A list of logical vectors, indicating which
-    positions correspond to a grid of markers/pseudomarkers. (may be
-    absent)
+    different from R/qtl.) Also contains four attributes:
+\itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
     are to be treated as the X chromosome or not, from input \code{cross}.
-\item \code{is_female} - Vector of indicators of which individuals are female, from input
-    \code{cross}.
-\item \code{cross_info} - Matrix of cross information for the
-    individuals, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
     \code{cross}.
 \item \code{alleleprobs} - Logical value (\code{FALSE}) that
     indicates whether the probabilities are compressed to allele
     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
-\item \code{step} - the value of the \code{step} argument.
-\item \code{off_end} - the value of the \code{off_end} argument.
-\item \code{stepwidth} - the value of the \code{stepwidth} argument.
-\item \code{error_prob} - the value of the \code{error_prob} argument.
-\item \code{map_function} - the value of the \code{map_function} argument.
 }
 }
 \description{
@@ -100,7 +74,10 @@ Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+gmap_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
+probs <- calc_genoprob(grav2, gmap_w_pmar, error_prob=0.002)
+}
+\seealso{
+\code{\link{insert_pseudomarkers}}
 }
 \keyword{utilities}
-

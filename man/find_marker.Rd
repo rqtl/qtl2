@@ -44,4 +44,3 @@ find_marker(iron$pmap, 7, c(44.2, 108.9))
 # find markers in an interval
 find_marker(iron$pmap, 16, interval=c(35, 80))
 }
-

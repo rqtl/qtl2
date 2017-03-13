@@ -27,8 +27,8 @@ Reduce genotype probabilities (as calculated by
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+gmap_w_pmar <- insert_pseudomarkers(iron, step=1)
+probs <- calc_genoprob(iron, gmap_w_pmar, error_prob=0.002)
 allele_probs <- genoprob_to_alleleprob(probs)
 }
 \keyword{utilities}
-

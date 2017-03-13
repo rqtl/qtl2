@@ -4,9 +4,8 @@
 \alias{calc_kinship}
 \title{Calculate kinship matrix}
 \usage{
-calc_kinship(probs, type = c("overall", "loco", "chr"),
-  use_grid_only = TRUE, omit_x = FALSE, use_allele_probs = TRUE,
-  normalize = FALSE, quiet = TRUE, cores = 1)
+calc_kinship(probs, type = c("overall", "loco", "chr"), omit_x = FALSE,
+  use_allele_probs = TRUE, normalize = FALSE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
@@ -16,10 +15,6 @@ calc_kinship(probs, type = c("overall", "loco", "chr"),
 (\code{"overall"}, using all chromosomes), the kinship matrix
 leaving out one chromosome at a time (\code{"loco"}), or the
 kinship matrix for each chromosome (\code{"chr"}).}
-
-\item{use_grid_only}{If \code{TRUE} and \code{probs} were calculated with
-\code{stepwidth="fixed"}, reduce them to the grid using
-\code{\link{probs_to_grid}}.}
 
 \item{omit_x}{If \code{TRUE}, only use the autosomes; ignored when
 \code{type="chr"}.}
@@ -71,8 +66,13 @@ equation 5 in Kang et al. (2010) Nat Genet
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+map <- insert_pseudomarkers(grav2$gmap, step=1)
+probs <- calc_genoprob(grav2, map, error_prob=0.002)
 K <- calc_kinship(probs)
+
+# using only markers/pseudomarkers on the grid
+grid <- calc_grid(grav2$gmap, step=1)
+probs_sub <- probs_to_grid(probs, grid)
+K_grid <- calc_kinship(probs_sub)
 }
 \keyword{utilities}
-

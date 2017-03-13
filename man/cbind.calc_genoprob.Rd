@@ -4,7 +4,7 @@
 \alias{cbind.calc_genoprob}
 \title{Join genotype probabilities for different chromosomes}
 \usage{
-cbind.calc_genoprob(...)
+\method{cbind}{calc_genoprob}(...)
 }
 \arguments{
 \item{...}{Genotype probability objects as produced by
@@ -19,9 +19,9 @@ Join multiple genotype probability objects, as produced by
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-probsA <- calc_genoprob(grav2[1:5,1:2], step=1, error_prob=0.002)
-probsB <- calc_genoprob(grav2[1:5,3:4], step=1, error_prob=0.002)
+map <- insert_pseudomarkers(grav2$gmap, step=1)
+probsA <- calc_genoprob(grav2[1:5,1:2], map, error_prob=0.002)
+probsB <- calc_genoprob(grav2[1:5,3:4], map, error_prob=0.002)
 probs <- cbind(probsA, probsB)
 
 }
-

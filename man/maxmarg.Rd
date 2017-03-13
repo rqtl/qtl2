@@ -4,12 +4,14 @@
 \alias{maxmarg}
 \title{Find genotypes with maximum marginal probabilities}
 \usage{
-maxmarg(probs, minprob = 0.95, chr = NULL, pos = NULL,
+maxmarg(probs, map = NULL, minprob = 0.95, chr = NULL, pos = NULL,
   return_char = FALSE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
 \code{\link{calc_genoprob}}.}
+
+\item{map}{Map of pseudomarkers in \code{probs}. Used only if \code{chr} and \code{pos} are provided.}
 
 \item{minprob}{Minimum probability for making a call. If maximum
 probability is less then this value, give \code{NA}.}
@@ -28,34 +30,18 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-If \code{chr} and \code{pos} are provided, a vector of genotypes is returned
+If \code{chr} and \code{pos} are provided, a vector of
+genotypes is returned. In this case, \code{map} is needed.
 
 Otherwise, the result is a object like that returned by \code{\link{viterbi}},
-A list containing the following:
+A list of two-dimensional arrays of imputed genotypes,
+individuals x positions. Also includes these attributes:
 \itemize{
-\item \code{geno} - List of two-dimensional arrays of imputed genotypes,
-individuals x positions.
-\item \code{map} - The genetic map as a list of vectors of marker positions.
-\item \code{grid} - A list of logical vectors, indicating which
-    positions correspond to a grid of markers/pseudomarkers. (may be
-    absent)
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
     are to be treated as the X chromosome or not, from input \code{cross}.
-\item \code{is_female} - Vector of indicators of which individuals are female, from input
-    \code{cross}.
-\item \code{cross_info} - Matrix of cross information for the
-    individuals, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
     \code{cross}.
-\item \code{alleleprob} - Logical value (\code{FALSE}) that
-    indicates whether the probabilities are compressed to allele
-    probabilities, as from \code{\link{genoprob_to_alleleprob}}.
-\item \code{step} - the value of the \code{step} argument.
-\item \code{off_end} - the value of the \code{off_end} argument.
-\item \code{stepwidth} - the value of the \code{stepwidth} argument.
-\item \code{error_prob} - the value of the \code{error_prob} argument.
-\item \code{map_function} - the value of the \code{map_function} argument.
 }
 }
 \description{
@@ -64,18 +50,17 @@ For each individual at each position, find the genotype with the maximum margina
 \examples{
 # load data and calculate genotype probabilities
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-pr <- calc_genoprob(iron, step=0, error_prob=0.002)
+pr <- calc_genoprob(iron, error_prob=0.002)
 
 # full set of imputed genotypes
 ginf <- maxmarg(pr)
 
 # imputed genotypes at a fixed position
-g <- maxmarg(pr, chr=8, pos=45.5)
+g <- maxmarg(pr, iron$gmap, chr=8, pos=45.5)
 
 # return genotype names rather than integers
-g <- maxmarg(pr, chr=8, pos=45.5, return_char=TRUE)
+g <- maxmarg(pr, iron$gmap, chr=8, pos=45.5, return_char=TRUE)
 }
 \seealso{
 \code{\link{sim_geno}}, \code{\link{viterbi}}
 }
-

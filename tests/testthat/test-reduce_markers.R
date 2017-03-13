@@ -81,6 +81,8 @@ test_that("reduce_markers works", {
                                "CH.331L-Col", "GD.222C-Col", "g2368", "HH.122C/120L"))),
                           .Names = c("1","2", "3", "4", "5"))
 
+    attr(expected, "is_x_chr") <- attr(grav2$gmap, "is_x_chr")
+
     expect_equal( reduce_markers(grav2$gmap, prtyped, 0.5), expected)
 
 })

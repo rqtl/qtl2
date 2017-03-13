@@ -22,4 +22,3 @@ Summarize a cross2 object
 \link[=basic_summaries]{basic summaries}
 }
 \keyword{utilities}
-

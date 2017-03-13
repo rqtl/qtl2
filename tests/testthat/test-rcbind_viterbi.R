@@ -3,7 +3,8 @@ context("rbind and cbind viterbi")
 test_that("rbind.viterbi works for grav", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    g <- viterbi(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    g <- viterbi(grav2, map, error_prob=0.002)
     gA <- g[1:5,]
     gB <- g[6:12,]
     gC <- g[13:20,]
@@ -21,7 +22,8 @@ test_that("rbind.viterbi works for grav", {
 test_that("rbind.viterbi works for iron", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    g <- viterbi(iron, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    g <- viterbi(iron, map, error_prob=0.002)
     gA <- g[2:20,]
     gB <- g[41:60,]
     gC <- g[102:201,]
@@ -38,7 +40,8 @@ test_that("rbind.viterbi works for iron", {
 test_that("cbind.viterbi works for grav", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    g <- viterbi(grav2[1:10,], step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    g <- viterbi(grav2[1:10,], map, error_prob=0.002)
     gA <- g[,1:2]
     gB <- g[,5]
     gC <- g[,3:4]
@@ -56,7 +59,8 @@ test_that("cbind.viterbi works for grav", {
 test_that("cbind.viterbi works for iron", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    g <- viterbi(iron[6:21,], step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    g <- viterbi(iron[6:21,], map, error_prob=0.002)
     gA <- g[,2:3]
     gB <- g[,c(4,5,8)]
     gC <- g[,c(19,"X")]

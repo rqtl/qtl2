@@ -4,9 +4,9 @@
 #
 # Same input and output as sim_geno()
 sim_geno2 <-
-function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
-         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         quiet=TRUE, cores=1)
+    function(cross, map=NULL, n_draws=1, error_prob=1e-4,
+             map_function=c("haldane", "kosambi", "c-f", "morgan"),
+             quiet=TRUE, cores=1)
 {
     # check inputs
     if(!is.cross2(cross))
@@ -14,7 +14,6 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     if(error_prob < 0)
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
-    stepwidth <- match.arg(stepwidth)
 
     # set up cluster; make quiet=FALSE if cores>1
     cores <- setup_cluster(cores)
@@ -23,15 +22,18 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
         quiet <- TRUE # no more messages
     }
 
-    # construct map at which to do the calculations
-    # tolerance for matching marker and pseudomarker positions
-    tol <- ifelse(step==0 || step>1, 0.01, step/100)
-    # create the combined marker/pseudomarker map
-    map <- insert_pseudomarkers(cross$gmap, step, off_end, stepwidth,
-                                pseudomarker_map, tol)
-    index <- map$index
-    grid <- map$grid
-    map <- map$map
+    # pseudomarker map
+    if(is.null(map))
+        map <- insert_pseudomarkers(cross$gmap)
+    # possibly subset the map
+    if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
+        chr <- names(cross$geno)
+        if(!all(chr %in% names(map)))
+            stop("map doesn't contain all of the necessary chromosomes")
+        map <- map[chr]
+    }
+    # calculate marker index object
+    index <- create_marker_index(lapply(cross$geno, colnames), map)
 
     probs <- vector("list", length(map))
     rf <- map2rf(map, map_function)
@@ -96,19 +98,11 @@ function(cross, n_draws=1, step=0, off_end=0, stepwidth=c("fixed", "max"), pseud
     }
 
     names(draws) <- names(cross$gmap)
-    result <- list(draws=draws,
-                   map = map,
-                   crosstype = cross$crosstype,
-                   is_x_chr = cross$is_x_chr,
-                   is_female = cross$is_female,
-                   cross_info = cross$cross_info,
-                   step=step,
-                   off_end=off_end,
-                   stepwidth=stepwidth,
-                   error_prob=error_prob,
-                   map_function=map_function)
-    result$grid <- grid # include only if not NULL
 
-    class(result) <- c("sim_geno", "list")
-    result
+    attr(draws, "crosstype") <- cross$crosstype
+    attr(draws, "is_x_chr") <- cross$is_x_chr
+    attr(draws, "alleles") <- cross$alleles
+
+    class(draws) <- c("sim_geno", "list")
+    draws
 }

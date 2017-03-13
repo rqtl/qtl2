@@ -19,4 +19,3 @@ None.
 Print a summary of a cross2 object
 }
 \keyword{utilities}
-

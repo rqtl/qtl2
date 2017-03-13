@@ -10,8 +10,9 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' drawsA <- sim_geno(grav2[1:5,], step=1, error_prob=0.002, n_draws=4)
-#' drawsB <- sim_geno(grav2[6:12,], step=1, error_prob=0.002, n_draws=4)
+#' map <- insert_pseudomarkers(grav2$gmap, step=1)
+#' drawsA <- sim_geno(grav2[1:5,], map, error_prob=0.002, n_draws=4)
+#' drawsB <- sim_geno(grav2[6:12,], map, error_prob=0.002, n_draws=4)
 #' draws <- rbind(drawsA, drawsB)
 #'
 #' @export

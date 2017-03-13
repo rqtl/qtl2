@@ -25,4 +25,3 @@ specifications. Problems are issued as warnings.
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 check_cross2(grav2)
 }
-

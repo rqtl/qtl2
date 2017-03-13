@@ -21,7 +21,8 @@ test_that("can read grav2 data", {
     expect_equal(summary(grav2), expected)
 
     # calculate QTL genotype probabilities
-    pr <- calc_genoprob(grav2, step=1)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    pr <- calc_genoprob(grav2, map)
 
 })
 
@@ -48,7 +49,8 @@ test_that("can read iron data", {
 
 
     # calculate QTL genotype probabilities
-    pr <- calc_genoprob(iron, step=1)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    pr <- calc_genoprob(iron, map)
 
 })
 

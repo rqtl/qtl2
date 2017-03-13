@@ -44,4 +44,3 @@ sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 and \url{http://github.com/rqtl/qtl2data}
 }
 \keyword{IO}
-

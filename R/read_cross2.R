@@ -285,6 +285,14 @@ function(file, quiet=TRUE)
         warning("Used control information: ",
                 paste0('"', names(used_control)[!used_control], '"', collapse=", "))
 
+    # add is_x_chr as attributes to gmap and pmap
+    if("is_x_chr" %in% names(output)) {
+        for(obj in c("gmap", "pmap")) {
+            if(obj %in% names(output))
+                attr(output[[obj]], "is_x_chr") <- output$is_x_chr
+        }
+    }
+
     output
 }
 

@@ -4,13 +4,12 @@ test_that("probs_to_grid works", {
 
     # try it out
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
-    orig_dim <- sapply(probs$probs, dim)
-    probs_sub <- probs_to_grid(probs)
-    new_dim <- sapply(probs_sub$probs, dim)
-
-    # map at which calculations were done
-    map <- probs$map
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
+    orig_dim <- sapply(probs, dim)
+    grid <- calc_grid(grav2$gmap, step=1)
+    probs_sub <- probs_to_grid(probs, grid)
+    new_dim <- sapply(probs_sub, dim)
 
     # reduced dimension match what we'd expect?
     npmar <- 1 + floor(sapply(map, function(a) diff(range(a))))
@@ -19,14 +18,10 @@ test_that("probs_to_grid works", {
 
     # test results
     expected <- probs
-    for(i in seq(along=probs$probs)) {
-        grid <- probs$grid[[i]]
-        expected$probs[[i]] <- probs$probs[[i]][,,grid,drop=FALSE]
-
-        map[[i]] <- map[[i]][grid]
+    for(i in seq(along=probs)) {
+        expected[[i]] <- probs[[i]][,,grid[[i]],drop=FALSE]
     }
 
-    expected$map <- map
-    expected$grid <- NULL
     expect_equal(probs_sub, expected)
+
 })

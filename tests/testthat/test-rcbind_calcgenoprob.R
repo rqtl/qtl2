@@ -3,7 +3,8 @@ context("rbind and cbind calc_genoprob")
 test_that("rbind.calc_genoprob works for grav", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
     probsA <- probs[1:5,]
     probsB <- probs[6:12,]
     probsC <- probs[13:20,]
@@ -21,7 +22,8 @@ test_that("rbind.calc_genoprob works for grav", {
 test_that("rbind.calc_genoprob works for iron", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron, step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
     probsA <- probs[2:20,]
     probsB <- probs[41:60,]
     probsC <- probs[102:201,]
@@ -38,7 +40,8 @@ test_that("rbind.calc_genoprob works for iron", {
 test_that("cbind.calc_genoprob works for grav", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-    probs <- calc_genoprob(grav2[1:10,], step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2[1:10,], map, error_prob=0.002)
     probsA <- probs[,1:2]
     probsB <- probs[,5]
     probsC <- probs[,3:4]
@@ -56,7 +59,8 @@ test_that("cbind.calc_genoprob works for grav", {
 test_that("cbind.calc_genoprob works for iron", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
-    probs <- calc_genoprob(iron[6:21,], step=1, error_prob=0.002)
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron[6:21,], map, error_prob=0.002)
     probsA <- probs[,2:3]
     probsB <- probs[,c(4,5,8)]
     probsC <- probs[,c(19,"X")]

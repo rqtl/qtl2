@@ -8,17 +8,9 @@
 #'
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param step Distance between pseudomarkers and markers; if
-#' \code{step=0} no pseudomarkers are inserted.
-#' @param off_end Distance beyond terminal markers in which to insert
-#' pseudomarkers.
-#' @param stepwidth Indicates whether to use a fixed grid
-#' (\code{stepwidth="fixed"}) or to use the maximal distance between
-#' pseudomarkers to ensure that no two adjacent markers/pseudomarkers
-#' are more than \code{step} apart.
-#' @param pseudomarker_map A map of pseudomarker locations; if provided the
-#' \code{step}, \code{off_end}, and \code{stepwidth} arguments are
-#' ignored.
+#' @param map Genetic map of markers. May include pseudomarker
+#' locations (that is, locations that are not within the marker
+#' genotype data). If NULL, the genetic map in \code{cross} is used.
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
@@ -32,31 +24,14 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A list of containing the following:
+#' @return A list of two-dimensional arrays of imputed genotypes,
+#' individuals x positions. Also contains three attributes:
 #' \itemize{
-#' \item \code{geno} - List of two-dimensional arrays of imputed genotypes,
-#' individuals x positions.
-#' \item \code{map} - The genetic map as a list of vectors of marker positions.
-#' \item \code{grid} - A list of logical vectors, indicating which
-#'     positions correspond to a grid of markers/pseudomarkers. (may be
-#'     absent)
 #' \item \code{crosstype} - The cross type of the input \code{cross}.
 #' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
 #'     are to be treated as the X chromosome or not, from input \code{cross}.
-#' \item \code{is_female} - Vector of indicators of which individuals are female, from input
-#'     \code{cross}.
-#' \item \code{cross_info} - Matrix of cross information for the
-#'     individuals, from input \code{cross}.
 #' \item \code{alleles} - Vector of allele codes, from input
 #'     \code{cross}.
-#' \item \code{alleleprob} - Logical value (\code{FALSE}) that
-#'     indicates whether the probabilities are compressed to allele
-#'     probabilities, as from \code{\link{genoprob_to_alleleprob}}.
-#' \item \code{step} - the value of the \code{step} argument.
-#' \item \code{off_end} - the value of the \code{off_end} argument.
-#' \item \code{stepwidth} - the value of the \code{stepwidth} argument.
-#' \item \code{error_prob} - the value of the \code{error_prob} argument.
-#' \item \code{map_function} - the value of the \code{map_function} argument.
 #' }
 #'
 #' @details We use a hidden Markov model to find, for each individual
@@ -78,12 +53,13 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' g <- viterbi(grav2, step=1, error_prob=0.002)
+#' map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
+#' g <- viterbi(grav2, map_w_pmar, error_prob=0.002)
 
 viterbi <-
-function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map=NULL,
-         error_prob=1e-4, map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         lowmem=FALSE, quiet=TRUE, cores=1)
+    function(cross, map=NULL, error_prob=1e-4,
+             map_function=c("haldane", "kosambi", "c-f", "morgan"),
+             lowmem=FALSE, quiet=TRUE, cores=1)
 {
     # check inputs
     if(!is.cross2(cross))
@@ -91,12 +67,10 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     if(error_prob < 0)
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
-    stepwidth <- match.arg(stepwidth)
 
     if(!lowmem)
-        return(viterbi2(cross=cross, step=step, off_end=off_end,
-                        stepwidth=stepwidth, pseudomarker_map=pseudomarker_map,
-                        error_prob=error_prob, map_function=map_function, quiet=quiet,
+        return(viterbi2(cross=cross, map=map, error_prob=error_prob,
+                        map_function=map_function, quiet=quiet,
                         cores=cores))
 
     # set up cluster; make quiet=FALSE if cores>1
@@ -106,17 +80,20 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
         quiet <- TRUE # no more messages
     }
 
-    # construct map at which to do the calculations
-    # tolerance for matching marker and pseudomarker positions
-    tol <- ifelse(step==0 || step>1, 0.01, step/100)
-    # create the combined marker/pseudomarker map
-    map <- insert_pseudomarkers(cross$gmap, step, off_end, stepwidth,
-                                pseudomarker_map, tol)
-    index <- map$index
-    grid <- map$grid
-    map <- map$map
 
-    probs <- vector("list", length(map))
+    # pseudomarker map
+    if(is.null(map))
+        map <- insert_pseudomarkers(cross$gmap)
+    # possibly subset the map
+    if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
+        chr <- names(cross$geno)
+        if(!all(chr %in% names(map)))
+            stop("map doesn't contain all of the necessary chromosomes")
+        map <- map[chr]
+    }
+    # calculate marker index object
+    index <- create_marker_index(lapply(cross$geno, colnames), map)
+
     rf <- map2rf(map, map_function)
 
     # deal with missing information
@@ -166,18 +143,9 @@ function(cross, step=0, off_end=0, stepwidth=c("fixed", "max"), pseudomarker_map
     }
 
     names(result) <- names(cross$gmap)
-    result <- list(geno=result,
-                   map = map,
-                   crosstype = cross$crosstype,
-                   is_x_chr = cross$is_x_chr,
-                   is_female = cross$is_female,
-                   cross_info = cross$cross_info,
-                   step=step,
-                   off_end=off_end,
-                   stepwidth=stepwidth,
-                   error_prob=error_prob,
-                   map_function=map_function)
-    result$grid <- grid # include only if not NULL
+    attr(result, "crosstype") <- cross$crosstype
+    attr(result, "is_x_chr") <- cross$is_x_chr
+    attr(result, "alleles") <- cross$alleles
 
     class(result) <- c("viterbi", "list")
     result

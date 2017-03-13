@@ -4,7 +4,7 @@
 \alias{cbind.sim_geno}
 \title{Join genotype imputations for different chromosomes}
 \usage{
-cbind.sim_geno(...)
+\method{cbind}{sim_geno}(...)
 }
 \arguments{
 \item{...}{Genotype imputation objects as produced by
@@ -20,9 +20,9 @@ chromosomes.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-drawsA <- sim_geno(grav2[1:5,1:2], step=1, error_prob=0.002, n_draws=4)
-drawsB <- sim_geno(grav2[1:5,3:4], step=1, error_prob=0.002, n_draws=4)
+map <- insert_pseudomarkers(grav2$gmap, step=1)
+drawsA <- sim_geno(grav2[1:5,1:2], map, error_prob=0.002, n_draws=4)
+drawsB <- sim_geno(grav2[1:5,3:4], map, error_prob=0.002, n_draws=4)
 draws <- cbind(drawsA, drawsB)
 
 }
-
