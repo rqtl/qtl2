@@ -42,6 +42,11 @@ genoprob_to_alleleprob <-
 
     probs_attr <- attributes(probs)
 
+    # alleles attribute?
+    alleles <- probs_attr$alleles
+    if(is.null(alleles))
+        warning("probs has no alleles attribute; guessing allele codes.")
+
     by_chr_func <- function(chr) {
         if(!quiet) message(" - Chr ", names(probs)[chr])
         result <- aperm(.genoprob_to_alleleprob(attr(probs, "crosstype"),
@@ -51,7 +56,10 @@ genoprob_to_alleleprob <-
 
         # allele names
         dn <- dimnames(probs[[chr]])
-        dn[[2]] <- attr(probs, "alleles")
+        if(is.null(alleles) || length(alleles) < ncol(result)) {
+            alleles <- assign_allele_codes(ncol(result), colnames(probs[[chr]]))
+        }
+        dn[[2]] <- alleles
         dimnames(result) <- dn
 
         result
@@ -59,7 +67,6 @@ genoprob_to_alleleprob <-
 
     chrID <- names(probs)
     chrs <- seq(along=chrID)
-
 
     probs <- cluster_lapply(cores, chrs, by_chr_func) # if cores==1, this uses lapply()
     names(probs) <- chrID
