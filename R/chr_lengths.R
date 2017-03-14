@@ -26,9 +26,18 @@ chr_lengths <-
     result
 }
 
+# turn lengths into sums of autosomal and X-chr lengths
 collapse_chr_lengths_to_AX <-
 function(lengths, is_x_chr=NULL)
 {
+    if(length(lengths)==2 && (is.null(names(lengths)) || all(names(lengths)==c("A","X")))) {
+        # here, assume that the lengths have already been collapsed
+        result <- lengths
+        names(result) <- c("A", "X")
+        attr(result, "is_x_chr") <- c(A=FALSE,X=TRUE)
+        return(result)
+    }
+
     if(is.null(is_x_chr)) # not provided as argument; use attribute
         is_x_chr <- attr(lengths, "is_x_chr")
 
