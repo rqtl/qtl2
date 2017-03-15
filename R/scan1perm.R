@@ -50,6 +50,12 @@
 #' genotype data and fit an LMM with the same residual heritability
 #' (estimated under the null hypothesis of no QTL).
 #'
+#' Note that if \code{Xcovar} is provided, so that there are separate
+#' null covariates on the X chromosome, one will generally want to
+#' perform a stratified permutation test, with strata defined by those
+#' null covariates. See \code{\link[qtl2geno]{get_x_covar}} and
+#' \code{\link[qtl2scan]{mat2strat}}.
+#'
 #' @references Churchill GA, Doerge RW (1994) Empirical threshold
 #' values for quantitative trait mapping. Genetics 138:963--971.
 #'
@@ -84,11 +90,15 @@
 #' names(covar) <- rownames(iron$covar)
 #' Xcovar <- get_x_covar(iron)
 #'
+#' # strata for permutations
+#' perm_strat <- mat2strat(Xcovar)
+#'
 #' # permutations with genome scan
 #' \dontrun{
 #' operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                n_perm=1000, perm_Xsp=TRUE, chr_lengths=chr_lengths(iron$gmap))}
-#' \dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3)}
+#'                n_perm=1000, perm_Xsp=TRUE, perm_strat=perm_strat,
+#'                chr_lengths=chr_lengths(iron$gmap))}
+#' \dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strat=perm_strat)}
 #'
 #' # leave-one-chromosome-out kinship matrices
 #' kinship <- calc_kinship(probs, "loco")
@@ -96,10 +106,10 @@
 #' # genome scan with a linear mixed model
 #' \dontrun{
 #' operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
-#'                    perm_Xsp=TRUE)}
-#' \dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3)}
+#'                    perm_Xsp=TRUE, perm_strat=perm_strat)}
+#' \dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strat=perm_strat)}
 #'
-#' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}
+#' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strat}}
 #' @export
 scan1perm <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
