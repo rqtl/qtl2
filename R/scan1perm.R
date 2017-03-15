@@ -107,6 +107,11 @@ scan1perm <-
              perm_Xsp=FALSE, perm_strat=NULL, chr_lengths=NULL,
              cores=1, ...)
 {
+    # grab tol from dot args
+    dotargs <- list(...)
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    stopifnot(tol > 0)
+
     if(n_perm <= 0) stop("n_perm should be > 0")
 
     if(perm_Xsp) { # autosome/X chr-specific permutations
