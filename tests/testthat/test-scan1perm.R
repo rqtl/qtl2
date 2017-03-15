@@ -3,6 +3,7 @@ context("scan1 permutations")
 test_that("scan1 permutations work (regression test)", {
 
     seed <- 3025685
+    RNGkind("L'Ecuyer-CMRG")
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata","iron.zip", package="qtl2geno"))
