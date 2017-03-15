@@ -136,3 +136,6 @@ Kang HM, Zaitlen NA, Wade CM, Kirby A, Heckerman D, Daly MJ, Eskin
 E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
 }
+\seealso{
+\code{\link{scan1perm}}
+}

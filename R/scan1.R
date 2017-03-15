@@ -115,6 +115,7 @@
 #' # genome scan with a linear mixed model
 #' out_lmm <- scan1(probs, pheno, kinship, covar, Xcovar)
 #'
+#' @seealso \code{\link{scan1perm}}
 #' @export
 scan1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
