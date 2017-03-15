@@ -120,19 +120,21 @@ scan1perm <-
         if(any(chr_lengths < 1e-12))
             stop("Autosome or X chromosome of length 0; skip perm_Xsp")
 
-        n_permX <- ceiling(n_perm * chr_lengths$A / chr_lengths$X)
+        n_permX <- ceiling(n_perm * chr_lengths[["A"]] / chr_lengths[["X"]])
 
-        A <- scan1perm(genoprobs=genoprobs[!is_x_chr], pheno=pheno, kinship=kinship,
+        A <- scan1perm(genoprobs=genoprobs[,!is_x_chr], pheno=pheno, kinship=kinship,
                        addcovar=addcovar, Xcovar=NULL, intcovar=intcovar, weights=weights,
                        reml=reml, n_perm=n_perm, perm_Xsp=FALSE, perm_strat=perm_strat,
                        chr_lengths=NULL, cores=cores, ...)
-        X <- scan1perm(genoprobs=genoprobs[is_x_chr], pheno=pheno, kinship=kinship,
+        X <- scan1perm(genoprobs=genoprobs[,is_x_chr], pheno=pheno, kinship=kinship,
                        addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar, weights=weights,
-                       reml=reml, n_perm=n_perm, perm_Xsp=FALSE, perm_strat=perm_strat,
+                       reml=reml, n_perm=n_permX, perm_Xsp=FALSE, perm_strat=perm_strat,
                        chr_lengths=NULL, cores=cores, ...)
         result <- list(A=A, X=X)
         attr(result, "chr_lengths") <- chr_lengths
 
+        class(result$A) <- class(result$X) <- "matrix"
+        class(result) <- c("scan1perm", "list")
         return(result)
     }
 
