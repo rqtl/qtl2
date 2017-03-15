@@ -43,7 +43,7 @@ test. Should be named in the same way as the rows of
 \code{pheno}. The unique values define the strata.}
 
 \item{chr_lengths}{Lengths of the chromosomes; needed only if
-\code{perm_Xsp=TRUE}.}
+\code{perm_Xsp=TRUE}. See \code{\link{chr_lengths}}.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)

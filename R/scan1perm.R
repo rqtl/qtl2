@@ -26,7 +26,7 @@
 #' test. Should be named in the same way as the rows of
 #' \code{pheno}. The unique values define the strata.
 #' @param chr_lengths Lengths of the chromosomes; needed only if
-#' \code{perm_Xsp=TRUE}.
+#' \code{perm_Xsp=TRUE}. See \code{\link{chr_lengths}}.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -196,11 +196,12 @@ scan1perm <-
                                     ind2keep=ind2keep,
                                     ...)
     else
-        result <- scan1perm_clean(genoprobs=genoprobs,
+        result <- scan1perm_covar(genoprobs=genoprobs,
                                   pheno=pheno,
                                   addcovar=addcovar,
                                   Xcovar=Xcovar,
                                   intcovar=intcovar,
+                                  weights=weights,
                                   n_perm=n_perm,
                                   perm_strat=perm_strat,
                                   cores=cores,
@@ -318,9 +319,124 @@ scan1perm_nocovar <-
 # permutations with covariates and/or different batches of phenotypes
 scan1perm_covar <-
     function(genoprobs, pheno, addcovar=NULL, Xcovar=NULL, intcovar=NULL,
-             n_perm=1, perm_strat=NULL, cores=1,
+             weights=weights, n_perm=1, perm_strat=NULL, cores=1,
              ind2keep, ...)
 {
+    # deal with the dot args
+    dotargs <- list(...)
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    stopifnot(tol > 0)
+    intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
+                                 c("highmem", "lowmem"))
+    quiet <- grab_dots(dotargs, "quiet", TRUE)
+    max_batch <- grab_dots(dotargs, "max_batch", 1000)
+    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
+
+    # generate permutations
+    perms <- gen_strat_perm(n_perm, ind2keep, perm_strat)
+
+    # batch permutations
+    phe_batches <- batch_cols(pheno[ind2keep,,drop=FALSE], max_batch)
+
+    # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
+    genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
+    is_x_chr <- attr(genoprobs, "is_x_chr")
+    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
+
+    # set up parallel analysis
+    cores <- setup_cluster(cores)
+    if(!quiet && n_cores(cores)>1) {
+        message(" - Using ", n_cores(cores), " cores")
+        quiet <- TRUE # make the rest quiet
+    }
+
+    # batches for analysis, to allow parallel analysis
+    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)*n_perm),
+                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)*n_perm),
+                              perm_batch=rep(rep(1:n_perm, each=length(genoprobs), length(phe_batches))))
+
+    run_indexes <- 1:(length(genoprobs)*length(phe_batches)*n_perm)
+
+    # the function that does the work
+    by_group_func <- function(i) {
+        # deal with batch information, including individuals to drop due to missing phenotypes
+        chr <- run_batches$chr[i]
+        chrnam <- names(genoprobs)[chr]
+        phebatch <- phe_batches[[run_batches$phe_batch[i]]]
+        permbatch <- run_batches$perm_batch[i]
+        phecol <- phebatch$cols
+        omit <- phebatch$omit
+        these2keep <- ind2keep # individuals 2 keep for this batch
+        if(length(omit) > 0) these2keep <- ind2keep[-omit]
+        if(length(these2keep)<=2) return(NULL) # not enough individuals
+
+        # apply permutation to the probs
+        #     (I initially thought we'd need to apply these just to the rownames, but
+        #     actually we've already aligned probs and pheno and so forth
+        #     via ind2keep/these2keep, so now we need to just permute the rows)
+        #
+        # (also need some contortions here to keep the sizes the same)
+        pr <- genoprobs[[chr]][ind2keep,,,drop=FALSE]
+        pr <- pr[perms[,permbatch],,,drop=FALSE]
+        rownames(pr) <- ind2keep
+        pr <- pr[these2keep,,,drop=FALSE]
+
+        # subset the genotype probabilities: drop cols with all 0s, plus the first column
+        Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
+        if(length(Xcol2drop) > 0) {
+            pr <- pr[,-Xcol2drop,,drop=FALSE]
+        }
+        pr <- pr[,-1,,drop=FALSE]
+
+        # subset the rest
+        ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
+        Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
+        ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
+        wts <- weights; if(!is.null(wts)) wts <- wts[these2keep]
+        ph <- pheno[these2keep, phecol, drop=FALSE]
+
+        # if X chr, paste X covariates onto additive covariates
+        # (only for the null)
+        if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
+        else ac0 <- ac
+
+        # FIX_ME: calculating null RSS multiple times :(
+        nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
+
+        # scan1 function taking clean data (with no missing values)
+        rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
+
+        # calculate LOD score
+        lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+
+        # return column maxima
+        apply(lod, 1, max, na.rm=TRUE)
+    }
+
+    # calculations in parallel
+    list_result <- cluster_lapply(cores, run_indexes, by_group_func)
+
+    # check for problems (if clusters run out of memory, they'll return NULL)
+    result_is_null <- vapply(list_result, is.null, TRUE)
+    if(any(result_is_null))
+        stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
+
+    # reorganize results
+    result <- array(dim=c(length(genoprobs), n_perm, ncol(pheno)))
+
+    for(i in run_indexes) {
+        chr <- run_batches$chr[i]
+        phebatch <- phe_batches[[run_batches$phe_batch[i]]]
+        permbatch <- run_batches$perm_batch[i]
+
+        result[chr, permbatch, phebatch$cols] <- list_result[[i]]
+    }
+
+    result <- apply(result, c(2,3), max)
+    colnames(result) <- colnames(pheno)
+
+    class(result) <- c("scan1perm", "matrix")
+    result
 }
 
 
