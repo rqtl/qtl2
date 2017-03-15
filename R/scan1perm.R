@@ -142,7 +142,7 @@ scan1perm <-
         return(scan1perm_pg(genoprobs=genoprobs, pheno=pheno, kinship=kinship,
                             addcovar=addcovar, Xcover=Xcovar, intcovar=intcovar,
                             reml=reml, n_perm=n_perm, perm_Xsp=perm_Xsp,
-                            perm_strat=perm_strat, chr_lengthschr_lengths,
+                            perm_strat=perm_strat, chr_lengths=chr_lengths,
                             cores=cores, ...))
     }
 
