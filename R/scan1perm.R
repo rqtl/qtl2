@@ -56,6 +56,18 @@
 #' \code{perm_strata} that is a vector containing a single repeated
 #' value.
 #'
+#' The \code{...} argument can contain three additional control
+#' parameters; suspended for simplicity (or confusion, depending on
+#' your point of view). \code{tol} is used as a tolerance value for
+#' linear regression by QR decomposition (in determining whether
+#' columns are linearly dependent on others and should be omitted);
+#' default \code{1e-12}. \code{intcovar_method} indicates whether to
+#' use a high-memory (but potentially faster) method or a low-memory
+#' (and possibly slower) method, with values \code{"highmem"} or
+#' \code{"lowmem"}; default \code{"lowmem"}.  Finally, \code{max_batch}
+#' indicates the maximum number of phenotypes to run together; default
+#' is 1000.
+#'
 #' @references Churchill GA, Doerge RW (1994) Empirical threshold
 #' values for quantitative trait mapping. Genetics 138:963--971.
 #'
