@@ -51,11 +51,11 @@
 find_ibd_segments <-
     function(geno, map, min_lod=15, error_prob=0.001, cores=1)
 {
-    nstr <- vapply(geno, nrow, 1)
-    if(length(unique(nstr)) != 1)
+    n_str <- vapply(geno, nrow, 1)
+    if(length(unique(n_str)) != 1)
         stop("The geno matrices have different numbers of rows; they should be strains x markers")
-    nstr <- nstr[1]
-    if(nstr < 2)
+    n_str <- n_str[1]
+    if(n_str < 2)
         stop("Need at least two strains")
 
     nmar <- vapply(geno, ncol, 1)
@@ -68,11 +68,9 @@ find_ibd_segments <-
     if(error_prob <= 0 || error_prob >= 1)
         stop("error_prob should be in (0,1)")
 
-    result_list <- vector("list", choose(nstr, 2))
-
     # get strain pairs
-    str1 <- matrix(rep(1:nstr, nstr), ncol=nstr)
-    str2 <- matrix(rep(1:nstr, nstr), ncol=nstr, byrow=TRUE)
+    str1 <- matrix(rep(1:n_str, n_str), ncol=n_str)
+    str2 <- matrix(rep(1:n_str, n_str), ncol=n_str, byrow=TRUE)
     str_list <- data.frame(strain1=str1[upper.tri(str1)],
                            strain2=str2[upper.tri(str2)])
     str_list <- str_list[order(str_list[,1], str_list[,2]),]
