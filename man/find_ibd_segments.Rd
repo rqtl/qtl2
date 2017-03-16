@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_ibd_segments.R
 \name{find_ibd_segments}
 \alias{find_ibd_segments}
-\title{find IBD segments for a set of founders}
+\title{Find IBD segments for a set of strains}
 \usage{
 find_ibd_segments(geno, map, min_lod = 15, error_prob = 0.001, cores = 1)
 }
@@ -40,26 +40,20 @@ A data frame whose rows are IBD segments and whose columns
 }
 }
 \description{
-find IBD segments for a set of founders
+Find IBD segments (regions with a lot of shared SNP genotypes) for
+a set of strains
 }
 \examples{
 \donttest{
-# founder genotypes for data from Recla et al. (2014) Mamm Genome 25:211-222.
-fg_df <- read.csv("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla_foundergeno.csv")
+# load DO data from Recla et al. (2014) Mamm Genome 25:211-222.
+recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
 
-# physical map
-pmap_df <- read.csv("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla_pmap.csv")
+# grab founder genotypes and physical map
+fg <- recla$founder_geno
+pmap <- recla$pmap
 
-# convert pmap to list
-library(qtl2convert)
-pmap <- map_df_to_list(pmap_df, pos_column="pos")
-
-# convert genotypes to list with founders x markers
-fg <- vector("list", length(pmap))
-for(i in seq(along=pmap))
-  fg[[i]] <- t(fg_df[match(names(pmap[[i]]), fg_df$marker),-1])
-
-segs <- find_ibd_segments(fg, pmap, min_lod=10, error_prob=0.0001)
+# find shared segments
+(segs <- find_ibd_segments(fg, pmap, min_lod=10, error_prob=0.0001))
 }
 
 }
