@@ -327,6 +327,8 @@ check_kinship <-
 double_kinship <-
     function(kinship)
 {
+    if(is.null(kinship)) return(NULL)
+
     if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
         if("values" %in% names(kinship)) { # just one of them
             kinship$values <- 2*kinship$values
