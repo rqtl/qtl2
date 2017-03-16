@@ -6,7 +6,7 @@
 \usage{
 scan1perm(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  n_perm = 1, perm_Xsp = FALSE, perm_strat = NULL, chr_lengths = NULL,
+  n_perm = 1, perm_Xsp = FALSE, perm_strata = NULL, chr_lengths = NULL,
   cores = 1, ...)
 }
 \arguments{
@@ -38,7 +38,7 @@ REML; otherwise maximum likelihood.}
 \item{perm_Xsp}{If TRUE, do separate permutations for the autosomes
 and the X chromosome.}
 
-\item{perm_strat}{Vector of strata, for a stratified permutation
+\item{perm_strata}{Vector of strata, for a stratified permutation
 test. Should be named in the same way as the rows of
 \code{pheno}. The unique values define the strata.}
 
@@ -75,10 +75,10 @@ If \code{kinship} is provided, we instead permute the rows of the
 genotype data and fit an LMM with the same residual heritability
 (estimated under the null hypothesis of no QTL).
 
-If \code{Xcovar} is provided and \code{perm_strat=NULL}, we do a
+If \code{Xcovar} is provided and \code{perm_strata=NULL}, we do a
 stratified permutation test with the strata defined by the rows of
 \code{Xcovar}. If a simple permutation test is desired, provide
-\code{perm_strat} that is a vector containing a single repeated
+\code{perm_strata} that is a vector containing a single repeated
 value.
 }
 \examples{
@@ -101,14 +101,14 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
 # strata for permutations
-perm_strat <- mat2strat(Xcovar)
+perm_strata <- mat2strata(Xcovar)
 
 # permutations with genome scan
 \dontrun{
 operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-               n_perm=1000, perm_Xsp=TRUE, perm_strat=perm_strat,
+               n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
                chr_lengths=chr_lengths(iron$gmap))}
-\dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strat=perm_strat)}
+\dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)}
 
 # leave-one-chromosome-out kinship matrices
 kinship <- calc_kinship(probs, "loco")
@@ -116,8 +116,8 @@ kinship <- calc_kinship(probs, "loco")
 # genome scan with a linear mixed model
 \dontrun{
 operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
-                   perm_Xsp=TRUE, perm_strat=perm_strat)}
-\dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strat=perm_strat)}
+                   perm_Xsp=TRUE, perm_strata=perm_strata)}
+\dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strata=perm_strata)}
 
 }
 \references{
@@ -137,5 +137,5 @@ E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
 }
 \seealso{
-\code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strat}}
+\code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strata}}
 }

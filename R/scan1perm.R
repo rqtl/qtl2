@@ -22,7 +22,7 @@
 #' @param n_perm Number of permutation replicates.
 #' @param perm_Xsp If TRUE, do separate permutations for the autosomes
 #' and the X chromosome.
-#' @param perm_strat Vector of strata, for a stratified permutation
+#' @param perm_strata Vector of strata, for a stratified permutation
 #' test. Should be named in the same way as the rows of
 #' \code{pheno}. The unique values define the strata.
 #' @param chr_lengths Lengths of the chromosomes; needed only if
@@ -50,10 +50,10 @@
 #' genotype data and fit an LMM with the same residual heritability
 #' (estimated under the null hypothesis of no QTL).
 #'
-#' If \code{Xcovar} is provided and \code{perm_strat=NULL}, we do a
+#' If \code{Xcovar} is provided and \code{perm_strata=NULL}, we do a
 #' stratified permutation test with the strata defined by the rows of
 #' \code{Xcovar}. If a simple permutation test is desired, provide
-#' \code{perm_strat} that is a vector containing a single repeated
+#' \code{perm_strata} that is a vector containing a single repeated
 #' value.
 #'
 #' @references Churchill GA, Doerge RW (1994) Empirical threshold
@@ -91,14 +91,14 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # strata for permutations
-#' perm_strat <- mat2strat(Xcovar)
+#' perm_strata <- mat2strata(Xcovar)
 #'
 #' # permutations with genome scan
 #' \dontrun{
 #' operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                n_perm=1000, perm_Xsp=TRUE, perm_strat=perm_strat,
+#'                n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
 #'                chr_lengths=chr_lengths(iron$gmap))}
-#' \dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strat=perm_strat)}
+#' \dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)}
 #'
 #' # leave-one-chromosome-out kinship matrices
 #' kinship <- calc_kinship(probs, "loco")
@@ -106,15 +106,15 @@
 #' # genome scan with a linear mixed model
 #' \dontrun{
 #' operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
-#'                    perm_Xsp=TRUE, perm_strat=perm_strat)}
-#' \dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strat=perm_strat)}
+#'                    perm_Xsp=TRUE, perm_strata=perm_strata)}
+#' \dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strata=perm_strata)}
 #'
-#' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strat}}
+#' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strata}}
 #' @export
 scan1perm <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL, reml=TRUE, n_perm=1,
-             perm_Xsp=FALSE, perm_strat=NULL, chr_lengths=NULL,
+             perm_Xsp=FALSE, perm_strata=NULL, chr_lengths=NULL,
              cores=1, ...)
 {
     # grab tol from dot args
@@ -125,8 +125,8 @@ scan1perm <-
     if(n_perm <= 0) stop("n_perm should be > 0")
 
     # if Xcovar provided, the default is to do a stratified permutation test
-    if(is.null(perm_strat) && !is.null(Xcovar))
-        perm_strat <- mat2strata(Xcovar)
+    if(is.null(perm_strata) && !is.null(Xcovar))
+        perm_strata <- mat2strata(Xcovar)
 
     if(perm_Xsp) { # autosome/X chr-specific permutations
         if(is.null(chr_lengths))
@@ -143,11 +143,11 @@ scan1perm <-
 
         A <- scan1perm(genoprobs=genoprobs[,!is_x_chr], pheno=pheno, kinship=kinship,
                        addcovar=addcovar, Xcovar=NULL, intcovar=intcovar, weights=weights,
-                       reml=reml, n_perm=n_perm, perm_Xsp=FALSE, perm_strat=perm_strat,
+                       reml=reml, n_perm=n_perm, perm_Xsp=FALSE, perm_strata=perm_strata,
                        chr_lengths=NULL, cores=cores, ...)
         X <- scan1perm(genoprobs=genoprobs[,is_x_chr], pheno=pheno, kinship=kinship,
                        addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar, weights=weights,
-                       reml=reml, n_perm=n_permX, perm_Xsp=FALSE, perm_strat=perm_strat,
+                       reml=reml, n_perm=n_permX, perm_Xsp=FALSE, perm_strata=perm_strata,
                        chr_lengths=NULL, cores=cores, ...)
         result <- list(A=A, X=X)
         attr(result, "chr_lengths") <- chr_lengths
@@ -161,7 +161,7 @@ scan1perm <-
         return(scan1perm_pg(genoprobs=genoprobs, pheno=pheno, kinship=kinship,
                             addcovar=addcovar, Xcover=Xcovar, intcovar=intcovar,
                             reml=reml, n_perm=n_perm, perm_Xsp=perm_Xsp,
-                            perm_strat=perm_strat, chr_lengths=chr_lengths,
+                            perm_strata=perm_strata, chr_lengths=chr_lengths,
                             cores=cores, ...))
     }
 
@@ -180,7 +180,7 @@ scan1perm <-
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
-                               weights, perm_strat, complete.cases=TRUE)
+                               weights, perm_strata, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -205,7 +205,7 @@ scan1perm <-
         result <- scan1perm_nocovar(genoprobs=genoprobs,
                                     pheno=pheno,
                                     n_perm=n_perm,
-                                    perm_strat=perm_strat,
+                                    perm_strata=perm_strata,
                                     cores=cores,
                                     ind2keep=ind2keep,
                                     ...)
@@ -217,7 +217,7 @@ scan1perm <-
                                   intcovar=intcovar,
                                   weights=weights,
                                   n_perm=n_perm,
-                                  perm_strat=perm_strat,
+                                  perm_strata=perm_strata,
                                   cores=cores,
                                   ind2keep=ind2keep,
                                   ...)
@@ -229,7 +229,7 @@ scan1perm <-
 
 # simplest version: no covariates, no weights, no missing phenotypes
 scan1perm_nocovar <-
-    function(genoprobs, pheno, n_perm=1, perm_strat=NULL,
+    function(genoprobs, pheno, n_perm=1, perm_strata=NULL,
              cores=1, ind2keep, ...)
 {
     # deal with the dot args
@@ -241,7 +241,7 @@ scan1perm_nocovar <-
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
 
     # generate permutations
-    perms <- gen_strat_perm(n_perm, ind2keep, perm_strat)
+    perms <- gen_strat_perm(n_perm, ind2keep, perm_strata)
 
     # batch permutations
     phe_batches <- batch_vec( rep(1:ncol(pheno), n_perm), max_batch)
@@ -333,7 +333,7 @@ scan1perm_nocovar <-
 # permutations with covariates and/or different batches of phenotypes
 scan1perm_covar <-
     function(genoprobs, pheno, addcovar=NULL, Xcovar=NULL, intcovar=NULL,
-             weights=weights, n_perm=1, perm_strat=NULL, cores=1,
+             weights=weights, n_perm=1, perm_strata=NULL, cores=1,
              ind2keep, ...)
 {
     # deal with the dot args
@@ -347,7 +347,7 @@ scan1perm_covar <-
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
 
     # generate permutations
-    perms <- gen_strat_perm(n_perm, ind2keep, perm_strat)
+    perms <- gen_strat_perm(n_perm, ind2keep, perm_strata)
 
     # batch permutations
     phe_batches <- batch_cols(pheno[ind2keep,,drop=FALSE], max_batch)
@@ -458,15 +458,15 @@ scan1perm_covar <-
 # generate (potentially) stratified permutations
 #   (actual work is done in c++, see src/random.cpp)
 gen_strat_perm <-
-    function(n_perm, ind2keep, perm_strat=NULL)
+    function(n_perm, ind2keep, perm_strata=NULL)
 {
-    if(!is.null(perm_strat)) {
-        perm_strat <- perm_strat[ind2keep]
-        u <- unique(perm_strat)
+    if(!is.null(perm_strata)) {
+        perm_strata <- perm_strata[ind2keep]
+        u <- unique(perm_strata)
 
         if(length(u) > 1) {
 
-            strat_numeric <- match(perm_strat, u)-1
+            strat_numeric <- match(perm_strata, u)-1
 
             return(permute_nvector_stratified(n_perm,
                                               seq(along=ind2keep),
