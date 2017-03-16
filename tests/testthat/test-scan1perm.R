@@ -171,10 +171,10 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     expected <- cbind(liver= c(1.29766020287924632726, 1.0197730259964858934, 2.0112145151147022837),
                       spleen=c(0.90427196894971517693, 1.0214860518121018362, 2.8832996501350738328))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, kinship, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # sex and X-chr covariates, plus sex interactive
     set.seed(seed)
@@ -182,10 +182,10 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     expected <- cbind(liver= c(1.8645265744331560587, 1.6155547860418919548, 2.0112145151147022837),
                       spleen=c(1.0356350517366044173, 1.4490075143563088123, 2.8832996501350738328))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, kinship, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # sex and additive covariates + X-sp perms
     set.seed(seed)
@@ -201,11 +201,11 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
     attr(expected, "chr_lengths") <- L
     class(expected) <- c("scan1perm", "list")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=3e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, kinship, addcovar=sex, Xcovar=Xcovar, n_perm=3,
                         perm_Xsp=TRUE, chr_lengths=chr_lengths(map), perm_strata=perm_strata)
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=3e-7)
 
     # one missing phenotype, no covariates
     set.seed(seed)
