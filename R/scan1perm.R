@@ -50,11 +50,11 @@
 #' genotype data and fit an LMM with the same residual heritability
 #' (estimated under the null hypothesis of no QTL).
 #'
-#' Note that if \code{Xcovar} is provided, so that there are separate
-#' null covariates on the X chromosome, one will generally want to
-#' perform a stratified permutation test, with strata defined by those
-#' null covariates. See \code{\link[qtl2geno]{get_x_covar}} and
-#' \code{\link[qtl2scan]{mat2strat}}.
+#' If \code{Xcovar} is provided and \code{perm_strat=NULL}, we do a
+#' stratified permutation test with the strata defined by the rows of
+#' \code{Xcovar}. If a simple permutation test is desired, provide
+#' \code{perm_strat} that is a vector containing a single repeated
+#' value.
 #'
 #' @references Churchill GA, Doerge RW (1994) Empirical threshold
 #' values for quantitative trait mapping. Genetics 138:963--971.
@@ -123,6 +123,10 @@ scan1perm <-
     stopifnot(tol > 0)
 
     if(n_perm <= 0) stop("n_perm should be > 0")
+
+    # if Xcovar provided, the default is to do a stratified permutation test
+    if(is.null(perm_strat) && !is.null(Xcovar))
+        perm_strat <- mat2strata(Xcovar)
 
     if(perm_Xsp) { # autosome/X chr-specific permutations
         if(is.null(chr_lengths))

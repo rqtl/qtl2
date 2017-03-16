@@ -75,11 +75,11 @@ If \code{kinship} is provided, we instead permute the rows of the
 genotype data and fit an LMM with the same residual heritability
 (estimated under the null hypothesis of no QTL).
 
-Note that if \code{Xcovar} is provided, so that there are separate
-null covariates on the X chromosome, one will generally want to
-perform a stratified permutation test, with strata defined by those
-null covariates. See \code{\link[qtl2geno]{get_x_covar}} and
-\code{\link[qtl2scan]{mat2strat}}.
+If \code{Xcovar} is provided and \code{perm_strat=NULL}, we do a
+stratified permutation test with the strata defined by the rows of
+\code{Xcovar}. If a simple permutation test is desired, provide
+\code{perm_strat} that is a vector containing a single repeated
+value.
 }
 \examples{
 # load qtl2geno package for data and genoprob calculation
