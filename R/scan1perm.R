@@ -153,11 +153,13 @@ scan1perm <-
 
         n_permX <- ceiling(n_perm * chr_lengths[["A"]] / chr_lengths[["X"]])
 
-        A <- scan1perm(genoprobs=genoprobs[,!is_x_chr], pheno=pheno, kinship=kinship,
+        A <- scan1perm(genoprobs=genoprobs[,!is_x_chr], pheno=pheno,
+                       kinship=subset_kinship(kinship, chr=!is_x_chr),
                        addcovar=addcovar, Xcovar=NULL, intcovar=intcovar, weights=weights,
                        reml=reml, n_perm=n_perm, perm_Xsp=FALSE, perm_strata=perm_strata,
                        chr_lengths=NULL, cores=cores, ...)
-        X <- scan1perm(genoprobs=genoprobs[,is_x_chr], pheno=pheno, kinship=kinship,
+        X <- scan1perm(genoprobs=genoprobs[,is_x_chr], pheno=pheno,
+                       kinship=subset_kinship(kinship, chr=is_x_chr),
                        addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar, weights=weights,
                        reml=reml, n_perm=n_permX, perm_Xsp=FALSE, perm_strata=perm_strata,
                        chr_lengths=NULL, cores=cores, ...)
@@ -167,14 +169,6 @@ scan1perm <-
         class(result$A) <- class(result$X) <- "matrix"
         class(result) <- c("scan1perm", "list")
         return(result)
-    }
-
-    if(!is.null(kinship)) { # fit linear mixed model
-        return(scan1perm_pg(genoprobs=genoprobs, pheno=pheno, kinship=kinship,
-                            addcovar=addcovar, Xcover=Xcovar, intcovar=intcovar,
-                            reml=reml, n_perm=n_perm, perm_Xsp=perm_Xsp,
-                            perm_strata=perm_strata, chr_lengths=chr_lengths,
-                            cores=cores, ...))
     }
 
     # force things to be matrices
@@ -189,10 +183,17 @@ scan1perm <-
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
 
+    # check that kinship matrices are square with same IDs
+    kinshipIDs <- check_kinship(kinship, length(genoprobs))
+
+    # multiply kinship matrix by 2; rest is using 2*kinship
+    # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+    kinship <- double_kinship(kinship)
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
-                               weights, perm_strata, complete.cases=TRUE)
+                               kinshipIDs, weights, perm_strata, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -210,6 +211,13 @@ scan1perm <-
 
     # drop things from Xcovar that are already in addcovar
     Xcovar <- drop_xcovar(addcovar, Xcovar, tol)
+
+    if(!is.null(kinship)) { # fit linear mixed model
+        return(scan1perm_pg(genoprobs=genoprobs, pheno=pheno, kinship=kinship,
+                            addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar,
+                            reml=reml, n_perm=n_perm, perm_strata=perm_strata,
+                            cores=cores, ind2keep=ind2keep, ...))
+    }
 
     if(is.null(addcovar) && is.null(Xcovar) &&
        is.null(intcovar) && is.null(weights)
