@@ -25,7 +25,7 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(1.3756640664429049536, 2.7572772758036521168, 0.52452198541287131661),
                       spleen=c(1.5153608426190210423, 1.4532027591584668613, 2.86857866542299611012))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # no covariates or missing data
     set.seed(seed)
@@ -33,7 +33,7 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(13.541670362333418254, 14.7024286141676103767, 14.1453256570137018144),
                       spleen=c( 5.930376703877245248,  7.4039049500925262493,  5.5851374704542742222))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # sex and X-chr covariates
     set.seed(seed)
@@ -41,10 +41,10 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(1.56882977009222202014, 1.0308336167670439920, 1.6771296752179409850),
                       spleen=c(0.88478150549593514995, 1.1297760401050815915, 2.8456095237703333822))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # sex and X-chr covariates, plus sex interactive
     set.seed(seed)
@@ -52,10 +52,10 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(2.0685972274435684426, 1.5683121279062959275, 1.6771296752180671064),
                       spleen=c(1.0328759662065980507, 1.5091023963920129347, 2.8456095237703333822))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # sex and additive covariates + X-sp perms
     set.seed(seed)
@@ -71,11 +71,11 @@ test_that("scan1 permutations work (regression test)", {
     attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
     attr(expected, "chr_lengths") <- L
     class(expected) <- c("scan1perm", "list")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, addcovar=sex, Xcovar=Xcovar, n_perm=3,
                         perm_Xsp=TRUE, chr_lengths=chr_lengths(map), perm_strata=perm_strata)
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # one missing phenotype, no covariates
     set.seed(seed)
@@ -83,7 +83,7 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(1.4246052689684201020, 1.8035976886303082267, 1.295827488548965345),
                       spleen=c(2.1450871714236026122, 1.9160146558007777884, 1.887126247743548646))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # one missing phenotype, sex and X-chr covariates
     set.seed(seed)
@@ -91,10 +91,10 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(1.56455340995498248802, 1.0121930261312361843, 1.6731999914352853054),
                       spleen=c(0.88478150549593514995, 1.1297760401050815915, 2.8456095237703333822))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno2, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # one missing phenotype, sex and X-chr covariates, plus sex interactive
     set.seed(seed)
@@ -102,10 +102,10 @@ test_that("scan1 permutations work (regression test)", {
     expected <- cbind(liver= c(2.0627670956684416304, 1.6261084401604977145, 1.6731999914352853054),
                       spleen=c(1.0328759662065980507, 1.5091023963920129347, 2.8456095237703333822))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno2, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
     # one missing phenotype, sex and X-chr covariates, X-sp perms
     set.seed(seed)
@@ -124,7 +124,7 @@ test_that("scan1 permutations work (regression test)", {
     attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
     attr(expected, "chr_lengths") <- L
     class(expected) <- c("scan1perm", "list")
-    expect_equal(operm, expected)
+    expect_equal(operm, expected, tolerance=1e-7)
 
 })
 
