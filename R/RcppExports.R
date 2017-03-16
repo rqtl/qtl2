@@ -41,6 +41,10 @@ mpp_geno_names <- function(alleles, is_x_chr) {
     .Call('qtl2geno_mpp_geno_names', PACKAGE = 'qtl2geno', alleles, is_x_chr)
 }
 
+.find_ibd_segments <- function(g1, g2, p, error_prob) {
+    .Call('qtl2geno_find_ibd_segments', PACKAGE = 'qtl2geno', g1, g2, p, error_prob)
+}
+
 geno_names <- function(crosstype, alleles, is_x_chr) {
     .Call('qtl2geno_geno_names', PACKAGE = 'qtl2geno', crosstype, alleles, is_x_chr)
 }
