@@ -61,8 +61,31 @@ scan1perm_pg <-
         ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
         ph <- pheno[these2keep, phecol, drop=FALSE]
 
-        calc_hsq_clean(kinship_list[[ index_batches[i] ]],
-                       ph, ac, Xc, is_x_chr, reml, cores=1, check_boundary, tol)
+        k <- kinship_list[[ index_batches[i] ]]
+        result <- calc_hsq_clean(k, ph, ac, Xc, is_x_chr, reml, cores=1, check_boundary, tol)
+
+        # expand hsq and loglik to one row per chromosome
+        n_chr <- length(is_x_chr)
+        if(nrow(result$hsq) != n_chr) {
+            if(nrow(result$hsq)==1) {
+                for(i in seq(along=result))
+                    result[[i]] <- matrix(rep(result[[i]], n_chr), byrow=TRUE, nrow=n_chr)
+            }
+            else if(nrow(result$hsq)==2) {
+                for(i in seq(along=result)) {
+                    tmp <- result[[i]]
+                    result[[i]] <- matrix(nrow=n_chr, ncol=ncol(tmp))
+                    for(j in seq(along=is_x_chr)) {
+                        if(is_x_chr[j])
+                            result[[i]][j,] <- tmp[2,]
+                        else
+                            result[[i]][j,] <- tmp[1,]
+                    }
+                }
+            }
+        }
+
+        result
     }
     nullresult <- cluster_lapply(cores, seq(along=phe_batches), null_by_batch_func)
 
@@ -113,12 +136,8 @@ scan1perm_pg <-
         # hsq, null_loglik for this batch and chr
         Ke <- subset_kinship(kinship_list[[ index_batches[phebatchnum] ]], chr=chr)
 
-        hsq <- nullresult[[phebatchnum]]$hsq
-        null_loglik <- nullresult[[phebatchnum]]$loglik
-        if(nrow(hsq) > 1) { # FIX_ME this doesn't work because of the A/X case
-            hsq <- hsq[chr,]
-            null_loglik <- null_loglik[chr,]
-        }
+        hsq <- nullresult[[phebatchnum]]$hsq[chr,]
+        null_loglik <- nullresult[[phebatchnum]]$loglik[chr,]
 
         # calculate weights for this chromosome
         scan1perm_pg_onechr(pr, Ke, ph, ac, ic, hsq, null_loglik, reml,
