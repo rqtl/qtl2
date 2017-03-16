@@ -133,13 +133,14 @@ scan1perm_pg <-
         ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
         ph <- pheno[these2keep, phecol, drop=FALSE]
 
-        # hsq, null_loglik for this batch and chr
+        # grab decomposed kinship matrix for this chromosome
         Ke <- subset_kinship(kinship_list[[ index_batches[phebatchnum] ]], chr=chr)
 
+        # hsq, null_loglik for this batch and chr
         hsq <- nullresult[[phebatchnum]]$hsq[chr,]
         null_loglik <- nullresult[[phebatchnum]]$loglik[chr,]
 
-        # calculate weights for this chromosome
+        # scan this chromosome and calculate maximum LOD for each phenotype
         scan1perm_pg_onechr(pr, Ke, ph, ac, ic, hsq, null_loglik, reml,
                             intcovar_method, tol)
 
@@ -169,7 +170,6 @@ scan1perm_pg <-
 
     class(result) <- c("scan1perm", "matrix")
     result
-
 }
 
 
@@ -195,7 +195,6 @@ scan1perm_pg_onechr <-
 
     maxlod <- rep(NA, ncol(pheno))
 
-    # genoprobsep phenotype and covariates
     ac <- cbind(rep(1, nrow(pheno)), addcovar)
     ic <- intcovar
 
