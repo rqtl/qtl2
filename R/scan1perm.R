@@ -463,12 +463,16 @@ gen_strat_perm <-
     if(!is.null(perm_strat)) {
         perm_strat <- perm_strat[ind2keep]
         u <- unique(perm_strat)
-        strat_numeric <- match(perm_strat, u)-1
 
-        return(permute_nvector_stratified(n_perm,
-                                          seq(along=ind2keep),
-                                          strat_numeric,
-                                          length(u)))
+        if(length(u) > 1) {
+
+            strat_numeric <- match(perm_strat, u)-1
+
+            return(permute_nvector_stratified(n_perm,
+                                              seq(along=ind2keep),
+                                              strat_numeric,
+                                              length(u)))
+        }
     }
 
     permute_nvector(n_perm, seq(along=ind2keep))
