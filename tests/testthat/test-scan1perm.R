@@ -265,7 +265,7 @@ test_that("scan1 permutations work with LOCO kinship matrix (regression test)", 
     expected <- cbind(liver= c(15.0498110236199185152, 15.1559669590417573914, 16.1619790013112449856),
                       spleen=c( 5.6528544325570964091,  5.7416707117225200818,  8.1270354686771071329))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # sex and X-chr covariates
     set.seed(seed)
