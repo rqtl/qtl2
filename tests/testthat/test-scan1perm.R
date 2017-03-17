@@ -1,23 +1,25 @@
 context("scan1 permutations")
 
+library(qtl2geno)
+iron <- read_cross2(system.file("extdata","iron.zip", package="qtl2geno"))
+iron <- iron[,c(18,19,"X")]
+map <- insert_pseudomarkers(iron$gmap, step=1)
+pr <- calc_genoprob(iron, map, err=0.002)
+kinship <- calc_kinship(pr)
+kinship_loco <- calc_kinship(pr, "loco")
+
+pheno1 <- iron$pheno
+pheno2 <- iron$pheno; pheno2[5,1] <- NA
+
+Xcovar <- get_x_covar(iron)
+sex <- as.numeric(iron$covar$sex=="m")
+names(sex) <- rownames(iron$covar)
+perm_strata <- mat2strata(Xcovar)
+
 test_that("scan1 permutations work (regression test)", {
 
     seed <- 3025685
     RNGkind("L'Ecuyer-CMRG")
-
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata","iron.zip", package="qtl2geno"))
-    iron <- iron[,c(18,19,"X")]
-    map <- insert_pseudomarkers(iron$gmap, step=1)
-    pr <- calc_genoprob(iron, map, err=0.002)
-
-    pheno1 <- iron$pheno
-    pheno2 <- iron$pheno; pheno2[5,1] <- NA
-
-    Xcovar <- get_x_covar(iron)
-    sex <- as.numeric(iron$covar$sex=="m")
-    names(sex) <- rownames(iron$covar)
-    perm_strata <- mat2strata(Xcovar)
 
     # no covariates or missing data
     set.seed(seed)
@@ -134,21 +136,6 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     seed <- 3025685
     RNGkind("L'Ecuyer-CMRG")
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata","iron.zip", package="qtl2geno"))
-    iron <- iron[,c(18,19,"X")]
-    map <- insert_pseudomarkers(iron$gmap, step=1)
-    pr <- calc_genoprob(iron, map, err=0.002)
-    kinship <- calc_kinship(pr)
-
-    pheno1 <- iron$pheno
-    pheno2 <- iron$pheno; pheno2[5,1] <- NA
-
-    Xcovar <- get_x_covar(iron)
-    sex <- as.numeric(iron$covar$sex=="m")
-    names(sex) <- rownames(iron$covar)
-    perm_strata <- mat2strata(Xcovar)
-
     # no covariates or missing data
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, kinship, n_perm=3)
@@ -250,6 +237,121 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
                                       2.12568139604854344782, 2.37620592723849499706, 0.32068152868385429999),
                              spleen=c(1.68345573592034480900, 1.74381613053044959294, 1.23338578366108553300, 0.9426755474293885273,
                                       0.93450566468420337429, 0.89848750594932114133, 1.47549973926410826763)))
+    L <- c(A=61.200000000000002842,X=28.399999999999998579)
+    attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
+    attr(expected, "chr_lengths") <- L
+    class(expected) <- c("scan1perm", "list")
+    expect_equal(operm, expected, tolerance=1e-7)
+
+})
+
+
+test_that("scan1 permutations work with LOCO kinship matrix (regression test)", {
+
+    seed <- 3025685
+    RNGkind("L'Ecuyer-CMRG")
+
+    # no covariates or missing data
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, n_perm=3)
+    expected <- cbind(liver= c(1.4233905282897871825, 1.6883979222096348050, 1.1105319041474899233),
+                      spleen=c(2.1849905121197314983, 1.9112972630703948251, 1.8871262477436099303))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=1e-7)
+
+    # no covariates or missing data
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, n_perm=3, perm_strata=perm_strata)
+    expected <- cbind(liver= c(15.0498110236199185152, 15.1559669590417573914, 16.1619790013112449856),
+                      spleen=c( 5.6528544325570964091,  5.7416707117225200818,  8.1270354686771071329))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=1e-7)
+
+    # sex and X-chr covariates
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3)
+    expected <- cbind(liver= c(1.56882977009233215426, 1.0513515452269666106, 2.0908041328949908966),
+                      spleen=c(0.91750143650706161846, 1.0096069617524108253, 2.8456095237817189414))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=2e-7)
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
+    expect_equal(operm, expected, tolerance=2e-7)
+
+    # sex and X-chr covariates, plus sex interactive
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3)
+    expected <- cbind(liver= c(2.0685972274436985607, 1.5532309407813880142, 2.0908041328949908966),
+                      spleen=c(1.0453315747253293377, 1.4393283407079127123, 2.8456095237817189414))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=2e-7)
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3, perm_strata=perm_strata)
+    expect_equal(operm, expected, tolerance=2e-7)
+
+    # sex and additive covariates + X-sp perms
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3,
+                        perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
+    expected <- list(A=cbind(liver= c(1.56882977009233215426, 0.15408564377888087082, 0.67967768984653986752),
+                             spleen=c(0.91750143650706161846, 1.00960696175241082528, 0.91230958640896986367)),
+                     X=cbind(liver= c(0.97181612243038850707, 1.30884260163939236676, 1.0469267813436373693, 1.1756400822768775516,
+                                      0.95393471131950169362, 1.77629144210861866780, 1.1553802467963436573),
+                             spleen=c(1.09440461035015434987, 0.92166597393122562387, 1.9478774114125230188, 1.6002993996316043912,
+                                      1.87475751935023260408, 3.25271295915794134150, 1.4690019469768538229)))
+    L <- c(A=61.200000000000002842,X=28.399999999999998579)
+    attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
+    attr(expected, "chr_lengths") <- L
+    class(expected) <- c("scan1perm", "list")
+    expect_equal(operm, expected, tolerance=3e-7)
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno1, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3,
+                        perm_Xsp=TRUE, chr_lengths=chr_lengths(map), perm_strata=perm_strata)
+    expect_equal(operm, expected, tolerance=3e-7)
+
+    # one missing phenotype, no covariates
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno2, kinship_loco, n_perm=3)
+    expected <- cbind(liver= c(1.4246052689684871595, 1.7056415036570125032, 1.1168979618114607266),
+                      spleen=c(2.1849905121197314983, 1.9112972630703948251, 1.8871262477436099303))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=1e-7)
+
+    # one missing phenotype, sex and X-chr covariates
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno2, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3)
+    expected <- cbind(liver= c(1.56455340995486880118, 1.0297698518383779920, 2.0850243087458522062),
+                      spleen=c(0.91750143650706161846, 1.0096069617524108253, 2.8456095237817189414))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=1e-7)
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno2, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
+    expect_equal(operm, expected, tolerance=1e-7)
+
+    # one missing phenotype, sex and X-chr covariates, plus sex interactive
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno2, kinship_loco, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3)
+    expected <- cbind(liver= c(2.0627670956682830905, 1.6203949273894016070, 2.0850243087458522062),
+                      spleen=c(1.0453315747253293377, 1.4393283407079127123, 2.8456095237817189414))
+    class(expected) <- c("scan1perm", "matrix")
+    expect_equal(operm, expected, tolerance=1e-7)
+    set.seed(seed)
+    operm <- scan1perm(pr, pheno2, kinship_loco, addcovar=sex, Xcovar=Xcovar, intcovar=sex, n_perm=3, perm_strata=perm_strata)
+    expect_equal(operm, expected, tolerance=1e-7)
+
+    # one missing phenotype, sex and X-chr covariates, X-sp perms
+    set.seed(seed)
+    perm_strata <- rep(1, nrow(pheno2)) # avoid the stratified permutations
+    names(perm_strata) <- rownames(pheno2)
+    operm <- scan1perm(pr, pheno2, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3,
+                       perm_Xsp=TRUE, chr_lengths=chr_lengths(map),
+                       perm_strata=perm_strata)
+    expected <- list(A=cbind(liver= c(1.1843097019197699193, 0.85274796222960802528, 0.76981903233390269747),
+                             spleen=c(1.9799026087706383947, 2.49362417238307543244, 1.25357633693210002157)),
+                     X=cbind(liver= c(1.8780358059656263592, 0.90161252703340077908, 2.14165883712329874200, 1.22526835195444783189,
+                                      1.9880868077503865976, 2.26102772689441522402, 0.29930607545925685953),
+                             spleen=c(1.7745737202810807354, 1.62576920864453811078, 1.32234059834719985820, 0.88648559108750113467,
+                                      1.0819693331921111934, 0.84662422120364888567, 1.36404099441823589700)))
     L <- c(A=61.200000000000002842,X=28.399999999999998579)
     attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
     attr(expected, "chr_lengths") <- L
