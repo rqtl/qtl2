@@ -107,19 +107,19 @@
 #'
 #' # permutations with genome scan
 #' \dontrun{
-#' operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
-#'                chr_lengths=chr_lengths(iron$gmap))}
-#' \dontshow{operm <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)}
+#' operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
+#'                    n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
+#'                    chr_lengths=chr_lengths(iron$gmap))}
+#' \dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)}
 #'
 #' # leave-one-chromosome-out kinship matrices
 #' kinship <- calc_kinship(probs, "loco")
 #'
 #' # genome scan with a linear mixed model
 #' \dontrun{
-#' operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
-#'                    perm_Xsp=TRUE, perm_strata=perm_strata)}
-#' \dontshow{operm_lmm <- scan1(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strata=perm_strata)}
+#' operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
+#'                        perm_Xsp=TRUE, perm_strata=perm_strata)}
+#' \dontshow{operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strata=perm_strata)}
 #'
 #' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strata}}
 #' @export
