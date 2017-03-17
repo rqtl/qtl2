@@ -125,11 +125,60 @@ summary_scan1perm <-
 }
 
 #' @rdname summary_scan1perm
+#' @param ... Ignored
 #' @export
-summary.scan1perm <- summary_scan1perm
+summary.scan1perm <-
+    function(object, alpha=0.05, ...)
+{
+    summary_scan1perm(object, alpha=alpha)
+}
 
+#' Print summary of scan1perm permutations
+#'
+#' Print summary of scan1perm permutations
+#'
+#' @param x Object of class \code{"summary.scan1perm"}, as produced by \code{\link{summary_scan1perm}}.
+#' @param digits Number of digits in printing significance thresholds; passed to \code{\link[base]{print}}.
+#' @param ... Ignored.
+#'
+#' @return Invisibly returns the input, \code{x}.
+#'
+#' @details This is to go with \code{\link{summary_scan1perm}}, so
+#' that the summary output is printed in a nice format. Generally
+#' not called directly, but it can be in order to control the
+#' number of digits that appear.
+#'
+#' @examples
+#' \donttest{
+#' # load qtl2geno package for data and genoprob calculation
+#' library(qtl2geno)
+#'
+#' # read data
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#'
+#' # insert pseudomarkers into map
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
+#' # calculate genotype probabilities
+#' probs <- calc_genoprob(iron, map, error_prob=0.002)
+#'
+#' # grab phenotypes and covariates; ensure that covariates have names attribute
+#' pheno <- iron$pheno
+#' covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+#' names(covar) <- rownames(iron$covar)
+#' Xcovar <- get_x_covar(iron)
+#'
+#' # permutations with genome scan
+#' operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
+#'                    n_perm=100, perm_Xsp=TRUE,
+#'                    chr_lengths=chr_lengths(iron$gmap))
+#'
+#' summary(operm, alpha=c(0.20, 0.05))
+#'
+#' print( summary(operm, alpha=c(0.20, 0.05)), digits=8 )
+#' }
+#'
 #' @export
-#' @rdname summary_scan1perm
 print.summary.scan1perm <-
     function(x, digits=3, ...)
 {

@@ -3,19 +3,18 @@
 \name{summary_scan1perm}
 \alias{summary_scan1perm}
 \alias{summary.scan1perm}
-\alias{print.summary.scan1perm}
 \title{Summarize scan1perm results}
 \usage{
 summary_scan1perm(object, alpha = 0.05)
 
-\method{summary}{scan1perm}(object, alpha = 0.05)
-
-\method{print}{summary.scan1perm}(x, digits = 3, ...)
+\method{summary}{scan1perm}(object, alpha = 0.05, ...)
 }
 \arguments{
 \item{object}{Output of \code{\link{scan1perm}}}
 
 \item{alpha}{Vector of significance levels}
+
+\item{...}{Ignored}
 }
 \value{
 An object of class \code{summary.scan1perm}. If
