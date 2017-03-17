@@ -1,4 +1,4 @@
-## qtl2geno 0.5-5 (2017-03-17)
+## qtl2geno 0.5-6 (2017-03-17)
 
 ### New features
 
@@ -7,7 +7,7 @@
   to be IBD.
 
 
-## qtl2geno 0.5-4 (2017-03-13)
+## qtl2geno 0.5-5 (2017-03-13)
 
 ### New features
 
