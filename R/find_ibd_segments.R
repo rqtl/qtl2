@@ -24,6 +24,8 @@
 #' \item Right marker
 #' \item Left position
 #' \item Right position
+#' \item Left marker index
+#' \item Right marker index
 #' \item Interval length
 #' \item Number of markers
 #' \item Number of mismatches
@@ -127,10 +129,12 @@ find_ibd_segments <-
         data.frame(strain1=str_names[str1],
                    strain2=str_names[str2],
                    chr=chrnam,
-                   left=names(m)[result[,1]],
-                   right=names(m)[result[,2]],
+                   left_marker=names(m)[result[,1]],
+                   right_marker=names(m)[result[,2]],
                    left_pos=m[result[,1]],
                    right_pos=m[result[,2]],
+                   left_index=as.integer(keep[result[,1]]),
+                   right_index=as.integer(keep[result[,2]]),
                    int_length=m[result[,2]] - m[result[,1]],
                    n_mar = as.integer(result[,2] - result[,1] + 1),
                    n_mismatch=as.integer(result[,5]),

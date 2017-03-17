@@ -33,6 +33,8 @@ A data frame whose rows are IBD segments and whose columns
 \item Right marker
 \item Left position
 \item Right position
+\item Left marker index
+\item Right marker index
 \item Interval length
 \item Number of markers
 \item Number of mismatches
