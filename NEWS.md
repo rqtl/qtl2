@@ -1,3 +1,12 @@
+## qtl2geno 0.5-5
+
+### New features
+
+- Added a function `find_ibd_segments` that takes genotypes for a set
+  of inbred strains and searches for segments where strain pairs look
+  to be IBD.
+
+
 ## qtl2geno 0.5-4
 
 ### New features

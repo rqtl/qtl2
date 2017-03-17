@@ -43,6 +43,20 @@ A data frame whose rows are IBD segments and whose columns
 Find IBD segments (regions with a lot of shared SNP genotypes) for
 a set of strains
 }
+\details{
+For each strain pair on each chromosome, we consider all
+marker intervals and calculate a LOD score comparing the two
+hypotheses: that the strains are IBD in the interval, vs. that
+they are not. We assume that the two strains are homozygous at
+all markers, and use the model from Broman and Weber (1999),
+which assumes linkage equilibrium between markers and uses a
+simple model for genotype frequencies in the presence of genotyping
+errors or mutations.
+
+Note that inference of IBD segments is heavily dependent on how
+SNPs were chosen to be genotyped. (For example, were the SNPs ascertained
+based on their polymorphism between a particular strain pair?)
+}
 \examples{
 \donttest{
 # load DO data from Recla et al. (2014) Mamm Genome 25:211-222.
@@ -58,6 +72,7 @@ pmap <- recla$pmap
 
 }
 \references{
-Broman KW, Weber JL (1999) Long homozygous chromosomal segments in reference families from the
-Centre d’Étude du Polymorphisme Humain. Am J Hum Genet 65:1493--1500.
+Broman KW, Weber JL (1999) Long homozygous chromosomal segments in
+reference families from the Centre d’Étude du Polymorphisme Humain.
+Am J Hum Genet 65:1493--1500.
 }

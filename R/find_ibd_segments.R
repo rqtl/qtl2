@@ -30,9 +30,23 @@
 #' \item LOD score
 #' }
 #'
+#' @details For each strain pair on each chromosome, we consider all
+#' marker intervals and calculate a LOD score comparing the two
+#' hypotheses: that the strains are IBD in the interval, vs. that
+#' they are not. We assume that the two strains are homozygous at
+#' all markers, and use the model from Broman and Weber (1999),
+#' which assumes linkage equilibrium between markers and uses a
+#' simple model for genotype frequencies in the presence of genotyping
+#' errors or mutations.
+#'
+#' Note that inference of IBD segments is heavily dependent on how
+#' SNPs were chosen to be genotyped. (For example, were the SNPs ascertained
+#' based on their polymorphism between a particular strain pair?)
+#'
 #' @references
-#' Broman KW, Weber JL (1999) Long homozygous chromosomal segments in reference families from the
-#' Centre d’Étude du Polymorphisme Humain. Am J Hum Genet 65:1493--1500.
+#' Broman KW, Weber JL (1999) Long homozygous chromosomal segments in
+#' reference families from the Centre d’Étude du Polymorphisme Humain.
+#' Am J Hum Genet 65:1493--1500.
 #'
 #' @examples
 #' \donttest{
