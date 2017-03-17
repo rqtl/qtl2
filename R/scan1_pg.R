@@ -155,7 +155,7 @@ calc_hsq_clean <-
             Ke <- list(Ke, Ke)
             is_x_chr <- c(FALSE, TRUE)
         }
-        else { Ke <- list(Ke); is_x_chr <- FALSE }
+        else { Ke <- list(Ke) }
     }
 
     # function that does the work
