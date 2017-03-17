@@ -64,6 +64,7 @@
 #'
 #' summary(operm, alpha=c(0.20, 0.05))
 #'
+#' @importFrom stats quantile
 #' @export
 summary_scan1perm <-
     function(object, alpha=0.05)
