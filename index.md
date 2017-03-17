@@ -25,7 +25,7 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 
 ![Warning](assets/pics/warning_icon.png)
 
-In R/qtl2 version 0.5, we have made major revisions to some of the
+In R/qtl2 version 0.5, we made major revisions to some of the
 central data structures, and a number of steps in QTL analyses have
 changed. See the revised
 [user guide](assets/vignettes/user_guide.html), or
