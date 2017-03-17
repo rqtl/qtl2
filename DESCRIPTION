@@ -30,4 +30,5 @@ URL: http://kbroman.org/qtl2
 VignetteBuilder: knitr
 LinkingTo: Rcpp
 LazyData: true
+Encoding: UTF-8
 RoxygenNote: 6.0.1

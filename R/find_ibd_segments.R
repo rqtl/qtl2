@@ -32,7 +32,7 @@
 #'
 #' @references
 #' Broman KW, Weber JL (1999) Long homozygous chromosomal segments in reference families from the
-#' Centre d’Etude du Polymorphisme Humain. Am J Hum Genet 65:1493-1500.
+#' Centre d’Étude du Polymorphisme Humain. Am J Hum Genet 65:1493--1500.
 #'
 #' @examples
 #' \donttest{
