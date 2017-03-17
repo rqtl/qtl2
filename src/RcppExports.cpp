@@ -132,6 +132,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// find_ibd_segments
+NumericMatrix find_ibd_segments(const IntegerVector& g1, const IntegerVector& g2, const NumericVector& p, const double error_prob);
+RcppExport SEXP qtl2geno_find_ibd_segments(SEXP g1SEXP, SEXP g2SEXP, SEXP pSEXP, SEXP error_probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerVector& >::type g1(g1SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type g2(g2SEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type p(pSEXP);
+    Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_ibd_segments(g1, g2, p, error_prob));
+    return rcpp_result_gen;
+END_RCPP
+}
 // geno_names
 std::vector<std::string> geno_names(const String& crosstype, const std::vector<std::string> alleles, const bool is_x_chr);
 RcppExport SEXP qtl2geno_geno_names(SEXP crosstypeSEXP, SEXP allelesSEXP, SEXP is_x_chrSEXP) {
