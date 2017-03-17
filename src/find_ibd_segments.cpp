@@ -63,7 +63,6 @@ NumericMatrix find_ibd_segments(const IntegerVector& g1,
         double max_lod = marker_lod[i];
         int max_right = i;
         int max_mismatches = mismatch[i];
-        int num_mismatches = mismatch[i];
         double last_lod = marker_lod[i];
         int last_mismatches = mismatch[i];
 
