@@ -11,10 +11,10 @@
 
 ### Bug fixes
 
-- Fixed a bug in `scan1` with a kinship coefficient. This only would
-  show up if you scan the X chromosome on its own with special X chr
-  covariates (`Xcovar`). (Accidentally was acting as if it were an
-  autosome and so ignoring `Xcovar`.)
+- Fixed a bug in `scan1`. This would only show up if you were using a
+  kinship matrix and scanning the X chromosome on its own with special
+  X chr covariates (`Xcovar`). (Accidentally was acting as if it were
+  an autosome and so ignoring `Xcovar`.)
 
 
 ## qtl2scan 0.5-5 (2017-03-13)
