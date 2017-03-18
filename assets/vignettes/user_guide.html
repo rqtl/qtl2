@@ -224,6 +224,63 @@ for(i in <span class="dv">1</span>:<span class="dv">2</span>) {
 <p>For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods. On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.</p>
 <p>For the spleen phenotype (bottom panel), the linear mixed model with an overall kinship matrix again gives much lower LOD scores than the other two methods. However, in this case Haley-Knott regression and the LOCO method give quite similar results.</p>
 </div>
+<div id="performing-a-permutation-test" class="section level2">
+<h2>Performing a permutation test</h2>
+<p>To perform a permutation test to establish the statistical significance of the results of a genome scan, use the function <code>scan1perm()</code>. (In <a href="http://rqtl.org">R/qtl</a>, a single function, <code>scanone()</code>, was used for both performing a genome scan and for getting permutation-based significance thresholds, but in <a href="http://kbroman.org/qtl2">R/qtl2</a>, we’ve decided to make two separate functions).</p>
+<p>The <code>scan1perm()</code> function takes the same arguments as <code>scan1()</code>, plus additional arguments to control the permutations:</p>
+<ul>
+<li><code>n_perm</code> is the number of permutation replicates.</li>
+<li><code>perm_Xsp</code> controls whether to perform autosome/X chromosome specific permutations (with <code>perm_Xsp=TRUE</code>) or not (the default is to not).</li>
+<li><code>perm_strata</code> is a vector that defines the strata for a stratified permutation test.</li>
+<li><code>chr_lengths</code> is a vector of chromosome lengths, used in the case that <code>perm_Xsp=TRUE</code>.</li>
+</ul>
+<p>As with <code>scan1()</code>, you may provide a kinship matrix (or vector of kinship matrices, for the “leave one chromosome out” (loco) approach), in order to fit linear mixed models to account for accounting for the relationships among individuals (in other words, including a random polygenic effect). If <code>kinship</code> is unspecified, the function performs ordinary Haley-Knott regression.</p>
+<p>To perform a permutation test with the <code>iron</code> data, we do the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">operm &lt;-<span class="st"> </span><span class="kw">scan1perm</span>(pr, iron$pheno, <span class="dt">Xcovar=</span>Xcovar, <span class="dt">n_perm=</span><span class="dv">1000</span>)</code></pre></div>
+<p>Note the need to specify special covariates for the X chromosome (via <code>Xcovar</code>), to be included under the null hypothesis of no QTL. And note that when these are provided, the default is to perform a stratified permutation test, using strata defined by the rows in <code>Xcovar</code>. In general, when the X chromosome is considered, one will wish to stratify at least by sex.</p>
+<p>Also note that, as with <code>scan1()</code>, you can speed up the calculations on a multi-core machine by specifying the argument <code>cores</code>. With <code>cores=0</code>, the number of available cores will be detected via <code>parallel::detectCores()</code>. Otherwise, specify the number of cores as a positive integer. For large datasets, be mindful of the amount of memory that will be needed; you may need to use fewer than the maximum number of cores, to avoid going beyond the available memory.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">operm &lt;-<span class="st"> </span><span class="kw">scan1perm</span>(pr, iron$pheno, <span class="dt">Xcovar=</span>Xcovar, <span class="dt">n_perm=</span><span class="dv">1000</span>, <span class="dt">cores=</span><span class="dv">0</span>)</code></pre></div>
+<p>To get estimated significance thresholds, use the function <code>summary()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(operm)</code></pre></div>
+<pre><code>## LOD thresholds (1000 permutations)
+##      liver spleen
+## 0.05  3.46   3.46</code></pre>
+<p>The default is to return the 5% significance thresholds. Thresholds for other (or for multiple) significance levels can be obtained via the <code>alpha</code> argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(operm, <span class="dt">alpha=</span><span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.05</span>))</code></pre></div>
+<pre><code>## LOD thresholds (1000 permutations)
+##      liver spleen
+## 0.2   2.63   2.64
+## 0.05  3.46   3.46</code></pre>
+<p>To obtain autosome/X chromosome-specific significance thresholds, specify <code>perm_Xsp=TRUE</code>. In this case, you need to provide chromosome lengths, which may be obtained with the function <code>chr_lengths()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">operm2 &lt;-<span class="st"> </span><span class="kw">scan1perm</span>(pr, iron$pheno, <span class="dt">Xcovar=</span>Xcovar, <span class="dt">n_perm=</span><span class="dv">1000</span>,
+                    <span class="dt">perm_Xsp=</span><span class="ot">TRUE</span>, <span class="dt">chr_lengths=</span><span class="kw">chr_lengths</span>(map))</code></pre></div>
+<p>Separate permutations are performed for the autosomes and X chromosome, and considerably more permutation replicates are needed for the X chromosome. The computations take about twice as much time. See <a href="https://www.ncbi.nlm.nih.gov/pubmed/17028340">Broman et al. (2006) Genetics 174:2151-2158</a>.</p>
+<p>The significance thresholds are again derived via <code>summary()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(operm2, <span class="dt">alpha=</span><span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.05</span>))</code></pre></div>
+<pre><code>## Autosome LOD thresholds (1000 permutations)
+##      liver spleen
+## 0.2   2.65   2.54
+## 0.05  3.42   3.22
+## 
+## X chromosome LOD thresholds (28243 permutations)
+##      liver spleen
+## 0.2    3.1   4.02
+## 0.05   3.9   5.18</code></pre>
+<p>Permutations for a genome scan with a linear mixed model-based are performed by specifying the <code>kinship</code> argument. We can use the “leave one chromosome out” (loco) method by providing <code>kinship_loco</code>, the list of kinship matrices calculated above with <code>calc_kinship()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">operm3 &lt;-<span class="st"> </span><span class="kw">scan1perm</span>(pr, iron$pheno, kinship_loco, <span class="dt">Xcovar=</span>Xcovar, <span class="dt">n_perm=</span><span class="dv">1000</span>,
+                    <span class="dt">perm_Xsp=</span><span class="ot">TRUE</span>, <span class="dt">chr_lengths=</span><span class="kw">chr_lengths</span>(map))</code></pre></div>
+<p>Here are the estimated significance thresholds:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(operm3, <span class="dt">alpha=</span><span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.05</span>))</code></pre></div>
+<pre><code>## Autosome LOD thresholds (1000 permutations)
+##      liver spleen
+## 0.2   2.64   2.62
+## 0.05  3.29   3.29
+## 
+## X chromosome LOD thresholds (28243 permutations)
+##      liver spleen
+## 0.2   3.14   4.37
+## 0.05  3.82   5.50</code></pre>
+</div>
 <div id="estimated-qtl-effects" class="section level2">
 <h2>Estimated QTL effects</h2>
 <p>The <code>scan1()</code> function return only LOD scores. To obtain estimated QTL effects, use the function <code>scan1coef()</code>. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.</p>
