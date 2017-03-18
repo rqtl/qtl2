@@ -59,7 +59,7 @@
 #' object should have a component \code{"is_x_chr"} that indicates
 #' which of the chromosomes is the X chromosome, if any.
 #'
-#' The \code{...} argument can contain two additional control
+#' The \code{...} argument can contain three additional control
 #' parameters; suspended for simplicity (or confusion, depending on
 #' your point of view). \code{tol} is used as a tolerance value for
 #' linear regression by QR decomposition (in determining whether
@@ -67,7 +67,9 @@
 #' default \code{1e-12}. \code{intcovar_method} indicates whether to
 #' use a high-memory (but potentially faster) method or a low-memory
 #' (and possibly slower) method, with values \code{"highmem"} or
-#' \code{"lowmem"}; default \code{"lowmem"}.
+#' \code{"lowmem"}; default \code{"lowmem"}. Finally, \code{max_batch}
+#' indicates the maximum number of phenotypes to run together; default
+#' is unlimited.
 #'
 #' If \code{kinship} is absent, Haley-Knott regression is performed.
 #' If \code{kinship} is provided, a linear mixed model is used, with a
@@ -115,6 +117,7 @@
 #' # genome scan with a linear mixed model
 #' out_lmm <- scan1(probs, pheno, kinship, covar, Xcovar)
 #'
+#' @seealso \code{\link{scan1perm}}
 #' @export
 scan1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,

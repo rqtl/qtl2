@@ -55,19 +55,10 @@ out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 # pull out chromosome 8
 out_c8 <- subset(out, map, chr="8")
 
-# can also use bracket notation; need to provide map in first slot
-out_c8 <- out[map,"8",]
-
 # just the second column on chromosome 2
 out_c2_spleen <- subset(out, map, "2", "spleen")
 
-# again, in bracket notation
-out_c2_spleen <- out[map, "2", "spleen"]
-
 # all positions, but just the "liver" column
 out_spleen <- subset(out, map, lodcolumn="spleen")
-
-# bracket notation
-out_spleen <- out[map,,"spleen"]
 }
 }

@@ -59,6 +59,7 @@ library(devtools)
 install_github(paste0("rqtl/qtl2", c("geno", "scan", "plot", "convert")))
 ```
 
+
 ## Data file format
 
 The input data file formats for [R/qtl](http://rqtl.org) cannot
@@ -145,6 +146,7 @@ construction, there's a function `write_control_file()` that takes the
 large set of control parameters as input and then writes the YAML
 control file in the appropriate format.
 
+
 ## Sample data sets
 
 The R/qtl2 web site includes
@@ -174,6 +176,7 @@ grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2geno") )
 
 Additional sample data sets, including data on Diversity Outbred (DO)
 mice, are available at <https://github.com/rqtl/qtl2data>.
+
 
 ## Calculating genotype probabilities
 
@@ -237,6 +240,7 @@ probabilities, using the function `genoprob_to_alleleprob()`.
 ```{r allele_probs}
 apr <- genoprob_to_alleleprob(pr)
 ```
+
 
 ## Calculating a kinship matrix
 
@@ -305,6 +309,7 @@ function `get_x_covar()`.
 ```{r x_covar}
 Xcovar <- get_x_covar(iron)
 ```
+
 
 ## Performing a genome scan
 
@@ -464,6 +469,184 @@ For the spleen phenotype (bottom panel), the linear mixed model with an
 overall kinship matrix again gives much lower LOD scores than the
 other two methods. However, in this case Haley-Knott regression and
 the LOCO method give quite similar results.
+
+
+## Performing a permutation test
+
+To perform a permutation test to establish the statistical significance of
+the results of a genome scan, use the function `scan1perm()`. (In
+[R/qtl](http://rqtl.org), a single function, `scanone()`, was used for
+both performing a genome scan and for getting permutation-based
+significance thresholds, but in [R/qtl2](http://kbroman.org/qtl2),
+we've decided to make two separate functions).
+
+The `scan1perm()` function takes the same arguments as `scan1()`, plus
+additional arguments to control the permutations:
+
+- `n_perm` is the number of permutation replicates.
+- `perm_Xsp` controls whether to perform autosome/X chromosome
+  specific permutations (with `perm_Xsp=TRUE`) or not (the default is
+  to not).
+- `perm_strata` is a vector that defines the strata for a stratified permutation
+  test.
+- `chr_lengths` is a vector of chromosome lengths, used in the case
+  that `perm_Xsp=TRUE`.
+
+As with `scan1()`, you may provide a kinship matrix (or vector of
+kinship matrices, for the "leave one chromosome out" (loco) approach),
+in order to fit linear mixed models to account for accounting for the
+relationships among individuals (in other words, including a random
+polygenic effect). If `kinship` is unspecified, the function performs
+ordinary Haley-Knott regression.
+
+```{r set_seed, echo=FALSE}
+set.seed(49237170)
+RNGkind("Mersenne-Twister")
+```
+
+To perform a permutation test with the `iron` data, we do the following:
+
+```{r scan1perm, eval=FALSE}
+operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000)
+```
+
+Note the need to specify special covariates for the X chromosome (via
+`Xcovar`), to be included under the null hypothesis of no QTL.
+And note that when these are provided, the default is to perform a
+stratified permutation test, using strata defined by the rows in
+`Xcovar`. In general, when the X chromosome is considered, one will
+wish to stratify at least by sex.
+
+Also note that, as with `scan1()`, you can speed up the calculations on a multi-core
+machine by specifying the argument `cores`. With `cores=0`, the number
+of available cores will be detected via `parallel::detectCores()`.
+Otherwise, specify the number of cores as a positive integer.
+For large datasets, be mindful of the amount of memory that will be
+needed; you may need to use fewer than the maximum number of cores,
+to avoid going beyond the available memory.
+
+```{r scan1perm_multicore, eval=FALSE}
+operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000, cores=0)
+```
+
+To get estimated significance thresholds, use the function
+`summary()`.
+
+```{r create_summary, echo=FALSE}
+# skipped the permutations above and am hard-coding the results here
+operm_summary <- structure(c(3.46116054889584, 3.46335159869951), .Dim = 1:2, .Dimnames = list(
+                 "0.05", c("liver", "spleen")), class = c("summary.scan1perm",
+                 "matrix"), n_perm = structure(c(1000, 1000), .Dim = 1:2, .Dimnames = list(
+                 NULL, c("liver", "spleen"))))
+```
+
+```{r summary_scan1perm, eval=FALSE}
+summary(operm)
+```
+
+```{r summary_scan1perm_run, echo=FALSE}
+print(operm_summary)
+```
+
+The default is to return the 5% significance thresholds. Thresholds for
+other (or for multiple) significance levels can be obtained via the
+`alpha` argument.
+
+```{r create_summary_B, echo=FALSE}
+# skipped the permutations above and am hard-coding the results here
+operm_summary_B <- structure(c(2.62593592893683, 3.46116054889584, 2.63661419257339,
+                   3.46335159869951), .Dim = c(2L, 2L), .Dimnames = list(c("0.2",
+                   "0.05"), c("liver", "spleen")), class = c("summary.scan1perm",
+                   "matrix"), n_perm = structure(c(1000, 1000), .Dim = 1:2, .Dimnames = list(
+                   NULL, c("liver", "spleen"))))
+```
+
+```{r summary_scan1perm_B, eval=FALSE}
+summary(operm, alpha=c(0.2, 0.05))
+```
+
+```{r summary_scan1perm_B_run, echo=FALSE}
+print(operm_summary_B)
+```
+
+To obtain autosome/X chromosome-specific significance thresholds,
+specify `perm_Xsp=TRUE`. In this case, you need to provide chromosome
+lengths, which may be obtained with the function `chr_lengths()`.
+
+```{r set_seed_again, echo=FALSE}
+set.seed(49237170)
+```
+
+```{r scan1perm_Xsp, eval=FALSE}
+operm2 <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000,
+                    perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
+```
+
+Separate permutations are performed for the autosomes and X
+chromosome, and considerably more permutation replicates are needed
+for the X chromosome. The computations take about twice as much time.
+See [Broman et al. (2006) Genetics
+174:2151-2158](https://www.ncbi.nlm.nih.gov/pubmed/17028340).
+
+The significance thresholds are again derived via `summary()`:
+
+```{r create_summary_C, echo=FALSE}
+# skipped the permutations above and am hard-coding the results here
+operm2_summary <- structure(list(A = structure(c(2.65418133901934, 3.42486248852004,
+                  2.54301332030778, 3.22481615651871), .Dim = c(2L, 2L), .Dimnames = list(
+                  c("0.2", "0.05"), c("liver", "spleen"))), X = structure(c(3.09791964868745,
+                  3.89645628736863, 4.01757985708749, 5.17928309851641), .Dim = c(2L,
+                  2L), .Dimnames = list(c("0.2", "0.05"), c("liver", "spleen")))), .Names = c("A",
+                  "X"), class = c("summary.scan1perm", "list"), n_perm = structure(c(1000,
+                  28243, 1000, 28243), .Dim = c(2L, 2L), .Dimnames = list(c("A",
+                  "X"), c("liver", "spleen"))))
+```
+
+```{r summary_scan1perm_C, eval=FALSE}
+summary(operm2, alpha=c(0.2, 0.05))
+```
+
+```{r summary_scan1perm_C_run, echo=FALSE}
+print(operm2_summary)
+```
+
+Permutations for a genome scan with a linear mixed model-based are
+performed by specifying the `kinship` argument. We can
+use the "leave one chromosome out" (loco) method by providing
+`kinship_loco`, the list of kinship matrices calculated above with
+`calc_kinship()`.
+
+```{r set_seed_yet_again, echo=FALSE}
+set.seed(49237170)
+```
+
+```{r scan1perm_lmm, eval=FALSE}
+operm3 <- scan1perm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar, n_perm=1000,
+                    perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
+```
+
+Here are the estimated significance thresholds:
+
+```{r create_summary_D, echo=FALSE}
+# skipped the permutations above and am hard-coding the results here
+operm3_summary <- structure(list(A = structure(c(2.64158056099834, 3.2863616632467,
+                  2.62334670551258, 3.28542642483703), .Dim = c(2L, 2L), .Dimnames = list(
+                  c("0.2", "0.05"), c("liver", "spleen"))), X = structure(c(3.13853435409231,
+                  3.81699660922065, 4.36511444098698, 5.49658348000439), .Dim = c(2L,
+                  2L), .Dimnames = list(c("0.2", "0.05"), c("liver", "spleen")))), .Names = c("A",
+                  "X"), class = c("summary.scan1perm", "list"), n_perm = structure(c(1000,
+                  28243, 1000, 28243), .Dim = c(2L, 2L), .Dimnames = list(c("A",
+                  "X"), c("liver", "spleen"))))
+```
+
+```{r summary_scan1perm_D, eval=FALSE}
+summary(operm3, alpha=c(0.2, 0.05))
+```
+
+```{r summary_scan1perm_D_run, echo=FALSE}
+print(operm3_summary)
+```
+
 
 ## Estimated QTL effects
 
@@ -694,7 +877,6 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
-
 
 ### SNP associations
 

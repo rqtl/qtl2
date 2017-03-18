@@ -1,4 +1,23 @@
-## qtl2scan 0.5-5
+## qtl2scan 0.5-6 (2017-03-17)
+
+### New features
+
+- Added `scan1perm` to perform a permutation test to establish
+  genome-wide significance in a single-QTL genome scan by `scan1`.
+
+- Also added functions `rbind.scan1perm` and `cbind.scan1perm` for
+  combining `scan1perm` results, and `summary.scan1perm` to obtain
+  significance thresholds.
+
+### Bug fixes
+
+- Fixed a bug in `scan1` with a kinship coefficient. This only would
+  show up if you scan the X chromosome on its own with special X chr
+  covariates (`Xcovar`). (Accidentally was acting as if it were an
+  autosome and so ignoring `Xcovar`.)
+
+
+## qtl2scan 0.5-5 (2017-03-13)
 
 ### New features
 

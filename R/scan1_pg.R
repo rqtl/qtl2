@@ -107,8 +107,7 @@ scan1_pg <-
         if(length(these2keep) <= 2) next # not enough individuals; skip this batch
 
         # subset the rest
-        if(is.list(kinship)) K <- lapply(kinship, function(a) a[these2keep,these2keep])
-        else K <- kinship[these2keep, these2keep]
+        K <- subset_kinship(kinship, ind=these2keep)
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
         Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
         ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
@@ -156,7 +155,7 @@ calc_hsq_clean <-
             Ke <- list(Ke, Ke)
             is_x_chr <- c(FALSE, TRUE)
         }
-        else { Ke <- list(Ke); is_x_chr <- FALSE }
+        else { Ke <- list(Ke) }
     }
 
     # function that does the work
@@ -290,6 +289,7 @@ scan1_pg_clean <-
     result
 }
 
+
 # check that kinship matrices are square
 # and have same row and column IDs
 #
@@ -327,6 +327,8 @@ check_kinship <-
 double_kinship <-
     function(kinship)
 {
+    if(is.null(kinship)) return(NULL)
+
     if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
         if("values" %in% names(kinship)) { # just one of them
             kinship$values <- 2*kinship$values
