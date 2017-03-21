@@ -239,7 +239,7 @@ scan1 <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
     pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
@@ -284,7 +284,7 @@ scan1 <-
         }
     }
 
-    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    pos_names <- unlist(dimnames(genoprobs)[[3]])
     names(pos_names) <- NULL # this is just annoying
     dimnames(result) <- list(pos_names, colnames(pheno))
 

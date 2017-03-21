@@ -74,10 +74,10 @@ scan1_pg <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
     pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
-    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    pos_names <- unlist(dimnames(genoprobs)[[3]])
     names(pos_names) <- NULL # this is just annoying
 
     # to contain the results
@@ -274,7 +274,7 @@ scan1_pg_clean <-
     if(any(result_is_null))
         stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
     pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
 
