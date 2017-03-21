@@ -15,12 +15,16 @@ genoprobs_col2drop <-
             w <- which(is_x_chr)
             for(i in w)
                 result[[i]] <- genoprobs_col2drop(probs[[i]])
+
             return(result)
         }
         else {
-            w <- which(!is_x_chr)
-            for(i in w)
+            result <- lapply(seq(along=probs), function(a) numeric(0))
+            names(result) <- names(probs)
+
+            for(i in seq(length(probs)))
               result[[i]] <- genoprobs_col2drop(probs[[i]])
+
             return(result)
         }
     }

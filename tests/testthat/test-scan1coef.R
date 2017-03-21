@@ -189,7 +189,7 @@ test_that("scan1coef for backcross, with contrasts", {
     p <- p %*% contrasts
     dim(p) <- dim(prob)
     prob <- p
-    dimnames(prob) <- list(rownames(prob2), dimnames(prob2)[[3]], colnames(contrasts))
+    dimnames(prob) <- list(rownames(prob2), dimnames(prob2[[1]])[[3]], colnames(contrasts))
 
     posnames <- dimnames(prob2[[1]])[[3]]
 
