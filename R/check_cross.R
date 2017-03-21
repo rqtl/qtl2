@@ -314,29 +314,6 @@ function(cross2)
         warning("names(is_x_chr) != names(geno)")
     }
 
-    # check linenamp
-    linemap <- cross2$linemap
-    if(!is.null(linemap) && !is.null(pheno)) {
-        if(length(linemap) != nrow(pheno)) {
-            result <- FALSE
-            warning("length(linemap) (", length(linemap), ") != nrow(pheno) (", nrow(pheno), ")")
-        }
-        else if(any(names(linemap) != rownames(pheno))) {
-            result <- FALSE
-            warning("names(linemap) != rownames(pheno)")
-        }
-
-        if(any(is.na(match(linemap, rownames(geno[[1]]))))) {
-            result <- FALSE
-            warning("Some lines in linemap are not in rownames(geno[[1]])")
-        }
-    }
-
-    if(is.null(linemap) && !is.null(pheno) && nrow(pheno) != nrow(geno[[1]])) {
-        result <- FALSE
-        warning("linemap missing but nrow(pheno) != nrow(geno[[1]])")
-    }
-
     # founder_geno
     founder_geno <- cross2$founder_geno
     if(need_founder_geno(crosstype)) {

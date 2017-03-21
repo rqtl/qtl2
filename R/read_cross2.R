@@ -227,11 +227,6 @@ function(file, quiet=TRUE)
     }
     used_control["cross_info"] <- TRUE # indicate that we used it
 
-    # line map (mapping of individuals to lines)
-    output$linemap <- convert_linemap(control$linemap, output$covar, control$sep,
-                                      control$comment.char, dir, quiet=quiet)
-    used_control["linemap"] <- TRUE # indicate that we used it
-
     # alleles?
     n_alleles <- nalleles(output$crosstype)
     if("alleles" %in% names(control)) {
@@ -544,45 +539,6 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
     storage.mode(newci) <- "integer"
 
     newci
-}
-
-# grab linemap information
-convert_linemap <-
-function(linemap_control, covar, sep, comment.char, dir, quiet=TRUE)
-{
-    if(is.null(linemap_control)) return(NULL)
-
-    if(!is.list(linemap_control)) { # provided directly
-        if(file.exists(file.path(dir, linemap_control))) # is it a file name?
-            linemap_control <- list(file=linemap_control)
-        else # assumed to be a covariate column
-            linemap_control <- list(covar=linemap_control)
-    }
-
-    # see if it's a file
-    if("file" %in% names(linemap_control)) {
-        if(!quiet) message(" - reading linemap")
-        filename <- file.path(dir, linemap_control$file)
-        linemap <- read_csv(filename, sep=sep, na.strings=NULL, comment.char=comment.char,
-                            rownames_included=TRUE)
-    }
-    else if("covar" %in% names(linemap_control)) { # column name in the covariate data
-        linemap <- covar[,linemap_control$covar, drop=FALSE]
-    }
-    else { # can't figure it out; just ignore it
-        return(NULL)
-    }
-
-    # convert to vector
-    id <- rownames(linemap)
-    linemap <- linemap[,1]
-    names(linemap) <- id
-
-    # missing values?
-    if(any(is.na(linemap)))
-        stop(sum(is.na(linemap)), " missing linemapes (linemap can't be missing).")
-
-    linemap
 }
 
 # is file on web (starts with http://, https://, or file://)

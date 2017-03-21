@@ -1,3 +1,27 @@
+## qtl2geno 0.5-7 (2017-03-21)
+
+### New features
+
+- Removed the distinction between "lines" and "individuals", and the
+  `linemap` component in the input that connected them.
+  (While for RILs like the Collaborative Cross, we may want to work
+  with individual-level phenotypes, it seems best to deal with that
+  outside of the cross object.)
+
+- Removed the functions `n_lines()` and `line_ids()`. Added some
+  functions:
+
+    - `n_ind_geno()` for number of genotyped individuals, and
+      `ind_ids_geno()` to get their IDs.
+    - `n_ind_pheno()` for number of phenotyped individuals, and
+      `ind_ids_pheno()` to get their IDs.
+    - `n_ind_gnp()` for number of individuals with *both* genotypes
+      and phenotypes, and `ind_ids_gnp()` to get their IDs.
+
+- Also, `n_ind()` and `ind_ids()` now return the total number of
+  individuals, across both genotypes and phenotypes.
+
+
 ## qtl2geno 0.5-6 (2017-03-17)
 
 ### New features
