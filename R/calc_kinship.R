@@ -134,7 +134,7 @@ calc_kinship_overall <-
             result <- result + by_chr_res[[i]]
     }
 
-    tot_pos <- sum(vapply(probs, function(a) dim(a)[3], 0)[chrs])
+    tot_pos <- sum(dim(probs)[3,chrs])
     result <- result/tot_pos
     attr(result, "n_pos") <- tot_pos
 
