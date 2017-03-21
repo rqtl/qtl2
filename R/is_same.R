@@ -7,7 +7,7 @@ is_same <-
 
     if(is.list(a) && is.list(b)) {
         if(length(a) != length(b)) return(FALSE)
-        for(i in seq(along=a))
+        for(i in seq_along(a))
             if(!is_same(a[[i]], b[[i]])) return(FALSE)
         return(TRUE)
     }

@@ -46,7 +46,7 @@ scan1perm_pg <-
 
         decomp_kinship(subset_kinship(kinship, ind=these2keep), cores=1)
     }
-    kinship_list <- cluster_lapply(cores, seq(along=uindex_batches), decomp_func)
+    kinship_list <- cluster_lapply(cores, seq_along(uindex_batches), decomp_func)
 
     ## null results
     null_by_batch_func <- function(i) {
@@ -68,14 +68,14 @@ scan1perm_pg <-
         n_chr <- length(is_x_chr)
         if(nrow(result$hsq) != n_chr) {
             if(nrow(result$hsq)==1) {
-                for(i in seq(along=result))
+                for(i in seq_along(result))
                     result[[i]] <- matrix(rep(result[[i]], n_chr), byrow=TRUE, nrow=n_chr)
             }
             else if(nrow(result$hsq)==2) {
-                for(i in seq(along=result)) {
+                for(i in seq_along(result)) {
                     tmp <- result[[i]]
                     result[[i]] <- matrix(nrow=n_chr, ncol=ncol(tmp))
-                    for(j in seq(along=is_x_chr)) {
+                    for(j in seq_along(is_x_chr)) {
                         if(is_x_chr[j])
                             result[[i]][j,] <- tmp[2,]
                         else
@@ -87,11 +87,11 @@ scan1perm_pg <-
 
         result
     }
-    nullresult <- cluster_lapply(cores, seq(along=phe_batches), null_by_batch_func)
+    nullresult <- cluster_lapply(cores, seq_along(phe_batches), null_by_batch_func)
 
     # batches for analysis, to allow parallel analysis
-    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)*n_perm),
-                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)*n_perm),
+    run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)*n_perm),
+                              phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)*n_perm),
                               perm_batch=rep(rep(1:n_perm, each=length(genoprobs), length(phe_batches))))
 
     run_indexes <- 1:(length(genoprobs)*length(phe_batches)*n_perm)

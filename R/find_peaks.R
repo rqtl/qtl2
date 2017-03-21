@@ -158,12 +158,12 @@ find_peaks <-
 
     # split lod scores by column and by chromosome
     lod <- as.list(as.data.frame(unclass(scan1_output)))
-    chr <- rep(seq(along=map), vapply(map, length, 1))
+    chr <- rep(seq_along(map), vapply(map, length, 1))
     lod <- lapply(lod, split, chr)
 
     # batch info for parallel-processing
-    batch <- cbind(rep(seq(along=lod), vapply(lod, length, 1)),
-                   unlist(lapply(lod, function(a) seq(along=a))))
+    batch <- cbind(rep(seq_along(lod), vapply(lod, length, 1)),
+                   unlist(lapply(lod, function(a) seq_along(a))))
     dimnames(batch) <- NULL
     batch_index <- 1:nrow(batch)
 
@@ -201,7 +201,7 @@ find_peaks <-
                    chr=rep(names(map)[chr],n_peaks),
                    pos=peak_pos,
                    lod=peak_lod,
-                   row.names=seq(along=peaks),
+                   row.names=seq_along(peaks),
                    stringsAsFactors=FALSE)
     }
 

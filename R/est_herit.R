@@ -118,7 +118,7 @@ est_herit <-
     n <- nullLL <- hsq
 
     # loop over batches of phenotypes with the same pattern of NAs
-    for(batch in seq(along=phe_batches)) {
+    for(batch in seq_along(phe_batches)) {
 
         # info about batch
         omit <- phe_batches[[batch]]$omit # ind to omit

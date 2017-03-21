@@ -65,7 +65,7 @@ subset_scan1 <-
             x_mnames <- rownames(x)
         }
         if(!all(map_mnames %in% x_mnames)) {
-            for(i in seq(along=map)) {
+            for(i in seq_along(map)) {
                 mn <- names(map[[i]])
                 map[[i]] <- map[[i]][mn %in% x_mnames]
             }

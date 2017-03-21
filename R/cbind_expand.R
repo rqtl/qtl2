@@ -16,7 +16,7 @@ cbind_expand <-
     nrow <- vapply(input, nrow, 1)
     max_nrow <- max(nrow)
 
-    for(i in seq(along=input)) {
+    for(i in seq_along(input)) {
         rownames(input[[i]]) <- NULL # strip off the rownames
         if(nrow[i] < max_nrow) { # need to pad
             new_rows <- matrix(NA, ncol=ncol(input[[i]]), nrow=max_nrow - nrow[i])

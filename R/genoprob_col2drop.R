@@ -19,10 +19,10 @@ genoprobs_col2drop <-
             return(result)
         }
         else {
-            result <- lapply(seq(along=probs), function(a) numeric(0))
+            result <- lapply(seq_len(length(probs)), function(a) numeric(0))
             names(result) <- names(probs)
 
-            for(i in seq(length(probs)))
+            for(i in seq_len(length(probs)))
               result[[i]] <- genoprobs_col2drop(probs[[i]])
 
             return(result)

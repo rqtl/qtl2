@@ -42,7 +42,7 @@ batch_cols <-
     if(any(one_na)) {
         wh <- apply(mat[,one_na,drop=FALSE], 2, which)
         spl <- split(which(one_na), wh)
-        part2 <- lapply(seq(along=spl), function(i)
+        part2 <- lapply(seq_along(spl), function(i)
                         list(cols=as.numeric(spl[[i]]),
                              omit=as.numeric(names(spl)[i])))
 

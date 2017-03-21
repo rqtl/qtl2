@@ -141,7 +141,7 @@ snpinfo_to_map <-
     map <- split(snpinfo$pos, chr)
     snp <- split(snpinfo$snp, chr)
     index <- split(snpinfo$index, chr)
-    for(i in seq(along=map)) {
+    for(i in seq_along(map)) {
         u <- unique(index[[i]])
         map[[i]] <- map[[i]][u]
         names(map[[i]]) <- snp[[i]][u]
@@ -157,7 +157,7 @@ rev_snp_index <-
     function(snpinfo)
 {
     index_spl <- split(1:nrow(snpinfo), snpinfo$index)
-    revindex <- rep(seq(along=index_spl), vapply(index_spl, length, 1))
+    revindex <- rep(seq_along(index_spl), vapply(index_spl, length, 1))
     revindex[unlist(index_spl)] <- revindex
 
     revindex

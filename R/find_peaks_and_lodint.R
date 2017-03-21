@@ -42,12 +42,12 @@ find_peaks_and_lodint <-
 
     # split lod scores by column and by chromosome
     lod <- as.list(as.data.frame(unclass(scan1_output)))
-    chr <- rep(seq(along=map), vapply(map, length, 1))
+    chr <- rep(seq_along(map), vapply(map, length, 1))
     lod <- lapply(lod, split, chr)
 
     # batch info for parallel-processing
-    batch <- cbind(rep(seq(along=lod), vapply(lod, length, 1)),
-                   unlist(lapply(lod, function(a) seq(along=a))))
+    batch <- cbind(rep(seq_along(lod), vapply(lod, length, 1)),
+                   unlist(lapply(lod, function(a) seq_along(a))))
     dimnames(batch) <- NULL
     batch_index <- 1:nrow(batch)
 
@@ -97,7 +97,7 @@ find_peaks_and_lodint <-
                    lod=peak_lod,
                    ci_lo=ci_lo,
                    ci_hi=ci_hi,
-                   row.names=seq(along=peaks),
+                   row.names=seq_along(peaks),
                    stringsAsFactors=FALSE)
     }
 
@@ -127,7 +127,7 @@ expand_interval_to_markers <-
     pmar_pattern <- "^c.+\\.loc-*[0-9]+(\\.[0-9]+)*$"
     pmar <- grepl(pmar_pattern, mn)
 
-    mar_index <- seq(along=map)[!pmar]
+    mar_index <- seq_along(map)[!pmar]
 
     lo_index <- ci_index[1]
     hi_index <- ci_index[2]
