@@ -67,15 +67,6 @@ The data remains a list, now of class `"cross2"`. It has many
 components (some of them optional) in unspecified order; the names of
 the components are what matter.
 
-For some cross types (e.g., recombinant inbred lines), we will
-separate &ldquo;lines&rdquo; from &ldquo;individuals.&rdquo; Genotype
-data will be on the lines, while phenotype data will be on the
-individuals. In this case we will need a mapping from individuals to
-lines, `"linemap"` (more below). (For a cross type for which the
-genotyped individuals are also the phenotyped ones (e.g., the
-Diversity Outcross), think &ldquo;individual&rdquo; wherever we write
-&ldquo;line.&rdquo;)
-
 
 ### Cross type (`"crosstype"`)
 
@@ -109,7 +100,7 @@ The previous data structure had deep nesting of information; we're going
 to split that out and make things more flat. The genotype data will
 now be a list of matrices of integers. Each component of the
 list is a chromosome; the names are the chromosome names. Each
-chromosome has a matrix of `n_lines` x `n_markers`.
+chromosome has a matrix of `n_ind` x `n_markers`.
 
 The column names are the marker names, and the row names are the line
 identifiers (hereafter &ldquo;IDs&rdquo;).
@@ -140,7 +131,7 @@ information (which would be represented as a pair of allele
 intensities). It seems best to have separate data structures for these
 cases, perhaps named `geno_gbs` and `geno_int` (`int` for
 &ldquo;intensity&rdquo;). These could be three-dimensional arrays
-(`n_lines` &times; `n_markers` &times; `2`), with the third
+(`n_ind` &times; `n_markers` &times; `2`), with the third
 dimension corresponding to the two alleles.
 
 ### Founder genotype data (`"founder_geno"`)
@@ -159,20 +150,17 @@ chromosomes is the X chromosome.
 
 ### Sex (`"is_female"`)
 
-For the treatment of the X chromosome, we need access to sex of the lines.
-(That sounds a bit strange; sex is really a feature of individuals and
-won't actually be considered for cross types where we separate
-_individuals_ from _lines_.)
+For the treatment of the X chromosome, we need access to sex of the individuals.
 We'll have a logical vector (`"is_female"`) indicating which
 individuals are female. I prefer the logical vector as it's less
 susceptible to confusion. (Is 0 female and 1 male, or the other way
-around?) This will have length `n_lines`, with the name
+around?) This will have length `n_ind`, with the name
 attribute being the individual IDs.
 
 ### Cross information (`"cross_info"`)
 
 For many cross types, and particularly for the treatment of the X
-chromosome, we need line-level information about the nature of the
+chromosome, we need individual-level information about the nature of the
 cross. For an intercross, this is like `pgm` (for paternal
 grandmother) in [R/qtl](http://rqtl.org). For the Collaborative
 Cross, we need the order of the founders in the set of crosses that
@@ -180,7 +168,7 @@ led to each line. For the AIL and the Diversity Outcross, we need to
 know the number of generations of outbreeding.
 
 This `"cross_info"` component will be a matrix of integers with
-`n_lines` rows, and with the number of columns depending on the cross
+`n_ind` rows, and with the number of columns depending on the cross
 type.
 
 This information is highly cross-type-specific. We'll leave the
@@ -239,22 +227,6 @@ and proteomic measurements, and so a column indicating expression vs
 protein.
 
 
-### Individual to line mapping (`"linemap"`)
-
-For recombinant inbred lines (including the Collaborative Cross and
-MAGIC lines), we will want the genotypes at the line level and the
-phenotypes at the individual level. In this case we need a mapping
-between them. This will be a vector of character strings containing
-the line IDs, with length `n_individual` and the names attribute being
-the individual IDs. We might make this a two-column matrix, but it's
-more convenient as a vector with a names attribute, which acts like an
-[associative array](http://en.wikipedia.org/wiki/Associative_array)
-(also known as a dictionary, map, hash, or symbol table).
-
-(We might consider having a separate object type containing just the
-`pheno`, `phenocovar`, and `linemap` objects. This may simplify the
-use of multiple sets of phenotype data.)
-
 ### Alleles (`"alleles"`)
 
 The last bit is a vector of single-character strings, with allele
@@ -267,7 +239,7 @@ visualizations.
 A critical piece of _derived data_ is the conditional QTL genotype
 probabilities, given the observed marker data. This will be a list of
 three-dimensional arrays; each array corresponds to a chromosome and is of dimension
-`n_lines` &times; `n_positions` &times; `n_genotypes`.
+`n_ind` &times; `n_positions` &times; `n_genotypes`.
 
 An important consideration is the encoding of the genotypes.
 For crosses with two founder lines, this is straightforward except
@@ -489,8 +461,8 @@ Again, I don't want to get into too much detail here. All of the other
 files are in a simple CSV format. Each is a simple matrix with row
 names in the first column and column names in the first row.
 
-Genotypes are as lines &times; markers, with the first column
-being line IDs and the first row being marker names.
+Genotypes are as individuals &times; markers, with the first column
+being individual IDs and the first row being marker names.
 The founder genotypes are similar, but with founder lines as the
 rows.
 
@@ -514,7 +486,7 @@ file much as `sex` is above.
 The last piece is `"cross_info"`. For an intercross, this can just
 be a column in the covariate data (as it is for the example
 above). For more complex crosses, it will be a matrix with the rows
-being lines, and with the first column being line IDs.
+being individuals, and with the first column being individual IDs.
 
 For more detail, see
 [the input file format vignette](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
