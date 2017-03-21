@@ -1,3 +1,19 @@
+## qtl2scan 0.5-7 (2017-03-21)
+
+### New features
+
+- Added `dim.calc_genoprob` and `dimnames.calcgenoprob`, from
+  [Brian Yandell](https://github.com/byandell), for use with
+  [qtl2feather](https://github.com/byandell/qtl2feather), which uses
+  [feather](https://github.com/wesm/feather) to store
+  genotype probabilities in a file (to save memory).
+
+- In precess of revising various functions to use qtl2feather,
+  particularly in grabbing dimnames (with the above functions), but
+  also to avoid `seq(along=genoprobs)` and instead use
+  `seq_len(length(genoprobs))`.
+
+
 ## qtl2scan 0.5-6 (2017-03-17)
 
 ### New features
