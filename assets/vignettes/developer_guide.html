@@ -50,7 +50,6 @@
 <p>A key design decision concerns whether to split out the genotype data and marker maps by chromosome, or to keep them as a simpler table. I’m choosing to have these data split out by chromosome, as much of the analysis tends to proceed by chromosome, and it tends to be easier to combine then to split.</p>
 <p><strong>Note: I am fully open to modifying this design. I would be glad for suggestions.</strong></p>
 <p>The data remains a list, now of class <code>&quot;cross2&quot;</code>. It has many components (some of them optional) in unspecified order; the names of the components are what matter.</p>
-<p>For some cross types (e.g., recombinant inbred lines), we will separate “lines” from “individuals.” Genotype data will be on the lines, while phenotype data will be on the individuals. In this case we will need a mapping from individuals to lines, <code>&quot;linemap&quot;</code> (more below). (For a cross type for which the genotyped individuals are also the phenotyped ones (e.g., the Diversity Outcross), think “individual” wherever we write “line.”)</p>
 <div id="cross-type-crosstype" class="section level3">
 <h3>Cross type (<code>&quot;crosstype&quot;</code>)</h3>
 <p>Previously, the cross type (e.g., <code>&quot;bc&quot;</code> for backcross and <code>&quot;f2&quot;</code> for intercross) was part of the <code>&quot;class&quot;</code>. This was a bad idea.</p>
@@ -74,7 +73,7 @@
 </div>
 <div id="genotype-data-geno" class="section level3">
 <h3>Genotype data (<code>&quot;geno&quot;</code>)</h3>
-<p>The previous data structure had deep nesting of information; we’re going to split that out and make things more flat. The genotype data will now be a list of matrices of integers. Each component of the list is a chromosome; the names are the chromosome names. Each chromosome has a matrix of <code>n_lines</code> x <code>n_markers</code>.</p>
+<p>The previous data structure had deep nesting of information; we’re going to split that out and make things more flat. The genotype data will now be a list of matrices of integers. Each component of the list is a chromosome; the names are the chromosome names. Each chromosome has a matrix of <code>n_ind</code> x <code>n_markers</code>.</p>
 <p>The column names are the marker names, and the row names are the line identifiers (hereafter “IDs”).</p>
 <p>The genotypes are observed marker genotypes, represented as integers. Missing values are coded as 0 (not <code>NA</code>, as in R/qtl). For simple crosses, the autosomal genotypes are coded as before.</p>
 <ul>
@@ -84,7 +83,7 @@
 </ul>
 <p>However, we’re <strong>changing the encoding of X chromosome genotypes</strong> to have males coded as if they were homozygous. In an intercross, the X chromosome encodings are <code>1</code>/<code>2</code>/<code>3</code> for females (<code>1</code>/<code>2</code> for the forward direction and <code>2</code>/<code>3</code> for the reverse), and <code>1</code>/<code>3</code> for males. In a backcross, the females are <code>1</code>/<code>2</code> and the males are <code>1</code>/<code>3</code>.</p>
 <p>For crosses with &gt; 2 founders, I’m expecting SNPs, and intending, initially, to assume that the markers are diallelic, encoded <code>1</code>/<code>2</code>/<code>3</code> (with <code>2</code> being the heterozygote).</p>
-<p>All of the above is under the assumption that we’re using <em>genotypes calls</em> as the basic marker genotype information. Of course, we will also want to handle genotype-by-sequencing (GBS) data (which might be represented as a pair of allele counts), or array intensity information (which would be represented as a pair of allele intensities). It seems best to have separate data structures for these cases, perhaps named <code>geno_gbs</code> and <code>geno_int</code> (<code>int</code> for “intensity”). These could be three-dimensional arrays (<code>n_lines</code> × <code>n_markers</code> × <code>2</code>), with the third dimension corresponding to the two alleles.</p>
+<p>All of the above is under the assumption that we’re using <em>genotypes calls</em> as the basic marker genotype information. Of course, we will also want to handle genotype-by-sequencing (GBS) data (which might be represented as a pair of allele counts), or array intensity information (which would be represented as a pair of allele intensities). It seems best to have separate data structures for these cases, perhaps named <code>geno_gbs</code> and <code>geno_int</code> (<code>int</code> for “intensity”). These could be three-dimensional arrays (<code>n_ind</code> × <code>n_markers</code> × <code>2</code>), with the third dimension corresponding to the two alleles.</p>
 </div>
 <div id="founder-genotype-data-founder_geno" class="section level3">
 <h3>Founder genotype data (<code>&quot;founder_geno&quot;</code>)</h3>
@@ -96,12 +95,12 @@
 </div>
 <div id="sex-is_female" class="section level3">
 <h3>Sex (<code>&quot;is_female&quot;</code>)</h3>
-<p>For the treatment of the X chromosome, we need access to sex of the lines. (That sounds a bit strange; sex is really a feature of individuals and won’t actually be considered for cross types where we separate <em>individuals</em> from <em>lines</em>.) We’ll have a logical vector (<code>&quot;is_female&quot;</code>) indicating which individuals are female. I prefer the logical vector as it’s less susceptible to confusion. (Is 0 female and 1 male, or the other way around?) This will have length <code>n_lines</code>, with the name attribute being the individual IDs.</p>
+<p>For the treatment of the X chromosome, we need access to sex of the individuals. We’ll have a logical vector (<code>&quot;is_female&quot;</code>) indicating which individuals are female. I prefer the logical vector as it’s less susceptible to confusion. (Is 0 female and 1 male, or the other way around?) This will have length <code>n_ind</code>, with the name attribute being the individual IDs.</p>
 </div>
 <div id="cross-information-cross_info" class="section level3">
 <h3>Cross information (<code>&quot;cross_info&quot;</code>)</h3>
-<p>For many cross types, and particularly for the treatment of the X chromosome, we need line-level information about the nature of the cross. For an intercross, this is like <code>pgm</code> (for paternal grandmother) in <a href="http://rqtl.org">R/qtl</a>. For the Collaborative Cross, we need the order of the founders in the set of crosses that led to each line. For the AIL and the Diversity Outcross, we need to know the number of generations of outbreeding.</p>
-<p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with <code>n_lines</code> rows, and with the number of columns depending on the cross type.</p>
+<p>For many cross types, and particularly for the treatment of the X chromosome, we need individual-level information about the nature of the cross. For an intercross, this is like <code>pgm</code> (for paternal grandmother) in <a href="http://rqtl.org">R/qtl</a>. For the Collaborative Cross, we need the order of the founders in the set of crosses that led to each line. For the AIL and the Diversity Outcross, we need to know the number of generations of outbreeding.</p>
+<p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with <code>n_ind</code> rows, and with the number of columns depending on the cross type.</p>
 <p>This information is highly cross-type-specific. We’ll leave the details to the discussion of the format of input files.</p>
 </div>
 <div id="genetic-map-gmap" class="section level3">
@@ -128,18 +127,13 @@
 <p>For example, in the case of a phenotype measured over time, one column in the phenotype covariate data frame could be the time of measurement.</p>
 <p>For gene expression data, we would have columns representing chromosome and physical position of genes, as well as gene IDs. In the case of gene expression on multiple tissues, there could be a column representing the tissue. Or we might have both gene expression and proteomic measurements, and so a column indicating expression vs protein.</p>
 </div>
-<div id="individual-to-line-mapping-linemap" class="section level3">
-<h3>Individual to line mapping (<code>&quot;linemap&quot;</code>)</h3>
-<p>For recombinant inbred lines (including the Collaborative Cross and MAGIC lines), we will want the genotypes at the line level and the phenotypes at the individual level. In this case we need a mapping between them. This will be a vector of character strings containing the line IDs, with length <code>n_individual</code> and the names attribute being the individual IDs. We might make this a two-column matrix, but it’s more convenient as a vector with a names attribute, which acts like an <a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a> (also known as a dictionary, map, hash, or symbol table).</p>
-<p>(We might consider having a separate object type containing just the <code>pheno</code>, <code>phenocovar</code>, and <code>linemap</code> objects. This may simplify the use of multiple sets of phenotype data.)</p>
-</div>
 <div id="alleles-alleles" class="section level3">
 <h3>Alleles (<code>&quot;alleles&quot;</code>)</h3>
 <p>The last bit is a vector of single-character strings, with allele codes for the founders, to be used in various summaries and data visualizations.</p>
 </div>
 <div id="genotype-probabilities-genoprob" class="section level3">
 <h3>Genotype probabilities (<code>&quot;genoprob&quot;</code>)</h3>
-<p>A critical piece of <em>derived data</em> is the conditional QTL genotype probabilities, given the observed marker data. This will be a list of three-dimensional arrays; each array corresponds to a chromosome and is of dimension <code>n_lines</code> × <code>n_positions</code> × <code>n_genotypes</code>.</p>
+<p>A critical piece of <em>derived data</em> is the conditional QTL genotype probabilities, given the observed marker data. This will be a list of three-dimensional arrays; each array corresponds to a chromosome and is of dimension <code>n_ind</code> × <code>n_positions</code> × <code>n_genotypes</code>.</p>
 <p>An important consideration is the encoding of the genotypes. For crosses with two founder lines, this is straightforward except perhaps for the X chromosome.</p>
 <p>For the X chromosome, I’m using phase-known genotypes for the females and separating the male hemizygous genotypes. For example, for a backcross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code> for AA/AB/AY/BY. For an intercross, the genotype codes are <code>1</code>/<code>2</code>/<code>3</code>/<code>4</code>/<code>5</code>/<code>6</code> for AA/AB/BA/BB/AY/BY.</p>
 <p>For crosses with &gt; 2 founders and heterozygous offspring (such as the Diversity Outcross), genotypes will be encoded as integers in the following way, for the phase-unknown case:</p>
@@ -216,12 +210,12 @@ na.strings:
 <div id="all-the-other-files" class="section level3">
 <h3>All the other files</h3>
 <p>Again, I don’t want to get into too much detail here. All of the other files are in a simple CSV format. Each is a simple matrix with row names in the first column and column names in the first row.</p>
-<p>Genotypes are as lines × markers, with the first column being line IDs and the first row being marker names. The founder genotypes are similar, but with founder lines as the rows.</p>
+<p>Genotypes are as individuals × markers, with the first column being individual IDs and the first row being marker names. The founder genotypes are similar, but with founder lines as the rows.</p>
 <p>The phenotype and covariate data are as individuals × variables. The phenotype file must be <em>strictly numeric</em>, while the covariate file can be a mixture of types. The first column in each must be the individual IDs.</p>
 <p>The phenotype covariate information is a matrix of phenotypes × phenotype covariates. The first column contains the phenotype names and the first row contains the names of the phenotype covariates.</p>
 <p>The genetic and physical maps are in separate files with three columns: marker names, chromosome IDs, and positions.</p>
 <p>The individual-to-line mapping (<code>&quot;linemap&quot;</code>) would most likely be a column in the covariate data and would be represented in the YAML file much as <code>sex</code> is above.</p>
-<p>The last piece is <code>&quot;cross_info&quot;</code>. For an intercross, this can just be a column in the covariate data (as it is for the example above). For more complex crosses, it will be a matrix with the rows being lines, and with the first column being line IDs.</p>
+<p>The last piece is <code>&quot;cross_info&quot;</code>. For an intercross, this can just be a column in the covariate data (as it is for the example above). For more complex crosses, it will be a matrix with the rows being individuals, and with the first column being individual IDs.</p>
 <p>For more detail, see <a href="http://kbroman.org/qtl2/assets/vignettes/input_files.html">the input file format vignette</a>.</p>
 </div>
 </div>
