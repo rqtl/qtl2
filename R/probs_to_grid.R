@@ -42,15 +42,17 @@ probs_to_grid <-
     names(result) <- chrID
 
     for(i in seq(along=chrID)) {
+        probs_i <- probs[[i]]
+
         # grab grid vector
         if(is.null(grid[[i]]) || all(grid[[i]]))
-            result[[i]] <- probs[[i]]
+            result[[i]] <- probs_i
 
         # subset probs
-        if(length(grid[[i]]) != dim(probs[[i]])[3])
-            stop("length(grid) [", length(grid[[i]]), "] != ncol(probs) [",
-                 ncol(probs[[i]]), "] for chr ", chrID[i])
-        result[[i]] <- probs[[i]][,,grid[[i]],drop=FALSE]
+        if(length(grid[[i]]) != dim(probs_i)[3])
+            stop("length(grid) [", length(grid[[i]]), "] != dim(probs)[3] [",
+                 dim(probs)[3], "] for chr ", chrID[i])
+        result[[i]] <- probs_i[,,grid[[i]],drop=FALSE]
     }
 
     # Set up attributes. The result object is of class calc_genoprob.
