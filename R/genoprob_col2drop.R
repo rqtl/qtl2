@@ -7,7 +7,7 @@ genoprobs_col2drop <-
     if(is.list(probs)) { # proper calc_genoprob object, hopefully
         is_x_chr <- attr(probs, "is_x_chr")
         if(Xonly) {
-            result <- lapply(seq(along=probs), function(a) numeric(0))
+            result <- lapply(seq_len(length(probs)), function(a) numeric(0))
             names(result) <- names(probs)
 
             if(is.null(is_x_chr) || !any(is_x_chr)) return(result) # no X chr
