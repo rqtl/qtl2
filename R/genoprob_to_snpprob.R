@@ -110,7 +110,7 @@ genoprob_to_snpprob <-
         ### loop over chromosomes, using recursion
         results <- vector("list", length(uchr))
         names(results) <- uchr
-        for(i in seq(along=uchr))
+        for(i in seq_along(uchr))
             results[[i]] <- genoprob_to_snpprob(genoprobs, snpinfo_spl[[i]])[[1]]
 
         ### add attributes

@@ -54,7 +54,7 @@ pick_marker_subset <-
                any(vapply(weights, length, 1) != vapply(map, length, 1)))
                 stop("map and weights are different shapes")
         }
-        for(i in seq(along=map)) {
+        for(i in seq_along(map)) {
             if(is.null(weights)) wts <- rep(1, length(map[[i]]))
             else wts <- weights[[i]]
 

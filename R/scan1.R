@@ -190,8 +190,8 @@ scan1 <-
     }
 
     # batches for analysis, to allow parallel analysis
-    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)),
-                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)))
+    run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)),
+                              phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)))
     run_indexes <- 1:(length(genoprobs)*length(phe_batches))
 
     # the function that does the work
@@ -239,9 +239,9 @@ scan1 <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
+    pos_index <- split(1:totpos, rep(seq_len(length(genoprobs)), npos_by_chr))
 
     # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
@@ -284,7 +284,7 @@ scan1 <-
         }
     }
 
-    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    pos_names <- unlist(dimnames(genoprobs)[[3]])
     names(pos_names) <- NULL # this is just annoying
     dimnames(result) <- list(pos_names, colnames(pheno))
 

@@ -5,20 +5,27 @@ genoprobs_col2drop <-
     function(probs, Xonly=TRUE, tol=1e-8)
 {
     if(is.list(probs)) { # proper calc_genoprob object, hopefully
+        is_x_chr <- attr(probs, "is_x_chr")
         if(Xonly) {
-            result <- lapply(seq(along=probs), function(a) numeric(0))
+            result <- lapply(seq_len(length(probs)), function(a) numeric(0))
             names(result) <- names(probs)
 
-            is_x_chr <- attr(probs, "is_x_chr")
             if(is.null(is_x_chr) || !any(is_x_chr)) return(result) # no X chr
 
             w <- which(is_x_chr)
             for(i in w)
                 result[[i]] <- genoprobs_col2drop(probs[[i]])
+
             return(result)
         }
         else {
-            return(lapply(probs, genoprobs_col2drop))
+            result <- lapply(seq_len(length(probs)), function(a) numeric(0))
+            names(result) <- names(probs)
+
+            for(i in seq_len(length(probs)))
+              result[[i]] <- genoprobs_col2drop(probs[[i]])
+
+            return(result)
         }
     }
 

@@ -74,10 +74,10 @@ scan1_pg <-
     }
 
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
-    pos_names <- unlist(lapply(genoprobs, function(a) dimnames(a)[[3]]))
+    pos_index <- split(1:totpos, rep(seq_len(length(genoprobs)), npos_by_chr))
+    pos_names <- unlist(dimnames(genoprobs)[[3]])
     names(pos_names) <- NULL # this is just annoying
 
     # to contain the results
@@ -94,7 +94,7 @@ scan1_pg <-
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
     # loop over batches of phenotypes with the same pattern of NAs
-    for(batch in seq(along=phe_batches)) {
+    for(batch in seq_along(phe_batches)) {
 
         # info about batch
         omit <- phe_batches[[batch]]$omit # ind to omit
@@ -175,7 +175,7 @@ calc_hsq_clean <-
         }
 
     # now do the work
-    result <- cluster_lapply(cores, seq(along=Ke), by_chr_func)
+    result <- cluster_lapply(cores, seq_along(Ke), by_chr_func)
 
     # check for problems (if clusters run out of memory, they'll return NULL)
     result_is_null <- vapply(result, is.null, TRUE)
@@ -207,7 +207,7 @@ scan1_pg_clean <-
         else no_x <- FALSE
     } else loco <- TRUE
 
-    batches <- list(chr=rep(seq(along=genoprobs), ncol(pheno)),
+    batches <- list(chr=rep(seq_len(length(genoprobs)), ncol(pheno)),
                     phecol=rep(1:ncol(pheno), each=length(genoprobs)))
 
     # function that does the work
@@ -267,20 +267,20 @@ scan1_pg_clean <-
         }
 
     # now do the work
-    lod_list <- cluster_lapply(cores, seq(along=batches$chr), by_batch_func)
+    lod_list <- cluster_lapply(cores, seq_along(batches$chr), by_batch_func)
 
     # check for problems (if clusters run out of memory, they'll return NULL)
     result_is_null <- vapply(lod_list, is.null, TRUE)
     if(any(result_is_null))
         stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
-    npos_by_chr <- vapply(genoprobs, function(a) dim(a)[3], 1)
+    npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq(along=genoprobs), npos_by_chr))
+    pos_index <- split(1:totpos, rep(seq_len(length(genoprobs)), npos_by_chr))
 
     # to contain the results
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
-    for(batch in seq(along=batches$chr)) {
+    for(batch in seq_along(batches$chr)) {
         chr <- batches$chr[batch]
         phecol <- batches$phecol[batch]
         result[pos_index[[chr]], phecol] <- lod_list[[batch]]

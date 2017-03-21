@@ -280,8 +280,8 @@ scan1perm_nocovar <-
     }
 
     # batches for analysis, to allow parallel analysis
-    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)),
-                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)))
+    run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)),
+                              phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)))
 
     run_indexes <- 1:(length(genoprobs)*length(phe_batches))
 
@@ -338,7 +338,7 @@ scan1perm_nocovar <-
         phebatch <- phe_batches[[run_batches$phe_batch[i]]]
         permbatch <- perm_batches[[run_batches$phe_batch[i]]]
 
-        for(j in seq(along=phebatch))
+        for(j in seq_along(phebatch))
             result[chr,permbatch[j], phebatch[j]] <- list_result[[i]][j]
 
     }
@@ -385,8 +385,8 @@ scan1perm_covar <-
     }
 
     # batches for analysis, to allow parallel analysis
-    run_batches <- data.frame(chr=rep(seq(along=genoprobs), length(phe_batches)*n_perm),
-                              phe_batch=rep(seq(along=phe_batches), each=length(genoprobs)*n_perm),
+    run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)*n_perm),
+                              phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)*n_perm),
                               perm_batch=rep(rep(1:n_perm, each=length(genoprobs), length(phe_batches))))
 
     run_indexes <- 1:(length(genoprobs)*length(phe_batches)*n_perm)
@@ -489,11 +489,11 @@ gen_strat_perm <-
             strat_numeric <- match(perm_strata, u)-1
 
             return(permute_nvector_stratified(n_perm,
-                                              seq(along=ind2keep),
+                                              seq_along(ind2keep),
                                               strat_numeric,
                                               length(u)))
         }
     }
 
-    permute_nvector(n_perm, seq(along=ind2keep))
+    permute_nvector(n_perm, seq_along(ind2keep))
 }

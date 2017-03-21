@@ -90,7 +90,7 @@ index_snps <-
         snpinfo_spl <- split(snpinfo, chr)
 
         ### loop over chromosomes, using recursion
-        for(i in seq(along=uchr))
+        for(i in seq_along(uchr))
             snpinfo_spl[[i]] <- index_snps(map, snpinfo_spl[[i]])
 
         # combine the results

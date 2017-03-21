@@ -106,7 +106,7 @@ summary_scan1perm <-
 
         result <- list(A=apply(object$A, 2, quantile, 1-alphaA, na.rm=TRUE),
                        X=apply(object$X, 2, quantile, 1-alphaX, na.rm=TRUE))
-        for(i in seq(along=result)) {
+        for(i in seq_along(result)) {
             if(!is.matrix(result[[i]])) {
                 result[[i]] <- matrix(result[[i]], nrow=1)
                 colnames(result[[i]]) <- colnames(object[[i]])

@@ -181,7 +181,7 @@ scan1blup <-
         if(se) SE <- t(result$SE)
         else SE <- NULL
     } else {
-        result <- cluster_lapply(cores, seq(along=batches), by_group_func)
+        result <- cluster_lapply(cores, seq_along(batches), by_group_func)
 
         # check for problems (if clusters run out of memory, they'll return NULL)
         result_is_null <- vapply(result, is.null, TRUE)
@@ -189,7 +189,7 @@ scan1blup <-
             stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
         SE <- coef <- matrix(nrow=n_pos,ncol=nrow(result[[1]]$coef))
-        for(i in seq(along=result)) {
+        for(i in seq_along(result)) {
             coef[batches[[i]],] <- t(result[[i]]$coef)
             if(se) SE[batches[[i]],] <- t(result[[i]]$SE)
             else SE <- NULL

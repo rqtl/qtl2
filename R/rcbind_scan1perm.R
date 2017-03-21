@@ -67,7 +67,7 @@ rbind.scan1perm <-
         n_col <- vapply(dots, ncol, 1)
         if(length(unique(n_col)) != 1)
             stop("Inputs must all have the same number of columns.")
-        for(i in seq(along=dots)[-1]) {
+        for(i in seq_along(dots)[-1]) {
             if(!all(colnames(dots[[1]]) == colnames(dots[[i]])))
                 warning("Inputs have different column names; using those from the first input.")
         }
@@ -89,7 +89,7 @@ rbind.scan1perm <-
         n_colX <- vapply(dots, function(a) ncol(a$X), 1)
         if(length(unique(c(n_colA, n_colX))) != 1)
             stop("Inputs must all have the same number of columns.")
-        for(i in seq(along=dots)[-1]) {
+        for(i in seq_along(dots)[-1]) {
             if(!all(colnames(dots[[1]]$A) == colnames(dots[[i]]$A)) ||
                !all(colnames(dots[[1]]$X) == colnames(dots[[i]]$X)))
                 warning("Inputs have different column names; using those from the first input.")
@@ -112,7 +112,7 @@ rbind.scan1perm <-
             if(any(vapply(is_x_chr, length, 1) != 2) ||
                any(vapply(is_x_chr, function(a) any(sort(names(a)) != c("A", "X")), TRUE)))
                 stop('is_x_chr attributes should be length 2 vectors with names "A" and "X"')
-            for(i in seq(along=is_x_chr)[-1]) {
+            for(i in seq_along(is_x_chr)[-1]) {
                 if(is_x_chr[[1]]["A"] != is_x_chr[[i]]["A"] ||
                    is_x_chr[[1]]["X"] != is_x_chr[[i]]["X"])
                     stop("is_x_chr attributes differ")
@@ -241,7 +241,7 @@ cbind.scan1perm <-
             if(any(vapply(is_x_chr, length, 1) != 2) ||
                any(vapply(is_x_chr, function(a) any(sort(names(a)) != c("A", "X")), TRUE)))
                 stop('is_x_chr attributes should be length 2 vectors with names "A" and "X"')
-            for(i in seq(along=is_x_chr)[-1]) {
+            for(i in seq_along(is_x_chr)[-1]) {
                 if(is_x_chr[[1]]["A"] != is_x_chr[[i]]["A"] ||
                    is_x_chr[[1]]["X"] != is_x_chr[[i]]["X"])
                     stop("is_x_chr attributes differ")
