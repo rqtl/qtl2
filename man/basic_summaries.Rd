@@ -3,9 +3,13 @@
 \name{basic_summaries}
 \alias{basic_summaries}
 \alias{n_ind}
+\alias{n_ind_geno}
+\alias{n_ind_pheno}
+\alias{n_ind_gnp}
 \alias{ind_ids}
-\alias{n_lines}
-\alias{line_ids}
+\alias{ind_ids_geno}
+\alias{ind_ids_pheno}
+\alias{ind_ids_gnp}
 \alias{n_chr}
 \alias{chr_names}
 \alias{tot_mar}
@@ -21,11 +25,19 @@
 \usage{
 n_ind(cross2)
 
+n_ind_geno(cross2)
+
+n_ind_pheno(cross2)
+
+n_ind_gnp(cross2)
+
 ind_ids(cross2)
 
-n_lines(cross2)
+ind_ids_geno(cross2)
 
-line_ids(cross2)
+ind_ids_pheno(cross2)
+
+ind_ids_gnp(cross2)
 
 n_chr(cross2)
 
@@ -58,13 +70,21 @@ Basic summaries of a cross2 object.
 }
 \section{Functions}{
 \itemize{
-\item \code{n_ind}: Number of phenotyped individuals
+\item \code{n_ind}: Number of individuals (either genotyped or phenotyped)
 
-\item \code{ind_ids}: IDs of phenotyped individuals
+\item \code{n_ind_geno}: Number of genotyped individuals
 
-\item \code{n_lines}: Number of genotyped lines
+\item \code{n_ind_pheno}: Number of phenotyped individuals
 
-\item \code{line_ids}: IDs of genotyped lines
+\item \code{n_ind_gnp}: Number of individuals with both genotype and phenotype data
+
+\item \code{ind_ids}: IDs of individuals (either genotyped or phenotyped)
+
+\item \code{ind_ids_geno}: IDs of genotyped individuals
+
+\item \code{ind_ids_pheno}: IDs of phenotyped individuals
+
+\item \code{ind_ids_gnp}: IDs of individuals with both genotype and phenotype data
 
 \item \code{n_chr}: Number of chromosomes
 

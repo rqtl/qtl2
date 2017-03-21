@@ -5,7 +5,9 @@ test_that("basic summaries give correct numbers for iron data", {
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 
     expect_equal(n_ind(iron), 284)
-    expect_equal(n_lines(iron), 284)
+    expect_equal(n_ind_geno(iron), 284)
+    expect_equal(n_ind_pheno(iron), 284)
+    expect_equal(n_ind_gnp(iron), 284)
     expect_equal(n_chr(iron), 20)
     expect_equal(chr_names(iron), paste0(c(1:19, "X")))
     expect_equal(tot_mar(iron), 66)
@@ -31,7 +33,9 @@ test_that("basic summaries give correct numbers for iron data", {
     expect_equal(n_phenocovar(iron), 1)
     expect_equal(phenocovar_names(iron), "tissue")
     expect_equal(ind_ids(iron), paste(1:284))
-    expect_equal(line_ids(iron), paste(1:284))
+    expect_equal(ind_ids_geno(iron), paste(1:284))
+    expect_equal(ind_ids_pheno(iron), paste(1:284))
+    expect_equal(ind_ids_gnp(iron), paste(1:284))
 
     # run summary
     z <- summary(iron)
@@ -43,7 +47,9 @@ test_that("basic summaries give correct numbers for grav2 data", {
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
 
     expect_equal(n_ind(grav2), 162)
-    expect_equal(n_lines(grav2), 162)
+    expect_equal(n_ind_geno(grav2), 162)
+    expect_equal(n_ind_pheno(grav2), 162)
+    expect_equal(n_ind_gnp(grav2), 162)
     expect_equal(n_chr(grav2), 5)
     expect_equal(chr_names(grav2), paste(1:5))
     expect_equal(tot_mar(grav2), 234)
@@ -55,7 +61,9 @@ test_that("basic summaries give correct numbers for grav2 data", {
     expect_equal(n_phenocovar(grav2), 1)
     expect_equal(phenocovar_names(grav2), "time (hrs)")
     expect_equal(ind_ids(grav2), paste(1:162))
-    expect_equal(line_ids(grav2), paste(1:162))
+    expect_equal(ind_ids_geno(grav2), paste(1:162))
+    expect_equal(ind_ids_pheno(grav2), paste(1:162))
+    expect_equal(ind_ids_gnp(grav2), paste(1:162))
 
     expect_equal(marker_names(grav2), c("PVV4", "AXR-1", "HH.335C-Col/PhyA", "EC.480C", "EC.66C", "GD.86L",
                                         "CH.160L-Col", "CC.98L-Col/101C", "AD.121C", "AD.106L-Col", "GB.112L",

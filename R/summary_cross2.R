@@ -12,66 +12,89 @@
 #' @seealso \code{\link{summary.cross2}}
 NULL
 
-#' @describeIn basic_summaries Number of phenotyped individuals
+#' @describeIn basic_summaries Number of individuals (either genotyped or phenotyped)
 #' @export
 n_ind <-
 function(cross2)
 {
-    if(!is.cross2(cross2))
-        stop('Input must have class "cross2"')
-
-    if(is.null(cross2$pheno)) {
-        return(0)
-    }
-
-    nrow(cross2$pheno)
+    length( ind_ids(cross2) )
 }
 
-#' @describeIn basic_summaries IDs of phenotyped individuals
+#' @describeIn basic_summaries Number of genotyped individuals
+#' @export
+n_ind_geno <-
+function(cross2)
+{
+    length( ind_ids_geno(cross2) )
+}
+
+#' @describeIn basic_summaries Number of phenotyped individuals
+#' @export
+n_ind_pheno <-
+function(cross2)
+{
+    length( ind_ids_pheno(cross2) )
+}
+
+#' @describeIn basic_summaries Number of individuals with both genotype and phenotype data
+#' @export
+n_ind_gnp <-
+function(cross2)
+{
+    length( ind_ids_gnp(cross2) )
+}
+
+#' @describeIn basic_summaries IDs of individuals (either genotyped or phenotyped)
 #' @export
 ind_ids <-
 function(cross2)
 {
+    unique( c(ind_ids_geno(cross2), ind_ids_pheno(cross2)) )
+}
+
+#' @describeIn basic_summaries IDs of genotyped individuals
+#' @export
+ind_ids_geno <-
+function(cross2)
+{
     if(!is.cross2(cross2))
         stop('Input must have class "cross2"')
 
-    if(is.null(cross2$pheno)) {
-        return(NULL)
-    }
+    if(is.null(cross2$geno)) return(NULL)
+
+    rownames(cross2$geno[[1]])
+}
+
+#' @describeIn basic_summaries IDs of phenotyped individuals
+#' @export
+ind_ids_pheno <-
+function(cross2)
+{
+    if(!is.cross2(cross2))
+        stop('Input must have class "cross2"')
+
+    if(is.null(cross2$pheno)) return(NULL)
 
     rownames(cross2$pheno)
 }
 
+#' @describeIn basic_summaries IDs of individuals with both genotype and phenotype data
 #' @export
-#' @describeIn basic_summaries Number of genotyped lines
-n_lines <-
+ind_ids_gnp <-
 function(cross2)
 {
-    if(!is.cross2(cross2))
-        stop('Input must have class "cross2"')
+    pheID <- ind_ids_pheno(cross2)
+    genID <- ind_ids_geno(cross2)
 
-    if(is.null(cross2$geno)) {
-        warning("No genotypes present")
-        return(0)
-    }
+    # if either is empty, return NULL
+    if(is.null(pheID) || is.null(genID)) return(NULL)
 
-    nrow(cross2$geno[[1]])
-}
+    id <- find_common_ids(genID, pheID)
 
-#' @describeIn basic_summaries IDs of genotyped lines
-#' @export
-line_ids <-
-function(cross2)
-{
-    if(!is.cross2(cross2))
-        stop('Input must have class "cross2"')
+    # if no individuals in common, return NULL
+    if(length(id) == 0) return(NULL)
 
-    if(is.null(cross2$geno)) {
-        warning("No genotypes present")
-        return(NULL)
-    }
-
-    rownames(cross2$geno[[1]])
+    id
 }
 
 #' @describeIn basic_summaries Number of chromosomes
@@ -281,8 +304,10 @@ function(object, ...)
     check <- check_cross2(object)
 
     result <- list(crosstype=object$crosstype,
-                   nlines=n_lines(object),
                    nind=n_ind(object),
+                   nind_geno=n_ind_geno(object),
+                   nind_pheno=n_ind_pheno(object),
+                   nind_gnp=n_ind_gnp(object),
                    nchr=n_chr(object),
                    nmar=n_mar(object),
                    npheno=n_pheno(object),
@@ -300,13 +325,15 @@ function(x, ...)
 {
     cat('Object of class cross2 (crosstype "', x$crosstype, '")\n\n', sep='')
 
-    toprint <- c("\bNo. genotyped lines"=        x$nlines,
-                 "\bNo. phenotyped individuals"= x$nind,
-                 "\nNo. phenotypes"=             x$npheno,
-                 "\bNo. covariates"=             x$ncovar,
-                 "\bNo. phenotype covariates"=   x$nphenocovar,
-                 "\nNo. chromosomes"=            x$nchr,
-                 "\bTotal markers"=              x$totmar)
+    toprint <- c("\bTotal individuals"=           x$nind,
+                 "\bNo. genotyped individuals"=   x$nind_geno,
+                 "\bNo. phenotyped individuals"=  x$nind_pheno,
+                 "\bNo. with both geno & pheno"=  x$nind_gnp,
+                 "\nNo. phenotypes"=              x$npheno,
+                 "\bNo. covariates"=              x$ncovar,
+                 "\bNo. phenotype covariates"=    x$nphenocovar,
+                 "\nNo. chromosomes"=             x$nchr,
+                 "\bTotal markers"=               x$totmar)
 
     print_aligned(toprint)
     cat("No. markers by chr:\n")
