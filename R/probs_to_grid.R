@@ -39,10 +39,12 @@ probs_to_grid <-
     attrs <- attributes(probs)
     chrID <- names(probs)
     result <- vector("list", length(chrID))
+    names(result) <- chrID
 
     for(i in seq(along=chrID)) {
         # grab grid vector
-        if(is.null(grid[[i]]) || all(grid[[i]])) next
+        if(is.null(grid[[i]]) || all(grid[[i]]))
+            result[[i]] <- probs[[i]]
 
         # subset probs
         if(length(grid[[i]]) != dim(probs[[i]])[3])

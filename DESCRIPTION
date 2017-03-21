@@ -1,5 +1,5 @@
 Package: qtl2geno
-Version: 0.5-7
+Version: 0.5-8
 Date: 2017-03-21
 Title: Treatment of Marker Genotypes for QTL Experiments
 Description: Functions to calculate QTL genotype probabilities, impute
