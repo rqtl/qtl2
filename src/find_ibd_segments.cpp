@@ -31,7 +31,7 @@ NumericMatrix find_ibd_segments(const IntegerVector& g1,
                                 const NumericVector& p,
                                 const double error_prob)
 {
-    const unsigned int n = g1.size();
+    const int n = g1.size();
     if(g2.size() != n)
         throw std::invalid_argument("length(g1) != length(g2)");
     if(p.size() != n)
@@ -44,7 +44,7 @@ NumericMatrix find_ibd_segments(const IntegerVector& g1,
     // LOD scores at each marker for all pairs of strains
     NumericVector marker_lod(n);
     IntegerVector mismatch(n);
-    for(unsigned int i=0; i<n; i++) {
+    for(int i=0; i<n; i++) {
         if(g1[i] == g2[i]) {
             mismatch[i] = 0;
             if(g1[i] == 1) {
@@ -59,14 +59,14 @@ NumericMatrix find_ibd_segments(const IntegerVector& g1,
     }
 
     // for each marker and each strain pair, find interval with that marker as left endpoint that has maximum LOD score
-    for(unsigned int i=0; i<n; i++) {
+    for(int i=0; i<n; i++) {
         double max_lod = marker_lod[i];
         int max_right = i;
         int max_mismatches = mismatch[i];
         double last_lod = marker_lod[i];
         int last_mismatches = mismatch[i];
 
-        for(unsigned int j=i+1; j<n; j++) {
+        for(int j=i+1; j<n; j++) {
             double this_lod = last_lod + marker_lod[j];
             int this_mismatches = last_mismatches + mismatch[j];
             if(this_lod > max_lod) {
@@ -88,9 +88,9 @@ NumericMatrix find_ibd_segments(const IntegerVector& g1,
 
 
     // reduce to non-overlapping intervals
-    for(unsigned int i=0; i<n; i++) {
+    for(int i=0; i<n; i++) {
         if(result(i,5) < 0.5) continue; // skip to next
-        for(unsigned int j=i+1; j < result(i,1); j++) {
+        for(int j=i+1; j < result(i,1); j++) {
             if(result(j,2) > result(i,2)) {
                 result(i,5) = 0.0;
                 break;

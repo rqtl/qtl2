@@ -18,7 +18,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
                              const NumericVector& weights,
                              const double min_dist)
 {
-    const unsigned int n = pos.size();
+    const int n = pos.size();
 
     if(weights.size() != n)
         throw std::range_error("length(pos) != length(weights)");
@@ -33,7 +33,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
     prev_marker[0] = -1;
     total_weights[0] = weights[0];
 
-    for(unsigned int i=1; i<n; i++) {
+    for(int i=1; i<n; i++) {
         if(pos[i] < pos[0] + min_dist) {
             // no markers to left of i that are > min_dist away
             total_weights[i] = weights[i];
@@ -45,7 +45,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
             n_max_to_choose = 1;
             max_to_choose[0] = 0;
             themax = total_weights[0];
-            for(unsigned int j=1; j<i; j++) {
+            for(int j=1; j<i; j++) {
 
                 if(pos[i] < pos[j] + min_dist) break;
 
@@ -73,7 +73,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
     n_max_to_choose = 1;
     max_to_choose[0] = 0;
 
-    for(unsigned int i=1; i<n; i++) {
+    for(int i=1; i<n; i++) {
         if(total_weights[i] > themax) {
             themax = total_weights[i];
             n_max_to_choose = 1;
