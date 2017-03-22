@@ -10,10 +10,20 @@ scan1perm_pg <-
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
-    max_batch <- grab_dots(dotargs, "max_batch", 1000)
     check_boundary <- grab_dots(dotargs, "check_boundary", TRUE)
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch",
                                 "check_boundary"))
+
+    # set up parallel analysis
+    cores <- setup_cluster(cores)
+    if(!quiet && n_cores(cores)>1) {
+        message(" - Using ", n_cores(cores), " cores")
+        quiet <- TRUE # make the rest quiet
+    }
+
+    # max batch size
+    max_batch <- grab_dots(dotargs, "max_batch",
+                           min(1000, ceiling(n_perm*length(genoprobs)*ncol(pheno)/n_cores(cores))))
 
     # generate permutations
     perms <- gen_strat_perm(n_perm, ind2keep, perm_strata)
@@ -25,13 +35,6 @@ scan1perm_pg <-
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
     is_x_chr <- attr(genoprobs, "is_x_chr")
     if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
-
-    # set up parallel analysis
-    cores <- setup_cluster(cores)
-    if(!quiet && n_cores(cores)>1) {
-        message(" - Using ", n_cores(cores), " cores")
-        quiet <- TRUE # make the rest quiet
-    }
 
     ## decompose kinship matrices
     # look for the unique groups of individuals omitted
