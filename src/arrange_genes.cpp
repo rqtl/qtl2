@@ -11,7 +11,7 @@ using namespace Rcpp;
 IntegerVector arrange_genes(const NumericVector& start,
                             const NumericVector& end)
 {
-    const unsigned int n = start.size();
+    const int n = start.size();
     IntegerVector result(n);
 
     // check inputs
@@ -29,8 +29,8 @@ IntegerVector arrange_genes(const NumericVector& start,
     maxx.push_back(end[0]);
     result[0] = 1;
 
-    for(unsigned int i=1; i<n; i++) {
-        for(unsigned int j=0; j<maxx.size(); j++) {
+    for(int i=1; i<n; i++) {
+        for(int j=0; j<maxx.size(); j++) {
             if(start[i] > maxx[j]) {
                 result[i] = j+1;
                 maxx[j] = end[i];
