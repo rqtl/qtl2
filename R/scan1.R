@@ -123,13 +123,17 @@ scan1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
 {
+    # grab dot args
+    dotargs <- list(...)
+    if("n_perm" %in% names(dotargs))
+        stop("You included n_perm as an argument; you probably want to run scan1perm not scan1.")
+
     if(!is.null(kinship)) { # fit linear mixed model
         return(scan1_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
                         reml, cores, ...))
     }
 
     # deal with the dot args
-    dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
     stopifnot(tol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
