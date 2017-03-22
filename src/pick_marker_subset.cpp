@@ -14,7 +14,7 @@ IntegerVector pick_marker_subset(const NumericVector& pos,      // positions of 
                                  const double min_d,             // minimum position between markers
                                  const NumericVector& weights)  // weights on the markers
 {
-    const unsigned int n_pos = pos.size();
+    const int n_pos = pos.size();
     if(n_pos != weights.size())
         throw std::range_error("length(pos) != length(weights)");
 
@@ -23,15 +23,15 @@ IntegerVector pick_marker_subset(const NumericVector& pos,      // positions of 
     IntegerVector max_to_choose(n_pos);
     IntegerVector path(n_pos);
 
-    unsigned int n_path;
-    unsigned int n_max_to_choose;
+    int n_path;
+    int n_max_to_choose;
     double themax;
 
     /* first location */
     prev_marker[0] = -1;
     total_weights[0] = weights[0];
 
-    for(unsigned int i=1; i<n_pos; i++) {
+    for(int i=1; i<n_pos; i++) {
         if(pos[i] < pos[0] + min_d) {
             /* no markers to left of i that are > min_d away */
             total_weights[i] = weights[i];
@@ -43,7 +43,7 @@ IntegerVector pick_marker_subset(const NumericVector& pos,      // positions of 
             n_max_to_choose = 1;
             max_to_choose[0] = 0;
             themax = total_weights[0];
-            for(unsigned int j=1; j<i; j++) {
+            for(int j=1; j<i; j++) {
 
                 Rcpp::checkUserInterrupt();  // check for ^C from user
 
@@ -73,7 +73,7 @@ IntegerVector pick_marker_subset(const NumericVector& pos,      // positions of 
     n_max_to_choose = 1;
     max_to_choose[0] = 0;
 
-    for(unsigned int i=1; i<n_pos; i++) {
+    for(int i=1; i<n_pos; i++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         if(total_weights[i] > themax) {
@@ -104,7 +104,7 @@ IntegerVector pick_marker_subset(const NumericVector& pos,      // positions of 
 
     // the results in "path" are backward and have indexes starting at 0
     IntegerVector result(n_path);
-    for(unsigned int i=0; i<n_path; i++)
+    for(int i=0; i<n_path; i++)
         result[i] = path[n_path-i-1]+1;
 
     return result;

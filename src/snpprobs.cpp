@@ -15,14 +15,14 @@ using namespace Rcpp;
 // [[Rcpp::export(".calc_sdp")]]
 IntegerVector calc_sdp(const IntegerMatrix& geno)
 {
-    const unsigned int n_mar = geno.rows();
-    const unsigned int n_str = geno.cols();
+    const int n_mar = geno.rows();
+    const int n_str = geno.cols();
     if(n_str < 2)
         throw std::invalid_argument("Need genotypes on >= 2 strains");
 
     IntegerVector result(n_mar);
-    for(unsigned int i=0; i<n_mar; i++) {
-        for(unsigned int j=0; j<n_str; j++) {
+    for(int i=0; i<n_mar; i++) {
+        for(int j=0; j<n_str; j++) {
             result[i] += geno(i,j)*(1 << j);
         }
     }
@@ -41,16 +41,16 @@ IntegerVector calc_sdp(const IntegerMatrix& geno)
 // [[Rcpp::export(".invert_sdp")]]
 IntegerMatrix invert_sdp(const IntegerVector& sdp, const int n_str)
 {
-    const unsigned int n_mar = sdp.size();
-    for(unsigned int mar=0; mar<n_mar; mar++) {
+    const int n_mar = sdp.size();
+    for(int mar=0; mar<n_mar; mar++) {
         if(sdp[mar] < 0 || sdp[mar] > (1 << n_str) - 1)
             throw std::invalid_argument("sdp out of range");
     }
 
     IntegerMatrix result(n_mar,n_str);
 
-    for(unsigned int mar=0; mar<n_mar; mar++) {
-        for(unsigned int str=0; str<n_str; str++) {
+    for(int mar=0; mar<n_mar; mar++) {
+        for(int str=0; str<n_str; str++) {
             result(mar,str) = (sdp[mar] & (1 << str)) != 0;
         }
     }
@@ -72,10 +72,10 @@ NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
                                     LogicalVector on_map)
 {
     const IntegerVector& d = alleleprob.attr("dim");
-    const unsigned int n_ind = d[0];
-    const unsigned int n_str = d[1];
-    const unsigned int n_pos = d[2];
-    const unsigned int n_snp = sdp.size();
+    const int n_ind = d[0];
+    const int n_str = d[1];
+    const int n_pos = d[2];
+    const int n_snp = sdp.size();
     if(n_snp != interval.size())
         throw std::invalid_argument("length(sdp) != length(interval)");
     if(n_snp != on_map.size())
@@ -87,7 +87,7 @@ NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
     result.attr("dim") = Dimension(n_ind, 2, n_snp);
 
     // check that the interval and SDP values are okay
-    for(unsigned int i=0; i<n_snp; i++) {
+    for(int i=0; i<n_snp; i++) {
         if(interval[i] < 0 || interval[i] > n_pos-1 ||
            (interval[i] == n_pos-1 && !on_map[i]))
             throw std::invalid_argument("snp outside of map range");
@@ -95,15 +95,15 @@ NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
             throw std::invalid_argument("SDP out of range");
     }
 
-    for(unsigned int snp=0; snp<n_snp; snp++) {
-        for(unsigned int strain=0; strain < n_str; strain++) {
+    for(int snp=0; snp<n_snp; snp++) {
+        for(int strain=0; strain < n_str; strain++) {
 
-            unsigned int allele = ((sdp[snp] & (1 << strain)) != 0); // 0 or 1 SNP genotype for this strain
+            int allele = ((sdp[snp] & (1 << strain)) != 0); // 0 or 1 SNP genotype for this strain
 
-            unsigned int result_offset = allele*n_ind + (snp*n_ind*2);
-            unsigned int input_offset = strain*n_ind + (interval[snp]*n_ind*n_str);
-            unsigned int next_on_map = input_offset + n_ind*n_str;
-            for(unsigned int ind=0; ind<n_ind; ind++) {
+            int result_offset = allele*n_ind + (snp*n_ind*2);
+            int input_offset = strain*n_ind + (interval[snp]*n_ind*n_str);
+            int next_on_map = input_offset + n_ind*n_str;
+            for(int ind=0; ind<n_ind; ind++) {
                 if(on_map[snp]) {
                     result[ind + result_offset] += alleleprob[ind + input_offset];
                 }
@@ -127,20 +127,20 @@ NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
 // [[Rcpp::export]]
 IntegerVector genocol_to_snpcol(const int n_str, const int sdp)
 {
-    const unsigned int n_gen = n_str*(n_str+1)/2;
+    const int n_gen = n_str*(n_str+1)/2;
     if(sdp < 1 || sdp > (1 << n_str)-1)
         throw std::invalid_argument("SDP out of range");
 
     IntegerVector result(n_gen);
 
-    for(unsigned int a1=0, g=0; a1<n_str; a1++) {
-        for(unsigned int a2=0; a2<=a1; a2++, g++) {
+    for(int a1=0, g=0; a1<n_str; a1++) {
+        for(int a2=0; a2<=a1; a2++, g++) {
             // a1,a2 are the alleles
             // g is the corresponding genotype code
 
             // snp alleles for these two alleles
-            unsigned int snp1 = ((sdp & (1 << a1)) != 0);
-            unsigned int snp2 = ((sdp & (1 << a2)) != 0);
+            int snp1 = ((sdp & (1 << a1)) != 0);
+            int snp2 = ((sdp & (1 << a2)) != 0);
 
             if(snp1==0 && snp2==0) { // hom 00
                 result[g] = 0;
@@ -171,13 +171,13 @@ NumericVector genoprob_to_snpprob(NumericVector genoprob,
                                   LogicalVector on_map)
 {
     const IntegerVector& d = genoprob.attr("dim");
-    const unsigned int n_ind = d[0];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_str = (sqrt(8*n_gen + 1) - 1)/2;
+    const int n_ind = d[0];
+    const int n_gen = d[1];
+    const int n_str = (sqrt(8*n_gen + 1) - 1)/2;
     if(n_gen != n_str*(n_str+1)/2)
         throw std::invalid_argument("n_gen must == n(n+1)/2 for some n");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_snp = sdp.size();
+    const int n_pos = d[2];
+    const int n_snp = sdp.size();
     if(n_snp != interval.size())
         throw std::invalid_argument("length(sdp) != length(interval)");
     if(n_snp != on_map.size())
@@ -189,7 +189,7 @@ NumericVector genoprob_to_snpprob(NumericVector genoprob,
     result.attr("dim") = Dimension(n_ind, 3, n_snp);
 
     // check that the interval and SDP values are okay
-    for(unsigned int i=0; i<n_snp; i++) {
+    for(int i=0; i<n_snp; i++) {
         if(interval[i] < 0 || interval[i] > n_pos-1 ||
            (interval[i] == n_pos-1 && !on_map[i]))
             throw std::invalid_argument("snp outside of map range");
@@ -197,14 +197,14 @@ NumericVector genoprob_to_snpprob(NumericVector genoprob,
             throw std::invalid_argument("SDP out of range");
     }
 
-    for(unsigned int snp=0; snp<n_snp; snp++) {
+    for(int snp=0; snp<n_snp; snp++) {
         IntegerVector snpcol = genocol_to_snpcol(n_str, sdp[snp]);
 
-        for(unsigned int g=0; g<n_gen; g++) {
-            unsigned int result_offset = snpcol[g]*n_ind + (snp*n_ind*3);
-            unsigned int input_offset = g*n_ind + (interval[snp]*n_ind*n_gen);
-            unsigned int next_on_map = input_offset + n_ind*n_gen;
-            for(unsigned int ind=0; ind<n_ind; ind++) {
+        for(int g=0; g<n_gen; g++) {
+            int result_offset = snpcol[g]*n_ind + (snp*n_ind*3);
+            int input_offset = g*n_ind + (interval[snp]*n_ind*n_gen);
+            int next_on_map = input_offset + n_ind*n_gen;
+            for(int ind=0; ind<n_ind; ind++) {
                 if(on_map[snp]) {
                     result[ind + result_offset] += genoprob[ind + input_offset];
                 }
@@ -228,22 +228,22 @@ NumericVector genoprob_to_snpprob(NumericVector genoprob,
 // [[Rcpp::export]]
 IntegerVector Xgenocol_to_snpcol(const int n_str, const int sdp)
 {
-    const unsigned int n_femgen = n_str*(n_str+1)/2;
-    const unsigned int n_gen = n_femgen + n_str;
+    const int n_femgen = n_str*(n_str+1)/2;
+    const int n_gen = n_femgen + n_str;
     if(sdp < 1 || sdp > (1 << n_str)-1)
         throw std::invalid_argument("SDP out of range");
 
     IntegerVector result(n_gen);
 
-    for(unsigned int a1=0, g=0; a1<n_str; a1++) {
-        unsigned int snp1;
-        for(unsigned int a2=0; a2<=a1; a2++, g++) {
+    for(int a1=0, g=0; a1<n_str; a1++) {
+        int snp1;
+        for(int a2=0; a2<=a1; a2++, g++) {
             // a1,a2 are the alleles
             // g is the corresponding genotype code
 
             // snp alleles for these two alleles
             snp1 = ((sdp & (1 << a1)) != 0);
-            unsigned int snp2 = ((sdp & (1 << a2)) != 0);
+            int snp2 = ((sdp & (1 << a2)) != 0);
 
             if(snp1==0 && snp2==0) { // hom 00
                 result[g] = 0;
@@ -279,13 +279,13 @@ NumericVector Xgenoprob_to_snpprob(NumericVector genoprob,
                                    LogicalVector on_map)
 {
     const IntegerVector& d = genoprob.attr("dim");
-    const unsigned int n_ind = d[0];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_str = (sqrt(8*n_gen + 9) - 3)/2;
+    const int n_ind = d[0];
+    const int n_gen = d[1];
+    const int n_str = (sqrt(8*n_gen + 9) - 3)/2;
     if(n_gen != n_str*(n_str+1)/2 + n_str)
         throw std::invalid_argument("n_gen must == n + n(n+1)/2 for some n");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_snp = sdp.size();
+    const int n_pos = d[2];
+    const int n_snp = sdp.size();
     if(n_snp != interval.size())
         throw std::invalid_argument("length(sdp) != length(interval)");
     if(n_snp != on_map.size())
@@ -297,7 +297,7 @@ NumericVector Xgenoprob_to_snpprob(NumericVector genoprob,
     result.attr("dim") = Dimension(n_ind, 5, n_snp);
 
     // check that the interval and SDP values are okay
-    for(unsigned int i=0; i<n_snp; i++) {
+    for(int i=0; i<n_snp; i++) {
         if(interval[i] < 0 || interval[i] > n_pos-1 ||
            (interval[i] == n_pos-1 && !on_map[i]))
             throw std::invalid_argument("snp outside of map range");
@@ -305,14 +305,14 @@ NumericVector Xgenoprob_to_snpprob(NumericVector genoprob,
             throw std::invalid_argument("SDP out of range");
     }
 
-    for(unsigned int snp=0; snp<n_snp; snp++) {
+    for(int snp=0; snp<n_snp; snp++) {
         IntegerVector snpcol = Xgenocol_to_snpcol(n_str, sdp[snp]);
 
-        for(unsigned int g=0; g<n_gen; g++) {
-            unsigned int result_offset = snpcol[g]*n_ind + (snp*n_ind*5);
-            unsigned int input_offset = g*n_ind + (interval[snp]*n_ind*n_gen);
-            unsigned int next_on_map = input_offset + n_ind*n_gen;
-            for(unsigned int ind=0; ind<n_ind; ind++) {
+        for(int g=0; g<n_gen; g++) {
+            int result_offset = snpcol[g]*n_ind + (snp*n_ind*5);
+            int input_offset = g*n_ind + (interval[snp]*n_ind*n_gen);
+            int next_on_map = input_offset + n_ind*n_gen;
+            for(int ind=0; ind<n_ind; ind++) {
                 if(on_map[snp]) {
                     result[ind + result_offset] += genoprob[ind + input_offset];
                 }

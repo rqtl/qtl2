@@ -34,18 +34,18 @@ List scanblup(const NumericVector& genoprobs,
               const bool preserve_intercept,
               const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.size();
+    const int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int x_size = n_ind * n_gen;
-    unsigned int n_coef = n_gen + n_addcovar;
+    const int n_pos = d[2];
+    const int n_gen = d[1];
+    const int n_addcovar = addcovar.cols();
+    const int x_size = n_ind * n_gen;
+    int n_coef = n_gen + n_addcovar;
     if(!preserve_intercept) n_coef--;
     NumericMatrix coef(n_coef, n_pos); // to contain the estimated coefficients
     NumericMatrix SE(n_coef, n_pos); // to contain the estimated SEs
 
-    for(unsigned int pos=0; pos < n_pos; pos++) { // loop over positions
+    for(int pos=0; pos < n_pos; pos++) { // loop over positions
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // calculate ZZ' with Z = genoprobs for this position
@@ -68,39 +68,39 @@ List scanblup(const NumericVector& genoprobs,
 
         // calculate BLUPs
         VectorXd resid = y - X * lmm_out.beta;
-        for(unsigned int i=0; i<n_ind; i++) // multiply by weights
+        for(int i=0; i<n_ind; i++) // multiply by weights
             resid[i] *= lmm_out.hsq/(lmm_out.hsq * ZZp_decomp.first[i] + (1.0-lmm_out.hsq));
         Z = ZZp_decomp.second * Z;
         VectorXd blup = Z.transpose() * resid;
 
         // insert estimated coefficients
         if(!preserve_intercept) { // add intercept to BLUPs and drop the intercept column
-            for(unsigned int i=0; i<n_gen; i++) coef(i,pos) = blup[i] + lmm_out.beta[0];
-            for(unsigned int i=0; i<n_addcovar-1; i++) coef(n_gen+i,pos) = lmm_out.beta[i+1];
+            for(int i=0; i<n_gen; i++) coef(i,pos) = blup[i] + lmm_out.beta[0];
+            for(int i=0; i<n_addcovar-1; i++) coef(n_gen+i,pos) = lmm_out.beta[i+1];
         }
         else {
-            for(unsigned int i=0; i<n_gen; i++) coef(i,pos) = blup[i];
-            for(unsigned int i=0; i<n_addcovar; i++) coef(n_gen+i,pos) = lmm_out.beta[i];
+            for(int i=0; i<n_gen; i++) coef(i,pos) = blup[i];
+            for(int i=0; i<n_addcovar; i++) coef(n_gen+i,pos) = lmm_out.beta[i];
         }
 
         if(se) { // get SEs
             // construct variance matrix
             MatrixXd ZX(n_ind, n_gen+n_addcovar);
-            for(unsigned int i=0; i<n_gen; i++) ZX.col(i) = Z.col(i);
-            for(unsigned int i=0; i<n_addcovar; i++) ZX.col(i+n_gen) = ac.col(i);
+            for(int i=0; i<n_gen; i++) ZX.col(i) = Z.col(i);
+            for(int i=0; i<n_addcovar; i++) ZX.col(i+n_gen) = ac.col(i);
             MatrixXd Vinv = calc_XpX(ZX)/(1.0-lmm_out.hsq);
-            for(unsigned int i=0; i<n_gen; i++) Vinv(i,i) += 1.0/lmm_out.hsq;
+            for(int i=0; i<n_gen; i++) Vinv(i,i) += 1.0/lmm_out.hsq;
 
             // sigma^2 * (Vinv)^(-1)
             MatrixXd V = Vinv.inverse()*lmm_out.sigmasq;
 
             // insert estimated SEs
             if(!preserve_intercept) { // add intercept to BLUPs and drop the intercept column
-                for(unsigned int i=0; i<n_gen; i++) SE(i,pos) = sqrt(V(i,i) + V(n_gen,n_gen) + 2.0*V(i,n_gen));
-                for(unsigned int i=0; i<n_addcovar-1; i++) SE(n_gen+i,pos) = sqrt(V(n_gen+i+1,n_gen+i+1));
+                for(int i=0; i<n_gen; i++) SE(i,pos) = sqrt(V(i,i) + V(n_gen,n_gen) + 2.0*V(i,n_gen));
+                for(int i=0; i<n_addcovar-1; i++) SE(n_gen+i,pos) = sqrt(V(n_gen+i+1,n_gen+i+1));
             }
             else {
-                for(unsigned int i=0; i<n_coef; i++) SE(i,pos) = sqrt(V(i,i));
+                for(int i=0; i<n_coef; i++) SE(i,pos) = sqrt(V(i,i));
             }
 
         }

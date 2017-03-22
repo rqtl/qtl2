@@ -20,19 +20,19 @@ using namespace Rcpp;
 NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const NumericMatrix& pheno,
                                      const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
-    const unsigned int n_phe = pheno.cols();
+    const int n_ind = pheno.rows();
+    const int n_phe = pheno.cols();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
-    const unsigned int x_size = n_ind * n_gen;
+    const int n_pos = d[2];
+    const int n_gen = d[1];
+    const int x_size = n_ind * n_gen;
     if(d[0] != n_ind)
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
 
     NumericMatrix result(n_phe, n_pos);
     NumericMatrix X(n_ind, n_gen);
 
-    for(unsigned int i=0, offset=0; i<n_pos; i++, offset += x_size) {
+    for(int i=0, offset=0; i<n_pos; i++, offset += x_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for pos i into a matrix
@@ -59,7 +59,7 @@ NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const Numer
 NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno,
                              const NumericMatrix& addcovar, const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     const Dimension d = genoprobs.attr("dim");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
@@ -87,7 +87,7 @@ NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const Nume
                                       const NumericMatrix& addcovar, const NumericVector& weights,
                                       const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     const Dimension d = genoprobs.attr("dim");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
@@ -129,7 +129,7 @@ NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs,
                                               const NumericMatrix& intcovar,
                                               const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     const Dimension d = genoprobs.attr("dim");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
@@ -170,7 +170,7 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_highmem(const NumericVector& geno
                                                        const NumericVector& weights,
                                                        const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     const Dimension d = genoprobs.attr("dim");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
@@ -217,10 +217,10 @@ NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs,
                                              const NumericMatrix& intcovar,
                                              const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_phe = pheno.cols();
+    const int n_pos = d[2];
+    const int n_phe = pheno.cols();
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -230,7 +230,7 @@ NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs,
 
     NumericMatrix result(n_phe, n_pos);
 
-    for(unsigned int pos=0; pos<n_pos; pos++) {
+    for(int pos=0; pos<n_pos; pos++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // form X matrix
@@ -265,10 +265,10 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genop
                                                       const NumericVector& weights,
                                                       const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_phe = pheno.cols();
+    const int n_pos = d[2];
+    const int n_phe = pheno.cols();
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -280,7 +280,7 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genop
 
     NumericMatrix pheno_rev = weighted_matrix(pheno, weights);
 
-    for(unsigned int pos=0; pos<n_pos; pos++) {
+    for(int pos=0; pos<n_pos; pos++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // form X matrix

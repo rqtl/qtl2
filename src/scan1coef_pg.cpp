@@ -27,14 +27,14 @@ NumericMatrix scancoef_pg_addcovar(const NumericVector& genoprobs,
                                    const NumericVector& weights,
                                    const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.size();
+    const int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_weights = weights.size();
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int x_size = n_ind * n_gen;
-    const unsigned int n_coef = n_gen + n_addcovar;
+    const int n_pos = d[2];
+    const int n_gen = d[1];
+    const int n_weights = weights.size();
+    const int n_addcovar = addcovar.cols();
+    const int x_size = n_ind * n_gen;
+    const int n_coef = n_gen + n_addcovar;
 
     if(n_ind != d[0])
         throw std::range_error("length(pheno) != nrow(genoprobs)");
@@ -60,7 +60,7 @@ NumericMatrix scancoef_pg_addcovar(const NumericVector& genoprobs,
         addcovar_rev = weighted_matrix(addcovar_rev, weights);
     }
 
-    for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+    for(int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for pos i into a matrix
@@ -99,14 +99,14 @@ NumericMatrix scancoef_pg_intcovar(const NumericVector& genoprobs,
                                    const NumericVector& weights,
                                    const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.size();
+    const int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_weights = weights.size();
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int n_intcovar = intcovar.cols();
-    const unsigned int n_coef = n_gen + n_addcovar + (n_gen-1)*n_intcovar;
+    const int n_pos = d[2];
+    const int n_gen = d[1];
+    const int n_weights = weights.size();
+    const int n_addcovar = addcovar.cols();
+    const int n_intcovar = intcovar.cols();
+    const int n_coef = n_gen + n_addcovar + (n_gen-1)*n_intcovar;
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -124,7 +124,7 @@ NumericMatrix scancoef_pg_intcovar(const NumericVector& genoprobs,
     NumericVector pheno_rev = matrix_x_vector(eigenvec, pheno);
     pheno_rev = pheno_rev * weights;
 
-    for(unsigned int pos=0; pos<n_pos; pos++) {
+    for(int pos=0; pos<n_pos; pos++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // form X matrix
@@ -161,14 +161,14 @@ List scancoefSE_pg_addcovar(const NumericVector& genoprobs,
                             const NumericVector& weights,
                             const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.size();
+    const int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_weights = weights.size();
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int x_size = n_ind * n_gen;
-    const unsigned int n_coef = n_gen + n_addcovar;
+    const int n_pos = d[2];
+    const int n_gen = d[1];
+    const int n_weights = weights.size();
+    const int n_addcovar = addcovar.cols();
+    const int x_size = n_ind * n_gen;
+    const int n_coef = n_gen + n_addcovar;
 
     if(n_ind != d[0])
         throw std::range_error("length(pheno) != nrow(genoprobs)");
@@ -195,7 +195,7 @@ List scancoefSE_pg_addcovar(const NumericVector& genoprobs,
         addcovar_rev = weighted_matrix(addcovar_rev, weights);
     }
 
-    for(unsigned int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+    for(int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for pos i into a matrix
@@ -239,14 +239,14 @@ List scancoefSE_pg_intcovar(const NumericVector& genoprobs,
                             const NumericVector& weights,
                             const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.size();
+    const int n_ind = pheno.size();
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
-    const unsigned int n_gen = d[1];
-    const unsigned int n_weights = weights.size();
-    const unsigned int n_addcovar = addcovar.cols();
-    const unsigned int n_intcovar = intcovar.cols();
-    const unsigned int n_coef = n_gen + n_addcovar + (n_gen-1)*n_intcovar;
+    const int n_pos = d[2];
+    const int n_gen = d[1];
+    const int n_weights = weights.size();
+    const int n_addcovar = addcovar.cols();
+    const int n_intcovar = intcovar.cols();
+    const int n_coef = n_gen + n_addcovar + (n_gen-1)*n_intcovar;
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -265,7 +265,7 @@ List scancoefSE_pg_intcovar(const NumericVector& genoprobs,
     NumericVector pheno_rev = matrix_x_vector(eigenvec, pheno);
     pheno_rev = pheno_rev * weights;
 
-    for(unsigned int pos=0; pos<n_pos; pos++) {
+    for(int pos=0; pos<n_pos; pos++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // form X matrix

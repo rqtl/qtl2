@@ -47,7 +47,7 @@ NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y,
 NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P,
                                    const double tol=1e-12)
 {
-    const unsigned int nrowx = X.rows();
+    const int nrowx = X.rows();
     const Dimension d = P.attr("dim");
     if(d[0] != nrowx)
         throw std::range_error("nrow(X) != nrow(P)");

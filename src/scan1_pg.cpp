@@ -28,11 +28,11 @@ NumericVector scan_pg_onechr(const NumericVector& genoprobs, const NumericMatrix
                              const NumericMatrix& addcovar, const NumericMatrix& eigenvec,
                              const NumericVector& weights, const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
+    const int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("ncol(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -67,7 +67,7 @@ NumericVector scan_pg_onechr(const NumericVector& genoprobs, const NumericMatrix
     double sum_logweights = sum(log(weights));
 
     NumericVector result(n_pos);
-    for(unsigned int pos=0; pos<n_pos; pos++)
+    for(int pos=0; pos<n_pos; pos++)
         result[pos] = -(double)n_ind/2.0*log(rss[pos]) + sum_logweights;
 
     return result;
@@ -97,11 +97,11 @@ NumericVector scan_pg_onechr_intcovar_highmem(const NumericVector& genoprobs,
                                               const NumericVector& weights,
                                               const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
+    const int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -141,7 +141,7 @@ NumericVector scan_pg_onechr_intcovar_highmem(const NumericVector& genoprobs,
 
     // calculate log likelihood
     NumericVector result(n_pos);
-    for(unsigned int pos=0; pos<n_pos; pos++)
+    for(int pos=0; pos<n_pos; pos++)
         result[pos] = -(double)n_ind/2.0*log(rss[pos]) + sum_logweights;
 
     return result;
@@ -171,11 +171,11 @@ NumericVector scan_pg_onechr_intcovar_lowmem(const NumericVector& genoprobs,
                                              const NumericVector& weights,
                                              const double tol=1e-12)
 {
-    const unsigned int n_ind = pheno.rows();
+    const int n_ind = pheno.rows();
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
-    const unsigned int n_pos = d[2];
+    const int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -198,7 +198,7 @@ NumericVector scan_pg_onechr_intcovar_lowmem(const NumericVector& genoprobs,
     // 0.5*sum(log(weights)) [since these are sqrt(weights)]
     double sum_logweights = sum(log(weights));
 
-    for(unsigned int pos=0; pos<n_pos; pos++) {
+    for(int pos=0; pos<n_pos; pos++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // form X matrix

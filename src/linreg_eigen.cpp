@@ -12,7 +12,7 @@ using namespace Eigen;
 // calc X'X
 MatrixXd calc_XpX(const MatrixXd& X)
 {
-    const unsigned int n = X.cols();
+    const int n = X.cols();
 
     return MatrixXd(n,n).setZero().selfadjointView<Lower>()
         .rankUpdate(X.adjoint());
@@ -25,7 +25,7 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
-    const unsigned int n = XX.rows(), p=XX.cols();
+    const int n = XX.rows(), p=XX.cols();
     LLT<MatrixXd> llt = calc_XpX(XX);
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
@@ -69,7 +69,7 @@ List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
-    const unsigned int n = XX.rows(), p=XX.cols();
+    const int n = XX.rows(), p=XX.cols();
     LLT<MatrixXd> llt = calc_XpX(XX);
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
@@ -110,12 +110,12 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     typedef ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int n = XX.rows(), p = XX.cols();
+    const int n = XX.rows(), p = XX.cols();
 
     CPivQR PQR( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat( PQR.colsPermutation() );
-    const unsigned int r = PQR.rank();
+    const int r = PQR.rank();
 
     VectorXd betahat(p), fitted(n), se(p);
 
@@ -173,12 +173,12 @@ NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVect
     typedef ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int p = XX.cols();
+    const int p = XX.cols();
 
     CPivQR PQR( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat( PQR.colsPermutation() );
-    const unsigned int r = PQR.rank();
+    const int r = PQR.rank();
 
     VectorXd betahat(p);
 
@@ -211,12 +211,12 @@ List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     typedef ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int n = XX.rows(), p = XX.cols();
+    const int n = XX.rows(), p = XX.cols();
 
     CPivQR PQR( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat( PQR.colsPermutation() );
-    const unsigned int r = PQR.rank();
+    const int r = PQR.rank();
 
     VectorXd betahat(p), fitted(n), se(p);
 
@@ -268,12 +268,12 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int n = XX.rows(), p = XX.cols();
+    const int n = XX.rows(), p = XX.cols();
 
     CPivQR PQR = XX;
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
-    const unsigned int r = PQR.rank();
+    const int r = PQR.rank();
 
     VectorXd fitted(n);
     if(r == p) { // full rank
@@ -297,8 +297,8 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
 // [[Rcpp::export]]
 NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
-    const unsigned int ncolY = Y.cols();
-    const unsigned int ncolX = X.cols();
+    const int ncolY = Y.cols();
+    const int ncolX = X.cols();
 
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const MatrixXd YY(as<Map<MatrixXd> >(Y));
@@ -308,7 +308,7 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     MatrixXd XXpY(XX.adjoint() * YY);
 
     MatrixXd betahat(ncolX,ncolY);
-    for(unsigned int i=0; i<ncolY; i++)
+    for(int i=0; i<ncolY; i++)
         betahat.col(i) = llt.solve(XXpY.col(i));
 
     MatrixXd fitted = XX * betahat;
@@ -330,20 +330,20 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int n = XX.rows(), p = XX.cols();
-    const unsigned int k = YY.cols();
+    const int n = XX.rows(), p = XX.cols();
+    const int k = YY.cols();
 
     CPivQR PQR = XX;
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
-    const unsigned int r = PQR.rank();
+    const int r = PQR.rank();
 
     MatrixXd fitted(n,k);
 
     if(r == p) { // full rank
         MatrixXd betahat(p,k);
 
-        for(unsigned int i=0; i<k; i++)
+        for(int i=0; i<k; i++)
             betahat.col(i) = PQR.solve(YY.col(i));
 
         fitted = XX * betahat;
@@ -353,7 +353,7 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
         MatrixXd Rinv = PQR.matrixQR().topLeftCorner(r,r)
             .triangularView<Upper>().solve(MatrixXd::Identity(r,r));
 
-        for(unsigned int i=0; i<k; i++) {
+        for(int i=0; i<k; i++) {
             VectorXd effects = PQR.householderQ().adjoint() * YY.col(i);
             effects.tail(n - r).setZero();
 
@@ -372,8 +372,8 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
 // [[Rcpp::export]]
 NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
-    const unsigned int ncolY = Y.cols();
-    const unsigned int ncolX = X.cols();
+    const int ncolY = Y.cols();
+    const int ncolX = X.cols();
 
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const MatrixXd YY(as<Map<MatrixXd> >(Y));
@@ -383,7 +383,7 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     MatrixXd XXpY(XX.adjoint() * YY);
 
     MatrixXd betahat(ncolX,ncolY);
-    for(unsigned int i=0; i<ncolY; i++)
+    for(int i=0; i<ncolY; i++)
         betahat.col(i) = llt.solve(XXpY.col(i));
 
     MatrixXd fitted = XX * betahat;
@@ -406,20 +406,20 @@ NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
 
-    const unsigned int n = XX.rows(), p = XX.cols();
-    const unsigned int k = YY.cols();
+    const int n = XX.rows(), p = XX.cols();
+    const int k = YY.cols();
 
     CPivQR PQR = XX;
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
-    const unsigned int r = PQR.rank();
+    const int r = PQR.rank();
 
     MatrixXd fitted(n,k);
 
     if(r == p) { // full rank
         MatrixXd betahat(p,k);
 
-        for(unsigned int i=0; i<k; i++)
+        for(int i=0; i<k; i++)
             betahat.col(i) = PQR.solve(YY.col(i));
 
         fitted = XX * betahat;
@@ -429,7 +429,7 @@ NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
         MatrixXd Rinv = PQR.matrixQR().topLeftCorner(r,r)
             .triangularView<Upper>().solve(MatrixXd::Identity(r,r));
 
-        for(unsigned int i=0; i<k; i++) {
+        for(int i=0; i<k; i++) {
             VectorXd effects = PQR.householderQ().adjoint() * YY.col(i);
             effects.tail(n - r).setZero();
 
