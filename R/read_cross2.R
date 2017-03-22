@@ -163,6 +163,9 @@ function(file, quiet=TRUE)
     if(!("geno" %in% names(output)))
        stop("No genotype data found.")
 
+    # omit markers not in common among geno, gmap, pmap, founder_geno
+    output <- drop_incomplete_markers( output )
+
     # pull out a map; make it numeric
     if("gmap" %in% names(output))
         map <- output$gmap
@@ -627,4 +630,53 @@ extract_dim_from_header <-
     }
 
     result
+}
+
+# drop markers that do not appear in all of geno, gmap, pmap, founder_geno
+drop_incomplete_markers <-
+    function( output )
+{
+    geno_mar <- colnames( output$geno )
+
+    if(!is.null(output$gmap)) {
+        pos <- suppressWarnings( as.numeric(output$gmap[,2]) )
+        if(any(is.na(pos))) {
+            n_na <- sum(is.na(pos))
+            warning(n_na, ifelse(n_na==1, " marker", " markers"), " with missing genetic map position.")
+        }
+        gmap_mar <- rownames(output$gmap)[!is.na(pos)]
+    }
+    else gmap_mar <- geno_mar
+
+    if(!is.null(output$pmap)) {
+        pos <- suppressWarnings( as.numeric(output$pmap[,2]) )
+        if(any(is.na(pos))) {
+            n_na <- sum(is.na(pos))
+            warning(n_na, ifelse(n_na==1, " marker", " markers"), " with missing physical map position.")
+        }
+        pmap_mar <- rownames(output$pmap)[!is.na(pos)]
+    }
+    else pmap_mar <- geno_mar
+
+    if(!is.null(output$founder_geno))
+        fg_mar <- colnames(output$founder_geno)
+    else fg_mar <- geno_mar
+
+    tot_mar <- unique(c(geno_mar, gmap_mar, pmap_mar, fg_mar))
+    keep_mar <- find_common_ids(geno_mar, gmap_mar, pmap_mar, fg_mar)
+
+    if(length(keep_mar) < length(tot_mar)) {
+        n_drop <- length( tot_mar[!(tot_mar %in% keep_mar)] )
+        warning("Omitting ", n_drop, " markers that are not in both genotypes and maps")
+
+        output$geno <- output$geno[,keep_mar, drop=FALSE]
+        if(!is.null(output$gmap))
+            output$gmap <- output$gmap[keep_mar, , drop=FALSE]
+        if(!is.null(output$pmap))
+            output$pmap <- output$pmap[keep_mar, , drop=FALSE]
+        if(!is.null(output$founder_geno))
+            output$founder_geno <- output$founder_geno[, keep_mar, drop=FALSE]
+    }
+
+    output
 }
