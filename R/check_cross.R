@@ -304,6 +304,13 @@ function(cross2)
         }
     }
 
+    # compare individuals in geno and pheno
+    if(!is.null(pheno)) {
+        id <- find_common_ids(rownames(pheno), rownames(geno[[1]]))
+        if(length(id) == 0)
+            warning("No individuals in common between geno and pheno")
+    }
+
     # check is_x_chr
     if(length(is_x_chr) != length(geno)) {
         result <- FALSE
