@@ -156,7 +156,7 @@ public:
     // check that cross_info conforms to expectation
     virtual const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr)
     {
-        //const unsigned int n_col = cross_info.cols();
+        //const int n_col = cross_info.cols();
         //if(n_col > 0)
         //    REprintf("cross_info provided (with %d columns) but ignored for this cross type\n", n_col);
 
@@ -166,7 +166,7 @@ public:
     // check that sex conforms to expectation
     virtual const bool check_is_female_vector(const Rcpp::LogicalVector& is_female, const bool any_x_chr)
     {
-        //const unsigned int n = is_female.size();
+        //const int n = is_female.size();
         //if(n > 0)
         //    REprintf("is_female provided but ignored for this cross type\n");
 
@@ -188,9 +188,9 @@ public:
     // X chromosome covariates
     virtual const Rcpp::NumericMatrix get_x_covar(const Rcpp::LogicalVector& is_female, const Rcpp::IntegerMatrix& cross_info)
     {
-        const unsigned int n_ind = is_female.size();
-        unsigned int n_female=0;
-        for(unsigned int i=0; i<n_ind; i++)
+        const int n_ind = is_female.size();
+        int n_female=0;
+        for(int i=0; i<n_ind; i++)
             if(is_female[i]) ++n_female;
 
         if(n_female==0 || n_female==n_ind) // all male or all female
@@ -198,7 +198,7 @@ public:
 
         // some males and some females; return single-column matrix with sex indicators
         Rcpp::NumericMatrix result(n_ind,1);
-        for(unsigned int i=0; i<n_ind; i++) {
+        for(int i=0; i<n_ind; i++) {
             if(is_female[i]) result(i,0) = 0.0;
             else result(i,0) = 1.0;
         }
@@ -230,16 +230,16 @@ public:
                                                                    const Rcpp::IntegerVector& cross_info)
     {
         Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
-        const unsigned int n_true_gen = gen.size();
-        const unsigned int n_obs_gen = 6;
+        const int n_true_gen = gen.size();
+        const int n_obs_gen = 6;
 
-        const unsigned int n_markers = founder_geno.cols();
+        const int n_markers = founder_geno.cols();
 
         std::vector<Rcpp::NumericMatrix> result;
-        for(unsigned int i=0; i<n_markers; i++) {
+        for(int i=0; i<n_markers; i++) {
             Rcpp::NumericMatrix emitmatrix(n_obs_gen, n_true_gen);
-            for(unsigned int obs_gen=0; obs_gen<n_obs_gen; obs_gen++) {
-                for(unsigned int true_gen=0; true_gen<n_true_gen; true_gen++) {
+            for(int obs_gen=0; obs_gen<n_obs_gen; obs_gen++) {
+                for(int true_gen=0; true_gen<n_true_gen; true_gen++) {
                     emitmatrix(obs_gen,true_gen) = emit(obs_gen, gen[true_gen], error_prob,
                                                         founder_geno(_, i), is_x_chr, is_female, cross_info);
                 }
@@ -256,15 +256,15 @@ public:
                                                                    const Rcpp::IntegerVector& cross_info)
     {
         Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
-        const unsigned int n_gen = gen.size();
+        const int n_gen = gen.size();
 
-        const unsigned int n_intervals = rec_frac.size();
+        const int n_intervals = rec_frac.size();
 
         std::vector<Rcpp::NumericMatrix> result;
-        for(unsigned int i=0; i<n_intervals; i++) {
+        for(int i=0; i<n_intervals; i++) {
             Rcpp::NumericMatrix stepmatrix(n_gen, n_gen);
-            for(unsigned int left=0; left<n_gen; left++) {
-                for(unsigned int right=0; right<n_gen; right++) {
+            for(int left=0; left<n_gen; left++) {
+                for(int right=0; right<n_gen; right++) {
                     stepmatrix(left,right) = step(gen[left], gen[right], rec_frac[i],
                                                   is_x_chr, is_female, cross_info);
                 }
@@ -280,10 +280,10 @@ public:
                                         const Rcpp::IntegerVector& cross_info)
     {
         Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
-        const unsigned int n_gen = gen.size();
+        const int n_gen = gen.size();
 
         Rcpp::NumericVector result(n_gen);
-        for(unsigned int g=0; g<n_gen; g++) {
+        for(int g=0; g<n_gen; g++) {
             result[g] = init(gen[g], is_x_chr, is_female, cross_info);
         }
 
