@@ -142,8 +142,8 @@ test_that("Create zip file works", {
     new_unzipped_files <- utils::unzip(zipfile, exdir=tmp_dir)
 
     # sample files as originally?
-    ofiles <- sort(sub(dir, "", unzipped_files))
-    nfiles <- sort(sub(tmp_dir, "", new_unzipped_files))
+    ofiles <- sort( basename( unzipped_files ) )
+    nfiles <- sort( basename( new_unzipped_files ) )
     expect_equal( ofiles, nfiles )
 
     # read them?
