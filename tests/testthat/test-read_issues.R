@@ -54,7 +54,15 @@ test_that("read_cross2 deals with missing marker info", {
                 row.names=FALSE, col.names=TRUE, quote=FALSE)
 
     expect_warning( iron_sub3 <- read_cross2(yaml_file) ) # this gives an error at the moment
-
     expect_equal(iron_sub3, drop_markers(iron, c(dropped_markers, dropped_markers3, na_markers3)))
+
+    # markers out of order in genotypes
+    g <- read_csv(geno_file)
+    g <- g[,sample(ncol(g)),drop=FALSE]
+    write.table(cbind(marker=rownames(g), g), file=geno_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
+
+    expect_warning( iron_randgeno <- read_cross2(yaml_file) )
+    expect_equal(iron_sub3, iron_randgeno)
 
 })

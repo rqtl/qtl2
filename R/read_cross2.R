@@ -385,17 +385,19 @@ function(geno, map)
     if(any(is.na(m)))
         stop("Some markers in genotype data not found in map: ",
              paste0('"', gmark[is.na(m)], '"', collapse=", "))
+    map <- map[mmark %in% gmark,,drop=FALSE] # toss from map any markers not in geno
 
-    chr <- map[match(colnames(geno), rownames(map)), 1]
-    pos <- map[match(colnames(geno), rownames(map)), 2]
+    # sort map
+    map <- map[order(factor(map[,1], levels=unique(map[,1])), map[,2], seq_len(nrow(map))),,drop=FALSE]
 
+    geno <- geno[,rownames(map),drop=FALSE]
+
+    chr <- map[,1]
     uchr <- unique(chr)
     newgeno <- vector("list", length(uchr))
     names(newgeno) <- uchr
     for(i in uchr) {
-        wh <- which(chr==i)
-        o <- order(pos[chr==i])
-        newgeno[[i]] <- geno[,wh[o], drop=FALSE]
+        newgeno[[i]] <- geno[,which(chr==i), drop=FALSE]
     }
 
     newgeno
@@ -645,6 +647,7 @@ drop_incomplete_markers <-
             warning(n_na, ifelse(n_na==1, " marker", " markers"), " with missing genetic map position.")
         }
         gmap_mar <- rownames(output$gmap)[!is.na(pos)]
+        output$gmap <- output$gmap[!is.na(pos),]
     }
     else gmap_mar <- geno_mar
 
@@ -655,6 +658,7 @@ drop_incomplete_markers <-
             warning(n_na, ifelse(n_na==1, " marker", " markers"), " with missing physical map position.")
         }
         pmap_mar <- rownames(output$pmap)[!is.na(pos)]
+        output$pmap <- output$pmap[!is.na(pos),]
     }
     else pmap_mar <- geno_mar
 
@@ -669,13 +673,13 @@ drop_incomplete_markers <-
         n_drop <- length( tot_mar[!(tot_mar %in% keep_mar)] )
         warning("Omitting ", n_drop, " markers that are not in both genotypes and maps")
 
-        output$geno <- output$geno[,keep_mar, drop=FALSE]
+        output$geno <- output$geno[,geno_mar %in% keep_mar, drop=FALSE]
         if(!is.null(output$gmap))
-            output$gmap <- output$gmap[keep_mar, , drop=FALSE]
+            output$gmap <- output$gmap[gmap_mar %in% keep_mar, , drop=FALSE]
         if(!is.null(output$pmap))
-            output$pmap <- output$pmap[keep_mar, , drop=FALSE]
+            output$pmap <- output$pmap[pmap_mar %in% keep_mar, , drop=FALSE]
         if(!is.null(output$founder_geno))
-            output$founder_geno <- output$founder_geno[, keep_mar, drop=FALSE]
+            output$founder_geno <- output$founder_geno[, fg_mar %in% keep_mar, drop=FALSE]
     }
 
     output
