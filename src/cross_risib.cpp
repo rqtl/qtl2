@@ -125,8 +125,8 @@ const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr
 const bool RISIB::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n_row = cross_info.rows();
-    const unsigned int n_col = cross_info.cols();
+    const int n_row = cross_info.rows();
+    const int n_col = cross_info.cols();
 
     if(!any_x_chr) { // all autosomes
         if(n_col > 0) {
@@ -144,16 +144,16 @@ const bool RISIB::check_crossinfo(const IntegerMatrix& cross_info, const bool an
             r_message("cross_info has >1 columns, but should have just 1");
         }
         else {
-            unsigned int n_missing = 0;
-            for(unsigned int i=0; i<n_row; i++)
+            int n_missing = 0;
+            for(int i=0; i<n_row; i++)
                 if(cross_info[i] == NA_INTEGER) ++n_missing;
             if(n_missing > 0) {
                 result = false;
                 r_message("cross_info contains missing values (it shouldn't)");
             }
 
-            unsigned int n_invalid = 0;
-            for(unsigned int i=0; i<n_row; i++)
+            int n_invalid = 0;
+            for(int i=0; i<n_row; i++)
                 if(cross_info[i] != NA_INTEGER && cross_info[i] != 0 && cross_info[i] != 1) ++n_invalid;
             if(n_invalid > 0) {
                 result = false;

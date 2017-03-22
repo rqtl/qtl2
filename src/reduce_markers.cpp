@@ -27,7 +27,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
     IntegerVector prev_marker(n);
     IntegerVector max_to_choose(n);
     IntegerVector path(n);
-    unsigned int n_path=0;
+    int n_path=0;
     int n_max_to_choose, themax;
 
     prev_marker[0] = -1;
@@ -100,7 +100,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
 
     // note: result is backwards and has indices starting at 0
     IntegerVector result(n_path);
-    for(unsigned int i=0; i<n_path; i++)
+    for(int i=0; i<n_path; i++)
         result[i] = path[n_path-1-i] + 1;
     return result;
 }

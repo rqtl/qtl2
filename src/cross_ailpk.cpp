@@ -468,7 +468,7 @@ const NumericMatrix AILPK::geno2allele_matrix(const bool is_x_chr)
 const bool AILPK::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n = is_female.size();
+    const int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
             // not needed here, but don't call this an error
@@ -481,8 +481,8 @@ const bool AILPK::check_is_female_vector(const LogicalVector& is_female, const b
             r_message("is_female not provided, but needed to handle X chromosome");
         }
         else {
-            unsigned int n_missing = 0;
-            for(unsigned int i=0; i<n; i++)
+            int n_missing = 0;
+            for(int i=0; i<n; i++)
                 if(is_female[i] == NA_LOGICAL) ++n_missing;
             if(n_missing > 0) {
                 result = false;
@@ -497,8 +497,8 @@ const bool AILPK::check_is_female_vector(const LogicalVector& is_female, const b
 const bool AILPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n_row = cross_info.rows();
-    const unsigned int n_col = cross_info.cols();
+    const int n_row = cross_info.rows();
+    const int n_col = cross_info.cols();
     // first column is number of generations (needed no matter what; values should be >= 2)
     // second column is 0=AxB, 1=BxA, 2=balanced (needed for X chromosome)
 
@@ -508,9 +508,9 @@ const bool AILPK::check_crossinfo(const IntegerMatrix& cross_info, const bool an
         return result;
     }
 
-    unsigned int n_missing=0;
-    unsigned int n_invalid=0;
-    for(unsigned int i=0; i<n_row; i++) {
+    int n_missing=0;
+    int n_invalid=0;
+    for(int i=0; i<n_row; i++) {
         if(cross_info[i] == NA_INTEGER) ++n_missing;
         else if(cross_info[i] < 2) ++n_invalid;
     }
@@ -534,9 +534,9 @@ const bool AILPK::check_crossinfo(const IntegerMatrix& cross_info, const bool an
             r_message("cross_info should have no more than 2 columns (no. generations and cross direction)");
         }
 
-        unsigned int n_missing = 0;
-        unsigned int n_invalid = 0;
-        for(unsigned int i=0; i<n_row; i++) {
+        int n_missing = 0;
+        int n_invalid = 0;
+        for(int i=0; i<n_row; i++) {
             if(cross_info[i+n_row] == NA_INTEGER) ++n_missing;
             else if(cross_info[i+n_row] != 0 &&
                     cross_info[i+n_row] != 1 &&

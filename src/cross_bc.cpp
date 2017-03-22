@@ -119,7 +119,7 @@ const double BC::nrec(const int gen_left, const int gen_right,
 const bool BC::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n = is_female.size();
+    const int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
             // not needed here, but don't call it an error
@@ -132,8 +132,8 @@ const bool BC::check_is_female_vector(const LogicalVector& is_female, const bool
             r_message("is_female not provided, but needed to handle X chromosome");
         }
         else {
-            unsigned int n_missing = 0;
-            for(unsigned int i=0; i<n; i++)
+            int n_missing = 0;
+            for(int i=0; i<n; i++)
                 if(is_female[i] == NA_LOGICAL) ++n_missing;
             if(n_missing > 0) {
                 result = false;

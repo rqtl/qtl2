@@ -266,7 +266,7 @@ const NumericMatrix DOPK::geno2allele_matrix(const bool is_x_chr)
 const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n = is_female.size();
+    const int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
             // not needed here, but don't call this an error
@@ -279,8 +279,8 @@ const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bo
             r_message("is_female not provided, but needed to handle X chromosome");
         }
         else {
-            unsigned int n_missing = 0;
-            for(unsigned int i=0; i<n; i++)
+            int n_missing = 0;
+            for(int i=0; i<n; i++)
                 if(is_female[i] == NA_LOGICAL) ++n_missing;
             if(n_missing > 0) {
                 result = false;
@@ -295,8 +295,8 @@ const bool DOPK::check_is_female_vector(const LogicalVector& is_female, const bo
 const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n_row = cross_info.rows();
-    const unsigned int n_col = cross_info.cols();
+    const int n_row = cross_info.rows();
+    const int n_col = cross_info.cols();
     // one column with number of generations (needed no matter what; values should be >= 1)
 
     if(n_col == 0) {
@@ -305,9 +305,9 @@ const bool DOPK::check_crossinfo(const IntegerMatrix& cross_info, const bool any
         return result;
     }
 
-    unsigned int n_missing=0;
-    unsigned int n_invalid=0;
-    for(unsigned int i=0; i<n_row; i++) {
+    int n_missing=0;
+    int n_invalid=0;
+    for(int i=0; i<n_row; i++) {
         if(cross_info[i] == NA_INTEGER) ++n_missing;
         else if(cross_info[i] < 1) ++n_invalid;
     }

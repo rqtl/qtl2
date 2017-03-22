@@ -114,7 +114,7 @@ NumericVector est_map(const String& crosstype,
                 }
 
                 // add to full_gamma array of dim n_rf x n_ind x n_gen x n_gen
-                const unsigned int offset = n_gen_sq_times_n_ind*pos + n_gen_sq*ind;
+                const int offset = n_gen_sq_times_n_ind*pos + n_gen_sq*ind;
                 for(int ir=0; ir<n_poss_gen; ir++) {
                     int gr_by_n_gen = (poss_gen[ir]-1)*n_gen;
                     for(int il=0; il<n_poss_gen; il++) {

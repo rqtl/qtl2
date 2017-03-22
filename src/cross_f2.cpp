@@ -227,7 +227,7 @@ const NumericMatrix F2::geno2allele_matrix(const bool is_x_chr)
 const bool F2::check_is_female_vector(const LogicalVector& is_female, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n = is_female.size();
+    const int n = is_female.size();
     if(!any_x_chr) { // all autosomes
         if(n > 0) {
             // not needed here, but don't call it an error
@@ -240,8 +240,8 @@ const bool F2::check_is_female_vector(const LogicalVector& is_female, const bool
             r_message("is_female not provided, but needed to handle X chromosome");
         }
         else {
-            unsigned int n_missing = 0;
-            for(unsigned int i=0; i<n; i++)
+            int n_missing = 0;
+            for(int i=0; i<n; i++)
                 if(is_female[i] == NA_LOGICAL) ++n_missing;
             if(n_missing > 0) {
                 result = false;
@@ -256,8 +256,8 @@ const bool F2::check_is_female_vector(const LogicalVector& is_female, const bool
 const bool F2::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
 {
     bool result = true;
-    const unsigned int n_row = cross_info.rows();
-    const unsigned int n_col = cross_info.cols();
+    const int n_row = cross_info.rows();
+    const int n_col = cross_info.cols();
 
     if(!any_x_chr) { // all autosomes
         if(n_col > 0) {
@@ -275,16 +275,16 @@ const bool F2::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
             r_message("cross_info has >1 columns, but should have just 1");
         }
         else {
-            unsigned int n_missing = 0;
-            for(unsigned int i=0; i<n_row; i++)
+            int n_missing = 0;
+            for(int i=0; i<n_row; i++)
                 if(cross_info[i] == NA_INTEGER) ++n_missing;
             if(n_missing > 0) {
                 result = false;
                 r_message("cross_info contains missing values (it shouldn't)");
             }
 
-            unsigned int n_invalid = 0;
-            for(unsigned int i=0; i<n_row; i++)
+            int n_invalid = 0;
+            for(int i=0; i<n_row; i++)
                 if(cross_info[i] != NA_INTEGER && cross_info[i] != 0 && cross_info[i] != 1) ++n_invalid;
             if(n_invalid > 0) {
                 result = false;
@@ -298,10 +298,10 @@ const bool F2::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
 // X chromosome covariates
 const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const IntegerMatrix& cross_info)
 {
-    const unsigned int n_ind = is_female.size();
+    const int n_ind = is_female.size();
 
-    unsigned int n_female=0, n_forwdir=0;
-    for(unsigned int i=0; i<n_ind; i++) {
+    int n_female=0, n_forwdir=0;
+    for(int i=0; i<n_ind; i++) {
         if(is_female[i]) ++n_female;
         if(cross_info[i] == 0) ++n_forwdir;
     }
@@ -315,7 +315,7 @@ const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const Intege
         }
         else { // some of each direction but all female, return single-column matrix with cross direction indicators
             NumericMatrix result(n_ind,1);
-            for(unsigned int i=0; i<n_ind; i++) {
+            for(int i=0; i<n_ind; i++) {
                 if(cross_info[i]==0) result(i,0) = 0.0;
                 else result(i,0) = 1.0;
             }
@@ -328,7 +328,7 @@ const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const Intege
         if(n_forwdir==n_ind || n_forwdir==0) { // one direction
             // both sexes but one direction; return single-column matrix with sex indicators
             NumericMatrix result(n_ind,1);
-            for(unsigned int i=0; i<n_ind; i++) {
+            for(int i=0; i<n_ind; i++) {
                 if(is_female[i]) result(i,0) = 0.0;
                 else result(i,0) = 1.0;
             }
@@ -337,7 +337,7 @@ const NumericMatrix F2::get_x_covar(const LogicalVector& is_female, const Intege
         }
         else { // both directions and both sexes
             NumericMatrix result(n_ind,2);
-            for(unsigned int i=0; i<n_ind; i++) {
+            for(int i=0; i<n_ind; i++) {
                 if(is_female[i]) result(i,0) = 0.0;
                 else result(i,0) = 1.0;
 
