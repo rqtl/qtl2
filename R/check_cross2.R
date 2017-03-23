@@ -257,7 +257,7 @@ function(cross2)
     }
 
     # Markers in gmap in non-decreasing order
-    d <- vapply(gmap, function(x) min(diff(x)), 0)
+    d <- vapply(gmap, function(x) ifelse(length(x)==1, 0, min(diff(x))), 0)
     if(any(d < 0)) {
         result <- FALSE
         warning("Markers not in order in gmap on chr ", paste(names(gmap)[d < 0], collapse=", "))
@@ -383,7 +383,7 @@ function(cross2)
         }
 
         # markers in order?
-        d <- vapply(pmap, function(x) min(diff(x)), 0)
+        d <- vapply(pmap, function(x) ifelse(length(x)==1, 0, min(diff(x))), 0)
         if(any(d < 0)) {
             result <- FALSE
             warning("Markers not in order in pmap on chr ", paste(names(pmap)[d < 0], collapse=", "))
