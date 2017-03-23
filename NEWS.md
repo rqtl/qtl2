@@ -1,3 +1,10 @@
+## qtl2geno 0.5-9 (2017-03-23)
+
+## Minor changes
+
+- Made various small improvements to the handling of problems in the
+  input files.
+
 ## qtl2geno 0.5-8 (2017-03-21)
 
 ### New features
