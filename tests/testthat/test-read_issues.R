@@ -67,13 +67,45 @@ test_that("read_cross2 deals with missing marker info", {
 
     # markers out of order in physical map
     pmap <- read_csv(pmap_file, rownames_included=FALSE)
-    pmap <- pmap[sample(nrow(pmap)), , drop=FALSE]
-    write.table(pmap, file=pmap_file, sep=",",
+    pmap_rand <- pmap
+    pmap_rand <- pmap[sample(nrow(pmap)), , drop=FALSE]
+    write.table(pmap_rand, file=pmap_file, sep=",",
                 row.names=FALSE, col.names=TRUE, quote=FALSE)
 
     expect_warning( iron_randpmap <- read_cross2(yaml_file) )
     expect_equal(iron_sub3, iron_randpmap)
 
+    # markers out of order within a chromosome on genetic map
+    gmap <- read_csv(gmap_file, rownames_included=FALSE)
+    gmap_reordered <- gmap
+    gmap_reordered[6:7,1] <- gmap[7:6,1] # swap two marker names
+    write.table(gmap_reordered, file=gmap_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
 
+    expect_warning( iron_marorder <- read_cross2(yaml_file) )
+    expected <- iron_sub3
+    expected$pmap[[2]] <- expected$pmap[[2]][c(2,1,3)]
+    names(expected$gmap[[2]]) <- names(expected$gmap[[2]])[c(2,1,3)]
+    expected$geno[[2]] <- expected$geno[[2]][,c(2,1,3)]
+    expect_equal(iron_marorder, expected)
+
+    # markers out of order within a chromosome on physical map
+    ### first, put gmap and pmap back in order
+    write.table(gmap, file=gmap_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
+    write.table(pmap, file=pmap_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
+    pmap_reordered <- pmap
+    neworder <- c(40,37,43,41,38,42,39)
+    pmap_reordered[37:43,1] <- pmap[neworder,1] # reorder marker names on chr 11
+    write.table(pmap_reordered, file=pmap_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
+
+    expect_warning( iron_marorder <- read_cross2(yaml_file) )
+    expected <- iron_sub3
+    tmp <- expected$pmap[[11]]
+    names(tmp) <- names(tmp)[c(4,1,7,5,2,6,3)]
+    expected$pmap[[11]] <- tmp[names(expected$pmap[[11]])]
+    expect_equal(iron_marorder, expected)
 
 })
