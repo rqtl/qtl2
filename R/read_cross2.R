@@ -173,13 +173,14 @@ function(file, quiet=TRUE)
         map <- output$pmap
     else stop("Need a genetic or physical marker map")
     map[,2] <- as.numeric(map[,2])
+    map <- reorder_map_table(map)
 
     # split maps by chr
     maps <- c("gmap", "pmap")
     for(section in maps) {
         if(section %in% names(output)) {
             if(!quiet) message(" - splitting up ", section)
-            output[[section]] <- split_map(output[[section]])
+            output[[section]] <- split_map(output[[section]], unique(map[,1]))
         }
     }
 
@@ -406,8 +407,10 @@ function(geno, map)
 # split a data frame with chr, pos (and marker names as rows)
 #   into a list of chromosomes
 split_map <-
-function(map)
+function(map, chr_names=NULL)
 {
+    map <- reorder_map_table(map, chr_names=chr_names)
+
     pos <- as.numeric(map[,2])
     chr <- map[,1]
     uchr <- unique(chr)
@@ -683,4 +686,17 @@ drop_incomplete_markers <-
     }
 
     output
+}
+
+reorder_map_table <-
+    function(map_tab, chr_col=1, pos_col=2, chr_names=NULL)
+{
+    chr <- map_tab[,chr_col]
+
+    if(is.null(chr_names)) chr_names <- unique(chr)
+
+    chr <- factor(chr, levels=chr_names)
+    pos <- suppressWarnings( as.numeric(map_tab[,pos_col]) )
+
+    map_tab[ order(chr, pos, seq_len(nrow(map_tab))), , drop=FALSE]
 }

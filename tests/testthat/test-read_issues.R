@@ -65,4 +65,15 @@ test_that("read_cross2 deals with missing marker info", {
     expect_warning( iron_randgeno <- read_cross2(yaml_file) )
     expect_equal(iron_sub3, iron_randgeno)
 
+    # markers out of order in physical map
+    pmap <- read_csv(pmap_file, rownames_included=FALSE)
+    pmap <- pmap[sample(nrow(pmap)), , drop=FALSE]
+    write.table(pmap, file=pmap_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
+
+    expect_warning( iron_randpmap <- read_cross2(yaml_file) )
+    expect_equal(iron_sub3, iron_randpmap)
+
+
+
 })
