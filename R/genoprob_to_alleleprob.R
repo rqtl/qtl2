@@ -55,12 +55,12 @@ genoprob_to_alleleprob <-
                         c(2, 1, 3)) # reorg back to ind x geno x pos
 
         # allele names
-        dn <- dimnames(probs[[chr]])
+        dn <- dimnames(probs)
         if(is.null(alleles) || length(alleles) < ncol(result)) {
-            alleles <- assign_allele_codes(ncol(result), colnames(probs[[chr]]))
+            alleles <- assign_allele_codes(ncol(result), dn[[2]][[chr]])
         }
-        dn[[2]] <- alleles
-        dimnames(result) <- dn
+        dn[[2]][[chr]] <- alleles
+        dimnames(result) <- list(dn[[1]], dn[[2]][[chr]], dn[[3]][[chr]])
 
         result
     }
