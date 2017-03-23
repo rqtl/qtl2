@@ -104,7 +104,7 @@ test_that("read_cross2 deals with missing marker info", {
     expect_warning( iron_marorder <- read_cross2(yaml_file) )
     expected <- iron_sub3
     tmp <- expected$pmap[[11]]
-    names(tmp) <- names(tmp)[c(4,1,7,5,2,6,3)]
+    names(tmp) <- names(tmp)[order(order(neworder))]
     expected$pmap[[11]] <- tmp[names(expected$pmap[[11]])]
     expect_equal(iron_marorder, expected)
 
