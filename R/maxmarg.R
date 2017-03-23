@@ -72,7 +72,12 @@ maxmarg <-
         chr <- as.character(chr)
         marker <- find_marker(map, chr, pos)
 
-        probs <- list("1"=probs[[chr]][,,marker,drop=FALSE])
+        if(class(probs)[1]=="feather_calc_genoprob")
+            probs <- list("1"=probs[,,marker][[1]])
+        else
+            probs <- list("1"=probs[[chr]][,,marker,drop=FALSE])
+        names(probs) <- chr
+        class(probs) <- c("calc_genoprob", "list")
     }
 
     if(return_char && is.null(colnames(probs[[1]]))) {
@@ -80,14 +85,16 @@ maxmarg <-
         return_char <- FALSE
     }
 
+    dn <- dimnames(probs)
+
     # function that does the work
     by_chr_func <- function(chr, return_char) {
         if(!quiet) message(" - Chr ", names(probs)[chr])
-        dn <- dimnames(probs[[chr]])
         result <- .maxmarg(aperm(probs[[chr]], c(2,3,1)), minprob=minprob) # convert to pos x gen x ind
-        if(return_char && !is.null(dn[[2]]))
-            result[,1:ncol(result)] <- dn[[2]][result]
-        dimnames(result) <- list(dn[[1]], dn[[3]])
+        if(return_char && !is.null(dn[[2]][[chr]]))
+            result[,1:ncol(result)] <- dn[[2]][[chr]][result]
+        dimnames(result) <- list(dn[[1]], dn[[3]][[chr]])
+
         result
     }
 
@@ -99,13 +106,7 @@ maxmarg <-
     }
 
     # run and combine results
-    chrs <- seq(along=probs)
-    if(n_cores(cores) == 1) {
-        result <- lapply(chrs, by_chr_func, return_char=return_char)
-    }
-    else {
-        result <- cluster_lapply(cores, chrs, by_chr_func, return_char=return_char)
-    }
+    result <- cluster_lapply(cores, seq_len(length(probs)), by_chr_func, return_char=return_char)
     names(result) <- names(probs)
 
     # if chr and pos given, return a vector
