@@ -108,4 +108,13 @@ test_that("read_cross2 deals with missing marker info", {
     expected$pmap[[11]] <- tmp[names(expected$pmap[[11]])]
     expect_equal(iron_marorder, expected)
 
+    # a marker on different chromosomes in gmap and pmap
+    pmap_mischr <- pmap
+    pmap_mischr[50,2] <- "14" # marker on chr 15 -> 14
+    pmap_mischr[50,3] <- 90
+    write.table(pmap_mischr, file=pmap_file, sep=",",
+                row.names=FALSE, col.names=TRUE, quote=FALSE)
+    expect_warning( iron_mischr <- read_cross2(yaml_file) )
+    expect_equal( iron_mischr, drop_markers(iron_sub3, pmap_mischr$marker[50]) )
+
 })
