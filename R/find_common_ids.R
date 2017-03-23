@@ -58,17 +58,33 @@ find_common_ids <-
 # align genotypes, is_female and cross_info
 # (because we'll do this alot)
 align_geno_sex_cross <-
-    function(geno, is_female, cross_info)
+    function(geno, is_female, cross_info, hold_off_warning=FALSE)
 {
     if(is.list(geno)) {
+        give_warning <- FALSE
+        dropped_ind <- NULL
         for(i in seq(along=geno)) {
+            orig_nind <- nrow(geno[[i]])
+            orig_ind <- rownames(geno[[i]])
             tmp <- align_geno_sex_cross(geno[[i]],
                                         is_female,
-                                        cross_info)
+                                        cross_info,
+                                        hold_off_warning=TRUE)
+            if(orig_nind > nrow(tmp$geno)) {
+                new_ind <- rownames(tmp$geno)
+                dropped_ind <- unique(c(dropped_ind,
+                                        orig_ind[!(orig_ind %in% new_ind)]))
+                give_warning <- TRUE
+            }
             is_female <- tmp$is_female
             cross_info <- tmp$cross_info
             geno[[i]] <- tmp$geno
         }
+        if(give_warning)
+            warning("Omitting genotypes for ", length(dropped_ind),
+                    ifelse(length(dropped_ind)==1, " individual", " individuals"),
+                    " with no sex/cross info.")
+
         return(list(geno=geno, is_female=is_female, cross_info=cross_info))
     }
 
@@ -78,10 +94,10 @@ align_geno_sex_cross <-
 
     keep <- find_common_ids(rownames(geno), names(is_female), rownames(cross_info))
 
-    if(length(keep) < length(ind))
-        warning("Omitting genotypes for ",
-                length(ind)-length(keep),
-                " individuals with no sex/cross info.")
+    if(length(keep) < length(ind) && !hold_off_warning)
+        warning("Omitting genotypes for ", length(ind) - length(keep),
+                ifelse(length(ind)-length(keep)==1, " individual", " individuals"),
+                " with no sex/cross info.")
 
     list(geno=geno[keep,,drop=FALSE],
          is_female=is_female[keep],
