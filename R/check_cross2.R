@@ -260,7 +260,7 @@ function(cross2)
     d <- vapply(gmap, function(x) ifelse(length(x)==1, 0, min(diff(x))), 0)
     if(any(d < 0)) {
         result <- FALSE
-        warning("Markers not in order in gmap on chr ", paste(names(gmap)[d < 0], collapse=", "))
+        warning("Genetic map out of order on chr ", paste(names(gmap)[d < 0], collapse=", "))
     }
 
     # compare geno to is_female
@@ -386,7 +386,7 @@ function(cross2)
         d <- vapply(pmap, function(x) ifelse(length(x)==1, 0, min(diff(x))), 0)
         if(any(d < 0)) {
             result <- FALSE
-            warning("Markers not in order in pmap on chr ", paste(names(pmap)[d < 0], collapse=", "))
+            warning("Physical map out of order on chr ", paste(names(pmap)[d < 0], collapse=", "))
         }
     }
 
