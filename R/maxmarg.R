@@ -79,6 +79,11 @@ maxmarg <-
         names(probs) <- chr
         class(probs) <- c("calc_genoprob", "list")
     }
+    else {
+        if(!is.null(map)) # give warning that map was provided but not needed (or used)
+            warning("map provided but not used (only needed in chr and pos are provided)")
+    }
+
 
     if(return_char && is.null(colnames(probs[[1]]))) {
         warning("No genotype names included in probs; returning integers")
