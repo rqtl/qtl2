@@ -5,6 +5,10 @@
 - Made various small improvements to the handling of problems in the
   input files.
 
+- Small changes to better handle genotype probabilities that are in
+  the [qtl2feather](https://github.com/byandell/qtl2feather) format.
+
+
 ## qtl2geno 0.5-8 (2017-03-21)
 
 ### New features
