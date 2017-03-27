@@ -55,7 +55,7 @@ IntegerVector sim_geno(const String& crosstype,
 
         // possible genotypes for this individual
         IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));
-        int n_poss_gen = poss_gen.size();
+        const int n_poss_gen = poss_gen.size();
         NumericVector probs(n_poss_gen);
 
         // backward equations

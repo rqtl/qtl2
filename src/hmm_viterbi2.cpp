@@ -48,7 +48,7 @@ IntegerMatrix viterbi2(const String& crosstype,
 
     NumericVector init_vector = cross->calc_initvector(is_X_chr, is_female, cross_info);
 
-    int max_obsgeno = max(genotypes);
+    const int max_obsgeno = max(genotypes);
 
     std::vector<NumericMatrix> emit_matrix = cross->calc_emitmatrix(error_prob, max_obsgeno, founder_geno,
                                                                     is_X_chr, is_female, cross_info);
@@ -57,7 +57,7 @@ IntegerMatrix viterbi2(const String& crosstype,
 
     // possible genotypes
     IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female, cross_info);
-    int n_poss_gen = poss_gen.size();
+    const int n_poss_gen = poss_gen.size();
 
     for(int ind=0; ind<n_ind; ind++) {
 

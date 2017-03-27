@@ -20,9 +20,9 @@ NumericVector calc_genoprob2(const String& crosstype,
                              const IntegerVector& marker_index, // length nrow(genotypes)
                              const double error_prob)
 {
-    int n_ind = genotypes.cols();
-    int n_pos = marker_index.size();
-    int n_mar = genotypes.rows();
+    const int n_ind = genotypes.cols();
+    const int n_pos = marker_index.size();
+    const int n_mar = genotypes.rows();
 
     QTLCross* cross = QTLCross::Create(crosstype);
 
@@ -43,13 +43,13 @@ NumericVector calc_genoprob2(const String& crosstype,
         throw std::range_error("founder_geno and genotypes have different numbers of markers");
     // end of checks
 
-    int n_gen = cross->ngen(is_X_chr);
-    int matsize = n_gen*n_ind; // size of genotype x individual matrix
+    const int n_gen = cross->ngen(is_X_chr);
+    const int matsize = n_gen*n_ind; // size of genotype x individual matrix
     NumericVector genoprobs(matsize*n_pos);
 
     NumericVector init_vector = cross->calc_initvector(is_X_chr, is_female, cross_info);
 
-    int max_obsgeno = max(genotypes);
+    const int max_obsgeno = max(genotypes);
 
     std::vector<NumericMatrix> emit_matrix = cross->calc_emitmatrix(error_prob, max_obsgeno,
                                                                     founder_geno,
@@ -59,7 +59,7 @@ NumericVector calc_genoprob2(const String& crosstype,
 
     // possible genotypes
     IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female, cross_info);
-    int n_poss_gen = poss_gen.size();
+    const int n_poss_gen = poss_gen.size();
 
     for(int ind=0; ind<n_ind; ind++) {
 
