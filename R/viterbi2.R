@@ -73,14 +73,8 @@ viterbi2 <-
     for(chr in seq(along=cross$geno)) {
         if(!quiet) message("Chr ", names(cross$geno)[chr])
 
-        if(n_cores(cores)==1) { # no parallel processing
-            # calculations in one group
-            temp <- lapply(groupindex, by_group_func)
-        }
-        else {
-            # calculations in parallel
-            temp <- cluster_lapply(cores, groupindex, by_group_func)
-        }
+        # calculations in parallel [if cores==1, it just does lapply()]
+        temp <- cluster_lapply(cores, groupindex, by_group_func)
 
         # paste them back together
         d <- vapply(temp, dim, rep(0,2))
