@@ -80,14 +80,24 @@ function(cross, probs, quiet=TRUE, cores=1)
         if(!all(mn %in% dn[[3]][[chr]]))
             stop("Some markers in cross are not in probs on chr ", chrnames[chr])
         pr <- aperm(probs[[chr]][ind,,mn,drop=FALSE], c(2,1,3)) # genotype, ind, marker
-        errorlod <- t(.calc_errorlod(cross$crosstype, pr,
+        errorlod <- t(.calc_errorlod(cross$crosstype, pr[,group[[i]],,drop=FALSE],
                                      t(cross$geno[[chr]][group[[i]],,drop=FALSE]),
                                      founder_geno[[chr]], cross$is_x_chr[chr], cross$is_female[group[[i]][1]],
                                      t(cross$cross_info[group[[i]][1],])))
 
     }
 
-    group <- parallel::splitIndices(nrow(cross$geno[[1]]), n_cores(cores))
+    # split individuals into groups with common sex and cross_info
+    sex_crossinfo <- paste(cross$is_female, apply(cross$cross_info, 1, paste, collapse=":"), sep=":")
+    group <- split(seq(along=sex_crossinfo), sex_crossinfo)
+    names(group) <- NULL
+    nc <- n_cores(cores)
+    while(nc > length(group) && max(sapply(group, length)) > 1) { # successively split biggest group in half until there are as many groups as cores
+        mx <- which.max(sapply(group, length))
+        g <- group[[mx]]
+        group <- c(group, list(g[seq(1, length(g), by=2)]))
+        group[[mx]] <- g[seq(2, length(g), by=2)]
+    }
     groupindex <- seq(along=group)
 
     errorlod <- vector("list", length(probs))
@@ -96,22 +106,15 @@ function(cross, probs, quiet=TRUE, cores=1)
     for(chr in seq_len(length(chrnames))) {
         if(!quiet) message("Chr ", chrnames[chr])
 
-        if(n_cores(cores) == 1) { # no parallel processing
-            # calculations in one group
-            errorlod[[chr]] <- by_group_func(1)
-        }
-        else {
-            # calculations in parallel
-            temp <- cluster_lapply(cores, groupindex, by_group_func)
+        temp <- cluster_lapply(cores, groupindex, by_group_func)
 
-            # paste them back together
-            d <- vapply(temp, dim, rep(0,2))
-            nr <- sum(d[1,])
-            errorlod[[chr]] <- matrix(nrow=sum(vapply(temp, nrow, 1)),
-                                    ncol=ncol(temp[[1]]))
-            for(i in groupindex)
-                errorlod[[chr]][group[[i]],,] <- temp[[i]]
-        }
+        # paste them back together
+        d <- vapply(temp, dim, c(0,0))
+        nr <- sum(d[1,])
+        errorlod[[chr]] <- matrix(nrow=sum(vapply(temp, nrow, 1)),
+                                  ncol=ncol(temp[[1]]))
+        for(i in groupindex)
+            errorlod[[chr]][group[[i]],] <- temp[[i]]
 
         dimnames(errorlod[[chr]]) <- dimnames(cross$geno[[chr]])
     }
