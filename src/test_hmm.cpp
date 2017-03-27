@@ -116,12 +116,13 @@ bool need_founder_geno(const String& crosstype)
 // [[Rcpp::export]]
 std::vector<NumericMatrix> test_emitmatrix(const String& crosstype,
                                            const double error_prob,
+                                           const int max_obsgeno,
                                            const IntegerMatrix& founder_geno, const bool is_x_chr,
                                            const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    std::vector<Rcpp::NumericMatrix> result = cross->calc_emitmatrix(error_prob, founder_geno, is_x_chr, is_female, cross_info);
+    std::vector<Rcpp::NumericMatrix> result = cross->calc_emitmatrix(error_prob, max_obsgeno, founder_geno, is_x_chr, is_female, cross_info);
     delete cross;
     return result;
 }

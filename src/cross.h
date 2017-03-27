@@ -225,13 +225,14 @@ public:
 
     // calculate a vector of emission matrices
     virtual const std::vector<Rcpp::NumericMatrix> calc_emitmatrix(const double error_prob,
+                                                                   const int max_obsgeno,
                                                                    const Rcpp::IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
                                                                    const bool is_x_chr, const bool is_female,
                                                                    const Rcpp::IntegerVector& cross_info)
     {
         Rcpp::IntegerVector gen = possible_gen(is_x_chr, is_female, cross_info);
         const int n_true_gen = gen.size();
-        const int n_obs_gen = 6;
+        const int n_obs_gen = max_obsgeno+1;
 
         const int n_markers = founder_geno.cols();
 

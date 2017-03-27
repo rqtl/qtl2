@@ -137,8 +137,8 @@ need_founder_geno <- function(crosstype) {
     .Call('qtl2geno_need_founder_geno', PACKAGE = 'qtl2geno', crosstype)
 }
 
-test_emitmatrix <- function(crosstype, error_prob, founder_geno, is_x_chr, is_female, cross_info) {
-    .Call('qtl2geno_test_emitmatrix', PACKAGE = 'qtl2geno', crosstype, error_prob, founder_geno, is_x_chr, is_female, cross_info)
+test_emitmatrix <- function(crosstype, error_prob, max_obsgeno, founder_geno, is_x_chr, is_female, cross_info) {
+    .Call('qtl2geno_test_emitmatrix', PACKAGE = 'qtl2geno', crosstype, error_prob, max_obsgeno, founder_geno, is_x_chr, is_female, cross_info)
 }
 
 test_stepmatrix <- function(crosstype, rec_frac, is_x_chr, is_female, cross_info) {

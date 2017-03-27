@@ -38,6 +38,7 @@ bool need_founder_geno(const Rcpp::String& crosstype);
 // test calculation of vector of emit matrices
 std::vector<Rcpp::NumericMatrix> test_emitmatrix(const Rcpp::String& crosstype,
                                                  const double error_prob,
+                                                 const int max_obsgeno,
                                                  const Rcpp::IntegerMatrix& founder_geno, const bool is_x_chr,
                                                  const bool is_female, const Rcpp::IntegerVector& cross_info);
 

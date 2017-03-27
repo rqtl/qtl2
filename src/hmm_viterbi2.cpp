@@ -48,7 +48,9 @@ IntegerMatrix viterbi2(const String& crosstype,
 
     NumericVector init_vector = cross->calc_initvector(is_X_chr, is_female, cross_info);
 
-    std::vector<NumericMatrix> emit_matrix = cross->calc_emitmatrix(error_prob, founder_geno,
+    int max_obsgeno = max(genotypes);
+
+    std::vector<NumericMatrix> emit_matrix = cross->calc_emitmatrix(error_prob, max_obsgeno, founder_geno,
                                                                     is_X_chr, is_female, cross_info);
 
     std::vector<NumericMatrix> step_matrix = cross->calc_stepmatrix(rec_frac, is_X_chr, is_female, cross_info);
