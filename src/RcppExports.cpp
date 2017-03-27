@@ -324,6 +324,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// subtrlog
+double subtrlog(const double a, const double b);
+RcppExport SEXP qtl2geno_subtrlog(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(subtrlog(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // viterbi
 IntegerMatrix viterbi(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
 RcppExport SEXP qtl2geno_viterbi(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
