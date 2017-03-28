@@ -68,6 +68,7 @@ NumericMatrix calc_errorlod(const String& crosstype,
         for(int mar=0, matindex=n_gen*ind; mar<n_mar; mar++, matindex += matsize) {
 
             double init_err=0.0, init_noerr=0.0, post_err=0.0, post_noerr=0.0;
+            int n_err=0, n_noerr=0;
 
             int obs_geno = genotypes(mar,ind);
             if(obs_geno == 0) { // missing genotype
@@ -77,17 +78,24 @@ NumericMatrix calc_errorlod(const String& crosstype,
 
             for(int i=0; i<n_poss_gen; i++) {
                 int g = poss_gen[i]-1;
-                if(emit_matrix[mar](obs_geno, i) < log_half) { // error
+                if(emit_matrix[mar](obs_geno, i) < log_half) { // considered error if Pr(O | g) < 1/2
+                    n_err++;
                     init_err += exp(init_vector[i]);
                     post_err += probs[matindex + g];
                 }
                 else { // not an error
+                    n_noerr++;
                     init_noerr += exp(init_vector[i]);
                     post_noerr += probs[matindex + g];
                 }
             } // loop over possible genotypes
 
-            error_lod(mar, ind) = log10( (post_err * init_noerr) / (post_noerr * init_err) );
+            // need to deal with cases that there were 0 counts
+            if(n_err==0 && n_noerr==0)     error_lod(mar,ind)=   0.0;
+            else if(n_err==0 && n_noerr>0) error_lod(mar,ind)=  -5.0; // small but not really small value
+            else if(n_err>0 && n_noerr==0) error_lod(mar,ind)=   5.0; // large but not really large value
+            else // this is what's supposed to happen
+                error_lod(mar, ind) = log10( (post_err * init_noerr) / (post_noerr * init_err) );
 
         } // loop over markers
     } // loop over individuals
