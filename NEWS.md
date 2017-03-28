@@ -1,6 +1,14 @@
+## qtl2geno 0.5-10 (2017-03-27)
+
+### New feature
+
+- Added `calc_errorlod` to help identify potential genotyping errors
+  (and problem markers or individuals).
+
+
 ## qtl2geno 0.5-9 (2017-03-23)
 
-## Minor changes
+### Minor changes
 
 - Made various small improvements to the handling of problems in the
   input files.

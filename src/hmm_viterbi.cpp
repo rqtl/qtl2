@@ -53,7 +53,7 @@ IntegerMatrix viterbi(const String& crosstype,
 
         // possible genotypes for this individual
         IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));
-        int n_poss_gen = poss_gen.size();
+        const int n_poss_gen = poss_gen.size();
 
         IntegerMatrix traceback(n_pos, n_poss_gen); // for tracing back through the genotypes
 

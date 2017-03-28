@@ -19,9 +19,9 @@ NumericVector calc_genoprob(const String& crosstype,
                             const IntegerVector& marker_index, // length nrow(genotypes)
                             const double error_prob)
 {
-    int n_ind = genotypes.cols();
-    int n_pos = marker_index.size();
-    int n_mar = genotypes.rows();
+    const int n_ind = genotypes.cols();
+    const int n_pos = marker_index.size();
+    const int n_mar = genotypes.rows();
 
     QTLCross* cross = QTLCross::Create(crosstype);
 
@@ -44,8 +44,8 @@ NumericVector calc_genoprob(const String& crosstype,
         throw std::range_error("founder_geno is not the right size");
     // end of checks
 
-    int n_gen = cross->ngen(is_X_chr);
-    int matsize = n_gen*n_ind; // size of genotype x individual matrix
+    const int n_gen = cross->ngen(is_X_chr);
+    const int matsize = n_gen*n_ind; // size of genotype x individual matrix
     NumericVector genoprobs(matsize*n_pos);
 
     for(int ind=0; ind<n_ind; ind++) {
@@ -54,7 +54,7 @@ NumericVector calc_genoprob(const String& crosstype,
 
         // possible genotypes for this individual
         IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));
-        int n_poss_gen = poss_gen.size();
+        const int n_poss_gen = poss_gen.size();
 
         // forward/backward equations
         NumericMatrix alpha = forwardEquations(cross, genotypes(_,ind), founder_geno, is_X_chr, is_female[ind],

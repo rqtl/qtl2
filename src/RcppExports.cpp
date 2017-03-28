@@ -196,6 +196,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calc_errorlod
+NumericMatrix calc_errorlod(const String& crosstype, const NumericVector& probs, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const bool is_female, const IntegerVector& cross_info);
+RcppExport SEXP qtl2geno_calc_errorlod(SEXP crosstypeSEXP, SEXP probsSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type probs(probsSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type genotypes(genotypesSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_female(is_femaleSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type cross_info(cross_infoSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_errorlod(crosstype, probs, genotypes, founder_geno, is_X_chr, is_female, cross_info));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calc_genoprob
 NumericVector calc_genoprob(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
 RcppExport SEXP qtl2geno_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
@@ -304,6 +321,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type a(aSEXP);
     Rcpp::traits::input_parameter< const double >::type b(bSEXP);
     rcpp_result_gen = Rcpp::wrap(addlog(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// subtrlog
+double subtrlog(const double a, const double b);
+RcppExport SEXP qtl2geno_subtrlog(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< const double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(subtrlog(a, b));
     return rcpp_result_gen;
 END_RCPP
 }
