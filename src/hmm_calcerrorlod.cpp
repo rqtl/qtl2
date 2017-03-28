@@ -58,6 +58,9 @@ NumericMatrix calc_errorlod(const String& crosstype,
     IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female, cross_info);
     const int n_poss_gen = poss_gen.size();
 
+    if(max(poss_gen) > dim_probs[0])
+        throw std::invalid_argument("No. genotypes in probs isn't large enough for no. possible genotypes");
+
     for(int ind=0; ind<n_ind; ind++) {
 
         Rcpp::checkUserInterrupt();  // check for ^C from user

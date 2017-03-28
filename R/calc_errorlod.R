@@ -45,6 +45,9 @@ function(cross, probs, quiet=TRUE, cores=1)
     # check inputs
     if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')
+    alleleprobs <- attr(probs, "alleleprobs")
+    if(!is.null(alleleprobs) && alleleprobs)
+        stop("probs must contain full genotype probabilities, not haplotype/allele probabilities")
 
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
