@@ -49,6 +49,17 @@ function(cross, probs, quiet=TRUE, cores=1)
     if(!is.null(alleleprobs) && alleleprobs)
         stop("probs must contain full genotype probabilities, not haplotype/allele probabilities")
 
+    if(length(cross$geno) != length(probs) ||
+       !all(names(cross$geno) == names(probs))) {
+        chr1 <- names(cross$geno)
+        chr2 <- names(probs)
+        chr <- find_common_ids(chr1, chr2)
+        if(length(chr)==0)
+            stop("cross and probs have no chromosomes in common")
+        cross <- cross[,chr]
+        probs <- subset(probs, chr=chr)
+    }
+
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
     if(!quiet && n_cores(cores)>1) {
