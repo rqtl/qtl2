@@ -15,8 +15,9 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A matrix of genotyping error LOD scores, individuals x
-#'     markers.
+#' @return A list of matrices of genotyping error LOD scores. Each
+#'     matrix corresponds to a chromosome and is arranged as
+#'     individuals x markers.
 #'
 #' @details
 #'   Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
@@ -35,9 +36,12 @@
 #' @seealso \code{\link{calc_genoprob}}
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-#' probs <- calc_genoprob(grav2, error_prob=0.002)
-#' errorlod <- calc_errorlod(grav2, probs)
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' probs <- calc_genoprob(iron, error_prob=0.002, map_function="c-f")
+#' errorlod <- calc_errorlod(iron, probs)
+#'
+#' # combine into one matrix
+#' errorlod <- do.call("cbind", errorlod)
 
 calc_errorlod <-
 function(cross, probs, quiet=TRUE, cores=1)

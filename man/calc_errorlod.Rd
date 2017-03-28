@@ -20,8 +20,9 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-A matrix of genotyping error LOD scores, individuals x
-    markers.
+A list of matrices of genotyping error LOD scores. Each
+    matrix corresponds to a chromosome and is arranged as
+    individuals x markers.
 }
 \description{
 Use the genotype probabilities calculated with
@@ -39,9 +40,12 @@ Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
  log10[ Pr(O[k] | g[k] = O[k]) / Pr(O[k] | g[k] != O[k]) ]}
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
-probs <- calc_genoprob(grav2, error_prob=0.002)
-errorlod <- calc_errorlod(grav2, probs)
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+probs <- calc_genoprob(iron, error_prob=0.002, map_function="c-f")
+errorlod <- calc_errorlod(iron, probs)
+
+# combine into one matrix
+errorlod <- do.call("cbind", errorlod)
 }
 \references{
 Lincoln SE, Lander ES (1992) Systematic detection of errors in genetic linkage data. Genomics 14:604--610.
