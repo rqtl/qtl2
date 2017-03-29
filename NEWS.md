@@ -1,3 +1,11 @@
+## qtl2geno 0.5-11 (2017-03-29)
+
+### New feature
+
+- Added `compare_geno` for comparing raw genotypes between pairs of
+  individuals (to look for possible sample duplicates).
+
+
 ## qtl2geno 0.5-10 (2017-03-27)
 
 ### New feature
