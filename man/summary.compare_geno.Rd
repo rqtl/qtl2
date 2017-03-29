@@ -18,6 +18,8 @@ of individuals, as output by \code{\link{compare_geno}}.}
 \item{...}{Ignored}
 
 \item{x}{Results of \code{\link{summary.compare_geno}}}
+
+\item{digits}{Number of digits to print}
 }
 \value{
 Data frame with individual pair, proportion matches, number

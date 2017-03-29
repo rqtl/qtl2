@@ -140,6 +140,7 @@ summary.compare_geno <-
 
 #' @rdname summary.compare_geno
 #' @param x Results of \code{\link{summary.compare_geno}}
+#' @param digits Number of digits to print
 #' @export
 print.summary.compare_geno <-
     function(x, digits=2, ...)
