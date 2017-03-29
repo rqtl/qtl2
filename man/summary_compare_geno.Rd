@@ -29,7 +29,7 @@ Data frame with individual pair, proportion matches, number
     of mismatches, number of matches, and total markers genotyped.
 }
 \description{
-From results of \code{\link{compare_geno}}, show individuals with similar genotypes.
+From results of \code{\link{compare_geno}}, show pairs of individuals with similar genotypes.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

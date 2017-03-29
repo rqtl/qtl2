@@ -83,7 +83,7 @@ compare_geno <-
 
 #' Basic summary of compare_geno object
 #'
-#' From results of \code{\link{compare_geno}}, show individuals with similar genotypes.
+#' From results of \code{\link{compare_geno}}, show pairs of individuals with similar genotypes.
 #'
 #' @param object A square matrix with genotype comparisons for pairs
 #'     of individuals, as output by \code{\link{compare_geno}}.
@@ -167,3 +167,62 @@ print.summary.compare_geno <-
     }
     invisible(x)
 }
+
+
+#' Find pair with most similar genotypes
+#'
+#' From results of \code{\link{compare_geno}}, show the pair with most similar genotypes.
+#'
+#' @param object A square matrix with genotype comparisons for pairs
+#'     of individuals, as output by \code{\link{compare_geno}}.
+#' @param ... Ignored
+#'
+#' @return Data frame with individual pair, proportion matches, number
+#'     of mismatches, number of matches, and total markers genotyped.
+#'
+#' @export
+#' @keywords utilities
+#'
+#' @examples
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' cg <- compare_geno(grav2)
+#' max(cg)
+
+max_compare_geno <-
+    function(object, ...)
+{
+    # proportion matching
+    p <- object
+    p[upper.tri(p)] <- p[upper.tri(p)] / t(p)[upper.tri(p)]
+    p[lower.tri(p)] <- t(p)[lower.tri(p)]
+    diag(p) <- NA
+
+    max_p <- max(unclass(p), na.rm=TRUE)
+
+    wh <- which(!is.na(p) & p == max_p, arr.ind=TRUE)
+    wh <- wh[wh[,1] < wh[,2], , drop=FALSE]
+
+    ind <- rownames(object)
+
+    r <- 1:nrow(wh)
+    p_match <- vapply(r, function(i) p[wh[i,1],wh[i,2]], 1)
+    n_match <- vapply(r, function(i) object[wh[i,1],wh[i,2]], 1)
+    n_typed <- vapply(r, function(i) object[wh[i,2],wh[i,1]], 1)
+
+    result <- data.frame(ind1=ind[wh[,1]],
+                         ind2=ind[wh[,2]],
+                         prop_match=p_match,
+                         n_mismatch=n_typed-n_match,
+                         n_typed=n_typed,
+                         n_match=n_match,
+                         stringsAsFactors=FALSE)
+
+    result <- result[order(result$prop_match, decreasing=TRUE),,drop=FALSE]
+
+    class(result) <- c("summary.compare_geno", "data.frame")
+    result
+}
+
+#' @rdname max_compare_geno
+#' @export
+max.compare_geno <- max_compare_geno

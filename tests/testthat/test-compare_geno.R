@@ -37,6 +37,10 @@ test_that("compare_geno works", {
                           threshold = 0.5)
     expect_equal(summary(cg, 0.5), expected)
 
+    # test max()
+    attr(expected, "threshold") <- NULL
+    expect_equal(max(cg), expected)
+
 })
 
 test_that("compare_geno works when multi-core", {
