@@ -4,11 +4,13 @@
 \alias{compare_geno}
 \title{Compare individuals' genotype data}
 \usage{
-compare_geno(cross, quiet = TRUE, cores = 1)
+compare_geno(cross, omit_x = FALSE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+
+\item{omit_x}{If TRUE, only use autosomal genotypes}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 

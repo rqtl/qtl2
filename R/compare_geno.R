@@ -6,6 +6,7 @@
 #'
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @param omit_x If TRUE, only use autosomal genotypes
 #' @param quiet IF \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -27,16 +28,25 @@
 #' summary(cg)
 
 compare_geno <-
-    function(cross, quiet=TRUE, cores=1)
+    function(cross, omit_x=FALSE, quiet=TRUE, cores=1)
 {
     if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')
 
-    geno <- cross$geno
-    chrnames <- names(geno)
-    chrnum <- seq_along(chrnames)
+    # which chr is X?
+    is_x_chr <- cross$is_x_chr
+    if(is.null(is_x_chr))
+        is_x_chr <- rep(FALSE, length(cross$geno))
 
-    ind_names <- rownames(geno[[1]])
+    # chr names and numeric indices
+    chrnames <- names(cross$geno)
+    chrnum <- seq_along(chrnames)
+    if(omit_x) { # don't use the X chromosome
+        chrnames <- chrnames[!is_x_chr]
+        chrnum <- chrnum[!is_x_chr]
+    }
+
+    ind_names <- rownames(cross$geno[[1]])
     n_ind <- length(ind_names)
 
     result <- matrix(0, nrow=n_ind, ncol=n_ind)
@@ -52,7 +62,7 @@ compare_geno <-
     # function that does the work
     by_chr_func <- function(chr) {
         if(!quiet) message(" - Chr ", chrnames[chr])
-        .compare_geno(t(geno[[chr]]))
+        .compare_geno(t(cross$geno[[chr]]))
     }
 
     # run and combine results
@@ -62,7 +72,7 @@ compare_geno <-
     }
     else {
         result_list <- cluster_lapply(cores, chrnum, by_chr_func)
-        for(i in chrnum)
+        for(i in seq_along(result_list))
             result <- result + result_list[[i]]
     }
 
