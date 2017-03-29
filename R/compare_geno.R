@@ -110,8 +110,19 @@ summary.compare_geno <-
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
 
-    if(sum(!is.na(p) & p >= threshold) == 0) # no results
-        return(NULL)
+    if(sum(!is.na(p) & p >= threshold) == 0) { # no results
+        result <- data.frame(ind1=character(0),
+                             ind2=character(0),
+                             prop_match=numeric(0),
+                             n_mismatch=numeric(0),
+                             n_typed=numeric(0),
+                             n_match=numeric(0),
+                             stringsAsFactors=FALSE)
+
+        class(result) <- c("summary.compare_geno", "data.frame")
+        attr(result, "threshold") <- threshold
+        return(result)
+    }
 
     wh <- which(!is.na(p) & p >= threshold, arr.ind=TRUE)
     wh <- wh[wh[,1] < wh[,2], , drop=FALSE]
@@ -131,7 +142,7 @@ summary.compare_geno <-
                          n_match=n_match,
                          stringsAsFactors=FALSE)
 
-    result <- result[order(result$prop_match),,drop=FALSE]
+    result <- result[order(result$prop_match, decreasing=TRUE),,drop=FALSE]
 
     attr(result, "threshold") <- threshold
     class(result) <- c("summary.compare_geno", "data.frame")
@@ -145,9 +156,10 @@ summary.compare_geno <-
 print.summary.compare_geno <-
     function(x, digits=2, ...)
 {
-    if(is.null(x))
-        cat("No pairs with proportion matches above ", attr(x, "threshold"))
+    if(nrow(x) == 0)
+        cat("No pairs with proportion matches above ", attr(x, "threshold"), ".\n", sep="")
     else {
         print.data.frame(x, digits=digits, row.names=FALSE)
     }
+    invisible(x)
 }
