@@ -101,7 +101,7 @@ compare_geno <-
 #' cg <- compare_geno(grav2)
 #' summary(cg)
 
-summary.compare_geno <-
+summary_compare_geno <-
     function(object, threshold=0.9, ...)
 {
     # proportion matching
@@ -149,7 +149,11 @@ summary.compare_geno <-
     result
 }
 
-#' @rdname summary.compare_geno
+#' @rdname summary_compare_geno
+#' @export
+summary.compare_geno <- summary_compare_geno
+
+#' @rdname summary_compare_geno
 #' @param x Results of \code{\link{summary.compare_geno}}
 #' @param digits Number of digits to print
 #' @export
