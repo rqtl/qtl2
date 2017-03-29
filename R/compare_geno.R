@@ -63,7 +63,7 @@ compare_geno <-
     else {
         result_list <- cluster_lapply(cores, chrnum, by_chr_func)
         for(i in chrnum)
-            result <- result + by_chr_res[[i]]
+            result <- result + result_list[[i]]
     }
 
     class(result) <- c("compare_geno", "matrix")
