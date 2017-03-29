@@ -80,6 +80,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// compare_geno
+IntegerMatrix compare_geno(const IntegerMatrix& geno);
+RcppExport SEXP qtl2geno_compare_geno(SEXP genoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
+    rcpp_result_gen = Rcpp::wrap(compare_geno(geno));
+    return rcpp_result_gen;
+END_RCPP
+}
 // mpp_encode_alleles
 int mpp_encode_alleles(const int allele1, const int allele2, const int n_alleles, const bool phase_known);
 RcppExport SEXP qtl2geno_mpp_encode_alleles(SEXP allele1SEXP, SEXP allele2SEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
