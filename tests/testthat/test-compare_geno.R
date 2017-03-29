@@ -22,6 +22,21 @@ test_that("compare_geno works", {
     cg_noX <- compare_geno(iron, omit_x=TRUE)
     expect_equal(cg_noX, expected - expectedX)
 
+    # test summary()
+    expected <- structure(list(ind1 = character(0), ind2 = character(0), prop_match = numeric(0),
+                               n_mismatch = numeric(0), n_typed = numeric(0), n_match = numeric(0)),
+                          .Names = c("ind1", "ind2", "prop_match", "n_mismatch", "n_typed", "n_match"),
+                          row.names = integer(0), class = c("summary.compare_geno", "data.frame"),
+                          threshold = 0.9)
+    expect_equal(summary(cg), expected)
+
+    expected <- structure(list(ind1 = "3", ind2 = "4", prop_match = 0.666666666666667,
+                               n_mismatch = 2, n_typed = 6, n_match = 4),
+                          .Names = c("ind1", "ind2", "prop_match", "n_mismatch", "n_typed", "n_match"),
+                          row.names = 1L, class = c("summary.compare_geno", "data.frame"),
+                          threshold = 0.5)
+    expect_equal(summary(cg, 0.5), expected)
+
 })
 
 test_that("compare_geno works when multi-core", {
