@@ -37,6 +37,10 @@ class AIL : public QTLCross
     const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr);
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
+
+    const int nrec(const int gen_left, const int gen_right,
+                   const bool is_x_chr, const bool is_female,
+                   const Rcpp::IntegerVector& cross_info);
 };
 
 #endif // CROSS_AIL_H

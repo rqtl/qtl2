@@ -516,7 +516,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_nrec
-double test_nrec(const String& crosstype, const int gen_left, const int gen_right, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
+int test_nrec(const String& crosstype, const int gen_left, const int gen_right, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 RcppExport SEXP qtl2geno_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

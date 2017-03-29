@@ -28,8 +28,8 @@ Rcpp::IntegerVector test_possible_gen(const Rcpp::String& crosstype,
 
 int test_ngen(const Rcpp::String& crosstype, const bool is_x_chr);
 
-double test_nrec(const Rcpp::String& crosstype, const int gen_left, const int gen_right,
-                 const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
+int test_nrec(const Rcpp::String& crosstype, const int gen_left, const int gen_right,
+              const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
 
 bool test_founder_geno(const Rcpp::String& crosstype, const Rcpp::IntegerMatrix& founder_geno, const int n_markers);
 

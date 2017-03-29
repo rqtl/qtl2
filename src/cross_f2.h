@@ -40,9 +40,9 @@ class F2 : public QTLCross
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
 
-    const double nrec(const int gen_left, const int gen_right,
-                      const bool is_x_chr, const bool is_female,
-                      const Rcpp::IntegerVector& cross_info);
+    const int nrec(const int gen_left, const int gen_right,
+                   const bool is_x_chr, const bool is_female,
+                   const Rcpp::IntegerVector& cross_info);
 
 };
 

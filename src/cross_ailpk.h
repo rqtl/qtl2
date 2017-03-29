@@ -30,8 +30,8 @@ class AILPK : public QTLCross
 
     const int ngen(const bool is_x_chr);
 
-    const double nrec(const int gen_left, const int gen_right,
-                      const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
+    const int nrec(const int gen_left, const int gen_right,
+                   const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
 
     // this isn't actually implemented yet; just throws an error
     const double est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,

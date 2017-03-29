@@ -214,12 +214,12 @@ const int HSPK::nalleles()
     return 8;
 }
 
-const double HSPK::nrec(const int gen_left, const int gen_right,
-                        const bool is_x_chr, const bool is_female,
-                        const IntegerVector& cross_info)
+const int HSPK::nrec(const int gen_left, const int gen_right,
+                     const bool is_x_chr, const bool is_female,
+                     const IntegerVector& cross_info)
 {
     // need to fill in this function
-    return NA_REAL;
+    return NA_INTEGER;
 }
 
 const double HSPK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,

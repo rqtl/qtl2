@@ -82,12 +82,12 @@ int test_ngen(const String& crosstype, const bool is_x_chr)
 }
 
 // [[Rcpp::export]]
-double test_nrec(const String& crosstype, const int gen_left, const int gen_right,
-                 const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
+int test_nrec(const String& crosstype, const int gen_left, const int gen_right,
+              const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
 
-    double result = cross->nrec(gen_left, gen_right, is_x_chr, is_female, cross_info);
+    int result = cross->nrec(gen_left, gen_right, is_x_chr, is_female, cross_info);
     delete cross;
     return result;
 }
