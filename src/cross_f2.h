@@ -39,6 +39,11 @@ class F2 : public QTLCross
     const Rcpp::NumericMatrix get_x_covar(const Rcpp::LogicalVector& is_female, const Rcpp::IntegerMatrix& cross_info);
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
+
+    const double nrec(const int gen_left, const int gen_right,
+                      const bool is_x_chr, const bool is_female,
+                      const Rcpp::IntegerVector& cross_info);
+
 };
 
 #endif // CROSS_F2_H

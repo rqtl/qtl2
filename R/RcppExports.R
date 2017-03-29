@@ -29,6 +29,10 @@ check_handle_x_chr <- function(crosstype, any_x_chr) {
     .Call('qtl2geno_compare_geno', PACKAGE = 'qtl2geno', geno)
 }
 
+.count_xo <- function(geno, crosstype, is_X_chr) {
+    .Call('qtl2geno_count_xo', PACKAGE = 'qtl2geno', geno, crosstype, is_X_chr)
+}
+
 mpp_encode_alleles <- function(allele1, allele2, n_alleles, phase_known) {
     .Call('qtl2geno_mpp_encode_alleles', PACKAGE = 'qtl2geno', allele1, allele2, n_alleles, phase_known)
 }

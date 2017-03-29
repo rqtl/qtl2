@@ -376,3 +376,37 @@ const std::vector<std::string> F2::geno_names(const std::vector<std::string> all
         return result;
     }
 }
+
+// used in counting crossovers in count_xo.R and locate_xo.R
+const double F2::nrec(const int gen_left, const int gen_right,
+                      const bool is_x_chr, const bool is_female,
+                      const Rcpp::IntegerVector& cross_info)
+{
+    if(!is_x_chr) {
+        switch(gen_left) {
+        case 1:
+            switch(gen_right) {
+            case 1: return(0.0);
+            case 2: return(1.0);
+            case 3: return(2.0);
+            }
+        case 2:
+            switch(gen_right) {
+            case 1: case 3: return(1.0);
+            case 2: return(0.0);
+            }
+        case 3:
+            switch(gen_right) {
+            case 1: return(2.0);
+            case 2: return(1.0);
+            case 3: return(0.0);
+            }
+        }
+    }
+    else { // X chromosome
+        if(gen_left == gen_right) return(0.0);
+        else return(1.0);
+    }
+
+    return(NA_REAL);
+}

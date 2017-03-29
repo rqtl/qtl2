@@ -25,8 +25,10 @@ of individuals, as output by \code{\link{compare_geno}}.}
 \item{digits}{Number of digits to print}
 }
 \value{
-Data frame with individual pair, proportion matches, number
-    of mismatches, number of matches, and total markers genotyped.
+Data frame with names of individuals in pair, proportion
+    matches, number of mismatches, number of matches, and total
+    markers genotyped. Last two columns are the numeric indexes of
+    the individuals in the pair.
 }
 \description{
 From results of \code{\link{compare_geno}}, show pairs of individuals with similar genotypes.
