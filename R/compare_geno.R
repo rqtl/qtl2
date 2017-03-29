@@ -90,8 +90,10 @@ compare_geno <-
 #' @param threshold Minimum proportion matches for a pair of individuals to be shown.
 #' @param ... Ignored
 #'
-#' @return Data frame with individual pair, proportion matches, number
-#'     of mismatches, number of matches, and total markers genotyped.
+#' @return Data frame with names of individuals in pair, proportion
+#'     matches, number of mismatches, number of matches, and total
+#'     markers genotyped. Last two columns are the numeric indexes of
+#'     the individuals in the pair.
 #'
 #' @export
 #' @keywords utilities
@@ -117,6 +119,8 @@ summary_compare_geno <-
                              n_mismatch=numeric(0),
                              n_typed=numeric(0),
                              n_match=numeric(0),
+                             index1=numeric(0),
+                             index2=numeric(0),
                              stringsAsFactors=FALSE)
 
         class(result) <- c("summary.compare_geno", "data.frame")
@@ -140,6 +144,8 @@ summary_compare_geno <-
                          n_mismatch=n_typed-n_match,
                          n_typed=n_typed,
                          n_match=n_match,
+                         index1=wh[,1],
+                         index2=wh[,2],
                          stringsAsFactors=FALSE)
 
     result <- result[order(result$prop_match, decreasing=TRUE),,drop=FALSE]
@@ -215,6 +221,8 @@ max_compare_geno <-
                          n_mismatch=n_typed-n_match,
                          n_typed=n_typed,
                          n_match=n_match,
+                         index1=wh[,1],
+                         index2=wh[,2],
                          stringsAsFactors=FALSE)
 
     result <- result[order(result$prop_match, decreasing=TRUE),,drop=FALSE]
