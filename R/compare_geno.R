@@ -14,8 +14,8 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
 #' @return A square matrix; diagonal is number of observed genotypes
-#' for each individual; upper triangle is the number of matching
-#' genotypes for each pair; lower triangle is the number of
+#' for each individual; the upper triangle is the proprotion of matching
+#' genotypes for each pair; the lower triangle is the number of
 #' markers where both of a pair were genotyped. The object is
 #' given class \code{"compare_geno"}.
 #'
@@ -76,6 +76,10 @@ compare_geno <-
             result <- result + result_list[[i]]
     }
 
+    # upper triangle from count -> proportion
+    result[upper.tri(result)] <- result[upper.tri(result)]/t(result)[upper.tri(result)]
+    result[is.nan(result)] <- NA
+
     class(result) <- c("compare_geno", "matrix")
     result
 }
@@ -106,11 +110,15 @@ compare_geno <-
 summary_compare_geno <-
     function(object, threshold=0.9, ...)
 {
-    # proportion matching
+    # proportion matching as symmetric matrix
     p <- object
-    p[upper.tri(p)] <- p[upper.tri(p)] / t(p)[upper.tri(p)]
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
+
+    # number matching in upper triangle
+    object[upper.tri(object)] <- round(object[upper.tri(object)]*
+                                       t(object)[upper.tri(object)])
+    object[is.na(object)] <- 0
 
     if(sum(!is.na(p) & p >= threshold) == 0) { # no results
         result <- data.frame(ind1=character(0),
@@ -197,12 +205,17 @@ print.summary.compare_geno <-
 max_compare_geno <-
     function(object, ...)
 {
-    # proportion matching
+    # proportion matching as symmetric matrix
     p <- object
-    p[upper.tri(p)] <- p[upper.tri(p)] / t(p)[upper.tri(p)]
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
 
+    # number matching in upper triangle
+    object[upper.tri(object)] <- round(object[upper.tri(object)]*
+                                       t(object)[upper.tri(object)])
+    object[is.na(object)] <- 0
+
+    # maximum proportion of matches
     max_p <- max(unclass(p), na.rm=TRUE)
 
     wh <- which(!is.na(p) & p == max_p, arr.ind=TRUE)

@@ -21,8 +21,8 @@ produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
 A square matrix; diagonal is number of observed genotypes
-for each individual; upper triangle is the number of matching
-genotypes for each pair; lower triangle is the number of
+for each individual; the upper triangle is the proprotion of matching
+genotypes for each pair; the lower triangle is the number of
 markers where both of a pair were genotyped. The object is
 given class \code{"compare_geno"}.
 }
