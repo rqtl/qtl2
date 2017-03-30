@@ -109,6 +109,10 @@ subtrlog <- function(a, b) {
     .Call('qtl2geno_viterbi2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
 
+.locate_xo <- function(geno, map, crosstype, is_X_chr) {
+    .Call('qtl2geno_locate_xo', PACKAGE = 'qtl2geno', geno, map, crosstype, is_X_chr)
+}
+
 .maxmarg <- function(prob_array, minprob) {
     .Call('qtl2geno_maxmarg', PACKAGE = 'qtl2geno', prob_array, minprob)
 }

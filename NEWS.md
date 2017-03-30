@@ -1,3 +1,12 @@
+## qtl2geno 0.5-12 (2017-03-29)
+
+## New features
+
+- Added functions `count_xo` and `locate_xo` for getting estimates of
+  the number of crossovers on each chromosome in each individual, and
+  of their locations.
+
+
 ## qtl2geno 0.5-11 (2017-03-29)
 
 ### New feature
