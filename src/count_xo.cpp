@@ -32,7 +32,7 @@ IntegerVector count_xo(const IntegerMatrix geno, // genotype matrix markers x in
             }
 
             if(g != last_g)
-                n_xo += (int)cross->nrec(last_g, g, is_X_chr, false, null_cross_info);
+                n_xo += cross->nrec(last_g, g, is_X_chr, false, null_cross_info);
 
             last_g = g;
         } // end loop over markers
