@@ -94,9 +94,9 @@ public:
         return x;
     }
 
-    virtual const double nrec(const int gen_left, const int gen_right,
-                              const bool is_x_chr, const bool is_female,
-                              const Rcpp::IntegerVector& cross_info)
+    virtual const int nrec(const int gen_left, const int gen_right,
+                           const bool is_x_chr, const bool is_female,
+                           const Rcpp::IntegerVector& cross_info)
     {
         #ifndef NDEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -104,8 +104,8 @@ public:
             throw std::range_error("genotype value not allowed");
         #endif
 
-        if(gen_left == gen_right) return 0.0;
-        else return 1.0;
+        if(gen_left == gen_right) return 0;
+        else return 1;
     }
 
     virtual const double est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,

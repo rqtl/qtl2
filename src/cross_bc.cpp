@@ -102,8 +102,8 @@ const int BC::ngen(const bool is_x_chr)
 }
 
 
-const double BC::nrec(const int gen_left, const int gen_right,
-                      const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
+const int BC::nrec(const int gen_left, const int gen_right,
+                   const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -111,8 +111,8 @@ const double BC::nrec(const int gen_left, const int gen_right,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(gen_left == gen_right) return 0.0;
-    else return 1.0;
+    if(gen_left == gen_right) return 0;
+    else return 1;
 }
 
 // check that sex conforms to expectation

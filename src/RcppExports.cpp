@@ -91,6 +91,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// count_xo
+IntegerVector count_xo(const IntegerMatrix geno, const String& crosstype, const bool is_X_chr);
+RcppExport SEXP qtl2geno_count_xo(SEXP genoSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix >::type geno(genoSEXP);
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP);
+    rcpp_result_gen = Rcpp::wrap(count_xo(geno, crosstype, is_X_chr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // mpp_encode_alleles
 int mpp_encode_alleles(const int allele1, const int allele2, const int n_alleles, const bool phase_known);
 RcppExport SEXP qtl2geno_mpp_encode_alleles(SEXP allele1SEXP, SEXP allele2SEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
@@ -385,6 +398,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// locate_xo
+List locate_xo(const IntegerMatrix geno, const NumericVector map, const String& crosstype, const bool is_X_chr);
+RcppExport SEXP qtl2geno_locate_xo(SEXP genoSEXP, SEXP mapSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix >::type geno(genoSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type map(mapSEXP);
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP);
+    rcpp_result_gen = Rcpp::wrap(locate_xo(geno, map, crosstype, is_X_chr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // maxmarg
 IntegerMatrix maxmarg(const NumericVector& prob_array, const double minprob);
 RcppExport SEXP qtl2geno_maxmarg(SEXP prob_arraySEXP, SEXP minprobSEXP) {
@@ -503,7 +530,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // test_nrec
-double test_nrec(const String& crosstype, const int gen_left, const int gen_right, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
+int test_nrec(const String& crosstype, const int gen_left, const int gen_right, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 RcppExport SEXP qtl2geno_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

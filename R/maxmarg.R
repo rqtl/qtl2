@@ -91,6 +91,7 @@ maxmarg <-
     }
 
     dn <- dimnames(probs)
+    probs_attr <- attributes(probs)
 
     # function that does the work
     by_chr_func <- function(chr, return_char) {
@@ -117,8 +118,10 @@ maxmarg <-
     # if chr and pos given, return a vector
     if(!is.null(pos)) return(result[[1]][,1])
 
-    # otherwise, return an object like vitebri()
-    probs <- result
-    class(probs) <- c("viterbi", "list")
-    probs
+    # otherwise, return an object like viterbi()
+    attr(result, "crosstype") <- probs_attr$crosstype
+    attr(result, "alleles") <- probs_attr$alleles
+    attr(result, "is_x_chr") <- probs_attr$is_x_chr
+    class(result) <- c("viterbi", "list")
+    result
 }

@@ -362,3 +362,33 @@ const std::vector<std::string> DO::geno_names(const std::vector<std::string> all
 {
     return mpp_geno_names(alleles, is_x_chr);
 }
+
+// used in counting crossovers in count_xo.R and locate_xo.R
+const int DO::nrec(const int gen_left, const int gen_right,
+                   const bool is_x_chr, const bool is_female,
+                   const Rcpp::IntegerVector& cross_info)
+{
+    if(is_x_chr && gen_left > 36 && gen_right > 36) { // male X chromosome
+        if(gen_left == gen_right) return(0);
+        else return(1);
+    }
+
+    Rcpp::IntegerVector a_left = mpp_decode_geno(gen_left, 8, false);
+    Rcpp::IntegerVector a_right = mpp_decode_geno(gen_right, 8, false);
+
+    if(a_left[0] == a_right[0]) {
+        if(a_left[1] == a_right[1]) return(0);
+        else return(1);
+    }
+    else if(a_left[0] == a_right[1]) {
+        if(a_left[1] == a_right[0]) return(0);
+        else return(1);
+    }
+    else if(a_left[1] == a_right[0]) {
+        return(1);
+    }
+    else if(a_left[1] == a_right[1]) {
+        return(1);
+    }
+    else return(2);
+}

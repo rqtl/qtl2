@@ -383,7 +383,7 @@ const int AILPK::ngen(const bool is_x_chr)
     return 4;
 }
 
-const double AILPK::nrec(const int gen_left, const int gen_right,
+const int AILPK::nrec(const int gen_left, const int gen_right,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
@@ -394,34 +394,34 @@ const double AILPK::nrec(const int gen_left, const int gen_right,
     #endif
 
     if(is_x_chr && !is_female) { // male X chr
-        if(gen_left == gen_right) return 0.0;
-        else return 1.0;
+        if(gen_left == gen_right) return 0;
+        else return 1;
     }
     else { // autosome or female X chr
         switch(gen_left) {
         case AA:
             switch(gen_right) {
-            case AA: return 0.0;
-            case AB: case BA: return 0.5;
-            case BB: return 1.0;
+            case AA: return 0;
+            case AB: case BA: return 1;
+            case BB: return 2;
             }
         case AB:
             switch(gen_right) {
-            case AA: case BB: return 0.5;
-            case AB: return 0.0;
-            case BA: return 1.0;
+            case AA: case BB: return 1;
+            case AB: return 0;
+            case BA: return 2;
             }
         case BA:
             switch(gen_right) {
-            case AA: case BB: return 0.5;
-            case BA: return 0.0;
-            case AB: return 1.0;
+            case AA: case BB: return 1;
+            case BA: return 0;
+            case AB: return 2;
             }
         case BB:
             switch(gen_right) {
-            case AA: return 1.0;
-            case AB: case BA: return 0.5;
-            case BB: return 0.0;
+            case AA: return 2;
+            case AB: case BA: return 1;
+            case BB: return 0;
             }
         }
     }

@@ -205,9 +205,9 @@ const int F2PK::ngen(const bool is_x_chr)
     return 4;
 }
 
-const double F2PK::nrec(const int gen_left, const int gen_right,
-                        const bool is_x_chr, const bool is_female,
-                        const IntegerVector& cross_info)
+const int F2PK::nrec(const int gen_left, const int gen_right,
+                     const bool is_x_chr, const bool is_female,
+                     const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -216,34 +216,34 @@ const double F2PK::nrec(const int gen_left, const int gen_right,
     #endif
 
     if(is_x_chr) {
-        if(gen_left == gen_right) return 0.0;
-        else return 1.0;
+        if(gen_left == gen_right) return 0;
+        else return 1;
     }
     else { // autosome
         switch(gen_left) {
         case AA:
             switch(gen_right) {
-            case AA: return 0.0;
-            case AB: case BA: return 0.5;
-            case BB: return 1.0;
+            case AA: return 0;
+            case AB: case BA: return 1;
+            case BB: return 2;
             }
         case AB:
             switch(gen_right) {
-            case AA: case BB: return 0.5;
-            case AB: return 0.0;
-            case BA: return 1.0;
+            case AA: case BB: return 1;
+            case AB: return 0;
+            case BA: return 2;
             }
         case BA:
             switch(gen_right) {
-            case AA: case BB: return 0.5;
-            case BA: return 0.0;
-            case AB: return 1.0;
+            case AA: case BB: return 1;
+            case BA: return 0;
+            case AB: return 2;
             }
         case BB:
             switch(gen_right) {
-            case AA: return 1.0;
-            case AB: case BA: return 0.5;
-            case BB: return 0.0;
+            case AA: return 2;
+            case AB: case BA: return 1;
+            case BB: return 0;
             }
         }
     }
@@ -267,7 +267,7 @@ const double F2PK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
 
     for(int il=0; il<n_gen; il++) {
         for(int ir=0; ir<n_gen; ir++)
-            num_rec(il,ir) = nrec(il+1, ir+1, false, false, empty);
+            num_rec(il,ir) = 0.5*(double)nrec(il+1, ir+1, false, false, empty);
     }
 
     double numerator=0.0;
