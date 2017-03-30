@@ -10,6 +10,7 @@ test_that("compare_geno works", {
                             NA, 6, 6, 0, 0.166666666666667, NA, 0.666666666666667, 6, 0,
                             NA, NA, NA, NA, 0), .Dim = c(5L, 5L),
                           .Dimnames = list(c("1", "2", "3", "4", "5"), c("1", "2", "3", "4", "5")),
+                          proportion=TRUE,
                           class = c("compare_geno", "matrix"))
     expect_equal(cg, expected)
 
@@ -17,6 +18,7 @@ test_that("compare_geno works", {
     expectedX <- structure(c(2, 0, 2, 2, 0, NA, 0, 0, 0, 0, 0, NA, 2, 2, 0, 0,
                              NA, 1, 2, 0, NA, NA, NA, NA, 0), .Dim = c(5L, 5L),
                            .Dimnames = list(c("1", "2", "3", "4", "5"), c("1", "2", "3", "4", "5")),
+                           proportion=TRUE,
                            class = c("compare_geno", "matrix"))
     expect_equal(cg_X, expectedX)
 
@@ -24,8 +26,14 @@ test_that("compare_geno works", {
     expected_noX <- structure(c(4, 0, 4, 4, 0, NA, 0, 0, 0, 0, 0.5, NA, 4, 4, 0,
                                 0.25, NA, 0.5, 4, 0, NA, NA, NA, NA, 0), .Dim = c(5L, 5L),
                               .Dimnames = list(c("1", "2", "3", "4", "5"), c("1", "2", "3", "4", "5")),
+                              proportion=TRUE,
                               class = c("compare_geno", "matrix"))
     expect_equal(cg_noX, expected_noX)
+
+    # if proportion=FALSE, total is sum of X and autosomes
+    expect_equal(compare_geno(iron, proportion=FALSE),
+                 compare_geno(iron[,"X"], proportion=FALSE) +
+                 compare_geno(iron, omit_x=TRUE, proportion=FALSE))
 
     # test summary()
     expected <- structure(list(ind1 = character(0), ind2 = character(0), prop_match = numeric(0),

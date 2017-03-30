@@ -7,6 +7,10 @@
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param omit_x If TRUE, only use autosomal genotypes
+#' @param proportion If TRUE (the default), the upper triangle of the
+#'     result contains the proportions of matching genotypes. If
+#'     FALSE, the upper triangle contains counts of matching
+#'     genotypes.
 #' @param quiet IF \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -14,10 +18,12 @@
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
 #' @return A square matrix; diagonal is number of observed genotypes
-#' for each individual; the upper triangle is the proprotion of matching
-#' genotypes for each pair; the lower triangle is the number of
-#' markers where both of a pair were genotyped. The object is
-#' given class \code{"compare_geno"}.
+#' for each individual. The values in the lower triangle are the
+#' numbers of markers where both of a pair were genotyped. The
+#' values in the upper triangle are either proportions or counts
+#' of matching genotypes for each pair (depending on whether
+#' \code{proportion=TRUE} or \code{=FALSE}). The object is given
+#' class \code{"compare_geno"}.
 #'
 #' @export
 #' @keywords utilities
@@ -28,7 +34,7 @@
 #' summary(cg)
 
 compare_geno <-
-    function(cross, omit_x=FALSE, quiet=TRUE, cores=1)
+    function(cross, omit_x=FALSE, proportion=TRUE, quiet=TRUE, cores=1)
 {
     if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')
@@ -77,9 +83,12 @@ compare_geno <-
     }
 
     # upper triangle from count -> proportion
-    result[upper.tri(result)] <- result[upper.tri(result)]/t(result)[upper.tri(result)]
-    result[is.nan(result)] <- NA
+    if(proportion) {
+        result[upper.tri(result)] <- result[upper.tri(result)]/t(result)[upper.tri(result)]
+        result[is.nan(result)] <- NA
+    }
 
+    attr(result, "proportion") <- proportion
     class(result) <- c("compare_geno", "matrix")
     result
 }
@@ -110,15 +119,28 @@ compare_geno <-
 summary_compare_geno <-
     function(object, threshold=0.9, ...)
 {
+    # does upper triangle contain proportions or not?
+    proportion <- attr(object, "proportion")
+    if(is.null(proportion)) { # missing attribute; guess
+        if(max(object[upper.tri(object)], na.rm=TRUE) <= 1)
+            proportion <- TRUE
+        else proportion <- FALSE
+    }
+
     # proportion matching as symmetric matrix
-    p <- object
+    if(proportion) {
+        p <- object
+
+        # number matching in upper triangle
+        object[upper.tri(object)] <- round(object[upper.tri(object)]*
+                                           t(object)[upper.tri(object)])
+        object[is.na(object)] <- 0
+    } else {
+        p <- object
+        p[upper.tri(p)] <- cg[upper.tri(p)]/t(cg)[upper.tri(p)]
+    }
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
-
-    # number matching in upper triangle
-    object[upper.tri(object)] <- round(object[upper.tri(object)]*
-                                       t(object)[upper.tri(object)])
-    object[is.na(object)] <- 0
 
     if(sum(!is.na(p) & p >= threshold) == 0) { # no results
         result <- data.frame(ind1=character(0),
@@ -205,15 +227,28 @@ print.summary.compare_geno <-
 max_compare_geno <-
     function(object, ...)
 {
+    # does upper triangle contain proportions or not?
+    proportion <- attr(object, "proportion")
+    if(is.null(proportion)) { # missing attribute; guess
+        if(max(object[upper.tri(object)], na.rm=TRUE) <= 1)
+            proportion <- TRUE
+        else proportion <- FALSE
+    }
+
     # proportion matching as symmetric matrix
-    p <- object
+    if(proportion) {
+        p <- object
+
+        # number matching in upper triangle
+        object[upper.tri(object)] <- round(object[upper.tri(object)]*
+                                           t(object)[upper.tri(object)])
+        object[is.na(object)] <- 0
+    } else {
+        p <- object
+        p[upper.tri(p)] <- cg[upper.tri(p)]/t(cg)[upper.tri(p)]
+    }
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
-
-    # number matching in upper triangle
-    object[upper.tri(object)] <- round(object[upper.tri(object)]*
-                                       t(object)[upper.tri(object)])
-    object[is.na(object)] <- 0
 
     # maximum proportion of matches
     max_p <- max(unclass(p), na.rm=TRUE)
