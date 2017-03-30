@@ -1,4 +1,4 @@
-## qtl2geno 0.5-12 (2017-03-29)
+## qtl2geno 0.5-12 (2017-03-30)
 
 ## New features
 
@@ -6,18 +6,8 @@
   the number of crossovers on each chromosome in each individual, and
   of their locations.
 
-
-## qtl2geno 0.5-11 (2017-03-29)
-
-### New feature
-
 - Added `compare_geno` for comparing raw genotypes between pairs of
   individuals (to look for possible sample duplicates).
-
-
-## qtl2geno 0.5-10 (2017-03-27)
-
-### New feature
 
 - Added `calc_errorlod` to help identify potential genotyping errors
   (and problem markers or individuals).
