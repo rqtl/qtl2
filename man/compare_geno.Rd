@@ -4,13 +4,19 @@
 \alias{compare_geno}
 \title{Compare individuals' genotype data}
 \usage{
-compare_geno(cross, omit_x = FALSE, quiet = TRUE, cores = 1)
+compare_geno(cross, omit_x = FALSE, proportion = TRUE, quiet = TRUE,
+  cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{omit_x}{If TRUE, only use autosomal genotypes}
+
+\item{proportion}{If TRUE (the default), the upper triangle of the
+result contains the proportions of matching genotypes. If
+FALSE, the upper triangle contains counts of matching
+genotypes.}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
@@ -21,10 +27,12 @@ produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
 A square matrix; diagonal is number of observed genotypes
-for each individual; upper triangle is the number of matching
-genotypes for each pair; lower triangle is the number of
-markers where both of a pair were genotyped. The object is
-given class \code{"compare_geno"}.
+for each individual. The values in the lower triangle are the
+numbers of markers where both of a pair were genotyped. The
+values in the upper triangle are either proportions or counts
+of matching genotypes for each pair (depending on whether
+\code{proportion=TRUE} or \code{=FALSE}). The object is given
+class \code{"compare_geno"}.
 }
 \description{
 Count the number of matching genotypes between all pairs of
