@@ -55,6 +55,20 @@ test_that("compare_geno works", {
     attr(expected, "threshold") <- NULL
     expect_equal(max(cg), expected)
 
+    # summary and max should give the same results whether you use proportion=TRUE or FALSE
+    expect_equal(summary(compare_geno(iron, proportion=TRUE)),
+                 summary(compare_geno(iron, proportion=FALSE)))
+    expect_equal(summary(compare_geno(iron, proportion=TRUE), threshold=0.7),
+                 summary(compare_geno(iron, proportion=FALSE), threshold=0.7))
+    expect_equal(max(compare_geno(iron, proportion=TRUE)),
+                 max(compare_geno(iron, proportion=FALSE)))
+    expect_equal(summary(compare_geno(iron, omit_x=TRUE, proportion=TRUE)),
+                 summary(compare_geno(iron, omit_x=TRUE, proportion=FALSE)))
+    expect_equal(summary(compare_geno(iron, omit_x=TRUE, proportion=TRUE), threshold=0.7),
+                 summary(compare_geno(iron, omit_x=TRUE, proportion=FALSE), threshold=0.7))
+    expect_equal(max(compare_geno(iron, omit_x=TRUE, proportion=TRUE)),
+                 max(compare_geno(iron, omit_x=TRUE, proportion=FALSE)))
+
 })
 
 test_that("compare_geno works when multi-core", {

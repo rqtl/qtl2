@@ -137,7 +137,7 @@ summary_compare_geno <-
         object[is.na(object)] <- 0
     } else {
         p <- object
-        p[upper.tri(p)] <- cg[upper.tri(p)]/t(cg)[upper.tri(p)]
+        p[upper.tri(p)] <- object[upper.tri(p)]/t(object)[upper.tri(p)]
     }
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
@@ -245,7 +245,7 @@ max_compare_geno <-
         object[is.na(object)] <- 0
     } else {
         p <- object
-        p[upper.tri(p)] <- cg[upper.tri(p)]/t(cg)[upper.tri(p)]
+        p[upper.tri(p)] <- object[upper.tri(p)]/t(object)[upper.tri(p)]
     }
     p[lower.tri(p)] <- t(p)[lower.tri(p)]
     diag(p) <- NA
