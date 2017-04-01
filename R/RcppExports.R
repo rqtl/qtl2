@@ -17,6 +17,14 @@
     .Call('qtl2scan_R_find_peaks_and_bayesint', PACKAGE = 'qtl2scan', lod, pos, threshold, peakdrop, prob)
 }
 
+fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_fit1_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
+}
+
+fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, tol = 1e-12) {
+    .Call('qtl2scan_fit1_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, tol)
+}
+
 interpolate_map <- function(oldpos, oldmap, newmap) {
     .Call('qtl2scan_interpolate_map', PACKAGE = 'qtl2scan', oldpos, oldmap, newmap)
 }
@@ -91,6 +99,10 @@ calc_resid_linreg <- function(X, Y, tol = 1e-12) {
 
 calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
     .Call('qtl2scan_calc_resid_linreg_3d', PACKAGE = 'qtl2scan', X, P, tol)
+}
+
+fit_linreg <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_fit_linreg', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 Rcpp_eigen_decomp <- function(A) {

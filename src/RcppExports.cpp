@@ -61,6 +61,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fit1_hk_addcovar
+List fit1_hk_addcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const double tol);
+RcppExport SEXP qtl2scan_fit1_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit1_hk_intcovar
+List fit1_hk_intcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
+RcppExport SEXP qtl2scan_fit1_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit1_hk_intcovar(genoprobs, pheno, addcovar, intcovar, weights, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
@@ -299,6 +330,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     rcpp_result_gen = Rcpp::wrap(calc_resid_linreg_3d(X, P, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit_linreg
+List fit_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_fit_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_linreg(X, y, tol));
     return rcpp_result_gen;
 END_RCPP
 }
