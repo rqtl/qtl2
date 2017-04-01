@@ -345,7 +345,7 @@ nullrss_clean <-
     if(add_intercept)
         addcovar <- cbind(rep(1,n), addcovar) # add intercept
 
-    if(is.null(weights)) { # no weights
+    if(is.null(weights) || length(weights)==0) { # no weights
         result <- calc_rss_linreg(addcovar, pheno, tol)
     } else { # weights included
         result <- calc_rss_linreg(addcovar*weights, pheno*weights, tol)
