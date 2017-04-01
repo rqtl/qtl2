@@ -29,4 +29,10 @@ Rcpp::NumericVector calc_resid_linreg_3d(const Rcpp::NumericMatrix& X,
                                          const Rcpp::NumericVector& P,
                                          const double tol);
 
+// Linear regression of y on X, returning a bunch of stuff
+// output is list of (coef, fitted, resid, rss, sigma, rank, df, SE)
+Rcpp::List fit_linreg(const Rcpp::NumericMatrix& X,
+                      const Rcpp::NumericVector& y,
+                      const double tol);
+
 #endif // LINREG_H
