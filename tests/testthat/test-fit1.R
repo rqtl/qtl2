@@ -71,3 +71,59 @@ test_that("fit1 by H-K works in intercross", {
     for(i in 1:3)
         expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
 })
+
+
+test_that("fit1 by H-K works in riself", {
+
+    library(qtl2geno)
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- grav2[,4:5]
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
+
+    pheno <- grav2$pheno[,219]
+
+    # calculate LOD scores
+    out <- scan1(probs, pheno)
+
+    # estimate coefficients
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno))
+
+    # fit1, no missing data
+    npos <- sapply(probs, function(a) dim(a)[3])
+    pmar <- c(1, 172)
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno))
+
+    pos <- c(0,npos[1]) + pmar
+    # check LOD vs scan1, plus ind'l contributions to LOD
+    for(i in 1:2) {
+        expect_equal(out_fit1[[i]]$lod, out[pos[i],1])
+        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
+    }
+
+    # check coefficients
+    for(i in 1:2)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+
+    # repeat the whole thing with a couple of missing phenotypes
+    pheno[c(24, 106)] <- NA
+
+    # calculate LOD scores
+    out <- scan1(probs, pheno)
+
+    # estimate coefficients
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno))
+
+    # fit1, no missing data
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno))
+
+    # check LOD vs scan1, plus ind'l contributions to LOD
+    for(i in 1:2) {
+        expect_equal(out_fit1[[i]]$lod, out[pos[i],1])
+        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
+    }
+
+    # check coefficients
+    for(i in 1:2)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+})
