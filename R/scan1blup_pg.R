@@ -1,6 +1,6 @@
 # Calculate BLUPs of QTL effects in scan along one chromosome, with residual polygenic effect
 scan1blup_pg <-
-    function(genoprobs, pheno, kinship, addcovar=NULL,
+    function(genoprobs, pheno, kinship, addcovar=NULL, nullcovar=NULL,
              contrasts=NULL, se=FALSE, reml=TRUE, preserve_intercept=FALSE,
              tol=1e-12, cores=1, quiet=TRUE)
 {
@@ -9,6 +9,8 @@ scan1blup_pg <-
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
+    if(!is.null(nullcovar) && !is.matrix(nullcovar))
+        nullcovar <- as.matrix(nullcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
 
@@ -53,7 +55,7 @@ scan1blup_pg <-
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs, addcovar, complete.cases=TRUE)
+    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs, addcovar, nullcovar, complete.cases=TRUE)
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")
@@ -74,6 +76,7 @@ scan1blup_pg <-
     genoprobs <- genoprobs[ind2keep,,,drop=FALSE]
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
+    if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
 
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
@@ -96,7 +99,8 @@ scan1blup_pg <-
     pheno <- eigenvec %*% pheno
 
     # estimate hsq (this doesn't take intercept)
-    nullresult <- Rcpp_fitLMM(eigenval, pheno, addcovar, reml=reml, check_boundary=TRUE, tol=tol)
+    nullresult <- Rcpp_fitLMM(eigenval, pheno, cbind(addcovar, nullcovar),
+                              reml=reml, check_boundary=TRUE, tol=tol)
     hsq <- nullresult$hsq
 
     # eigen-vectors and weights

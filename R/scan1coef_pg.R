@@ -2,7 +2,7 @@
 #
 scan1coef_pg <-
     function(genoprobs, pheno, kinship,
-             addcovar=NULL, intcovar=NULL,
+             addcovar=NULL, nullcovar=NULL, intcovar=NULL,
              contrasts=NULL, se=FALSE,
              hsq=NULL, reml=TRUE, tol=1e-12)
 {
@@ -11,6 +11,8 @@ scan1coef_pg <-
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
+    if(!is.null(nullcovar) && !is.matrix(nullcovar))
+        nullcovar <- as.matrix(nullcovar)
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
@@ -58,7 +60,7 @@ scan1coef_pg <-
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
-                               addcovar, intcovar, complete.cases=TRUE)
+                               addcovar, nullcovar, intcovar, complete.cases=TRUE)
 
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -80,7 +82,7 @@ scan1coef_pg <-
     genoprobs <- genoprobs[ind2keep,,,drop=FALSE]
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
-
+    if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
 
     # make sure addcovar is full rank when we add an intercept
@@ -95,8 +97,8 @@ scan1coef_pg <-
 
     # estimate hsq if necessary
     if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
-                                     reml, cores=1, check_boundary=TRUE, tol)
+        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
+                                     NULL, FALSE, reml, cores=1, check_boundary=TRUE, tol)
         hsq <- nullresult$hsq
     }
 

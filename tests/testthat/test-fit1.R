@@ -201,14 +201,16 @@ test_that("fit1 by LMM works in intercross", {
 
     # estimate coefficients (with SEs)
     coef <- lapply(seq_len(length(probs)), function(i) {
-        if(i==3) cov <- NULL
-        else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship, addcovar=cov, se=TRUE) })
+        if(i==3) { cov <- NULL; nullcov <- Xcovar }
+        else { cov <- covar; nullcov <- NULL }
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship,
+                  addcovar=cov, nullcovar=nullcov, se=TRUE) })
 
     coef_loco <- lapply(seq_len(length(probs)), function(i) {
-        if(i==3) cov <- NULL
-        else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship_loco[[i]], addcovar=cov, se=TRUE) })
+        if(i==3) { cov <- NULL; nullcov <- Xcovar }
+        else { cov <- covar; nullcov <- NULL }
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship_loco[i],
+                  addcovar=cov, nullcovar=nullcov, se=TRUE) })
 
     names(coef) <- names(coef_loco) <- names(kinship_loco)
 

@@ -6,6 +6,12 @@
   and return the LOD score, estimated coefficients, individual
   contributions to the LOD score, and (if `se=TRUE`) standard errors.
 
+- In `scan1coef()` and `scan1blup()`, added an argument `nullcovar`
+  for covariates to include only under the null hypothesis (of no
+  QTL). This is only used in the case that `kinship` is provided but
+  `hsq` is not, as these may be needed for the X chromosome to get the
+  estimated residual heritability.
+
 
 ## qtl2scan 0.5-7 (2017-03-21)
 
