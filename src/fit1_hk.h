@@ -1,4 +1,4 @@
-// fit a single-QTL model at a single psotion by Haley-Knott regression
+// fit a single-QTL model at a single position by Haley-Knott regression
 #ifndef FIT1_HK_H
 #define FIT1_HK_H
 

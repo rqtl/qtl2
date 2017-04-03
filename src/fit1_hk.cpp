@@ -1,4 +1,4 @@
-// fit a single-QTL model at a single psotion by Haley-Knott regression
+// fit a single-QTL model at a single position by Haley-Knott regression
 
 #include "fit1_hk.h"
 #include <Rcpp.h>
@@ -42,7 +42,7 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
 
     NumericMatrix X(n_ind, n_coef);
 
-    // copy genoprobs for pos i into a matrix
+    // copy genoprobs into matrix
     std::copy(genoprobs.begin(), genoprobs.end(), X.begin());
 
     // copy addcovar into matrix
