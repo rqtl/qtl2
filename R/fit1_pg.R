@@ -11,6 +11,8 @@ fit1_pg <-
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
+    if(!is.null(nullcovar) && !is.matrix(nullcovar))
+        nullcovar <- as.matrix(nullcovar)
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
@@ -57,7 +59,7 @@ fit1_pg <-
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
-                               addcovar, intcovar, complete.cases=TRUE)
+                               addcovar, nullcovar, intcovar, complete.cases=TRUE)
 
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -94,8 +96,8 @@ fit1_pg <-
 
     # estimate hsq if necessary
     if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
-                                     reml, cores=1, check_boundary=TRUE, tol)
+        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
+                                     NULL, FALSE, reml, cores=1, check_boundary=TRUE, tol)
         hsq <- nullresult$hsq
     }
 
@@ -103,31 +105,45 @@ fit1_pg <-
     eigenvec <- kinship$vectors
     weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
+    # fit null model
+    fit0 <- fit1_pg_addcovar(cbind(rep(1, length(pheno)), addcovar, nullcovar),
+                             pheno,
+                             matrix(ncol=0, nrow=length(pheno)),
+                             eigenvec, weights, se, tol)
+
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
         genoprobs <- genoprobs %*% contrasts
 
     if(is.null(intcovar)) { # just addcovar
         if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-        result <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
+        fitA <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
     }
     else {                  # intcovar
-        result <- fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                   eigenvec, weights, se, tol)
+        fitA <- fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                 eigenvec, weights, se, tol)
     }
-    return(result)
 
-    result <- t(result) # transpose to positions x coefficients
+    # lod score
+    n <- length(pheno)
+    lod <- (n/2)*log10(fit0$rss/fitA$rss)
 
-    # add names
-    dimnames(result) <- list(dimnames(genoprobs)[[3]],
-                             scan1coef_names(genoprobs, addcovar, intcovar))
-    if(se) dimnames(SE) <- dimnames(result)
+    # residual SDs using 1/n
+    sigsq0 <- fit0$sigma^2/n*fit0$df
+    sigsqA <- fitA$sigma^2/n*fitA$df
 
-    # add some attributes with details on analysis
-    attr(result, "sample_size") <- length(ind2keep)
-    attr(result, "SE") <- SE # include only if not NULL
+    # individual contributions to the lod score
+    ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
+    names(ind_lod) <- names(pheno)
 
-    class(result) <- c("scan1coef", "scan1", "matrix")
-    result
+    # names of coefficients
+    coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)
+
+    if(se) # results include standard errors
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    SE=stats::setNames(fitA$SE, coef_names)))
+    else
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=stats::setNames(fitA$coef, coef_names)))
 }

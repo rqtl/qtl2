@@ -94,6 +94,41 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fit1_pg_addcovar
+List fit1_pg_addcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const bool se, const double tol);
+RcppExport SEXP qtl2scan_fit1_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type eigenvec(eigenvecSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, se, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit1_pg_intcovar
+List fit1_pg_intcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const bool se, const double tol);
+RcppExport SEXP qtl2scan_fit1_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type genoprobs(genoprobsSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type pheno(phenoSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type intcovar(intcovarSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type eigenvec(eigenvecSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
 RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {

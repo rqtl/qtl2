@@ -25,6 +25,14 @@ fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se, 
     .Call('qtl2scan_fit1_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, se, tol)
 }
 
+fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se, tol = 1e-12) {
+    .Call('qtl2scan_fit1_pg_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
+}
+
+fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol = 1e-12) {
+    .Call('qtl2scan_fit1_pg_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol)
+}
+
 interpolate_map <- function(oldpos, oldmap, newmap) {
     .Call('qtl2scan_interpolate_map', PACKAGE = 'qtl2scan', oldpos, oldmap, newmap)
 }

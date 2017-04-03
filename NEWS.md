@@ -1,3 +1,12 @@
+## qtl2scan 0.5-8 (2017-04-03)
+
+### New features
+
+- Added `fit1()` to fit a single-QTL model at a single fixed position
+  and return the LOD score, estimated coefficients, individual
+  contributions to the LOD score, and (if `se=TRUE`) standard errors.
+
+
 ## qtl2scan 0.5-7 (2017-03-21)
 
 ### New features
