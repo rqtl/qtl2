@@ -203,9 +203,9 @@ fit1 <-
 
     if(se) # results include standard errors
         return(list(lod=lod, ind_lod=ind_lod,
-                    coef=setNames(fitA$coef, coef_names),
-                    SE=setNames(fitA$SE, coef_names)))
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    SE=stats::setNames(fitA$SE, coef_names)))
     else
         return(list(lod=lod, ind_lod=ind_lod,
-                    coef=setNames(fitA$coef, coef_names)))
+                    coef=stats::setNames(fitA$coef, coef_names)))
 }
