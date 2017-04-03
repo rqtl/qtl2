@@ -7,6 +7,13 @@
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix.
 #' @param addcovar An optional matrix of additive covariates.
+#' @param nullcovar An optional matrix of additional additive
+#' covariates that are used under the null hypothesis (of no QTL)
+#' but not under the alternative (with a QTL). This is needed for
+#' the X chromosome, where we might need sex as a additive
+#' covariate under the null hypothesis, but we wouldn't want to
+#' include it under the alternative as it would be collinear with
+#' the QTL effects.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
 #' individuals. As with the other inputs, it must have \code{names}
@@ -84,11 +91,12 @@
 #'
 #' @export
 fit1 <-
-    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, intcovar=NULL, weights=NULL,
+    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
+             intcovar=NULL, weights=NULL,
              contrasts=NULL, se=TRUE, hsq=NULL, reml=TRUE, tol=1e-12)
 {
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
-        return(fit1_pg(genoprobs, pheno, kinship, addcovar,
+        return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
                        intcovar, contrasts, se, hsq, reml, tol))
     }
 
@@ -97,6 +105,8 @@ fit1 <-
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
+    if(!is.null(nullcovar) && !is.matrix(nullcovar))
+        nullcovar <- as.matrix(nullcovar)
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
@@ -125,8 +135,7 @@ fit1 <-
     }
 
     # find individuals in common across all arguments
-    # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs, pheno, addcovar, intcovar,
+    ind2keep <- get_common_ids(genoprobs, pheno, addcovar, nullcovar, intcovar,
                                weights, complete.cases=TRUE)
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -140,6 +149,7 @@ fit1 <-
     genoprobs <- genoprobs[ind2keep,,drop=FALSE]
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
+    if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
     if(!is.null(weights)) weights <- weights[ind2keep]
 
@@ -160,7 +170,8 @@ fit1 <-
         genoprobs <- genoprobs %*% contrasts
 
     # null fit
-    fit0 <- fit1_hk_addcovar(cbind(rep(1, length(pheno)), addcovar), # plug addcovar where genoprobs would be
+    X0 <- drop_depcols(cbind(rep(1, length(pheno)), addcovar, nullcovar), FALSE, tol)
+    fit0 <- fit1_hk_addcovar(X0, # plug addcovar where genoprobs would be
                              pheno,
                              matrix(nrow=length(pheno), ncol=0),     # empty slot for addcovar
                              weights, se=FALSE, tol)

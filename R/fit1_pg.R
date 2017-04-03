@@ -2,7 +2,7 @@
 #
 fit1_pg <-
     function(genoprobs, pheno, kinship,
-             addcovar=NULL, intcovar=NULL,
+             addcovar=NULL, nullcovar=NULL, intcovar=NULL,
              contrasts=NULL, se=FALSE,
              hsq=NULL, reml=TRUE, tol=1e-12)
 {

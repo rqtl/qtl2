@@ -4,9 +4,9 @@
 \alias{fit1}
 \title{Fit single-QTL model at a single position}
 \usage{
-fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, intcovar = NULL,
-  weights = NULL, contrasts = NULL, se = TRUE, hsq = NULL,
-  reml = TRUE, tol = 0.000000000001)
+fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, nullcovar = NULL,
+  intcovar = NULL, weights = NULL, contrasts = NULL, se = TRUE,
+  hsq = NULL, reml = TRUE, tol = 0.000000000001)
 }
 \arguments{
 \item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes}
@@ -16,6 +16,14 @@ fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, intcovar = NULL,
 \item{kinship}{Optional kinship matrix.}
 
 \item{addcovar}{An optional matrix of additive covariates.}
+
+\item{nullcovar}{An optional matrix of additional additive
+covariates that are used under the null hypothesis (of no QTL)
+but not under the alternative (with a QTL). This is needed for
+the X chromosome, where we might need sex as a additive
+covariate under the null hypothesis, but we wouldn't want to
+include it under the alternative as it would be collinear with
+the QTL effects.}
 
 \item{intcovar}{An optional matrix of interactive covariates.}
 
