@@ -3,7 +3,7 @@
 fit1_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, intcovar=NULL,
-             contrasts=NULL,
+             contrasts=NULL, se=FALSE,
              hsq=NULL, reml=TRUE, tol=1e-12)
 {
     stopifnot(tol > 0)
@@ -109,11 +109,11 @@ fit1_pg <-
 
     if(is.null(intcovar)) { # just addcovar
         if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-        result <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
+        result <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
     }
     else {                  # intcovar
         result <- fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                   eigenvec, weights, tol)
+                                   eigenvec, weights, se, tol)
     }
     return(result)
 

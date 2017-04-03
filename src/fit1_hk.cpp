@@ -23,6 +23,7 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
                       const NumericVector& pheno,
                       const NumericMatrix& addcovar,
                       const NumericVector& weights,
+                      const bool se,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -51,7 +52,7 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
     // multiply by square-root weights, if necessary
     if(n_weights > 0) X = weighted_matrix(X, weights);
 
-    return fit_linreg(X, pheno, tol);
+    return fit_linreg(X, pheno, se, tol);
 }
 
 
@@ -72,14 +73,12 @@ List fit1_hk_intcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& addcovar,
                       const NumericMatrix& intcovar,
                       const NumericVector& weights,
+                      const bool se,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
-    const int n_gen = genoprobs.cols();
     const int n_weights = weights.size();
-    const int n_addcovar = addcovar.cols();
-    const int n_intcovar = intcovar.cols();
-    const int n_coef = n_gen + n_addcovar + (n_gen-1)*n_intcovar;
+
     if(n_ind != genoprobs.rows())
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -93,5 +92,5 @@ List fit1_hk_intcovar(const NumericMatrix& genoprobs,
     NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, 0, false);
     if(n_weights > 0) X = weighted_matrix(X, weights);
 
-    return fit_linreg(X, pheno, tol);
+    return fit_linreg(X, pheno, se, tol);
 }

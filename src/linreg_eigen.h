@@ -10,7 +10,8 @@ Eigen::MatrixXd calc_XpX(const Eigen::MatrixXd& A);
 // least squares by "LLt" Cholesky decomposition
 // needs to be full rank
 Rcpp::List fit_linreg_eigenchol(const Rcpp::NumericMatrix& X,
-                                const Rcpp::NumericVector& y);
+                                const Rcpp::NumericVector& y,
+                                const bool se);
 
 // least squares by "LLt" Cholesky decomposition
 // return just the coefficients
@@ -32,6 +33,7 @@ double calc_rss_eigenchol(const Rcpp::NumericMatrix& X,
 // least squares by QR decomposition with column pivoting
 Rcpp::List fit_linreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const Rcpp::NumericVector& y,
+                              const bool se,
                               const double tol);
 
 // least squares by QR decomposition with column pivoting

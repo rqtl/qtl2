@@ -16,6 +16,7 @@
 #' \code{cbind(c(1,1,1), c(-0.5, 0, 0.5), c(-0.5, 1, -0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
+#' @param se If TRUE, calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
 #' \code{kinship} provided.
 #' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
@@ -26,8 +27,8 @@
 #'
 #' @return A list containing
 #' \itemize{
-#' \item \code{coef} - Vector of estimated coefficients
-#' \item \code{SE} - Vector of estimated standard errors
+#' \item \code{coef} - Vector of estimated coefficients.
+#' \item \code{SE} - Vector of estimated standard errors (included if \code{se=TRUE}).
 #' \item \code{lod} - The overall lod score.
 #' \item \code{ind_lod} - Vector of individual contributions to the LOD score.
 #' }
@@ -76,16 +77,19 @@
 #' max_pos <- rownames(max(out, map[7]))
 #'
 #' # fit QTL model just at that position
-#' out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
+#' out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, addcovar=covar)
+#'
+#' # fit QTL model just at that position, with polygenic effect
+#' # out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
 #'
 #' @export
 fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, intcovar=NULL, weights=NULL,
-             contrasts=NULL, hsq=NULL, reml=TRUE, tol=1e-12)
+             contrasts=NULL, se=TRUE, hsq=NULL, reml=TRUE, tol=1e-12)
 {
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar,
-                       intcovar, contrasts, hsq, reml, tol))
+                       intcovar, contrasts, se, hsq, reml, tol))
     }
 
     stopifnot(tol > 0)
@@ -159,15 +163,15 @@ fit1 <-
     fit0 <- fit1_hk_addcovar(cbind(rep(1, length(pheno)), addcovar), # plug addcovar where genoprobs would be
                              pheno,
                              matrix(nrow=length(pheno), ncol=0),     # empty slot for addcovar
-                             weights, tol)
+                             weights, se=FALSE, tol)
 
     if(is.null(intcovar)) { # just addcovar
         if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-        fitA <- fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+        fitA <- fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, se=se, tol)
     }
     else {                  # intcovar
         fitA <- fit1_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                   weights, tol)
+                                   weights, se=se, tol)
     }
 
     # lod score
@@ -185,9 +189,11 @@ fit1 <-
     # names of coefficients
     coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)
 
-    result <- list(lod=lod, ind_lod=ind_lod,
-                   coef=setNames(fitA$coef, coef_names),
-                   SE=setNames(fitA$SE, coef_names))
-
-    result
+    if(se) # results include standard errors
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=setNames(fitA$coef, coef_names),
+                    SE=setNames(fitA$SE, coef_names)))
+    else
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=setNames(fitA$coef, coef_names)))
 }
