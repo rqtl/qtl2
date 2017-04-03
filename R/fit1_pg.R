@@ -81,7 +81,7 @@ fit1_pg <-
     genoprobs <- genoprobs[ind2keep,,drop=FALSE]
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
-
+    if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
 
     # make sure addcovar is full rank when we add an intercept
