@@ -1,6 +1,22 @@
+## qtl2geno 0.5-13 (2017-04-03)
+
+### New features
+
+- Added function `ind_ids_covar` to grab individual IDs from the
+  covariate data.
+
+- `ind_ids()` now return individuals that are in any of geno, pheno, covar.
+
+### Bug fixes
+
+- `subset_cross2()` now deals properly with the case that chromosome
+  or individual IDs are not found in cross object, and deals with the
+  case that geno and pheno (and covar) have different individuals.
+
+
 ## qtl2geno 0.5-12 (2017-03-30)
 
-## New features
+### New features
 
 - Added functions `count_xo` and `locate_xo` for getting estimates of
   the number of crossovers on each chromosome in each individual, and

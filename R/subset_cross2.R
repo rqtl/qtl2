@@ -55,8 +55,7 @@ subset.cross2 <-
 
     slice_by_chr <- c("geno", "founder_geno", "gmap", "pmap", "is_x_chr")
 
-    slice_by_ind <- c("geno", "is_female", "cross_info")
-    slice_by_ind_linemap <- c("pheno", "covar")
+    slice_by_ind <- c("geno", "is_female", "cross_info", "pheno", "covar")
 
     if(!is.null(chr)) {
         # first clean up chromosome argument
@@ -98,79 +97,81 @@ subset.cross2 <-
     }
 
     if(!is.null(ind)) {
+        # check that geno, covar, pheno have individuals in same order
+        allow_logical <- TRUE
+        ind_g <- rownames(x$geno[[1]])
+        if(!is.null(x$covar) && nrow(x$covar) != length(ind_g) ||
+           !all(rownames(x$covar) == ind_g))
+            allow_logical <- FALSE
+        if(!is.null(x$pheno) && nrow(x$pheno) != length(ind_g) ||
+           !all(rownames(x$pheno) == ind_g))
+            allow_logical <- FALSE
+
         # first clean up ind argument
-        allind <- rownames(x$geno[[1]])
         if(is.logical(ind)) {
-            if(length(ind) != allind)
+            if(!allow_logical) stop("ind can't be logical if different individuals in geno, pheno, covar")
+
+            if(length(ind) != ind_g)
                 stop("ind is logical but length [", length(ind), "] != n_ind is x [",
-                     length(allind), "]")
-            ind <- allind[ind]
+                     length(ind_g), "]")
+            ind <- ind_g[ind]
         }
         if(is.numeric(ind)) { # treat as numeric indexes
+            if(!allow_logical) stop("ind can't be numeric if different individuals in geno, pheno, covar")
             if(any(ind < 0)) { # deal with negatives
                 if(!all(ind < 0)) stop("Can't mix negative and positive ind subscripts")
-                ind <- (seq_along(allind))[ind]
+                ind <- (seq_along(ind_g))[ind]
             }
 
-            if(any(ind < 1 | ind > length(allind))) {
-                ind <- ind[ind >= 1 & ind <= length(allind)]
-                if(length(ind)==0)
-                    stop("All ind out of range")
-                warning("some ind out of range [1,", length(allind), "]")
+            if(any(ind < 1 | ind > length(ind_g))) {
+                ind <- ind[ind >= 1 & ind <= length(ind_g)]
+                if(length(ind)==0) stop("All ind out of range")
+                warning("some ind out of range [1,", length(ind_g), "]")
             }
+
+            ind <- ind_g[ind]
         }
-        else { # character
-            ind <- as.character(ind)
 
-            # look for negatives; turn to positives
-            if(!any(grepl("^\\-", allind)) && any(grepl("^\\-", ind))) { # if "-" used in actual IDs, don't allow negative subscripts
-                if(!all(grepl("^\\-", ind)))
-                    stop("Can't mix negative and positive ind subscripts")
-                ind <- sub("^\\-", "", ind)
-                if(!all(ind %in% allind)) {
-                    if(!any(ind %in% allind)) stop("None of the individuals in cross")
-                    warning("Some individuals not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
-                }
-                ind <- allind[!(allind %in% ind)]
-            }
+        # now treat ind as character strings
+        ind <- as.character(ind)
+        allind <- ind_ids(x)
 
+        # look for negatives; turn to positives
+        if(!any(grepl("^\\-", allind)) && any(grepl("^\\-", ind))) { # if "-" used in actual IDs, don't allow negative subscripts
+            if(!all(grepl("^\\-", ind)))
+                stop("Can't mix negative and positive ind subscripts")
+            ind <- sub("^\\-", "", ind)
             if(!all(ind %in% allind)) {
                 if(!any(ind %in% allind)) stop("None of the individuals in cross")
-                warning("Some ind not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
-                ind <- ind[ind %in% allind]
+                warning("Some individuals not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
             }
+            ind <- allind[!(allind %in% ind)]
         }
 
+        if(!all(ind %in% allind)) {
+            if(!any(ind %in% allind)) stop("None of the individuals in cross")
+            warning("Some ind not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
+            ind <- ind[ind %in% ind]
+        }
+
+        # Finally, the actual subsetting
         for(obj in slice_by_ind) {
             if(obj %in% names(x)) {
+                # is it a matrix like cross_info?
+                if(is.matrix(x[[obj]]) || is.data.frame(x[[obj]])) {
+                    x[[obj]] <- x[[obj]][ind[ind %in% rownames(x[[obj]])],,drop=FALSE]
+                }
                 # is it a list like $geno?
-                if(!is.matrix(x[[obj]]) && is.list(x[[obj]])) {
+                else if(!is.matrix(x[[obj]]) && is.list(x[[obj]])) {
                     x[[obj]] <- lapply(x[[obj]], function(a, b) {
                         if(is.matrix(a))
-                            a <- a[b,,drop=FALSE]
+                            a <- a[b[b %in% rownames(a)],,drop=FALSE]
                         else
-                            a <- a[b]
+                            a <- a[b[b %in% names(a)]]
                         a }, ind)
                 }
-                # is it a matrix like cross_info?
-                else if(is.matrix(x[[obj]]))
-                    x[[obj]] <- x[[obj]][ind,,drop=FALSE]
                 else # it's a vector
-                    x[[obj]] <- x[[obj]][ind]
-            }
-        }
-
-        if("linemap" %in% names(x)) {
-            # slice the lines then the individuals by lines
-            ind2keep <- names(x$linemap)[x$linemap %in% rownames(x$geno)]
-            x$linemap <- x$linemap[ind2keep]
-            for(obj in slice_by_ind_linemap) {
-                x[[obj]] <- x[[obj]][ind2keep,,drop=FALSE]
-            }
-        }
-        else {
-            for(obj in slice_by_ind_linemap) {
-                x[[obj]] <- x[[obj]][ind,,drop=FALSE]
+                    x[[obj]] <- x[[obj]][ind[ind %in% names(x[[obj]])]]
             }
         }
     }

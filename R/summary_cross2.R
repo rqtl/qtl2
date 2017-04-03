@@ -36,6 +36,14 @@ function(cross2)
     length( ind_ids_pheno(cross2) )
 }
 
+#' @describeIn basic_summaries Number of individuals with covariate data
+#' @export
+n_ind_covar <-
+function(cross2)
+{
+    length( ind_ids_covar(cross2) )
+}
+
 #' @describeIn basic_summaries Number of individuals with both genotype and phenotype data
 #' @export
 n_ind_gnp <-
@@ -49,7 +57,7 @@ function(cross2)
 ind_ids <-
 function(cross2)
 {
-    unique( c(ind_ids_geno(cross2), ind_ids_pheno(cross2)) )
+    unique( c(ind_ids_geno(cross2), ind_ids_pheno(cross2), ind_ids_covar(cross2)) )
 }
 
 #' @describeIn basic_summaries IDs of genotyped individuals
@@ -76,6 +84,19 @@ function(cross2)
     if(is.null(cross2$pheno)) return(NULL)
 
     rownames(cross2$pheno)
+}
+
+#' @describeIn basic_summaries IDs of individuals with covariate data
+#' @export
+ind_ids_covar <-
+function(cross2)
+{
+    if(!is.cross2(cross2))
+        stop('Input must have class "cross2"')
+
+    if(is.null(cross2$covar)) return(NULL)
+
+    rownames(cross2$covar)
 }
 
 #' @describeIn basic_summaries IDs of individuals with both genotype and phenotype data
