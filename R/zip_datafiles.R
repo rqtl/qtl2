@@ -61,13 +61,6 @@ function(control_file, zip_file=NULL, quiet=TRUE)
         }
     }
 
-    # linemap as a file?
-    if("linemap" %in% names(control)) {
-        filename <- file.path(dir, control[["linemap"]])
-        if(file.exists(filename))
-            files <- c(files, control[["linemap"]])
-    }
-
     # flag for quiet
     zip_flags <- ifelse(quiet, "-q", "")
 
