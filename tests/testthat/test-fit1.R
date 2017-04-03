@@ -52,14 +52,14 @@ test_that("fit1 by H-K works in intercross", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov) })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE) })
 
     # fit1, no missing data
     out_fit1 <- lapply(seq(along=pmar),
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov) })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE) })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:3) {
@@ -70,6 +70,37 @@ test_that("fit1 by H-K works in intercross", {
     # check coefficients
     for(i in 1:3)
         expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+
+    # check SEs
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
+
+    # direct calculations, chr 18
+    lm0 <- lm(pheno ~ covar)
+    X <- cbind(probs[[1]][,,pmar[1]], covar)
+    colnames(X) <- c("SS", "SB", "BB", "ac1")
+    lm1 <- lm(pheno ~ -1 + X)
+    n <- sum(!is.na(pheno))
+    sigsq0 <- sum(lm0$resid^2)/n
+    sigsq1 <- sum(lm1$resid^2)/n
+    expect_equal(out_fit1[[1]]$lod, n/2*log10(sum(lm0$resid^2)/sum(lm1$resid^2)))
+    expect_equal(out_fit1[[1]]$ind_lod, (dnorm(lm1$resid,0,sqrt(sigsq1), TRUE) - dnorm(lm0$resid,0,sqrt(sigsq0),TRUE))/log(10))
+    expect_equal(out_fit1[[1]]$coef, stats::setNames(lm1$coef, c("SS", "SB", "BB", "ac1")))
+    expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(lm1)$coef[,2], c("SS", "SB", "BB", "ac1")))
+
+    # direct calculations, chr X
+    lm0 <- lm(pheno ~ Xcovar)
+    X <- probs[[3]][,,pmar[3]]
+    colnames(X) <- c("SS", "SB", "BS", "BB", "SY", "BY")
+    lm1 <- lm(pheno ~ -1 + X)
+    n <- sum(!is.na(pheno))
+    sigsq0 <- sum(lm0$resid^2)/n
+    sigsq1 <- sum(lm1$resid^2)/n
+    expect_equal(out_fit1[[3]]$lod, n/2*log10(sum(lm0$resid^2)/sum(lm1$resid^2)))
+    expect_equal(out_fit1[[3]]$ind_lod, (dnorm(lm1$resid,0,sqrt(sigsq1), TRUE) - dnorm(lm0$resid,0,sqrt(sigsq0),TRUE))/log(10))
+    expect_equal(out_fit1[[3]]$coef, stats::setNames(lm1$coef, c("SS", "SB", "BS", "BB", "SY", "BY")))
+    expect_equal(out_fit1[[3]]$SE, stats::setNames(summary(lm1)$coef[,2], c("SS", "SB", "BS", "BB", "SY", "BY")))
+
 })
 
 
@@ -112,10 +143,10 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno)
 
     # estimate coefficients
-    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE))
 
     # fit1, no missing data
-    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno))
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE))
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:2) {
@@ -126,4 +157,23 @@ test_that("fit1 by H-K works in riself", {
     # check coefficients
     for(i in 1:2)
         expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+
+
+    # check SEs
+    for(i in 1:2)
+        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
+
+    # direct calculations, chr 18
+    lm0 <- lm(pheno ~ 1)
+    X <- probs[[1]][,,pmar[1]]
+    colnames(X) <- c("LL", "CC")
+    lm1 <- lm(pheno ~ -1 + X)
+    n <- sum(!is.na(pheno))
+    sigsq0 <- sum(lm0$resid^2)/n
+    sigsq1 <- sum(lm1$resid^2)/n
+    expect_equal(out_fit1[[1]]$lod, n/2*log10(sum(lm0$resid^2)/sum(lm1$resid^2)))
+    expect_equal(out_fit1[[1]]$ind_lod, (dnorm(lm1$resid,0,sqrt(sigsq1), TRUE) - dnorm(lm0$resid,0,sqrt(sigsq0),TRUE))/log(10))
+    expect_equal(out_fit1[[1]]$coef, stats::setNames(lm1$coef, c("LL", "CC")))
+    expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(lm1)$coef[,2], c("LL", "CC")))
+
 })
