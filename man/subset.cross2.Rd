@@ -32,12 +32,16 @@ Pull out a specified set of individuals and/or chromosomes from a
 \details{
 When subsetting by individual, if \code{ind} is numeric, they're
 assumed to be numeric indices; if character strings, they're
-assumed to be individual IDs. When subsetting by chromosome,
-\code{chr} is \emph{always} converted to character strings and
-treated as chromosome IDs. So if there are three chromosomes with
-IDs \code{"18"}, \code{"19"}, and \code{"X"}, \code{mycross[,18]}
-will give the first of the chromosomes (labeled \code{"18"}) and
-\code{mycross[,3]} will give an error.
+assumed to be individual IDs. \code{ind} can be numeric or logical
+only if the genotype, phenotype, and covariate data all have the
+same individuals in the same order.
+
+When subsetting by chromosome, \code{chr} is \emph{always}
+converted to character strings and treated as chromosome IDs. So if
+there are three chromosomes with IDs \code{"18"}, \code{"19"}, and
+\code{"X"}, \code{mycross[,18]} will give the first of the
+chromosomes (labeled \code{"18"}) and \code{mycross[,3]} will give
+an error.
 
 When using character string IDs for \code{ind} or \code{chr}, you
 can use "negative" subscripts to indicate exclusions, for example

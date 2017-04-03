@@ -17,12 +17,16 @@
 #' @details
 #' When subsetting by individual, if \code{ind} is numeric, they're
 #' assumed to be numeric indices; if character strings, they're
-#' assumed to be individual IDs. When subsetting by chromosome,
-#' \code{chr} is \emph{always} converted to character strings and
-#' treated as chromosome IDs. So if there are three chromosomes with
-#' IDs \code{"18"}, \code{"19"}, and \code{"X"}, \code{mycross[,18]}
-#' will give the first of the chromosomes (labeled \code{"18"}) and
-#' \code{mycross[,3]} will give an error.
+#' assumed to be individual IDs. \code{ind} can be numeric or logical
+#' only if the genotype, phenotype, and covariate data all have the
+#' same individuals in the same order.
+#'
+#' When subsetting by chromosome, \code{chr} is \emph{always}
+#' converted to character strings and treated as chromosome IDs. So if
+#' there are three chromosomes with IDs \code{"18"}, \code{"19"}, and
+#' \code{"X"}, \code{mycross[,18]} will give the first of the
+#' chromosomes (labeled \code{"18"}) and \code{mycross[,3]} will give
+#' an error.
 #'
 #' When using character string IDs for \code{ind} or \code{chr}, you
 #' can use "negative" subscripts to indicate exclusions, for example
@@ -100,19 +104,19 @@ subset.cross2 <-
         # check that geno, covar, pheno have individuals in same order
         allow_logical <- TRUE
         ind_g <- rownames(x$geno[[1]])
-        if(!is.null(x$covar) && nrow(x$covar) != length(ind_g) ||
-           !all(rownames(x$covar) == ind_g))
+        if(!is.null(x$covar) && (nrow(x$covar) != length(ind_g) ||
+           !all(rownames(x$covar) == ind_g)))
             allow_logical <- FALSE
-        if(!is.null(x$pheno) && nrow(x$pheno) != length(ind_g) ||
-           !all(rownames(x$pheno) == ind_g))
+        if(!is.null(x$pheno) && (nrow(x$pheno) != length(ind_g) ||
+           !all(rownames(x$pheno) == ind_g)))
             allow_logical <- FALSE
 
         # first clean up ind argument
         if(is.logical(ind)) {
             if(!allow_logical) stop("ind can't be logical if different individuals in geno, pheno, covar")
 
-            if(length(ind) != ind_g)
-                stop("ind is logical but length [", length(ind), "] != n_ind is x [",
+            if(length(ind) != length(ind_g))
+                stop("ind is logical but length [", length(ind), "] != no. ind in cross [",
                      length(ind_g), "]")
             ind <- ind_g[ind]
         }

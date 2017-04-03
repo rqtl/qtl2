@@ -71,6 +71,23 @@ test_that("subset.cross2 works (F2)", {
     expect_equal(iron[,"-4"], iron[,c(1:3,5:19,"X")])
     expect_equal(iron[c("-189", "-190"),], iron[-c(189,190),])
 
+    # test ind logical
+    ind_logic <- rep(FALSE, n_ind(iron))
+    ind_logic[1:20] <- TRUE
+    ind_num <- 1:20
+    ind_char <- rownames(iron$geno[[1]])[1:20]
+    expect_equal(iron[ind_logic,], iron[ind_char,])
+    expect_equal(iron[ind_num,], iron[ind_char,])
+
+    # test case of different numbers of genotyped and phenotyped individuals
+    iron_orig <- iron
+    iron$pheno <- iron$pheno[1:10,]
+    expect_error(iron[1:20,])
+    iron$covar <- iron$covar[1:20,]
+    expect_error(iron[rep(TRUE, n_ind_geno(iron)),])
+    ind <- ind_ids_geno(iron)[1:10]
+    expect_equal(iron[ind,], iron_orig[ind,])
+
 })
 
 test_that("subset.calc_genoprob works", {
