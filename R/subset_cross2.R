@@ -9,10 +9,27 @@
 #' @param x An object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param ind A vector of individuals: numeric indices, logical
-#' values, or character string IDs
+#' values, or character string IDs.
 #' @param chr A vector of chromosomes: numeric indices, logical
 #' values, or character string IDs
 #' @param ... Ignored.
+#'
+#' @details
+#' When subsetting by individual, if \code{ind} is numeric, they're
+#' assumed to be numeric indices; if character strings, they're
+#' assumed to be individual IDs. When subsetting by chromosome,
+#' \code{chr} is \emph{always} converted to character strings and
+#' treated as chromosome IDs. So if there are three chromosomes with
+#' IDs \code{"18"}, \code{"19"}, and \code{"X"}, \code{mycross[,18]}
+#' will give the first of the chromosomes (labeled \code{"18"}) and
+#' \code{mycross[,3]} will give an error.
+#'
+#' When using character string IDs for \code{ind} or \code{chr}, you
+#' can use "negative" subscripts to indicate exclusions, for example
+#' \code{mycross[,c("-18", "-X")]} or \code{mycross["-Mouse2501",]}.
+#' But you can't mix "positive" and "negative" subscripts, and if any
+#' of the individuals has an ID that begins with \code{"-"}, you can't
+#' use negative subscripts like this.
 #'
 #' @return The input \code{cross2} object, with the selected
 #' individuals and/or chromsomes.
@@ -51,9 +68,24 @@ subset.cross2 <-
             chr <- allchr[chr]
         } else {
             chr <- as.character(chr)
+
+            # look for negatives; turn to positives
+            if(any(grepl("^\\-", chr))) {
+                if(!all(grepl("^\\-", chr)))
+                    stop("Can't mix negative and positive chr subscripts")
+                chr <- sub("^\\-", "", chr)
+                if(!all(chr %in% allchr)) {
+                    if(!any(chr %in% allchr))
+                        stop("None of the chr found in the cross object")
+                    warning("Some chr not found: ", paste(chr[!(chr %in% allchr)], collapse=", "))
+                    chr <- chr[chr %in% allchr]
+                }
+                chr <- allchr[!(allchr %in% chr)]
+            }
+
             if(!all(chr %in% allchr)) {
-                if(!any(chr %in% allchr)) stop("None of the chromosomes in x")
-                warning("Some chr not in x: ", paste(chr[!(chr %in% allchr)], collapse=", "))
+                if(!any(chr %in% allchr)) stop("None of the chromosomes in cross")
+                warning("Some chr not in cross: ", paste(chr[!(chr %in% allchr)], collapse=", "))
                 chr <- chr[chr %in% allchr]
             }
         }
@@ -75,6 +107,11 @@ subset.cross2 <-
             ind <- allind[ind]
         }
         if(is.numeric(ind)) { # treat as numeric indexes
+            if(any(ind < 0)) { # deal with negatives
+                if(!all(ind < 0)) stop("Can't mix negative and positive ind subscripts")
+                ind <- (seq_along(allind))[ind]
+            }
+
             if(any(ind < 1 | ind > length(allind))) {
                 ind <- ind[ind >= 1 & ind <= length(allind)]
                 if(length(ind)==0)
@@ -84,9 +121,22 @@ subset.cross2 <-
         }
         else { # character
             ind <- as.character(ind)
+
+            # look for negatives; turn to positives
+            if(!any(grepl("^\\-", allind)) && any(grepl("^\\-", ind))) { # if "-" used in actual IDs, don't allow negative subscripts
+                if(!all(grepl("^\\-", ind)))
+                    stop("Can't mix negative and positive ind subscripts")
+                ind <- sub("^\\-", "", ind)
+                if(!all(ind %in% allind)) {
+                    if(!any(ind %in% allind)) stop("None of the individuals in cross")
+                    warning("Some individuals not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
+                }
+                ind <- allind[!(allind %in% ind)]
+            }
+
             if(!all(ind %in% allind)) {
-                if(!any(ind %in% allind)) stop("None of the individuals in x")
-                warning("Some ind not in x: ", paste(ind[!(ind %in% allind)], collapse=", "))
+                if(!any(ind %in% allind)) stop("None of the individuals in cross")
+                warning("Some ind not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
                 ind <- ind[ind %in% allind]
             }
         }

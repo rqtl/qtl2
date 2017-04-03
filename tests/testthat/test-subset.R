@@ -66,6 +66,11 @@ test_that("subset.cross2 works (F2)", {
     expect_equal(ironsubA, expected)
     expect_equal(ironsubB, expected)
 
+    # test negative subscripts
+    expect_equal(iron[,"-X"], iron[,1:19])
+    expect_equal(iron[,"-4"], iron[,c(1:3,5:19,"X")])
+    expect_equal(iron[c("-189", "-190"),], iron[-c(189,190),])
+
 })
 
 test_that("subset.calc_genoprob works", {
