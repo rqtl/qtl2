@@ -42,6 +42,22 @@ subset.cross2 <-
     slice_by_ind_linemap <- c("pheno", "covar")
 
     if(!is.null(chr)) {
+        # first clean up chromosome argument
+        allchr <- names(x$geno)
+        if(is.logical(chr)) {
+            if(length(chr) != length(allchr))
+                stop("chr is logical but length [", length(chr), "] != n_chr is x [",
+                     length(allchr), "]")
+            chr <- allchr[chr]
+        } else {
+            chr <- as.character(chr)
+            if(!all(chr %in% allchr)) {
+                if(!any(chr %in% allchr)) stop("None of the chromosomes in x")
+                warning("Some chr not in x: ", paste(chr[!(chr %in% allchr)], collapse=", "))
+                chr <- chr[chr %in% allchr]
+            }
+        }
+
         for(obj in slice_by_chr) {
             if(obj %in% names(x)) {
                 x[[obj]] <- x[[obj]][chr]
@@ -50,6 +66,31 @@ subset.cross2 <-
     }
 
     if(!is.null(ind)) {
+        # first clean up ind argument
+        allind <- rownames(x$geno[[1]])
+        if(is.logical(ind)) {
+            if(length(ind) != allind)
+                stop("ind is logical but length [", length(ind), "] != n_ind is x [",
+                     length(allind), "]")
+            ind <- allind[ind]
+        }
+        if(is.numeric(ind)) { # treat as numeric indexes
+            if(any(ind < 1 | ind > length(allind))) {
+                ind <- ind[ind >= 1 & ind <= length(allind)]
+                if(length(ind)==0)
+                    stop("All ind out of range")
+                warning("some ind out of range [1,", length(allind), "]")
+            }
+        }
+        else { # character
+            ind <- as.character(ind)
+            if(!all(ind %in% allind)) {
+                if(!any(ind %in% allind)) stop("None of the individuals in x")
+                warning("Some ind not in x: ", paste(ind[!(ind %in% allind)], collapse=", "))
+                ind <- ind[ind %in% allind]
+            }
+        }
+
         for(obj in slice_by_ind) {
             if(obj %in% names(x)) {
                 # is it a list like $geno?

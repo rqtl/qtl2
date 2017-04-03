@@ -3,6 +3,15 @@ context("subset cross2, calc_genoprob, sim_geno, viterbi")
 test_that("subset.cross2 works (riself)", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+
+    # possible problems in indexes
+    expect_error(grav2[,c(18:19,"X")])
+    expect_warning(grav2[,c(1,2,18)])
+    expect_equal(grav2[,1:2], suppressWarnings(grav2[,c(1:2,18)]))
+    expect_error(grav2[201:250,])
+    expect_warning(grav2[101:250,])
+    expect_equal(grav2[101:162,], suppressWarnings(grav2[101:250,]))
+
     chr <- c(3,5)
     grav2sub <- grav2[,chr]
 
