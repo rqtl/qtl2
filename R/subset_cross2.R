@@ -9,10 +9,31 @@
 #' @param x An object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param ind A vector of individuals: numeric indices, logical
-#' values, or character string IDs
+#' values, or character string IDs.
 #' @param chr A vector of chromosomes: numeric indices, logical
 #' values, or character string IDs
 #' @param ... Ignored.
+#'
+#' @details
+#' When subsetting by individual, if \code{ind} is numeric, they're
+#' assumed to be numeric indices; if character strings, they're
+#' assumed to be individual IDs. \code{ind} can be numeric or logical
+#' only if the genotype, phenotype, and covariate data all have the
+#' same individuals in the same order.
+#'
+#' When subsetting by chromosome, \code{chr} is \emph{always}
+#' converted to character strings and treated as chromosome IDs. So if
+#' there are three chromosomes with IDs \code{"18"}, \code{"19"}, and
+#' \code{"X"}, \code{mycross[,18]} will give the first of the
+#' chromosomes (labeled \code{"18"}) and \code{mycross[,3]} will give
+#' an error.
+#'
+#' When using character string IDs for \code{ind} or \code{chr}, you
+#' can use "negative" subscripts to indicate exclusions, for example
+#' \code{mycross[,c("-18", "-X")]} or \code{mycross["-Mouse2501",]}.
+#' But you can't mix "positive" and "negative" subscripts, and if any
+#' of the individuals has an ID that begins with \code{"-"}, you can't
+#' use negative subscripts like this.
 #'
 #' @return The input \code{cross2} object, with the selected
 #' individuals and/or chromsomes.
@@ -38,10 +59,40 @@ subset.cross2 <-
 
     slice_by_chr <- c("geno", "founder_geno", "gmap", "pmap", "is_x_chr")
 
-    slice_by_ind <- c("geno", "is_female", "cross_info")
-    slice_by_ind_linemap <- c("pheno", "covar")
+    slice_by_ind <- c("geno", "is_female", "cross_info", "pheno", "covar")
 
     if(!is.null(chr)) {
+        # first clean up chromosome argument
+        allchr <- names(x$geno)
+        if(is.logical(chr)) {
+            if(length(chr) != length(allchr))
+                stop("chr is logical but length [", length(chr), "] != n_chr is x [",
+                     length(allchr), "]")
+            chr <- allchr[chr]
+        } else {
+            chr <- as.character(chr)
+
+            # look for negatives; turn to positives
+            if(any(grepl("^\\-", chr))) {
+                if(!all(grepl("^\\-", chr)))
+                    stop("Can't mix negative and positive chr subscripts")
+                chr <- sub("^\\-", "", chr)
+                if(!all(chr %in% allchr)) {
+                    if(!any(chr %in% allchr))
+                        stop("None of the chr found in the cross object")
+                    warning("Some chr not found: ", paste(chr[!(chr %in% allchr)], collapse=", "))
+                    chr <- chr[chr %in% allchr]
+                }
+                chr <- allchr[!(allchr %in% chr)]
+            }
+
+            if(!all(chr %in% allchr)) {
+                if(!any(chr %in% allchr)) stop("None of the chromosomes in cross")
+                warning("Some chr not in cross: ", paste(chr[!(chr %in% allchr)], collapse=", "))
+                chr <- chr[chr %in% allchr]
+            }
+        }
+
         for(obj in slice_by_chr) {
             if(obj %in% names(x)) {
                 x[[obj]] <- x[[obj]][chr]
@@ -50,36 +101,81 @@ subset.cross2 <-
     }
 
     if(!is.null(ind)) {
-        for(obj in slice_by_ind) {
-            if(obj %in% names(x)) {
-                # is it a list like $geno?
-                if(!is.matrix(x[[obj]]) && is.list(x[[obj]])) {
-                    x[[obj]] <- lapply(x[[obj]], function(a, b) {
-                        if(is.matrix(a))
-                            a <- a[b,,drop=FALSE]
-                        else
-                            a <- a[b]
-                        a }, ind)
-                }
-                # is it a matrix like cross_info?
-                else if(is.matrix(x[[obj]]))
-                    x[[obj]] <- x[[obj]][ind,,drop=FALSE]
-                else # it's a vector
-                    x[[obj]] <- x[[obj]][ind]
+        # check that geno, covar, pheno have individuals in same order
+        allow_logical <- TRUE
+        ind_g <- rownames(x$geno[[1]])
+        if(!is.null(x$covar) && (nrow(x$covar) != length(ind_g) ||
+           !all(rownames(x$covar) == ind_g)))
+            allow_logical <- FALSE
+        if(!is.null(x$pheno) && (nrow(x$pheno) != length(ind_g) ||
+           !all(rownames(x$pheno) == ind_g)))
+            allow_logical <- FALSE
+
+        # first clean up ind argument
+        if(is.logical(ind)) {
+            if(!allow_logical) stop("ind can't be logical if different individuals in geno, pheno, covar")
+
+            if(length(ind) != length(ind_g))
+                stop("ind is logical but length [", length(ind), "] != no. ind in cross [",
+                     length(ind_g), "]")
+            ind <- ind_g[ind]
+        }
+        if(is.numeric(ind)) { # treat as numeric indexes
+            if(!allow_logical) stop("ind can't be numeric if different individuals in geno, pheno, covar")
+            if(any(ind < 0)) { # deal with negatives
+                if(!all(ind < 0)) stop("Can't mix negative and positive ind subscripts")
+                ind <- (seq_along(ind_g))[ind]
             }
+
+            if(any(ind < 1 | ind > length(ind_g))) {
+                ind <- ind[ind >= 1 & ind <= length(ind_g)]
+                if(length(ind)==0) stop("All ind out of range")
+                warning("some ind out of range [1,", length(ind_g), "]")
+            }
+
+            ind <- ind_g[ind]
         }
 
-        if("linemap" %in% names(x)) {
-            # slice the lines then the individuals by lines
-            ind2keep <- names(x$linemap)[x$linemap %in% rownames(x$geno)]
-            x$linemap <- x$linemap[ind2keep]
-            for(obj in slice_by_ind_linemap) {
-                x[[obj]] <- x[[obj]][ind2keep,,drop=FALSE]
+        # now treat ind as character strings
+        ind <- as.character(ind)
+        allind <- ind_ids(x)
+
+        # look for negatives; turn to positives
+        if(!any(grepl("^\\-", allind)) && any(grepl("^\\-", ind))) { # if "-" used in actual IDs, don't allow negative subscripts
+            if(!all(grepl("^\\-", ind)))
+                stop("Can't mix negative and positive ind subscripts")
+            ind <- sub("^\\-", "", ind)
+            if(!all(ind %in% allind)) {
+                if(!any(ind %in% allind)) stop("None of the individuals in cross")
+                warning("Some individuals not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
             }
+            ind <- allind[!(allind %in% ind)]
         }
-        else {
-            for(obj in slice_by_ind_linemap) {
-                x[[obj]] <- x[[obj]][ind,,drop=FALSE]
+
+        if(!all(ind %in% allind)) {
+            if(!any(ind %in% allind)) stop("None of the individuals in cross")
+            warning("Some ind not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
+            ind <- ind[ind %in% ind]
+        }
+
+        # Finally, the actual subsetting
+        for(obj in slice_by_ind) {
+            if(obj %in% names(x)) {
+                # is it a matrix like cross_info?
+                if(is.matrix(x[[obj]]) || is.data.frame(x[[obj]])) {
+                    x[[obj]] <- x[[obj]][ind[ind %in% rownames(x[[obj]])],,drop=FALSE]
+                }
+                # is it a list like $geno?
+                else if(!is.matrix(x[[obj]]) && is.list(x[[obj]])) {
+                    x[[obj]] <- lapply(x[[obj]], function(a, b) {
+                        if(is.matrix(a))
+                            a <- a[b[b %in% rownames(a)],,drop=FALSE]
+                        else
+                            a <- a[b[b %in% names(a)]]
+                        a }, ind)
+                }
+                else # it's a vector
+                    x[[obj]] <- x[[obj]][ind[ind %in% names(x[[obj]])]]
             }
         }
     }

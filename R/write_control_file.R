@@ -37,12 +37,6 @@
 #' codes used in the covariate column; the values within the vector
 #' should be the codes to which they will be converted (for example,
 #' \code{0} and \code{1} for an intercross).
-#' @param linemap_file File name for the \code{linemap} data
-#' (indicating the mapping of individuals to lines). (Specify just one of
-#' \code{linemap_file} or \code{linemap_covar}.)
-#' @param linemap_covar  Column name in the covariate data that
-#' corresponds to the \code{linemap} data. (Specify just one of
-#' \code{linemap_file} or \code{linemap_covar}.)
 #' @param geno_codes Named vector specifying the encoding of
 #' genotypes. The names attribute has the codes used within the
 #' genotype and founder genotype data files; the values within the
@@ -117,7 +111,7 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
          pmap_file=NULL, pheno_file=NULL, covar_file=NULL, phenocovar_file=NULL,
          sex_file=NULL, sex_covar=NULL, sex_codes=NULL,
          crossinfo_file=NULL, crossinfo_covar=NULL, crossinfo_codes=NULL,
-         linemap_file=NULL, linemap_covar=NULL, geno_codes=NULL, alleles=NULL, xchr=NULL,
+         geno_codes=NULL, alleles=NULL, xchr=NULL,
          sep=",", na.strings=c("-", "NA"), comment.char="#",
          geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
@@ -205,16 +199,6 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
         storage.mode(crossinfo_codes) <- "integer"
         result$cross_info <- c(list(covar=crossinfo_covar),
                                as.list(crossinfo_codes))
-    }
-
-    # linemap
-    if(!is.null(linemap_file)) {
-        if(!is.null(linemap_covar))
-            stop("Specify just one of linemap_file and linemap_covar")
-        result$linemap <- linemap_file
-    }
-    else if(!is.null(linemap_covar)) {
-        result$linemap <- linemap_covar
     }
 
     # JSON or YAML?

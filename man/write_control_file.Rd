@@ -9,9 +9,8 @@ write_control_file(output_file, crosstype = NULL, geno_file = NULL,
   pheno_file = NULL, covar_file = NULL, phenocovar_file = NULL,
   sex_file = NULL, sex_covar = NULL, sex_codes = NULL,
   crossinfo_file = NULL, crossinfo_covar = NULL, crossinfo_codes = NULL,
-  linemap_file = NULL, linemap_covar = NULL, geno_codes = NULL,
-  alleles = NULL, xchr = NULL, sep = ",", na.strings = c("-", "NA"),
-  comment.char = "#", geno_transposed = FALSE,
+  geno_codes = NULL, alleles = NULL, xchr = NULL, sep = ",",
+  na.strings = c("-", "NA"), comment.char = "#", geno_transposed = FALSE,
   founder_geno_transposed = FALSE, pheno_transposed = FALSE,
   covar_transposed = FALSE, phenocovar_transposed = FALSE,
   description = NULL, comments = NULL)
@@ -63,14 +62,6 @@ encoding of \code{cross_info}. The names attribute should be the
 codes used in the covariate column; the values within the vector
 should be the codes to which they will be converted (for example,
 \code{0} and \code{1} for an intercross).}
-
-\item{linemap_file}{File name for the \code{linemap} data
-(indicating the mapping of individuals to lines). (Specify just one of
-\code{linemap_file} or \code{linemap_covar}.)}
-
-\item{linemap_covar}{Column name in the covariate data that
-corresponds to the \code{linemap} data. (Specify just one of
-\code{linemap_file} or \code{linemap_covar}.)}
 
 \item{geno_codes}{Named vector specifying the encoding of
 genotypes. The names attribute has the codes used within the

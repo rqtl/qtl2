@@ -86,7 +86,6 @@ function(cross2)
     # sometimes required
     #     is_female
     #     cross_info
-    #     linemap (required if nrow(pheno) != nrow(geno[[1]])
     #     founder_geno (required for some crosstypes)
 
     # optional pieces

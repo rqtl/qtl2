@@ -14,7 +14,7 @@
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{ind}{A vector of individuals: numeric indices, logical
-values, or character string IDs}
+values, or character string IDs.}
 
 \item{chr}{A vector of chromosomes: numeric indices, logical
 values, or character string IDs}
@@ -28,6 +28,27 @@ individuals and/or chromsomes.
 \description{
 Pull out a specified set of individuals and/or chromosomes from a
 \code{cross2} object.
+}
+\details{
+When subsetting by individual, if \code{ind} is numeric, they're
+assumed to be numeric indices; if character strings, they're
+assumed to be individual IDs. \code{ind} can be numeric or logical
+only if the genotype, phenotype, and covariate data all have the
+same individuals in the same order.
+
+When subsetting by chromosome, \code{chr} is \emph{always}
+converted to character strings and treated as chromosome IDs. So if
+there are three chromosomes with IDs \code{"18"}, \code{"19"}, and
+\code{"X"}, \code{mycross[,18]} will give the first of the
+chromosomes (labeled \code{"18"}) and \code{mycross[,3]} will give
+an error.
+
+When using character string IDs for \code{ind} or \code{chr}, you
+can use "negative" subscripts to indicate exclusions, for example
+\code{mycross[,c("-18", "-X")]} or \code{mycross["-Mouse2501",]}.
+But you can't mix "positive" and "negative" subscripts, and if any
+of the individuals has an ID that begins with \code{"-"}, you can't
+use negative subscripts like this.
 }
 \section{Warning}{
 

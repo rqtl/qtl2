@@ -278,6 +278,27 @@ function(file, quiet=TRUE)
             output$founder_geno[[i]] <- output$founder_geno[[i]][,mar,drop=FALSE]
     }
 
+    # if pheno and geno have same individuals, make same order
+    if(!is.null(output$pheno)) {
+        ind_g <- rownames(output$geno[[1]])
+        ind_p <- rownames(output$pheno)
+        if(length(ind_g) == length(ind_p)) {
+            if(!all(ind_g == ind_p) && all(sort(ind_g) == sort(ind_p))) {
+                output$pheno <- output$pheno[ind_g,,drop=FALSE]
+            }
+        }
+    }
+    # same with geno and covar
+    if(!is.null(output$covar)) {
+        ind_g <- rownames(output$geno[[1]])
+        ind_p <- rownames(output$covar)
+        if(length(ind_g) == length(ind_p)) {
+            if(!all(ind_g == ind_p) && all(sort(ind_g) == sort(ind_p))) {
+                output$covar <- output$covar[ind_g,,drop=FALSE]
+            }
+        }
+    }
+
     check_cross2(output) # run all the checks
 
     if(any(!used_control))
