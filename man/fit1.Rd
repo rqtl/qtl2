@@ -5,8 +5,8 @@
 \title{Fit single-QTL model at a single position}
 \usage{
 fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, intcovar = NULL,
-  weights = NULL, contrasts = NULL, hsq = NULL, reml = TRUE,
-  tol = 0.000000000001)
+  weights = NULL, contrasts = NULL, se = TRUE, hsq = NULL,
+  reml = TRUE, tol = 0.000000000001)
 }
 \arguments{
 \item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes}
@@ -29,6 +29,8 @@ genotypes x genotypes. For an intercross, you might use
 mean, additive effect, and dominance effect. The default is the
 identity matrix.}
 
+\item{se}{If TRUE, calculate the standard errors.}
+
 \item{hsq}{(Optional) residual heritability; used only if
 \code{kinship} provided.}
 
@@ -42,8 +44,8 @@ columns are linearly dependent on others and should be omitted)}
 \value{
 A list containing
 \itemize{
-\item \code{coef} - Vector of estimated coefficients
-\item \code{SE} - Vector of estimated standard errors
+\item \code{coef} - Vector of estimated coefficients.
+\item \code{SE} - Vector of estimated standard errors (included if \code{se=TRUE}).
 \item \code{lod} - The overall lod score.
 \item \code{ind_lod} - Vector of individual contributions to the LOD score.
 }
@@ -89,7 +91,10 @@ out <- scan1(probs[,7], pheno, kinship7, addcovar=covar)
 max_pos <- rownames(max(out, map[7]))
 
 # fit QTL model just at that position
-out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
+out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, addcovar=covar)
+
+# fit QTL model just at that position, with polygenic effect
+# out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
 
 }
 \references{
