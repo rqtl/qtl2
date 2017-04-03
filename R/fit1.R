@@ -89,6 +89,7 @@
 #' # fit QTL model just at that position, with polygenic effect
 #' # out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
 #'
+#' @importFrom stats setNames
 #' @export
 fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
