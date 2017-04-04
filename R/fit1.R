@@ -125,10 +125,6 @@ fit1 <-
     }
 
     # genoprobs is a matrix?
-    if(is.null(genoprobs)) {
-      genoprobws <- matrix(nrow = length(pheno), ncol = 0)
-      rownames(geno_null) <- names(pheno)
-    }
     if(!is.matrix(genoprobs))
         stop("genoprobs should be a matrix, individuals x genotypes")
 

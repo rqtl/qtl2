@@ -245,7 +245,7 @@ scan1coef_names <-
 {
     qtl_names <-colnames(genoprobs)
     if(is.null(qtl_names))
-        qtl_names <- paste0("qtleff", seq_len(ncol(genoprobs)))
+        qtl_names <- paste0("qtleff", 1:ncol(genoprobs))
 
     if(is.null(addcovar) || ncol(addcovar)==0) { # no additive covariates
         return(qtl_names)
@@ -253,9 +253,9 @@ scan1coef_names <-
     else { # some additive covariates
         add_names <- colnames(addcovar)
         if(is.null(add_names) || all(add_names==""))
-            add_names <- paste0("ac", seq_len(ncol(addcovar)))
+            add_names <- paste0("ac", 1:ncol(addcovar))
         else if(all(add_names[-1] == "")) # all but first is empty
-            add_names[-1] <- paste0("ac", seq_len(ncol(addcovar)-1))
+            add_names[-1] <- paste0("ac", 1:(ncol(addcovar)-1))
 
         if(is.null(intcovar)) { # no interactive covariates
             return(c(qtl_names, add_names))
@@ -263,7 +263,7 @@ scan1coef_names <-
 
         int_names <- colnames(intcovar)
         if(is.null(intcovar))
-            int_names <- paste0("ic", seq_len(ncol(intcovar)))
+            int_names <- paste0("ic", 1:ncol(intcovar))
 
         result <- c(qtl_names, add_names)
         for(ic in int_names)
