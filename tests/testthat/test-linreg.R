@@ -17,7 +17,7 @@ test_that("lin regr works for simple example", {
     rss <- sum(resid^2)
 
     # QR-based regression
-    qrFit <- fit_linreg_eigenqr(X, y)
+    qrFit <- fit_linreg_eigenqr(X, y, TRUE)
     expect_equal(rss, qrFit$rss)
     expect_equivalent(lm.out$coef, qrFit$coef)
     expect_equivalent(lm.out$fitted, qrFit$fitted)
@@ -69,7 +69,7 @@ test_that("lin regr works for reduced-rank example", {
     # (cholesky-based regression won't work here)
 
     # QR-based regression
-    qrFit <- fit_linreg_eigenqr(mm, y)
+    qrFit <- fit_linreg_eigenqr(mm, y, TRUE)
     expect_equal(rss, qrFit$rss)
     expect_equivalent(lm.out$coef, qrFit$coef)
     expect_equivalent(lm.out$fitted, qrFit$fitted)

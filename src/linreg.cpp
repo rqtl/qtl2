@@ -60,3 +60,15 @@ NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& 
 
     return result;
 }
+
+// least squares, returning everything
+// output is list of (coef, fitted, resid, rss, sigma, rank, df, SE)
+//
+// argument se indicates whether to calculate standard errors (SE)
+//
+// [[Rcpp::export]]
+List fit_linreg(const NumericMatrix& X, const NumericVector& y,
+                const bool se, const double tol=1e-12)
+{
+    return fit_linreg_eigenqr(X, y, se, tol);
+}

@@ -1,6 +1,6 @@
-# Calculate QTL effects in scan along one chromosome, adjusting for polygenes with an LMM
+# fit a single-QTL model at a single position, adjusting for polygenes with an LMM
 #
-scan1coef_pg <-
+fit1_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
              contrasts=NULL, se=FALSE,
@@ -27,10 +27,9 @@ scan1coef_pg <-
         names(pheno) <- rn
     }
 
-    # genoprobs has more than one chromosome?
-    if(length(genoprobs) > 1)
-        warning("Using only the first chromosome, ", names(genoprobs)[1])
-    genoprobs <- genoprobs[[1]]
+    # genoprobs is a matrix?
+    if(!is.matrix(genoprobs))
+        stop("genoprobs should be a matrix, individuals x genotypes")
 
     # make sure contrasts is square n_genotypes x n_genotypes
     if(!is.null(contrasts)) {
@@ -39,7 +38,7 @@ scan1coef_pg <-
             stop("contrasts should be a square matrix, ", ng, " x ", ng)
     }
 
-    # check that kinship matrices are square with same IDs
+    # check that kinship matrix is square with same IDs
     if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
         kinshipIDs <- rownames(kinship$vectors)
         did_decomp <- TRUE
@@ -79,7 +78,7 @@ scan1coef_pg <-
     }
 
     # omit individuals not in common
-    genoprobs <- genoprobs[ind2keep,,,drop=FALSE]
+    genoprobs <- genoprobs[ind2keep,,drop=FALSE]
     pheno <- pheno[ind2keep]
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
     if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
@@ -106,47 +105,45 @@ scan1coef_pg <-
     eigenvec <- kinship$vectors
     weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
+    # fit null model
+    fit0 <- fit1_pg_addcovar(cbind(rep(1, length(pheno)), addcovar, nullcovar),
+                             pheno,
+                             matrix(ncol=0, nrow=length(pheno)),
+                             eigenvec, weights, se, tol)
+
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
-        genoprobs <- genoprobs_by_contrasts(genoprobs, contrasts)
+        genoprobs <- genoprobs %*% contrasts
 
-    if(se) { # also calculate SEs
-
-        if(is.null(intcovar)) { # just addcovar
-            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoefSE_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
-        }
-        else {                  # intcovar
-            result <- scancoefSE_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                              eigenvec, weights, tol)
-        }
-
-        SE <- t(result$SE) # transpose to positions x coefficients
-        result <- result$coef
-    } else { # don't calculate SEs
-
-        if(is.null(intcovar)) { # just addcovar
-            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoef_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
-        }
-        else {                  # intcovar
-            result <- scancoef_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                            eigenvec, weights, tol)
-        }
-        SE <- NULL
+    if(is.null(intcovar)) { # just addcovar
+        if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
+        fitA <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
+    }
+    else {                  # intcovar
+        fitA <- fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                 eigenvec, weights, se, tol)
     }
 
-    result <- t(result) # transpose to positions x coefficients
+    # lod score
+    n <- length(pheno)
+    lod <- (n/2)*log10(fit0$rss/fitA$rss)
 
-    # add names
-    dimnames(result) <- list(dimnames(genoprobs)[[3]],
-                             scan1coef_names(genoprobs, addcovar, intcovar))
-    if(se) dimnames(SE) <- dimnames(result)
+    # residual SDs using 1/n
+    sigsq0 <- fit0$sigma^2/n*fit0$df
+    sigsqA <- fitA$sigma^2/n*fitA$df
 
-    # add some attributes with details on analysis
-    attr(result, "sample_size") <- length(ind2keep)
-    attr(result, "SE") <- SE # include only if not NULL
+    # individual contributions to the lod score
+    ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
+    names(ind_lod) <- names(pheno)
 
-    class(result) <- c("scan1coef", "scan1", "matrix")
-    result
+    # names of coefficients
+    coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)
+
+    if(se) # results include standard errors
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    SE=stats::setNames(fitA$SE, coef_names)))
+    else
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=stats::setNames(fitA$coef, coef_names)))
 }

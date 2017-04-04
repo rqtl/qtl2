@@ -11,6 +11,14 @@
 #' per chromosome), in order to use the LOCO (leave one chromosome
 #' out) method.
 #' @param addcovar An optional matrix of additive covariates.
+#' @param nullcovar An optional matrix of additional additive
+#' covariates that are used under the null hypothesis (of no QTL) but
+#' not under the alternative (with a QTL). This is needed for the X
+#' chromosome, where we might need sex as a additive covariate under
+#' the null hypothesis, but we wouldn't want to include it under the
+#' alternative as it would be collinear with the QTL effects. Only
+#' used if \code{kinship} is provided but \code{hsq} is not, to get
+#' estimate of residual heritability.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
 #' \code{cbind(c(1,0,0), c(-0.5, 0, 0.5), c(-0.5, 1, 0.5))} to get
@@ -93,14 +101,14 @@
 #'
 #' @export
 scan1blup <-
-    function(genoprobs, pheno, kinship=NULL, addcovar=NULL,
+    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              contrasts=NULL, se=FALSE, reml=TRUE, preserve_intercept=FALSE,
              tol=1e-12, cores=1, quiet=TRUE)
 {
     if(!is.null(contrasts)) preserve_intercept <- TRUE # force preserve_intercept if using contrasts
 
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
-        return(scan1blup_pg(genoprobs, pheno, kinship, addcovar,
+        return(scan1blup_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
                             contrasts, se, reml, preserve_intercept, tol, cores, quiet))
     }
 

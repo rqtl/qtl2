@@ -12,13 +12,21 @@
 #' per chromosome), in order to use the LOCO (leave one chromosome
 #' out) method.
 #' @param addcovar An optional matrix of additive covariates.
+#' @param nullcovar An optional matrix of additional additive
+#' covariates that are used under the null hypothesis (of no QTL) but
+#' not under the alternative (with a QTL). This is needed for the X
+#' chromosome, where we might need sex as a additive covariate under
+#' the null hypothesis, but we wouldn't want to include it under the
+#' alternative as it would be collinear with the QTL effects. Only
+#' used if \code{kinship} is provided but \code{hsq} is not, to get
+#' estimate of residual heritability.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
 #' individuals. As with the other inputs, it must have \code{names}
 #' for individual identifiers. Ignored if \code{kinship} is provided.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
-#' \code{cbind(c(1,0,0), c(-0.5, 0, 0.5), c(-0.5, 1, 0.5))} to get
+#' \code{cbind(c(1,1,1), c(-0.5, 0, 0.5), c(-0.5, 1, -0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param se If TRUE, also calculate the standard errors.
@@ -87,11 +95,12 @@
 #'
 #' @export
 scan1coef <-
-    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, intcovar=NULL, weights=NULL,
+    function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
+             intcovar=NULL, weights=NULL,
              contrasts=NULL, se=FALSE, hsq=NULL, reml=TRUE, tol=1e-12)
 {
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
-        return(scan1coef_pg(genoprobs, pheno, kinship, addcovar,
+        return(scan1coef_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
                             intcovar, contrasts, se, hsq, reml, tol))
     }
 

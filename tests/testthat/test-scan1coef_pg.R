@@ -105,18 +105,18 @@ test_that("scan1coef_pg for grav", {
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # interactive covariate
-    est <- scan1coef(pr[,1], phe, K, covar, covar, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, covar, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=TRUE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
-    est <- scan1coef(pr[,1], phe, Ke, covar, covar)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar)
     expect_equivalent(est, est_lm)
-    est <- scan1coef(pr[,1], phe, Ke, covar, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, se=TRUE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
@@ -138,18 +138,18 @@ test_that("scan1coef_pg for grav", {
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two interactive covariates
-    est <- scan1coef(pr[,1], phe, K, covar, covar, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, covar, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=TRUE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
-    est <- scan1coef(pr[,1], phe, Ke, covar, covar)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar)
     expect_equivalent(est, est_lm)
-    est <- scan1coef(pr[,1], phe, Ke, covar, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, se=TRUE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 

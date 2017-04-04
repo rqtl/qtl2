@@ -29,4 +29,14 @@ Rcpp::NumericVector calc_resid_linreg_3d(const Rcpp::NumericMatrix& X,
                                          const Rcpp::NumericVector& P,
                                          const double tol);
 
+
+// least squares, returning everything
+// output is list of (coef, fitted, resid, rss, sigma, rank, df, SE)
+//
+// argument se indicates whether to calculate standard errors (SE)
+Rcpp::List fit_linreg(const Rcpp::NumericMatrix& X,
+                      const Rcpp::NumericVector& y,
+                      const bool se,
+                      const double tol);
+
 #endif // LINREG_H

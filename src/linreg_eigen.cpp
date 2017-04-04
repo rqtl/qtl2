@@ -20,7 +20,7 @@ MatrixXd calc_XpX(const MatrixXd& X)
 
 // least squares by "LLt" Cholesky decomposition
 // [[Rcpp::export]]
-List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
+List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se)
 {
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
@@ -33,17 +33,27 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
     VectorXd resid = yy - fitted;
     const int df = n-p;
     const double s = resid.norm() / std::sqrt((double)df);
-    VectorXd se = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
     const double rss = resid.squaredNorm();
+    if(se) {
+        VectorXd SE = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
 
-    return List::create(Named("coef") = betahat,
-                        Named("fitted") = fitted,
-                        Named("resid") = resid,
-                        Named("rss") = rss,
-                        Named("sigma") = s,
-                        Named("rank") = p,
-                        Named("df") = df,
-                        Named("SE") = se);
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = s,
+                            Named("rank") = p,
+                            Named("df") = df,
+                            Named("SE") = SE);
+    } else {
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = s,
+                            Named("rank") = p,
+                            Named("df") = df);
+    }
 }
 
 // least squares by "LLt" Cholesky decomposition
@@ -102,7 +112,7 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 // least squares by QR decomposition with column pivoting
 // [[Rcpp::export]]
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
-                        const double tol=1e-12)
+                        const bool se, const double tol=1e-12)
 {
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
@@ -117,16 +127,18 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     Permutation Pmat( PQR.colsPermutation() );
     const int r = PQR.rank();
 
-    VectorXd betahat(p), fitted(n), se(p);
+    VectorXd betahat(p), fitted(n), SE(p);
 
     if(r == p) { // full rank
         betahat = PQR.solve(yy);
         fitted = XX * betahat;
 
-        se = Pmat * PQR.matrixQR().topRows(p).
-            triangularView<Upper>().
-            solve(MatrixXd::Identity(p, p)).
-            rowwise().norm();
+        if(se) {
+            SE = Pmat * PQR.matrixQR().topRows(p).
+                triangularView<Upper>().
+                solve(MatrixXd::Identity(p, p)).
+                rowwise().norm();
+        }
 
     } else {
         MatrixXd Rinv( PQR.matrixQR().topLeftCorner(r,r).
@@ -138,9 +150,11 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
         betahat.head(r) = Rinv * effects.head(r);
         betahat = Pmat*betahat;
 
-        se.fill(::NA_REAL);
-        se.head(r) = Rinv.rowwise().norm();
-        se = Pmat * se;
+        if(se) {
+            SE.fill(::NA_REAL);
+            SE.head(r) = Rinv.rowwise().norm();
+            SE = Pmat * SE;
+        }
 
         effects.tail(n - r).setZero();
         fitted = PQR.householderQ() * effects;
@@ -151,14 +165,23 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     const int df = n - r;
     const double sigma = std::sqrt(rss/(double)df);
 
-    return List::create(Named("coef") = betahat,
-                        Named("fitted") = fitted,
-                        Named("resid") = resid,
-                        Named("rss") = rss,
-                        Named("sigma") = sigma,
-                        Named("rank") = r,
-                        Named("df") = df,
-                        Named("SE") = sigma*se);
+    if(se)
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = sigma,
+                            Named("rank") = r,
+                            Named("df") = df,
+                            Named("SE") = sigma*SE);
+    else
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = sigma,
+                            Named("rank") = r,
+                            Named("df") = df);
 }
 
 // least squares by QR decomposition with column pivoting
