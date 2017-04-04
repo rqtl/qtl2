@@ -177,7 +177,7 @@ scan1blup <-
 
     # determine batches
     n_pos <- dim(genoprobs)[[3]]
-    batches <- batch_vec(1:n_pos, ceiling(n_pos/n_cores(cores)))
+    batches <- batch_vec(seq_len(n_pos), ceiling(n_pos/n_cores(cores)))
 
     by_group_func <- function(i)
         scanblup(genoprobs[,,batches[[i]],drop=FALSE], pheno, addcovar, se, reml, preserve_intercept, tol)

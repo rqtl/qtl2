@@ -165,7 +165,7 @@ find_peaks <-
     batch <- cbind(rep(seq_along(lod), vapply(lod, length, 1)),
                    unlist(lapply(lod, function(a) seq_along(a))))
     dimnames(batch) <- NULL
-    batch_index <- 1:nrow(batch)
+    batch_index <- seq_len(nrow(batch))
 
     # set up parallel analysis
     cores <- setup_cluster(cores)

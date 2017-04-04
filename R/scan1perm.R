@@ -175,7 +175,7 @@ scan1perm <-
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)
     if(is.null(colnames(pheno))) # force column names
-        colnames(pheno) <- paste0("pheno", 1:ncol(pheno))
+        colnames(pheno) <- paste0("pheno", seq_len(ncol(pheno)))
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
     if(!is.null(Xcovar) && !is.matrix(Xcovar))
@@ -274,8 +274,8 @@ scan1perm_nocovar <-
     perms <- gen_strat_perm(n_perm, ind2keep, perm_strata)
 
     # batch permutations
-    phe_batches <- batch_vec( rep(1:ncol(pheno), n_perm), max_batch)
-    perm_batches <- batch_vec( rep(1:n_perm, each=ncol(pheno)), max_batch)
+    phe_batches <- batch_vec( rep(seq_len(ncol(pheno)), n_perm), max_batch)
+    perm_batches <- batch_vec( rep(seq_len(n_perm), each=ncol(pheno)), max_batch)
 
     # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
     genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
@@ -286,7 +286,7 @@ scan1perm_nocovar <-
     run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)),
                               phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)))
 
-    run_indexes <- 1:(length(genoprobs)*length(phe_batches))
+    run_indexes <- seq_len(length(genoprobs)*length(phe_batches))
 
     # subset the phenotypes
     pheno <- pheno[ind2keep,,drop=FALSE]
@@ -312,7 +312,7 @@ scan1perm_nocovar <-
             pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
 
         ph <- pheno[,phebatch,drop=FALSE]
-        for(col in 1:ncol(ph)) # permute columns
+        for(col in seq_len(ncol(ph))) # permute columns
             ph[,col] <- ph[perms[,permbatch[col]] , col]
 
         # scan1 function taking clean data (with no missing values)
@@ -393,9 +393,9 @@ scan1perm_covar <-
     # batches for analysis, to allow parallel analysis
     run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)*n_perm),
                               phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)*n_perm),
-                              perm_batch=rep(rep(1:n_perm, each=length(genoprobs), length(phe_batches))))
+                              perm_batch=rep(rep(seq_len(n_perm), each=length(genoprobs), length(phe_batches))))
 
-    run_indexes <- 1:(length(genoprobs)*length(phe_batches)*n_perm)
+    run_indexes <- seq_len(length(genoprobs)*length(phe_batches)*n_perm)
 
     # the function that does the work
     by_group_func <- function(i) {

@@ -132,7 +132,7 @@ index_snps <-
     snpinfo$interval <- interval
     snpinfo$on_map <- on_map
     ### first row with each unique pattern
-    urow <- (1:nrow(snpinfo))[match(upat, pat)]
+    urow <- seq_len(nrow(snpinfo))[match(upat, pat)]
     ### update index as linking to row number
     snpinfo$index <- urow[snpinfo$index]
 

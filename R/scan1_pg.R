@@ -21,7 +21,7 @@ scan1_pg <-
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)
     if(is.null(colnames(pheno))) # force column names
-        colnames(pheno) <- paste0("pheno", 1:ncol(pheno))
+        colnames(pheno) <- paste0("pheno", seq_len(ncol(pheno)))
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
     if(!is.null(Xcovar) && !is.matrix(Xcovar))
@@ -76,7 +76,7 @@ scan1_pg <-
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
     npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq_len(length(genoprobs)), npos_by_chr))
+    pos_index <- split(seq_len(totpos), rep(seq_len(length(genoprobs)), npos_by_chr))
     pos_names <- unlist(dimnames(genoprobs)[[3]])
     names(pos_names) <- NULL # this is just annoying
 
@@ -208,7 +208,7 @@ scan1_pg_clean <-
     } else loco <- TRUE
 
     batches <- list(chr=rep(seq_len(length(genoprobs)), ncol(pheno)),
-                    phecol=rep(1:ncol(pheno), each=length(genoprobs)))
+                    phecol=rep(seq_len(ncol(pheno)), each=length(genoprobs)))
 
     # function that does the work
     by_batch_func <-
@@ -276,7 +276,7 @@ scan1_pg_clean <-
 
     npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq_len(length(genoprobs)), npos_by_chr))
+    pos_index <- split(seq_len(totpos), rep(seq_len(length(genoprobs)), npos_by_chr))
 
     # to contain the results
     result <- matrix(nrow=totpos, ncol=ncol(pheno))

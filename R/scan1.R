@@ -146,7 +146,7 @@ scan1 <-
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)
     if(is.null(colnames(pheno))) # force column names
-        colnames(pheno) <- paste0("pheno", 1:ncol(pheno))
+        colnames(pheno) <- paste0("pheno", seq_len(ncol(pheno)))
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)
     if(!is.null(Xcovar) && !is.matrix(Xcovar))
@@ -196,7 +196,7 @@ scan1 <-
     # batches for analysis, to allow parallel analysis
     run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)),
                               phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)))
-    run_indexes <- 1:(length(genoprobs)*length(phe_batches))
+    run_indexes <- seq_len(length(genoprobs)*length(phe_batches))
 
     # the function that does the work
     by_group_func <- function(i) {
@@ -245,7 +245,7 @@ scan1 <-
     # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
     npos_by_chr <- dim(genoprobs)[3,]
     totpos <- sum(npos_by_chr)
-    pos_index <- split(1:totpos, rep(seq_len(length(genoprobs)), npos_by_chr))
+    pos_index <- split(seq_len(totpos), rep(seq_len(length(genoprobs)), npos_by_chr))
 
     # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
@@ -366,7 +366,7 @@ colnames4attr <-
 
     if(is.null(cn)) cn <- rep("", ncol(mat))
 
-    if(any(cn=="")) cn[cn==""] <- paste0("unnamed", 1:sum(cn==""))
+    if(any(cn=="")) cn[cn==""] <- paste0("unnamed", seq_len(sum(cn=="")))
 
     cn
 }

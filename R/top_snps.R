@@ -156,7 +156,7 @@ snpinfo_to_map <-
 rev_snp_index <-
     function(snpinfo)
 {
-    index_spl <- split(1:nrow(snpinfo), snpinfo$index)
+    index_spl <- split(seq_len(nrow(snpinfo)), snpinfo$index)
     revindex <- rep(seq_along(index_spl), vapply(index_spl, length, 1))
     revindex[unlist(index_spl)] <- revindex
 

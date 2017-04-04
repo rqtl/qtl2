@@ -95,9 +95,9 @@ scan1perm_pg <-
     # batches for analysis, to allow parallel analysis
     run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)*n_perm),
                               phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)*n_perm),
-                              perm_batch=rep(rep(1:n_perm, each=length(genoprobs), length(phe_batches))))
+                              perm_batch=rep(rep(seq_len(n_perm), each=length(genoprobs), length(phe_batches))))
 
-    run_indexes <- 1:(length(genoprobs)*length(phe_batches)*n_perm)
+    run_indexes <- seq_len(length(genoprobs)*length(phe_batches)*n_perm)
 
     # the function that does the work
     by_group_func <- function(i) {
@@ -201,7 +201,7 @@ scan1perm_pg_onechr <-
     ac <- cbind(rep(1, nrow(pheno)), addcovar)
     ic <- intcovar
 
-    for(phecol in 1:ncol(pheno)) {
+    for(phecol in seq_len(ncol(pheno))) {
         y <- pheno[,phecol,drop=FALSE]
 
         weights <- 1/(hsq[phecol]*Keval + (1-hsq[phecol]))

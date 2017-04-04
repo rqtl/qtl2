@@ -73,7 +73,7 @@ drop_xcovar <-
                           Xcovar[complete.cases(Xcovar),,drop=FALSE])
 
     # look for matching columns, having reduced to common individuals
-    matches <- find_matching_cols(cbind(covar[ids,], Xcovar[ids,]), tol)[-(1:ncol(covar))]
+    matches <- find_matching_cols(cbind(covar[ids,], Xcovar[ids,]), tol)[-seq_len(ncol(covar))]
 
     if(all(matches > 0)) return(NULL)
 

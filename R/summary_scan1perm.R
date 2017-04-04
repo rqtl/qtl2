@@ -215,7 +215,7 @@ print.summary.scan1perm <-
         if(constant_perms) cat("(", n_perm[1], " permutations)", sep="")
         cat("\n")
 
-        print(x[1:nrow(x),,drop=FALSE], digits=digits)
+        print(x[seq_len(nrow(x)),,drop=FALSE], digits=digits)
 
         if(!constant_perms) {
             cat("\n")

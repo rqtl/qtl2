@@ -53,7 +53,7 @@ batch_cols <-
     # now the columns with >1 NA
     other_cols <- !(no_na | one_na)
     if(any(other_cols)) {
-        other_cols <- (1:ncol(mat))[other_cols]
+        other_cols <- seq_len(ncol(mat))[other_cols]
 
         # pattern of missing data (as character string with 0's and 1's
         pat <- apply(mat[,other_cols,drop=FALSE], 2, function(a) paste(which(a), collapse=":"))
@@ -97,9 +97,9 @@ batch_vec <-
     n_per_batch <- rep(floor(n/n_batches), n_batches)
     d <- n - sum(n_per_batch)
     if(d >= 1)
-        n_per_batch[1:d] <- n_per_batch[1:d]+1
+        n_per_batch[seq_len(d)] <- n_per_batch[seq_len(d)]+1
 
-    result <- split(vec, rep(1:n_batches, n_per_batch))
+    result <- split(vec, rep(seq_len(n_batches), n_per_batch))
     names(result) <- NULL
     result
 }

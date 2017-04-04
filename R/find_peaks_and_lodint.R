@@ -49,7 +49,7 @@ find_peaks_and_lodint <-
     batch <- cbind(rep(seq_along(lod), vapply(lod, length, 1)),
                    unlist(lapply(lod, function(a) seq_along(a))))
     dimnames(batch) <- NULL
-    batch_index <- 1:nrow(batch)
+    batch_index <- seq_len(nrow(batch))
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -79,7 +79,7 @@ find_peaks_and_lodint <-
         #  take average of multiple positions sharing the maximum LOD score)
         # and remember that .find_peaks returns indexes starting at 0
         ci_lo <- ci_hi <- rep(0, n_peaks)
-        for(i in 1:n_peaks) {
+        for(i in seq_len(n_peaks)) {
             if(expand2markers)
                 ci <- expand_interval_to_markers(peaks[[i]][1:2]+1, map[[chr]])
             else

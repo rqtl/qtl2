@@ -132,7 +132,7 @@ lod_int <-
     #  take average of multiple positions sharing the maximum LOD score)
     # and remember that .find_peaks returns indexes starting at 0
     ci_lo <- ci_hi <- rep(0, n_peaks)
-    for(i in 1:n_peaks) {
+    for(i in seq_len(n_peaks)) {
         if(expand2markers)
             ci <- expand_interval_to_markers(peaks[[i]][1:2]+1, map)
         else
@@ -145,7 +145,7 @@ lod_int <-
     result <- cbind(ci_lo=ci_lo,
                     pos=peak_pos,
                     ci_hi=ci_hi)
-    rownames(result) <- 1:nrow(result)
+    rownames(result) <- seq_len(nrow(result))
 
     result
 }
