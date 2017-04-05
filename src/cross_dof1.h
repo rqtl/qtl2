@@ -42,6 +42,9 @@ class DOF1 : public QTLCross
     const bool need_founder_geno();
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
+
+    const double est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
+                              const Rcpp::IntegerMatrix& cross_info, const int n_gen);
 };
 
 #endif // CROSS_DOF1_H
