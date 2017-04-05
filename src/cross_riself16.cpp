@@ -70,6 +70,9 @@ const double RISELF16::step(const int gen_left, const int gen_right, const doubl
         throw std::range_error("genotype value not allowed");
     #endif
 
+    // equations are from Teuscher and Broman Genetics 175:1267-1274, 2007
+    //    doi:10.1534/genetics.106.064063
+    //    see equation 1 in right column on page 1269
     if(gen_left == gen_right)
         return 3.0*log(1.0-rec_frac) - log(16.0) - log(1.0 + 2.0 * rec_frac);
 
@@ -233,8 +236,41 @@ const int RISELF16::nrec(const int gen_left, const int gen_right,
 const double RISELF16::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                                     const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
-    // FIX_ME need to implement this
-    return(NA_REAL);
+    int n_ind = cross_info.cols();
+    int n_gen_sq = n_gen*n_gen;
+
+    #ifndef NDEBUG
+    if(cross_info.rows() != 8) // incorrect number of founders
+        throw std::range_error("cross_info should contain 8 founders");
+    #endif
+
+    double u=0.0, v=0.0, w=0.0, y=0.0; // counts of the four different patterns of 2-locus genotypes
+    for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
+        IntegerVector founder_index = reverse_index_founders(cross_info(_,ind));
+
+        for(int gl=0; gl<n_gen; gl++) {
+            u += gamma[offset+gl*n_gen+gl];
+            for(int gr=gl+1; gr<n_gen; gr++) {
+                if(founder_index[gl] / 2 == founder_index[gr] / 2)
+                    v += (gamma[offset+gl*n_gen+gr] + gamma[offset+gr*n_gen+gl]);
+                else if(founder_index[gl] / 4 == founder_index[gr] / 4)
+                    w += (gamma[offset+gl*n_gen+gr] + gamma[offset+gr*n_gen+gl]);
+                else
+                    y += (gamma[offset+gl*n_gen+gr] + gamma[offset+gr*n_gen+gl]);
+            }
+        }
+    }
+    double n = u + v + w + y; // total
+
+    // calculate MLE of recombination fraction
+    double A = sqrt(9.0*y*y + 6.0*y*(3.0*w + 5.0*v + 3.0*u - 2.0*n) + 9.0*w*w +
+                    6.0*w*(5.0*v+3.0*u-2.0*n) + 25.0*v*v + 2.0*v*(15.0*u-2.0*n) +
+                    9.0*u*u + 12.0*n*u +4.0*n*n);
+    double result =  (A + y + w - v - 3.0*u - 2.0*n)/4.0/(y + w + 3.0*v + 3.0*u - n);
+
+    if(result < 0.0) result = 0.0;
+
+    return result;
 }
 
 // check whether X chr can be handled
