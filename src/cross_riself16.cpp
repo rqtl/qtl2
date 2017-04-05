@@ -70,16 +70,29 @@ const double RISELF16::step(const int gen_left, const int gen_right, const doubl
         throw std::range_error("genotype value not allowed");
     #endif
 
-    // FIX_ME
-    // oy this is a bit tricky; need to use cross_info
+    if(gen_left == gen_right)
+        return 3.0*log(1.0-rec_frac) - log(16.0) - log(1.0 + 2.0 * rec_frac);
 
-    return(NA_REAL);
+    // first get reverse index of cross info
+    IntegerVector founder_index = reverse_index_founders(cross_info);
+
+    // were the two founders crossed to each other at the first generation?
+    if(founder_index[gen_left-1] / 2 == founder_index[gen_right-1] / 2) // next to each other
+        return log(rec_frac) + 2.0*log(1.0 - rec_frac) - log(16.0) - log(1.0 + 2.0 * rec_frac);
+
+    // were the two founders in the same group of 4?
+    if(founder_index[gen_left-1] / 4 == founder_index[gen_right-1] / 4)
+        return log(rec_frac) + log(1.0 - rec_frac) - log(32.0) - log(1.0 + 2.0 * rec_frac);
+
+    // off the block-diagonal
+    return log(rec_frac) - log(64.0) - log(1.0 + 2.0 * rec_frac);
+
 }
 
 const IntegerVector RISELF16::possible_gen(const bool is_x_chr, const bool is_female,
                                        const IntegerVector& cross_info)
 {
-    int n_geno = 8;
+    int n_geno = 16;
     IntegerVector result(n_geno);
 
     for(int i=0; i<n_geno; i++) result[i] = i+1;
@@ -88,12 +101,12 @@ const IntegerVector RISELF16::possible_gen(const bool is_x_chr, const bool is_fe
 
 const int RISELF16::ngen(const bool is_x_chr)
 {
-    return 8;
+    return 16;
 }
 
 const int RISELF16::nalleles()
 {
-    return 8;
+    return 16;
 }
 
 
