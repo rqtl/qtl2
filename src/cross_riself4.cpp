@@ -70,10 +70,10 @@ const double RISELF4::step(const int gen_left, const int gen_right, const double
         throw std::range_error("genotype value not allowed");
     #endif
 
-    // FIX_ME
-    // oy this is a bit tricky; need to use cross_info
-
-    return(NA_REAL);
+    if(gen_left != gen_right)
+        return log(rec_frac) - log(4.0) - log(1.0 + 2.0*rec_frac);
+    else
+        return log(1.0 - rec_frac) - log(4.0) - log(1.0 + 2.0*rec_frac);
 }
 
 const IntegerVector RISELF4::possible_gen(const bool is_x_chr, const bool is_female,
@@ -220,8 +220,10 @@ const int RISELF4::nrec(const int gen_left, const int gen_right,
 const double RISELF4::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                                     const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
-    // FIX_ME need to implement this
-    return(NA_REAL);
+    double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
+
+    // inverse of R = 3r/(1+2r)
+    return R/(3.0 - 2.0*R);
 }
 
 // check whether X chr can be handled
