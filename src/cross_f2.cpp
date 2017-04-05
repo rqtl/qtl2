@@ -382,6 +382,12 @@ const int F2::nrec(const int gen_left, const int gen_right,
                    const bool is_x_chr, const bool is_female,
                    const Rcpp::IntegerVector& cross_info)
 {
+    #ifndef NDEBUG
+    if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
+       !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+
     if(!is_x_chr) {
         switch(gen_left) {
         case 1:

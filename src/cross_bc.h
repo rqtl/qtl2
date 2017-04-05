@@ -30,10 +30,6 @@ class BC : public QTLCross
                                            const Rcpp::IntegerVector& cross_info);
     const int ngen(const bool is_x_chr);
 
-    const int nrec(const int gen_left, const int gen_right,
-                   const bool is_x_chr, const bool is_female,
-                   const Rcpp::IntegerVector& cross_info);
-
     const bool check_is_female_vector(const Rcpp::LogicalVector& is_female, const bool any_x_chr);
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles,

@@ -218,8 +218,35 @@ const int HSPK::nrec(const int gen_left, const int gen_right,
                      const bool is_x_chr, const bool is_female,
                      const IntegerVector& cross_info)
 {
-    // need to fill in this function
-    return NA_INTEGER;
+    #ifndef NDEBUG
+    if(!check_geno(gen_left, true, is_x_chr, is_female, cross_info) ||
+       !check_geno(gen_right, true, is_x_chr, is_female, cross_info))
+        throw std::range_error("genotype value not allowed");
+    #endif
+
+    if(is_x_chr && gen_left > 64 && gen_right > 64) { // male X chromosome
+        if(gen_left == gen_right) return(0);
+        else return(1);
+    }
+
+    Rcpp::IntegerVector a_left = mpp_decode_geno(gen_left, 8, true);
+    Rcpp::IntegerVector a_right = mpp_decode_geno(gen_right, 8, true);
+
+    if(a_left[0] == a_right[0]) {
+        if(a_left[1] == a_right[1]) return(0);
+        else return(1);
+    }
+    else if(a_left[0] == a_right[1]) {
+        if(a_left[1] == a_right[0]) return(0);
+        else return(1);
+    }
+    else if(a_left[1] == a_right[0]) {
+        return(1);
+    }
+    else if(a_left[1] == a_right[1]) {
+        return(1);
+    }
+    else return(2);
 }
 
 const double HSPK::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,

@@ -226,3 +226,37 @@ test_that("geno_names works", {
     expect_equal(geno_names("f2", c("B", "R"), FALSE), c("BB", "BR", "RR"))
     expect_equal(geno_names("f2", c("B", "R"), TRUE), c("BB", "BR", "RB", "RR", "BY", "RY"))
 })
+
+test_that("nrec works", {
+
+    # autosome genotypes = 1:3
+    expected <- rbind(c(0,1,2), c(1,0,1), c(2,1,0))
+    for(i in 1:3)
+        for(j in 1:3)
+            expect_equal(test_nrec("f2", i, j, FALSE, FALSE, 0), expected[i,j])
+
+    # X chromosome female, forward
+    expected <- rbind(c(0,1), c(1,0))
+    for(i in 1:2)
+        for(j in 1:2)
+            expect_equal(test_nrec("f2", i, j, TRUE, TRUE, 0), expected[i,j])
+
+    # X chromosome female, reverse
+    expected <- rbind(c(0,1), c(1,0))
+    for(i in 1:2)
+        for(j in 1:2)
+            expect_equal(test_nrec("f2", i+2, j+2, TRUE, TRUE, 1), expected[i,j])
+
+    # X chromosome male
+    expected <- rbind(c(0,1), c(1,0))
+    for(i in 1:2)
+        for(j in 1:2)
+            expect_equal(test_nrec("f2", i+4, j+4, TRUE, FALSE, 0), expected[i,j])
+
+    # X chromosome male
+    expected <- rbind(c(0,1), c(1,0))
+    for(i in 1:2)
+        for(j in 1:2)
+            expect_equal(test_nrec("f2", i+4, j+4, TRUE, FALSE, 1), expected[i,j])
+
+})
