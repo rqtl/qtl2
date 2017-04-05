@@ -72,6 +72,30 @@ test_that("riself8 step works", {
         expect_equal(result, log(expected))
     }
 
+    # test with different order of founders
+    forder <- c(3, 8, 5, 2, 1, 7, 6, 4)
+    forder_rev <- c(5,4,1,8,3,7,6,2)
+
+    for(rf in c(0.01, 0.1, 0.45)) {
+        expected <- matrix(rf/16/(1+2*rf), ncol=8, nrow=8)
+        diag(expected) <- (1-rf)^2/8/(1+2*rf)
+        block <- list(c(1,2), c(3,4), c(5,6), c(7,8))
+        for(i in seq_along(block)) {
+            b <- block[[i]]
+            expected[b[1],b[2]] <- expected[b[2],b[1]] <- rf*(1-rf)/8/(1+2*rf)
+        }
+        expected <- expected[forder_rev, forder_rev]
+
+        result <- matrix(ncol=8, nrow=8)
+        for(i in 1:8) {
+            for(j in 1:8) {
+                result[i,j] <- test_step("riself8", i, j, rf, FALSE, FALSE, forder)
+            }
+        }
+
+        expect_equal(result, log(expected))
+    }
+
 })
 
 
@@ -79,7 +103,7 @@ test_that("riself8 step works", {
 
 test_that("riself16 step works", {
 
-    for(rf in 0.2) {#c(0.01, 0.1, 0.45)) {
+    for(rf in c(0.01, 0.1, 0.45)) {
         expected <- matrix(rf/64/(1+2*rf), ncol=16, nrow=16)
         expected[1:4,1:4] <- expected[5:8,5:8] <-
             expected[9:12,9:12] <- expected[13:16,13:16] <- rf*(1-rf)/32/(1+2*rf)
@@ -94,6 +118,31 @@ test_that("riself16 step works", {
         for(i in 1:16) {
             for(j in 1:16) {
                 result[i,j] <- test_step("riself16", i, j, rf, FALSE, FALSE, 1:16)
+            }
+        }
+
+        expect_equal(result, log(expected))
+    }
+
+    # test with founders in a different order
+    forder <- c(12, 5, 15, 13, 14, 1, 2, 3, 9, 10, 6, 11, 8, 4, 16, 7)
+    forder_rev <- c(6,7,8,14,2,11,16,13,9,10,12,1,4,5,3,15)
+    for(rf in c(0.01, 0.1, 0.45)) {
+        expected <- matrix(rf/64/(1+2*rf), ncol=16, nrow=16)
+        expected[1:4,1:4] <- expected[5:8,5:8] <-
+            expected[9:12,9:12] <- expected[13:16,13:16] <- rf*(1-rf)/32/(1+2*rf)
+        diag(expected) <- (1-rf)^3/16/(1+2*rf)
+        block <- list(c(1,2), c(3,4), c(5,6), c(7,8),c(9,10),c(11,12),c(13,14),c(15,16))
+        for(i in seq_along(block)) {
+            b <- block[[i]]
+            expected[b[1],b[2]] <- expected[b[2],b[1]] <- rf*(1-rf)^2/16/(1+2*rf)
+        }
+        expected <- expected[forder_rev, forder_rev]
+
+        result <- matrix(ncol=16, nrow=16)
+        for(i in 1:16) {
+            for(j in 1:16) {
+                result[i,j] <- test_step("riself16", i, j, rf, FALSE, FALSE, forder)
             }
         }
 
