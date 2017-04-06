@@ -13,12 +13,15 @@
 #' @return Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #'
-#' @details A control file in \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format contains information about
-#' basic parameters as well as the names of the series of data files
-#' to be read. See the
-#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files}
-#' and the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
+#' @details
+#' A control file in \href{http://www.yaml.org}{YAML} or
+#' \href{http://www.json.org/}{JSON} format contains information
+#' about basic parameters as well as the names of the series of
+#' data files to be read. See the
+#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample
+#' data files} and the
+#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
+#' describing the input file format}.
 #'
 #' @export
 #' @keywords IO
