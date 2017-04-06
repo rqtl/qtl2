@@ -189,7 +189,7 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
     if(!is.null(crossinfo_file)) {
         if(!is.null(crossinfo_covar))
             stop("Specify just one of crossinfo_file and crossinfo_covar")
-        if(is.null(crossinfo_codes))
+        if(!is.null(crossinfo_codes))
             warning("if crossinfo_file is specified, crossinfo_codes is ignored")
         result$cross_info <- list(file=crossinfo_file)
     }
