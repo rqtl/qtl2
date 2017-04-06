@@ -1,3 +1,23 @@
+## qtl2geno 0.5-14 (2017-04-05)
+
+### New features
+
+- Implemented new cross types `"riself4"`, `"riself8"`, and
+  `"riself16"`, for multi-way MAGIC populations (multi-way RILs by
+  selfing).
+
+## Bug fixes
+
+- Fixed problem in `read_cross2` in the case that data has a physical
+  map but not a genetic map.
+
+## Minor changes
+
+- Added argument 'overwrite' to `write_control_file`; if `TRUE`,
+  overwrite the file, if it's present. (Previously, you were always
+  forced to first remove it.)
+
+
 ## qtl2geno 0.5-13 (2017-04-03)
 
 ### New features

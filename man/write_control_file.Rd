@@ -13,7 +13,7 @@ write_control_file(output_file, crosstype = NULL, geno_file = NULL,
   na.strings = c("-", "NA"), comment.char = "#", geno_transposed = FALSE,
   founder_geno_transposed = FALSE, pheno_transposed = FALSE,
   covar_transposed = FALSE, phenocovar_transposed = FALSE,
-  description = NULL, comments = NULL)
+  description = NULL, comments = NULL, overwrite = FALSE)
 }
 \arguments{
 \item{output_file}{File name (with path) of the
@@ -98,6 +98,9 @@ character in a set of leading comment lines in the data files.}
 comments at the top of the file (in the case of YAML), with each
 string as a line. For JSON, the comments are instead included
 within the control object.}
+
+\item{overwrite}{If TRUE, overwrite file if it exists. If FALSE
+(the default) and the file exists, stop with an error.}
 }
 \value{
 (Invisibly) The data structure that was written.

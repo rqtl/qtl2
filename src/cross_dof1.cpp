@@ -351,3 +351,11 @@ const std::vector<std::string> DOF1::geno_names(const std::vector<std::string> a
         return result;
     }
 }
+
+const double DOF1::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,
+                                const IntegerMatrix& cross_info, const int n_gen)
+{
+    Rcpp::stop("est_map not yet available for Diversity Outcross F1");
+
+    return NA_REAL;
+}

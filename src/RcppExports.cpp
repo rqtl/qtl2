@@ -156,6 +156,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// reverse_index_founders
+IntegerVector reverse_index_founders(IntegerVector cross_info);
+RcppExport SEXP qtl2geno_reverse_index_founders(SEXP cross_infoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP);
+    rcpp_result_gen = Rcpp::wrap(reverse_index_founders(cross_info));
+    return rcpp_result_gen;
+END_RCPP
+}
 // find_ibd_segments
 NumericMatrix find_ibd_segments(const IntegerVector& g1, const IntegerVector& g2, const NumericVector& p, const double error_prob);
 RcppExport SEXP qtl2geno_find_ibd_segments(SEXP g1SEXP, SEXP g2SEXP, SEXP pSEXP, SEXP error_probSEXP) {

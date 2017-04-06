@@ -237,3 +237,38 @@ test_that("geno_names works", {
     expect_equal(geno_names("do", LETTERS[1:8], FALSE), auto)
     expect_equal(geno_names("do", LETTERS[1:8], TRUE), X)
 })
+
+test_that("nrec works", {
+
+    # X chr male
+    for(i in 36+(1:8)) {
+        for(j in 36+(1:8)) {
+            expect_equal(test_nrec("do", i, j, TRUE, FALSE, 0), as.numeric(i!=j))
+            # hs should be the same, too
+            expect_equal(test_nrec("hs", i, j, TRUE, FALSE, 0), as.numeric(i!=j))
+        }
+    }
+
+    # autosome or X chr female
+    g <- sapply(1:36, mpp_decode_geno, 8, FALSE)
+    expected <- resultA <- resultX <- matrix(ncol=ncol(g), nrow=ncol(g))
+    resultAhs <- resultXhs <- resultA
+    for(i in 1:ncol(g)) {
+        for(j in 1:ncol(g)) {
+            if((g[1,i] == g[1,j] && g[2,i]==g[2,j]) ||
+               (g[1,i] == g[2,j] && g[2,i]==g[1,j])) expected[i,j] <- 0
+            else if(g[1,i] != g[1,j] && g[2,i]!=g[2,j] &&
+                    g[1,i] != g[2,j] && g[2,i]!=g[1,j]) expected[i,j] <- 2
+            else expected[i,j] <- 1
+
+            resultA[i,j] <- test_nrec("do", i, j, FALSE, FALSE, 0)
+            resultX[i,j] <- test_nrec("do", i, j, TRUE, TRUE, 0)
+            resultAhs[i,j] <- test_nrec("hs", i, j, FALSE, FALSE, 0)
+            resultXhs[i,j] <- test_nrec("hs", i, j, TRUE, TRUE, 0)
+        }
+    }
+    expect_equal(resultA, expected)
+    expect_equal(resultX, expected)
+    expect_equal(resultAhs, expected)
+    expect_equal(resultXhs, expected)
+})

@@ -321,3 +321,26 @@ test_that("phase-known AIL step works", {
 
 
 })
+
+test_that("nrec works for AIL-pk", {
+
+    # autosome or female X chr
+    expected <- rbind(c(0,1,1,2),
+                      c(1,0,2,1),
+                      c(1,2,0,1),
+                      c(2,1,1,0))
+    for(i in 1:4) {
+        for(j in 1:4) {
+            expect_equal(test_nrec("ailpk", i, j, FALSE, FALSE, c(20,0)), expected[i,j])
+            expect_equal(test_nrec("ailpk", i, j, TRUE, TRUE, c(20,0)), expected[i,j])
+        }
+    }
+
+    # male X chr
+    for(i in 1:2) {
+        for(j in 1:2) {
+            expect_equal(test_nrec("ailpk", i, j, TRUE, FALSE, c(20,0)), expected[i,j])
+        }
+    }
+
+})

@@ -60,6 +60,8 @@
 #' comments at the top of the file (in the case of YAML), with each
 #' string as a line. For JSON, the comments are instead included
 #' within the control object.
+#' @param overwrite If TRUE, overwrite file if it exists. If FALSE
+#' (the default) and the file exists, stop with an error.
 #'
 #' @return (Invisibly) The data structure that was written.
 #'
@@ -116,11 +118,11 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
          geno_transposed=FALSE, founder_geno_transposed=FALSE,
          pheno_transposed=FALSE, covar_transposed=FALSE,
          phenocovar_transposed=FALSE,
-         description=NULL, comments=NULL)
+         description=NULL, comments=NULL, overwrite=FALSE)
 {
     output_file <- path.expand(output_file)
-    if(file.exists(output_file))
-        stop("The output file (", output_file, ") already exists. Please remove it first.")
+    if(!overwrite && file.exists(output_file))
+        stop("The output file (", output_file, ") already exists. Remove it first (or use overwrite=TRUE).")
 
     result <- list(description="", # stub to be replaced or removed
                    comments="", # stub to be replaced or removed
@@ -189,7 +191,7 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
     if(!is.null(crossinfo_file)) {
         if(!is.null(crossinfo_covar))
             stop("Specify just one of crossinfo_file and crossinfo_covar")
-        if(is.null(crossinfo_codes))
+        if(!is.null(crossinfo_codes))
             warning("if crossinfo_file is specified, crossinfo_codes is ignored")
         result$cross_info <- list(file=crossinfo_file)
     }

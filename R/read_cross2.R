@@ -13,12 +13,15 @@
 #' @return Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #'
-#' @details A control file in \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format contains information about
-#' basic parameters as well as the names of the series of data files
-#' to be read. See the
-#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files}
-#' and the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
+#' @details
+#' A control file in \href{http://www.yaml.org}{YAML} or
+#' \href{http://www.json.org/}{JSON} format contains information
+#' about basic parameters as well as the names of the series of
+#' data files to be read. See the
+#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample
+#' data files} and the
+#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
+#' describing the input file format}.
 #'
 #' @export
 #' @keywords IO
@@ -169,7 +172,7 @@ function(file, quiet=TRUE)
     # pull out a map; make it numeric
     if("gmap" %in% names(output))
         map <- output$gmap
-    else if("pmap" %in% output)
+    else if("pmap" %in% names(output))
         map <- output$pmap
     else stop("Need a genetic or physical marker map")
     map[,2] <- as.numeric(map[,2])
@@ -259,6 +262,7 @@ function(file, quiet=TRUE)
         mmar <- names(output$gmap[[i]])
         pmar <- names(output$pmap[[i]])
         if(is.null(pmar)) pmar <- mmar
+        if(is.null(mmar)) mmar <- pmar
         fmar <- colnames(output$founder_geno[[i]])
         if(is.null(fmar)) fmar <- gmar
 

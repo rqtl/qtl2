@@ -156,20 +156,12 @@ public:
     // check that cross_info conforms to expectation
     virtual const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr)
     {
-        //const int n_col = cross_info.cols();
-        //if(n_col > 0)
-        //    REprintf("cross_info provided (with %d columns) but ignored for this cross type\n", n_col);
-
         return true; // don't call it an error
     }
 
     // check that sex conforms to expectation
     virtual const bool check_is_female_vector(const Rcpp::LogicalVector& is_female, const bool any_x_chr)
     {
-        //const int n = is_female.size();
-        //if(n > 0)
-        //    REprintf("is_female provided but ignored for this cross type\n");
-
         return true; // don't call it an error
     }
 

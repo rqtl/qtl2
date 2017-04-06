@@ -1,19 +1,19 @@
-// Diversity Outcross F1 (in cross with another inbred strain) QTLCross class (for HMM)
+// 8-way RIL by selfing QTLCross class (for HMM)
 
-#ifndef CROSS_DOF1_H
-#define CROSS_DOF1_H
+#ifndef CROSS_RISELF8_H
+#define CROSS_RISELF8_H
 
 #include <Rcpp.h>
 #include "cross.h"
 
-class DOF1 : public QTLCross
+class RISELF8 : public QTLCross
 {
  public:
-    DOF1(){
-        crosstype = "dof1";
-        phase_known_crosstype = "dof1";
+    RISELF8(){
+        crosstype = "riself8";
+        phase_known_crosstype = "riself8";
     };
-    ~DOF1(){};
+    ~RISELF8(){};
 
     const bool check_geno(const int gen, const bool is_observed_value,
                           const bool is_x_chr, const bool is_female, const Rcpp::IntegerVector& cross_info);
@@ -31,10 +31,6 @@ class DOF1 : public QTLCross
     const int ngen(const bool is_x_chr);
     const int nalleles();
 
-    const Rcpp::NumericMatrix geno2allele_matrix(const bool is_x_chr);
-
-    const bool check_is_female_vector(const Rcpp::LogicalVector& is_female, const bool any_x_chr);
-
     const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr);
 
     const bool check_founder_geno_size(const Rcpp::IntegerMatrix& founder_geno, const int n_markers);
@@ -43,8 +39,16 @@ class DOF1 : public QTLCross
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
 
+    const int nrec(const int gen_left, const int gen_right,
+                   const bool is_x_chr, const bool is_female,
+                   const Rcpp::IntegerVector& cross_info);
+
     const double est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                               const Rcpp::IntegerMatrix& cross_info, const int n_gen);
+
+    // check whether X chr can be handled
+    const bool check_handle_x_chr(const bool any_x_chr);
+
 };
 
-#endif // CROSS_DOF1_H
+#endif // CROSS_RISELF8_H

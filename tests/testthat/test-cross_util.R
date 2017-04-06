@@ -101,3 +101,11 @@ test_that("mpp_is_het works for 8 alleles, phase known", {
         }
     }
 })
+
+test_that("reverse_index_founders works", {
+
+    expect_equal(reverse_index_founders(c(2,3,1,4)), c(2,0,1,3))
+    expect_equal(reverse_index_founders(c(2,4,3,1)), c(3,0,2,1))
+    expect_equal(reverse_index_founders(c(7,8,3,5,4,1,6,2)), c(5,7,2,4,3,6,0,1))
+
+})
