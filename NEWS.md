@@ -1,3 +1,12 @@
+## qtl2geno 0.5-14 (2017-04-05)
+
+### New features
+
+- Implemented new cross types `"riself4"`, `"riself8"`, and
+  `"riself16"`, for multi-way MAGIC populations (multi-way RILs by
+  selfing).
+
+
 ## qtl2geno 0.5-13 (2017-04-03)
 
 ### New features
