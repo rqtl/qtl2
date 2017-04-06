@@ -262,6 +262,7 @@ function(file, quiet=TRUE)
         mmar <- names(output$gmap[[i]])
         pmar <- names(output$pmap[[i]])
         if(is.null(pmar)) pmar <- mmar
+        if(is.null(mmar)) mmar <- pmar
         fmar <- colnames(output$founder_geno[[i]])
         if(is.null(fmar)) fmar <- gmar
 
