@@ -172,7 +172,7 @@ function(file, quiet=TRUE)
     # pull out a map; make it numeric
     if("gmap" %in% names(output))
         map <- output$gmap
-    else if("pmap" %in% output)
+    else if("pmap" %in% names(output))
         map <- output$pmap
     else stop("Need a genetic or physical marker map")
     map[,2] <- as.numeric(map[,2])
