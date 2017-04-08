@@ -156,14 +156,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// reverse_index_founders
-IntegerVector reverse_index_founders(IntegerVector cross_info);
-RcppExport SEXP qtl2geno_reverse_index_founders(SEXP cross_infoSEXP) {
+// invert_founder_index
+IntegerVector invert_founder_index(IntegerVector cross_info);
+RcppExport SEXP qtl2geno_invert_founder_index(SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type cross_info(cross_infoSEXP);
-    rcpp_result_gen = Rcpp::wrap(reverse_index_founders(cross_info));
+    rcpp_result_gen = Rcpp::wrap(invert_founder_index(cross_info));
     return rcpp_result_gen;
 END_RCPP
 }

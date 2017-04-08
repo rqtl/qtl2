@@ -76,8 +76,8 @@ const double RISELF16::step(const int gen_left, const int gen_right, const doubl
     if(gen_left == gen_right)
         return 3.0*log(1.0-rec_frac) - log(16.0) - log(1.0 + 2.0 * rec_frac);
 
-    // first get reverse index of cross info
-    IntegerVector founder_index = reverse_index_founders(cross_info);
+    // first get inverted index of cross info
+    IntegerVector founder_index = invert_founder_index(cross_info);
 
     // were the two founders crossed to each other at the first generation?
     if(founder_index[gen_left-1] / 2 == founder_index[gen_right-1] / 2) // next to each other
@@ -246,7 +246,7 @@ const double RISELF16::est_rec_frac(const Rcpp::NumericVector& gamma, const bool
 
     double u=0.0, v=0.0, w=0.0, y=0.0; // counts of the four different patterns of 2-locus genotypes
     for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
-        IntegerVector founder_index = reverse_index_founders(cross_info(_,ind));
+        IntegerVector founder_index = invert_founder_index(cross_info(_,ind));
 
         for(int gl=0; gl<n_gen; gl++) {
             u += gamma[offset+gl*n_gen+gl];

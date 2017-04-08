@@ -139,13 +139,13 @@ const std::vector<std::string> mpp_geno_names(const std::vector<std::string> all
 }
 
 // For vector of founder indices (cross info), create the reverse index
-// with the reverse indices starting at 0
+// with the inverted indices starting at 0
 // (2,3,1,4) -> (2,0,1,3)
 // (2,4,3,1) -> (3,0,2,1)
 // (7,8,3,5,4,1,6,2) -> (5,7,2,4,3,6,0,1)
 //
 // [[Rcpp::export]]
-IntegerVector reverse_index_founders(IntegerVector cross_info)
+IntegerVector invert_founder_index(IntegerVector cross_info)
 {
     const int n = cross_info.size();
     IntegerVector result(n);
