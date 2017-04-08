@@ -298,7 +298,7 @@ public:
                                                const double tol,
                                                const bool verbose)
     {
-        return est_map2_simple(this->crosstype,
+        return est_map2_lowmem(this->crosstype,
                                genotypes, founder_geno,
                                is_X_chr, is_female, cross_info,
                                cross_group, unique_cross_group,
