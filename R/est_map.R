@@ -74,9 +74,11 @@ function(cross, error_prob=1e-4,
         founder_geno <- create_empty_founder_geno(cross$geno)
 
     # if lowmem=FALSE, define groups of individuals with common sex/cross_info
-    sex_crossinfo <- paste(cross$is_female, apply(cross$cross_info, 1, paste, collapse=":"), sep=":")
-    unique_cross_group <- unique(sex_crossinfo)
-    cross_group <- match(sex_crossinfo, unique_cross_group)-1 # indexes start at 0
+    if(!lowmem) {
+        sex_crossinfo <- paste(cross$is_female, apply(cross$cross_info, 1, paste, collapse=":"), sep=":")
+        unique_cross_group <- unique(sex_crossinfo)
+        cross_group <- match(sex_crossinfo, unique_cross_group)-1 # indexes start at 0
+        unique_cross_group <- match(seq(along=unique_cross_group), cross_group)-1 # again start at 0
 
     by_chr_func <- function(chr) {
         # the following avoids a warning in R CMD check
