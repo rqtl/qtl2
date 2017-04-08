@@ -6,6 +6,7 @@
 #define CROSS_H
 
 #include <Rcpp.h>
+#include "hmm_estmap2.h"
 
 using namespace Rcpp;
 
@@ -281,6 +282,25 @@ public:
         }
 
         return result;
+    }
+
+    // tailored est_map that pre-calculates transition matrices, etc
+    virtual const Rcpp::NumericVector est_map2(const Rcpp::IntegerMatrix& genotypes,
+                                               const Rcpp::IntegerMatrix& founder_geno,
+                                               const bool is_X_chr,
+                                               const Rcpp::LogicalVector& is_female,
+                                               const Rcpp::IntegerMatrix& cross_info,
+                                               const Rcpp::NumericVector& rec_frac,
+                                               const double error_prob,
+                                               const int max_iterations,
+                                               const double tol,
+                                               const bool verbose)
+    {
+        return est_map2_simple(this->crosstype,
+                               genotypes, founder_geno,
+                               is_X_chr, is_female, cross_info,
+                               rec_frac, error_prob, max_iterations,
+                               tol, verbose);
     }
 
 };

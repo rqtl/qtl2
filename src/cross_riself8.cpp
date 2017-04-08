@@ -279,3 +279,22 @@ const bool RISELF8::check_handle_x_chr(const bool any_x_chr)
 
     return true; // most crosses can handle the X chr
 }
+
+// tailored est_map that pre-calculates transition matrices, etc
+const NumericVector RISELF8::est_map2(const IntegerMatrix& genotypes,
+                                      const IntegerMatrix& founder_geno,
+                                      const bool is_X_chr,
+                                      const LogicalVector& is_female,
+                                      const IntegerMatrix& cross_info,
+                                      const NumericVector& rec_frac,
+                                      const double error_prob,
+                                      const int max_iterations,
+                                      const double tol,
+                                      const bool verbose)
+{
+    return est_map2_founderorder(this->crosstype,
+                                 genotypes, founder_geno,
+                                 is_X_chr, is_female, cross_info,
+                                 rec_frac, error_prob, max_iterations,
+                                 tol, verbose);
+}

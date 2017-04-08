@@ -1,3 +1,11 @@
+## qtl2geno 0.5-15 (2017-04-08)
+
+### New features
+
+- Second c++ implementation tailored somewhat to cross type, hoping to
+  be faster.
+
+
 ## qtl2geno 0.5-14 (2017-04-05)
 
 ### New features
