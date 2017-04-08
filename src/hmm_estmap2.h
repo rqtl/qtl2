@@ -12,6 +12,14 @@
 #include <Rcpp.h>
 
 // re-estimate inter-marker recombination fractions
+//
+// this approach pre-calculates init, emit, step; uses more memory but faster
+//
+// cross_group and unique_cross_group are used in est_map_grouped
+//     cross_group = vector of integers that categorizes individuals into groups with common is_female and cross_info
+//                   values in {0, 1, ..., length(unique_cross_group)-1}
+//     unique_cross_group = vector of indexes to the first individual in each category, for grabbing is_female
+//                          and cross_info for the category
 Rcpp::NumericVector est_map2(const Rcpp::String& crosstype,
                              const Rcpp::IntegerMatrix& genotypes, // columns are individuals, rows are markers
                              const Rcpp::IntegerMatrix& founder_geno, // columns are markers, rows are founder lines
@@ -27,8 +35,8 @@ Rcpp::NumericVector est_map2(const Rcpp::String& crosstype,
                              const bool verbose);
 
 
-// actually just using the low-mem approach here for now
-Rcpp::NumericVector est_map2_simple(const Rcpp::String crosstype,
+// just use the low-mem approach
+Rcpp::NumericVector est_map2_lowmem(const Rcpp::String crosstype,
                                     const Rcpp::IntegerMatrix& genotypes,
                                     const Rcpp::IntegerMatrix& founder_geno,
                                     const bool is_X_chr,
@@ -41,6 +49,21 @@ Rcpp::NumericVector est_map2_simple(const Rcpp::String crosstype,
                                     const int max_iterations,
                                     const double tol,
                                     const bool verbose);
+
+// same init, emit, step for groups with common sex and cross_info
+Rcpp::NumericVector est_map2_grouped(const Rcpp::String crosstype,
+                                     const Rcpp::IntegerMatrix& genotypes,
+                                     const Rcpp::IntegerMatrix& founder_geno,
+                                     const bool is_X_chr,
+                                     const Rcpp::LogicalVector& is_female,
+                                     const Rcpp::IntegerMatrix& cross_info,
+                                     const Rcpp::IntegerVector& cross_group,
+                                     const Rcpp::IntegerVector& unique_cross_group,
+                                     const Rcpp::NumericVector& rec_frac,
+                                     const double error_prob,
+                                     const int max_iterations,
+                                     const double tol,
+                                     const bool verbose);
 
 // Need same set of possible genotypes for all individuals,
 // and same basic structure for transition matrix, but reorder transition matrix by founder order
