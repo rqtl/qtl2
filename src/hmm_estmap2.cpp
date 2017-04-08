@@ -244,7 +244,6 @@ NumericVector est_map2_grouped(const String crosstype,
         } // loop over individuals
 
         // re-estimate rec'n fractions
-
         for(int pos=0; pos < n_rf; pos++) {
             // pull out the part for that position
             NumericVector sub_gamma(n_gen_sq_times_n_ind);
