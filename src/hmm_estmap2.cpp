@@ -284,19 +284,6 @@ NumericVector est_map2_grouped(const String crosstype,
     for(int ind=0; ind<n_ind; ind++) {
         double curloglik=0.0;
 
-        // reorder step matrix for this individual
-        std::vector<NumericMatrix> ind_step_matrix(n_rf);
-        for(int pos=0; pos<n_rf; pos++) {
-            NumericMatrix this_step(n_poss_gen, n_poss_gen);
-            for(int f1=0; f1<n_founders; f1++) {
-                this_step(f1,f1) = step_matrix[pos](f1,f1); // diagonal all the same
-                for(int f2=f1+1; f2<n_founders; f2++)
-                    this_step(f1,f2) = this_step(f2,f1) =
-                        step_matrix[pos](founder_index(f1,ind), founder_index(f2,ind));
-            }
-            ind_step_matrix[pos] = this_step;
-        }
-
         // forward
         NumericMatrix alpha = forwardEquations2(genotypes(_,ind),
                                                 init_vector[cross_group[ind]],
