@@ -161,7 +161,7 @@ NumericVector est_map2_grouped(const String crosstype,
     // pre-calculate stuff; need separate ones for each unique value of is_female/cross_info
     const int max_obsgeno = max(genotypes);
     std::vector<std::vector<NumericMatrix> > emit_matrix(n_cross_group);
-    std::vector<std::vectdor<NumericVector> > init_vector(n_cross_group);
+    std::vector<NumericVector> init_vector(n_cross_group);
     std::vector<IntegerVector> poss_gen(n_cross_group);
     IntegerVector n_poss_gen(n_cross_group);
     for(int i=0; i<n_cross_group; i++) {
@@ -177,7 +177,6 @@ NumericVector est_map2_grouped(const String crosstype,
                                                 cross_info[unique_cross_group[i]]);
         n_poss_gen[i] = poss_gen[i].size();
     }
-
 
     for(int it=0; it<max_iterations; it++) {
 
@@ -212,11 +211,11 @@ NumericVector est_map2_grouped(const String crosstype,
 
             for(int pos=0; pos<n_rf; pos++) {
                 // calculate gamma = log Pr(v1, v2, O)
-                NumericMatrix gamma(n_poss_gen, n_poss_gen);
+                NumericMatrix gamma(n_gen, n_gen);
                 double sum_gamma=0.0;
                 bool sum_gamma_undef = true;
-                for(int ir=0; ir<n_poss_gen; ir++) {
-                    for(int il=0; il<n_poss_gen; il++) {
+                for(int ir=0; ir<n_poss_gen[cross_group[ind]]; ir++) {
+                    for(int il=0; il<n_poss_gen[cross_group[ind]]; il++) {
                         gamma(il,ir) = alpha(il,pos) + beta(ir,pos+1) +
                             emit_matrix[cross_group[ind]][pos+1](genotypes(pos+1,ind),ir) +
                             step_matrix[cross_group[ind]][pos](il,ir);
@@ -233,10 +232,10 @@ NumericVector est_map2_grouped(const String crosstype,
 
                 // add to full_gamma array of dim n_rf x n_ind x n_gen x n_gen
                 const int offset = n_gen_sq_times_n_ind*pos + n_gen_sq*ind;
-                for(int ir=0; ir<n_poss_gen; ir++) {
-                    int gr_by_n_gen = (poss_gen[ir]-1)*n_gen;
-                    for(int il=0; il<n_poss_gen; il++) {
-                        int gl = poss_gen[il]-1;
+                for(int ir=0; ir<n_poss_gen[cross_group[ind]]; ir++) {
+                    int gr_by_n_gen = (poss_gen[cross_group[ind]][ir]-1)*n_gen;
+                    for(int il=0; il<n_poss_gen[cross_group[ind]]; il++) {
+                        int gl = poss_gen[cross_group[ind]][il]-1;
                         full_gamma[offset + gr_by_n_gen + gl] += exp(gamma(il,ir) - sum_gamma);
                     }
                 }
@@ -276,8 +275,13 @@ NumericVector est_map2_grouped(const String crosstype,
 
 
     // transition matrix for current rec fracs
-    std::vector<NumericMatrix> step_matrix = cross->calc_stepmatrix(cur_rec_frac, is_X_chr,
-                                                                    false, plain_founder_order);
+    std::vector<std::vector<NumericMatrix> > step_matrix(n_cross_group);
+    for(int i=0; i<n_cross_group; i++) {
+        step_matrix[i] = cross->calc_stepmatrix(cur_rec_frac, is_X_chr,
+                                                is_female[unique_cross_group[i]],
+                                                cross_info[unique_cross_group[i]]);
+    }
+
 
     // calculate log likelihood
     double loglik = 0.0;
@@ -293,7 +297,7 @@ NumericVector est_map2_grouped(const String crosstype,
                                                 poss_gen[cross_group[ind]]);
 
         bool curloglik_undef = true;
-        for(int i=0; i<n_poss_gen; i++) {
+        for(int i=0; i<n_poss_gen[cross_group[ind]]; i++) {
             if(curloglik_undef) {
                 curloglik_undef = false;
                 curloglik = alpha(i,n_rf);
