@@ -24,6 +24,8 @@ NumericVector est_map2(const String& crosstype,
                        const bool is_X_chr,
                        const LogicalVector& is_female,
                        const IntegerMatrix& cross_info,
+                       const IntegerVector& cross_group, // categories of unique (is_fem, cross_inf)
+                       const IntegerVector& unique_cross_group, // index to the unique ones
                        const NumericVector& rec_frac,
                        const double error_prob,
                        const int max_iterations,
@@ -63,6 +65,7 @@ NumericVector est_map2(const String& crosstype,
 
     NumericVector result = cross->est_map2(genotypes, founder_geno,
                                            is_X_chr, is_female, cross_info,
+                                           cross_group, unique_cross_group,
                                            rec_frac, error_prob, max_iterations,
                                            tol, verbose);
 
@@ -78,6 +81,8 @@ NumericVector est_map2_simple(const String crosstype,
                               const bool is_X_chr,
                               const LogicalVector& is_female,
                               const IntegerMatrix& cross_info,
+                              const IntegerVector& cross_group, // categories of unique (is_fem, cross_inf)
+                              const IntegerVector& unique_cross_group, // index to the unique ones
                               const NumericVector& rec_frac,
                               const double error_prob,
                               const int max_iterations,
@@ -100,6 +105,8 @@ NumericVector est_map2_founderorder(const String crosstype,
                                     const bool is_X_chr,
                                     const LogicalVector& is_female,
                                     const IntegerMatrix& cross_info,
+                                    const IntegerVector& cross_group, // [ignored here]
+                                    const IntegerVector& unique_cross_group, // [ignored here]
                                     const NumericVector& rec_frac,
                                     const double error_prob,
                                     const int max_iterations,

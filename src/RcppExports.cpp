@@ -308,8 +308,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // est_map2
-NumericVector est_map2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const double error_prob, const int max_iterations, const double tol, const bool verbose);
-RcppExport SEXP qtl2geno_est_map2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
+NumericVector est_map2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const IntegerVector& cross_group, const IntegerVector& unique_cross_group, const NumericVector& rec_frac, const double error_prob, const int max_iterations, const double tol, const bool verbose);
+RcppExport SEXP qtl2geno_est_map2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP cross_groupSEXP, SEXP unique_cross_groupSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -319,12 +319,14 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool >::type is_X_chr(is_X_chrSEXP);
     Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP);
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type cross_info(cross_infoSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type cross_group(cross_groupSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type unique_cross_group(unique_cross_groupSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type rec_frac(rec_fracSEXP);
     Rcpp::traits::input_parameter< const double >::type error_prob(error_probSEXP);
     Rcpp::traits::input_parameter< const int >::type max_iterations(max_iterationsSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(est_map2(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose));
+    rcpp_result_gen = Rcpp::wrap(est_map2(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, cross_group, unique_cross_group, rec_frac, error_prob, max_iterations, tol, verbose));
     return rcpp_result_gen;
 END_RCPP
 }

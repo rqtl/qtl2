@@ -290,6 +290,8 @@ public:
                                                const bool is_X_chr,
                                                const Rcpp::LogicalVector& is_female,
                                                const Rcpp::IntegerMatrix& cross_info,
+                                               const Rcpp::IntegerVector& cross_group,
+                                               const Rcpp::IntegerVector& unique_cross_group,
                                                const Rcpp::NumericVector& rec_frac,
                                                const double error_prob,
                                                const int max_iterations,
@@ -299,6 +301,7 @@ public:
         return est_map2_simple(this->crosstype,
                                genotypes, founder_geno,
                                is_X_chr, is_female, cross_info,
+                               cross_group, unique_cross_group,
                                rec_frac, error_prob, max_iterations,
                                tol, verbose);
     }

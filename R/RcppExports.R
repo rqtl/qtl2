@@ -89,8 +89,8 @@ nalleles <- function(crosstype) {
     .Call('qtl2geno_est_map', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
 }
 
-.est_map2 <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
-    .Call('qtl2geno_est_map2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
+.est_map2 <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, cross_group, unique_cross_group, rec_frac, error_prob, max_iterations, tol, verbose) {
+    .Call('qtl2geno_est_map2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, cross_group, unique_cross_group, rec_frac, error_prob, max_iterations, tol, verbose)
 }
 
 .sim_geno <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob, n_draws) {
