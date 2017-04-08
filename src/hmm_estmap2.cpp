@@ -164,6 +164,7 @@ NumericVector est_map2_grouped(const String crosstype,
     std::vector<NumericVector> init_vector(n_cross_group);
     std::vector<IntegerVector> poss_gen(n_cross_group);
     IntegerVector n_poss_gen(n_cross_group);
+
     for(int i=0; i<n_cross_group; i++) {
         emit_matrix[i] = cross->calc_emitmatrix(error_prob, max_obsgeno,
                                                 founder_geno, is_X_chr,
