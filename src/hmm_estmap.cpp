@@ -71,12 +71,12 @@ NumericVector est_map(const String& crosstype,
 
     for(int it=0; it<max_iterations; it++) {
 
-        Rcpp::checkUserInterrupt();  // check for ^C from user
-
         // zero the full_gamma array
         full_gamma.fill(0.0);
 
         for(int ind=0; ind < n_ind; ind++) {
+
+            Rcpp::checkUserInterrupt();  // check for ^C from user
 
             // possible genotypes for this individual
             IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));
@@ -127,7 +127,6 @@ NumericVector est_map(const String& crosstype,
         } // loop over individuals
 
         // re-estimate rec'n fractions
-
         for(int pos=0; pos < n_rf; pos++) {
             // pull out the part for that position
             NumericVector sub_gamma(n_gen_sq_times_n_ind);
@@ -160,6 +159,8 @@ NumericVector est_map(const String& crosstype,
     double loglik = 0.0;
     for(int ind=0; ind<n_ind; ind++) {
         double curloglik=0.0;
+
+        Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // possible genotypes for this individual
         IntegerVector poss_gen = cross->possible_gen(is_X_chr, is_female[ind], cross_info(_,ind));

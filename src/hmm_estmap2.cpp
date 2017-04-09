@@ -181,8 +181,6 @@ NumericVector est_map2_grouped(const String crosstype,
 
     for(int it=0; it<max_iterations; it++) {
 
-        Rcpp::checkUserInterrupt();  // check for ^C from user
-
         // transition matrix for current rec fracs
         std::vector<std::vector<NumericMatrix> > step_matrix(n_cross_group);
         for(int i=0; i<n_cross_group; i++) {
@@ -195,6 +193,8 @@ NumericVector est_map2_grouped(const String crosstype,
         full_gamma.fill(0.0);
 
         for(int ind=0; ind < n_ind; ind++) {
+            Rcpp::checkUserInterrupt();  // check for ^C from user
+
             const int this_n_poss_gen = n_poss_gen[cross_group[ind]];
 
             // forward and backward equations
@@ -289,6 +289,8 @@ NumericVector est_map2_grouped(const String crosstype,
     // calculate log likelihood
     double loglik = 0.0;
     for(int ind=0; ind<n_ind; ind++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         const int this_n_poss_gen = n_poss_gen[cross_group[ind]];
         double curloglik=0.0;
 
@@ -387,8 +389,6 @@ NumericVector est_map2_founderorder(const String crosstype,
 
     for(int it=0; it<max_iterations; it++) {
 
-        Rcpp::checkUserInterrupt();  // check for ^C from user
-
         // transition matrix for current rec fracs
         std::vector<NumericMatrix> step_matrix = cross->calc_stepmatrix(prev_rec_frac, is_X_chr,
                                                                         false, plain_founder_order);
@@ -397,6 +397,8 @@ NumericVector est_map2_founderorder(const String crosstype,
         full_gamma.fill(0.0);
 
         for(int ind=0; ind < n_ind; ind++) {
+
+            Rcpp::checkUserInterrupt();  // check for ^C from user
 
             // reorder step matrix for this individual
             std::vector<NumericMatrix> ind_step_matrix(n_rf);
@@ -490,6 +492,8 @@ NumericVector est_map2_founderorder(const String crosstype,
     // calculate log likelihood
     double loglik = 0.0;
     for(int ind=0; ind<n_ind; ind++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         double curloglik=0.0;
 
         // reorder step matrix for this individual
