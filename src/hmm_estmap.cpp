@@ -31,6 +31,11 @@ NumericVector est_map(const String& crosstype,
         cross = QTLCross::Create(cross_pu->phase_known_crosstype);
     else cross = cross_pu;
 
+    // call est_rec_frac just to check if est_map is implemented for this cross type
+    NumericVector emptyv(0);
+    IntegerMatrix emptym(0,0);
+    cross->est_rec_frac(emptyv, false, emptym, 0);
+
     // check inputs
     if(is_female.size() != n_ind)
         throw std::range_error("length(is_female) != ncol(genotypes)");
