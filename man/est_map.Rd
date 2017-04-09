@@ -5,8 +5,8 @@
 \title{Estimate genetic maps}
 \usage{
 est_map(cross, error_prob = 0.0001, map_function = c("haldane", "kosambi",
-  "c-f", "morgan"), maxit = 10000, tol = 0.000001, quiet = TRUE,
-  cores = 1)
+  "c-f", "morgan"), lowmem = FALSE, maxit = 10000, tol = 0.000001,
+  quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
@@ -16,6 +16,14 @@ est_map(cross, error_prob = 0.0001, map_function = c("haldane", "kosambi",
 
 \item{map_function}{Character string indicating the map function to
 use to convert genetic distances to recombination fractions.}
+
+\item{lowmem}{If \code{FALSE}, precalculate initial and emission
+probabilities, and at each iteration calculate the transition
+matrices for a chromosome; potentially a lot faster but using
+more memory. Needs to be tailored somewhat to cross type. For
+example, multi-way RIL may need to reorder the transition
+matrix according to cross order, and AIL and DO need separate
+transition matrices for each generation.}
 
 \item{maxit}{Maximum number of iterations in EM algorithm.}
 

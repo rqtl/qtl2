@@ -9,6 +9,13 @@
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
+#' @param lowmem If \code{FALSE}, precalculate initial and emission
+#' probabilities, and at each iteration calculate the transition
+#' matrices for a chromosome; potentially a lot faster but using
+#' more memory. Needs to be tailored somewhat to cross type. For
+#' example, multi-way RIL may need to reorder the transition
+#' matrix according to cross order, and AIL and DO need separate
+#' transition matrices for each generation.
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
 #' @param quiet If \code{FALSE}, print progress messages.
@@ -35,7 +42,7 @@
 est_map <-
 function(cross, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         maxit=10000, tol=1e-6, quiet=TRUE,
+         lowmem=FALSE, maxit=10000, tol=1e-6, quiet=TRUE,
          cores=1)
 {
     if(!is.cross2(cross))
@@ -83,11 +90,22 @@ function(cross, error_prob=1e-4,
         cross_info <- t(cross$cross_info[keep,,drop=FALSE])
 
         rf_start <- map2rf(gmap) # positions to inter-marker rec frac
-        rf <- .est_map(cross$crosstype, geno,
-                       founder_geno[[chr]], is_x_chr[chr], is_female,
-                       cross_info,
-                       rf_start,
-                       error_prob, maxit, tol, !quiet)
+        if(lowmem)
+            rf <- .est_map(cross$crosstype, geno, founder_geno[[chr]],
+                           is_x_chr[chr], is_female, cross_info,
+                           rf_start, error_prob, maxit, tol, !quiet)
+        else {
+            # groups of individuals with common sex and cross_info
+            sex_crossinfo <- paste(is_female, apply(cross_info, 2, paste, collapse=":"), sep=":")
+            unique_cross_group <- unique(sex_crossinfo)
+            cross_group <- match(sex_crossinfo, unique_cross_group)-1 # indexes start at 0
+            unique_cross_group <- match(seq_along(unique_cross_group)-1, cross_group)-1 # again start at 0
+
+            rf <- .est_map2(cross$crosstype, geno, founder_geno[[chr]],
+                            is_x_chr[chr], is_female, cross_info,
+                            cross_group, unique_cross_group,
+                            rf_start, error_prob, maxit, tol, !quiet)
+        }
 
         loglik <- attr(rf, "loglik")
         map <- cumsum(c(gmap[1], imf(rf, map_function))) # rec frac to positions

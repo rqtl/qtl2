@@ -419,3 +419,26 @@ const int HS::nrec(const int gen_left, const int gen_right,
     }
     else return(2);
 }
+
+// not implemented
+const NumericVector HS::est_map2(const IntegerMatrix& genotypes,
+                                 const IntegerMatrix& founder_geno,
+                                 const bool is_X_chr,
+                                 const LogicalVector& is_female,
+                                 const IntegerMatrix& cross_info,
+                                 const IntegerVector& cross_group,
+                                 const IntegerVector& unique_cross_group,
+                                 const NumericVector& rec_frac,
+                                 const double error_prob,
+                                 const int max_iterations,
+                                 const double tol,
+                                 const bool verbose)
+{
+    Rcpp::stop("est_map not yet implemented for heterogeneous stock.");
+
+    // return vector of NAs
+    const int n_rf = rec_frac.size();
+    NumericVector result(n_rf);
+    for(int i=0; i<n_rf; i++) result[i] = NA_REAL;
+    return result ;
+}

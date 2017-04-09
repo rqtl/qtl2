@@ -49,8 +49,8 @@ mpp_geno_names <- function(alleles, is_x_chr) {
     .Call('qtl2geno_mpp_geno_names', PACKAGE = 'qtl2geno', alleles, is_x_chr)
 }
 
-reverse_index_founders <- function(cross_info) {
-    .Call('qtl2geno_reverse_index_founders', PACKAGE = 'qtl2geno', cross_info)
+invert_founder_index <- function(cross_info) {
+    .Call('qtl2geno_invert_founder_index', PACKAGE = 'qtl2geno', cross_info)
 }
 
 .find_ibd_segments <- function(g1, g2, p, error_prob) {
@@ -87,6 +87,10 @@ nalleles <- function(crosstype) {
 
 .est_map <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose) {
     .Call('qtl2geno_est_map', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, error_prob, max_iterations, tol, verbose)
+}
+
+.est_map2 <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, cross_group, unique_cross_group, rec_frac, error_prob, max_iterations, tol, verbose) {
+    .Call('qtl2geno_est_map2', PACKAGE = 'qtl2geno', crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, cross_group, unique_cross_group, rec_frac, error_prob, max_iterations, tol, verbose)
 }
 
 .sim_geno <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob, n_draws) {

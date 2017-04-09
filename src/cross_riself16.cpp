@@ -76,8 +76,8 @@ const double RISELF16::step(const int gen_left, const int gen_right, const doubl
     if(gen_left == gen_right)
         return 3.0*log(1.0-rec_frac) - log(16.0) - log(1.0 + 2.0 * rec_frac);
 
-    // first get reverse index of cross info
-    IntegerVector founder_index = reverse_index_founders(cross_info);
+    // first get inverted index of cross info
+    IntegerVector founder_index = invert_founder_index(cross_info);
 
     // were the two founders crossed to each other at the first generation?
     if(founder_index[gen_left-1] / 2 == founder_index[gen_right-1] / 2) // next to each other
@@ -246,7 +246,7 @@ const double RISELF16::est_rec_frac(const Rcpp::NumericVector& gamma, const bool
 
     double u=0.0, v=0.0, w=0.0, y=0.0; // counts of the four different patterns of 2-locus genotypes
     for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
-        IntegerVector founder_index = reverse_index_founders(cross_info(_,ind));
+        IntegerVector founder_index = invert_founder_index(cross_info(_,ind));
 
         for(int gl=0; gl<n_gen; gl++) {
             u += gamma[offset+gl*n_gen+gl];
@@ -282,4 +282,25 @@ const bool RISELF16::check_handle_x_chr(const bool any_x_chr)
     }
 
     return true; // most crosses can handle the X chr
+}
+
+const NumericVector RISELF16::est_map2(const IntegerMatrix& genotypes,
+                                       const IntegerMatrix& founder_geno,
+                                       const bool is_X_chr,
+                                       const LogicalVector& is_female,
+                                       const IntegerMatrix& cross_info,
+                                       const IntegerVector& cross_group,
+                                       const IntegerVector& unique_cross_group,
+                                       const NumericVector& rec_frac,
+                                       const double error_prob,
+                                       const int max_iterations,
+                                       const double tol,
+                                       const bool verbose)
+{
+    return est_map2_founderorder(this->crosstype,
+                                 genotypes, founder_geno,
+                                 is_X_chr, is_female, cross_info,
+                                 cross_group, unique_cross_group,
+                                 rec_frac, error_prob, max_iterations,
+                                 tol, verbose);
 }

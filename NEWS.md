@@ -1,3 +1,12 @@
+## qtl2geno 0.5-15 (2017-04-08)
+
+### New features
+
+- Added argument `lowmem` to `est_map`; default is `FALSE`, which
+  corresponds to a new implementation that uses more memory but is
+  considerably faster.
+
+
 ## qtl2geno 0.5-14 (2017-04-05)
 
 ### New features
