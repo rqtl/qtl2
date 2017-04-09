@@ -195,6 +195,7 @@ NumericVector est_map2_grouped(const String crosstype,
         full_gamma.fill(0.0);
 
         for(int ind=0; ind < n_ind; ind++) {
+            const int this_n_poss_gen = n_poss_gen[cross_group[ind]];
 
             // forward and backward equations
             NumericMatrix alpha = forwardEquations2(genotypes(_,ind),
@@ -212,11 +213,11 @@ NumericVector est_map2_grouped(const String crosstype,
 
             for(int pos=0; pos<n_rf; pos++) {
                 // calculate gamma = log Pr(v1, v2, O)
-                NumericMatrix gamma(n_gen, n_gen);
+                NumericMatrix gamma(this_n_poss_gen, this_n_poss_gen);
                 double sum_gamma=0.0;
                 bool sum_gamma_undef = true;
-                for(int ir=0; ir<n_poss_gen[cross_group[ind]]; ir++) {
-                    for(int il=0; il<n_poss_gen[cross_group[ind]]; il++) {
+                for(int ir=0; ir<this_n_poss_gen; ir++) {
+                    for(int il=0; il<this_n_poss_gen; il++) {
                         gamma(il,ir) = alpha(il,pos) + beta(ir,pos+1) +
                             emit_matrix[cross_group[ind]][pos+1](genotypes(pos+1,ind),ir) +
                             step_matrix[cross_group[ind]][pos](il,ir);
@@ -233,14 +234,16 @@ NumericVector est_map2_grouped(const String crosstype,
 
                 // add to full_gamma array of dim n_rf x n_ind x n_gen x n_gen
                 const int offset = n_gen_sq_times_n_ind*pos + n_gen_sq*ind;
-                for(int ir=0; ir<n_poss_gen[cross_group[ind]]; ir++) {
+                for(int ir=0; ir<this_n_poss_gen; ir++) {
                     int gr_by_n_gen = (poss_gen[cross_group[ind]][ir]-1)*n_gen;
-                    for(int il=0; il<n_poss_gen[cross_group[ind]]; il++) {
+                    for(int il=0; il<this_n_poss_gen; il++) {
                         int gl = poss_gen[cross_group[ind]][il]-1;
                         full_gamma[offset + gr_by_n_gen + gl] += exp(gamma(il,ir) - sum_gamma);
                     }
                 }
+
             } // loop over marker intervals
+
 
         } // loop over individuals
 
@@ -286,6 +289,7 @@ NumericVector est_map2_grouped(const String crosstype,
     // calculate log likelihood
     double loglik = 0.0;
     for(int ind=0; ind<n_ind; ind++) {
+        const int this_n_poss_gen = n_poss_gen[cross_group[ind]];
         double curloglik=0.0;
 
         // forward
@@ -297,7 +301,7 @@ NumericVector est_map2_grouped(const String crosstype,
                                                 poss_gen[cross_group[ind]]);
 
         bool curloglik_undef = true;
-        for(int i=0; i<n_poss_gen[cross_group[ind]]; i++) {
+        for(int i=0; i<this_n_poss_gen; i++) {
             if(curloglik_undef) {
                 curloglik_undef = false;
                 curloglik = alpha(i,n_rf);
