@@ -22,7 +22,9 @@ setup_cluster <-
 {
     if(is_cluster(cores)) return(cores)
 
+    if(is.null(cores) || is.na(cores)) cores <- 1
     if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
+    if(is.na(cores)) cores <- 1
 
     if(cores > 1 && Sys.info()[1] == "Windows") { # windows doesn't support mclapply
         cores <- parallel::makeCluster(cores)
