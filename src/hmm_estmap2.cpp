@@ -169,13 +169,13 @@ NumericVector est_map2_grouped(const String crosstype,
         emit_matrix[i] = cross->calc_emitmatrix(error_prob, max_obsgeno,
                                                 founder_geno, is_X_chr,
                                                 is_female[unique_cross_group[i]],
-                                                cross_info[unique_cross_group[i]]);
+                                                cross_info(_,unique_cross_group[i]));
         init_vector[i] = cross->calc_initvector(is_X_chr,
                                                 is_female[unique_cross_group[i]],
-                                                cross_info[unique_cross_group[i]]);
+                                                cross_info(_,unique_cross_group[i]));
         poss_gen[i] = cross->possible_gen(is_X_chr,
-                                                is_female[unique_cross_group[i]],
-                                                cross_info[unique_cross_group[i]]);
+                                          is_female[unique_cross_group[i]],
+                                          cross_info(_,unique_cross_group[i]));
         n_poss_gen[i] = poss_gen[i].size();
     }
 
@@ -187,8 +187,8 @@ NumericVector est_map2_grouped(const String crosstype,
         std::vector<std::vector<NumericMatrix> > step_matrix(n_cross_group);
         for(int i=0; i<n_cross_group; i++) {
             step_matrix[i] = cross->calc_stepmatrix(prev_rec_frac, is_X_chr,
-                                                is_female[unique_cross_group[i]],
-                                                cross_info[unique_cross_group[i]]);
+                                                    is_female[unique_cross_group[i]],
+                                                    cross_info(_,unique_cross_group[i]));
         }
 
         // zero the full_gamma array
@@ -282,7 +282,7 @@ NumericVector est_map2_grouped(const String crosstype,
     for(int i=0; i<n_cross_group; i++) {
         step_matrix[i] = cross->calc_stepmatrix(cur_rec_frac, is_X_chr,
                                                 is_female[unique_cross_group[i]],
-                                                cross_info[unique_cross_group[i]]);
+                                                cross_info(_,unique_cross_group[i]));
     }
 
 
