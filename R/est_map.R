@@ -96,7 +96,7 @@ function(cross, error_prob=1e-4,
                            rf_start, error_prob, maxit, tol, !quiet)
         else {
             # groups of individuals with common sex and cross_info
-            sex_crossinfo <- paste(is_female, apply(cross_info, 1, paste, collapse=":"), sep=":")
+            sex_crossinfo <- paste(is_female, apply(cross_info, 2, paste, collapse=":"), sep=":")
             unique_cross_group <- unique(sex_crossinfo)
             cross_group <- match(sex_crossinfo, unique_cross_group)-1 # indexes start at 0
             unique_cross_group <- match(seq_along(unique_cross_group)-1, cross_group)-1 # again start at 0
