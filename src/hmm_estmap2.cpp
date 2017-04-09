@@ -465,7 +465,7 @@ NumericVector est_map2_founderorder(const String crosstype,
 
         if(verbose) {
             double maxdif = max(abs(prev_rec_frac - cur_rec_frac));
-            Rprintf("%4d %.12f\n", it, maxdif);
+            Rprintf("%4d %.12f\n", it+1, maxdif);
         }
 
         // check convergence
