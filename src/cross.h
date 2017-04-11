@@ -298,6 +298,22 @@ public:
                                                const double tol,
                                                const bool verbose)
     {
+        if(!is_X_chr) { // autosome
+            // autosome, ignore the groups provided
+            const int n_ind = cross_group.size();
+            Rcpp::IntegerVector one_group(n_ind);
+            for(int i=0; i<n_ind; i++) one_group[i] = 0;
+            Rcpp::IntegerVector one_unique_group(1);
+            one_unique_group[0] = 0;
+
+            return est_map2_grouped(this->crosstype,
+                                    genotypes, founder_geno,
+                                    is_X_chr, is_female, cross_info,
+                                    one_group, one_unique_group,
+                                    rec_frac, error_prob, max_iterations,
+                                    tol, verbose);
+        }
+
         return est_map2_grouped(this->crosstype,
                                 genotypes, founder_geno,
                                 is_X_chr, is_female, cross_info,
