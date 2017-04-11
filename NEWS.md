@@ -1,10 +1,13 @@
-## qtl2geno 0.5-15 (2017-04-10)
+## qtl2geno 0.5-15 (2017-04-11)
 
 ### New features
 
 - Added argument `lowmem` to `est_map`; default is `FALSE`, which
   corresponds to a new implementation that uses more memory but is
   considerably faster.
+
+- Added function `find_map_gaps` for identifying larger inter-marker gaps
+  in a genetic map.
 
 
 ## qtl2geno 0.5-14 (2017-04-05)
