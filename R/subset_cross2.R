@@ -63,35 +63,7 @@ subset.cross2 <-
 
     if(!is.null(chr)) {
         # first clean up chromosome argument
-        allchr <- names(x$geno)
-        if(is.logical(chr)) {
-            if(length(chr) != length(allchr))
-                stop("chr is logical but length [", length(chr), "] != n_chr is x [",
-                     length(allchr), "]")
-            chr <- allchr[chr]
-        } else {
-            chr <- as.character(chr)
-
-            # look for negatives; turn to positives
-            if(any(grepl("^\\-", chr))) {
-                if(!all(grepl("^\\-", chr)))
-                    stop("Can't mix negative and positive chr subscripts")
-                chr <- sub("^\\-", "", chr)
-                if(!all(chr %in% allchr)) {
-                    if(!any(chr %in% allchr))
-                        stop("None of the chr found in the cross object")
-                    warning("Some chr not found: ", paste(chr[!(chr %in% allchr)], collapse=", "))
-                    chr <- chr[chr %in% allchr]
-                }
-                chr <- allchr[!(allchr %in% chr)]
-            }
-
-            if(!all(chr %in% allchr)) {
-                if(!any(chr %in% allchr)) stop("None of the chromosomes in cross")
-                warning("Some chr not in cross: ", paste(chr[!(chr %in% allchr)], collapse=", "))
-                chr <- chr[chr %in% allchr]
-            }
-        }
+        chr <- subset_chr(chr, names(x$geno))
 
         for(obj in slice_by_chr) {
             if(obj %in% names(x)) {
@@ -112,51 +84,7 @@ subset.cross2 <-
             allow_logical <- FALSE
 
         # first clean up ind argument
-        if(is.logical(ind)) {
-            if(!allow_logical) stop("ind can't be logical if different individuals in geno, pheno, covar")
-
-            if(length(ind) != length(ind_g))
-                stop("ind is logical but length [", length(ind), "] != no. ind in cross [",
-                     length(ind_g), "]")
-            ind <- ind_g[ind]
-        }
-        if(is.numeric(ind)) { # treat as numeric indexes
-            if(!allow_logical) stop("ind can't be numeric if different individuals in geno, pheno, covar")
-            if(any(ind < 0)) { # deal with negatives
-                if(!all(ind < 0)) stop("Can't mix negative and positive ind subscripts")
-                ind <- (seq_along(ind_g))[ind]
-            }
-
-            if(any(ind < 1 | ind > length(ind_g))) {
-                ind <- ind[ind >= 1 & ind <= length(ind_g)]
-                if(length(ind)==0) stop("All ind out of range")
-                warning("some ind out of range [1,", length(ind_g), "]")
-            }
-
-            ind <- ind_g[ind]
-        }
-
-        # now treat ind as character strings
-        ind <- as.character(ind)
-        allind <- ind_ids(x)
-
-        # look for negatives; turn to positives
-        if(!any(grepl("^\\-", allind)) && any(grepl("^\\-", ind))) { # if "-" used in actual IDs, don't allow negative subscripts
-            if(!all(grepl("^\\-", ind)))
-                stop("Can't mix negative and positive ind subscripts")
-            ind <- sub("^\\-", "", ind)
-            if(!all(ind %in% allind)) {
-                if(!any(ind %in% allind)) stop("None of the individuals in cross")
-                warning("Some individuals not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
-            }
-            ind <- allind[!(allind %in% ind)]
-        }
-
-        if(!all(ind %in% allind)) {
-            if(!any(ind %in% allind)) stop("None of the individuals in cross")
-            warning("Some ind not in cross: ", paste(ind[!(ind %in% allind)], collapse=", "))
-            ind <- ind[ind %in% ind]
-        }
+        ind <- subset_ind(ind, ind_g, allow_logical)
 
         # Finally, the actual subsetting
         for(obj in slice_by_ind) {

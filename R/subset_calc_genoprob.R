@@ -32,24 +32,9 @@ subset.calc_genoprob <-
     if(is.null(ind) && is.null(chr))
         stop("You must specify either ind or chr.")
 
-    chrID <- names(x)
-    n_chr <- length(chrID)
     if(!is.null(chr)) {
-        if(is.logical(chr)) {
-            if(length(chr) != n_chr) {
-                stop("length(chr) [", length(chr), "] != no. chr in x [",
-                     n_chr, "]")
-            }
-            chr <- chrID[chr] # convert to character strings
-        }
-        else {
-            chrindex <- match(chr, chrID)
-            if(any(is.na(chrindex))) {
-                stop("Some chr not found: ",
-                     paste(chr[is.na(chrindex)], collapse=", "))
-            }
-            chr <- chrID[chrindex] # character strings
-        }
+        chr <- subset_chr(chr, names(x))
+
         if(length(chr) == 0)
             stop("Must retain at least one chromosome.")
 
@@ -73,30 +58,13 @@ subset.calc_genoprob <-
         class(x) <- cl
     }
 
-    indID <- rownames(x[[1]])
-
-    n_ind <- length(indID)
     if(!is.null(ind)) {
-        if(is.logical(ind)) {
-            if(length(ind) != n_ind) {
-                stop("length(ind) [", length(ind), "] != no. ind in x [",
-                     n_ind, "]")
-            }
-            ind <- indID[ind] # convert to character strings
-        }
-        else if(is.numeric(ind)) {
-            if(any(ind < 1 || ind > n_ind))
-                stop("Numeric ind out of allowed range [1 - ", n_ind, "]")
-            ind <- indID[ind] # convert to character strings
-        }
-        else {
-            indindex <- match(ind, indID)
-            if(any(is.na(indindex))) {
-                stop("Some individuals not found: ",
-                     paste(ind[is.na(indindex)], collapse=", "))
-            }
-            ind <- indID[indindex]
-        }
+        if("calc_genoprob" %in% class(x))
+            all_ind <- dimnames(x)[[1]]
+        else all_ind <- rownames(x[[1]])
+
+        ind <- subset_ind(ind, all_ind)
+
         if(length(ind) == 0)
             stop("Must retain at least one individual.")
 
@@ -107,7 +75,6 @@ subset.calc_genoprob <-
             x[[i]] <- x[[i]][ind,,,drop=FALSE]
 
         class(x) <- cl
-
     }
 
     x
