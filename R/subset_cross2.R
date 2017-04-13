@@ -63,35 +63,7 @@ subset.cross2 <-
 
     if(!is.null(chr)) {
         # first clean up chromosome argument
-        allchr <- names(x$geno)
-        if(is.logical(chr)) {
-            if(length(chr) != length(allchr))
-                stop("chr is logical but length [", length(chr), "] != n_chr is x [",
-                     length(allchr), "]")
-            chr <- allchr[chr]
-        } else {
-            chr <- as.character(chr)
-
-            # look for negatives; turn to positives
-            if(any(grepl("^\\-", chr))) {
-                if(!all(grepl("^\\-", chr)))
-                    stop("Can't mix negative and positive chr subscripts")
-                chr <- sub("^\\-", "", chr)
-                if(!all(chr %in% allchr)) {
-                    if(!any(chr %in% allchr))
-                        stop("None of the chr found in the cross object")
-                    warning("Some chr not found: ", paste(chr[!(chr %in% allchr)], collapse=", "))
-                    chr <- chr[chr %in% allchr]
-                }
-                chr <- allchr[!(allchr %in% chr)]
-            }
-
-            if(!all(chr %in% allchr)) {
-                if(!any(chr %in% allchr)) stop("None of the chromosomes in cross")
-                warning("Some chr not in cross: ", paste(chr[!(chr %in% allchr)], collapse=", "))
-                chr <- chr[chr %in% allchr]
-            }
-        }
+        chr <- subset_chr(chr, names(x$geno))
 
         for(obj in slice_by_chr) {
             if(obj %in% names(x)) {
