@@ -1,4 +1,4 @@
-## qtl2geno 0.5-15 (2017-04-11)
+## qtl2geno 0.5-15 (2017-04-13)
 
 ### New features
 
@@ -8,6 +8,10 @@
 
 - Added function `find_map_gaps` for identifying larger inter-marker gaps
   in a genetic map.
+
+- Added function `calc_geno_freq` for calculating genotype
+  frequencies, by individual or by marker (from the multipoint
+  genotype probabilities returned by `calc_genoprob`).
 
 
 ## qtl2geno 0.5-14 (2017-04-05)
