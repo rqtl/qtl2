@@ -45,7 +45,7 @@ calc_geno_freq <-
     }
 
     if(any(is_x_chr) && any(!is_x_chr)) { # some autosome, some X chr
-        ng <- dim(apr)[2,]
+        ng <- dim(probs)[2,]
         g <- dimnames(probs)[[2]]
         if(length(unique(ng)) > 1 ||  # not all the same number of genotypes
            !all(vapply(g[-1], function(a) all(a==g[[1]]),TRUE))) { # not all the same genotypes
