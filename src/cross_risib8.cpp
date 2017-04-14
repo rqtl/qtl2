@@ -87,13 +87,16 @@ const double RISIB8::step(const int gen_left, const int gen_right, const double 
     if(!is_x_chr) {
         // equations are from Broman (2005) Genetics 169:1133-1146
         //    doi:10.1534/genetics.104.035212
-        //    see top equation in right column on page 1137
+        //    see bottom equation in right column on page 1137
         if(gen_left == gen_right)
             return log(1.0 - rec_frac) - log(1.0 + 6.0 * rec_frac);
 
         return log(4.0) + log(rec_frac) - log(1.0 + 6.0 * rec_frac);
     }
     else { // X chr; need to use founder order
+        // equations are from Broman (2005) Genetics 169:1133-1146
+        //    doi:10.1534/genetics.104.035212
+        //    see table 4 page 1137
         if(gen_left == gen_right) {
             if(gen_left == cross_info[2])
                 return - log(1.0 + 4.0 * rec_frac);

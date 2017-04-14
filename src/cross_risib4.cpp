@@ -88,7 +88,10 @@ const double RISIB4::step(const int gen_left, const int gen_right, const double 
 
         return log(2.0) + log(rec_frac) - log(1.0 + 6.0 * rec_frac);
     }
-    else { // 1/3
+    else { // X chromosome
+        // equations are from Broman (2005) Genetics 169:1133-1146
+        //    doi:10.1534/genetics.104.035212
+        //    see right column on page 1136
         if(gen_left == gen_right)
             return - log(1.0 + 4.0 * rec_frac);
 
