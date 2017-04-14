@@ -14,14 +14,22 @@
 #' frequencies; columns are genotypes and rows are either individuals
 #' or markers.
 #'
-#' If \code{omit_x=FALSE} and the data include the X chromosome, the
-#' result is a list with two components (for the autosomes and for the
-#' X chromosome), each being a matrix of genotype frequencies.
+#' If necessary (that is, if \code{omit_x=FALSE}, the data include the
+#' X chromosome, and the set of genotypes on the X chromosome are
+#' different than on the autosomes), the result is a list with two
+#' components (for the autosomes and for the X chromosome), each being
+#' a matrix of genotype frequencies.
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #' p <- calc_genoprob(iron, err=0.002)
-#' tab <- calc_geno_freq(p, "marker")
+#'
+#' # genotype frequencies by marker
+#' tab_g <- calc_geno_freq(p, "marker")
+#'
+#' # allele frequencies by marker
+#' ap <- genoprob_to_alleleprob(p)
+#' tab_a <- calc_geno_freq(ap, "marker")
 #'
 #' @export
 calc_geno_freq <-
@@ -37,8 +45,13 @@ calc_geno_freq <-
     }
 
     if(any(is_x_chr) && any(!is_x_chr)) { # some autosome, some X chr
-        return( list(A=calc_geno_freq(probs[,!is_x_chr], by, FALSE),
-                     X=calc_geno_freq(probs[,is_x_chr], by, FALSE)) )
+        ng <- dim(apr)[2,]
+        g <- dimnames(probs)[[2]]
+        if(length(unique(ng)) > 1 ||  # not all the same number of genotypes
+           !all(vapply(g[-1], function(a) all(a==g[[1]]),TRUE))) { # not all the same genotypes
+            return( list(A=calc_geno_freq(probs[,!is_x_chr], by, FALSE),
+                         X=calc_geno_freq(probs[,is_x_chr], by, FALSE)) )
+        }
     }
 
     # for rest, can assume that they're all one group

@@ -21,9 +21,11 @@ If \code{omit_x=TRUE}, the result is a matrix of genotype
 frequencies; columns are genotypes and rows are either individuals
 or markers.
 
-If \code{omit_x=FALSE} and the data include the X chromosome, the
-result is a list with two components (for the autosomes and for the
-X chromosome), each being a matrix of genotype frequencies.
+If necessary (that is, if \code{omit_x=FALSE}, the data include the
+X chromosome, and the set of genotypes on the X chromosome are
+different than on the autosomes), the result is a list with two
+components (for the autosomes and for the X chromosome), each being
+a matrix of genotype frequencies.
 }
 \description{
 Calculate genotype frequencies, by individual or by marker
@@ -31,6 +33,12 @@ Calculate genotype frequencies, by individual or by marker
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 p <- calc_genoprob(iron, err=0.002)
-tab <- calc_geno_freq(p, "marker")
+
+# genotype frequencies by marker
+tab_g <- calc_geno_freq(p, "marker")
+
+# allele frequencies by marker
+ap <- genoprob_to_alleleprob(p)
+tab_a <- calc_geno_freq(ap, "marker")
 
 }

@@ -43,4 +43,30 @@ test_that("calc_geno_freq works for an intercross", {
     expect_equal(calc_geno_freq(pr[,c(19,"X")], "marker", omit_x=TRUE), expected$A)
     expect_equal(calc_geno_freq(pr[,c(19,"X")], "marker", omit_x=FALSE), expected)
 
+    # genotype probs -> allele probs
+    apr <- genoprob_to_alleleprob(pr)
+
+    # allele frequencies by individual
+    expected <- structure(c(0.484316015981535, 0.44532631844618, 0.515683984018465, 0.55467368155382),
+                          .Dim = c(2L, 2L), .Dimnames = list(c("88", "105"), c("S", "B")))
+    expect_equal(calc_geno_freq(apr[c(88,105),]), expected)
+
+    # include X chr
+    expected <- structure(c(0.484791288224519, 0.446983096675083, 0.515208711775481,0.553016903324917),
+                          .Dim = c(2L, 2L), .Dimnames = list(c("88","105"), c("S", "B")))
+    expect_equal(calc_geno_freq(apr[c(88,105),], omit_x=FALSE), expected)
+
+
+    # allele frequencies by marker
+    expected <- structure(c(0.510671441233419, 0.517493723525186, 0.489328558766582, 0.482506276474814),
+                          .Dim = c(2L, 2L), .Dimnames = list(c("D19Mit68", "D19Mit37"), c("S", "B")))
+    expect_equal(calc_geno_freq(apr[,c(19,"X")], "marker"), expected)
+
+    # include X chr
+    expected <- structure(c(0.510671441233419, 0.517493723525186, 0.486912125849693, 0.500795350791111,
+                            0.489328558766582, 0.482506276474814, 0.513087874150307, 0.499204649208889),
+                          .Dim = c(4L, 2L), .Dimnames = list(c("D19Mit68", "D19Mit37", "DXMit16", "DXMit186"),
+                                                             c("S", "B")))
+    expect_equal(calc_geno_freq(apr[,c(19,"X")], "marker", omit_x=FALSE), expected)
+
 })
