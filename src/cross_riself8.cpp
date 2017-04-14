@@ -122,7 +122,7 @@ const bool RISELF8::check_crossinfo(const IntegerMatrix& cross_info, const bool 
 
     if(n_col != 8) {
         result = false;
-        r_message("cross_info not provided, but should 8 columns, indicating the order of the cross");
+        r_message("cross_info not provided, but should have 8 columns, indicating the order of the cross");
         return result;
     }
 
