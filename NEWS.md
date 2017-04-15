@@ -1,3 +1,11 @@
+## qtl2geno 0.5-16 (2017-04-14)
+
+### New features
+
+- Implemented new cross types `"risib4"` and `"risib8"`. The latter
+  corresponds to the Collaborative Cross.
+
+
 ## qtl2geno 0.5-15 (2017-04-14)
 
 ### New features

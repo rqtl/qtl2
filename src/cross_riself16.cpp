@@ -123,7 +123,7 @@ const bool RISELF16::check_crossinfo(const IntegerMatrix& cross_info, const bool
 
     if(n_col != 16) {
         result = false;
-        r_message("cross_info not provided, but should 16 columns, indicating the order of the cross");
+        r_message("cross_info should have 16 columns, indicating the order of the cross");
         return result;
     }
 
@@ -205,15 +205,15 @@ const bool RISELF16::need_founder_geno()
 const std::vector<std::string> RISELF16::geno_names(const std::vector<std::string> alleles,
                                                 const bool is_x_chr)
 {
-    int n_alleles = alleles.size();
-
     if(alleles.size() < 16)
         throw std::range_error("alleles must have length 16");
+
+    const int n_alleles = 16;
 
     std::vector<std::string> result(n_alleles);
 
     for(int i=0; i<n_alleles; i++)
-        result[i] = alleles[i];
+        result[i] = alleles[i] + alleles[i];
 
     return result;
 }
@@ -240,8 +240,8 @@ const double RISELF16::est_rec_frac(const Rcpp::NumericVector& gamma, const bool
     int n_gen_sq = n_gen*n_gen;
 
     #ifndef NDEBUG
-    if(cross_info.rows() != 8) // incorrect number of founders
-        throw std::range_error("cross_info should contain 8 founders");
+    if(cross_info.rows() != 16) // incorrect number of founders
+        throw std::range_error("cross_info should contain 16 founders");
     #endif
 
     double u=0.0, v=0.0, w=0.0, y=0.0; // counts of the four different patterns of 2-locus genotypes

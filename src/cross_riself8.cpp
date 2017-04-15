@@ -122,7 +122,7 @@ const bool RISELF8::check_crossinfo(const IntegerMatrix& cross_info, const bool 
 
     if(n_col != 8) {
         result = false;
-        r_message("cross_info not provided, but should 8 columns, indicating the order of the cross");
+        r_message("cross_info should have 8 columns, indicating the order of the cross");
         return result;
     }
 
@@ -204,15 +204,15 @@ const bool RISELF8::need_founder_geno()
 const std::vector<std::string> RISELF8::geno_names(const std::vector<std::string> alleles,
                                                 const bool is_x_chr)
 {
-    int n_alleles = alleles.size();
-
     if(alleles.size() < 8)
         throw std::range_error("alleles must have length 8");
+
+    const int n_alleles = 8;
 
     std::vector<std::string> result(n_alleles);
 
     for(int i=0; i<n_alleles; i++)
-        result[i] = alleles[i];
+        result[i] = alleles[i] + alleles[i];
 
     return result;
 }
