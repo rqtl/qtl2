@@ -49,7 +49,7 @@ const double RISIB8::init(const int true_gen,
         return -log(8.0);
     }
     else { // X chromosome Pr(A)=Pr(B)=Pr(C)=1/3
-        if(true_gen == cross_info[3]) return -log(3.0);
+        if(true_gen == cross_info[2]) return -log(3.0);
         else return -log(6.0);
     }
 }
