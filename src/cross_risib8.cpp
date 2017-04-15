@@ -270,16 +270,36 @@ const int RISIB8::nrec(const int gen_left, const int gen_right,
 const double RISIB8::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                                     const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
-    int n_ind = cross_info.cols();
-    int n_gen_sq = n_gen*n_gen;
 
-    R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
 
-    if(is_x_chr) { // X chromosome: ... trickier
-        return R/4.0/(1.0-R);
-    }
-    else { // autosome: solve R=7r/(1+6r) for r
+    if(!is_x_chr) { // autosome: solve R=7r/(1+6r) for r
+        double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
         return R / (7.0 - 6.0 * R);
+    }
+    else {
+        int n_ind = cross_info.cols();
+        int n_gen_sq = n_gen*n_gen;
+
+        // three groups of counts
+        double a=0.0, b=0.0, c=0.0;
+
+        for(int ind=0, offset=0; ind<n_ind; ind++, offset += n_gen_sq) {
+            int founder_c = cross_info(2, ind) - 1; // third founder in cross = "C"
+
+            for(int gl=0; gl<n_gen; gl++) {
+                if(gl == founder_c)
+                    c += gamma[offset+gl*n_gen+gl];
+                else
+                    a += gamma[offset+gl*n_gen+gl];
+
+                for(int gr=gl+1; gr<n_gen; gr++) {
+                    b += (gamma[offset+gl*n_gen+gr] + gamma[offset+gr*n_gen+gl]);
+                }
+            }
+        }
+
+        // solved via maxima
+        return (4*c + b+ 5*a - sqrt(16*c*c + 8*(5*a-b)*c + b*b + 10*a*b + 25*a*a))/8/c;
     }
 }
 
