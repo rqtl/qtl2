@@ -287,7 +287,7 @@ const bool HS::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x
 
     if(n_col == 0) {
         result = false;
-        r_message("cross_info not provided, but should at least one column, with no. generations");
+        r_message("cross_info should have at least one column, with no. generations");
         return result;
     }
 

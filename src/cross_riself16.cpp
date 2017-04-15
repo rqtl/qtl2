@@ -123,7 +123,7 @@ const bool RISELF16::check_crossinfo(const IntegerMatrix& cross_info, const bool
 
     if(n_col != 16) {
         result = false;
-        r_message("cross_info not provided, but should have 16 columns, indicating the order of the cross");
+        r_message("cross_info should have 16 columns, indicating the order of the cross");
         return result;
     }
 
