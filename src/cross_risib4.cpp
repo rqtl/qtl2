@@ -282,10 +282,11 @@ const NumericVector RISIB4::est_map2(const IntegerMatrix& genotypes,
                                 tol, verbose);
     }
 
-    return est_map2_founderorder(this->crosstype,
-                                 genotypes, founder_geno,
-                                 is_X_chr, is_female, cross_info,
-                                 cross_group, unique_cross_group,
-                                 rec_frac, error_prob, max_iterations,
-                                 tol, verbose);
+    // X chromosome: need to use the lowmem version
+    return est_map2_lowmem(this->crosstype,
+                           genotypes, founder_geno,
+                           is_X_chr, is_female, cross_info,
+                           cross_group, unique_cross_group,
+                           rec_frac, error_prob, max_iterations,
+                           tol, verbose);
 }
