@@ -91,7 +91,7 @@ const double RISIB8::step(const int gen_left, const int gen_right, const double 
         if(gen_left == gen_right)
             return log(1.0 - rec_frac) - log(1.0 + 6.0 * rec_frac);
 
-        return log(4.0) + log(rec_frac) - log(1.0 + 6.0 * rec_frac);
+        return log(rec_frac) - log(1.0 + 6.0 * rec_frac);
     }
     else { // X chr; need to use founder order
         // equations are from Broman (2005) Genetics 169:1133-1146
