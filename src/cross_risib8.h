@@ -39,10 +39,6 @@ class RISIB8 : public QTLCross
 
     const std::vector<std::string> geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
 
-    const int nrec(const int gen_left, const int gen_right,
-                   const bool is_x_chr, const bool is_female,
-                   const Rcpp::IntegerVector& cross_info);
-
     const double est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                               const Rcpp::IntegerMatrix& cross_info, const int n_gen);
 

@@ -235,20 +235,6 @@ const std::vector<std::string> RISIB4::geno_names(const std::vector<std::string>
 }
 
 
-const int RISIB4::nrec(const int gen_left, const int gen_right,
-                         const bool is_x_chr, const bool is_female,
-                         const Rcpp::IntegerVector& cross_info)
-{
-    #ifndef NDEBUG
-    if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
-       !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
-        throw std::range_error("genotype value not allowed");
-    #endif
-
-    if(gen_left == gen_right) return 0;
-    else return 1;
-}
-
 const double RISIB4::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                                     const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
