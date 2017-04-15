@@ -156,9 +156,9 @@ test_that("riself16 step works", {
 
 test_that("riself4-8-16 geno_names work", {
 
-    expect_equal( geno_names("riself4", LETTERS[5:8], FALSE), LETTERS[5:8] )
-    expect_equal( geno_names("riself8", LETTERS[2:9], FALSE), LETTERS[2:9] )
-    expect_equal( geno_names("riself16", LETTERS[11:26], FALSE), LETTERS[11:26] )
+    expect_equal( geno_names("riself4", LETTERS[5:8], FALSE), paste0(LETTERS[5:8], LETTERS[5:8]) )
+    expect_equal( geno_names("riself8", LETTERS[2:9], FALSE), paste0(LETTERS[2:9], LETTERS[2:9]) )
+    expect_equal( geno_names("riself16", LETTERS[11:26], FALSE), paste0(LETTERS[11:26], LETTERS[11:26]) )
 
 })
 
