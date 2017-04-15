@@ -252,10 +252,7 @@ const int RISIB4::nrec(const int gen_left, const int gen_right,
 const double RISIB4::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                                     const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
-    int n_ind = cross_info.cols();
-    int n_gen_sq = n_gen*n_gen;
-
-    R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
+    double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
 
     if(is_x_chr) { // X chromosome: solve R=4r/(1+4r) for r
         return R/4.0/(1.0-R);
