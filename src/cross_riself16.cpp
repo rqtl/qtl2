@@ -205,15 +205,15 @@ const bool RISELF16::need_founder_geno()
 const std::vector<std::string> RISELF16::geno_names(const std::vector<std::string> alleles,
                                                 const bool is_x_chr)
 {
-    int n_alleles = alleles.size();
-
     if(alleles.size() < 16)
         throw std::range_error("alleles must have length 16");
+
+    const int n_alleles = 16;
 
     std::vector<std::string> result(n_alleles);
 
     for(int i=0; i<n_alleles; i++)
-        result[i] = alleles[i];
+        result[i] = alleles[i] + alleles[i];
 
     return result;
 }
