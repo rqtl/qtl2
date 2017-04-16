@@ -1,9 +1,12 @@
-## qtl2geno 0.5-16 (2017-04-14)
+## qtl2geno 0.5-16 (2017-04-16)
 
 ### New features
 
-- Implemented new cross types `"risib4"` and `"risib8"`. The latter
-  corresponds to the Collaborative Cross.
+- Implemented new cross types `"risib4"`, `"risib8"`, and `"magic19"`.
+  The `"risib8"` cross type corresponds to the Collaborative Cross.
+  The `"magic19"` cross type corresponds to the 19-way Arabidopsis
+  MAGIC lines of
+  [Kover et al (2009) PLOS Genetics 5:e1000551](https://doi.org/10.1371/journal.pgen.1000551).
 
 
 ## qtl2geno 0.5-15 (2017-04-14)
