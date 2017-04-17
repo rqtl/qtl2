@@ -40,7 +40,7 @@ read_cross2 <-
 function(file, quiet=TRUE)
 {
     if(length(grep("\\.zip$", file)) > 0) { # zip file
-        dir <- tempdir()
+        dir <- file.path(tempdir(), paste0("qtl2_", paste(sample(c(letters, 0:9), 15, replace=TRUE), collapse="")))
         if(is_web_file(file)) {
             tmpfile <- tempfile()
             if(!quiet) message(" - downloading ", file, "\n       to ", tmpfile)
