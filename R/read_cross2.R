@@ -40,7 +40,8 @@ read_cross2 <-
 function(file, quiet=TRUE)
 {
     if(length(grep("\\.zip$", file)) > 0) { # zip file
-        dir <- file.path(tempdir(), paste0("qtl2_", paste(sample(c(letters, 0:9), 15, replace=TRUE), collapse="")))
+        dir <- qtl2_temp_dir()
+
         if(is_web_file(file)) {
             tmpfile <- tempfile()
             if(!quiet) message(" - downloading ", file, "\n       to ", tmpfile)
@@ -53,10 +54,13 @@ function(file, quiet=TRUE)
         file <- path.expand(file)
         stop_if_no_file(file)
         unzipped_files <- utils::unzip(file, exdir=dir)
-        on.exit({ # clean up when done
+
+        # remove temporary directory on exit
+        on.exit({
             if(!quiet) message(" - cleaning up")
             unlink(dir, recursive=TRUE)
         }, add=TRUE)
+
         if(any(grepl("\\.yaml$", unzipped_files))) {
             file <- grep("\\.yaml$", unzipped_files, value=TRUE)
             if(length(file) > 1)
@@ -727,4 +731,13 @@ reorder_map_table <-
     pos <- suppressWarnings( as.numeric(map_tab[,pos_col]) )
 
     map_tab[ order(chr, pos, seq_len(nrow(map_tab))), , drop=FALSE]
+}
+
+# create unique temporary directory name
+qtl2_temp_dir <-
+    function(n_letters=15, initial_bit="qtl2")
+{
+    file.path(tempdir(),
+              paste0(initial_bit, "_", paste(sample(c(letters, 0:9), n_letters, replace=TRUE), collapse="")) )
+
 }
