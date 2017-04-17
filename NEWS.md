@@ -1,3 +1,23 @@
+## qtl2geno 0.5-17 (2017-04-17)
+
+### Bug fixes
+
+- `read_cross2` now unzips a `.zip` file to a separate directory, to
+  avoid possibility of clashing of multiple sets of files.
+
+- `read_cross2` will now ignore any JSON or YAML files in the `.zip`
+  file that have the pattern `__MACOSX/._*`.
+
+- `read_cross2` will stop with an error if a `.zip` file contains
+  multiple JSON or multiple YAML files. If there's both a YAML and a
+  JSON file, the YAML file is used and a warning is issued.
+
+## Minor changes
+
+- `est_map` now gives a warning if it reaches the maximum number of
+  iterations without converging.
+
+
 ## qtl2geno 0.5-16 (2017-04-16)
 
 ### New features

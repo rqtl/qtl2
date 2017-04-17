@@ -13,6 +13,7 @@
 #include "hmm_util.h"
 #include "hmm_forwback2.h"
 #include "hmm_estmap.h"
+#include "r_message.h"
 #include "cross_util.h"
 
 // re-estimate inter-marker recombination fractions
@@ -179,6 +180,7 @@ NumericVector est_map2_grouped(const String crosstype,
         n_poss_gen[i] = poss_gen[i].size();
     }
 
+    bool converged = false; // flag for convergence
     for(int it=0; it<max_iterations; it++) {
 
         // transition matrix for current rec fracs
@@ -263,7 +265,7 @@ NumericVector est_map2_grouped(const String crosstype,
         }
 
         // check convergence
-        bool converged = true;
+        converged = true;
         for(int pos=0; pos<n_rf; pos++) {
             if(fabs(prev_rec_frac[pos] - cur_rec_frac[pos]) > tol*(cur_rec_frac[pos]+tol*100.0)) {
                 converged = false;
@@ -276,6 +278,8 @@ NumericVector est_map2_grouped(const String crosstype,
         prev_rec_frac = clone(cur_rec_frac);
     } // end loop over iterations
 
+    if(!converged)
+        r_warning("est_map reaching maximum iterations without converging");
 
     // transition matrix for current rec fracs
     std::vector<std::vector<NumericMatrix> > step_matrix(n_cross_group);
@@ -387,6 +391,7 @@ NumericVector est_map2_founderorder(const String crosstype,
     for(int ind=0; ind<n_ind; ind++)
         founder_index(_,ind) = invert_founder_index(cross_info(_,ind));
 
+    bool converged = false; // flag for convergence
     for(int it=0; it<max_iterations; it++) {
 
         // transition matrix for current rec fracs
@@ -471,7 +476,7 @@ NumericVector est_map2_founderorder(const String crosstype,
         }
 
         // check convergence
-        bool converged = true;
+        converged = true;
         for(int pos=0; pos<n_rf; pos++) {
             if(fabs(prev_rec_frac[pos] - cur_rec_frac[pos]) > tol*(cur_rec_frac[pos]+tol*100.0)) {
                 converged = false;
@@ -484,6 +489,9 @@ NumericVector est_map2_founderorder(const String crosstype,
         prev_rec_frac = clone(cur_rec_frac);
     } // end loop over iterations
 
+
+    if(!converged)
+        r_warning("est_map reaching maximum iterations without converging");
 
     // transition matrix for current rec fracs
     std::vector<NumericMatrix> step_matrix = cross->calc_stepmatrix(cur_rec_frac, is_X_chr,
