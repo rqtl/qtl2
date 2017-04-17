@@ -12,6 +12,11 @@
   multiple JSON or multiple YAML files. If there's both a YAML and a
   JSON file, the YAML file is used and a warning is issued.
 
+## Minor changes
+
+- `est_map` now gives a warning if it reaches the maximum number of
+  iterations without converging.
+
 
 ## qtl2geno 0.5-16 (2017-04-16)
 

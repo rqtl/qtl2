@@ -6,6 +6,7 @@
 #include "cross.h"
 #include "hmm_util.h"
 #include "hmm_forwback.h"
+#include "r_message.h"
 
 // re-estimate inter-marker recombination fractions
 // [[Rcpp::export(".est_map")]]
@@ -74,6 +75,7 @@ NumericVector est_map(const String& crosstype,
     int n_gen_sq_times_n_ind = n_gen_sq * n_ind;
     NumericVector full_gamma(n_gen_sq_times_n_ind * n_rf);
 
+    bool converged = false; // flag for convergence
     for(int it=0; it<max_iterations; it++) {
 
         // zero the full_gamma array
@@ -147,7 +149,7 @@ NumericVector est_map(const String& crosstype,
         }
 
         // check convergence
-        bool converged = true;
+        converged = true;
         for(int pos=0; pos<n_rf; pos++) {
             if(fabs(prev_rec_frac[pos] - cur_rec_frac[pos]) > tol*(cur_rec_frac[pos]+tol*100.0)) {
                 converged = false;
@@ -159,6 +161,9 @@ NumericVector est_map(const String& crosstype,
 
         prev_rec_frac = clone(cur_rec_frac);
     } // end loop over iterations
+
+    if(!converged)
+        r_warning("est_map reaching maximum iterations without converging");
 
     // calculate log likelihood
     double loglik = 0.0;
