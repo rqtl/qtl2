@@ -4,9 +4,11 @@ context("sim_geno")
 
 test_that("sim_geno riself", {
 
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+
     RNGkind("Mersenne-Twister")
     set.seed(20150918)
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+
     map <- insert_pseudomarkers(grav2$gmap, step=1)
     dr <- sim_geno(grav2, map, n_draws=2, err=0.002)
 
@@ -60,9 +62,10 @@ test_that("sim_geno riself", {
 
 test_that("sim_geno f2", {
 
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
     RNGkind("Mersenne-Twister")
     set.seed(20150918)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     dr <- sim_geno(iron, map, n_draws=2, err=0.002)
 
