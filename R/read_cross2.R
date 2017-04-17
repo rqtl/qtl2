@@ -58,12 +58,12 @@ function(file, quiet=TRUE)
             unlink(dir, recursive=TRUE)
         }, add=TRUE)
         if(any(grepl("\\.yaml$", unzipped_files))) {
-            file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
+            file <- grep("\\.yaml$", unzipped_files, value=TRUE)
             if(length(file) > 1)
                 stop("The zip file contains multiple yaml files")
         }
         else if(any(grepl("\\.json$", unzipped_files))) {
-            file <- unzipped_files[grep("\\.json$", unzipped_files)]
+            file <- grep("\\.json$", unzipped_files, value=TRUE)
             if(length(file) > 1)
                 stop("The zip file contains multiple json files")
         }
