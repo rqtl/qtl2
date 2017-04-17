@@ -61,6 +61,9 @@ function(file, quiet=TRUE)
             unlink(dir, recursive=TRUE)
         }, add=TRUE)
 
+        # ignore "__MACOSX/._" files
+        unzipped_files <- grep("__MACOSX/._", unzipped_files, fixed=TRUE, invert=TRUE, value=TRUE)
+
         if(any(grepl("\\.yaml$", unzipped_files))) {
             file <- grep("\\.yaml$", unzipped_files, value=TRUE)
             if(length(file) > 1)
