@@ -53,20 +53,23 @@ function(file, quiet=TRUE)
         file <- path.expand(file)
         stop_if_no_file(file)
         unzipped_files <- utils::unzip(file, exdir=dir)
+        on.exit({ # clean up when done
+            if(!quiet) message(" - cleaning up")
+            unlink(dir, recursive=TRUE)
+        }, add=TRUE)
         if(any(grepl("\\.yaml$", unzipped_files))) {
             file <- unzipped_files[grep("\\.yaml$", unzipped_files)]
+            if(length(file) > 1)
+                stop("The zip file contains multiple yaml files")
         }
         else if(any(grepl("\\.json$", unzipped_files))) {
             file <- unzipped_files[grep("\\.json$", unzipped_files)]
+            if(length(file) > 1)
+                stop("The zip file contains multiple json files")
         }
         else {
             stop('No ".yaml" or ".json" control file found')
         }
-
-        on.exit({ # clean up when done
-            if(!quiet) message(" - cleaning up")
-            unlink(unzipped_files)
-        }, add=TRUE)
     }
 
     # directory containing the data
