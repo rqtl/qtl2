@@ -65,6 +65,8 @@ function(file, quiet=TRUE)
             file <- grep("\\.yaml$", unzipped_files, value=TRUE)
             if(length(file) > 1)
                 stop("The zip file contains multiple yaml files")
+            if(any(grepl("\\.json$", unzipped_files)))
+                warning("The zip file contains both YAML and JSON files; using the YAML file.")
         }
         else if(any(grepl("\\.json$", unzipped_files))) {
             file <- grep("\\.json$", unzipped_files, value=TRUE)
