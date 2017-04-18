@@ -5,6 +5,9 @@
 - Fix bug in `find_map_gaps` regarding the case that the output are
   empty.
 
+- Fix bug in attempting to subsett `calc_genoprob` output by
+  individual using individuals that aren't present in the data.
+
 
 ## qtl2geno 0.5-17 (2017-04-17)
 

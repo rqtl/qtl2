@@ -49,7 +49,7 @@ subset_ind <-
     if(!all(ind %in% all_ind)) {
         if(!any(ind %in% all_ind)) stop("None of the individuals in cross")
         warning("Some ind not in cross: ", paste(ind[!(ind %in% all_ind)], collapse=", "))
-        ind <- ind[ind %in% ind]
+        ind <- ind[ind %in% all_ind]
     }
 
     ind

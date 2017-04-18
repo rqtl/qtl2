@@ -35,6 +35,11 @@ test_that("subset.cross2 works (riself)", {
     expect_equal(grav2subA, expected)
     expect_equal(grav2subB, expected)
 
+    # subset cross with individuals that aren't present
+    expect_warning(
+        expect_equal(grav2sub[c(ind, "karl", "fisher"),], expected)
+    )
+
 })
 
 test_that("subset.cross2 works (F2)", {
@@ -65,6 +70,11 @@ test_that("subset.cross2 works (F2)", {
 
     expect_equal(ironsubA, expected)
     expect_equal(ironsubB, expected)
+
+    # subset cross with individuals that aren't present
+    expect_warning(
+        expect_equal(ironsub[c(ind, "karl", "fisher"),], expected)
+    )
 
     # test negative subscripts
     expect_equal(iron[,"-X"], iron[,1:19])
@@ -115,6 +125,11 @@ test_that("subset.calc_genoprob works", {
 
     expect_equal(prsub, expected)
 
+    # subset with individuals that aren't present
+    expect_warning(
+        expect_equal(pr[c(ind, "karl", "fisher"), "X"], expected)
+    )
+
 })
 
 test_that("subset.sim_geno works", {
@@ -141,6 +156,11 @@ test_that("subset.sim_geno works", {
     expected[["X"]] <- expected[["X"]][ind,,,drop=FALSE]
 
     expect_equal(drsub, expected)
+
+    # subset with individuals that aren't present
+    expect_warning(
+        expect_equal(dr[c(ind, "karl", "fisher"), "X"], expected)
+    )
 
 })
 
@@ -195,5 +215,10 @@ test_that("subset.viterbi works", {
     expected[["X"]] <- expected[["X"]][ind,,drop=FALSE]
 
     expect_equal(gsub, expected)
+
+    # subset with individuals that aren't present
+    expect_warning(
+        expect_equal(g[c(ind, "karl", "fisher"), "X"], expected)
+    )
 
 })
