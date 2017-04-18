@@ -2,10 +2,10 @@
 
 ### Minor changes
 
-- Revised `subset_scan1` to use same options for subsetting by
-  chromosome as the functions in
-  [R/qtl2geno](https://github.com/rqtl/qtl2geno), most importantly
-  use of "negative" chromosome indexes, like `"-X"`.
+- Revised `subset_scan1` (and the internal function `subset_kinship`)
+  to use the same options for subsetting by chromosome as the
+  functions in [R/qtl2geno](https://github.com/rqtl/qtl2geno), most
+  importantly use of "negative" chromosome indexes, like `"-X"`.
 
 
 ## qtl2scan 0.5-8 (2017-04-03)
