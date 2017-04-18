@@ -77,12 +77,7 @@ subset_scan1 <-
         if(is.null(map))
             stop("To subset by chromosome, you need to provide map object.")
 
-        chr <- as.character(chr)
-
-        # selected chromosomes
-        chr_found <- chr %in% names(map)
-        if(!all(chr_found))
-            stop("Not all chr found: ", paste(chr[!chr_found], collapse=", "))
+        chr <- subset_chr(chr, names(map))
 
         # rows to keep
         row <- map2chr(map) %in% chr
