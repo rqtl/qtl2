@@ -1,5 +1,10 @@
 ## qtl2geno 0.5-18 (2017-04-18)
 
+### New features
+
+- Function `reduce_map_gaps` that reduces the length of any gaps in
+  map. (Gaps greater than `min_gap` are reduced to `min_gap`.)
+
 ### Bug fixes
 
 - Fix bug in `find_map_gaps` regarding the case that the output are

@@ -25,3 +25,6 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 find_map_gaps(iron$gmap, 40)
 
 }
+\seealso{
+\code{\link{reduce_map_gaps}}
+}
