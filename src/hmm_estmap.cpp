@@ -26,6 +26,8 @@ NumericVector est_map(const String& crosstype,
     int n_mar = genotypes.rows();
     int n_rf = n_mar-1;
 
+    const double rf_tol = tol/1000.0; // smallest allowed recombination fraction
+
     QTLCross* cross_pu = QTLCross::Create(crosstype);
     QTLCross* cross;
     if(cross_pu->crosstype != cross_pu->phase_known_crosstype) // get phase-known version of cross
@@ -142,6 +144,10 @@ NumericVector est_map(const String& crosstype,
                       sub_gamma.begin());
             cur_rec_frac[pos] = cross->est_rec_frac(sub_gamma, is_X_chr, cross_info, n_gen);
         }
+
+        // don't let rec fracs get too small
+        for(int pos=0; pos<n_rf; pos++)
+            if(cur_rec_frac[pos] < rf_tol) cur_rec_frac[pos] = rf_tol;
 
         if(verbose) {
             double maxdif = max(abs(prev_rec_frac - cur_rec_frac));
