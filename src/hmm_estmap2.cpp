@@ -132,6 +132,7 @@ NumericVector est_map2_grouped(const String crosstype,
     const int n_cross_group = unique_cross_group.size();
 
     const double rf_tol = tol/1000.0; // smallest allowed recombination fraction
+    const double rf_uptol = 0.999;    // largest allowed recombination fraction
 
     #ifndef NDEBUG
     for(int i=0; i<n_cross_group; i++) {
@@ -262,8 +263,10 @@ NumericVector est_map2_grouped(const String crosstype,
         }
 
         // don't let rec fracs get too small
-        for(int pos=0; pos<n_rf; pos++)
+        for(int pos=0; pos<n_rf; pos++) {
             if(cur_rec_frac[pos] < rf_tol) cur_rec_frac[pos] = rf_tol;
+            if(cur_rec_frac[pos] > rf_uptol) cur_rec_frac[pos] = rf_uptol;
+        }
 
         if(verbose) {
             double maxdif = max(abs(prev_rec_frac - cur_rec_frac));
@@ -358,6 +361,7 @@ NumericVector est_map2_founderorder(const String crosstype,
     const int n_rf = n_mar-1;
 
     const double rf_tol = tol/1000.0; // smallest allowed recombination fraction
+    const double rf_uptol = 0.999;    // largest allowed recombination fraction
 
     QTLCross* cross_pu = QTLCross::Create(crosstype);
     QTLCross* cross;
@@ -477,10 +481,14 @@ NumericVector est_map2_founderorder(const String crosstype,
                       sub_gamma.begin());
             cur_rec_frac[pos] = cross->est_rec_frac(sub_gamma, is_X_chr, cross_info, n_gen);
         }
+        const double min_rf = min(cur_rec_frac);
+        const double max_rf = max(cur_rec_frac);
 
         // don't let rec fracs get too small
-        for(int pos=0; pos<n_rf; pos++)
+        for(int pos=0; pos<n_rf; pos++) {
             if(cur_rec_frac[pos] < rf_tol) cur_rec_frac[pos] = rf_tol;
+            if(cur_rec_frac[pos] > rf_uptol) cur_rec_frac[pos] = rf_uptol;
+        }
 
         if(verbose) {
             double maxdif = max(abs(prev_rec_frac - cur_rec_frac));
