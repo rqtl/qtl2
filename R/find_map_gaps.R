@@ -40,7 +40,7 @@ find_map_gaps <-
         gaps <- rbind(gaps, df)
     }
 
-    rownames(gaps) <- 1:nrow(gaps)
+    rownames(gaps) <- seq_len(nrow(gaps))
 
     gaps
 }

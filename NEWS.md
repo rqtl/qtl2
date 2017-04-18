@@ -1,3 +1,11 @@
+## qtl2geno 0.5-18 (2017-04-18)
+
+### Bug fixes
+
+- Fix bug in `find_map_gaps` regarding the case that the output are
+  empty.
+
+
 ## qtl2geno 0.5-17 (2017-04-17)
 
 ### Bug fixes

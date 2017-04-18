@@ -21,4 +21,13 @@ test_that("find_map_gaps works", {
                             gap=c(59, 42.7, 44.8, 38.2),
                             stringsAsFactors=FALSE))
 
+    expect_equal(find_map_gaps(iron$gmap, 1000),
+                 data.frame(chr=character(0),
+                            left_marker=character(0),
+                            left_index=numeric(0),
+                            right_marker=character(0),
+                            right_index=numeric(0),
+                            gap=numeric(0),
+                            stringsAsFactors=FALSE))
+
 })
