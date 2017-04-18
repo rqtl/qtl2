@@ -137,7 +137,7 @@ scan1perm_pg <-
         ph <- pheno[these2keep, phecol, drop=FALSE]
 
         # grab decomposed kinship matrix for this chromosome
-        Ke <- subset_kinship(kinship_list[[ index_batches[phebatchnum] ]], chr=chr)
+        Ke <- subset_kinship(kinship_list[[index_batches[phebatchnum]]], chr=chrnam)
 
         # hsq, null_loglik for this batch and chr
         hsq <- nullresult[[phebatchnum]]$hsq[chr,]
