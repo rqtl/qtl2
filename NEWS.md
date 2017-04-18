@@ -8,6 +8,8 @@
 - Fix bug in attempting to subsett `calc_genoprob` output by
   individual using individuals that aren't present in the data.
 
+- Fix bug in `est_map` where it was producing `NaN`s in some cases.
+
 
 ## qtl2geno 0.5-17 (2017-04-17)
 
