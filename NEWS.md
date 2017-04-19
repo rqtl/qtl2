@@ -5,6 +5,12 @@
 - Function `reduce_map_gaps` that reduces the length of any gaps in
   map. (Gaps greater than `min_gap` are reduced to `min_gap`.)
 
+- `maxmarg` now picks at random among genotypes that jointly share the
+  maximum probability. Previously, it picked the first among these.
+  Added an argument `tol`; if two genotypes have probabilities that
+  differ by no more than `tol`, they are treated as having the same
+  probability.
+
 ### Bug fixes
 
 - Fix bug in `find_map_gaps` regarding the case that the output are

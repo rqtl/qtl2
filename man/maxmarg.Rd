@@ -5,7 +5,7 @@
 \title{Find genotypes with maximum marginal probabilities}
 \usage{
 maxmarg(probs, map = NULL, minprob = 0.95, chr = NULL, pos = NULL,
-  return_char = FALSE, quiet = TRUE, cores = 1)
+  return_char = FALSE, quiet = TRUE, cores = 1, tol = 0.0000000000001)
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
@@ -28,6 +28,9 @@ probability is less then this value, give \code{NA}.}
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
+
+\item{tol}{Tolerance value; genotypes with probability that are within
+\code{tol} of each other are treated as equivalent.}
 }
 \value{
 If \code{chr} and \code{pos} are provided, a vector of
@@ -46,6 +49,9 @@ individuals x positions. Also includes these attributes:
 }
 \description{
 For each individual at each position, find the genotype with the maximum marginal probability.
+}
+\details{
+If multiple genotypes share the maximum probability, one is chosen at random.
 }
 \examples{
 # load data and calculate genotype probabilities
