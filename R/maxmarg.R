@@ -16,6 +16,8 @@
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
+#' @param tol Tolerance value; genotypes with probability that are within
+#'     \code{tol} of each other are treated as equivalent.
 #'
 #' @return If \code{chr} and \code{pos} are provided, a vector of
 #' genotypes is returned. In this case, \code{map} is needed.
@@ -30,6 +32,9 @@
 #' \item \code{alleles} - Vector of allele codes, from input
 #'     \code{cross}.
 #' }
+#'
+#' @details
+#' If multiple genotypes share the maximum probability, one is chosen at random.
 #'
 #' @seealso \code{\link{sim_geno}}, \code{\link{viterbi}}
 #'
@@ -50,7 +55,7 @@
 #' g <- maxmarg(pr, iron$gmap, chr=8, pos=45.5, return_char=TRUE)
 maxmarg <-
     function(probs, map=NULL, minprob=0.95, chr=NULL, pos=NULL,
-             return_char=FALSE, quiet=TRUE, cores=1)
+             return_char=FALSE, quiet=TRUE, cores=1, tol=1e-13)
 {
     if(!is.null(chr) || !is.null(pos)) {
         if(is.null(chr) || is.null(pos) || is.null(map))
@@ -96,7 +101,7 @@ maxmarg <-
     # function that does the work
     by_chr_func <- function(chr, return_char) {
         if(!quiet) message(" - Chr ", names(probs)[chr])
-        result <- .maxmarg(aperm(probs[[chr]], c(2,3,1)), minprob=minprob) # convert to pos x gen x ind
+        result <- .maxmarg(aperm(probs[[chr]], c(2,3,1)), minprob=minprob, tol=tol) # convert to pos x gen x ind
         if(return_char && !is.null(dn[[2]][[chr]]))
             result[,1:ncol(result)] <- dn[[2]][[chr]][result]
         dimnames(result) <- list(dn[[1]], dn[[3]][[chr]])

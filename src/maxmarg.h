@@ -2,4 +2,5 @@
 
 #include <Rcpp.h>
 
-Rcpp::IntegerMatrix maxmarg(const Rcpp::NumericVector& prob_array, const int minprob);
+Rcpp::IntegerMatrix maxmarg(const Rcpp::NumericVector& prob_array,
+                            const int minprob, const double tol);

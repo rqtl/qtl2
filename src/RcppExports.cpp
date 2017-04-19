@@ -447,14 +447,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // maxmarg
-IntegerMatrix maxmarg(const NumericVector& prob_array, const double minprob);
-RcppExport SEXP qtl2geno_maxmarg(SEXP prob_arraySEXP, SEXP minprobSEXP) {
+IntegerMatrix maxmarg(const NumericVector& prob_array, const double minprob, const double tol);
+RcppExport SEXP qtl2geno_maxmarg(SEXP prob_arraySEXP, SEXP minprobSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
     Rcpp::traits::input_parameter< const double >::type minprob(minprobSEXP);
-    rcpp_result_gen = Rcpp::wrap(maxmarg(prob_array, minprob));
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(maxmarg(prob_array, minprob, tol));
     return rcpp_result_gen;
 END_RCPP
 }

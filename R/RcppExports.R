@@ -121,8 +121,8 @@ subtrlog <- function(a, b) {
     .Call('qtl2geno_locate_xo', PACKAGE = 'qtl2geno', geno, map, crosstype, is_X_chr)
 }
 
-.maxmarg <- function(prob_array, minprob) {
-    .Call('qtl2geno_maxmarg', PACKAGE = 'qtl2geno', prob_array, minprob)
+.maxmarg <- function(prob_array, minprob, tol) {
+    .Call('qtl2geno_maxmarg', PACKAGE = 'qtl2geno', prob_array, minprob, tol)
 }
 
 .reduce_markers <- function(pos, weights, min_dist) {

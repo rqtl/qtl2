@@ -2,8 +2,19 @@
 
 ### New features
 
-- Function `reduce_map_gaps` that reduces the length of any gaps in
-  map. (Gaps greater than `min_gap` are reduced to `min_gap`.)
+- New function `reduce_map_gaps` that reduces the length of any gaps
+  in map. (Gaps greater than `min_gap` are reduced to `min_gap`.)
+
+- `maxmarg` now picks at random among genotypes that jointly share the
+  maximum probability. Previously, it picked the first among these.
+  Added an argument `tol`; if two genotypes have probabilities that
+  differ by no more than `tol`, they are treated as having the same
+  probability.
+
+- New function `calc_entropy` takes the results of `calc_genoprob` and
+  calculates, for each individual at each genomic postion, the entropy
+  of the genotype probability distribution, as a measure of missing
+  information.
 
 ### Bug fixes
 
