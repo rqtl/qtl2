@@ -481,8 +481,6 @@ NumericVector est_map2_founderorder(const String crosstype,
                       sub_gamma.begin());
             cur_rec_frac[pos] = cross->est_rec_frac(sub_gamma, is_X_chr, cross_info, n_gen);
         }
-        const double min_rf = min(cur_rec_frac);
-        const double max_rf = max(cur_rec_frac);
 
         // don't let rec fracs get too small
         for(int pos=0; pos<n_rf; pos++) {
