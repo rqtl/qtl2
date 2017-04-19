@@ -1,9 +1,9 @@
 # reformat data from Moore et al. (2003) Genetics 195:1077-1086
 # in R/qtl2 file format (this is the second replicate)
 #
-# See QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013c
+# Available at QTL Archive as Moore1c, http://phenome.jax.org/db/q?rtn=projects/projdet&reqprojid=284
 
-url <- "http://qtlarchive.org/grpdoc/moore_2013c/RIL2_GraviInput.csv"
+url <- "http://phenome.jax.org/grpdoc/QTL_Archive/moore_2013c/RIL2_GraviInput.csv"
 file <- "grav2.csv"
 utils::download.file(url, file)
 
