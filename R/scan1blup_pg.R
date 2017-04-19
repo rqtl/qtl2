@@ -50,7 +50,7 @@ scan1blup_pg <-
     }
 
     # multiply kinship matrix by 2; rest is using 2*kinship
-    # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+    # see Almasy & Blangero (1998) https://doi.org/10.1086/301844
     kinship <- double_kinship(kinship)
 
     # find individuals in common across all arguments

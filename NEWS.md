@@ -1,4 +1,4 @@
-## qtl2scan 0.5-9 (2017-04-18)
+## qtl2scan 0.5-9 (2017-04-19)
 
 ### Minor changes
 

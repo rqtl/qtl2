@@ -36,7 +36,7 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 ## Installation
 
 R/qtl2 is early in development and so is not yet available on
-[CRAN](http://cran.r-project.org).
+[CRAN](https://cran.r-project.org).
 
 You can install R/qtl2 from [GitHub](https://github.com/rqtl).
 
@@ -84,7 +84,7 @@ A few important changes in the tabular data:
   format, we separate numeric phenotypes from the often
   non-numeric covariates.
 - We define a table of &ldquo;phenotype covariates.&rdquo; These are
-  [metadata](http://en.wikipedia.org/wiki/Metadata) describing the
+  [metadata](https://en.wikipedia.org/wiki/Metadata) describing the
   phenotypes. For example, in the case of a phenotype measured over
   time, one column in the phenotype covariate data could be the
   time of measurement. For gene expression data, we would have columns
@@ -111,7 +111,7 @@ grav2 <- read_cross2("~/my_data/grav2.yaml")
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
+[zip file](https://en.wikipedia.org/wiki/Zip_(file_format)) containing
 all of the data files, and to read that zip file directly. There's even a
 function for creating the zip file:
 
@@ -199,7 +199,7 @@ probabilities.
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
 from
-[Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
+[Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 (an intercross) as an example. We first load the data:
 
 ```{r load_data}
@@ -314,7 +314,7 @@ Xcovar <- get_x_covar(iron)
 ## Performing a genome scan
 
 To perform a genome scan by Haley-Knott regression
-([Haley and Knott 1992](http://www.ncbi.nlm.nih.gov/pubmed/16718932)),
+([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
 use the function `scan1()` in
 [qtl2scan](https://github.com/rqtl/qtl2scan). (The functions above
 were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
@@ -782,12 +782,12 @@ To illustrate this sort of SNP association analysis, we'll consider some
 Diversity Outbred mouse data. The Diversity Outcross (DO) mice are an
 advanced intercross population derived from the same eight founder strains
 as the Collaborative Cross (CC). See
-[Svenson et al. (2012)](http://www.ncbi.nlm.nih.gov/pubmed/22345611)
+[Svenson et al. (2012)](https://www.ncbi.nlm.nih.gov/pubmed/22345611)
 and
-[Gatti et al. (2014)](http://www.ncbi.nlm.nih.gov/pubmed/25237114).
+[Gatti et al. (2014)](https://www.ncbi.nlm.nih.gov/pubmed/25237114).
 
 We'll consider a subset of the data from
-[Recla et al. (2014)](http://www.ncbi.nlm.nih.gov/pubmed/24700285),
+[Recla et al. (2014)](https://www.ncbi.nlm.nih.gov/pubmed/24700285),
 available as part of the
 [qtl2data github repository](https://github.com/rqtl/qtl2data). (The
 full data are in

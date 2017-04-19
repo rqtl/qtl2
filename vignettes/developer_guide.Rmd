@@ -376,7 +376,7 @@ simplifies the function for reading in the data. That function,
 control file.
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format) containing
+[zip file](https://en.wikipedia.org/wiki/Zip_(file_format) containing
 all of the data files, and to read that zip file directly (with the same
 function, `qtl2geno::read_cross2()`). The function `qtl2geno::zip_datafiles()` can be used
 to create the zip file.
@@ -398,7 +398,7 @@ in YAML.
 
 ```
 # Data from Grant et al. (2006) Hepatology 44:174-185
-# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
 crosstype: f2
 geno: iron_geno.csv
@@ -442,7 +442,7 @@ form a vector.
 `genotypes` gives the genotype codes used in the genotype data
 file. `SS`, `SB`, and `BB` are the codes used, to be converted to `1`,
 `2`, and `3`, respectively. The `key: value` structure is for an
-[associative array](http://en.wikipedia.org/wiki/Associative_array).
+[associative array](https://en.wikipedia.org/wiki/Associative_array).
 
 `sex` contains information about the name of the covariate that
 represents sex as well as the codes used: the sexes in the

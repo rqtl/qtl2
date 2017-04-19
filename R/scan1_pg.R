@@ -33,7 +33,7 @@ scan1_pg <-
     kinshipIDs <- check_kinship(kinship, length(genoprobs))
 
     # multiply kinship matrix by 2; rest is using 2*kinship
-    # see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+    # see Almasy & Blangero (1998) https://doi.org/10.1086/301844
     kinship <- double_kinship(kinship)
 
     # find individuals in common across all arguments
@@ -321,7 +321,7 @@ check_kinship <-
 }
 
 # multiply kinship matrix by 2
-# see Almasy & Blangero (1998) http://doi.org/10.1086/301844
+# see Almasy & Blangero (1998) https://doi.org/10.1086/301844
 #
 # This can also handle the case of "loco", and of having eigen decomposition pre-computed
 double_kinship <-
