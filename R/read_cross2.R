@@ -27,7 +27,7 @@
 #' @keywords IO
 #' @seealso \code{\link{read_pheno}}, \code{\link{write_control_file}},
 #' sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
-#' and \url{http://github.com/rqtl/qtl2data}
+#' and \url{https://github.com/rqtl/qtl2data}
 #'
 #' @examples
 #' \dontrun{

@@ -5,7 +5,7 @@
   (the second replicate of the RILs)
 
 - [`iron.zip`](iron.zip), data from
-  [Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
+  [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 
 See the contents at <http://kbroman.org/qtl2/pages/sampledata.html>.
 

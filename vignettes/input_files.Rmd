@@ -58,7 +58,7 @@ grav2 <- read_cross2("~/my_data/grav2.yaml")
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
-[zip file](http://en.wikipedia.org/wiki/Zip_(file_format)) containing
+[zip file](https://en.wikipedia.org/wiki/Zip_(file_format)) containing
 all of the data files, and to read that zip file directly. There's even a
 function for creating the zip file:
 
@@ -210,7 +210,7 @@ We'll start with an example: the control file for the
 
 ```
 # Data from Grant et al. (2006) Hepatology 44:174-185
-# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
 crosstype: f2
 geno: iron_geno.csv
