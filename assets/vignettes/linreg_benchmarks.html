@@ -4,9 +4,11 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 
@@ -16,32 +18,46 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
-</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 
-<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -49,9 +65,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 
-<div id="header">
-<h1 class="title">Benchmarks of linear regression routines</h1>
-</div>
+
+<h1 class="title toc-ignore">Benchmarks of linear regression routines</h1>
+
 
 
 <p><a href="https://github.com/rqtl/qtl2scan">R/qtl2scan</a> includes code with several options for linear regression. We’re mostly focusing on using the <a href="http://eigen.tuxfamily.org">Eigen library</a> via <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a>, particularly linear regression via QR decomposition with column pivoting. We want speed, but we often have to deal with rank-deficient matrices.</p>
@@ -62,14 +78,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="simple-case" class="section level2">
 <h2>Simple case</h2>
 <p>First let’s look at a simple case, of a single covariate.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">27343534</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">27343534</span>)
 n &lt;-<span class="st"> </span><span class="dv">1000</span>
 x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">50</span>, <span class="dv">10</span>)
 X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, x)
 y &lt;-<span class="st"> </span><span class="dv">30</span> +<span class="st"> </span><span class="fl">0.5</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">2.5</span>)
-Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre>
-<p>We use the <a href="http://cran.r-project.org/web/packages/microbenchmark/">microbenchmark package</a> and run each of the routines 1000 times.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2scan)
+Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre></div>
+<p>We use the <a href="https://cran.r-project.org/package=microbenchmark">microbenchmark package</a> and run each of the routines 1000 times.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2scan)
 <span class="kw">library</span>(microbenchmark)
 <span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>        <span class="kw">lm.fit</span>(X, y),
                <span class="dt">dgels=</span>         qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y),
@@ -78,40 +94,40 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
                <span class="dt">eigen_qr=</span>      qtl2scan:::<span class="kw">fit_linreg_eigenqr</span>(X, y),
                <span class="dt">eigen_chol_rss=</span>qtl2scan:::<span class="kw">calc_rss_eigenchol</span>(X, y),
                <span class="dt">eigen_chol=</span>    qtl2scan:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
-               <span class="dt">times=</span><span class="dv">1000</span>)</code></pre>
+               <span class="dt">times=</span><span class="dv">1000</span>)</code></pre></div>
 <pre><code>## Unit: microseconds
 ##            expr     min       lq      mean   median       uq      max neval   cld
-##           lmfit 145.677 153.4905 165.30004 155.0835 158.1705 1195.866  1000     e
-##           dgels  58.817  61.4385  65.46379  63.0405  65.0095  939.353  1000   c  
-##          dgelsy  80.320  83.4955  88.91314  85.1440  87.2070  921.794  1000    d 
-##    eigen_qr_rss  48.060  50.8400  54.55227  51.9925  54.1800 1532.336  1000  b   
-##        eigen_qr  55.040  57.5905  65.26628  58.9550  61.4880 1377.371  1000   c  
-##  eigen_chol_rss  37.775  40.8315  44.31090  41.9920  44.0815 1294.393  1000 a    
-##      eigen_chol  45.237  48.0740  53.87646  49.3165  51.9130 1498.946  1000  b</code></pre>
+##           lmfit 146.487 155.1875 173.18889 156.8080 159.4725 1466.197  1000     e
+##           dgels  56.780  60.3695  66.06252  62.0075  64.1240 1253.733  1000   c  
+##          dgelsy  82.091  85.2330  94.77884  87.1060  89.1975 6307.761  1000    d 
+##    eigen_qr_rss  47.847  50.8585  52.69912  52.1250  53.8070   90.419  1000 ab   
+##        eigen_qr  55.177  58.7410  62.91448  59.9665  62.0185 1102.191  1000  bc  
+##  eigen_chol_rss  36.497  39.9840  41.72484  41.2695  43.1555  114.879  1000 a    
+##      eigen_chol  43.440  47.0105  55.10859  48.4150  50.6455 1546.386  1000  bc</code></pre>
 <p>It’s easy to beat <code>lm.fit</code>, but it’s great to see considerable gains with Eigen over LAPACK. The use of the Cholesky decomposition is somewhat faster than QR decomposition, but it can’t be used in the rank-deficient case.</p>
 </div>
 <div id="rank-deficient-case" class="section level2">
 <h2>Rank-deficient case</h2>
-<p>Let’s now consider a rank-deficient case. We use an example from <a href="http://www.jstatsoft.org/v52/i05/">Bates and Eddelbuettel (2013)</a> (the <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a> paper).</p>
-<pre class="sourceCode r"><code class="sourceCode r">dd &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">f1 =</span> <span class="kw">gl</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dt">labels =</span> LETTERS[<span class="dv">1</span>:<span class="dv">4</span>]),
+<p>Let’s now consider a rank-deficient case. We use an example from <a href="https://www.jstatsoft.org/article/view/v052i05">Bates and Eddelbuettel (2013)</a> (the <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a> paper).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dd &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">f1 =</span> <span class="kw">gl</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dt">labels =</span> LETTERS[<span class="dv">1</span>:<span class="dv">4</span>]),
                  <span class="dt">f2 =</span> <span class="kw">gl</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dt">labels =</span> letters[<span class="dv">1</span>:<span class="dv">3</span>]))[-(<span class="dv">7</span>:<span class="dv">8</span>), ]
 mm &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(~<span class="st"> </span>f1*f2, dd)
 y &lt;-<span class="st"> </span>mm %*%<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">ncol</span>(mm)) +<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(mm), <span class="dt">sd =</span> <span class="fl">0.1</span>)
-Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre>
+Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre></div>
 <p>And here are the benchmark results.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit=</span>       <span class="kw">lm.fit</span>(mm, y),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit=</span>       <span class="kw">lm.fit</span>(mm, y),
                <span class="dt">dgels=</span>       qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y),
                <span class="dt">dgelsy=</span>      qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
                <span class="dt">eigen_qr_rss=</span>qtl2scan:::<span class="kw">calc_rss_eigenqr</span>(mm, y),
                <span class="dt">eigen_qr=</span>    qtl2scan:::<span class="kw">fit_linreg_eigenqr</span>(mm, y),
-               <span class="dt">times=</span><span class="dv">1000</span>)</code></pre>
+               <span class="dt">times=</span><span class="dv">1000</span>)</code></pre></div>
 <pre><code>## Unit: microseconds
-##          expr     min       lq      mean   median      uq      max neval  cld
-##         lmfit 110.518 124.8430 131.08893 126.8815 131.109 2393.267  1000    d
-##         dgels  54.577  59.0650  68.94412  61.3635  65.319 4223.444  1000   c 
-##        dgelsy  44.063  48.7745  54.51252  50.9515  54.818 2256.109  1000  b  
-##  eigen_qr_rss  35.870  40.1820  43.63637  42.4165  46.021  142.496  1000 a   
-##      eigen_qr  41.361  46.0830  50.48290  49.0490  53.042  157.606  1000 ab</code></pre>
+##          expr     min       lq      mean   median       uq      max neval  cld
+##         lmfit 107.582 118.7895 128.68169 121.3000 127.7230 2700.053  1000    d
+##         dgels  52.998  57.9310  61.92482  61.2320  64.1460  290.752  1000   c 
+##        dgelsy  43.105  47.7965  51.69704  50.9500  53.6810  188.029  1000  b  
+##  eigen_qr_rss  33.332  38.9520  43.53250  43.6290  46.3765   75.915  1000 a   
+##      eigen_qr  39.691  45.2230  52.68842  50.2595  53.5445 2451.936  1000  b</code></pre>
 <p>We skip the methods based on Cholesky decomposition, but we again see performance gains with Eigen over LAPACK.</p>
 <p><code>dgels</code> is slower than <code>dgelsy</code> here, because with that routine, I’m calling <code>dgels</code> to check the matrix rank and then switch to <code>dgelsy</code> if the matrix is rank-deficient.</p>
 <p>For further discussion of <code>dgels</code> vs. <code>dgelsy</code>, see <a href="http://www.netlib.org/lapack/lug/node71.html" class="uri">http://www.netlib.org/lapack/lug/node71.html</a>, which says:</p>
@@ -122,118 +138,124 @@ Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre
 <div id="bigger-matrix" class="section level2">
 <h2>Bigger matrix</h2>
 <p>Let’s consider a bigger matrix, with 2,500 rows and 300 columns. I don’t want it to be too big, or compiling this vignette will take too long. Try this yourself with bigger matrices, if you want.</p>
-<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">2500</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">2500</span>
 p &lt;-<span class="st"> </span><span class="dv">300</span>
 X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n*p), <span class="dt">nrow=</span>n)
 y &lt;-<span class="st"> </span>X %*%<span class="st"> </span><span class="kw">runif</span>(p) +<span class="st"> </span><span class="kw">rnorm</span>(n)
-Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre>
+Y &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(y)</code></pre></div>
 <p>We use the full set again, as we can assume this to be a full-rank case. But we’ll just do 10 replicates.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>        <span class="kw">lm.fit</span>(X, y),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>        <span class="kw">lm.fit</span>(X, y),
                <span class="dt">dgels=</span>         qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y),
                <span class="dt">dgelsy=</span>        qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
                <span class="dt">eigen_qr_rss=</span>  qtl2scan:::<span class="kw">calc_rss_eigenqr</span>(X, y),
                <span class="dt">eigen_qr=</span>      qtl2scan:::<span class="kw">fit_linreg_eigenqr</span>(X, y),
                <span class="dt">eigen_chol_rss=</span>qtl2scan:::<span class="kw">calc_rss_eigenchol</span>(X, y),
                <span class="dt">eigen_chol=</span>    qtl2scan:::<span class="kw">fit_linreg_eigenchol</span>(X, y),
-               <span class="dt">times=</span><span class="dv">10</span>)</code></pre>
+               <span class="dt">times=</span><span class="dv">10</span>)</code></pre></div>
 <pre><code>## Unit: milliseconds
-##            expr       min        lq      mean    median        uq       max neval   cld
-##           lmfit 236.46295 238.47198 252.72642 243.18284 246.99424 301.87721    10   cd 
-##           dgels 262.68349 263.74468 265.57926 264.80721 266.25476 270.36006    10    d 
-##          dgelsy 277.73202 279.33084 281.97348 280.70441 284.33841 288.91116    10     e
-##    eigen_qr_rss 217.26703 218.30208 223.10302 222.83316 225.51301 233.25988    10  b   
-##        eigen_qr 242.86838 244.29774 247.37137 246.73637 249.63753 254.12816    10   c  
-##  eigen_chol_rss  30.35882  30.63261  31.03223  30.94423  31.09581  32.19369    10 a    
-##      eigen_chol  34.84863  34.99935  36.12121  35.65521  37.07688  38.52420    10 a</code></pre>
+##            expr       min        lq      mean    median        uq       max neval  cld
+##           lmfit 237.34363 237.68151 263.54147 240.37376 242.03065 362.72523    10    d
+##           dgels 251.07461 252.04762 253.73086 253.65026 255.26914 256.61895    10    d
+##          dgelsy 265.04467 265.44633 266.45315 266.43768 266.74483 269.30555    10    d
+##    eigen_qr_rss 138.26806 139.14996 141.15809 140.45880 144.04247 144.64668    10  b  
+##        eigen_qr 168.74685 168.88070 170.04622 169.49833 170.17323 174.20644    10   c 
+##  eigen_chol_rss  30.22184  30.39548  30.96240  30.77930  31.17019  32.69367    10 a   
+##      eigen_chol  34.87328  34.89145  35.81083  35.45013  36.35371  38.11364    10 a</code></pre>
 </div>
 <div id="multiple-phenotypes" class="section level2">
 <h2>Multiple phenotypes</h2>
 <p>We’ll go back to the case with a single covariate, but we’ll consider 500 phenotypes. We have a few routines to handle this, focusing solely on calculating the residual sum of squares for each phenotype.</p>
-<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">1000</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">1000</span>
 x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">50</span>, <span class="dv">10</span>)
 X &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dv">1</span>, x)
 y &lt;-<span class="st"> </span><span class="dv">30</span> +<span class="st"> </span><span class="fl">0.5</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">2.5</span>)
-Y &lt;-<span class="st"> </span>qtl2scan:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre>
+Y &lt;-<span class="st"> </span>qtl2scan:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre></div>
 <p>Now we’ll get the benchmarks.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>    <span class="kw">colSums</span>(<span class="kw">lm.fit</span>(X, Y)$resid^<span class="dv">2</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>    <span class="kw">colSums</span>(<span class="kw">lm.fit</span>(X, Y)$resid^<span class="dv">2</span>),
                <span class="dt">dgels=</span>     qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y),
                <span class="dt">dgelsy=</span>    qtl2scan:::<span class="kw">calc_rss_lapack</span>(X, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
                <span class="dt">eigen_qr=</span>  qtl2scan:::<span class="kw">calc_mvrss_eigenqr</span>(X, Y),
                <span class="dt">eigen_chol=</span>qtl2scan:::<span class="kw">calc_mvrss_eigenchol</span>(X, Y),
-               <span class="dt">times=</span><span class="dv">50</span>)</code></pre>
+               <span class="dt">times=</span><span class="dv">50</span>)</code></pre></div>
 <pre><code>## Unit: milliseconds
-##        expr       min        lq      mean    median        uq       max neval cld
-##       lmfit 12.470448 14.037135 34.301707 14.918092 72.522290 75.068279    50   b
-##       dgels  6.473077  6.695889 12.011475  6.944019  8.503111 66.817012    50  a 
-##      dgelsy  7.934123  8.135673 14.656660  8.570542  9.811808 69.072818    50  a 
-##    eigen_qr  6.228239  6.404008  6.693985  6.503944  6.805585 11.030074    50  a 
-##  eigen_chol  5.185032  5.385320  5.653380  5.463275  5.800693  7.374327    50  a</code></pre>
+##        expr       min        lq      mean     median         uq        max neval cld
+##       lmfit 13.032342 14.662763 91.435604 133.382386 135.258572 136.616153    50   b
+##       dgels  6.272388  6.495671 11.895399   6.613942   8.060865 127.826941    50  a 
+##      dgelsy  9.461087  9.596972 10.055839   9.699649  10.084062  12.205911    50  a 
+##    eigen_qr  5.466869  5.583197  5.868297   5.667449   5.933052   9.914935    50  a 
+##  eigen_chol  4.942614  5.082557  5.339065   5.159700   5.353120   7.946770    50  a</code></pre>
 </div>
 <div id="multiple-phenotypes-rank-deficient-matrix" class="section level2">
 <h2>Multiple phenotypes, rank-deficient matrix</h2>
 <p>Let’s do the same thing with a rank-deficient matrix.</p>
-<pre class="sourceCode r"><code class="sourceCode r">dd &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">f1 =</span> <span class="kw">gl</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dt">labels =</span> LETTERS[<span class="dv">1</span>:<span class="dv">4</span>]),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dd &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">f1 =</span> <span class="kw">gl</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dt">labels =</span> LETTERS[<span class="dv">1</span>:<span class="dv">4</span>]),
                  <span class="dt">f2 =</span> <span class="kw">gl</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dt">labels =</span> letters[<span class="dv">1</span>:<span class="dv">3</span>]))[-(<span class="dv">7</span>:<span class="dv">8</span>), ]
 mm &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(~<span class="st"> </span>f1*f2, dd)
 y &lt;-<span class="st"> </span>mm %*%<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">ncol</span>(mm)) +<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(mm), <span class="dt">sd =</span> <span class="fl">0.1</span>)
-Y &lt;-<span class="st"> </span>qtl2scan:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre>
+Y &lt;-<span class="st"> </span>qtl2scan:::<span class="kw">permute_nvector</span>(<span class="dv">500</span>, y)</code></pre></div>
 <p>And here are the benchmarks.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>    <span class="kw">colSums</span>(<span class="kw">lm.fit</span>(mm, Y)$resid^<span class="dv">2</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(<span class="dt">lmfit =</span>    <span class="kw">colSums</span>(<span class="kw">lm.fit</span>(mm, Y)$resid^<span class="dv">2</span>),
                <span class="dt">dgels=</span>     qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y),
                <span class="dt">dgelsy=</span>    qtl2scan:::<span class="kw">calc_rss_lapack</span>(mm, Y, <span class="dt">skip_dgels=</span><span class="ot">TRUE</span>),
                <span class="dt">eigen_qr=</span>  qtl2scan:::<span class="kw">calc_mvrss_eigenqr</span>(mm, Y),
-               <span class="dt">times=</span><span class="dv">100</span>)</code></pre>
+               <span class="dt">times=</span><span class="dv">100</span>)</code></pre></div>
 <pre><code>## Unit: microseconds
-##      expr      min        lq     mean    median       uq      max neval cld
-##     lmfit 1137.613 1168.6730 1332.947 1208.9795 1367.244 4987.259   100   c
-##     dgels 1146.661 1151.5605 1188.174 1160.3210 1183.502 2360.746   100  b 
-##    dgelsy  724.562  729.0245  765.543  736.7555  772.050 1643.856   100 a  
-##  eigen_qr 1068.417 1093.6800 1189.012 1117.0625 1204.974 4992.953   100  b</code></pre>
+##      expr      min       lq      mean   median       uq      max neval cld
+##     lmfit 1049.911 1122.129 1412.9006 1249.513 1394.615 6488.325   100   c
+##     dgels 1112.870 1146.343 1254.5212 1208.819 1297.528 2315.482   100  b 
+##    dgelsy  694.283  716.444  798.2769  755.031  800.184 1812.793   100 a  
+##  eigen_qr 1000.551 1056.899 1167.3293 1135.697 1218.653 2044.882   100  b</code></pre>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <p>The following shows the R and package versions I was using.</p>
-<pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre></div>
 <pre><code>## Session info ---------------------------------------------------------------------------------------</code></pre>
 <pre><code>##  setting  value                       
-##  version  R version 3.2.2 (2015-08-14)
+##  version  R version 3.3.3 (2017-03-06)
 ##  system   x86_64, darwin13.4.0        
 ##  ui       X11                         
 ##  language en_US.UTF-8                 
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2015-12-01</code></pre>
+##  date     2017-04-19</code></pre>
 <pre><code>## Packages -------------------------------------------------------------------------------------------</code></pre>
-<pre><code>##  package        * version    date       source                           
-##  codetools        0.2-14     2015-07-15 CRAN (R 3.2.0)                   
-##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)                   
-##  devtools         1.9.1      2015-09-11 CRAN (R 3.2.0)                   
-##  digest           0.6.8      2014-12-31 CRAN (R 3.2.0)                   
-##  evaluate         0.8        2015-09-18 CRAN (R 3.2.0)                   
-##  formatR          1.2.1      2015-09-18 CRAN (R 3.2.0)                   
-##  ggplot2          1.0.1.9003 2015-11-11 Github (hadley/ggplot2@23a748f)  
-##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)                   
-##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)                   
-##  knitr            1.11.16    2015-11-16 Github (yihui/knitr@6e8ce0c)     
-##  lattice          0.20-33    2015-07-14 CRAN (R 3.2.0)                   
-##  magrittr         1.5        2014-11-22 CRAN (R 3.2.0)                   
-##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)                   
-##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)                   
-##  multcomp         1.4-1      2015-07-23 CRAN (R 3.2.0)                   
-##  munsell          0.4.2      2013-07-11 CRAN (R 3.2.0)                   
-##  mvtnorm          1.0-3      2015-07-22 CRAN (R 3.2.0)                   
-##  plyr             1.8.3      2015-06-12 CRAN (R 3.2.0)                   
-##  qtl2scan       * 0.3-8      2015-12-02 Github (kbroman/qtl2scan@f1b9bd3)
-##  Rcpp             0.12.2     2015-11-15 CRAN (R 3.2.2)                   
-##  rmarkdown        0.8.1      2015-10-10 CRAN (R 3.2.2)                   
-##  sandwich         2.3-4      2015-09-24 CRAN (R 3.2.2)                   
-##  scales           0.3.0      2015-08-25 CRAN (R 3.2.0)                   
-##  stringi          1.0-1      2015-10-22 CRAN (R 3.2.0)                   
-##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)                   
-##  survival         2.38-3     2015-07-02 CRAN (R 3.2.0)                   
-##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)                   
-##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)                   
-##  zoo              1.7-12     2015-03-16 CRAN (R 3.2.0)</code></pre>
+<pre><code>##  package        * version date       source                           
+##  backports        1.0.5   2017-01-18 CRAN (R 3.3.2)                   
+##  codetools        0.2-15  2016-10-05 CRAN (R 3.3.0)                   
+##  colorspace       1.3-2   2016-12-14 CRAN (R 3.3.2)                   
+##  devtools         1.12.0  2016-06-24 CRAN (R 3.3.0)                   
+##  digest           0.6.12  2017-01-27 CRAN (R 3.3.2)                   
+##  evaluate         0.10    2016-10-11 CRAN (R 3.3.0)                   
+##  ggplot2          2.2.1   2016-12-30 CRAN (R 3.3.2)                   
+##  gtable           0.2.0   2016-02-26 CRAN (R 3.3.0)                   
+##  htmltools        0.3.5   2016-03-21 CRAN (R 3.3.0)                   
+##  knitr            1.15.1  2016-11-22 CRAN (R 3.3.2)                   
+##  lattice          0.20-35 2017-03-25 CRAN (R 3.3.2)                   
+##  lazyeval         0.2.0   2016-06-12 CRAN (R 3.3.0)                   
+##  magrittr         1.5     2014-11-22 CRAN (R 3.3.0)                   
+##  MASS             7.3-45  2016-04-21 CRAN (R 3.3.0)                   
+##  Matrix           1.2-8   2017-01-20 CRAN (R 3.3.2)                   
+##  memoise          1.0.0   2016-01-29 CRAN (R 3.3.0)                   
+##  microbenchmark * 1.4-2.1 2015-11-25 CRAN (R 3.3.0)                   
+##  multcomp         1.4-6   2016-07-14 CRAN (R 3.3.0)                   
+##  munsell          0.4.3   2016-02-13 CRAN (R 3.3.0)                   
+##  mvtnorm          1.0-6   2017-03-02 CRAN (R 3.3.2)                   
+##  plyr             1.8.4   2016-06-08 CRAN (R 3.3.0)                   
+##  qtl2scan       * 0.3-8   2017-04-19 Github (kbroman/qtl2scan@f1b9bd3)
+##  Rcpp             0.12.10 2017-03-19 CRAN (R 3.3.3)                   
+##  rmarkdown        1.4     2017-03-24 CRAN (R 3.3.2)                   
+##  rprojroot        1.2     2017-01-16 CRAN (R 3.3.2)                   
+##  sandwich         2.3-4   2015-09-24 CRAN (R 3.3.0)                   
+##  scales           0.4.1   2016-11-09 CRAN (R 3.3.2)                   
+##  stringi          1.1.5   2017-04-07 CRAN (R 3.3.2)                   
+##  stringr          1.2.0   2017-02-18 CRAN (R 3.3.2)                   
+##  survival         2.41-3  2017-04-04 CRAN (R 3.3.2)                   
+##  TH.data          1.0-8   2017-01-23 CRAN (R 3.3.2)                   
+##  tibble           1.3.0   2017-04-01 CRAN (R 3.3.2)                   
+##  withr            1.0.2   2016-06-20 CRAN (R 3.3.0)                   
+##  yaml             2.1.14  2016-11-12 CRAN (R 3.3.2)                   
+##  zoo              1.8-0   2017-04-12 CRAN (R 3.3.3)</code></pre>
 </div>
 
 
