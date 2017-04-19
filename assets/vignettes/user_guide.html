@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -74,7 +74,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We expect that basic analyses with R/qtl2 will generally be performed in “batch” (for example, on a cluster) rather than interactively. And so the software is split into three parts: <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans, and <a href="https://github.com/rqtl/qtl2plot">qtl2plot</a> for data visualization. A further package, <a href="https://github.com/rqtl/qtl2convert">qtl2convert</a>, contains functions for converting data among the R/qtl2, <a href="https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html">DOQTL</a>, and <a href="http://rqtl.org">R/qtl</a> formats, for example to convert genotype probabilities produced by DOQTL to the format needed by qtl2scan, or to convert qtl2scan results to the format produced by <code>scanone</code> in R/qtl, so that they may be graphed with the R/qtl functions.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<p>R/qtl2 is early in development and so is not yet available on <a href="http://cran.r-project.org">CRAN</a>.</p>
+<p>R/qtl2 is early in development and so is not yet available on <a href="https://cran.r-project.org">CRAN</a>.</p>
 <p>You can install R/qtl2 from <a href="https://github.com/rqtl">GitHub</a>.</p>
 <p>You first need to install the <a href="https://github.com/hadley/devtools">devtools</a> package, plus a set of package dependencies: <a href="https://cran.r-project.org/package=yaml">yaml</a>, <a href="https://cran.r-project.org/package=jsonlite">jsonlite</a>, <a href="https://cran.r-project.org/package=data.table">data.table</a>, and <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a>. (Additional, secondary dependencies will also be installed)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;yaml&quot;</span>, <span class="st">&quot;jsonlite&quot;</span>, <span class="st">&quot;data.table&quot;</span>, <span class="st">&quot;RcppEigen&quot;</span>))</code></pre></div>
@@ -90,13 +90,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li>We will use not just the genetic marker map, but also a physical map (if available).</li>
 <li>Previously, phenotypes and covariates were combined. In the new format, we separate numeric phenotypes from the often non-numeric covariates.</li>
-<li>We define a table of “phenotype covariates.” These are <a href="http://en.wikipedia.org/wiki/Metadata">metadata</a> describing the phenotypes. For example, in the case of a phenotype measured over time, one column in the phenotype covariate data could be the time of measurement. For gene expression data, we would have columns representing chromosome and physical position of genes, as well as gene IDs.</li>
+<li>We define a table of “phenotype covariates.” These are <a href="https://en.wikipedia.org/wiki/Metadata">metadata</a> describing the phenotypes. For example, in the case of a phenotype measured over time, one column in the phenotype covariate data could be the time of measurement. For gene expression data, we would have columns representing chromosome and physical position of genes, as well as gene IDs.</li>
 </ul>
 <p>In addition to the set of CSV files with the primary data, we need a separate “control” file with various control parameters (or metadata), including the names of all of the other data files and the genotype codes used in the genotype data file. The control file is in a specific format using either <a href="http://www.yaml.org">YAML</a> or <a href="http://json.org">JSON</a>; these are human-readable text files for representing relatively complex data.</p>
 <p>A big advantage of this control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. So you can read in data like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre></div>
-<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="http://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
+<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="https://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre></div>
 <p>This <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code> or <code>.json</code>.</p>
 <p>To read the data back in, we use the same <code>read_cross2()</code> function, providing the name (and path) of the zip file rather than the control file.</p>
@@ -119,7 +119,7 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>( <span c
 <h2>Calculating genotype probabilities</h2>
 <p>The first basic task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. This is accomplished with the <code>calc_genoprob()</code> function in the <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> package. Unlike the corresponding function in <a href="http://rqtl.org">R/qtl</a>, <code>calc.genoprob()</code>, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals × genotypes × positions.</p>
 <p>If we wish to perform QTL calculations at positions between markers (so called “pseudomarkers”), we first need to insert such positions into the genetic map with the function <code>insert_pseudomarkers()</code>. Unlike [R/qtl], the map is kept separate from the genotype probabilities.</p>
-<p>We’ll use the <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">iron dataset</a> from <a href="http://www.ncbi.nlm.nih.gov/pubmed/16799992">Grant et al. (2006) Hepatology 44:174-185</a> (an intercross) as an example. We first load the data:</p>
+<p>We’ll use the <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">iron dataset</a> from <a href="https://www.ncbi.nlm.nih.gov/pubmed/16799992">Grant et al. (2006) Hepatology 44:174-185</a> (an intercross) as an example. We first load the data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 iron &lt;-<span class="st"> </span><span class="kw">read_cross2</span>( <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;iron.zip&quot;</span>, <span class="dt">package=</span><span class="st">&quot;qtl2geno&quot;</span>) )</code></pre></div>
 <p>We then use <code>insert_pseudomarkers()</code> to insert pseudomarkers into the genetic map, which we grab from the <code>iron</code> object as <code>iron$gmap</code>:</p>
@@ -153,7 +153,7 @@ kinship_grid &lt;-<span class="st"> </span><span class="kw">calc_kinship</span>(
 </div>
 <div id="performing-a-genome-scan" class="section level2">
 <h2>Performing a genome scan</h2>
-<p>To perform a genome scan by Haley-Knott regression (<a href="http://www.ncbi.nlm.nih.gov/pubmed/16718932">Haley and Knott 1992</a>), use the function <code>scan1()</code> in <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>. (The functions above were all from <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>; from here forward, the functions are all from <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>.)</p>
+<p>To perform a genome scan by Haley-Knott regression (<a href="https://www.ncbi.nlm.nih.gov/pubmed/16718932">Haley and Knott 1992</a>), use the function <code>scan1()</code> in <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>. (The functions above were all from <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>; from here forward, the functions are all from <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>.)</p>
 <p><code>scan1()</code> takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a vector of weights.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2scan)
 out &lt;-<span class="st"> </span><span class="kw">scan1</span>(pr, iron$pheno, <span class="dt">Xcovar=</span>Xcovar)</code></pre></div>
@@ -343,8 +343,8 @@ for(i in <span class="kw">seq</span>(<span class="dt">along=</span>last_coef))
 <p>For multi-parent crosses, it can be useful to collapse the genotype or allele probabilities according to the founder genotypes of the various SNPs in the region of a QTL.</p>
 <div id="qtl-analysis-in-diversity-outbred-mice" class="section level3">
 <h3>QTL analysis in Diversity Outbred mice</h3>
-<p>To illustrate this sort of SNP association analysis, we’ll consider some Diversity Outbred mouse data. The Diversity Outcross (DO) mice are an advanced intercross population derived from the same eight founder strains as the Collaborative Cross (CC). See <a href="http://www.ncbi.nlm.nih.gov/pubmed/22345611">Svenson et al. (2012)</a> and <a href="http://www.ncbi.nlm.nih.gov/pubmed/25237114">Gatti et al. (2014)</a>.</p>
-<p>We’ll consider a subset of the data from <a href="http://www.ncbi.nlm.nih.gov/pubmed/24700285">Recla et al. (2014)</a>, available as part of the <a href="https://github.com/rqtl/qtl2data">qtl2data github repository</a>. (The full data are in <a href="https://github.com/rqtl/qtl2data/tree/master/DO_Recla"><code>DO_Recla</code></a>; the directory <a href="https://github.com/rqtl/qtl2data/tree/master/DOex"><code>DOex</code></a> contains a reduced set, with just three chromosomes, one phenotype (<code>OF_immobile_pct</code>, percent immobile in the open field test), and a reduced set of markers.</p>
+<p>To illustrate this sort of SNP association analysis, we’ll consider some Diversity Outbred mouse data. The Diversity Outcross (DO) mice are an advanced intercross population derived from the same eight founder strains as the Collaborative Cross (CC). See <a href="https://www.ncbi.nlm.nih.gov/pubmed/22345611">Svenson et al. (2012)</a> and <a href="https://www.ncbi.nlm.nih.gov/pubmed/25237114">Gatti et al. (2014)</a>.</p>
+<p>We’ll consider a subset of the data from <a href="https://www.ncbi.nlm.nih.gov/pubmed/24700285">Recla et al. (2014)</a>, available as part of the <a href="https://github.com/rqtl/qtl2data">qtl2data github repository</a>. (The full data are in <a href="https://github.com/rqtl/qtl2data/tree/master/DO_Recla"><code>DO_Recla</code></a>; the directory <a href="https://github.com/rqtl/qtl2data/tree/master/DOex"><code>DOex</code></a> contains a reduced set, with just three chromosomes, one phenotype (<code>OF_immobile_pct</code>, percent immobile in the open field test), and a reduced set of markers.</p>
 <p>You can download the data from a single zip file, as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;https://raw.githubusercontent.com/rqtl/&quot;</span>,
                <span class="st">&quot;qtl2data/master/DOex/DOex.zip&quot;</span>)

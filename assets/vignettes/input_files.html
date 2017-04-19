@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -82,7 +82,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. So you can read in data like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre></div>
-<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="http://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
+<p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="https://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre></div>
 <p>The <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code> or <code>.json</code>.</p>
 <p>To read the data back in, we use the same <code>read_cross2()</code> function, providing the name (and path) of the zip file rather than the control file.</p>
@@ -135,7 +135,7 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span cl
 <p>The format of the control file is a bit technical. We describe the details here and also provide a function <code>write_control_file()</code> that takes the detailed specifications as input and contructs the control file in the correct format.</p>
 <p>We’ll start with an example: the control file for the <a href="http://kbroman.org/qtl2/pages/sampledata">sample intercross data</a>.</p>
 <pre><code># Data from Grant et al. (2006) Hepatology 44:174-185
-# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
 crosstype: f2
 geno: iron_geno.csv

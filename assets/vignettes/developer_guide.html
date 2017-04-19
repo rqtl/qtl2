@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -166,14 +166,14 @@
 <p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="http://rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
 <p>Another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>’s <a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: the inclusion of metadata, such as genotype encodings, with the primary data. This will simplify the handling of multiple files and will help to avoid mistakes.</p>
 <p>And so the basic idea for the new format is to have a separate file for each part of the primary data (genotypes, founder genotypes, genetic map, physical map, phenotypes, covariates, and phenotype covariates), and then a control file which specifies the names of all of those files, the genotype encodings and missing value codes, and things like the name of the sex column within the covariate data (and the encodings for the sexes) and which chromosome is the X chromosome.</p>
-<p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>qtl2geno::read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="http://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">http://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly (with the same function, <code>qtl2geno::read_cross2()</code>). The function <code>qtl2geno::zip_datafiles()</code> can be used to create the zip file.</p>
+<p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>qtl2geno::read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="https://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">https://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly (with the same function, <code>qtl2geno::read_cross2()</code>). The function <code>qtl2geno::zip_datafiles()</code> can be used to create the zip file.</p>
 <p>I describe the details of the input files in a <a href="input_files.html">separate vignette</a>. Here I’ll give a brief sketch of the structure of the files.</p>
 <div id="control-file" class="section level3">
 <h3>Control file</h3>
 <p>The control file can be in <a href="http://www.yaml.org">YAML</a> or <a href="http://www.json.org">JSON</a> formats. Both are human-readable text file for representing relatively complex data. YAML tends to be more readable, but JSON is more robust.</p>
 <p>Here’s an example, for a <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">sample intercross dataset</a>, in YAML.</p>
 <pre><code># Data from Grant et al. (2006) Hepatology 44:174-185
-# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
 crosstype: f2
 geno: iron_geno.csv
@@ -203,7 +203,7 @@ na.strings:
 <p>The order of the information is not important, but the names of things are critical.</p>
 <p><code>crosstype</code> indicates the cross type. <code>geno</code>, <code>pheno</code>, <code>phenocovar</code>, <code>covar</code>, and <code>gmap</code> indicate the names of the files for the different major pieces of data, all expected to be within the same directory as the YAML control file.</p>
 <p><code>alleles</code> indicates the two single-character allele codes for the founders. The initial dashes are just to indicate that the <code>S</code> and <code>B</code> form a vector.</p>
-<p><code>genotypes</code> gives the genotype codes used in the genotype data file. <code>SS</code>, <code>SB</code>, and <code>BB</code> are the codes used, to be converted to <code>1</code>, <code>2</code>, and <code>3</code>, respectively. The <code>key: value</code> structure is for an <a href="http://en.wikipedia.org/wiki/Associative_array">associative array</a>.</p>
+<p><code>genotypes</code> gives the genotype codes used in the genotype data file. <code>SS</code>, <code>SB</code>, and <code>BB</code> are the codes used, to be converted to <code>1</code>, <code>2</code>, and <code>3</code>, respectively. The <code>key: value</code> structure is for an <a href="https://en.wikipedia.org/wiki/Associative_array">associative array</a>.</p>
 <p><code>sex</code> contains information about the name of the covariate that represents sex as well as the codes used: the sexes in the <code>iron_covar.csv</code> file are coded as <code>f</code> and <code>m</code>, and we want to indicate which one is <code>female</code> and which is <code>male</code>.</p>
 <p>The format of the control file is maybe a bit technical for some users, so there’s a function <code>write_control_file()</code> that takes the control parameters (including file names) as input and writes the YAML file in the correct form.</p>
 </div>
