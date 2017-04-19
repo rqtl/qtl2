@@ -1,4 +1,11 @@
-## qtl2plot 0.5-3 (2017-04-19)
+## qtl2plot 0.5-4 (2017-03-11)
+
+### Bug fixes
+
+- Fix bug in `plot_scan1`: need to import `qtl2scan::subset_scan1`.
+
+
+## qtl2plot 0.5-3 (2017-03-07)
 
 ### New features
 
