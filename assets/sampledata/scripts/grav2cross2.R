@@ -73,10 +73,10 @@ grav2_info <- list(crosstype = "riself",
 library(yaml)
 yaml_file <- file.path(odir, "grav2.yaml")
 cat("# Data from Moore et al. (2013) Genetics 195:1077-1086 (2nd RIL replicate)",
-    "# Available at QTL Archive, http://qtlarchive.org/db/q?pg=projdetails&proj=moore_2013c",
+    "# Available at QTL Archive as Moore1c, http://phenome.jax.org/db/q?rtn=projects/projdet&reqprojid=284",
     file=yaml_file, sep="\n")
 cat(as.yaml(grav2_info), file=yaml_file, append=TRUE)
 
 # create a version as a zip file
-library(qtl2)
+library(qtl2geno)
 zip_datafiles(yaml_file)
