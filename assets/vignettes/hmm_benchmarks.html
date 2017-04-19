@@ -4,9 +4,11 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 
@@ -16,32 +18,46 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
-</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 
-<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -49,84 +65,86 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 
-<div id="header">
-<h1 class="title">Benchmarks of HMM routines</h1>
-</div>
+
+<h1 class="title toc-ignore">Benchmarks of HMM routines</h1>
+
 
 
 <p><a href="https://github.com/kbroman/qtl2geno">R/qtl2geno</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
-<p>The new HMM code can potentially handle more general cases and uses C++ classes to simplify the extension to new cross types. I’ve also split out the forward and backward equations as separate functions, to reduce code duplication. And the basic calculations are separated by individual, which may allow for low-level parallel processing (i.e., <a href="http://en.wikipedia.org/wiki/Concurrency_(computer_science)">concurrency</a>). (I’m considered using <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a> for this.)</p>
+<p>The new HMM code can potentially handle more general cases and uses C++ classes to simplify the extension to new cross types. I’ve also split out the forward and backward equations as separate functions, to reduce code duplication. And the basic calculations are separated by individual, which may allow for low-level parallel processing (i.e., <a href="https://en.wikipedia.org/wiki/Concurrency_(computer_science)">concurrency</a>). (I’m considered using <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a> for this.)</p>
 <p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="http://www.rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="http://www.rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
 <div id="genotype-probabilities" class="section level2">
 <h2>Genotype probabilities</h2>
 <p>First let’s look at the calculation of conditional genotype probabilities (given multiple genetic marker genotypes). We’ll consider simulated data, first of a backcross with 500 individuals (250 males and 250 females) and with markers at a 1 cM spacing on 20 chromosomes (including the X chromosome), and 5% missing data. We use <code>qtl::sim.map()</code> and <code>qtl:sim.cross()</code> to simulate the data.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">8440561</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">8440561</span>)
 <span class="kw">library</span>(qtl)
 <span class="kw">data</span>(map10)
 chrL &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">summary</span>(map10)$length[<span class="dv">1</span>:<span class="dv">20</span>])
 map &lt;-<span class="st"> </span><span class="kw">sim.map</span>(<span class="dt">len=</span>chrL, <span class="dt">n.mar=</span>chrL<span class="dv">+1</span>, <span class="dt">include.x=</span><span class="ot">TRUE</span>, <span class="dt">eq.spacing=</span><span class="ot">TRUE</span>)
 n &lt;-<span class="st"> </span><span class="dv">500</span>
 bc &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;bc&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
-bc$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)</code></pre>
+bc$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)</code></pre></div>
 <p>There’s a total of 1685 markers.</p>
-<p>We use <code>qtl2geno::convert2cross2()</code> to convert the data to the format for <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
-bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</code></pre>
-<p>We use the <a href="http://cran.r-project.org/web/packages/microbenchmark/">microbenchmark package</a> and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2geno::calc_genoprob2()</code> 25 times, with calculations at a 0.5 cM spacing. Even though the data were simulated without genotyping errors, I’m going to do the calculations assuming a 0.2% genotype error rate.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
+<p>We use <code>qtl2geno::convert2cross2()</code> to convert the data to the format for <a href="http://kbroman.org/qtl2">R/qtl2</a>. Also, with R/qtl2, I need to use <code>insert_pseudomarkers</code> to create a map with pseudomarkers inserted, prior to running <code>calc_genoprob</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
+bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)
+bc2_pmarkmap &lt;-<span class="st"> </span>qtl2geno::<span class="kw">insert_pseudomarkers</span>(bc2$gmap, <span class="dt">step=</span><span class="fl">0.5</span>)</code></pre></div>
+<p>We use the <a href="https://cran.r-project.org/package=microbenchmark">microbenchmark package</a> and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2geno::calc_genoprob2()</code> 25 times, with calculations at a 0.5 cM spacing. Even though the data were simulated without genotyping errors, I’m going to do the calculations assuming a 0.2% genotype error rate.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
 probbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">calc.genoprob</span>(bc, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error.prob=</span><span class="fl">0.002</span>),
-                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">calc_genoprob</span>(bc2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
+                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">calc_genoprob</span>(bc2, bc2_pmarkmap, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
                          <span class="dt">times=</span><span class="dv">25</span>)
-<span class="kw">print</span>(probbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
+<span class="kw">print</span>(probbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq       max neval cld
-##   qtl 0.7103831 0.7249905 0.7486349 0.7371471 0.7615736 0.8165685    25  a 
-##  qtl2 1.0920018 1.1380402 1.1781311 1.1784175 1.2279973 1.3184069    25   b</code></pre>
-<p>Let’s do the same for an intercross, also including the X chromosome, and with crosses in both directions and with both sexes.</p>
-<pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;f2&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
+##  expr       min        lq      mean    median        uq      max neval cld
+##   qtl 1.0799567 1.0868793 1.1032730 1.0911020 1.0978109 1.169801    25   b
+##  qtl2 0.8402393 0.8513209 0.8694808 0.8563172 0.8666195 1.050022    25  a</code></pre>
+<p>Let’s do the same for an intercross, also including the X chromosome, and with crosses in both directions and with both sexes. Again, with R/qtl2, I need to use <code>insert_pseudomarkers</code> to create a map with pseudomarkers inserted, prior to running <code>calc_genoprob</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;f2&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
 f2$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)
 f2$pheno$pgm &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, n/<span class="dv">2</span>)
-f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)</code></pre>
+f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)
+f2_2_pmarkmap &lt;-<span class="st"> </span>qtl2geno::<span class="kw">insert_pseudomarkers</span>(f2_2$gmap, <span class="dt">step=</span><span class="fl">0.5</span>)</code></pre></div>
 <p>Now for the benchmarks; we’ll do the calculations just 10 times.</p>
-<pre class="sourceCode r"><code class="sourceCode r">probf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">calc.genoprob</span>(f2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error.prob=</span><span class="fl">0.002</span>),
-                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">calc_genoprob</span>(f2_2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">probf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">calc.genoprob</span>(f2, <span class="dt">step=</span><span class="fl">0.5</span>, <span class="dt">error.prob=</span><span class="fl">0.002</span>),
+                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">calc_genoprob</span>(f2_2, f2_2_pmarkmap, <span class="dt">error_prob=</span><span class="fl">0.002</span>),
                          <span class="dt">times=</span><span class="dv">10</span>)
-<span class="kw">print</span>(probf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
+<span class="kw">print</span>(probf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 1.685662 1.694231 1.724986 1.726407 1.739922 1.796371    10  a 
-##  qtl2 2.415408 2.463876 2.534604 2.511243 2.639942 2.680305    10   b</code></pre>
+##   qtl 2.646663 2.660546 2.669483 2.667213 2.672160 2.710538    10   b
+##  qtl2 1.796203 1.913149 1.928840 1.921409 1.923194 2.144731    10  a</code></pre>
 </div>
 <div id="genetic-map-estimation" class="section level2">
 <h2>Genetic map estimation</h2>
 <p>Now let’s consider the estimation of inter-marker distances in the genetic map, with the functions <code>qtl::est.map</code> and <code>qtl2geno::est_map</code>.</p>
 <p>First the backcross; to speed things up, we’ll look at just chromosomes 1 and X.</p>
-<pre class="sourceCode r"><code class="sourceCode r">bc &lt;-<span class="st"> </span>bc[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
-bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bc &lt;-<span class="st"> </span>bc[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
+bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</code></pre></div>
 <p>Now for the benchmarks. We’ll just do 5 replicates.</p>
-<pre class="sourceCode r"><code class="sourceCode r">mapbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">est.map</span>(bc, <span class="dt">error.prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mapbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">est.map</span>(bc, <span class="dt">error.prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">est_map</span>(bc2, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
                         <span class="dt">times=</span><span class="dv">5</span>)
-<span class="kw">print</span>(mapbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
+<span class="kw">print</span>(mapbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq       max neval cld
-##   qtl 0.8793725 0.8951445 0.9236523 0.9027155 0.9653231 0.9757058     5  a 
-##  qtl2 5.5094063 5.5468859 5.5480607 5.5473157 5.5671699 5.5695255     5   b</code></pre>
+##  expr      min       lq     mean   median       uq      max neval cld
+##   qtl 1.379063 1.381583 1.383991 1.383686 1.387074 1.388547     5  a 
+##  qtl2 1.637470 1.653812 1.659821 1.656770 1.670041 1.681014     5   b</code></pre>
 <p>Now to the intercross. Again, we’ll look at just chromosomes 1 and X, and we’ll perform just 5 replicates.</p>
-<pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span>f2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span>f2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
 f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)
 mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">qtl =</span>  qtl::<span class="kw">est.map</span>(f2, <span class="dt">error.prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
                         <span class="dt">qtl2 =</span> qtl2geno::<span class="kw">est_map</span>(f2_2, <span class="dt">error_prob=</span><span class="fl">0.002</span>, <span class="dt">tol=</span><span class="fl">1e-6</span>, <span class="dt">maxit=</span><span class="dv">10000</span>),
                         <span class="dt">times=</span><span class="dv">5</span>)
-<span class="kw">print</span>(mapf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre>
+<span class="kw">print</span>(mapf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 2.563113 2.629724 2.658564 2.638842 2.673152 2.787991     5  a 
-##  qtl2 8.950104 8.960476 9.139625 9.144089 9.159017 9.484441     5   b</code></pre>
-<p>For the backcross, the new code takes 6.1 times longer; for the intercross, the new code takes 3.5 times longer.</p>
+##   qtl 3.858236 3.861335 3.866668 3.865346 3.873071 3.875353     5   b
+##  qtl2 3.121583 3.140473 3.208224 3.231638 3.263488 3.283941     5  a</code></pre>
+<p>For the backcross, the new code takes 1.2 times longer; for the intercross, the new code takes 0.8 times longer.</p>
 </div>
-<div id="why-so-slow" class="section level2">
-<h2>Why so slow?</h2>
+<div id="why-the-differences-in-speed" class="section level2">
+<h2>Why the differences in speed?</h2>
 <p>I made a number of changes to the HMM code between <a href="http://www.rqtl.org">R/qtl</a> and <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
 <ul>
 <li>Split out the forward/backward equations as separate functions (to avoid code duplication and to make the code potentially clearer).</li>
@@ -140,60 +158,57 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <p>The following shows the R and package versions I was using.</p>
-<pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre></div>
 <pre><code>## Session info ---------------------------------------------------------------------------------------</code></pre>
 <pre><code>##  setting  value                       
-##  version  R version 3.2.0 (2015-04-16)
+##  version  R version 3.3.3 (2017-03-06)
 ##  system   x86_64, darwin13.4.0        
 ##  ui       X11                         
 ##  language en_US.UTF-8                 
 ##  collate  en_US.UTF-8                 
-##  tz       America/Chicago</code></pre>
+##  tz       America/Chicago             
+##  date     2017-04-19</code></pre>
 <pre><code>## Packages -------------------------------------------------------------------------------------------</code></pre>
-<pre><code>##  package        * version    date       source                          
-##  assertthat       0.1        2013-12-06 CRAN (R 3.2.0)                  
-##  bitops           1.0-6      2013-08-17 CRAN (R 3.2.0)                  
-##  broman         * 0.55-3     2015-04-27 local                           
-##  codetools        0.2-11     2015-03-10 CRAN (R 3.2.0)                  
-##  colorspace       1.2-6      2015-03-11 CRAN (R 3.2.0)                  
-##  devtools         1.8.0.9000 2015-05-12 Github (hadley/devtools@dc61a9e)
-##  digest           0.6.8      2014-12-31 CRAN (R 3.2.0)                  
-##  evaluate         0.7        2015-04-21 CRAN (R 3.2.0)                  
-##  formatR          1.2        2015-04-21 CRAN (R 3.2.0)                  
-##  ggplot2          1.0.1      2015-03-17 CRAN (R 3.2.0)                  
-##  git2r            0.10.1     2015-05-07 CRAN (R 3.2.0)                  
-##  gtable           0.1.2      2012-12-05 CRAN (R 3.2.0)                  
-##  htmltools        0.2.6      2014-09-08 CRAN (R 3.2.0)                  
-##  jsonlite         0.9.16     2015-04-11 CRAN (R 3.2.0)                  
-##  knitr            1.10.5     2015-05-06 CRAN (R 3.2.0)                  
-##  lattice          0.20-31    2015-03-30 CRAN (R 3.2.0)                  
-##  magrittr       * 1.5        2014-11-22 CRAN (R 3.2.0)                  
-##  MASS             7.3-40     2015-03-21 CRAN (R 3.2.0)                  
-##  memoise          0.2.1      2014-04-22 CRAN (R 3.2.0)                  
-##  microbenchmark * 1.4-2      2014-09-28 CRAN (R 3.2.0)                  
-##  multcomp         1.4-0      2015-03-05 CRAN (R 3.2.0)                  
-##  munsell          0.4.2      2013-07-11 CRAN (R 3.2.0)                  
-##  mvtnorm          1.0-2      2014-12-18 CRAN (R 3.2.0)                  
-##  plyr             1.8.2      2015-04-21 CRAN (R 3.2.0)                  
-##  proto            0.3-10     2012-12-22 CRAN (R 3.2.0)                  
-##  qtl            * 1.37-1     2015-04-20 local                           
-##  qtl2geno       * 0.2-2      2015-06-01 local                           
-##  Rcpp             0.11.6     2015-05-01 CRAN (R 3.2.0)                  
-##  RCurl            1.95-4.6   2015-04-24 CRAN (R 3.2.0)                  
-##  reshape2         1.4.1      2014-12-06 CRAN (R 3.2.0)                  
-##  RJSONIO          1.3-0      2014-07-28 CRAN (R 3.2.0)                  
-##  rmarkdown        0.6.1      2015-05-07 CRAN (R 3.2.0)                  
-##  RPushbullet      0.2.0      2015-02-09 CRAN (R 3.2.0)                  
-##  rversions        1.0.0      2015-04-22 CRAN (R 3.2.0)                  
-##  sandwich         2.3-3      2015-03-26 CRAN (R 3.2.0)                  
-##  scales           0.2.4      2014-04-22 CRAN (R 3.2.0)                  
-##  stringi          0.4-1      2014-12-14 CRAN (R 3.2.0)                  
-##  stringr          1.0.0      2015-04-30 CRAN (R 3.2.0)                  
-##  survival         2.38-1     2015-02-24 CRAN (R 3.2.0)                  
-##  TH.data          1.0-6      2015-01-05 CRAN (R 3.2.0)                  
-##  XML              3.98-1.2   2015-05-31 CRAN (R 3.2.0)                  
-##  yaml             2.1.13     2014-06-12 CRAN (R 3.2.0)                  
-##  zoo              1.7-12     2015-03-16 CRAN (R 3.2.0)</code></pre>
+<pre><code>##  package        * version date       source        
+##  assertthat       0.2.0   2017-04-11 CRAN (R 3.3.2)
+##  backports        1.0.5   2017-01-18 CRAN (R 3.3.2)
+##  broman         * 0.65-2  2017-02-21 local         
+##  codetools        0.2-15  2016-10-05 CRAN (R 3.3.0)
+##  colorspace       1.3-2   2016-12-14 CRAN (R 3.3.2)
+##  data.table       1.10.4  2017-02-01 CRAN (R 3.3.2)
+##  devtools         1.12.0  2016-06-24 CRAN (R 3.3.0)
+##  digest           0.6.12  2017-01-27 CRAN (R 3.3.2)
+##  evaluate         0.10    2016-10-11 CRAN (R 3.3.0)
+##  ggplot2          2.2.1   2016-12-30 CRAN (R 3.3.2)
+##  gtable           0.2.0   2016-02-26 CRAN (R 3.3.0)
+##  htmltools        0.3.5   2016-03-21 CRAN (R 3.3.0)
+##  knitr            1.15.1  2016-11-22 CRAN (R 3.3.2)
+##  lattice          0.20-35 2017-03-25 CRAN (R 3.3.2)
+##  lazyeval         0.2.0   2016-06-12 CRAN (R 3.3.0)
+##  magrittr       * 1.5     2014-11-22 CRAN (R 3.3.0)
+##  MASS             7.3-45  2016-04-21 CRAN (R 3.3.0)
+##  Matrix           1.2-8   2017-01-20 CRAN (R 3.3.2)
+##  memoise          1.0.0   2016-01-29 CRAN (R 3.3.0)
+##  microbenchmark * 1.4-2.1 2015-11-25 CRAN (R 3.3.0)
+##  multcomp         1.4-6   2016-07-14 CRAN (R 3.3.0)
+##  munsell          0.4.3   2016-02-13 CRAN (R 3.3.0)
+##  mvtnorm          1.0-6   2017-03-02 CRAN (R 3.3.2)
+##  plyr             1.8.4   2016-06-08 CRAN (R 3.3.0)
+##  qtl            * 1.41-2  2017-03-10 local         
+##  qtl2geno       * 0.5-18  2017-04-19 local         
+##  Rcpp             0.12.10 2017-03-19 CRAN (R 3.3.3)
+##  rmarkdown        1.4     2017-03-24 CRAN (R 3.3.2)
+##  rprojroot        1.2     2017-01-16 CRAN (R 3.3.2)
+##  sandwich         2.3-4   2015-09-24 CRAN (R 3.3.0)
+##  scales           0.4.1   2016-11-09 CRAN (R 3.3.2)
+##  stringi          1.1.5   2017-04-07 CRAN (R 3.3.2)
+##  stringr          1.2.0   2017-02-18 CRAN (R 3.3.2)
+##  survival         2.41-3  2017-04-04 CRAN (R 3.3.2)
+##  TH.data          1.0-8   2017-01-23 CRAN (R 3.3.2)
+##  tibble           1.3.0   2017-04-01 CRAN (R 3.3.2)
+##  withr            1.0.2   2016-06-20 CRAN (R 3.3.0)
+##  yaml             2.1.14  2016-11-12 CRAN (R 3.3.2)
+##  zoo              1.8-0   2017-04-12 CRAN (R 3.3.3)</code></pre>
 </div>
 
 

@@ -51,11 +51,14 @@ bc$pheno$sex <- rep(0:1, each=n/2)
 There's a total of `r totmar(bc)` markers.
 
 We use `qtl2geno::convert2cross2()` to convert the data to the format for
-[R/qtl2](http://kbroman.org/qtl2).
+[R/qtl2](http://kbroman.org/qtl2). Also, with R/qtl2, I need to use
+`insert_pseudomarkers` to create a map with pseudomarkers inserted,
+prior to running `calc_genoprob`.
 
 ```{r convert2cross2}
 library(qtl2geno)
 bc2 <- convert2cross2(bc)
+bc2_pmarkmap <- qtl2geno::insert_pseudomarkers(bc2$gmap, step=0.5)
 ```
 
 We use the
@@ -68,7 +71,7 @@ calculations assuming a 0.2% genotype error rate.
 ```{r benchmark_calcgenoprob_bc}
 library(microbenchmark)
 probbc <- microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
-                         qtl2 = qtl2geno::calc_genoprob(bc2, step=0.5, error_prob=0.002),
+                         qtl2 = qtl2geno::calc_genoprob(bc2, bc2_pmarkmap, error_prob=0.002),
                          times=25)
 print(probbc, unit="s")
 ```
@@ -83,13 +86,16 @@ function(mbmout,digits=1)
 ```
 
 Let's do the same for an intercross, also including the X chromosome,
-and with crosses in both directions and with both sexes.
+and with crosses in both directions and with both sexes. Again, with
+R/qtl2, I need to use `insert_pseudomarkers` to create a map with
+pseudomarkers inserted, prior to running `calc_genoprob`.
 
 ```{r sim_intercross}
 f2 <- sim.cross(map, n.ind=n, type="f2", missing.prob=0.05)
 f2$pheno$sex <- rep(0:1, each=n/2)
 f2$pheno$pgm <- rep(0:1, n/2)
 f2_2 <- convert2cross2(f2)
+f2_2_pmarkmap <- qtl2geno::insert_pseudomarkers(f2_2$gmap, step=0.5)
 ```
 
 Now for the benchmarks; we'll do the calculations just 10
@@ -97,7 +103,7 @@ times.
 
 ```{r benchmark_calcgenoprob_f2}
 probf2 <- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
-                         qtl2 = qtl2geno::calc_genoprob(f2_2, step=0.5, error_prob=0.002),
+                         qtl2 = qtl2geno::calc_genoprob(f2_2, f2_2_pmarkmap, error_prob=0.002),
                          times=10)
 print(probf2, unit="s")
 ```
@@ -142,7 +148,7 @@ longer; for the intercross, the new code takes
 `r median_ratio(mapf2)` times longer.
 
 
-## Why so slow?
+## Why the differences in speed?
 
 I made a number of changes to the HMM code between
 [R/qtl](http://www.rqtl.org) and [R/qtl2](http://kbroman.org/qtl2).
