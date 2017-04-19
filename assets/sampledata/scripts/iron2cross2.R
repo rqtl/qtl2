@@ -72,6 +72,7 @@ iron_info <- list(crosstype = "f2",
                   phenocovar = "iron_phenocovar.csv",
                   covar = "iron_covar.csv",
                   gmap = "iron_gmap.csv",
+                  pmap = "iron_pmap.csv",
                   alleles = alleles,
                   genotypes = genotypes,
                   sex = list(covar="sex", f='female', m='male'),
@@ -88,5 +89,5 @@ cat("# Data from Grant et al. (2006) Hepatology 44:174-185",
 cat(as.yaml(iron_info), file=yaml_file, append=TRUE)
 
 # create a version as a zip file
-library(qtl2)
+library(qtl2geno)
 zip_datafiles(yaml_file)
