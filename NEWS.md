@@ -1,4 +1,4 @@
-## qtl2plot 0.5-3
+## qtl2plot 0.5-3 (2017-04-19)
 
 ### New features
 
