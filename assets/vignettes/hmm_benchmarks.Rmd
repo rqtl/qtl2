@@ -17,7 +17,7 @@ C++ classes to simplify the extension to new cross types. I've also
 split out the forward and backward equations as separate functions, to
 reduce code duplication. And the basic calculations are separated by
 individual, which may allow for low-level parallel processing (i.e.,
-[concurrency](http://en.wikipedia.org/wiki/Concurrency_(computer_science))).
+[concurrency](https://en.wikipedia.org/wiki/Concurrency_(computer_science))).
 (I'm considered using
 [RcppParallel](http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel)
 for this.)
@@ -59,7 +59,7 @@ bc2 <- convert2cross2(bc)
 ```
 
 We use the
-[microbenchmark package](http://cran.r-project.org/web/packages/microbenchmark/)
+[microbenchmark package](https://cran.r-project.org/package=microbenchmark)
 and run each of `qtl::calc.genoprob()` and `qtl2geno::calc_genoprob2()`
 25 times, with calculations at a 0.5 cM spacing. Even though the data
 were simulated without genotyping errors, I'm going to do the

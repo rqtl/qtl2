@@ -32,7 +32,7 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 ### Installation
 
 R/qtl2 is early in development and so is not yet available on
-[CRAN](http://cran.r-project.org).
+[CRAN](https://cran.r-project.org).
 
 You can install R/qtl2 from [GitHub](https://github.com/rqtl).
 
@@ -66,4 +66,4 @@ Then, install R/qtl2 using `devtools::install_github()`.
 
 #### License
 
-[Licensed](LICENSE) under [GPL-3](http://www.r-project.org/Licenses/GPL-3).
+[Licensed](LICENSE) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).

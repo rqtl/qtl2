@@ -39,7 +39,7 @@ Rqtl2 version 0.4 and the new format are in
 ### Installation
 
 R/qtl2 is early in development and so is not yet available on
-[CRAN](http://cran.r-project.org).
+[CRAN](https://cran.r-project.org).
 
 You can install R/qtl2 from [GitHub](https://github.com/rqtl).
 
@@ -91,11 +91,11 @@ merchantability or fitness for a particular purpose.  See the GNU
 General Public License for more details.
 
 A copy of the GNU General Public License, version 3, is available at
-<http://www.r-project.org/Licenses/GPL-3>
+<https://www.r-project.org/Licenses/GPL-3>
 
 ---
 
-Sources on [github](http://github.com):
+Sources on [github](https://github.com):
 
 - The [source for the qtl2geno](https://github.com/rqtl/qtl2geno)
 - The [source for the qtl2scan](https://github.com/rqtl/qtl2scan)

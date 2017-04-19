@@ -57,7 +57,7 @@ Y <- as.matrix(y)
 ```
 
 We use the
-[microbenchmark package](http://cran.r-project.org/web/packages/microbenchmark/)
+[microbenchmark package](https://cran.r-project.org/package=microbenchmark)
 and run each of the routines 1000 times.
 
 ```{r simple_benchmark}
@@ -81,7 +81,7 @@ rank-deficient case.
 ## Rank-deficient case
 
 Let's now consider a rank-deficient case. We use an example from
-[Bates and Eddelbuettel (2013)](http://www.jstatsoft.org/v52/i05/)
+[Bates and Eddelbuettel (2013)](https://www.jstatsoft.org/article/view/v052i05)
 (the [RcppEigen](https://github.com/RcppCore/RcppEigen) paper).
 
 ```{r sim_rankdef_data}

@@ -1,7 +1,7 @@
 ## Data from Grant et al. (2006)
 
 Sample input data files from
-[Grant et al. (2006) Hepatology 44:174-185](http://www.ncbi.nlm.nih.gov/pubmed/16799992)
+[Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 (an intercross)
 
 - [`iron.yaml`](iron.yaml), the control file ([YAML format](http://www.yaml.org/))

@@ -1,7 +1,7 @@
 # reformat data from Grant et al. (2006) Hepatology 44:174-185
 # in R/qtl2 file format
 #
-# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Data taken from R/qtlbook package, https://github.com/kbroman/qtlbook
 
 library(qtl)
@@ -82,7 +82,7 @@ iron_info <- list(crosstype = "f2",
 library(yaml)
 yaml_file <- file.path(odir, "iron.yaml")
 cat("# Data from Grant et al. (2006) Hepatology 44:174-185",
-    "# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992",
+    "# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992",
     "# Available as part of R/qtl book package, https://github.com/kbroman/qtlbook",
     file=yaml_file, sep="\n")
 cat(as.yaml(iron_info), file=yaml_file, append=TRUE)

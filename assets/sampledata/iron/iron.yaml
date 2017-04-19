@@ -1,5 +1,5 @@
 # Data from Grant et al. (2006) Hepatology 44:174-185
-# Abstract of paper at PubMed: http://www.ncbi.nlm.nih.gov/pubmed/16799992
+# Abstract of paper at PubMed: https://www.ncbi.nlm.nih.gov/pubmed/16799992
 # Available as part of R/qtl book package, https://github.com/kbroman/qtlbook
 crosstype: f2
 geno: iron_geno.csv
