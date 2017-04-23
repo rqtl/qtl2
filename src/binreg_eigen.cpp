@@ -125,3 +125,64 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 
     return llik;
 }
+
+// logistic regression
+// return just the coefficients
+// [[Rcpp::export]]
+NumericVector calc_coef_binreg_eigenqr(const NumericMatrix& X,
+                                             const NumericVector& y,
+                                             const int maxit=100,
+                                             const double tol=1e-6,
+                                             const double qr_tol=1e-12)
+{
+    const int n_ind = y.size();
+    if(n_ind != X.rows())
+        throw std::invalid_argument("nrow(X) != length(y)");
+
+    double curllik = 0;
+    NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
+
+    for(int ind=0; ind<n_ind; ind++) {
+        pi[ind] = (y[ind] + 0.5)/2;
+        wt[ind] = sqrt(pi[ind] * (1-pi[ind]));
+        nu[ind] = log(pi[ind]) - log(1-pi[ind]);
+        z[ind] = nu[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
+        curllik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
+    }
+
+    NumericMatrix XX = weighted_matrix(X, wt); // to store weighted matrix
+
+    bool converged=false;
+    double llik;
+    NumericVector coef;
+
+    for(int it=0; it<maxit; it++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
+        // coefficients and then fitted values
+        // coefficients from regression of z on XX; fitted values use X
+        nu = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
+
+        llik = 0.0;
+        for(int ind=0; ind<n_ind; ind++) {
+            nu[ind] /= wt[ind]; // need to divide by previous weights
+            pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
+            wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind]));
+            z[ind] = nu[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
+            llik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
+        }
+
+        XX = weighted_matrix(X, wt);
+
+        if(fabs(llik - curllik) < tol) { // converged
+            converged = true;
+            break;
+        }
+
+        curllik = llik;
+    } // end iterations
+
+    if(!converged) r_warning("binreg didn't converge");
+
+    return calc_coef_linreg_eigenqr(XX, z, qr_tol);
+}

@@ -14,9 +14,15 @@ test_that("binreg_eigen functions work", {
     pi <- out$fitted
     expected <- sum(y*log10(pi) + (1-y)*log10(1-pi))
 
+    # just the log likelihood
     expect_equal(calc_ll_binreg_eigenchol(X, y), expected)
     expect_equal(calc_ll_binreg_eigenqr(X, y), expected)
     expect_equal(calc_ll_binreg(X, y), expected)
+
+    # coefficients
+    coef <- setNames(out$coef, NULL)
+    expect_equal(calc_coef_binreg_eigenqr(X, y), coef)
+    expect_equal(calc_coef_binreg(X, y), coef)
 
     # reduced rank matrix
     XX <- cbind(X, X[,1]+X[,2])
@@ -25,6 +31,7 @@ test_that("binreg_eigen functions work", {
     pi <- out$fitted
     expected2 <- sum(y*log10(pi) + (1-y)*log10(1-pi))
 
+    # just the log likelihood
     expect_equal(calc_ll_binreg_eigenchol(XX, y), expected2)
     expect_equal(calc_ll_binreg_eigenqr(XX, y), expected2)
     expect_equal(calc_ll_binreg(XX, y), expected2)
