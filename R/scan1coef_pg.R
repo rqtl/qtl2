@@ -99,7 +99,7 @@ scan1coef_pg <-
     if(is.null(hsq)) {
         nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
                                      NULL, FALSE, reml, cores=1, check_boundary=TRUE, tol)
-        hsq <- nullresult$hsq
+        hsq <- as.numeric(nullresult$hsq)
     }
 
     # eigen-vectors and weights
