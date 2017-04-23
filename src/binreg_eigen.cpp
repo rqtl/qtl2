@@ -47,8 +47,7 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
         llik = 0.0;
         for(int ind=0; ind<n_ind; ind++) {
             nu[ind] = fitted[ind]; // fitted values
-            pi[ind] = exp(nu[ind]);
-            pi[ind] = pi[ind]/(1.0 + pi[ind]);
+            pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
             wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind]));
             z[ind] = nu[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
             llik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
