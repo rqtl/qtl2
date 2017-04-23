@@ -1,3 +1,11 @@
+## qtl2scan 0.5-10 (2017-04-23)
+
+### New features
+
+- Implemented logistic regression in c++, for later use in genome
+  scans with a binary trait.
+
+
 ## qtl2scan 0.5-9 (2017-04-19)
 
 ### Minor changes

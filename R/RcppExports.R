@@ -5,6 +5,10 @@
     .Call('qtl2scan_R_bayes_int_plain', PACKAGE = 'qtl2scan', lod, pos, prob)
 }
 
+calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6) {
+    .Call('qtl2scan_calc_ll_binreg_eigenchol', PACKAGE = 'qtl2scan', X, y, maxit, tol)
+}
+
 .find_peaks <- function(lod, threshold, peakdrop) {
     .Call('qtl2scan_R_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
 }
