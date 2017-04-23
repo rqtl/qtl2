@@ -30,6 +30,11 @@ Rcpp::List calc_coefSE_linreg_eigenchol(const Rcpp::NumericMatrix& X,
 double calc_rss_eigenchol(const Rcpp::NumericMatrix& X,
                           const Rcpp::NumericVector& y);
 
+// least squares by "LLt" Cholesky decomposition
+// return just the fitted values
+Rcpp::NumericVector calc_fitted_linreg_eigenchol(const Rcpp::NumericMatrix& X,
+                                                 const Rcpp::NumericVector& y);
+
 // least squares by QR decomposition with column pivoting
 Rcpp::List fit_linreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const Rcpp::NumericVector& y,
@@ -53,6 +58,12 @@ Rcpp::List calc_coefSE_linreg_eigenqr(const Rcpp::NumericMatrix& X,
 double calc_rss_eigenqr(const Rcpp::NumericMatrix& X,
                         const Rcpp::NumericVector& y,
                         const double tol);
+
+// least squares by QR decomposition with column pivoting
+// return just the fitted values
+Rcpp::NumericVector calc_fitted_linreg_eigenqr(const Rcpp::NumericMatrix& X,
+                                               const Rcpp::NumericVector& y,
+                                               const double tol);
 
 // least squares by "LLt" Cholesky decomposition, with matrix Y
 // return vector of RSS

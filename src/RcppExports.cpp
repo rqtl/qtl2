@@ -218,6 +218,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calc_fitted_linreg_eigenchol
+NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
+RcppExport SEXP qtl2scan_calc_fitted_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_fitted_linreg_eigenchol(X, y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fit_linreg_eigenqr
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const bool se, const double tol);
 RcppExport SEXP qtl2scan_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
@@ -268,6 +280,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     rcpp_result_gen = Rcpp::wrap(calc_rss_eigenqr(X, y, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_fitted_linreg_eigenqr
+NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP qtl2scan_calc_fitted_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_fitted_linreg_eigenqr(X, y, tol));
     return rcpp_result_gen;
 END_RCPP
 }

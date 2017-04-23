@@ -41,12 +41,12 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
     for(int it=0; it<maxit; it++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
-        NumericVector coef = calc_coef_linreg_eigenchol(XX, z);
-        NumericVector fitted = matrix_x_vector(X, coef);
+        // fitted values using weighted XX; will need to divide by previous weights
+        nu = calc_fitted_linreg_eigenchol(XX, z);
 
         llik = 0.0;
         for(int ind=0; ind<n_ind; ind++) {
-            nu[ind] = fitted[ind]; // fitted values
+            nu[ind] /= wt[ind]; // need to divide by previous weights
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
             wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind]));
             z[ind] = nu[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];

@@ -109,6 +109,21 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
     return resid.squaredNorm();
 }
 
+// least squares by "LLt" Cholesky decomposition
+// return just the fitted values
+// [[Rcpp::export]]
+NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    LLT<MatrixXd> llt = calc_XpX(XX);
+
+    VectorXd betahat = llt.solve(XX.adjoint() * yy);
+    VectorXd fitted = XX * betahat;
+    return wrap(fitted);
+}
+
 // least squares by QR decomposition with column pivoting
 // [[Rcpp::export]]
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
@@ -312,6 +327,41 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
 
     VectorXd resid = yy - fitted;
     return resid.squaredNorm();
+}
+
+
+// least squares by QR decomposition with column pivoting
+// return just the fitted values
+// [[Rcpp::export]]
+NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
+                                         const double tol=1e-12)
+{
+    const MatrixXd XX(as<Map<MatrixXd> >(X));
+    const VectorXd yy(as<Map<VectorXd> >(y));
+
+    typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
+    typedef CPivQR::PermutationType Permutation;
+
+    const int n = XX.rows(), p = XX.cols();
+
+    CPivQR PQR = XX;
+    PQR.setThreshold(tol); // set tolerance
+    Permutation Pmat = PQR.colsPermutation();
+    const int r = PQR.rank();
+
+    VectorXd fitted(n);
+    if(r == p) { // full rank
+        VectorXd betahat = PQR.solve(yy);
+        fitted = XX * betahat;
+    } else {
+        MatrixXd Rinv = PQR.matrixQR().topLeftCorner(r,r)
+            .triangularView<Upper>().solve(MatrixXd::Identity(r,r));
+        VectorXd effects = PQR.householderQ().adjoint() * yy;
+        effects.tail(n - r).setZero();
+        fitted = PQR.householderQ() * effects;
+    }
+
+    return wrap(fitted);
 }
 
 

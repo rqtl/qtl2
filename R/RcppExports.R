@@ -61,6 +61,10 @@ calc_rss_eigenchol <- function(X, y) {
     .Call('qtl2scan_calc_rss_eigenchol', PACKAGE = 'qtl2scan', X, y)
 }
 
+calc_fitted_linreg_eigenchol <- function(X, y) {
+    .Call('qtl2scan_calc_fitted_linreg_eigenchol', PACKAGE = 'qtl2scan', X, y)
+}
+
 fit_linreg_eigenqr <- function(X, y, se, tol = 1e-12) {
     .Call('qtl2scan_fit_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, se, tol)
 }
@@ -75,6 +79,10 @@ calc_coefSE_linreg_eigenqr <- function(X, y, tol = 1e-12) {
 
 calc_rss_eigenqr <- function(X, y, tol = 1e-12) {
     .Call('qtl2scan_calc_rss_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
+}
+
+calc_fitted_linreg_eigenqr <- function(X, y, tol = 1e-12) {
+    .Call('qtl2scan_calc_fitted_linreg_eigenqr', PACKAGE = 'qtl2scan', X, y, tol)
 }
 
 calc_mvrss_eigenchol <- function(X, Y) {
