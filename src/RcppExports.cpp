@@ -33,6 +33,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calc_ll_binreg_eigenqr
+double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
+RcppExport SEXP qtl2scan_calc_ll_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_ll_binreg_eigenqr(X, y, maxit, tol, qr_tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_ll_binreg
+double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
+RcppExport SEXP qtl2scan_calc_ll_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_ll_binreg(X, y, maxit, tol, qr_tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // R_find_peaks
 List R_find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
 RcppExport SEXP qtl2scan_R_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {

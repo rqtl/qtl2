@@ -15,6 +15,8 @@ test_that("binreg_eigen functions work", {
     expected <- sum(y*log10(pi) + (1-y)*log10(1-pi))
 
     expect_equal(calc_ll_binreg_eigenchol(X, y), expected)
+    expect_equal(calc_ll_binreg_eigenqr(X, y), expected)
+    expect_equal(calc_ll_binreg(X, y), expected)
 
     # reduced rank matrix
     XX <- cbind(X, X[,1]+X[,2])
@@ -24,5 +26,7 @@ test_that("binreg_eigen functions work", {
     expected2 <- sum(y*log10(pi) + (1-y)*log10(1-pi))
 
     expect_equal(calc_ll_binreg_eigenchol(XX, y), expected2)
+    expect_equal(calc_ll_binreg_eigenqr(XX, y), expected2)
+    expect_equal(calc_ll_binreg(XX, y), expected2)
 
 })

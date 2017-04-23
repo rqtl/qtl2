@@ -9,6 +9,14 @@ calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6) {
     .Call('qtl2scan_calc_ll_binreg_eigenchol', PACKAGE = 'qtl2scan', X, y, maxit, tol)
 }
 
+calc_ll_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_ll_binreg_eigenqr', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
+}
+
+calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_ll_binreg', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
+}
+
 .find_peaks <- function(lod, threshold, peakdrop) {
     .Call('qtl2scan_R_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
 }
