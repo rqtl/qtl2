@@ -67,3 +67,61 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
 
     return llik;
 }
+
+
+// logistic regression by Qr decomposition with column pivoting
+// return just the log likelihood
+// [[Rcpp::export]]
+double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
+                              const int maxit=100, const double tol=1e-6,
+                              const double qr_tol=1e-12)
+{
+    const int n_ind = y.size();
+    if(n_ind != X.rows())
+        throw std::invalid_argument("nrow(X) != length(y)");
+
+    double curllik = 0;
+    NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
+
+    for(int ind=0; ind<n_ind; ind++) {
+        pi[ind] = (y[ind] + 0.5)/2;
+        wt[ind] = sqrt(pi[ind] * (1-pi[ind]));
+        nu[ind] = log(pi[ind]) - log(1-pi[ind]);
+        z[ind] = nu[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
+        curllik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
+    }
+
+    NumericMatrix XX = weighted_matrix(X, wt);
+
+    bool converged=false;
+    double llik;
+
+    for(int it=0; it<maxit; it++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
+        // fitted values using weighted XX; will need to divide by previous weights
+        nu = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
+
+        llik = 0.0;
+        for(int ind=0; ind<n_ind; ind++) {
+            nu[ind] /= wt[ind]; // need to divide by previous weights
+            pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
+            wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind]));
+            z[ind] = nu[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
+            llik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
+        }
+
+        if(fabs(llik - curllik) < tol) { // converged
+            converged = true;
+            break;
+        }
+
+        XX = weighted_matrix(X, wt);
+        curllik = llik;
+
+    } // end iterations
+
+    if(!converged) r_warning("binreg didn't converge");
+
+    return llik;
+}

@@ -11,4 +11,13 @@ double calc_ll_binreg_eigenchol(const Rcpp::NumericMatrix& X,
                                 const int maxit,
                                 const double tol);
 
+// logistic regression by Qr decomposition with column pivoting
+// return just the log likelihood
+double calc_ll_binreg_eigenqr(const Rcpp::NumericMatrix& X,
+                              const Rcpp::NumericVector& y,
+                              const int maxit,
+                              const double tol,
+                              const double qr_tol);
+
+
 #endif // BINREG_EIGEN_H
