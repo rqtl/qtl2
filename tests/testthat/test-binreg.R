@@ -18,6 +18,7 @@ test_that("binreg_eigen functions work", {
     expect_equal(calc_ll_binreg_eigenchol(X, y), expected)
     expect_equal(calc_ll_binreg_eigenqr(X, y), expected)
     expect_equal(calc_ll_binreg(X, y), expected)
+    expect_equal(expected, out$deviance/(-2*log(10)))
 
     # coefficients
     coef <- setNames(out$coef, NULL)
@@ -35,5 +36,6 @@ test_that("binreg_eigen functions work", {
     expect_equal(calc_ll_binreg_eigenchol(XX, y), expected2)
     expect_equal(calc_ll_binreg_eigenqr(XX, y), expected2)
     expect_equal(calc_ll_binreg(XX, y), expected2)
+    expect_equal(expected, out$deviance/(-2*log(10)))
 
 })
