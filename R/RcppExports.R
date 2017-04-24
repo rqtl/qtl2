@@ -17,12 +17,19 @@ calc_coef_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e
     .Call('qtl2scan_calc_coef_binreg_eigenqr', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
 }
 
+calc_coefSE_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_binreg_eigenqr', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
+}
 calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
     .Call('qtl2scan_calc_ll_binreg', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
 }
 
 calc_coef_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
     .Call('qtl2scan_calc_coef_binreg', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
+}
+
+calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_binreg', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
 }
 .find_peaks <- function(lod, threshold, peakdrop) {
     .Call('qtl2scan_R_find_peaks', PACKAGE = 'qtl2scan', lod, threshold, peakdrop)
