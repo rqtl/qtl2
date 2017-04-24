@@ -154,13 +154,11 @@ NumericVector calc_coef_binreg_eigenqr(const NumericMatrix& X,
 
     bool converged=false;
     double llik;
-    NumericVector coef;
 
     for(int it=0; it<maxit; it++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
-        // coefficients and then fitted values
-        // coefficients from regression of z on XX; fitted values use X
+        // fitted values using weighted XX; will need to divide by previous weights
         nu = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
 
         llik = 0.0;
