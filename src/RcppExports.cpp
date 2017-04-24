@@ -78,6 +78,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fit_binreg_eigenqr
+List fit_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const bool se, const int maxit, const double tol, const double qr_tol);
+RcppExport SEXP qtl2scan_fit_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_binreg_eigenqr(X, y, se, maxit, tol, qr_tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calc_ll_binreg
 double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
 RcppExport SEXP qtl2scan_calc_ll_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
@@ -120,6 +136,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
     rcpp_result_gen = Rcpp::wrap(calc_coefSE_binreg(X, y, maxit, tol, qr_tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit_binreg
+List fit_binreg(const NumericMatrix& X, const NumericVector& y, const bool se, const int maxit, const double tol, const double qr_tol);
+RcppExport SEXP qtl2scan_fit_binreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_binreg(X, y, se, maxit, tol, qr_tol));
     return rcpp_result_gen;
 END_RCPP
 }

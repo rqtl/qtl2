@@ -38,3 +38,14 @@ List calc_coefSE_binreg(const NumericMatrix& X, const NumericVector& y,
 {
     return calc_coefSE_binreg_eigenqr(X, y, maxit, tol, qr_tol);
 }
+
+// logistic regression
+// return (llik, individual contributions to llik, fitted probabilities, coef, SE
+// [[Rcpp::export]]
+List fit_binreg(const NumericMatrix& X, const NumericVector& y,
+                const bool se=true, // whether to include SEs
+                const int maxit=100, const double tol=1e-6,
+                const double qr_tol=1e-12)
+{
+    return fit_binreg_eigenqr(X, y, se, maxit, tol, qr_tol);
+}
