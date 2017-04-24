@@ -245,9 +245,9 @@ List calc_coefSE_binreg_eigenqr(const NumericMatrix& X,
     List fit = fit_linreg_eigenqr(XX, z, true, qr_tol);
     NumericVector coef = fit[0];
     // SE scaled by sigma; need to unscale
-    double sigma = fit[4];
+    NumericVector sigma = fit[4];
     NumericVector SE = fit[7];
-    for(int i=0; i<SE.size(); i++) SE[i] /= sigma;
+    for(int i=0; i<SE.size(); i++) SE[i] /= sigma[0];
 
     return List::create(Named("coef") = coef,
                         Named("SE") = SE);
@@ -317,9 +317,9 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
 
     if(se) {
         // SE scaled by sigma; need to unscale
-        double sigma = fit[4];
+        NumericVector sigma = fit[4];
         NumericVector SE = fit[7];
-        for(int i=0; i<SE.size(); i++) SE[i] /= sigma;
+        for(int i=0; i<SE.size(); i++) SE[i] /= sigma[0];
 
         return List::create(Named("log10lik") = llik,
                             Named("fitted_probs") = pi,
