@@ -25,6 +25,42 @@ fit_binreg_eigenqr <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol
     .Call('qtl2scan_fit_binreg_eigenqr', PACKAGE = 'qtl2scan', X, y, se, maxit, tol, qr_tol)
 }
 
+calc_ll_binreg_weighted_eigenchol <- function(X, y, weights, maxit = 100L, tol = 1e-6) {
+    .Call('qtl2scan_calc_ll_binreg_weighted_eigenchol', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol)
+}
+
+calc_ll_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_ll_binreg_weighted_eigenqr', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol, qr_tol)
+}
+
+calc_coef_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_coef_binreg_weighted_eigenqr', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol, qr_tol)
+}
+
+calc_coefSE_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_binreg_weighted_eigenqr', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol, qr_tol)
+}
+
+fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_fit_binreg_weighted_eigenqr', PACKAGE = 'qtl2scan', X, y, weights, se, maxit, tol, qr_tol)
+}
+
+calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_ll_binreg_weighted', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol, qr_tol)
+}
+
+calc_coef_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_coef_binreg_weighted', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol, qr_tol)
+}
+
+calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_calc_coefSE_binreg_weighted', PACKAGE = 'qtl2scan', X, y, weights, maxit, tol, qr_tol)
+}
+
+fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_fit_binreg_weighted', PACKAGE = 'qtl2scan', X, y, weights, se, maxit, tol, qr_tol)
+}
+
 calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
     .Call('qtl2scan_calc_ll_binreg', PACKAGE = 'qtl2scan', X, y, maxit, tol, qr_tol)
 }
