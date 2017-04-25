@@ -89,19 +89,27 @@ fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12
     .Call('qtl2scan_R_find_peaks_and_bayesint', PACKAGE = 'qtl2scan', lod, pos, threshold, peakdrop, prob)
 }
 
-fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se, tol = 1e-12) {
+fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_fit1_binary_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, se, maxit, tol, qr_tol)
+}
+
+fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_fit1_binary_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, se, maxit, tol, qr_tol)
+}
+
+fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, tol = 1e-12) {
     .Call('qtl2scan_fit1_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, se, tol)
 }
 
-fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se, tol = 1e-12) {
+fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, tol = 1e-12) {
     .Call('qtl2scan_fit1_hk_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, se, tol)
 }
 
-fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se, tol = 1e-12) {
+fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se = FALSE, tol = 1e-12) {
     .Call('qtl2scan_fit1_pg_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
 }
 
-fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol = 1e-12) {
+fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se = TRUE, tol = 1e-12) {
     .Call('qtl2scan_fit1_pg_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol)
 }
 
@@ -189,7 +197,7 @@ calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
     .Call('qtl2scan_calc_resid_linreg_3d', PACKAGE = 'qtl2scan', X, P, tol)
 }
 
-fit_linreg <- function(X, y, se, tol = 1e-12) {
+fit_linreg <- function(X, y, se = TRUE, tol = 1e-12) {
     .Call('qtl2scan_fit_linreg', PACKAGE = 'qtl2scan', X, y, se, tol)
 }
 

@@ -2,8 +2,8 @@
 
 ### New features
 
-- Implemented model="binary" (for phenotypes with values 0/1) in scan1.
-  (Not available with kinship correction.)
+- Implemented model="binary" (for phenotypes with values 0/1) in scan1
+  and fit1. (Not available with kinship correction.)
 
 
 ## qtl2scan 0.5-9 (2017-04-19)
