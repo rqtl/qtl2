@@ -25,7 +25,7 @@ List fit1_pg_addcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& addcovar,
                       const NumericMatrix& eigenvec,
                       const NumericVector& weights,
-                      const bool se,
+                      const bool se=false,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -85,7 +85,7 @@ List fit1_pg_intcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& intcovar,
                       const NumericMatrix& eigenvec,
                       const NumericVector& weights,
-                      const bool se,
+                      const bool se=true,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
