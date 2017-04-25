@@ -5,7 +5,8 @@
 \title{Genome scan with a single-QTL model}
 \usage{
 scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL, Xcovar = NULL,
-  intcovar = NULL, weights = NULL, reml = TRUE, cores = 1, ...)
+  intcovar = NULL, weights = NULL, reml = TRUE, model = c("normal",
+  "binary"), cores = 1, ...)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -30,6 +31,10 @@ for individual identifiers. Ignored if \code{kinship} is provided.}
 
 \item{reml}{If \code{kinship} provided: if \code{reml=TRUE}, use
 REML; otherwise maximum likelihood.}
+
+\item{model}{Indicates whether to use a normal model (least
+squares) or binary model (logistic regression) for the phenotype.
+If \code{model="binary"}, the phenotypes must have values in [0, 1].}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)

@@ -18,6 +18,9 @@
 #' for individual identifiers. Ignored if \code{kinship} is provided.
 #' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
 #' REML; otherwise maximum likelihood.
+#' @param model Indicates whether to use a normal model (least
+#'     squares) or binary model (logistic regression) for the phenotype.
+#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -121,7 +124,8 @@
 #' @export
 scan1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
-             intcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
+             intcovar=NULL, weights=NULL, reml=TRUE,
+             model=c("normal", "binary"), cores=1, ...)
 {
     # grab dot args
     dotargs <- list(...)
@@ -135,12 +139,14 @@ scan1 <-
 
     # deal with the dot args
     tol <- grab_dots(dotargs, "tol", 1e-12)
+    bintol <- sqrt(tol) # for model="binary"
     stopifnot(tol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
     max_batch <- grab_dots(dotargs, "max_batch", NULL)
-    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
+    maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
+    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch", "maxit"))
 
     # force things to be matrices
     if(!is.matrix(pheno))
@@ -153,6 +159,15 @@ scan1 <-
         Xcovar <- as.matrix(Xcovar)
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
+
+    # for binary model
+    model <- match.arg(model)
+    if(model=="binary") {
+        if(!is.null(kinship))
+            stop("Can't yet account for kinship with model = \"binary\"")
+        pheno <- check_binary_pheno(pheno)
+    }
+
     # square-root of weights
     weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
 
@@ -231,14 +246,28 @@ scan1 <-
         if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
         else ac0 <- ac
 
-        # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
+        if(model=="normal") {
+            # FIX_ME: calculating null RSS multiple times :(
+            nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
 
-        # scan1 function taking clean data (with no missing values)
-        rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
+            # scan1 function taking clean data (with no missing values)
+            rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
 
-        # calculate LOD score
-        lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+            # calculate LOD score
+            lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+        }
+        else { # binary traits
+            # FIX_ME: calculating null RSS multiple times :(
+            nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol)
+
+            # scan1 function taking clean data (with no missing values)
+            lod <- scan1_binary_clean(pr, ph, ac, ic, wts, add_intercept=TRUE,
+                                      maxit, bintol, tol, intcovar_method)
+
+            # calculate LOD score
+            lod <- lod - nulllod
+        }
+
         list(lod=lod, n=nrow(ph)) # return LOD & number of individuals used
     }
 

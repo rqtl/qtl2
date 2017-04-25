@@ -285,6 +285,30 @@ permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
     .Call('qtl2scan_permute_ivector_stratified', PACKAGE = 'qtl2scan', n_perm, x, strata, n_strata)
 }
 
+scan_binary_onechr <- function(genoprobs, pheno, addcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scan_binary_onechr', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, maxit, tol, qr_tol)
+}
+
+scan_binary_onechr_weighted <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scan_binary_onechr_weighted', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol)
+}
+
+scan_binary_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scan_binary_onechr_intcovar_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, maxit, tol, qr_tol)
+}
+
+scan_binary_onechr_intcovar_weighted_highmem <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scan_binary_onechr_intcovar_weighted_highmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol)
+}
+
+scan_binary_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scan_binary_onechr_intcovar_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, maxit, tol, qr_tol)
+}
+
+scan_binary_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scan_binary_onechr_intcovar_weighted_lowmem', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol)
+}
+
 scan_hk_onechr_nocovar <- function(genoprobs, pheno, tol = 1e-12) {
     .Call('qtl2scan_scan_hk_onechr_nocovar', PACKAGE = 'qtl2scan', genoprobs, pheno, tol)
 }
