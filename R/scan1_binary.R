@@ -60,7 +60,7 @@ null_binary_clean <-
 check_binary_pheno <-
     function(pheno, tol=1e-8)
 {
-    binary_col <- apply(pheno, 2, function(a) all(a >= 0 & a <= 1))
+    binary_col <- apply(pheno, 2, function(a) all(is.na(a) | (a >= 0 & a <= 1)))
 
     if(!all(binary_col)) {
         if(!any(binary_col))
