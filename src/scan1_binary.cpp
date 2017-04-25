@@ -46,7 +46,7 @@ NumericMatrix scan_binary_onechr(const NumericVector& genoprobs,
     if(n_add > 0) // paste in covariates, if present
         std::copy(addcovar.begin(), addcovar.begin() + x_size, X.begin());
 
-    for(int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+    for(int pos=0, offset=0; pos<n_pos; pos++, offset += g_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for this pos into a matrix
@@ -101,7 +101,7 @@ NumericMatrix scan_binary_onechr_weighted(const NumericVector& genoprobs,
     if(n_add > 0) // paste in covariates, if present
         std::copy(addcovar.begin(), addcovar.begin() + x_size, X.begin());
 
-    for(int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
+    for(int pos=0, offset=0; pos<n_pos; pos++, offset += g_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for this pos into a matrix
