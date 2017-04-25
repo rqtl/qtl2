@@ -4,6 +4,7 @@ test_that("scan1 with binary phenotype gives same result as R/qtl", {
 
     library(qtl)
     data(hyper)
+    hyper <- hyper[c(2,3,8),] # subset to 3 chromosomes
     hyper <- calc.genoprob(hyper, error.prob=0.002, step=1)
     hyper$pheno <- cbind(hyper$pheno, bp_binary=as.numeric(hyper$pheno[,1] > median(hyper$pheno[,1])))
     out1 <- scanone(hyper, pheno.col=3, model="binary", method="hk")
