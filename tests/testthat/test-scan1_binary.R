@@ -29,6 +29,19 @@ test_that("scan1 with binary phenotype gives same result as R/qtl", {
     out1_ac <- scanone(hyper, pheno.col=3, model="binary", method="hk", addcovar=X)
     out2_ac <- scan1(pr, hyper2$pheno[,"bp_binary",drop=FALSE], model="binary", addcovar=X)
     expect_equal(out1_ac[,3] , as.numeric(out2_ac))
-    expect_equal(out1[,3] , as.numeric(out2))
+
+    # make one of them an interactive covariate
+    out1_ic <- scanone(hyper, pheno.col=3, model="binary", method="hk",
+                       addcovar=X, intcovar=X[,1])
+    out2_ic <- scan1(pr, hyper2$pheno[,"bp_binary",drop=FALSE], model="binary",
+                     addcovar=X, intcovar=X[,1,drop=FALSE])
+    expect_equal(out1_ic[,3] , as.numeric(out2_ic))
+
+    # make both interactive covariates
+    out1_ic2 <- scanone(hyper, pheno.col=3, model="binary", method="hk",
+                        addcovar=X, intcovar=X)
+    out2_ic2 <- scan1(pr, hyper2$pheno[,"bp_binary",drop=FALSE], model="binary",
+                      addcovar=X, intcovar=X)
+    expect_equal(out1_ic2[,3] , as.numeric(out2_ic2))
 
 })
