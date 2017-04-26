@@ -49,7 +49,7 @@ test_that("fit1 for binary traits works in intercross", {
     pheno[c(187, 244)] <- NA
 
     # calculate LOD scores
-    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, model="binary")
 
     # estimate coefficients; no covariates for X chromosome
 ### FIX_ME: scan1coef for binary traits not yet implemented
@@ -63,7 +63,7 @@ test_that("fit1 for binary traits works in intercross", {
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE) })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, model="binary") })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:3) {
@@ -93,8 +93,8 @@ test_that("fit1 for binary traits works in intercross", {
     glm_ind_lod <- (y * log10(p1) + (1-y)*log10(1-p1)) -
         (y * log10(p0) + (1-y)*log10(1-p0))
 
-    expect_equal(out_fit1[[1]]$lod, glm_lod, tol=1e-3) ## FIX_ME this just looks wrong
-    expect_equal(out_fit1[[1]]$ind_lod, glm_ind_lod, tol=1e-3) ## FIX_ME this just looks wrong
+    expect_equal(out_fit1[[1]]$lod, glm_lod)
+    expect_equal(out_fit1[[1]]$ind_lod, glm_ind_lod)
 
 ### FIX_ME: scan1coef for binary traits not yet implemented
 #    expect_equal(out_fit1[[1]]$coef, stats::setNames(lm1$coef, c("SS", "SB", "BB", "ac1")))
@@ -112,8 +112,8 @@ test_that("fit1 for binary traits works in intercross", {
     glm_ind_lod <- (y * log10(p1) + (1-y)*log10(1-p1)) -
         (y * log10(p0) + (1-y)*log10(1-p0))
 
-    expect_equal(out_fit1[[3]]$lod, glm_lod, tol=0.015) ## FIX_ME this just looks wrong
-    expect_equal(out_fit1[[3]]$ind_lod, glm_ind_lod, tol=0.0086) ## FIX_ME this just looks wrong
+    expect_equal(out_fit1[[3]]$lod, glm_lod)
+    expect_equal(out_fit1[[3]]$ind_lod, glm_ind_lod)
 ### FIX_ME: scan1coef for binary traits not yet implemented
 #    expect_equal(out_fit1[[3]]$coef, stats::setNames(lm1$coef, c("SS", "SB", "BS", "BB", "SY", "BY")))
 #    expect_equal(out_fit1[[3]]$SE, stats::setNames(summary(lm1)$coef[,2], c("SS", "SB", "BS", "BB", "SY", "BY")))
