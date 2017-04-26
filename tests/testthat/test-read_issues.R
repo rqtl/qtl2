@@ -8,6 +8,7 @@ test_that("read_cross2 deals with missing marker info", {
     # unzip iron data to a temporary directory
     dir <- tempdir()
     unzipped_files <- utils::unzip(ironfile, exdir=dir)
+    on.exit(unlink(unzipped_files)) # clean up
 
     # drop two markers from the geno file
     geno_file <- file.path(dir, "iron_geno.csv")
