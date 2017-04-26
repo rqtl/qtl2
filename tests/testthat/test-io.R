@@ -129,9 +129,11 @@ test_that("Create zip file works", {
     ironfile <- system.file("extdata", "iron.zip", package="qtl2geno")
     dir <- tempdir()
     unzipped_files <- utils::unzip(ironfile, exdir=dir)
+    on.exit(unlink(unzipped_files)) # clean up
 
     # zip the files
     zip_datafiles(file.path(dir, "iron.yaml"))
+    on.exit(unlink(file.path(dir, "iron.zip")), add=TRUE)
 
     # file created?
     zipfile <- file.path(dir, "iron.zip")
@@ -140,6 +142,7 @@ test_that("Create zip file works", {
     # unzip to tmp dir
     tmp_dir <- file.path(dir, "tmp")
     new_unzipped_files <- utils::unzip(zipfile, exdir=tmp_dir)
+    on.exit(unlink(tmp_dir, recursive=TRUE), add=TRUE) # clean up
 
     # sample files as originally?
     ofiles <- sort( basename( unzipped_files ) )
