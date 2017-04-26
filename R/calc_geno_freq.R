@@ -37,6 +37,9 @@ calc_geno_freq <-
 {
     by <- match.arg(by)
 
+    if("cross2" %in% class(probs))
+        stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
+
     is_x_chr <- attr(probs, "is_x_chr")
     if(any(is_x_chr) && !all(is_x_chr) && omit_x) {
         probs <- probs[,!is_x_chr]

@@ -23,6 +23,9 @@
 count_xo <-
     function(geno, quiet=TRUE, cores=1)
 {
+    if("cross2" %in% class(geno))
+        stop('Input geno is a "cross2" object but should be genotypes as from viterbi or maxmarg')
+
     crosstype <- attr(geno, "crosstype")
     if(is.null(crosstype))
         stop("Input geno needs to include a crosstype attribute.")

@@ -36,6 +36,9 @@
 probs_to_grid <-
     function(probs, grid)
 {
+    if("cross2" %in% class(probs))
+        stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
+
     attrs <- attributes(probs)
     chrID <- names(probs)
     result <- vector("list", length(chrID))

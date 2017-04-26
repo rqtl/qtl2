@@ -69,6 +69,9 @@ calc_kinship <-
              normalize=FALSE,
              quiet=TRUE, cores=1)
 {
+    if("cross2" %in% class(probs))
+        stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
+
     type <- match.arg(type)
 
     allchr <- names(probs)

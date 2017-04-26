@@ -33,6 +33,9 @@
 calc_entropy <-
     function(probs, quiet=TRUE, cores=1)
 {
+    if("cross2" %in% class(probs))
+        stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
+
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
     if(!quiet && n_cores(cores)>1) {

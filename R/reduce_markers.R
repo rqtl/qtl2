@@ -27,6 +27,9 @@
 reduce_markers <-
     function(map, weights=NULL, min_distance=1)
 {
+    if("cross2" %in% class(map))
+        stop('Input map is a "cross2" object but should be a genetic map')
+
     if(is.null(weights))
         weights <- lapply(map, function(a) rep(1, length(a)))
 
