@@ -38,19 +38,10 @@ fit1_pg <-
             stop("contrasts should be a square matrix, ", ng, " x ", ng)
     }
 
-    # check that kinship matrix is square with same IDs
-    if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
-        kinshipIDs <- rownames(kinship$vectors)
-        did_decomp <- TRUE
-    } else {
-        if(is.list(kinship)) { # if a list of length one, take the first part
-            if(length(kinship) > 1) # if a list of length >1, give error
-                stop("kinship should be a single matrix")
-            kinship <- kinship[[1]]
-        }
-        kinshipIDs <- check_kinship(kinship, 1)
-        did_decomp <- FALSE
-    }
+    # make sure kinship is for a single chromosome and get IDs
+    did_decomp <- is_kinship_decomposed(kinship)
+    kinship <- check_kinship_onechr(kinship)
+    kinshipIDs <- check_kinship(kinship, 1)
 
     # multiply kinship matrix by 2; rest is using 2*kinship
     # see Almasy & Blangero (1998) https://doi.org/10.1086/301844

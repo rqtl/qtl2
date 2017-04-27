@@ -1,9 +1,21 @@
-## qtl2scan 0.5-10 (2017-04-25)
+## qtl2scan 0.5-12 (2017-04-27)
 
 ### New features
 
 - Implemented model="binary" (for phenotypes with values 0/1) in scan1
   and fit1. (Not available with kinship correction.)
+
+
+## qtl2scan 0.5-11 (2017-04-27)
+
+### Minor fixes
+
+- Reduce repeated code dealing with kinship matrices.
+
+### Bug fixes
+
+- Fix bug regarding treatment of pre-decomposed kinship matrix in
+  `scan1`.
 
 
 ## qtl2scan 0.5-9 (2017-04-19)

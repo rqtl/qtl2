@@ -85,7 +85,7 @@ scan1_pg <-
     dimnames(result) <- list(pos_names, colnames(pheno))
 
     # number of chr to consider under null
-    if(is.list(kinship)) n_null_chr <- length(kinship)
+    if(is_kinship_list(kinship)) n_null_chr <- length(kinship)
     else if(!is.null(Xcovar)) n_null_chr <- any(is_x_chr) + any(!is_x_chr)
     else n_null_chr <- 1
 
@@ -149,7 +149,7 @@ calc_hsq_clean <-
     nphe <- ncol(pheno)
 
     # if just one kinship matrix, force it to be a list
-    if(!is.list(Ke[[1]])) {
+    if(!is_kinship_list(Ke)) {
         # X chromosome with special covariates
         if(!is.null(Xcovar) && any(is_x_chr) && any(!is_x_chr)) {
             Ke <- list(Ke, Ke)
@@ -287,63 +287,6 @@ scan1_pg_clean <-
     }
 
     result
-}
-
-
-# check that kinship matrices are square
-# and have same row and column IDs
-#
-# returns vector of IDs
-check_kinship <-
-    function(kinship, n_chr)
-{
-    if(!is.list(kinship)) { # one kinship matrix
-        stopifnot(nrow(kinship) == ncol(kinship))
-        stopifnot( all(rownames(kinship) == colnames(kinship)) )
-        return(rownames(kinship))
-    } else {
-        if(length(kinship) != n_chr)
-            stop("length(kinship) != no. chromosomes (", n_chr, ")")
-
-        kinship_square <- vapply(kinship, function(mat) nrow(mat) == ncol(mat), TRUE)
-        stopifnot( all(kinship_square) )
-
-        kinship_sameIDs <- vapply(kinship, function(mat) (nrow(mat) == nrow(kinship[[1]])) &&
-                                  all((rownames(mat) == rownames(kinship[[1]])) &
-                                      (colnames(mat) == colnames(kinship[[1]])) &
-                                      (rownames(mat) == colnames(kinship[[1]]))), TRUE)
-        if(!all(kinship_sameIDs))
-            stop("All kinship matrices should be the same size ",
-                 "and have the same row and column names")
-
-        return(rownames(kinship[[1]]))
-    }
-}
-
-# multiply kinship matrix by 2
-# see Almasy & Blangero (1998) https://doi.org/10.1086/301844
-#
-# This can also handle the case of "loco", and of having eigen decomposition pre-computed
-double_kinship <-
-    function(kinship)
-{
-    if(is.null(kinship)) return(NULL)
-
-    if(!is.null(attr(kinship, "eigen_decomp"))) { # already did decomposition
-        if("values" %in% names(kinship)) { # just one of them
-            kinship$values <- 2*kinship$values
-        }
-        else { # a list of decomposed kinship matrices
-            kinship <- lapply(kinship, function(a) { a$values <- 2*a$values; a })
-        }
-        return(kinship)
-    }
-
-    if(is.list(kinship))
-        kinship <- lapply(kinship, function(a) a*2)
-    else kinship <- 2*kinship
-
-    kinship
 }
 
 
