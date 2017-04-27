@@ -72,7 +72,9 @@ is_kinship_decomposed <-
 {
     decomp <- attr(kinship, "eigen_decomp")
 
-    (!is.null(decomp) && decomp) || (length(kinship)==2 && all(names(kinship) == c("values", "vectors")))
+    (!is.null(decomp) && decomp) || # should have attribute
+        (length(kinship)==2 && all(names(kinship) == c("values", "vectors"))) || # single-chr case missing attribute
+        (is.list(kinship) && all(vapply(kinship, length, 1)==2) && all(vapply(kinship, function(a) all(names(a)==c("values", "vectors")), TRUE))) # multi-chr case
 }
 
 # is kinship a list with (potentially) multiple chromosomes

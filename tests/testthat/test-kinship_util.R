@@ -27,7 +27,7 @@ test_that("is_kinship and is_kinship_decomposed work", {
     expect_error(check_kinship_onechr(kdloco))
 
     expect_equal(check_kinship_onechr(kloco[2]), kloco[[2]])
-    expect_equal(check_kinship_onechr(kdloco[2]), kdloco[[2]])
+    expect_equivalent(check_kinship_onechr(kdloco[2]), kdloco[[2]]) # former will have the eigen_decomp attribute
     expect_equal(check_kinship_onechr(k), k)
     expect_equal(check_kinship_onechr(kd), kd)
 
