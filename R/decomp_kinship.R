@@ -28,7 +28,8 @@ decomp_kinship <-
     function(kinship, cores=1)
 {
     # already done?
-    if(!is.null(attr(kinship, "eigen_decomp"))) return(kinship)
+    if(is_kinship_decomposed(kinship))
+        return(kinship) # no need to do it again
 
     if(is.matrix(kinship)) {
         if(ncol(kinship) != nrow(kinship))

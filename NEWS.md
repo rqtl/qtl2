@@ -1,3 +1,15 @@
+## qtl2scan 0.5-11 (2017-04-27)
+
+### Minor fixes
+
+- Reduce repeated code dealing with kinship matrices.
+
+### Bug fixes
+
+- Fix bug regarding treatment of pre-decomposed kinship matrix in
+  `scan1`.
+
+
 ## qtl2scan 0.5-9 (2017-04-19)
 
 ### Minor changes
