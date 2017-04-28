@@ -120,7 +120,7 @@ NumericMatrix formX_intcovar(const NumericVector& probs,
 
     NumericMatrix result(nrow, totcol);
 
-    if(position < 0 || position >= d[2])
+    if(position < 0 || (position != 0 && position >= d[2])) // if position == 0, don't look at d[2]
         throw std::range_error("position out of range of 0 .. (n_pos-1)");
     if(addcovar.rows() != nrow)
         throw std::range_error("nrow(addcovar) != nrow(probs)");
