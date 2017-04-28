@@ -13,6 +13,7 @@ using namespace Rcpp;
 // genoprobs = matrix of genotype probabilities (individuals x genotypes)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
+//             if weights included, phenotype already multiplied by weights (really sqrt of original weights)
 // addcovar  = additive covariates
 // weights   = vector of weights (really the SQUARE ROOT of the weights)
 //

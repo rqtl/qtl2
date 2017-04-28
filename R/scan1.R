@@ -346,6 +346,7 @@ scan1_clean <-
         if(is.null(weights)) { # no weights
             return( scan_hk_onechr(genoprobs, pheno, addcovar, tol) )
         } else { # weights included
+            # note: pheno gets multiplied by weights in c++ (or really sqrt of original weights)
             return( scan_hk_onechr_weighted(genoprobs, pheno, addcovar, weights, tol) )
         }
 
@@ -361,6 +362,7 @@ scan1_clean <-
         if(is.null(weights)) { # no weights
             return( scanf[[1]](genoprobs, pheno, addcovar, intcovar, tol) )
         } else { # weights included
+            # note: pheno gets multiplied by weights in c++ (or really sqrt of original weights)
             return( scanf[[2]](genoprobs, pheno, addcovar, intcovar, weights, tol) )
         }
 
