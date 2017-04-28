@@ -54,7 +54,7 @@ test_that("fit1 by H-K works in intercross", {
         else cov <- covar
         scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE) })
 
-    # fit1, no missing data
+    # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar),
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
@@ -145,7 +145,7 @@ test_that("fit1 by H-K works in riself", {
     # estimate coefficients
     coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE))
 
-    # fit1, no missing data
+    # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE))
 
     # check LOD vs scan1, plus ind'l contributions to LOD
