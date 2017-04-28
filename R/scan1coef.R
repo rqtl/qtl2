@@ -29,6 +29,9 @@
 #' \code{cbind(c(1,1,1), c(-0.5, 0, 0.5), c(-0.5, 1, -0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
+#' @param model Indicates whether to use a normal model (least
+#'     squares) or binary model (logistic regression) for the phenotype.
+#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
 #' @param se If TRUE, also calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
 #' \code{kinship} provided.
@@ -37,6 +40,8 @@
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
+#' @param maxit Maximum number of iterations in logistic regression
+#'     fit (when \code{model="binary"}).
 #'
 #' @return A matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
@@ -97,7 +102,8 @@
 scan1coef <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
-             contrasts=NULL, se=FALSE, hsq=NULL, reml=TRUE, tol=1e-12)
+             contrasts=NULL, model=c("normal", "binary"),
+             se=FALSE, hsq=NULL, reml=TRUE, tol=1e-12, maxit=100)
 {
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1coef_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
@@ -105,6 +111,7 @@ scan1coef <-
     }
 
     stopifnot(tol > 0)
+    bintol <- sqrt(tol)
 
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
@@ -113,8 +120,6 @@ scan1coef <-
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
-    # square-root of weights
-    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
 
     # make sure pheno is a vector
     if(is.matrix(pheno) || is.data.frame(pheno)) {
@@ -163,8 +168,21 @@ scan1coef <-
     # make sure columns in intcovar are also in addcovar
     addcovar <- force_intcovar(addcovar, intcovar, tol)
 
-    # if weights, adjust phenotypes
-    if(!is.null(weights)) pheno <- weights * pheno
+    # normal or binary model?
+    model <- match.arg(model)
+    if(model=="binary") {
+        if(!is.null(kinship))
+            stop("Can't yet account for kinship with model = \"binary\"")
+        if(any(!is.na(pheno) & (pheno < 0 | pheno > 1)))
+            stop('with model="binary", pheno should be in [0,1]')
+    }
+    else {
+        # square-root of weights (only if model="normal")
+        weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+
+        # if weights, adjust phenotypes
+        if(!is.null(weights)) pheno <- weights * pheno
+    }
 
     # weights have 0 dimension if missing
     if(is.null(weights)) weights <- numeric(0)
@@ -177,11 +195,18 @@ scan1coef <-
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoefSE_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+            if(model=="normal")
+                result <- scancoefSE_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+            else # binary trait
+                result <- scancoefSE_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol)
         }
         else {                  # intcovar
-            result <- scancoefSE_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                             weights, tol)
+            if(model=="normal")
+                result <- scancoefSE_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                                 weights, tol)
+            else
+                result <- scancoefSE_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                                 weights, maxit, bintol, tol)
         }
 
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -190,11 +215,18 @@ scan1coef <-
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoef_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+            if(model=="normal")
+                result <- scancoef_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
+            else
+                result <- scancoef_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol)
         }
         else {                  # intcovar
-            result <- scancoef_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                           weights, tol)
+            if(model=="normal")
+                result <- scancoef_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                               weights, tol)
+            else
+                result <- scancoef_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                                   weights, maxit, bintol, tol)
         }
         SE <- NULL
     }

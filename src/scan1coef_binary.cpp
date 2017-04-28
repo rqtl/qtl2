@@ -59,9 +59,9 @@ NumericMatrix scancoef_binary_addcovar(const NumericVector& genoprobs,
 
         // do regression
         if(n_weights > 0)
-            result(_,pos) = calc_coef_binreg(X, pheno, maxit, tol, qr_tol);
-        else
             result(_,pos) = calc_coef_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol);
+        else
+            result(_,pos) = calc_coef_binreg(X, pheno, maxit, tol, qr_tol);
     }
 
     return result;

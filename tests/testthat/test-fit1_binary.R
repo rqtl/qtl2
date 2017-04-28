@@ -18,11 +18,10 @@ test_that("fit1 for binary traits works in intercross", {
     out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, model="binary")
 
     # estimate coefficients; no covariates for X chromosome
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    coef <- lapply(seq_len(length(probs)), function(i) {
-#        if(i==3) cov <- NULL
-#        else cov <- covar
-#        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, model="binary") })
+    coef <- lapply(seq_len(length(probs)), function(i) {
+        if(i==3) cov <- NULL
+        else cov <- covar
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, model="binary") })
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
@@ -41,9 +40,8 @@ test_that("fit1 for binary traits works in intercross", {
     }
 
     # check coefficients
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    for(i in 1:3)
-#        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
 
     # repeat the whole thing with a couple of missing phenotypes
     pheno[c(187, 244)] <- NA
@@ -52,13 +50,12 @@ test_that("fit1 for binary traits works in intercross", {
     out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, model="binary")
 
     # estimate coefficients; no covariates for X chromosome
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    coef <- lapply(seq_len(length(probs)), function(i) {
-#        if(i==3) cov <- NULL
-#        else cov <- covar
-#        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE) })
+    coef <- lapply(seq_len(length(probs)), function(i) {
+        if(i==3) cov <- NULL
+        else cov <- covar
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, model="binary") })
 
-    # fit1, no missing data
+    # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar),
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
@@ -72,14 +69,12 @@ test_that("fit1 for binary traits works in intercross", {
     }
 
     # check coefficients
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    for(i in 1:3)
-#        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
 
     # check SEs
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    for(i in 1:3)
-#        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
 
     # direct calculations, chr 18
     glm0 <- glm(pheno ~ covar, family=binomial(link=logit))
@@ -96,9 +91,8 @@ test_that("fit1 for binary traits works in intercross", {
     expect_equal(out_fit1[[1]]$lod, glm_lod)
     expect_equal(out_fit1[[1]]$ind_lod, glm_ind_lod)
 
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    expect_equal(out_fit1[[1]]$coef, stats::setNames(lm1$coef, c("SS", "SB", "BB", "ac1")))
-#    expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(lm1)$coef[,2], c("SS", "SB", "BB", "ac1")))
+    expect_equal(out_fit1[[1]]$coef, stats::setNames(glm1$coef, c("SS", "SB", "BB", "ac1")))
+    expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(glm1)$coef[,2], c("SS", "SB", "BB", "ac1")), tol=1e-6)
 
     # direct calculations, chr X
     glm0 <- glm(pheno ~ Xcovar, family=binomial(link=logit))
@@ -114,9 +108,8 @@ test_that("fit1 for binary traits works in intercross", {
 
     expect_equal(out_fit1[[3]]$lod, glm_lod)
     expect_equal(out_fit1[[3]]$ind_lod, glm_ind_lod)
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    expect_equal(out_fit1[[3]]$coef, stats::setNames(lm1$coef, c("SS", "SB", "BS", "BB", "SY", "BY")))
-#    expect_equal(out_fit1[[3]]$SE, stats::setNames(summary(lm1)$coef[,2], c("SS", "SB", "BS", "BB", "SY", "BY")))
+    expect_equal(out_fit1[[3]]$coef, stats::setNames(glm1$coef, c("SS", "SB", "BS", "BB", "SY", "BY")))
+    expect_equal(out_fit1[[3]]$SE, stats::setNames(summary(glm1)$coef[,2], c("SS", "SB", "BS", "BB", "SY", "BY")), tol=1e-6)
 
 })
 
@@ -135,8 +128,7 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno, model="binary")
 
     # estimate coefficients
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, model="binary"))
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
@@ -151,9 +143,8 @@ test_that("fit1 by H-K works in riself", {
     }
 
     # check coefficients
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    for(i in 1:2)
-#        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+    for(i in 1:2)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
 
     # repeat the whole thing with a couple of missing phenotypes
     pheno[c(24, 106)] <- NA
@@ -162,10 +153,9 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno, model="binary")
 
     # estimate coefficients
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE, model="binary"))
 
-    # fit1, no missing data
+    # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE, model="binary"))
 
     # check LOD vs scan1, plus ind'l contributions to LOD
@@ -175,15 +165,13 @@ test_that("fit1 by H-K works in riself", {
     }
 
     # check coefficients
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    for(i in 1:2)
-#        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+    for(i in 1:2)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
 
 
     # check SEs
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    for(i in 1:2)
-#        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
+    for(i in 1:2)
+        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
 
     # direct calculations, chr 18
     glm0 <- glm(pheno ~ 1, family=binomial(link=logit))
@@ -199,8 +187,7 @@ test_that("fit1 by H-K works in riself", {
 
     expect_equal(out_fit1[[1]]$lod, glm_lod)
     expect_equal(out_fit1[[1]]$ind_lod, glm_ind_lod)
-### FIX_ME: scan1coef for binary traits not yet implemented
-#    expect_equal(out_fit1[[1]]$coef, stats::setNames(lm1$coef, c("LL", "CC")))
-#    expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(lm1)$coef[,2], c("LL", "CC")))
+    expect_equal(out_fit1[[1]]$coef, stats::setNames(glm1$coef, c("LL", "CC")))
+    expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(glm1)$coef[,2], c("LL", "CC")), tol=1e-6)
 
 })
