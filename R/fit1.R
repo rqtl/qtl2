@@ -119,8 +119,6 @@ fit1 <-
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
-    # square-root of weights
-    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
 
     model <- match.arg(model)
     if(model=="binary") {
@@ -128,6 +126,10 @@ fit1 <-
             stop("Can't yet account for kinship with model = \"binary\"")
         if(any(!is.na(pheno) & (pheno < 0 | pheno > 1)))
             stop('with model="binary", pheno should be in [0,1]')
+    }
+    else {
+        # square-root of weights
+        weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
     }
 
     # make sure pheno is a vector

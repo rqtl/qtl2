@@ -167,9 +167,10 @@ scan1 <-
             stop("Can't yet account for kinship with model = \"binary\"")
         pheno <- check_binary_pheno(pheno)
     }
-
-    # square-root of weights
-    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+    else {
+        # square-root of weights (only if model="normal")
+        weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+    }
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
