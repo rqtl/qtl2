@@ -294,8 +294,10 @@ scan1coef_names <-
         }
 
         int_names <- colnames(intcovar)
-        if(is.null(intcovar))
+        if(is.null(int_names) || all(int_names==""))
             int_names <- paste0("ic", seq_len(ncol(intcovar)))
+        else if(all(int_names[-1] == "")) # all but first is empty
+            int_names[-1] <- paste0("ic", seq_len(ncol(intcovar)-1))
 
         result <- c(qtl_names, add_names)
         for(ic in int_names)
