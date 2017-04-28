@@ -191,3 +191,73 @@ test_that("fit1 by H-K works in riself", {
     expect_equal(out_fit1[[1]]$SE, stats::setNames(summary(glm1)$coef[,2], c("LL", "CC")), tol=1e-6)
 
 })
+
+test_that("fit1 works for binary traits with weights", {
+
+    set.seed(17262911)
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- iron[,c(2,"X")]
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, err=0.002)
+
+    phe <- iron$pheno[,1]
+    phe <- setNames(as.numeric(phe > quantile(phe, 0.7)),
+                    ind_ids(iron))
+    phe[c(108,142,268)] <- NA
+    weights <- setNames(sample(1:10, n_ind(iron), replace=TRUE), names(phe))
+
+    npos <- dim(probs)[3,]
+    pos <- sapply(npos, sample, 1)
+    pr <- list(probs[[1]][,,pos[1]],
+               probs[[2]][,,pos[2]])
+
+    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights)
+    out_fit1_2 <- fit1(pr[[2]], phe, model="binary", se=TRUE, weights=weights)
+
+    # coefficients and SEs
+    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights)
+    expect_equal(out_fit1_1$coef, co2[pos[1],])
+    expect_equal(out_fit1_1$SE, attr(co2, "SE")[pos[1],])
+    coX <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights)
+    expect_equal(out_fit1_2$coef, coX[pos[2],])
+    expect_equal(out_fit1_2$SE, attr(coX, "SE")[pos[2],])
+
+    # lod
+    out <- scan1(probs, phe, model="binary", weights=weights)
+    expect_equal(out_fit1_1$lod, out[pos[1]])
+    expect_equal(out_fit1_2$lod, out[npos[1] + pos[2]])
+
+    # add a covariate
+    X <- setNames(rnorm(n_ind(iron)), names(phe))
+
+    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+    out_fit1_2 <- fit1(pr[[2]], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+
+    # coefficients and SEs
+    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+    expect_equal(out_fit1_1$coef, co2[pos[1],])
+    expect_equal(out_fit1_1$SE, attr(co2, "SE")[pos[1],])
+    coX <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+    expect_equal(out_fit1_2$coef, coX[pos[2],])
+    expect_equal(out_fit1_2$SE, attr(coX, "SE")[pos[2],])
+
+    # lod
+    out <- scan1(probs, phe, model="binary", weights=weights, addcovar=X)
+    expect_equal(out_fit1_1$lod, out[pos[1]])
+    expect_equal(out_fit1_2$lod, out[npos[1] + pos[2]])
+
+    # interactive covariate, autosome only
+    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X)
+
+    # coefficients and SEs
+    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X)
+    expect_equal(out_fit1_1$coef, co2[pos[1],])
+    expect_equal(out_fit1_1$SE, attr(co2, "SE")[pos[1],])
+
+    # lod
+    out <- scan1(probs, phe, model="binary", weights=weights, addcovar=X, intcovar=X)
+    expect_equal(out_fit1_1$lod, out[pos[1]])
+
+})
