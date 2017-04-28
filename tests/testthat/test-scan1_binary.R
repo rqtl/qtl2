@@ -23,6 +23,7 @@ test_that("scan1 with binary phenotype gives same result as R/qtl", {
     expect_equal(out1[,3] , as.numeric(out2))
 
     # add a couple of random covariates
+    set.seed(45170702)
     X <- matrix(rnorm(nind(hyper)*2, 20, 2), nrow=nind(hyper), ncol=2)
     rownames(X) <- ind_ids(hyper2)
 
@@ -70,6 +71,7 @@ test_that("scan1 with binary phenotype in intercross gives same results as R/qtl
     expect_equal(out1[,3] , as.numeric(out2))
 
     # add a couple of random covariates
+    set.seed(45170702)
     X <- matrix(rnorm(nind(listeria)*2, 20, 2), nrow=nind(listeria), ncol=2)
     rownames(X) <- ind_ids(listeria2)
 
@@ -120,6 +122,7 @@ test_that("scan1 with multiple binary phenotype gives same results as R/qtl", {
     for(i in 1:3) expect_equal(out1[,i+2], as.numeric(out2[,i]))
 
     # add a couple of random covariates
+    set.seed(45170702)
     X <- matrix(rnorm(nind(listeria)*2, 20, 2), nrow=nind(listeria), ncol=2)
     rownames(X) <- ind_ids(listeria2)
 
