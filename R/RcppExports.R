@@ -361,6 +361,22 @@ scanblup <- function(genoprobs, pheno, addcovar, se, reml, preserve_intercept, t
     .Call('qtl2scan_scanblup', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol)
 }
 
+scancoef_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scancoef_binary_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol)
+}
+
+scancoef_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scancoef_binary_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol)
+}
+
+scancoefSE_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_binary_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol)
+}
+
+scancoefSE_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
+    .Call('qtl2scan_scancoefSE_binary_intcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol)
+}
+
 scancoef_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {
     .Call('qtl2scan_scancoef_hk_addcovar', PACKAGE = 'qtl2scan', genoprobs, pheno, addcovar, weights, tol)
 }
