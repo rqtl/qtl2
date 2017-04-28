@@ -2,6 +2,8 @@ context("scan1coef for binary traits")
 
 test_that("scan1coef for binary traits works with intercross", {
 
+    set.seed(17262911)
+
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     iron <- iron[,c(2,"X")]
@@ -87,6 +89,8 @@ test_that("scan1coef for binary traits works with intercross", {
 
 
 test_that("scan1coef for binary traits works some missing phenotypes", {
+
+    set.seed(17262911)
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -174,6 +178,8 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
 
 test_that("scan1coef for binary traits works with weights", {
 
+    set.seed(17262911)
+
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
     iron <- iron[,c(2,"X")]
@@ -259,6 +265,8 @@ test_that("scan1coef for binary traits works with weights", {
 })
 
 test_that("scan1coef for binary traits works with weights and missing phenotypes", {
+
+    set.seed(17262911)
 
     library(qtl2geno)
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
