@@ -38,19 +38,18 @@ NumericMatrix scan_binary_onechr(const NumericVector& genoprobs,
         throw std::range_error("nrow(pheno) != nrow(addcovar)");
     const int n_add = addcovar.cols();
     const int g_size = n_ind * n_gen;
-    const int x_size = n_ind * n_add;
 
     NumericMatrix result(n_phe, n_pos);
     NumericMatrix X(n_ind, n_gen+n_add);
 
     if(n_add > 0) // paste in covariates, if present
-        std::copy(addcovar.begin(), addcovar.begin() + x_size, X.begin());
+        std::copy(addcovar.begin(), addcovar.end(), X.begin() + g_size);
 
     for(int pos=0, offset=0; pos<n_pos; pos++, offset += g_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for this pos into a matrix
-        std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + g_size, X.begin() + x_size);
+        std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + g_size, X.begin());
 
         for(int phe=0; phe<n_phe; phe++) {
             // calc rss and paste into ith column of result
@@ -92,20 +91,19 @@ NumericMatrix scan_binary_onechr_weighted(const NumericVector& genoprobs,
     const int n_gen = d[1];
     const int n_add = addcovar.cols();
     const int g_size = n_ind * n_gen;
-    const int x_size = n_ind * n_add;
     const int n_phe = pheno.cols();
 
     NumericMatrix result(n_phe, n_pos);
     NumericMatrix X(n_ind, n_gen+n_add);
 
     if(n_add > 0) // paste in covariates, if present
-        std::copy(addcovar.begin(), addcovar.begin() + x_size, X.begin());
+        std::copy(addcovar.begin(), addcovar.end(), X.begin() + g_size);
 
     for(int pos=0, offset=0; pos<n_pos; pos++, offset += g_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for this pos into a matrix
-        std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + g_size, X.begin() + x_size);
+        std::copy(genoprobs.begin() + offset, genoprobs.begin() + offset + g_size, X.begin());
 
         for(int phe=0; phe<n_phe; phe++) {
             // calc rss and paste into ith column of result

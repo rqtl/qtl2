@@ -60,15 +60,15 @@ NumericMatrix scancoef_pg_addcovar(const NumericVector& genoprobs,
         addcovar_rev = weighted_matrix(addcovar_rev, weights);
     }
 
+    // copy addcovar into matrix
+    if(n_addcovar > 0)
+        std::copy(addcovar_rev.begin(), addcovar_rev.end(), X.begin() + x_size);
+
     for(int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs_rev.begin() + offset, genoprobs_rev.begin() + offset + x_size, X.begin());
-
-        // copy addcovar into matrix
-        if(n_addcovar > 0)
-            std::copy(addcovar_rev.begin(), addcovar_rev.end(), X.begin() + x_size);
 
         // do regression
         result(_,pos) = calc_coef_linreg(X, pheno_rev, tol);
@@ -195,15 +195,15 @@ List scancoefSE_pg_addcovar(const NumericVector& genoprobs,
         addcovar_rev = weighted_matrix(addcovar_rev, weights);
     }
 
+    // copy addcovar into matrix
+    if(n_addcovar > 0)
+        std::copy(addcovar_rev.begin(), addcovar_rev.end(), X.begin() + x_size);
+
     for(int pos=0, offset=0; pos<n_pos; pos++, offset += x_size) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // copy genoprobs for pos i into a matrix
         std::copy(genoprobs_rev.begin() + offset, genoprobs_rev.begin() + offset + x_size, X.begin());
-
-        // copy addcovar into matrix
-        if(n_addcovar > 0)
-            std::copy(addcovar_rev.begin(), addcovar_rev.end(), X.begin() + x_size);
 
         // do regression
         List tmp = calc_coefSE_linreg(X, pheno_rev, tol);
