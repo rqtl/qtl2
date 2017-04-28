@@ -33,6 +33,15 @@ test_that("eigen decomposition works", {
     Ke2 <- decomp_kinship(Ke)
     expect_equal(Ke2, Ke)
 
+    # make sure it gives an error input has 0 rows and 0 cols
+    expect_error(decomp_kinship(K[[1]][numeric(0),numeric(0),drop=FALSE]))
+
+    # make sure it gives an error input isn't square
+    expect_error(decomp_kinship(K[[1]][1:5,1:4]))
+
+    # make sure it gives an error input isn't a matrix
+    expect_error(decomp_kinship(K[[1]][5,5]))
+
 })
 
 test_that("multi-core eigen decomposition works", {

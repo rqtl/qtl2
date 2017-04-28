@@ -1,4 +1,4 @@
-## qtl2scan 0.5-11 (2017-04-27)
+## qtl2scan 0.5-11 (2017-04-28)
 
 ### Minor fixes
 
@@ -8,6 +8,9 @@
 
 - Fix bug regarding treatment of pre-decomposed kinship matrix in
   `scan1`.
+
+- `decomp_kinship` crashes R if input has dimension 0x0; halt with an
+  error in this case.
 
 
 ## qtl2scan 0.5-9 (2017-04-19)

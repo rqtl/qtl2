@@ -34,6 +34,8 @@ decomp_kinship <-
     if(is.matrix(kinship)) {
         if(ncol(kinship) != nrow(kinship))
             stop("matrix must be square")
+        if(ncol(kinship) == 0)
+            stop("matrix has dimension (0,0)")
         return(Rcpp_eigen_decomp(kinship))
     }
 
