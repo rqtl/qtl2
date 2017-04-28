@@ -68,6 +68,21 @@ test_that("scan1coef for binary traits works with intercross", {
     expect_equivalent(unclass(co), glm_coef)
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
+    # int covariate, autosome
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary")
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE)
+    expect_equivalent(co, coSE)
+
+    out_glm <- apply(probs[[1]], 3, function(a) {
+        X <- cbind(a, sex, a[,-1]*sex)
+        glm(phe ~ -1 + X, family=binomial(link=logit),
+            control=list(epsilon=1e-12)) })
+    glm_coef <- t(sapply(out_glm, function(a) a$coef))
+    glm_se <- t(sapply(out_glm, function(a) summary(a)$coef[,2]))
+    colnames(glm_se) <- colnames(glm_coef) <- c("SS", "SB", "BB", "ac1", "SB:ic1", "BB:ic1")
+    expect_equivalent(unclass(co), glm_coef)
+    expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
+
 })
 
 
@@ -137,6 +152,21 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
     glm_coef <- t(sapply(out_glm, function(a) a$coef))
     glm_se <- t(sapply(out_glm, function(a) summary(a)$coef[,2]))
     colnames(glm_se) <- colnames(glm_coef) <- c("SS", "SB", "BS", "BB", "SY", "BY", "ac1")
+    expect_equivalent(unclass(co), glm_coef)
+    expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
+
+    # int covariate, autosome
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary")
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE)
+    expect_equivalent(co, coSE)
+
+    out_glm <- apply(probs[[1]], 3, function(a) {
+        X <- cbind(a, sex, a[,-1]*sex)
+        glm(phe ~ -1 + X, family=binomial(link=logit),
+            control=list(epsilon=1e-12)) })
+    glm_coef <- t(sapply(out_glm, function(a) a$coef))
+    glm_se <- t(sapply(out_glm, function(a) summary(a)$coef[,2]))
+    colnames(glm_se) <- colnames(glm_coef) <- c("SS", "SB", "BB", "ac1", "SB:ic1", "BB:ic1")
     expect_equivalent(unclass(co), glm_coef)
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
@@ -211,6 +241,21 @@ test_that("scan1coef for binary traits works with weights", {
     expect_equivalent(unclass(co), glm_coef)
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
+    # int covariate, autosome
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", weights=weights)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, weights=weights)
+    expect_equivalent(co, coSE)
+
+    out_glm <- apply(probs[[1]], 3, function(a) {
+        X <- cbind(a, sex, a[,-1]*sex)
+        glm(phe ~ -1 + X, family=binomial(link=logit),
+            control=list(epsilon=1e-12), weights=weights) })
+    glm_coef <- t(sapply(out_glm, function(a) a$coef))
+    glm_se <- t(sapply(out_glm, function(a) summary(a)$coef[,2]))
+    colnames(glm_se) <- colnames(glm_coef) <- c("SS", "SB", "BB", "ac1", "SB:ic1", "BB:ic1")
+    expect_equivalent(unclass(co), glm_coef)
+    expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
+
 })
 
 test_that("scan1coef for binary traits works with weights and missing phenotypes", {
@@ -280,6 +325,21 @@ test_that("scan1coef for binary traits works with weights and missing phenotypes
     glm_coef <- t(sapply(out_glm, function(a) a$coef))
     glm_se <- t(sapply(out_glm, function(a) summary(a)$coef[,2]))
     colnames(glm_se) <- colnames(glm_coef) <- c("SS", "SB", "BS", "BB", "SY", "BY", "ac1")
+    expect_equivalent(unclass(co), glm_coef)
+    expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
+
+    # int covariate, autosome
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", weights=weights)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, weights=weights)
+    expect_equivalent(co, coSE)
+
+    out_glm <- apply(probs[[1]], 3, function(a) {
+        X <- cbind(a, sex, a[,-1]*sex)
+        glm(phe ~ -1 + X, family=binomial(link=logit),
+            control=list(epsilon=1e-12), weights=weights) })
+    glm_coef <- t(sapply(out_glm, function(a) a$coef))
+    glm_se <- t(sapply(out_glm, function(a) summary(a)$coef[,2]))
+    colnames(glm_se) <- colnames(glm_coef) <- c("SS", "SB", "BB", "ac1", "SB:ic1", "BB:ic1")
     expect_equivalent(unclass(co), glm_coef)
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
