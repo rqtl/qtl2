@@ -139,8 +139,9 @@ scan1 <-
 
     # deal with the dot args
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    bintol <- sqrt(tol) # for model="binary"
     stopifnot(tol > 0)
+    bintol <- grab_dots(bintol, sqrt(tol)) # for model="binary"
+    stopifnot(bintol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
