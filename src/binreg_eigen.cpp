@@ -22,7 +22,7 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
 
-    double curllik = 0;
+    double curllik = 0.0;
     NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
 
     for(int ind=0; ind<n_ind; ind++) {
@@ -36,7 +36,7 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
     NumericMatrix XX = weighted_matrix(X, wt);
 
     bool converged=false;
-    double llik;
+    double llik=0.0;
 
     for(int it=0; it<maxit; it++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
@@ -80,7 +80,7 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
 
-    double curllik = 0;
+    double curllik = 0.0;
     NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
 
     for(int ind=0; ind<n_ind; ind++) {
@@ -94,7 +94,7 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     NumericMatrix XX = weighted_matrix(X, wt);
 
     bool converged=false;
-    double llik;
+    double llik=0.0;
 
     for(int it=0; it<maxit; it++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
@@ -174,7 +174,7 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
 
-    double curllik = 0;
+    double curllik = 0.0;
     NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
 
     for(int ind=0; ind<n_ind; ind++) {
@@ -188,7 +188,7 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
     NumericMatrix XX = weighted_matrix(X, wt); // to store weighted matrix
 
     bool converged=false;
-    double llik;
+    double llik=0.0;
 
     for(int it=0; it<maxit; it++) {
         Rcpp::checkUserInterrupt();  // check for ^C from user
