@@ -6,8 +6,8 @@
 \usage{
 scan1perm(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  n_perm = 1, perm_Xsp = FALSE, perm_strata = NULL, chr_lengths = NULL,
-  cores = 1, ...)
+  model = c("normal", "binary"), n_perm = 1, perm_Xsp = FALSE,
+  perm_strata = NULL, chr_lengths = NULL, cores = 1, ...)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -32,6 +32,10 @@ for individual identifiers. Ignored if \code{kinship} is provided.}
 
 \item{reml}{If \code{kinship} provided: if \code{reml=TRUE}, use
 REML; otherwise maximum likelihood.}
+
+\item{model}{Indicates whether to use a normal model (least
+squares) or binary model (logistic regression) for the phenotype.
+If \code{model="binary"}, the phenotypes must have values in [0, 1].}
 
 \item{n_perm}{Number of permutation replicates.}
 
@@ -99,6 +103,7 @@ library(qtl2geno)
 
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+\dontshow{iron <- iron[,c(10,18,"X")]}
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -120,7 +125,8 @@ perm_strata <- mat2strata(Xcovar)
 operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
                    n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
                    chr_lengths=chr_lengths(iron$gmap))}
-\dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)}
+\dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=2, perm_strata=perm_strata)}
+summary(operm)
 
 # leave-one-chromosome-out kinship matrices
 kinship <- calc_kinship(probs, "loco")
@@ -128,8 +134,12 @@ kinship <- calc_kinship(probs, "loco")
 # genome scan with a linear mixed model
 \dontrun{
 operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
-                       perm_Xsp=TRUE, perm_strata=perm_strata)}
-\dontshow{operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strata=perm_strata)}
+                       perm_Xsp=TRUE, perm_strata=perm_strata,
+                       chr_lengths=chr_lengths(map))}
+\dontshow{operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=2,
+                                 perm_Xsp=TRUE, perm_strata=perm_strata,
+                                 chr_lengths=chr_lengths(map))}
+summary(operm_lmm)
 
 }
 \references{
