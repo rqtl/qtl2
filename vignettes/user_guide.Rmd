@@ -471,6 +471,53 @@ other two methods. However, in this case Haley-Knott regression and
 the LOCO method give quite similar results.
 
 
+## Performing a genome scan with binary traits
+
+The genome scans above were performed assuming that the residual
+variation followed a normal distribution. This will often provide
+reasonable results even if the residuals are not normal, but an
+important special case is that of a binary trait, with values 0 and 1,
+which is best treated differently. The `scan1` function can perform a
+genome scan with binary traits by logistic regression, using the
+argument `model="binary"`. (The default value for the `model` argument
+is `"normal"`.) At present, we _can not_ account for relationships
+among individuals in this analysis.
+
+Let's first turn our two phenotypes into binary traits by thresholding
+at the median. One would generally _not_ do this in practice;
+this is just for illustration.
+
+```{r threshold_phenotypes}
+bin_pheno <- apply(iron$pheno, 2, function(a) as.numeric(a > median(a)))
+rownames(bin_pheno) <- rownames(iron$pheno)
+```
+
+We now perform the genome scan as before, including `model="binary"`
+to indicates that the phenotypes are binary traits with values 0 and
+1.
+
+```{r binary_trait_scan}
+out_bin <- scan1(pr, bin_pheno, Xcovar=Xcovar, model="binary")
+```
+
+Here is a plot of the two LOD curves.
+
+```{r plot_bin_scan}
+par(mar=c(5.1, 4.1, 1.1, 1.1))
+ymx <- maxlod(out_bin)
+plot(out_bin, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
+plot(out_bin, map, lodcolumn=2, col="violetred", add=TRUE)
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out_bin), bg="gray90")
+```
+
+We can use `find_peaks` as before.
+
+```{r find_peaks_bin_scan}
+find_peaks(out_bin, map, threshold=3.5, drop=1.5)
+```
+
+
+
 ## Performing a permutation test
 
 To perform a permutation test to establish the statistical significance of
@@ -647,6 +694,36 @@ summary(operm3, alpha=c(0.2, 0.05))
 print(operm3_summary)
 ```
 
+As with `scan1`, we can use `scan1perm` with binary traits, using the
+argument `model="binary"`. Again, this can't be used with a kinship
+matrix, but all of the other arguments can be applied.
+
+```{r scan1perm_binary, eval=FALSE}
+operm_bin <- scan1perm(pr, bin_pheno, Xcovar=Xcovar, model="binary",
+                       n_perm=1000, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
+```
+
+Here are the estimated 5% and 20% significance thresholds.
+
+```{r scan1perm_binary_summary, echo=FALSE}
+operm_bin_summary <- structure(list(A = structure(c(2.59831201609688, 3.32949509346178,
+                         2.62913892355286, 3.40933644523101), .Dim = c(2L, 2L), .Dimnames = list(
+                         c("0.2", "0.05"), c("liver", "spleen"))), X = structure(c(3.16115845941841,
+                         3.85862831021874, 3.0614902104213, 3.76657536814501), .Dim = c(2L,
+                         2L), .Dimnames = list(c("0.2", "0.05"), c("liver", "spleen")))), .Names = c("A",
+                         "X"), class = c("summary.scan1perm", "list"), n_perm = structure(c(1000,
+                         28243, 1000, 28243), .Dim = c(2L, 2L), .Dimnames = list(c("A",
+                         "X"), c("liver", "spleen"))))
+```
+
+```{r summary_scan1perm_binary, eval=FALSE}
+summary(operm_bin, alpha=c(0.2, 0.05))
+```
+
+```{r summary_scan1perm_binary_run, echo=FALSE}
+print(operm_bin_summary)
+```
+
 
 ## Estimated QTL effects
 
@@ -768,6 +845,28 @@ last_coef <- unclass(c2eff)[nrow(c2eff),]
 for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
+
+The `scan1coef` function can also provide estimated QTL effects for
+binary traits, with `model="binary"`. (However, `scan1blup` has not
+yet been implemented for binary traits.)
+
+```{r scan1coef_binary}
+c2eff_bin <- scan1coef(pr[,"2"], bin_pheno[,"liver"], model="binary")
+```
+
+Here's a plot of the effects. They're a bit tricky to interpret, as
+their basically log odds ratios.
+
+```{r plot_effects_binary}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+col <- c("slateblue", "violetred", "green3")
+plot(c2eff_bin, map["2"], columns=1:3, col=col)
+last_coef <- unclass(c2eff_bin)[nrow(c2eff_bin),] # pull out last coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+
 
 
 ## SNP association
