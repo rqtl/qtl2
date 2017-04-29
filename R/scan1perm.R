@@ -19,6 +19,9 @@
 #' for individual identifiers. Ignored if \code{kinship} is provided.
 #' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
 #' REML; otherwise maximum likelihood.
+#' @param model Indicates whether to use a normal model (least
+#'     squares) or binary model (logistic regression) for the phenotype.
+#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
 #' @param n_perm Number of permutation replicates.
 #' @param perm_Xsp If TRUE, do separate permutations for the autosomes
 #' and the X chromosome.
@@ -89,6 +92,7 @@
 #'
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' \dontshow{iron <- iron[,c(10,18,"X")]}
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -110,7 +114,8 @@
 #' operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
 #'                    n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
 #'                    chr_lengths=chr_lengths(iron$gmap))}
-#' \dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)}
+#' \dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=2, perm_strata=perm_strata)}
+#' summary(operm)
 #'
 #' # leave-one-chromosome-out kinship matrices
 #' kinship <- calc_kinship(probs, "loco")
@@ -118,21 +123,28 @@
 #' # genome scan with a linear mixed model
 #' \dontrun{
 #' operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
-#'                        perm_Xsp=TRUE, perm_strata=perm_strata)}
-#' \dontshow{operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=3, perm_strata=perm_strata)}
+#'                        perm_Xsp=TRUE, perm_strata=perm_strata,
+#'                        chr_lengths=chr_lengths(map))}
+#' \dontshow{operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=2,
+#'                                  perm_Xsp=TRUE, perm_strata=perm_strata,
+#'                                  chr_lengths=chr_lengths(map))}
+#' summary(operm_lmm)
 #'
 #' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strata}}
 #' @export
 scan1perm <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
-             intcovar=NULL, weights=NULL, reml=TRUE, n_perm=1,
-             perm_Xsp=FALSE, perm_strata=NULL, chr_lengths=NULL,
+             intcovar=NULL, weights=NULL, reml=TRUE, model=c("normal", "binary"),
+             n_perm=1, perm_Xsp=FALSE, perm_strata=NULL, chr_lengths=NULL,
              cores=1, ...)
 {
     # grab tol from dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
     stopifnot(tol > 0)
+
+    # normal or binary model?
+    model <- match.arg(model)
 
     if(n_perm <= 0) stop("n_perm should be > 0")
 
@@ -156,13 +168,13 @@ scan1perm <-
         A <- scan1perm(genoprobs=genoprobs[,!is_x_chr], pheno=pheno,
                        kinship=subset_kinship(kinship, chr=!is_x_chr),
                        addcovar=addcovar, Xcovar=NULL, intcovar=intcovar, weights=weights,
-                       reml=reml, n_perm=n_perm, perm_Xsp=FALSE, perm_strata=perm_strata,
-                       chr_lengths=NULL, cores=cores, ...)
+                       reml=reml, model=model, n_perm=n_perm, perm_Xsp=FALSE,
+                       perm_strata=perm_strata, chr_lengths=NULL, cores=cores, ...)
         X <- scan1perm(genoprobs=genoprobs[,is_x_chr], pheno=pheno,
                        kinship=subset_kinship(kinship, chr=is_x_chr),
                        addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar, weights=weights,
-                       reml=reml, n_perm=n_permX, perm_Xsp=FALSE, perm_strata=perm_strata,
-                       chr_lengths=NULL, cores=cores, ...)
+                       reml=reml, model=model, n_perm=n_permX, perm_Xsp=FALSE,
+                       perm_strata=perm_strata, chr_lengths=NULL, cores=cores, ...)
         result <- list(A=A, X=X)
         attr(result, "chr_lengths") <- chr_lengths
 
@@ -182,6 +194,17 @@ scan1perm <-
         Xcovar <- as.matrix(Xcovar)
     if(!is.null(intcovar) && !is.matrix(intcovar))
         intcovar <- as.matrix(intcovar)
+
+    # for binary model
+    if(model=="binary") {
+        if(!is.null(kinship))
+            stop("Can't yet account for kinship with model = \"binary\"")
+        pheno <- check_binary_pheno(pheno)
+    }
+    else {
+        # square-root of weights (only if model="normal")
+        weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+    }
 
     # check that kinship matrices are square with same IDs
     kinshipIDs <- check_kinship(kinship, length(genoprobs))
@@ -219,7 +242,7 @@ scan1perm <-
                             cores=cores, ind2keep=ind2keep, ...))
     }
 
-    if(is.null(addcovar) && is.null(Xcovar) &&
+    if(model=="normal" && is.null(addcovar) && is.null(Xcovar) &&
        is.null(intcovar) && is.null(weights)
        && sum(is.na(pheno[ind2keep,]))==0) # no covariates, no weights, no missing phenotypes
         result <- scan1perm_nocovar(genoprobs=genoprobs,
@@ -236,12 +259,12 @@ scan1perm <-
                                   Xcovar=Xcovar,
                                   intcovar=intcovar,
                                   weights=weights,
+                                  model=model,
                                   n_perm=n_perm,
                                   perm_strata=perm_strata,
                                   cores=cores,
                                   ind2keep=ind2keep,
                                   ...)
-
 
     result
 }
@@ -354,11 +377,14 @@ scan1perm_nocovar <-
 }
 
 # permutations with covariates and/or different batches of phenotypes
+# also covers the case of a binary phenotype
 scan1perm_covar <-
     function(genoprobs, pheno, addcovar=NULL, Xcovar=NULL, intcovar=NULL,
-             weights=weights, n_perm=1, perm_strata=NULL, cores=1,
-             ind2keep, ...)
+             weights=NULL, model=c("normal", "binary"),
+             n_perm=1, perm_strata=NULL, cores=1, ind2keep, ...)
 {
+    model <- match.arg(model)
+
     # deal with the dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
@@ -366,7 +392,16 @@ scan1perm_covar <-
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
-    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
+    if(model=="binary") {
+        bintol <- grab_dots(dotargs, "bintol", sqrt(tol))
+        stopifnot(bintol > 0)
+        maxit <- grab_dots(dotargs, "maxit", 100)
+        check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch",
+                                    "maxit", "bintol"))
+    }
+    else {
+        check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
+    }
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -440,14 +475,27 @@ scan1perm_covar <-
         if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
         else ac0 <- ac
 
-        # FIX_ME: calculating null RSS multiple times :(
-        nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
+        if(model=="normal") {
+            # FIX_ME: calculating null RSS multiple times :(
+            nullrss <- nullrss_clean(ph, ac0, wts, add_intercept=TRUE, tol)
 
-        # scan1 function taking clean data (with no missing values)
-        rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
+            # scan1 function taking clean data (with no missing values)
+            rss <- scan1_clean(pr, ph, ac, ic, wts, add_intercept=TRUE, tol, intcovar_method)
 
-        # calculate LOD score
-        lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+            # calculate LOD score
+            lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
+        }
+        else { # binary model
+            # FIX_ME: calculating null LOD multiple times :(
+            nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol)
+
+            # scan1 function taking clean data (with no missing values)
+            lod <- scan1_binary_clean(pr, ph, ac, ic, wts, add_intercept=TRUE,
+                                      maxit, bintol, tol, intcovar_method)
+
+            # calculate LOD score
+            lod <- lod - nulllod
+        }
 
         # return column maxima
         apply(lod, 1, max, na.rm=TRUE)

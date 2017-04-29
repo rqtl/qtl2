@@ -23,6 +23,9 @@
 #' \code{cbind(c(1,1,1), c(-0.5, 0, 0.5), c(-0.5, 1, -0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
+#' @param model Indicates whether to use a normal model (least
+#'     squares) or binary model (logistic regression) for the phenotype.
+#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
 #' @param se If TRUE, calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
 #' \code{kinship} provided.
@@ -31,6 +34,8 @@
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
+#' @param maxit Maximum number of iterations in logistic regression
+#'     fit (when \code{model="binary"}).
 #'
 #' @return A list containing
 #' \itemize{
@@ -94,7 +99,8 @@
 fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
-             contrasts=NULL, se=TRUE, hsq=NULL, reml=TRUE, tol=1e-12)
+             contrasts=NULL, model=c("normal", "binary"),
+             se=TRUE, hsq=NULL, reml=TRUE, tol=1e-12, maxit=100)
 {
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
@@ -102,6 +108,7 @@ fit1 <-
     }
 
     stopifnot(tol > 0)
+    bintol <- sqrt(tol)
 
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
@@ -112,8 +119,18 @@ fit1 <-
         intcovar <- as.matrix(intcovar)
     if(!is.null(contrasts) && !is.matrix(contrasts))
         contrasts <- as.matrix(contrasts)
-    # square-root of weights
-    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+
+    model <- match.arg(model)
+    if(model=="binary") {
+        if(!is.null(kinship))
+            stop("Can't yet account for kinship with model = \"binary\"")
+        if(any(!is.na(pheno) & (pheno < 0 | pheno > 1)))
+            stop('with model="binary", pheno should be in [0,1]')
+    }
+    else {
+        # square-root of weights
+        weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+    }
 
     # make sure pheno is a vector
     if(is.matrix(pheno) || is.data.frame(pheno)) {
@@ -160,43 +177,75 @@ fit1 <-
     # make sure columns in intcovar are also in addcovar
     addcovar <- force_intcovar(addcovar, intcovar, tol)
 
-    # if weights, adjust phenotypes
-    if(!is.null(weights)) pheno <- weights * pheno
-
-    # weights have 0 dimension if missing
-    if(is.null(weights)) weights <- numeric(0)
-
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
         genoprobs <- genoprobs %*% contrasts
 
-    # null fit
     X0 <- drop_depcols(cbind(rep(1, length(pheno)), addcovar, nullcovar), FALSE, tol)
-    fit0 <- fit1_hk_addcovar(X0, # plug addcovar where genoprobs would be
-                             pheno,
-                             matrix(nrow=length(pheno), ncol=0),     # empty slot for addcovar
-                             weights, se=FALSE, tol)
+    if(model=="normal") {
+        # if weights, adjust phenotypes
+        if(!is.null(weights)) pheno <- weights * pheno
 
-    if(is.null(intcovar)) { # just addcovar
-        if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-        fitA <- fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, se=se, tol)
+        # weights have 0 dimension if missing
+        if(is.null(weights)) weights <- numeric(0)
+
+        # null fit
+        fit0 <- fit1_hk_addcovar(X0, # plug addcovar where genoprobs would be
+                                 pheno,
+                                 matrix(nrow=length(pheno), ncol=0),     # empty slot for addcovar
+                                 weights, se=FALSE, tol)
+
+        if(is.null(intcovar)) { # just addcovar
+            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
+            fitA <- fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, se=se, tol)
+        }
+        else {                  # intcovar
+            fitA <- fit1_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                     weights, se=se, tol)
+        }
+
+        # lod score
+        n <- length(pheno)
+        lod <- (n/2)*log10(fit0$rss/fitA$rss)
+
+        # residual SDs using 1/n
+        sigsq0 <- fit0$sigma^2/n*fit0$df
+        sigsqA <- fitA$sigma^2/n*fitA$df
+
+        # individual contributions to the lod score
+        ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
+        names(ind_lod) <- names(pheno)
     }
-    else {                  # intcovar
-        fitA <- fit1_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                   weights, se=se, tol)
+    else { # binary phenotype
+        # null fit
+        if(is.null(weights)) { # no weights
+            fit0 <- fit_binreg(X0, pheno, FALSE, maxit, bintol, tol)
+            weights <- numeric(0)
+        }
+        else {
+            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, maxit, bintol, tol)
+        }
+
+        if(is.null(intcovar)) { # just addcovar
+            if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
+            fitA <- fit1_binary_addcovar(genoprobs, pheno, addcovar, weights, se=se,
+                                         maxit, bintol, tol)
+        }
+        else {                  # intcovar
+            fitA <- fit1_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
+                                         weights, se=se, maxit, bintol, tol)
+        }
+
+        lod <- fitA$log10lik - fit0$log10lik
+
+        # individual contributions to LOD
+        if(length(weights)==0) weights <- rep(1, length(pheno))
+        pA <- fitA$fitted_probs
+        ind_lodA <- weights * (pheno*log10(pA) + (1-pheno)*log10(1-pA))
+        p0 <- fit0$fitted_probs
+        ind_lod0 <- weights * (pheno*log10(p0) + (1-pheno)*log10(1-p0))
+        ind_lod <- ind_lodA - ind_lod0
     }
-
-    # lod score
-    n <- length(pheno)
-    lod <- (n/2)*log10(fit0$rss/fitA$rss)
-
-    # residual SDs using 1/n
-    sigsq0 <- fit0$sigma^2/n*fit0$df
-    sigsqA <- fitA$sigma^2/n*fitA$df
-
-    # individual contributions to the lod score
-    ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
-    names(ind_lod) <- names(pheno)
 
     # names of coefficients
     coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)

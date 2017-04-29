@@ -1,31 +1,33 @@
 // fit a single-QTL model at a single position by Haley-Knott regression
 
-#include "fit1_hk.h"
+#include "fit1_binary.h"
 #include <Rcpp.h>
 
 using namespace Rcpp;
 
-#include "linreg.h"
+#include "binreg.h"
+#include "binreg_weighted.h"
 #include "matrix.h"
 
 // Fit a single-QTL model at a single position
 //
 // genoprobs = matrix of genotype probabilities (individuals x genotypes)
 // pheno     = vector of numeric phenotypes (individuals x 1)
-//             (no missing data allowed)
-//             if weights included, phenotype already multiplied by weights (really sqrt of original weights)
+//             (no missing data allowed; values in [0,1])
 // addcovar  = additive covariates
-// weights   = vector of weights (really the SQUARE ROOT of the weights)
+// weights   = vector of weights
 //
-// output    = list with coef, fitted, resid, rss, sigma, rank, df, SE
+// output    = list with lod, fitted probabilities, coef, SE
 //
 // [[Rcpp::export]]
-List fit1_hk_addcovar(const NumericMatrix& genoprobs,
-                      const NumericVector& pheno,
-                      const NumericMatrix& addcovar,
-                      const NumericVector& weights,
-                      const bool se=false,
-                      const double tol=1e-12)
+List fit1_binary_addcovar(const NumericMatrix& genoprobs,
+                          const NumericVector& pheno,
+                          const NumericMatrix& addcovar,
+                          const NumericVector& weights,
+                          const bool se=false,
+                          const int maxit=100,
+                          const double tol=1e-6,
+                          const double qr_tol=1e-12)
 {
     const int n_ind = pheno.size();
     const int n_gen = genoprobs.cols();
@@ -50,10 +52,10 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
     if(n_addcovar > 0)
         std::copy(addcovar.begin(), addcovar.end(), X.begin() + x_size);
 
-    // multiply by square-root weights, if necessary
-    if(n_weights > 0) X = weighted_matrix(X, weights);
-
-    return fit_linreg(X, pheno, se, tol);
+    if(n_weights > 0)
+        return fit_binreg_weighted(X, pheno, weights, se, maxit, tol, qr_tol);
+    else
+        return fit_binreg(X, pheno, se, maxit, tol, qr_tol);
 }
 
 
@@ -61,21 +63,23 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
 //
 // genoprobs = matrix of genotype probabilities (individuals x genotypes)
 // pheno     = vector of numeric phenotypes (individuals x 1)
-//             (no missing data allowed)
+//             (no missing data allowed; values in [0,1])
 // addcovar  = additive covariates
 // intcovar  = interactive covariates (should also be included in addcovar)
-// weights   = vector of weights (really the SQUARE ROOT of the weights)
+// weights   = vector of weights
 //
 // output    = list with coef, fitted, resid, rss, sigma, rank, df, SE
 //
 // [[Rcpp::export]]
-List fit1_hk_intcovar(const NumericMatrix& genoprobs,
-                      const NumericVector& pheno,
-                      const NumericMatrix& addcovar,
-                      const NumericMatrix& intcovar,
-                      const NumericVector& weights,
-                      const bool se=true,
-                      const double tol=1e-12)
+List fit1_binary_intcovar(const NumericMatrix& genoprobs,
+                          const NumericVector& pheno,
+                          const NumericMatrix& addcovar,
+                          const NumericMatrix& intcovar,
+                          const NumericVector& weights,
+                          const bool se=true,
+                          const int maxit=100,
+                          const double tol=1e-6,
+                          const double qr_tol=1e-12)
 {
     const int n_ind = pheno.size();
     const int n_weights = weights.size();
@@ -91,7 +95,9 @@ List fit1_hk_intcovar(const NumericMatrix& genoprobs,
 
     // form X matrix
     NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, 0, false);
-    if(n_weights > 0) X = weighted_matrix(X, weights);
 
-    return fit_linreg(X, pheno, se, tol);
+    if(n_weights > 0)
+        return fit_binreg_weighted(X, pheno, weights, se, maxit, tol, qr_tol);
+    else
+        return fit_binreg(X, pheno, se, maxit, tol, qr_tol);
 }

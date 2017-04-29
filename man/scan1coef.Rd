@@ -6,7 +6,8 @@
 \usage{
 scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   nullcovar = NULL, intcovar = NULL, weights = NULL, contrasts = NULL,
-  se = FALSE, hsq = NULL, reml = TRUE, tol = 0.000000000001)
+  model = c("normal", "binary"), se = FALSE, hsq = NULL, reml = TRUE,
+  tol = 0.000000000001, maxit = 100)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -41,6 +42,10 @@ genotypes x genotypes. For an intercross, you might use
 mean, additive effect, and dominance effect. The default is the
 identity matrix.}
 
+\item{model}{Indicates whether to use a normal model (least
+squares) or binary model (logistic regression) for the phenotype.
+If \code{model="binary"}, the phenotypes must have values in [0, 1].}
+
 \item{se}{If TRUE, also calculate the standard errors.}
 
 \item{hsq}{(Optional) residual heritability; used only if
@@ -52,6 +57,9 @@ REML; otherwise maximum likelihood.}
 \item{tol}{Tolerance value for
 linear regression by QR decomposition (in determining whether
 columns are linearly dependent on others and should be omitted)}
+
+\item{maxit}{Maximum number of iterations in logistic regression
+fit (when \code{model="binary"}).}
 }
 \value{
 A matrix of estimated regression coefficients, of dimension
