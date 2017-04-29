@@ -259,7 +259,7 @@ scan1 <-
             lod <- nrow(ph)/2 * (log10(nullrss) - log10(rss))
         }
         else { # binary traits
-            # FIX_ME: calculating null RSS multiple times :(
+            # FIX_ME: calculating null LOD multiple times :(
             nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol)
 
             # scan1 function taking clean data (with no missing values)
