@@ -110,6 +110,9 @@ fit1 <-
     stopifnot(tol > 0)
     bintol <- sqrt(tol)
 
+    # check that the objects have rownames
+    check4names(pheno, addcovar, NULL, intcovar, nullcovar)
+
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)

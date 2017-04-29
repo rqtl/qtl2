@@ -17,6 +17,9 @@ scan1_pg <-
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch",
                                 "check_boundary"))
 
+    # check that the objects have rownames
+    check4names(pheno, addcovar, Xcovar, intcovar)
+
     # force things to be matrices
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)

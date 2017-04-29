@@ -114,6 +114,9 @@ scan1blup <-
 
     stopifnot(tol > 0)
 
+    # check that the objects have rownames
+    check4names(pheno, addcovar, NULL, NULL, nullcovar)
+
     # force things to be matrices
     if(!is.null(addcovar) && !is.matrix(addcovar))
         addcovar <- as.matrix(addcovar)

@@ -149,6 +149,9 @@ scan1 <-
     maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch", "maxit"))
 
+    # check that the objects have rownames
+    check4names(pheno, addcovar, Xcovar, intcovar)
+
     # force things to be matrices
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)
@@ -402,4 +405,32 @@ colnames4attr <-
     if(any(cn=="")) cn[cn==""] <- paste0("unnamed", seq_len(sum(cn=="")))
 
     cn
+}
+
+# check that objects have rownames, if they are matrices
+#   (or names, if not matrices)
+check4names <-
+    function(pheno=NULL, addcovar=NULL, Xcovar=NULL, intcovar=NULL, nullcovar=NULL)
+{
+    args <- list(pheno=pheno,
+                 addcovar=addcovar,
+                 Xcovar=Xcovar,
+                 intcovar=intcovar,
+                 nullcovar=nullcovar)
+
+    for(i in seq_along(args)) {
+        a <- args[[i]]
+        if(!is.null(a)) {
+            if(is.matrix(a)) {
+                if(is.null(rownames(a)))
+                    stop(names(args)[i], " has no rownames")
+            }
+            else {
+                if(is.null(names(a)))
+                    stop(names(args)[i], " has no names")
+            }
+        } # end if(!is.null)
+    } # end loop
+
+    TRUE
 }

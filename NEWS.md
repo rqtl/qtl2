@@ -1,4 +1,4 @@
-## qtl2scan 0.5-12 (2017-04-28)
+## qtl2scan 0.5-12 (2017-04-29)
 
 ### New features
 
@@ -6,6 +6,10 @@
   scan1coef, scan1perm, and fit1. (Not available with kinship
   correction.)
 
+### Bug fixes
+
+- Give a better error message if phenotypes (or covariates) are
+  missing rownames (or, with a vector, names)
 
 ## qtl2scan 0.5-11 (2017-04-28)
 

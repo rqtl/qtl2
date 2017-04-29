@@ -148,6 +148,9 @@ scan1perm <-
 
     if(n_perm <= 0) stop("n_perm should be > 0")
 
+    # check that the objects have rownames
+    check4names(pheno, addcovar, Xcovar, intcovar)
+
     # if Xcovar provided, the default is to do a stratified permutation test
     if(is.null(perm_strata) && !is.null(Xcovar))
         perm_strata <- mat2strata(Xcovar)
