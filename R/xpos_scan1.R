@@ -70,6 +70,8 @@
 xpos_scan1 <-
 function(map, chr=NULL, gap=25, thechr, thepos)
 {
+    if(is.null(map)) stop("map is NULL")
+
     # subset chromosomes
     if(!is.null(chr)) map <- map[chr]
 

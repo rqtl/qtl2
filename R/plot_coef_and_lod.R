@@ -12,6 +12,8 @@ plot_coef_and_lod <-
              vlines=NULL, vlines.col="white", vlines.lwd=1, vlines.lty=1,
              top_panel_prop=0.65, ...)
 {
+    if(is.null(map)) stop("map is NULL")
+
     if(nrow(x) != length(unlist(map)))
         stop("nrow(x) [", nrow(x), "] != number of positions in map [",
              length(unlist(map)), "]")

@@ -74,6 +74,8 @@ plot_scan1 <-
     function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
              bgcolor="gray90", altbgcolor="gray85", ...)
 {
+    if(is.null(map)) stop("map is NULL")
+
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
     if(nrow(x) != length(unlist(map)))

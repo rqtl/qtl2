@@ -1,3 +1,12 @@
+## qtl2plot 0.5-6 (2017-04-29)
+
+### Minor changes
+
+- Trap cases of the input `map` being `NULL`. This happens to me
+  particularly when I try `some_cross$pmap` but the cross object
+  doesn't contain a physical map.
+
+
 ## qtl2plot 0.5-4 (2017-03-11)
 
 ### Bug fixes
