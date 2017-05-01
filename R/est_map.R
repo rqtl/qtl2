@@ -19,6 +19,8 @@
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
 #' @param quiet If \code{FALSE}, print progress messages.
+#' @param save_rf If \code{TRUE}, save the estimated recombination
+#' fractions as an attribute (\code{"rf"}) of the result.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -42,7 +44,7 @@
 est_map <-
 function(cross, error_prob=1e-4,
          map_function=c("haldane", "kosambi", "c-f", "morgan"),
-         lowmem=FALSE, maxit=10000, tol=1e-6, quiet=TRUE,
+         lowmem=FALSE, maxit=10000, tol=1e-6, quiet=TRUE, save_rf=FALSE,
          cores=1)
 {
     if(!is.cross2(cross))
@@ -112,6 +114,10 @@ function(cross, error_prob=1e-4,
 
         names(map) <- names(gmap)
         attr(map, "loglik") <- loglik
+        if(save_rf) {
+            attr(rf, "loglik") <- NULL
+            attr(map, "rf") <- rf
+        }
 
         map
     }
@@ -121,5 +127,16 @@ function(cross, error_prob=1e-4,
 
     names(map) <- names(cross$gmap)
     attr(map, "is_x_chr") <- is_x_chr
+
+    if(save_rf) { # put est'd rec fracs as single attribute, as list
+        rfs <- lapply(map, function(a) attr(a, "rf"))
+        names(rfs) <- names(map)
+        attr(map, "rf") <- rfs
+
+        # strip off the individual rf attributes
+        for(i in seq_along(map))
+            attr(map[[i]], "rf") <- NULL
+    }
+
     map
 }

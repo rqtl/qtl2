@@ -1,3 +1,15 @@
+## qtl2geno 0.5-19 (2017-05-01)
+
+### Minor changes
+
+- Added an argument `save_rf` to `est_map()`; if `TRUE`, the estimated
+  recombinations are saved as an attribute (`"rf"`) of the result.
+  This can be useful for diagnostic purposes, for example when the
+  estimated recombination fraction between markers is > 1/2.
+  (After converting to genetic distance, rf>1/2 is indistinguishable
+  from rf=1/2.)
+
+
 ## qtl2geno 0.5-18 (2017-04-19)
 
 ### New features

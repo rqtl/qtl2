@@ -6,7 +6,7 @@
 \usage{
 est_map(cross, error_prob = 0.0001, map_function = c("haldane", "kosambi",
   "c-f", "morgan"), lowmem = FALSE, maxit = 10000, tol = 0.000001,
-  quiet = TRUE, cores = 1)
+  quiet = TRUE, save_rf = FALSE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
@@ -30,6 +30,9 @@ transition matrices for each generation.}
 \item{tol}{Tolerance for determining convergence}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}
+
+\item{save_rf}{If \code{TRUE}, save the estimated recombination
+fractions as an attribute (\code{"rf"}) of the result.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
