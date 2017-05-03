@@ -57,7 +57,7 @@ IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol=1e-
     const MatrixXd XX(as<Map<MatrixXd> >(mat));
     typedef Eigen::ColPivHouseholderQR<MatrixXd> CPivQR;
     typedef CPivQR::PermutationType Permutation;
-    CPivQR PQR = XX;
+    CPivQR PQR ( XX );
     PQR.setThreshold(tol);
 
     // pivot matrix, treated as regular matrix

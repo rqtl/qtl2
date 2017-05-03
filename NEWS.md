@@ -1,3 +1,11 @@
+## qtl2scan 0.5-13 (2017-05-03)
+
+### Bug fixes
+
+- Fixed linreg_eigen.cpp and matrix.cpp to work with
+  [RcppEigen](https://github.com/RcppCore/RcppEigen) 0.3.3.3.0.
+
+
 ## qtl2scan 0.5-12 (2017-04-29)
 
 ### New features

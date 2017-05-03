@@ -8,7 +8,6 @@
 using namespace Rcpp;
 using namespace Eigen;
 
-
 // calc X'X
 MatrixXd calc_XpX(const MatrixXd& X)
 {
@@ -26,7 +25,7 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
     const VectorXd yy(as<Map<VectorXd> >(y));
 
     const int n = XX.rows(), p=XX.cols();
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
     VectorXd fitted = XX * betahat;
@@ -64,7 +63,7 @@ NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVe
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     NumericVector betahat(wrap(llt.solve(XX.adjoint() * yy)));
     return betahat;
@@ -80,7 +79,7 @@ List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y
     const VectorXd yy(as<Map<VectorXd> >(y));
 
     const int n = XX.rows(), p=XX.cols();
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
     VectorXd fitted = XX * betahat;
@@ -101,7 +100,7 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
     VectorXd fitted = XX * betahat;
@@ -117,7 +116,7 @@ NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const Numeric
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
     VectorXd fitted = XX * betahat;
@@ -308,7 +307,7 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
 
     const int n = XX.rows(), p = XX.cols();
 
-    CPivQR PQR = XX;
+    CPivQR PQR ( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const int r = PQR.rank();
@@ -344,7 +343,7 @@ NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVe
 
     const int n = XX.rows(), p = XX.cols();
 
-    CPivQR PQR = XX;
+    CPivQR PQR ( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const int r = PQR.rank();
@@ -376,7 +375,7 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     MatrixXd XXpY(XX.adjoint() * YY);
 
@@ -406,7 +405,7 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
     const int n = XX.rows(), p = XX.cols();
     const int k = YY.cols();
 
-    CPivQR PQR = XX;
+    CPivQR PQR ( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const int r = PQR.rank();
@@ -451,7 +450,7 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
-    LLT<MatrixXd> llt = calc_XpX(XX);
+    LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     MatrixXd XXpY(XX.adjoint() * YY);
 
@@ -482,7 +481,7 @@ NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
     const int n = XX.rows(), p = XX.cols();
     const int k = YY.cols();
 
-    CPivQR PQR = XX;
+    CPivQR PQR ( XX );
     PQR.setThreshold(tol); // set tolerance
     Permutation Pmat = PQR.colsPermutation();
     const int r = PQR.rank();
