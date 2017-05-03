@@ -142,7 +142,7 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     expected <- cbind(liver= c(1.5850327051161108294, 1.6225465841443282855, 1.1047230815073763033),
                       spleen=c(2.1929283392327243440, 1.9397727636298436327, 1.8698391778175107447))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # no covariates or missing data
     set.seed(seed)
@@ -150,7 +150,7 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     expected <- cbind(liver= c(14.6442198530459659622, 14.6817005229127524046, 15.6345815802552241536),
                       spleen=c( 5.5167589745319025596,  5.6328648432420660441,  8.0494249754664739527))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # sex and X-chr covariates
     set.seed(seed)
@@ -200,7 +200,7 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     expected <- cbind(liver= c(1.5863339748532325757, 1.6385708572073809375, 1.1068373425454520742),
                       spleen=c(2.1929283392327243440, 1.9397727636298436327, 1.8698391778175107447))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # one missing phenotype, sex and X-chr covariates
     set.seed(seed)
@@ -208,10 +208,10 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     expected <- cbind(liver= c(1.29518706542233608126, 0.99913640281598758985, 2.0054677281986590387),
                       spleen=c(0.90427196894971517693, 1.02148605181210183623, 2.8832996501350738328))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno2, kinship, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # one missing phenotype, sex and X-chr covariates, plus sex interactive
     set.seed(seed)
