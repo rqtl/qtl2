@@ -25,6 +25,10 @@ check_handle_x_chr <- function(crosstype, any_x_chr) {
     .Call('qtl2geno_check_handle_x_chr', PACKAGE = 'qtl2geno', crosstype, any_x_chr)
 }
 
+.chisq_colpairs <- function(input) {
+    .Call('qtl2geno_chisq_colpairs', PACKAGE = 'qtl2geno', input)
+}
+
 .compare_geno <- function(geno) {
     .Call('qtl2geno_compare_geno', PACKAGE = 'qtl2geno', geno)
 }
