@@ -80,6 +80,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// chisq_colpairs
+NumericMatrix chisq_colpairs(const IntegerMatrix& input);
+RcppExport SEXP qtl2geno_chisq_colpairs(SEXP inputSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type input(inputSEXP);
+    rcpp_result_gen = Rcpp::wrap(chisq_colpairs(input));
+    return rcpp_result_gen;
+END_RCPP
+}
 // compare_geno
 IntegerMatrix compare_geno(const IntegerMatrix& geno);
 RcppExport SEXP qtl2geno_compare_geno(SEXP genoSEXP) {

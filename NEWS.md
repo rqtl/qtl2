@@ -1,3 +1,12 @@
+## qtl2geno 0.5-20 (2017-05-04)
+
+### New features
+
+- Added `chisq_colpairs` which performs chi-square tests for
+  independence on all pairs of columns of a matrix. It just calculates
+  the statistics.
+
+
 ## qtl2geno 0.5-19 (2017-05-01)
 
 ### Minor changes
