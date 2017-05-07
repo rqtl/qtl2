@@ -38,22 +38,26 @@ Rqtl2 version 0.4 and the new format are in
 
 ### Installation
 
-R/qtl2 is early in development and so is not yet available on
-[CRAN](https://cran.r-project.org).
+R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
+can be installed from [GitHub](https://github.com/rqtl).
 
-You can install R/qtl2 from [GitHub](https://github.com/rqtl).
+On _Windows_, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
-You first need to install the
+On _Mac OS X_, you'll need the
+[command-line developer tools](https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/),
+as well as [gfortran](https://cran.r-project.org/bin/macosx/tools/).
+
+You then need to install the
 [devtools](https://github.com/hadley/devtools) package, plus a set of
 package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [jsonlite](https://cran.r-project.org/package=jsonlite),
 [data.table](https://cran.r-project.org/package=data.table),
 and [RcppEigen](https://github.com/RcppCore/RcppEigen).
-(Additional, secondary dependencies will also be installed)
+(Additional, secondary dependencies will also be installed.)
 
     install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
 
-Then, install R/qtl2 using `devtools::install_github()`.
+Finally, install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
     install_github(paste0("rqtl/qtl2", c("geno", "scan", "plot", "convert")))
