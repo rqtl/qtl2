@@ -86,7 +86,7 @@ find_marker <-
         map <- map[[chr]]
         d <- abs(map - pos)
         closest <- which(d==min(d))
-        if(length(closest) > 1) mind <- sample(closest, 1)
+        if(length(closest) > 1) closest <- sample(closest, 1)
         return(names(map)[closest])
     }
 }
