@@ -43,3 +43,30 @@ IntegerVector count_xo(const IntegerMatrix geno, // genotype matrix markers x in
     delete cross;
     return result;
 }
+
+// [[Rcpp::export(".count_xo_3d")]]
+IntegerMatrix count_xo_3d(const IntegerVector geno_array, // 3d array of genotypes, markers x individuals x imputations
+                          const String& crosstype,
+                          const bool is_X_chr)
+{
+    if(Rf_isNull(geno_array.attr("dim")))
+        throw std::invalid_argument("geno_array has no dimension attribute");
+    const IntegerVector& dim = geno_array.attr("dim");
+    if(dim.size() != 3)
+        throw std::invalid_argument("geno_array should be 3-dimensional array of genotypes");
+    const int n_pos = dim[0];
+    const int n_ind = dim[1];
+    const int n_imp = dim[2];
+    const int mat_size = n_pos*n_ind;
+
+    IntegerMatrix result(n_ind, n_imp);
+
+    for(int imp=0, offset=0; imp<n_imp; imp++, offset += mat_size) {
+        IntegerMatrix geno_matrix(n_pos, n_ind);
+        std::copy(geno_array.begin()+offset, geno_array.begin()+offset+mat_size, geno_matrix.begin());
+
+        result(_,imp) = count_xo(geno_matrix, crosstype, is_X_chr);
+    }
+
+    return result;
+}

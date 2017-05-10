@@ -55,7 +55,7 @@ count_xo <-
     if(is.null(is_x_chr))
         is_x_chr <- rep(FALSE, length(geno))
 
-    # deal with the case of 3d-arrays from sim_geno
+    # the case of 3d-arrays from sim_geno
     if(length(dim(geno[[1]])) == 3) {
         nind <- vapply(geno, nrow, 1)
         if(length(unique(nind)) > 1)
@@ -66,18 +66,25 @@ count_xo <-
         if(length(unique(ndraws)) > 1)
             stop("Input chromosomes have varying numbers of imputations")
         ndraws <- ndraws[1]
-        result <- array(dim=stats::setNames(c(nind, nchr, ndraws), NULL))
-        dimnames(result) <- list(rownames(geno[[1]]), names(geno), NULL)
 
-        for(i in seq(ndraws)) {
-            one_draw <- lapply(geno, function(a) a[,,i])
-            for(attrnam in c("crosstype", "is_x_chr"))
-                attr(one_draw, attrnam) <- attr(geno, attrnam)
-            result[,,i] <- count_xo(one_draw, quiet, cores)
+        result <- array(dim=stats::setNames(c(nind, ndraws, nchr), NULL))
+        dimnames(result) <- list(rownames(geno[[1]]), NULL, names(geno))
+
+        by_chr_func <- function(chr) {
+            result <- .count_xo_3d(aperm(geno[[chr]], c(2,1,3)), crosstype, is_x_chr[chr])
+            names(result) <- rownames(geno[[chr]])
+            result
         }
-        return(result)
+
+        result_list <- cluster_lapply(cores, seq(along=geno), by_chr_func)
+
+        for(i in seq(nchr))
+            result[,,i] <- result_list[[i]]
+
+        return(aperm(result, c(1,3,2)))
     }
 
+    # the case of matrices from viterbi or maxmarg
     by_chr_func <- function(chr) {
         result <- .count_xo(t(geno[[chr]]), crosstype, is_x_chr[chr])
         names(result) <- rownames(geno[[chr]])
