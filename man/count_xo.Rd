@@ -7,7 +7,8 @@
 count_xo(geno, quiet = TRUE, cores = 1)
 }
 \arguments{
-\item{geno}{List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}}).}
+\item{geno}{List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}})
+or a list of 3d-arrays of genotypes (output of \code{\link{sim_geno}}).}
 
 \item{quiet}{If FALSE, print progress messages.}
 
@@ -17,7 +18,10 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-A matrix of crossover counts, individuals x chromosomes
+A matrix of crossover counts, individuals x chromosomes, or
+(if the input was the output of \code{\link{sim_geno}}) a
+3d-array of crossover counts, individuals x chromosomes x
+imputations.
 }
 \description{
 Estimate the numbers of crossovers in each individual on each chromosome.
@@ -27,6 +31,16 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 map <- insert_pseudomarkers(iron$gmap, step=1)
 pr <- calc_genoprob(iron, map, error_prob=0.002, map_function="c-f")
 g <- maxmarg(pr)
-count_xo(g)
+n_xo <- count_xo(g)
+
+# imputations
+\dontshow{iron <- iron[1:20,1:2]}
+imp <- sim_geno(iron, map, error_prob=0.002, map_function="c-f", n_draws=32)
+n_xo_imp <- count_xo(imp)
+# sums across chromosomes
+tot_xo_imp <- apply(n_xo_imp, c(1,3), sum)
+# mean and SD across imputations
+summary_xo <- cbind(mean=rowMeans(tot_xo_imp),
+                    sd=apply(tot_xo_imp, 1, sd))
 
 }

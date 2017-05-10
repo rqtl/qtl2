@@ -1,3 +1,12 @@
+## qtl2geno 0.5-21 (2017-05-10)
+
+### New features
+
+- `count_xo` now works with the output of `sim_geno`. The result is a
+  3d-array of counts of crossovers for each individual on each
+  chromosome in each imputation.
+
+
 ## qtl2geno 0.5-20 (2017-05-04)
 
 ### New features
