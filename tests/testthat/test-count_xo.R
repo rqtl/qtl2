@@ -38,4 +38,19 @@ test_that("count_xo and locate_xo work for intercross", {
     n_xo_derived <- sapply(pos_xo, sapply, length)
     expect_equal(n_xo, n_xo_derived)
 
+
+    # sim_geno
+    set.seed(85309395)
+    dr <- sim_geno(iron, n_draws=4, error_prob=0.002, map_function="c-f")
+    n_xo <- count_xo(dr)
+    expect_equal(dim(n_xo), c(5,3,4))
+
+    expected <- structure(c(2L, 2L, 3L, 2L, 4L, 3L, 0L, 2L, 0L, 3L, 0L, 0L, 0L,
+                            0L, 0L, 2L, 3L, 3L, 2L, 1L, 3L, 0L, 2L, 0L, 3L, 0L, 0L, 0L, 0L,
+                            0L, 2L, 0L, 3L, 2L, 0L, 3L, 0L, 2L, 0L, 3L, 0L, 1L, 0L, 0L, 1L,
+                            2L, 2L, 3L, 2L, 1L, 2L, 0L, 2L, 0L, 3L, 0L, 0L, 0L, 0L, 1L),
+                          .Dim = c(5L, 3L, 4L), .Dimnames = list(c("1", "2", "3", "4", "5"),
+                                                                 c("7", "8", "X"), NULL))
+    expect_equal(n_xo, expected)
+
 })

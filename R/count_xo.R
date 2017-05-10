@@ -2,29 +2,51 @@
 #'
 #' Estimate the numbers of crossovers in each individual on each chromosome.
 #'
-#' @param geno List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}}).
+#' @param geno List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}})
+#' or a list of 3d-arrays of genotypes (output of \code{\link{sim_geno}}).
 #' @param quiet If FALSE, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by \code{\link[parallel]{makeCluster}}.
 #'
-#' @return A matrix of crossover counts, individuals x chromosomes
+#' @return A matrix of crossover counts, individuals x chromosomes, or
+#' (if the input was the output of \code{\link{sim_geno}}) a
+#' 3d-array of crossover counts, individuals x chromosomes x
+#' imputations.
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
 #' pr <- calc_genoprob(iron, map, error_prob=0.002, map_function="c-f")
 #' g <- maxmarg(pr)
-#' count_xo(g)
+#' n_xo <- count_xo(g)
 #'
+#' # imputations
+#' \dontshow{iron <- iron[1:20,1:2]}
+#' imp <- sim_geno(iron, map, error_prob=0.002, map_function="c-f", n_draws=32)
+#' n_xo_imp <- count_xo(imp)
+#' # sums across chromosomes
+#' tot_xo_imp <- apply(n_xo_imp, c(1,3), sum)
+#' # mean and SD across imputations
+#' summary_xo <- cbind(mean=rowMeans(tot_xo_imp),
+#'                     sd=apply(tot_xo_imp, 1, sd))
+#'
+#' @importFrom stats setNames
 #' @export
 
 count_xo <-
     function(geno, quiet=TRUE, cores=1)
 {
     if("cross2" %in% class(geno))
-        stop('Input geno is a "cross2" object but should be genotypes as from viterbi or maxmarg')
+        stop('Input geno is a "cross2" object but should be genotypes as from viterbi, maxmarg, or sim_geno')
+
+    # set up cluster; set quiet=TRUE if multi-core
+    cores <- setup_cluster(cores, quiet)
+    if(!quiet && n_cores(cores)>1) {
+        message(" - Using ", n_cores(cores), " cores")
+        quiet <- TRUE # make the rest quiet
+    }
 
     crosstype <- attr(geno, "crosstype")
     if(is.null(crosstype))
@@ -33,11 +55,27 @@ count_xo <-
     if(is.null(is_x_chr))
         is_x_chr <- rep(FALSE, length(geno))
 
-    # set up cluster; set quiet=TRUE if multi-core
-    cores <- setup_cluster(cores, quiet)
-    if(!quiet && n_cores(cores)>1) {
-        message(" - Using ", n_cores(cores), " cores")
-        quiet <- TRUE # make the rest quiet
+    # deal with the case of 3d-arrays from sim_geno
+    if(length(dim(geno[[1]])) == 3) {
+        nind <- vapply(geno, nrow, 1)
+        if(length(unique(nind)) > 1)
+            stop("Input chromosomes have varying numbers of individuals")
+        nchr <- length(geno)
+        nind <- nind[1]
+        ndraws <- vapply(geno, function(a) dim(a)[3], 1)
+        if(length(unique(ndraws)) > 1)
+            stop("Input chromosomes have varying numbers of imputations")
+        ndraws <- ndraws[1]
+        result <- array(dim=stats::setNames(c(nind, nchr, ndraws), NULL))
+        dimnames(result) <- list(rownames(geno[[1]]), names(geno), NULL)
+
+        for(i in seq(ndraws)) {
+            one_draw <- lapply(geno, function(a) a[,,i])
+            for(attrnam in c("crosstype", "is_x_chr"))
+                attr(one_draw, attrnam) <- attr(geno, attrnam)
+            result[,,i] <- count_xo(one_draw, quiet, cores)
+        }
+        return(result)
     }
 
     by_chr_func <- function(chr) {
