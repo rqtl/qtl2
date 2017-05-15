@@ -45,7 +45,7 @@ On _Windows_, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools
 
 On _Mac OS X_, you'll need the
 [command-line developer tools](https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/),
-as well as [gfortran](https://cran.r-project.org/bin/macosx/tools/).
+as well as [gfortran](https://gcc.gnu.org/wiki/GFortranBinaries#MacOS).
 
 You then need to install the
 [devtools](https://github.com/hadley/devtools) package, plus a set of
