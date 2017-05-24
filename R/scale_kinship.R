@@ -34,7 +34,7 @@ scale_kinship <-
         result <- lapply(kinship, scale_kinship)
     else {
         d <- diag(kinship)
-        if(any(d < 0)) stop("Some diagonal elements are < 0")
+        if(any(d <= 0)) stop("Some diagonal elements are <= 0")
         d <- sqrt(d)
         result <- t(t(kinship/d) / d)
     }
