@@ -24,5 +24,13 @@ test_that("scale_kinship works for RIL", {
         expect_equal(scaled[pairs[i,1], pairs[i,2]],
                      setNames(sim[pairs[i,1], pairs[i,2]] / (d[pairs[i,1]] * d[pairs[i,2]]), NULL) )
 
+    # test with "loco" method
+    sim_loco <- calc_kinship(probs, "loco")
+    scaled_loco <- scale_kinship(sim_loco)
+
+    expected <- sim_loco
+    for(i in seq_along(sim_loco))
+        expected[[i]] <- scale_kinship(sim_loco[[i]])
+    expect_equal(scaled_loco, expected)
 
 })
