@@ -16,8 +16,6 @@
 #' allele probabilities (that is, first run
 #' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
 #' probabilities.
-#' @param normalize If \code{TRUE}, divide the kinship matrix by a
-#' normalizing constant (see Details).
 #' @param quiet IF \code{FALSE}, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -44,10 +42,6 @@
 #' don't convert to allele probabilities but just use the original
 #' genotype probabilities.
 #'
-#' If \code{normalize=TRUE}, we normalize the kinship matrix as in
-#' equation 5 in Kang et al. (2010) Nat Genet
-#' 42:348-354. \href{https://www.ncbi.nlm.nih.gov/pubmed/20208533}{doi: 10.1038/ng.548}
-#'
 #' @export
 #' @keywords utilities
 #'
@@ -66,7 +60,6 @@
 calc_kinship <-
     function(probs, type=c("overall", "loco", "chr"),
              omit_x=FALSE, use_allele_probs=TRUE,
-             normalize=FALSE,
              quiet=TRUE, cores=1)
 {
     if("cross2" %in% class(probs))
@@ -96,8 +89,6 @@ calc_kinship <-
         result <- calc_kinship_bychr(probs, chrs=chrs, scale=FALSE, quiet=quiet, cores=cores)
         K <- kinship_bychr2loco(result, allchr)
     }
-
-    if(normalize) K <- normalize_kinship(K)
 
     K
 }

@@ -1,3 +1,15 @@
+## qtl2geno 0.5-22 (2017-05-24)
+
+### New features
+
+- Added function `scale_kinship()` which converts a kinship matrix (or
+  a list of such, in the case of the "leave one chromosome out"
+  method) to be like a correlation matrix.
+
+- Removed the "normalize" argument from `calc_kinship()`, though left
+  the internal function `normalize_kinship()` in place, for now.
+
+
 ## qtl2geno 0.5-21 (2017-05-10)
 
 ### New features
