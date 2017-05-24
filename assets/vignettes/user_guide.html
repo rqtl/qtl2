@@ -74,7 +74,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We expect that basic analyses with R/qtl2 will generally be performed in “batch” (for example, on a cluster) rather than interactively. And so the software is split into three parts: <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans, and <a href="https://github.com/rqtl/qtl2plot">qtl2plot</a> for data visualization. A further package, <a href="https://github.com/rqtl/qtl2convert">qtl2convert</a>, contains functions for converting data among the R/qtl2, <a href="https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html">DOQTL</a>, and <a href="http://rqtl.org">R/qtl</a> formats, for example to convert genotype probabilities produced by DOQTL to the format needed by qtl2scan, or to convert qtl2scan results to the format produced by <code>scanone</code> in R/qtl, so that they may be graphed with the R/qtl functions.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<p>R/qtl2 is not yet available on <a href="https://cran.r-project.org">CRAN</a>, but can be installed from mini-CRAN at <a href="http://rqtl.org">rqtl.org</a>.</p>
+<p>R/qtl2 is not yet available on <a href="https://cran.r-project.org">CRAN</a>, but it can be installed from a mini-CRAN at <a href="http://rqtl.org">rqtl.org</a>.</p>
 <pre><code>install.packages(paste0(&quot;qtl2&quot;, c(&quot;geno&quot;, &quot;scan&quot;, &quot;plot&quot;, &quot;convert&quot;)),
                  repos=&quot;http://rqtl.org/qtl2cran&quot;)</code></pre>
 <p>This will also install a bunch of dependencies.</p>

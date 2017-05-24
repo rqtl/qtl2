@@ -39,7 +39,7 @@ Rqtl2 version 0.4 and the new format are in
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-can be installed from mini-CRAN at [rqtl.org](http://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
 
     install.packages(paste0("qtl2", c("geno", "scan", "plot", "convert")),
                      repos="http://rqtl.org/qtl2cran")
