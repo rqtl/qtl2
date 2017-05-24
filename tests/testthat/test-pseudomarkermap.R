@@ -1,6 +1,16 @@
 context("construction of pseudomarker map")
 suppressMessages(library(qtl))
 
+test_that("insert_pseudomarkers gives an error if the input is NULL", {
+    expect_error(insert_pseudomarkers(NULL, step=1))
+
+    library(qtl)
+    data(hyper)
+    expect_error(insert_pseudomarkers(hyper$gmap, step=1, error.prob=0.01))
+
+})
+
+
 test_that("grid-based version works in simple case", {
 
     # equally-spaced map

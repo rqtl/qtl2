@@ -9,6 +9,11 @@
 - Removed the "normalize" argument from `calc_kinship()`, though left
   the internal function `normalize_kinship()` in place, for now.
 
+### Minor changes
+
+- `insert_pseudomarkers` now gives an error if the input `map` is
+  `NULL`.
+
 
 ## qtl2geno 0.5-21 (2017-05-10)
 

@@ -49,6 +49,9 @@ insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
          pseudomarker_map=NULL, tol=0.01)
 {
+    if(is.null(map))
+        stop("Input map is NULL")
+
     # is input not a map but a cross2 object?
     cl <- class(map)
     if(length(cl)==1 && cl=="cross2") {
