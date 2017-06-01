@@ -19,7 +19,6 @@ Imports:
 License: GPL-3
 URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2
 BugReports: https://github.com/rqtl/qtl2/issues
-VignetteBuilder: knitr
 LazyData: true
 Encoding: UTF-8
 RoxygenNote: 6.0.1
