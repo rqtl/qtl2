@@ -1,0 +1,19 @@
+language: r
+sudo: false
+cache: packages
+
+r_packages:
+ - devtools
+
+r_github_packages:
+ - rqtl/qtl2geno
+ - rqtl/qtl2scan
+ - rqtl/qtl2plot
+ - rqtl/qtl2convert
+
+warnings_are_errors: true
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
