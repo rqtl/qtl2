@@ -20,7 +20,11 @@ Suggests:
     roxygen2,
     qtl2geno (>= 0.5-4)
 License: GPL-3
-URL: http://kbroman.org/qtl2
+URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2plot
+BugReports: https://github.com/rqtl/qtl2plot/issues
 LinkingTo: Rcpp
 LazyData: true
 RoxygenNote: 6.0.1
+Remotes:
+    rqtl/qtl2scan,
+    rqtl/qtl2geno
