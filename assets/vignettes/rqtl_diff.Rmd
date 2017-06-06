@@ -89,8 +89,8 @@ periods replaced by underscores. For example:
 We're no longer storing intermediate calculations
 as part of the cross object. For example, `calc_genoprob()`, to
 calculate QTL genotype probabilities given the observed
-marker data, returns a list that includes the probabilities and the
-related map. `scan1()`, to perform a genome scan, takes these
+marker data, returns a list with the probabilities.
+`scan1()`, to perform a genome scan, takes these
 probabilities plus a phenotype matrix.
 
 ## Use of individual identifiers for aligning data
