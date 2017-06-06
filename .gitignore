@@ -2,3 +2,4 @@ assets/vignettes/*.md
 _site
 *.Rout
 Gemfile.lock
+assets/vignettes/diag_cache
