@@ -66,8 +66,14 @@ saved, and that the genome scans with qtl2scan will be performed in
 "batch" (e.g., on a cluster) and also saved, and that interactive
 analyses will mostly be in the data visualizations with qtl2plot.
 
-If it's confusing which function is in which package, consider just
-loading all of the new packages.
+It can be confusing to remember which function is in which package.
+For this reason, we created an additional, largely empty
+package [qtl2](https://github.com/rqtl/qtl2). If you load qtl2 with
+`library(qtl2)`, the three main packages,
+[qtl2geno](https://github.com/rqtl/qtl2geno),
+[qtl2scan](https://github.com/rqtl/qtl2scan), and
+[qtl2plot](https://github.com/rqtl/qtl2plot), will all be loaded.
+
 
 ## New functions names
 

@@ -75,17 +75,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>R/qtl2 is not yet available on <a href="https://cran.r-project.org">CRAN</a>, but it can be installed from a mini-CRAN at <a href="http://rqtl.org">rqtl.org</a>.</p>
-<pre><code>install.packages(paste0(&quot;qtl2&quot;, c(&quot;geno&quot;, &quot;scan&quot;, &quot;plot&quot;, &quot;convert&quot;)),
-                 repos=&quot;http://rqtl.org/qtl2cran&quot;)</code></pre>
-<p>This will also install a bunch of dependencies.</p>
-<p>Alternatively, it can be installed from source on <a href="https://github.com/rqtl">GitHub</a>. (But note that compiling the C++ code can be rather slow.)</p>
+<pre><code>install.packages(&quot;qtl2&quot;, repos=&quot;http://rqtl.org/qtl2cran&quot;)</code></pre>
+<p>The <a href="https://github.com/rqtl/qtl2">qtl2</a> package is inspired by the <a href="https://cran.r-project.org/package=tidyverse">tidyverse package</a>; it is basically empty, but when you install it, the <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>, <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>, <a href="https://github.com/rqtl/qtl2plot">qtl2plot</a>, and <a href="https://github.com/rqtl/qtl2convert">qtl2convert</a> packages, plus a bunch of dependencies, will be installed.</p>
+<p>Alternatively, you can install R/qtl2 from its source on <a href="https://github.com/rqtl">GitHub</a>. (But note that compiling the C++ code can be rather slow.)</p>
 <p>On <em>Windows</em>, you’ll need <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.</p>
 <p>On <em>Mac OS X</em>, you’ll need the <a href="https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/">command-line developer tools</a>, as well as <a href="https://gcc.gnu.org/wiki/GFortranBinaries#MacOS">gfortran</a>.</p>
 <p>You then need to install the <a href="https://github.com/hadley/devtools">devtools</a> package, plus a set of package dependencies: <a href="https://cran.r-project.org/package=yaml">yaml</a>, <a href="https://cran.r-project.org/package=jsonlite">jsonlite</a>, <a href="https://cran.r-project.org/package=data.table">data.table</a>, and <a href="https://github.com/RcppCore/RcppEigen">RcppEigen</a>. (Additional, secondary dependencies will also be installed.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;yaml&quot;</span>, <span class="st">&quot;jsonlite&quot;</span>, <span class="st">&quot;data.table&quot;</span>, <span class="st">&quot;RcppEigen&quot;</span>))</code></pre></div>
+<pre><code>install.packages(c(&quot;devtools&quot;, &quot;yaml&quot;, &quot;jsonlite&quot;, &quot;data.table&quot;, &quot;RcppEigen&quot;))</code></pre>
 <p>Finally, install R/qtl2 using <code>devtools::install_github()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
-<span class="kw">install_github</span>(<span class="kw">paste0</span>(<span class="st">&quot;rqtl/qtl2&quot;</span>, <span class="kw">c</span>(<span class="st">&quot;geno&quot;</span>, <span class="st">&quot;scan&quot;</span>, <span class="st">&quot;plot&quot;</span>, <span class="st">&quot;convert&quot;</span>)))</code></pre></div>
+<pre><code>library(devtools)
+install_github(&quot;rqtl/qtl2&quot;)</code></pre>
 </div>
 <div id="data-file-format" class="section level2">
 <h2>Data file format</h2>
@@ -101,6 +100,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>A big advantage of this control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. So you can read in data like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre></div>
+<p><em>Note</em>: it can sometimes confusing which packages you need to load. If you install the (largely empty) <a href="https://github.com/rqtl/qtl2">qtl2</a> package, you can type just</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2)</code></pre></div>
+<p>and the three main packages, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>, <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>, and <a href="https://github.com/rqtl/qtl2plot">qtl2plot</a>, will be loaded.</p>
 <p>The large number of files is a bit cumbersome, so we’ve made it possible to use a <a href="https://en.wikipedia.org/wiki/Zip_(file_format)">zip file</a> containing all of the data files, and to read that zip file directly. There’s even a function for creating the zip file:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">zip_datafiles</span>(<span class="st">&quot;~/my_data/grav2.yaml&quot;</span>)</code></pre></div>
 <p>This <code>zip_datafiles()</code> function will read the control file to identify all of the relevant data files and then zip them up into a file with the same name and location, but with the extension <code>.zip</code> rather than <code>.yaml</code> or <code>.json</code>.</p>
@@ -127,6 +129,7 @@ grav2 &lt;-<span class="st"> </span><span class="kw">read_cross2</span>( <span c
 <p>We’ll use the <a href="https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron">iron dataset</a> from <a href="https://www.ncbi.nlm.nih.gov/pubmed/16799992">Grant et al. (2006) Hepatology 44:174-185</a> (an intercross) as an example. We first load the data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qtl2geno)
 iron &lt;-<span class="st"> </span><span class="kw">read_cross2</span>( <span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;iron.zip&quot;</span>, <span class="dt">package=</span><span class="st">&quot;qtl2geno&quot;</span>) )</code></pre></div>
+<p>(<em>Note</em>: you can use <code>library(qtl2)</code> to load the three main packages, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>, <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>, and <a href="https://github.com/rqtl/qtl2plot">qtl2plot</a>, all at once.)</p>
 <p>We then use <code>insert_pseudomarkers()</code> to insert pseudomarkers into the genetic map, which we grab from the <code>iron</code> object as <code>iron$gmap</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map &lt;-<span class="st"> </span><span class="kw">insert_pseudomarkers</span>(iron$gmap, <span class="dt">step=</span><span class="dv">1</span>)</code></pre></div>
 <p>And next we use <code>calc_genoprob()</code> to calculate the QTL genotype probabilities.</p>
