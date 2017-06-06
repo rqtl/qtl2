@@ -1,3 +1,10 @@
+## qtl2geno 0.5-23 (2017-06-05)
+
+### Minor changes
+
+- Revised installation instructions.
+
+
 ## qtl2geno 0.5-22 (2017-05-24)
 
 ### New features
