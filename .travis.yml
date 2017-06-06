@@ -17,3 +17,8 @@ notifications:
   email:
     on_success: change
     on_failure: always
+
+# only us travis on master branch
+branches:
+  only:
+  - master
