@@ -1,6 +1,6 @@
 Package: qtl2
-Version: 0.5-1
-Date: 2017-05-31
+Version: 0.5-2
+Date: 2017-06-05
 Title: Easily Install and Load R/qtl2
 Description: R/qtl2 is a set of packages that are used together to
     perform QTL analysis. It is a reimplementation of the R/qtl

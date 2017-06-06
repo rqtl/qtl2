@@ -34,12 +34,19 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
 
-    install.packages(paste0("qtl2", c("geno", "scan", "plot", "convert")),
-                     repos="http://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 
-This will also install a bunch of dependencies.
+The [qtl2](https://github.com/rqtl/qtl2) package is
+inspired by the
+[tidyverse package](https://cran.r-project.org/package=tidyverse);
+it is basically empty, but when you install it, the
+[qtl2geno](https://github.com/rqtl/qtl2geno),
+[qtl2scan](https://github.com/rqtl/qtl2scan),
+[qtl2plot](https://github.com/rqtl/qtl2plot), and
+[qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
+bunch of dependencies, will be installed.
 
-Alternatively, it can be installed from source on
+Alternatively, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
 code can be rather slow.)
 
@@ -62,7 +69,7 @@ and [RcppEigen](https://github.com/RcppCore/RcppEigen).
 Finally, install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
-    install_github(paste0("rqtl/qtl2", c("geno", "scan", "plot", "convert")))
+    install_github("rqtl/qtl2")
 
 ---
 
