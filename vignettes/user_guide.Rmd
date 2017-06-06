@@ -38,12 +38,19 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
 
-    install.packages(paste0("qtl2", c("geno", "scan", "plot", "convert")),
-                     repos="http://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 
-This will also install a bunch of dependencies.
+The [qtl2](https://github.com/rqtl/qtl2) package is
+inspired by the
+[tidyverse package](https://cran.r-project.org/package=tidyverse);
+it is basically empty, but when you install it, the
+[qtl2geno](https://github.com/rqtl/qtl2geno),
+[qtl2scan](https://github.com/rqtl/qtl2scan),
+[qtl2plot](https://github.com/rqtl/qtl2plot), and
+[qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
+bunch of dependencies, will be installed.
 
-Alternatively, it can be installed from source on
+Alternatively, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
 code can be rather slow.)
 
@@ -61,16 +68,12 @@ package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 and [RcppEigen](https://github.com/RcppCore/RcppEigen).
 (Additional, secondary dependencies will also be installed.)
 
-```{r install_devtools_and_dep, eval=FALSE}
-install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
-```
+    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
 
 Finally, install R/qtl2 using `devtools::install_github()`.
 
-```{r install_qtl2, eval=FALSE}
-library(devtools)
-install_github(paste0("rqtl/qtl2", c("geno", "scan", "plot", "convert")))
-```
+    library(devtools)
+    install_github("rqtl/qtl2")
 
 
 ## Data file format
@@ -121,6 +124,19 @@ control file. So you can read in data like this:
 library(qtl2geno)
 grav2 <- read_cross2("~/my_data/grav2.yaml")
 ```
+
+_Note_: it can sometimes confusing which packages you need to load. If
+you install the (largely empty) [qtl2](https://github.com/rqtl/qtl2)
+package, you can type just
+
+```{r library_qtl2, eval=FALSE}
+library(qtl2)
+```
+
+and the three main packages,
+[qtl2geno](https://github.com/rqtl/qtl2geno),
+[qtl2scan](https://github.com/rqtl/qtl2scan), and
+[qtl2plot](https://github.com/rqtl/qtl2plot), will be loaded.
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
@@ -219,6 +235,12 @@ from
 library(qtl2geno)
 iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2geno") )
 ```
+
+(_Note_: you can use `library(qtl2)` to load the
+three main packages,
+[qtl2geno](https://github.com/rqtl/qtl2geno),
+[qtl2scan](https://github.com/rqtl/qtl2scan), and
+[qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
 
 We then use `insert_pseudomarkers()` to insert pseudomarkers into the
 genetic map, which we grab from the `iron` object as `iron$gmap`:

@@ -1,3 +1,12 @@
+## qtl2scan 0.5-14 (2017-06-05)
+
+### Minor changes
+
+- Revised installation instructions.
+
+- Small changes to user guide regarding use of `library(qtl2)`.
+
+
 ## qtl2scan 0.5-13 (2017-05-03)
 
 ### Bug fixes
