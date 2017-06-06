@@ -1,3 +1,10 @@
+## qtl2plot 0.5-7 (2017-06-05)
+
+### Minor changes
+
+- Revised installation instructions.
+
+
 ## qtl2plot 0.5-6 (2017-04-29)
 
 ### Minor changes
