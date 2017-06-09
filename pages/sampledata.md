@@ -15,7 +15,7 @@ on the new data file format are described in
 For simple crosses (such as a backcross or intercross), one can
 continue to use the [old R/qtl formats](http://rqtl.org/sampledata/),
 load them with `qtl::read.cross()`, and then convert the data to the
-new format with `qtl2::convert2cross2()`.
+new format with `qtl2geno::convert2cross2()`.
 
 The following are sample input data files in the new R/qtl2 format.
 Also see <https://github.com/rqtl/qtl2data>.
