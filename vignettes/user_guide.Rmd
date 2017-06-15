@@ -1020,7 +1020,7 @@ of the locus.
 
 Well, actually, we first need to find the location of the inferred
 QTL.  The peak LOD score on chromosome 2 occurs at
-`r round(max(out, map, chr="2")$pos, 1)` cM. But to find nearby SNPs, we really want
+`r round(max(out, DOex$gmap, chr="2")$pos, 1)` cM. But to find nearby SNPs, we really want
 to know the Mbp position. The calculations were only performed at the
 marker positions, and so we need to find the peak marker and then
 find it's physical location:
