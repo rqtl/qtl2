@@ -346,18 +346,19 @@ function(x, ...)
 {
     cat('Object of class cross2 (crosstype "', x$crosstype, '")\n\n', sep='')
 
-    toprint <- c("\bTotal individuals"=           x$nind,
-                 "\bNo. genotyped individuals"=   x$nind_geno,
-                 "\bNo. phenotyped individuals"=  x$nind_pheno,
-                 "\bNo. with both geno & pheno"=  x$nind_gnp,
-                 "\nNo. phenotypes"=              x$npheno,
-                 "\bNo. covariates"=              x$ncovar,
-                 "\bNo. phenotype covariates"=    x$nphenocovar,
-                 "\nNo. chromosomes"=             x$nchr,
-                 "\bTotal markers"=               x$totmar)
+    toprint <- c("Total individuals"=           x$nind,
+                 "No. genotyped individuals"=   x$nind_geno,
+                 "No. phenotyped individuals"=  x$nind_pheno,
+                 "No. with both geno & pheno"=  x$nind_gnp,
+                 "\nNo. phenotypes"=            x$npheno,
+                 "No. covariates"=              x$ncovar,
+                 "No. phenotype covariates"=    x$nphenocovar,
+                 "\nNo. chromosomes"=           x$nchr,
+                 "Total markers"=               x$totmar)
 
     print_aligned(toprint)
-    cat("No. markers by chr:\n")
+
+    cat("\nNo. markers by chr:\n")
     print(x$nmar)
 
     invisible(x)
@@ -366,13 +367,18 @@ function(x, ...)
 print_aligned <-
 function(x)
 {
-    ndig <- ceiling(log10(max(x)))
+    newline_before <- grepl("\\n", names(x))
+    names(x) <- sub("^\\n", "", names(x))
+
+    ndig <- ceiling(log10(max(x, na.rm=TRUE)))
     n.char <- max(nchar(names(x)))
 
     format <- paste0("%-", n.char+1, "s  %", ndig, "d\n")
 
-    for(i in seq(along=x))
+    for(i in seq(along=x)) {
+        if(newline_before[i]) cat("\n")
         cat(sprintf(format, names(x)[i], x[i]))
+    }
 }
 
 # is an object a cross2 object?

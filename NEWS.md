@@ -1,3 +1,11 @@
+## qtl2geno 0.5-24 (2017-06-12)
+
+### Bug fixes
+
+- Fix formatting problem in output of `summary.cross2()` within
+  RStudio.
+
+
 ## qtl2geno 0.5-23 (2017-06-05)
 
 ### Minor changes
