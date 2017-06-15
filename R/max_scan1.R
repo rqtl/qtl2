@@ -52,6 +52,10 @@
 max_scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
+    if(nrow(scan1_output) != length(unlist(map)))
+        stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
+             length(unlist(map)), "]")
+
     thechr <- map2chr(map)
     thepos <- map2pos(map)
 
