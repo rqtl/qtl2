@@ -56,13 +56,13 @@ plot_genes <-
     internal_plot_genes <-
         function(xlab="Position (Mbp)", xaxs="i",
                  bgcolor="gray92", xat=NULL,
-                 mgp=c(0,0.2,0),
+                 mgp=c(1.6,0.2,0),
                  vlines=NULL, vlines.col="white",
                  vlines.lwd=1, vlines.lty=1)
         {
             plot(0, 0, type="n",
                  xlim=xlim,   xlab=xlab, xaxs=xaxs, xaxt="n",
-                 ylim=c(1,0), ylab="", yaxs="i", yaxt="n")
+                 ylim=c(1,0), ylab="", yaxs="i", yaxt="n", mgp=mgp)
 
             # gray background
             u <- par("usr")
