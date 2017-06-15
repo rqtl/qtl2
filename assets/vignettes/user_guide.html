@@ -431,7 +431,7 @@ apr &lt;-<span class="st"> </span><span class="kw">genoprob_to_alleleprob</span>
 <div id="snp-associations" class="section level3">
 <h3>SNP associations</h3>
 <p>Okay, now finally we get to the SNP associations. We have a large peak on chromosome 2, and we want to look at individual SNPs in the region of the locus.</p>
-<p>Well, actually, we first need to find the location of the inferred QTL. The peak LOD score on chromosome 2 occurs at 48.3 cM. But to find nearby SNPs, we really want to know the Mbp position. The calculations were only performed at the marker positions, and so we need to find the peak marker and then find it’s physical location:</p>
+<p>Well, actually, we first need to find the location of the inferred QTL. The peak LOD score on chromosome 2 occurs at 52.4 cM. But to find nearby SNPs, we really want to know the Mbp position. The calculations were only performed at the marker positions, and so we need to find the peak marker and then find it’s physical location:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">marker &lt;-<span class="st"> </span><span class="kw">rownames</span>(<span class="kw">max</span>(out, DOex$gmap, <span class="dt">chr=</span><span class="st">&quot;2&quot;</span>))
 peak_Mbp &lt;-<span class="st"> </span>DOex$pmap[[<span class="st">&quot;2&quot;</span>]][marker]</code></pre></div>
 <p>The marker is at 97.5 Mbp.</p>
