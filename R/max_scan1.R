@@ -52,6 +52,11 @@
 max_scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
+    # align scan1_output and map
+    tmp <- align_scan1_map(scan1_output, map)
+    scan1_output <- tmp$scan1
+    map <- tmp$map
+
     if(nrow(scan1_output) != length(unlist(map)))
         stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
              length(unlist(map)), "]")

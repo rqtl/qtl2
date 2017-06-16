@@ -51,6 +51,13 @@
 subset_scan1 <-
     function(x, map=NULL, chr=NULL, lodcolumn=NULL, ...)
 {
+    # align scan1 output and map
+    if(!is.null(map)) {
+        tmp <- align_scan1_map(x, map)
+        x <- tmp$scan1
+        map <- tmp$map
+    }
+
     x_attr <- attributes(x)
     x_attrnam <- names(x_attr)
     x_class <- class(x)

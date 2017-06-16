@@ -107,10 +107,6 @@ test_that("find_peaks works", {
                        ci_lo=c(53.3, 12.1, 39.1, 26.0, 21.5, 39.4, 25.1, 28.3,  9.0, 53.6),
                        ci_hi=c(65.3, 28.1, 53.6, 52.0, 40.4, 49.2, 32.6, 38.3, 17.0, 59.6)))
 
-    # expect error if output and map are not aligned
-    expect_error( find_peaks(subset(out, map, chr="2"), map) )
-    expect_error( find_peaks(out, map[2]) )
-
 })
 
 test_that("lod_int works", {
@@ -136,10 +132,6 @@ test_that("lod_int works", {
     expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
     rownames(expected4) <- 1
     expect_equal(lod_int(out, map, 8, 2), expected4)
-
-    # expect error if output and map are not aligned
-    expect_error( lod_int(subset(out, map, chr="2"), map) )
-    expect_error( lod_int(out, map[2]) )
 
 })
 
@@ -167,10 +159,6 @@ test_that("bayes_int works", {
     expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
     rownames(expected4) <- 1
     expect_equal(bayes_int(out, map, 8, 2), expected4)
-
-    # expect error if output and map are not aligned
-    expect_error( bayes_int(subset(out, map, chr="2"), map) )
-    expect_error( bayes_int(out, map[2]) )
 
 })
 
