@@ -78,6 +78,11 @@ plot_coef <-
 {
     if(is.null(map)) stop("map is NULL")
 
+    # align scan1 output and map
+    tmp <- align_scan1_map(x, map)
+    x <- tmp$scan1
+    map <- tmp$map
+
     if(nrow(x) != length(unlist(map)))
         stop("nrow(x) [", nrow(x), "] != number of positions in map [",
              length(unlist(map)), "]")
