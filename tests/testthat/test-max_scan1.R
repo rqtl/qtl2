@@ -45,10 +45,6 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     rownames(expected) <- "D2Mit17"
     expect_equal(max(out, map, chr="2"), expected)
 
-    # should throw an error if out and map are not aligned
-    expect_error( max(subset(out, map, chr="2"), map) )
-    expect_error( max(out, map[2]) )
-
 })
 
 test_that("maxlod works for intercross with two phenotypes", {
