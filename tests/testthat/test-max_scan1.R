@@ -45,6 +45,15 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     rownames(expected) <- "D2Mit17"
     expect_equal(max(out, map, chr="2"), expected)
 
+    # test that it works if output or map are subsetted
+    expect_equal( max(out, map, chr="2"), max(subset(out, map, chr="2"), map) )
+    expect_equal( max(out, map, chr="2"), max(out, map["2"]) )
+
+    # test that it works if output has rows shuffled
+    out_shuffled <- out[sample(1:nrow(out)),,drop=FALSE]
+    class(out_shuffled) <- c("scan1", "matrix")
+    expect_equal( max(out_shuffled, map), max(out, map))
+
 })
 
 test_that("maxlod works for intercross with two phenotypes", {
@@ -83,5 +92,14 @@ test_that("maxlod works for intercross with two phenotypes", {
     # really could be using integers
     expect_equal( maxlod(out, map, c(2,8, 11)),
                  max( maxlod(out, map, 2), maxlod(out, map, 8), maxlod(out, map, 11) ) )
+
+    # test that it works if output or map are subsetted
+    expect_equal( max(out, map, chr="2"), max(subset(out, map, chr="2"), map) )
+    expect_equal( max(out, map, chr="2"), max(out, map["2"]) )
+
+    # test that it works if output has rows shuffled
+    out_shuffled <- out[sample(1:nrow(out)),,drop=FALSE]
+    class(out_shuffled) <- c("scan1", "matrix")
+    expect_equal( max(out_shuffled, map), max(out, map))
 
 })

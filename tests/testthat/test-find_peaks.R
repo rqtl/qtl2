@@ -107,6 +107,15 @@ test_that("find_peaks works", {
                        ci_lo=c(53.3, 12.1, 39.1, 26.0, 21.5, 39.4, 25.1, 28.3,  9.0, 53.6),
                        ci_hi=c(65.3, 28.1, 53.6, 52.0, 40.4, 49.2, 32.6, 38.3, 17.0, 59.6)))
 
+
+    # test that it works if output or map are subsetted
+    expect_equal( find_peaks(out, map["2"]), find_peaks(subset(out, map, chr="2"), map) )
+
+    # test that it works if output has rows shuffled
+    out_shuffled <- out[sample(1:nrow(out)),,drop=FALSE]
+    class(out_shuffled) <- c("scan1", "matrix")
+    expect_equal( find_peaks(out_shuffled, map), find_peaks(out, map))
+
 })
 
 test_that("lod_int works", {
@@ -132,6 +141,9 @@ test_that("lod_int works", {
     expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
     rownames(expected4) <- 1
     expect_equal(lod_int(out, map, 8, 2), expected4)
+
+    expect_equal( lod_int(out, map, chr="2"), lod_int(subset(out, map, chr="2"), map, chr="2"))
+    expect_equal( lod_int(out, map, chr="2"), lod_int(out, map["2"], chr="2"))
 
 })
 
@@ -159,6 +171,9 @@ test_that("bayes_int works", {
     expected4 <- cbind(ci_lo=0.0, pos=13.6, ci_hi=32.7)
     rownames(expected4) <- 1
     expect_equal(bayes_int(out, map, 8, 2), expected4)
+
+    expect_equal( bayes_int(out, map, chr="2"), bayes_int(subset(out, map, chr="2"), map, chr="2"))
+    expect_equal( bayes_int(out, map, chr="2"), bayes_int(out, map["2"], chr="2"))
 
 })
 

@@ -48,4 +48,13 @@ test_that("align_scan1_map works", {
     attr(expected_map, "is_x_chr") <- attr(map, "is_x_chr")[7]
     expect_equal( result$map, expected_map )
 
+    # shuffled output
+    out_attr <- attributes(out)
+    out_shuffled <- out[sample(1:nrow(out)),,drop=FALSE]
+    for(a in c("sample_size", "class"))
+        attr(out_shuffled, a) <- out_attr[[a]]
+    result <- align_scan1_map(out_shuffled, map)
+    expect_equal( result$scan1, out )
+    expect_equal( result$map, map )
+
 })
