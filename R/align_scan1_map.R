@@ -13,6 +13,9 @@ align_scan1_map <-
        all(scan1_names == map_names))
         return(list(scan1_output=scan1_output, map=map))
 
+    if(!any(scan1_names %in% map_names))
+        stop("scan1 output and map have no markers in common")
+
     # subset scan1_output to markers in the map
     #    and use order as in map
     if(any(!(scan1_names %in% map_names))) {
