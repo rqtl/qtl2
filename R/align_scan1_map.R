@@ -20,14 +20,12 @@ align_scan1_map <-
 
     # subset scan1_output to markers in the map
     #    and use order as in map
-    if(any(!(scan1_names %in% map_names))) {
-        scan1_attr <- attributes(scan1_output)
-        names_ordered <- map_names[map_names %in% scan1_names]
-        scan1_output <- scan1_output[names_ordered,,drop=FALSE]
-        for(a in c("SE", "sample_size", "hsq", "class"))
-            attr(scan1_output, a) <- scan1_attr[[a]]
-        scan1_names <- rownames(scan1_output)
-    }
+    scan1_attr <- attributes(scan1_output)
+    names_ordered <- map_names[map_names %in% scan1_names]
+    scan1_output <- scan1_output[names_ordered,,drop=FALSE]
+    for(a in c("SE", "sample_size", "hsq", "class"))
+        attr(scan1_output, a) <- scan1_attr[[a]]
+    scan1_names <- rownames(scan1_output)
 
     # subset map to markers in scan1_output
     if(any(!(map_names %in% scan1_names))) {
