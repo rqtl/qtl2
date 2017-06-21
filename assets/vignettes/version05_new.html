@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -72,7 +72,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <p>The internal data structures for <a href="http://kbroman.org/qtl2">R/qtl2</a> version 0.5 have undergone major changes. In addition, in several places, QTL analysis now requires additional steps and the need to keep track of additional objects.</p>
 <p>The main differences are that the genotype probabilities from <code>qtl2geno::calc_genoprob</code> and the genome scan results from <code>qtl2scan::scan1</code> (as well as estimated QTL effects from <code>qtl2scan::scan1coef</code> and <code>qtl2scan::scan1blup</code>) no longer include the genetic map of marker/pseudomarker locations.</p>
-<p>To convert data structures from the old format to the new format, we provide functions <code>convert_probs()</code> and <code>convert_scan1()</code> in the file <a href="../assets/convert_04_to_05.R"><code>convert_04_to_05.R</code></a>.</p>
+<p>To convert data structures from the old format to the new format, we provide functions <code>convert_probs()</code> and <code>convert_scan1()</code> in the file <a href="../convert_04_to_05.R"><code>convert_04_to_05.R</code></a>.</p>
 <div id="genotype-probabilities" class="section level2">
 <h2>Genotype probabilities</h2>
 <p>First, the genotype probabilities produced by <code>qtl2geno::calc_genoprob</code> no longer include the genetic map of marker/pseudomarker positions, and calculating these probabilities generally requires one extra step.</p>
@@ -218,7 +218,7 @@ snpinfo &lt;-<span class="st"> </span><span class="kw">readRDS</span>(tmpfile)
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

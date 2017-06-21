@@ -22,7 +22,7 @@ genetic map of marker/pseudomarker locations.
 
 To convert data structures from the old format to the new format, we
 provide functions `convert_probs()` and `convert_scan1()` in the file
-[`convert_04_to_05.R`](../assets/convert_04_to_05.R).
+[`convert_04_to_05.R`](../convert_04_to_05.R).
 
 
 ## Genotype probabilities
