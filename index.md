@@ -36,6 +36,18 @@ Rqtl2 version 0.4 and the new format are in
 
 ---
 
+### Discussion group
+
+For discussion/questions about R/qtl2, join the
+[rqtl2-disc google group](https://groups.google.com/forum/#!forum/rqtl2-disc).
+Or join [rqtl-announce](https://groups.google.com/forum/#!forum/rqtl-announce)
+for announcements about R/qtl and R/qtl2.
+(We'll try to keep the original
+[rqtl-disc group](https://groups.google.com/forum/#!forum/rqtl-disc)
+for the discussion/questions about the original R/qtl only.)
+
+---
+
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
