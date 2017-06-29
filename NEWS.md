@@ -1,3 +1,13 @@
+## qtl2scan 0.5-16 (2017-06-29)
+
+### Minor changes
+
+- For the example contrasts in `scan1coef`, `scan1blup`, and
+  `fit1`, the contrasts for the additive effect in an intercross
+  should be `(-1,0,1)` not `(-0.5,0,0.5)`. Also fixed in the user
+  guide.
+
+
 ## qtl2scan 0.5-14 (2017-06-05)
 
 ### Minor changes

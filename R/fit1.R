@@ -20,7 +20,7 @@
 #' for individual identifiers. Ignored if \code{kinship} is provided.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
-#' \code{cbind(c(1,1,1), c(-0.5, 0, 0.5), c(-0.5, 1, -0.5))} to get
+#' \code{cbind(c(1,1,1), c(-1, 0, 1), c(-0.5, 1, -0.5))} to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param model Indicates whether to use a normal model (least
