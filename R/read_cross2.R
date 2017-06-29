@@ -374,9 +374,11 @@ function(geno, genotypes)
 pheno2matrix <-
 function(pheno)
 {
-    for(i in 1:ncol(pheno))
-        pheno[,i] <- as.numeric(pheno[,i])
-    pheno <- as.matrix(pheno)
+    nc <- ncol(pheno)
+    dn <- dimnames(pheno)
+    pheno <- matrix(as.numeric(unlist(pheno)), ncol=nc)
+    dimnames(pheno) <- dn
+
     storage.mode(pheno) <- "double"
 
     pheno

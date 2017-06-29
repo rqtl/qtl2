@@ -1,8 +1,9 @@
-#' Read a csv file
+#' Read a csv file that has numeric columns
 #'
 #' Read a csv file via \code{\link[data.table]{fread}} using a
 #' particular set of options, including the ability to transpose the
-#' result.
+#' result. This version assumes that the contents other than the first
+#' column and the header row are strictly numeric.
 #'
 #' @param filename Name of input file
 #' @param sep Field separator
@@ -19,14 +20,14 @@
 #'
 #' The first column is taken to be a set of row names
 #'
-#' @seealso \code{\link{read_csv_numer}}
+#' @seealso \code{\link{read_csv}}
 #'
 #' @importFrom data.table fread
 #' @export
 #'
 #' @examples
 #' \dontrun{mydata <- read_csv("myfile.csv", transpose=TRUE)}
-read_csv <-
+read_csv_numer <-
     function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE,
              rownames_included=TRUE)
 {
@@ -35,10 +36,21 @@ read_csv <-
     header <- read_header(filename, comment.char=comment.char)
     expected_dim <- extract_dim_from_header(header)
 
+    # determine expected columns
+    expected_ncol <- expected_dim[2]
+    if(is.na(expected_ncol)) { # no header about no. columns
+        x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
+                               verbose=FALSE, showProgress=FALSE, data.table=FALSE,
+                               nrow=1, skip=length(header))
+        expected_ncol <- ncol(x)
+    }
+    if(expected_ncol == 1) colClasses <- "character"
+    else colClasses <- c("character", rep("numeric", expected_ncol-1))
+
     # read the data
     x <- data.table::fread(filename, na.strings=na.strings, sep=sep, header=TRUE,
                            verbose=FALSE, showProgress=FALSE, data.table=FALSE,
-                           colClasses="character", skip=length(header))
+                           colClasses=colClasses, skip=length(header))
 
     # check that number of rows and columns match expected from header
     for(i in 1:2) {

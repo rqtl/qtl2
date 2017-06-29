@@ -1,3 +1,14 @@
+## qtl2geno 0.5-25 (2017-06-29)
+
+### New features
+
+- Added function `read_csv_numer()` that is like `read_csv()` but
+  assumes that all columns expect the first are strictly numeric.
+  Now used by `read_pheno()` to vastly speed things up (because
+  otherwise I was assuming everything was character and then
+  converting, and that conversion to numeric was deathly slow).
+
+
 ## qtl2geno 0.5-24 (2017-06-12)
 
 ### Bug fixes
