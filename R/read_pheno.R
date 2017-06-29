@@ -96,6 +96,7 @@ read_pheno <-
     if(!quiet) message(" - Reading ", basename(file))
     pheno <- read_csv_numer(file, sep=sep, na.strings=na.strings,
                             comment.char=comment.char, transpose=transpose)
+    pheno <- as.matrix(pheno)
 
     # read phenocovarfile
     if(!is.null(phenocovarfile)) {
