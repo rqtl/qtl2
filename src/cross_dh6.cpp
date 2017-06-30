@@ -71,9 +71,9 @@ const double DH6::step(const int gen_left, const int gen_right, const double rec
         throw std::range_error("genotype value not allowed");
     #endif
 
-    static int k = cross_info[0]; // number of generations
+    const int k = cross_info[0]; // number of generations
 
-    static double p = (1.0 + (5.0-6.0*rec_frac)*pow(1.0-rec_frac, k-2))/6.0;
+    double p = (1.0 + (5.0-6.0*rec_frac)*pow(1.0-rec_frac, (double)(k-2)))/6.0;
 
     if(gen_left == gen_right)
         return log(p);
