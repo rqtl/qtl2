@@ -341,6 +341,13 @@ function(cross2)
                 for(i in seq(along=geno)) {
                     if(!check_founder_geno_size(crosstype, founder_geno[[i]], ncol(geno[[i]]))) {
                         result <- FALSE
+                        break
+                    }
+                }
+                for(i in seq(along=geno)) {
+                    if(ncol(geno[[i]]) != ncol(founder_geno[[i]])) {
+                        result <- FALSE
+                        warning("Mismatch in number of markers between geno and founder_geno on chr ", names(geno)[i])
                     }
                     else if(any(colnames(geno[[i]]) != colnames(founder_geno[[i]]))) {
                         result <- FALSE
