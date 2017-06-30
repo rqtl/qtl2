@@ -30,6 +30,7 @@
 #include "cross_risib4.h"
 #include "cross_risib8.h"
 #include "cross_magic19.h"
+#include "cross_dh6.h"
 
 QTLCross* QTLCross::Create(const String& crosstype)
 {
@@ -53,6 +54,7 @@ QTLCross* QTLCross::Create(const String& crosstype)
     if(crosstype=="risib4")  return new RISIB4();
     if(crosstype=="risib8")  return new RISIB8();
     if(crosstype=="magic19") return new MAGIC19();
+    if(crosstype=="dh6")     return new DH6();
 
     throw std::range_error("cross type not yet supported.");
     return NULL;
