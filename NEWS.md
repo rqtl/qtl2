@@ -6,6 +6,12 @@
   a set of maize MAGIC populations developed at the
   [Wisconsin Crop Innovation Center](https://cropinnovation.cals.wisc.edu/).
 
+### Minor changes
+
+- Added internal C++ function `check_founder_geno_size()` for checking
+  the dimensions of the founder genotype data from R, and added this
+  check to the `check_cross2()` function.
+
 
 ## qtl2geno 0.5-25 (2017-06-29)
 
