@@ -294,3 +294,28 @@ test_that("geno_names works", {
     expect_equal(geno_names("ail3", LETTERS[1:3], FALSE), auto)
     expect_equal(geno_names("ail3", LETTERS[1:3], TRUE), X)
 })
+
+
+
+test_that("nrec works", {
+
+    # autosome genotypes = 1:6
+    expected <- rbind(c(0,1,2,1,2,2),
+                      c(1,0,1,1,1,2),
+                      c(2,1,0,2,1,2),
+                      c(1,1,2,0,1,1),
+                      c(2,1,1,1,0,1),
+                      c(2,2,2,1,1,0))
+    for(i in 1:6)
+        for(j in 1:6) {
+            expect_equal(test_nrec("ail3", i, j, FALSE, FALSE, 0), expected[i,j])
+            expect_equal(test_nrec("ail3", i, j, TRUE, TRUE, 0), expected[i,j])
+        }
+
+    # X chromosome male
+    expected <- matrix(1, ncol=3, nrow=3) - diag(rep(1,3))
+    for(i in 1:3)
+        for(j in 1:3)
+            expect_equal(test_nrec("ail3", i+6, j+6, TRUE, FALSE, 0), expected[i,j])
+
+})
