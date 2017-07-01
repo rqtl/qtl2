@@ -112,6 +112,18 @@ bool need_founder_geno(const String& crosstype)
     return result;
 }
 
+// [[Rcpp::export]]
+bool check_founder_geno_size(const String& crosstype,
+                             const IntegerMatrix& founder_geno,
+                             const int n_markers)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    bool result = cross->check_founder_geno_size(founder_geno, n_markers);
+    delete cross;
+    return result;
+}
+
 // test calculation of vector of emit matrices
 // [[Rcpp::export]]
 std::vector<NumericMatrix> test_emitmatrix(const String& crosstype,

@@ -1,3 +1,19 @@
+## qtl2geno 0.5-26 (2017-06-29)
+
+### New features
+
+- Implemented two new crosstypes: `"dh6"` for 6-way doubled haploids (for
+  a set of maize MAGIC populations developed at the
+  [Wisconsin Crop Innovation Center](https://cropinnovation.cals.wisc.edu/))
+  and `ail3` for 3-way advanced intercross lines.
+
+### Minor changes
+
+- Added internal C++ function `check_founder_geno_size()` for checking
+  the dimensions of the founder genotype data from R, and added this
+  check to the `check_cross2()` function.
+
+
 ## qtl2geno 0.5-25 (2017-06-29)
 
 ### New features

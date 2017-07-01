@@ -173,6 +173,10 @@ need_founder_geno <- function(crosstype) {
     .Call('qtl2geno_need_founder_geno', PACKAGE = 'qtl2geno', crosstype)
 }
 
+check_founder_geno_size <- function(crosstype, founder_geno, n_markers) {
+    .Call('qtl2geno_check_founder_geno_size', PACKAGE = 'qtl2geno', crosstype, founder_geno, n_markers)
+}
+
 test_emitmatrix <- function(crosstype, error_prob, max_obsgeno, founder_geno, is_x_chr, is_female, cross_info) {
     .Call('qtl2geno_test_emitmatrix', PACKAGE = 'qtl2geno', crosstype, error_prob, max_obsgeno, founder_geno, is_x_chr, is_female, cross_info)
 }

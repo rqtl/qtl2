@@ -627,6 +627,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// check_founder_geno_size
+bool check_founder_geno_size(const String& crosstype, const IntegerMatrix& founder_geno, const int n_markers);
+RcppExport SEXP qtl2geno_check_founder_geno_size(SEXP crosstypeSEXP, SEXP founder_genoSEXP, SEXP n_markersSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP);
+    Rcpp::traits::input_parameter< const int >::type n_markers(n_markersSEXP);
+    rcpp_result_gen = Rcpp::wrap(check_founder_geno_size(crosstype, founder_geno, n_markers));
+    return rcpp_result_gen;
+END_RCPP
+}
 // test_emitmatrix
 std::vector<NumericMatrix> test_emitmatrix(const String& crosstype, const double error_prob, const int max_obsgeno, const IntegerMatrix& founder_geno, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
 RcppExport SEXP qtl2geno_test_emitmatrix(SEXP crosstypeSEXP, SEXP error_probSEXP, SEXP max_obsgenoSEXP, SEXP founder_genoSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {

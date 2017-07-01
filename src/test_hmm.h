@@ -35,6 +35,10 @@ bool test_founder_geno(const Rcpp::String& crosstype, const Rcpp::IntegerMatrix&
 
 bool need_founder_geno(const Rcpp::String& crosstype);
 
+bool check_founder_geno_size(const Rcpp::String& crosstype,
+                             const Rcpp::IntegerMatrix& founder_geno,
+                             const int n_markers);
+
 // test calculation of vector of emit matrices
 std::vector<Rcpp::NumericMatrix> test_emitmatrix(const Rcpp::String& crosstype,
                                                  const double error_prob,
