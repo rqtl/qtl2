@@ -21,7 +21,6 @@ const bool AIL3PK::check_geno(const int gen, const bool is_observed_value,
         else return false;
     }
 
-    const int n_alleles = 3;
     const int n_genoA = 9;
     const int n_genoX = 12;
 
@@ -63,7 +62,6 @@ const double AIL3PK::emit(const int obs_gen, const int true_gen, const double er
         throw std::range_error("genotype value not allowed");
     #endif
 
-    const int n_alleles = 3;
     const int n_geno = 9;
 
     if(obs_gen==0) return 0.0; // missing

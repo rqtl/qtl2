@@ -21,7 +21,6 @@ const bool AIL3::check_geno(const int gen, const bool is_observed_value,
         else return false;
     }
 
-    const int n_alleles = 3;
     const int n_genoA = 6;
     const int n_genoX = 9;
 
@@ -44,11 +43,6 @@ const double AIL3::init(const int true_gen,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    const int n_alleles = 3;
-    const int n_genoA = 6;
-    const int n_genoX = 9;
-
-
     if(!is_x_chr || is_female) { // autosome or female X
         if(mpp_is_het(true_gen, 3, false)) return log(2.0)-log(9.0);
         else return log(1.0)-log(9.0);
@@ -67,7 +61,6 @@ const double AIL3::emit(const int obs_gen, const int true_gen, const double erro
         throw std::range_error("genotype value not allowed");
     #endif
 
-    const int n_alleles = 3;
     const int n_geno = 6;
 
     if(obs_gen==0) return 0.0; // missing
