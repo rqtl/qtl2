@@ -93,8 +93,8 @@ const double AIL::init(const int true_gen,
 }
 
 const double AIL::emit(const int obs_gen, const int true_gen, const double error_prob,
-                      const IntegerVector& founder_geno, const bool is_x_chr,
-                      const bool is_female, const IntegerVector& cross_info)
+                       const IntegerVector& founder_geno, const bool is_x_chr,
+                       const bool is_female, const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
@@ -141,8 +141,8 @@ const double AIL::emit(const int obs_gen, const int true_gen, const double error
 
 
 const double AIL::step(const int gen_left, const int gen_right, const double rec_frac,
-                      const bool is_x_chr, const bool is_female,
-                      const IntegerVector& cross_info)
+                       const bool is_x_chr, const bool is_female,
+                       const IntegerVector& cross_info)
 {
     #ifndef NDEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -335,7 +335,7 @@ const double AIL::step(const int gen_left, const int gen_right, const double rec
 }
 
 const IntegerVector AIL::possible_gen(const bool is_x_chr, const bool is_female,
-                                     const IntegerVector& cross_info)
+                                      const IntegerVector& cross_info)
 {
     if(is_x_chr && !is_female) { // male X chromosome
         IntegerVector result = IntegerVector::create(AY,BY);
