@@ -45,7 +45,7 @@ const double AIL3PK::init(const int true_gen,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(is_x_chr || is_female) { // autosome or female X
+    if(!is_x_chr || is_female) { // autosome or female X
         return -log(9.0);
     }
     else { // male X
@@ -193,8 +193,8 @@ const double AIL3PK::step(const int gen_left, const int gen_right, const double 
         }
         double R = (1.0 - 3.0*pAA);
 
-        const IntegerVector alleles_left = mpp_decode_geno(gen_left, 3, false);
-        const IntegerVector alleles_right = mpp_decode_geno(gen_right, 3, false);
+        const IntegerVector alleles_left = mpp_decode_geno(gen_left, 3, true);
+        const IntegerVector alleles_right = mpp_decode_geno(gen_right, 3, true);
 
         if(alleles_left[0] == alleles_left[1]) { // homozygous
             if(alleles_right[0] == alleles_right[1]) { // homozygous
