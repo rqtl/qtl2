@@ -2,9 +2,10 @@
 
 ### New features
 
-- Implemented a new crosstype, `"dh6"` for 6-way doubled haploids, for
+- Implemented two new crosstypes: `"dh6"` for 6-way doubled haploids (for
   a set of maize MAGIC populations developed at the
-  [Wisconsin Crop Innovation Center](https://cropinnovation.cals.wisc.edu/).
+  [Wisconsin Crop Innovation Center](https://cropinnovation.cals.wisc.edu/))
+  and `ail3` for 3-way advanced intercross lines.
 
 ### Minor changes
 
