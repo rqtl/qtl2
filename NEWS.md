@@ -10,6 +10,10 @@
   should be `(-1,0,1)` not `(-0.5,0,0.5)`. Also fixed in the user
   guide.
 
+- In `subset_kinship`, if subsetting a decomposed kinship matrix
+  by individual, check whether perhaps it's not actually being changed
+  in which case just ignore the `ind` argument.
+
 
 ## qtl2scan 0.5-14 (2017-06-05)
 
