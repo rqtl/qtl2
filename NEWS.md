@@ -1,6 +1,9 @@
-## qtl2scan 0.5-16 (2017-06-29)
+## qtl2scan 0.5-18 (2016-07-04)
 
-### Minor changes
+### Bug fixes
+
+- Fix bug that prevented scan1() from being used with a decomposed
+  kinship matrix.
 
 - For the example contrasts in `scan1coef`, `scan1blup`, and
   `fit1`, the contrasts for the additive effect in an intercross

@@ -624,3 +624,16 @@ test_that("scan1 deals with mismatching individuals", {
     expect_equal(scan1(probs, iron$pheno, addcovar=X, intcovar=X, Xcovar=Xc[ind,]), expected)
 
 })
+
+test_that("scan1 can handle decomposed kinship matrix", {
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+
+    pr <- calc_genoprob(iron)
+    k <- calc_kinship(pr)
+    kd <- decomp_kinship(k)
+    expect_equal( scan1(pr, iron$pheno, kd),
+                  scan1(pr, iron$pheno, k) )
+
+})
