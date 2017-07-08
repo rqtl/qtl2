@@ -6,21 +6,23 @@ subset_kinship <-
 
     # already decomposed
     if(is_kinship_decomposed(kinship)) {
-        # maybe it's not really needing to be subset by individual
-        if(is_kinship_list(kinship)) {
-            k_ind <- rownames(kinship$vectors[[1]])
-        } else {
-            k_ind <- rownames(kinship$vectors)
-        }
-        new_ind <- subset_ind(ind, k_ind)
-        if(length(new_ind) != length(k_ind) ||
-           any(new_ind != k_ind)) {
-            stop("Can't subset decomposed kinship matrices by individual")
-        }
-        # otherwise, not really being subset so can ignore ind argument
+        if(!is.null(ind)) {
+            # maybe it's not really needing to be subset by individual
+            if(is_kinship_list(kinship)) {
+                k_ind <- rownames(kinship$vectors[[1]])
+            } else {
+                k_ind <- rownames(kinship$vectors)
+            }
+            new_ind <- subset_ind(ind, k_ind)
+            if(length(new_ind) != length(k_ind) ||
+               any(new_ind != k_ind)) {
+                stop("Can't subset decomposed kinship matrices by individual")
+            }
+            # otherwise, not really being subset so can ignore ind argument
 
-        if(!is_kinship_list(kinship)) { # can ignore chr argument
-            return(kinship)
+            if(!is_kinship_list(kinship)) { # can ignore chr argument
+                return(kinship)
+            }
         }
 
         if(!is.null(chr)) {
