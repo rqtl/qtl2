@@ -5,19 +5,32 @@ subset_kinship <-
     if(is.null(kinship)) return(NULL)
 
     # already decomposed
-    decomped <- attr(kinship, "eigen_decomp")
-    if(!is.null(decomped) && decomped) {
-        if(!is.null(ind))
-            stop("Can't subset decomposed kinship matrices by individual")
+    if(is_kinship_decomposed(kinship)) {
+        if(!is.null(ind)) {
+            # maybe it's not really needing to be subset by individual
+            if(is_kinship_list(kinship)) {
+                k_ind <- rownames(kinship$vectors[[1]])
+            } else {
+                k_ind <- rownames(kinship$vectors)
+            }
+            new_ind <- subset_ind(ind, k_ind)
+            if(length(new_ind) != length(k_ind) ||
+               any(new_ind != k_ind)) {
+                stop("Can't subset decomposed kinship matrices by individual")
+            }
+            # otherwise, not really being subset so can ignore ind argument
 
-        if(is.list(kinship) && length(kinship)==2 &&
-           all(names(kinship) == c("values", "vectors")))
-            return(kinship)
-
+            if(!is_kinship_list(kinship)) { # can ignore chr argument
+                return(kinship)
+            }
+        }
 
         if(!is.null(chr)) {
-            chr <- subset_chr(chr, names(kinship))
-            kinship <- kinship[chr]
+            if(is_kinship_list(kinship)) {
+                chr <- subset_chr(chr, names(kinship))
+                kinship <- kinship[chr]
+            }
+            else return(kinship) # if just one chromosmoe, just return it
         }
         if(length(kinship)==1) return(kinship[[1]])
         return(kinship)

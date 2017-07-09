@@ -298,7 +298,9 @@ scan1_pg_clean <-
 hsq_dimnames <-
     function(kinship, Xcovar, is_x_chr, pheno)
 {
-    if(is.list(kinship)) rn <- names(kinship)
+    if(is_kinship_list(kinship)) {
+        rn <- names(kinship)
+    }
     else if(!is.null(Xcovar) && any(is_x_chr) + any(!is_x_chr) == 2) {
         rn <- c(names(is_x_chr)[!is_x_chr][1],
                 names(is_x_chr)[is_x_chr][1])
