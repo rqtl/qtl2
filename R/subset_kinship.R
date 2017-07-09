@@ -26,8 +26,11 @@ subset_kinship <-
         }
 
         if(!is.null(chr)) {
-            chr <- subset_chr(chr, names(kinship))
-            kinship <- kinship[chr]
+            if(is_kinship_list(kinship)) {
+                chr <- subset_chr(chr, names(kinship))
+                kinship <- kinship[chr]
+            }
+            else return(kinship) # if just one chromosmoe, just return it
         }
         if(length(kinship)==1) return(kinship[[1]])
         return(kinship)
