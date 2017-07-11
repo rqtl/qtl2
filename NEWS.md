@@ -1,3 +1,10 @@
+## qtl2plot 0.5-10
+
+### Bug fixes
+
+- Ensure that `scan1()` output and the map are aligned.
+
+
 ## qtl2plot 0.5-7 (2017-06-05)
 
 ### Minor changes

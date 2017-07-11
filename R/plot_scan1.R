@@ -78,15 +78,6 @@ plot_scan1 <-
 
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
-    # align scan1 output and map
-    tmp <- align_scan1_map(x, map)
-    x <- tmp$scan1
-    map <- tmp$map
-
-    if(nrow(x) != length(unlist(map)))
-        stop("nrow(x) [", nrow(x), "] != number of positions in map [",
-             length(unlist(map)), "]")
-
     # subset chromosomes
     if(!is.null(chr)) {
         chri <- match(chr, names(map))
@@ -95,6 +86,15 @@ plot_scan1 <-
         x <- qtl2scan::subset_scan1(x, map, chr)
         map <- map[chri]
     }
+
+    # align scan1 output and map
+    tmp <- align_scan1_map(x, map)
+    x <- tmp$scan1
+    map <- tmp$map
+
+    if(nrow(x) != length(unlist(map)))
+        stop("nrow(x) [", nrow(x), "] != number of positions in map [",
+             length(unlist(map)), "]")
 
     # pull out lod scores
     if(length(lodcolumn) > 1) { # If length > 1, take first value
