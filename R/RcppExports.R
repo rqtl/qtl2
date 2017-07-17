@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 arrange_genes <- function(start, end) {
-    .Call('qtl2plot_arrange_genes', PACKAGE = 'qtl2plot', start, end)
+    .Call(`_qtl2plot_arrange_genes`, start, end)
 }
 

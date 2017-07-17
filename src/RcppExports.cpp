@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // arrange_genes
 IntegerVector arrange_genes(const NumericVector& start, const NumericVector& end);
-RcppExport SEXP qtl2plot_arrange_genes(SEXP startSEXP, SEXP endSEXP) {
+RcppExport SEXP _qtl2plot_arrange_genes(SEXP startSEXP, SEXP endSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -16,4 +16,17 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(arrange_genes(start, end));
     return rcpp_result_gen;
 END_RCPP
+}
+
+RcppExport SEXP qtl2plot_arrange_genes(SEXP, SEXP);
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_qtl2plot_arrange_genes", (DL_FUNC) &_qtl2plot_arrange_genes, 2},
+    {"qtl2plot_arrange_genes", (DL_FUNC) &qtl2plot_arrange_genes, 2},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_qtl2plot(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
