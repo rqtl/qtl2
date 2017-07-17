@@ -18,11 +18,8 @@ BEGIN_RCPP
 END_RCPP
 }
 
-RcppExport SEXP qtl2plot_arrange_genes(SEXP, SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
     {"_qtl2plot_arrange_genes", (DL_FUNC) &_qtl2plot_arrange_genes, 2},
-    {"qtl2plot_arrange_genes", (DL_FUNC) &qtl2plot_arrange_genes, 2},
     {NULL, NULL, 0}
 };
 
