@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // R_bayes_int_plain
 IntegerVector R_bayes_int_plain(const NumericVector& lod, const NumericVector& pos, const double prob);
-RcppExport SEXP qtl2scan_R_bayes_int_plain(SEXP lodSEXP, SEXP posSEXP, SEXP probSEXP) {
+RcppExport SEXP _qtl2scan_R_bayes_int_plain(SEXP lodSEXP, SEXP posSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // calc_ll_binreg_eigenchol
 double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol);
-RcppExport SEXP qtl2scan_calc_ll_binreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_ll_binreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,7 +35,7 @@ END_RCPP
 }
 // calc_ll_binreg_eigenqr
 double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_ll_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_ll_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -50,7 +50,7 @@ END_RCPP
 }
 // calc_coef_binreg_eigenqr
 NumericVector calc_coef_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coef_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -65,7 +65,7 @@ END_RCPP
 }
 // calc_coefSE_binreg_eigenqr
 List calc_coefSE_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coefSE_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // fit_binreg_eigenqr
 List fit_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const bool se, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_fit_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_fit_binreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -96,7 +96,7 @@ END_RCPP
 }
 // calc_ll_binreg_weighted_eigenchol
 double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol);
-RcppExport SEXP qtl2scan_calc_ll_binreg_weighted_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_ll_binreg_weighted_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -111,7 +111,7 @@ END_RCPP
 }
 // calc_ll_binreg_weighted_eigenqr
 double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_ll_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_ll_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -127,7 +127,7 @@ END_RCPP
 }
 // calc_coef_binreg_weighted_eigenqr
 NumericVector calc_coef_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coef_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -143,7 +143,7 @@ END_RCPP
 }
 // calc_coefSE_binreg_weighted_eigenqr
 List calc_coefSE_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coefSE_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -159,7 +159,7 @@ END_RCPP
 }
 // fit_binreg_weighted_eigenqr
 List fit_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const bool se, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_fit_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_fit_binreg_weighted_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -176,7 +176,7 @@ END_RCPP
 }
 // calc_ll_binreg_weighted
 double calc_ll_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_ll_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_ll_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -192,7 +192,7 @@ END_RCPP
 }
 // calc_coef_binreg_weighted
 NumericVector calc_coef_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coef_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -208,7 +208,7 @@ END_RCPP
 }
 // calc_coefSE_binreg_weighted
 List calc_coefSE_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coefSE_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -224,7 +224,7 @@ END_RCPP
 }
 // fit_binreg_weighted
 List fit_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const bool se, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_fit_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_fit_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -241,7 +241,7 @@ END_RCPP
 }
 // calc_ll_binreg
 double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_ll_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_ll_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -256,7 +256,7 @@ END_RCPP
 }
 // calc_coef_binreg
 NumericVector calc_coef_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coef_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -271,7 +271,7 @@ END_RCPP
 }
 // calc_coefSE_binreg
 List calc_coefSE_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_calc_coefSE_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -286,7 +286,7 @@ END_RCPP
 }
 // fit_binreg
 List fit_binreg(const NumericMatrix& X, const NumericVector& y, const bool se, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_fit_binreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_fit_binreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -302,7 +302,7 @@ END_RCPP
 }
 // R_find_peaks
 List R_find_peaks(const NumericVector& lod, const double threshold, const double peakdrop);
-RcppExport SEXP qtl2scan_R_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {
+RcppExport SEXP _qtl2scan_R_find_peaks(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -315,7 +315,7 @@ END_RCPP
 }
 // R_find_peaks_and_lodint
 List R_find_peaks_and_lodint(const NumericVector& lod, const double threshold, const double peakdrop, const double drop);
-RcppExport SEXP qtl2scan_R_find_peaks_and_lodint(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP dropSEXP) {
+RcppExport SEXP _qtl2scan_R_find_peaks_and_lodint(SEXP lodSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP dropSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -329,7 +329,7 @@ END_RCPP
 }
 // R_find_peaks_and_bayesint
 List R_find_peaks_and_bayesint(const NumericVector& lod, const NumericVector& pos, const double threshold, const double peakdrop, const double prob);
-RcppExport SEXP qtl2scan_R_find_peaks_and_bayesint(SEXP lodSEXP, SEXP posSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP probSEXP) {
+RcppExport SEXP _qtl2scan_R_find_peaks_and_bayesint(SEXP lodSEXP, SEXP posSEXP, SEXP thresholdSEXP, SEXP peakdropSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -344,7 +344,7 @@ END_RCPP
 }
 // fit1_binary_addcovar
 List fit1_binary_addcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const bool se, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_fit1_binary_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_fit1_binary_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -362,7 +362,7 @@ END_RCPP
 }
 // fit1_binary_intcovar
 List fit1_binary_intcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const bool se, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_fit1_binary_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_fit1_binary_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -381,7 +381,7 @@ END_RCPP
 }
 // fit1_hk_addcovar
 List fit1_hk_addcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const bool se, const double tol);
-RcppExport SEXP qtl2scan_fit1_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_fit1_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -397,7 +397,7 @@ END_RCPP
 }
 // fit1_hk_intcovar
 List fit1_hk_intcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const bool se, const double tol);
-RcppExport SEXP qtl2scan_fit1_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_fit1_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -414,7 +414,7 @@ END_RCPP
 }
 // fit1_pg_addcovar
 List fit1_pg_addcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const bool se, const double tol);
-RcppExport SEXP qtl2scan_fit1_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_fit1_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -431,7 +431,7 @@ END_RCPP
 }
 // fit1_pg_intcovar
 List fit1_pg_intcovar(const NumericMatrix& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const bool se, const double tol);
-RcppExport SEXP qtl2scan_fit1_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_fit1_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -449,7 +449,7 @@ END_RCPP
 }
 // interpolate_map
 NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& oldmap, const NumericVector& newmap);
-RcppExport SEXP qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
+RcppExport SEXP _qtl2scan_interpolate_map(SEXP oldposSEXP, SEXP oldmapSEXP, SEXP newmapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -462,7 +462,7 @@ END_RCPP
 }
 // find_intervals
 IntegerMatrix find_intervals(const NumericVector& pos, const NumericVector& map, double tol);
-RcppExport SEXP qtl2scan_find_intervals(SEXP posSEXP, SEXP mapSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_find_intervals(SEXP posSEXP, SEXP mapSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -475,7 +475,7 @@ END_RCPP
 }
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se);
-RcppExport SEXP qtl2scan_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP) {
+RcppExport SEXP _qtl2scan_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -488,7 +488,7 @@ END_RCPP
 }
 // calc_coef_linreg_eigenchol
 NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_calc_coef_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -500,7 +500,7 @@ END_RCPP
 }
 // calc_coefSE_linreg_eigenchol
 List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_calc_coefSE_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -512,7 +512,7 @@ END_RCPP
 }
 // calc_rss_eigenchol
 double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_calc_rss_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP _qtl2scan_calc_rss_eigenchol(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -524,7 +524,7 @@ END_RCPP
 }
 // calc_fitted_linreg_eigenchol
 NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_calc_fitted_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP _qtl2scan_calc_fitted_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -536,7 +536,7 @@ END_RCPP
 }
 // fit_linreg_eigenqr
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const bool se, const double tol);
-RcppExport SEXP qtl2scan_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_fit_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -550,7 +550,7 @@ END_RCPP
 }
 // calc_coef_linreg_eigenqr
 NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP qtl2scan_calc_coef_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -563,7 +563,7 @@ END_RCPP
 }
 // calc_coefSE_linreg_eigenqr
 List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP qtl2scan_calc_coefSE_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -576,7 +576,7 @@ END_RCPP
 }
 // calc_rss_eigenqr
 double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP qtl2scan_calc_rss_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_rss_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -589,7 +589,7 @@ END_RCPP
 }
 // calc_fitted_linreg_eigenqr
 NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP qtl2scan_calc_fitted_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_fitted_linreg_eigenqr(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -602,7 +602,7 @@ END_RCPP
 }
 // calc_mvrss_eigenchol
 NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_calc_mvrss_eigenchol(SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP _qtl2scan_calc_mvrss_eigenchol(SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -614,7 +614,7 @@ END_RCPP
 }
 // calc_mvrss_eigenqr
 NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
-RcppExport SEXP qtl2scan_calc_mvrss_eigenqr(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_mvrss_eigenqr(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -627,7 +627,7 @@ END_RCPP
 }
 // calc_resid_eigenchol
 NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_calc_resid_eigenchol(SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP _qtl2scan_calc_resid_eigenchol(SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -639,7 +639,7 @@ END_RCPP
 }
 // calc_resid_eigenqr
 NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
-RcppExport SEXP qtl2scan_calc_resid_eigenqr(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_resid_eigenqr(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -652,7 +652,7 @@ END_RCPP
 }
 // calc_rss_linreg
 NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
-RcppExport SEXP qtl2scan_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -665,7 +665,7 @@ END_RCPP
 }
 // calc_coef_linreg
 NumericVector calc_coef_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP qtl2scan_calc_coef_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coef_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -678,7 +678,7 @@ END_RCPP
 }
 // calc_coefSE_linreg
 List calc_coefSE_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP qtl2scan_calc_coefSE_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_coefSE_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -691,7 +691,7 @@ END_RCPP
 }
 // calc_resid_linreg
 NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
-RcppExport SEXP qtl2scan_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -704,7 +704,7 @@ END_RCPP
 }
 // calc_resid_linreg_3d
 NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P, const double tol);
-RcppExport SEXP qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -717,7 +717,7 @@ END_RCPP
 }
 // fit_linreg
 List fit_linreg(const NumericMatrix& X, const NumericVector& y, const bool se, const double tol);
-RcppExport SEXP qtl2scan_fit_linreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_fit_linreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -731,7 +731,7 @@ END_RCPP
 }
 // Rcpp_eigen_decomp
 List Rcpp_eigen_decomp(const NumericMatrix& A);
-RcppExport SEXP qtl2scan_Rcpp_eigen_decomp(SEXP ASEXP) {
+RcppExport SEXP _qtl2scan_Rcpp_eigen_decomp(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -742,7 +742,7 @@ END_RCPP
 }
 // Rcpp_eigen_rotation
 List Rcpp_eigen_rotation(const NumericMatrix& K, const NumericMatrix& y, const NumericMatrix& X);
-RcppExport SEXP qtl2scan_Rcpp_eigen_rotation(SEXP KSEXP, SEXP ySEXP, SEXP XSEXP) {
+RcppExport SEXP _qtl2scan_Rcpp_eigen_rotation(SEXP KSEXP, SEXP ySEXP, SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -755,7 +755,7 @@ END_RCPP
 }
 // Rcpp_calc_logdetXpX
 double Rcpp_calc_logdetXpX(const NumericMatrix& X);
-RcppExport SEXP qtl2scan_Rcpp_calc_logdetXpX(SEXP XSEXP) {
+RcppExport SEXP _qtl2scan_Rcpp_calc_logdetXpX(SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -766,7 +766,7 @@ END_RCPP
 }
 // Rcpp_calcLL
 double Rcpp_calcLL(const double hsq, const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const double logdetXpX);
-RcppExport SEXP qtl2scan_Rcpp_calcLL(SEXP hsqSEXP, SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP logdetXpXSEXP) {
+RcppExport SEXP _qtl2scan_Rcpp_calcLL(SEXP hsqSEXP, SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP logdetXpXSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -782,7 +782,7 @@ END_RCPP
 }
 // Rcpp_fitLMM
 List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
-RcppExport SEXP qtl2scan_Rcpp_fitLMM(SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_Rcpp_fitLMM(SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -799,7 +799,7 @@ END_RCPP
 }
 // Rcpp_fitLMM_mat
 List Rcpp_fitLMM_mat(const NumericVector& Kva, const NumericMatrix& Y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
-RcppExport SEXP qtl2scan_Rcpp_fitLMM_mat(SEXP KvaSEXP, SEXP YSEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_Rcpp_fitLMM_mat(SEXP KvaSEXP, SEXP YSEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -816,7 +816,7 @@ END_RCPP
 }
 // R_lod_int_plain
 IntegerVector R_lod_int_plain(const NumericVector& lod, const double drop);
-RcppExport SEXP qtl2scan_R_lod_int_plain(SEXP lodSEXP, SEXP dropSEXP) {
+RcppExport SEXP _qtl2scan_R_lod_int_plain(SEXP lodSEXP, SEXP dropSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -828,7 +828,7 @@ END_RCPP
 }
 // find_matching_cols
 NumericVector find_matching_cols(const NumericMatrix& mat, const double tol);
-RcppExport SEXP qtl2scan_find_matching_cols(SEXP matSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_find_matching_cols(SEXP matSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -840,7 +840,7 @@ END_RCPP
 }
 // find_lin_indep_cols
 IntegerVector find_lin_indep_cols(const NumericMatrix& mat, const double tol);
-RcppExport SEXP qtl2scan_find_lin_indep_cols(SEXP matSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_find_lin_indep_cols(SEXP matSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -852,7 +852,7 @@ END_RCPP
 }
 // formX_intcovar
 NumericMatrix formX_intcovar(const NumericVector& probs, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const int position, const bool has_intercept);
-RcppExport SEXP qtl2scan_formX_intcovar(SEXP probsSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP positionSEXP, SEXP has_interceptSEXP) {
+RcppExport SEXP _qtl2scan_formX_intcovar(SEXP probsSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP positionSEXP, SEXP has_interceptSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -867,7 +867,7 @@ END_RCPP
 }
 // expand_genoprobs_intcovar
 NumericVector expand_genoprobs_intcovar(const NumericVector& probs, const NumericMatrix& intcovar);
-RcppExport SEXP qtl2scan_expand_genoprobs_intcovar(SEXP probsSEXP, SEXP intcovarSEXP) {
+RcppExport SEXP _qtl2scan_expand_genoprobs_intcovar(SEXP probsSEXP, SEXP intcovarSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -879,7 +879,7 @@ END_RCPP
 }
 // weighted_matrix
 NumericMatrix weighted_matrix(const NumericMatrix& mat, const NumericVector& weights);
-RcppExport SEXP qtl2scan_weighted_matrix(SEXP matSEXP, SEXP weightsSEXP) {
+RcppExport SEXP _qtl2scan_weighted_matrix(SEXP matSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -891,7 +891,7 @@ END_RCPP
 }
 // weighted_3darray
 NumericVector weighted_3darray(const NumericVector& array, const NumericVector& weights);
-RcppExport SEXP qtl2scan_weighted_3darray(SEXP arraySEXP, SEXP weightsSEXP) {
+RcppExport SEXP _qtl2scan_weighted_3darray(SEXP arraySEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -903,7 +903,7 @@ END_RCPP
 }
 // matrix_x_matrix
 NumericMatrix matrix_x_matrix(const NumericMatrix& X, const NumericMatrix& Y);
-RcppExport SEXP qtl2scan_matrix_x_matrix(SEXP XSEXP, SEXP YSEXP) {
+RcppExport SEXP _qtl2scan_matrix_x_matrix(SEXP XSEXP, SEXP YSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -915,7 +915,7 @@ END_RCPP
 }
 // matrix_x_vector
 NumericVector matrix_x_vector(const NumericMatrix& X, const NumericVector& y);
-RcppExport SEXP qtl2scan_matrix_x_vector(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP _qtl2scan_matrix_x_vector(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -927,7 +927,7 @@ END_RCPP
 }
 // matrix_x_3darray
 NumericVector matrix_x_3darray(const NumericMatrix& X, NumericVector& A);
-RcppExport SEXP qtl2scan_matrix_x_3darray(SEXP XSEXP, SEXP ASEXP) {
+RcppExport SEXP _qtl2scan_matrix_x_3darray(SEXP XSEXP, SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -939,7 +939,7 @@ END_RCPP
 }
 // pick_marker_subset
 IntegerVector pick_marker_subset(const NumericVector& pos, const double min_d, const NumericVector& weights);
-RcppExport SEXP qtl2scan_pick_marker_subset(SEXP posSEXP, SEXP min_dSEXP, SEXP weightsSEXP) {
+RcppExport SEXP _qtl2scan_pick_marker_subset(SEXP posSEXP, SEXP min_dSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -952,7 +952,7 @@ END_RCPP
 }
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
-RcppExport SEXP qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
+RcppExport SEXP _qtl2scan_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -965,7 +965,7 @@ END_RCPP
 }
 // get_permutation
 IntegerVector get_permutation(const int n);
-RcppExport SEXP qtl2scan_get_permutation(SEXP nSEXP) {
+RcppExport SEXP _qtl2scan_get_permutation(SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -976,7 +976,7 @@ END_RCPP
 }
 // permute_nvector
 NumericMatrix permute_nvector(const int n_perm, const NumericVector x);
-RcppExport SEXP qtl2scan_permute_nvector(SEXP n_permSEXP, SEXP xSEXP) {
+RcppExport SEXP _qtl2scan_permute_nvector(SEXP n_permSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -988,7 +988,7 @@ END_RCPP
 }
 // permute_ivector
 IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x);
-RcppExport SEXP qtl2scan_permute_ivector(SEXP n_permSEXP, SEXP xSEXP) {
+RcppExport SEXP _qtl2scan_permute_ivector(SEXP n_permSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1000,7 +1000,7 @@ END_RCPP
 }
 // permute_nvector_stratified
 NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x, const IntegerVector& strata, int n_strata);
-RcppExport SEXP qtl2scan_permute_nvector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+RcppExport SEXP _qtl2scan_permute_nvector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1014,7 +1014,7 @@ END_RCPP
 }
 // permute_ivector_stratified
 IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& x, const IntegerVector& strata, int n_strata);
-RcppExport SEXP qtl2scan_permute_ivector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
+RcppExport SEXP _qtl2scan_permute_ivector_stratified(SEXP n_permSEXP, SEXP xSEXP, SEXP strataSEXP, SEXP n_strataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1028,7 +1028,7 @@ END_RCPP
 }
 // scan_binary_onechr
 NumericMatrix scan_binary_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scan_binary_onechr(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_binary_onechr(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1044,7 +1044,7 @@ END_RCPP
 }
 // scan_binary_onechr_weighted
 NumericMatrix scan_binary_onechr_weighted(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scan_binary_onechr_weighted(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_binary_onechr_weighted(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1061,7 +1061,7 @@ END_RCPP
 }
 // scan_binary_onechr_intcovar_highmem
 NumericMatrix scan_binary_onechr_intcovar_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scan_binary_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_binary_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1078,7 +1078,7 @@ END_RCPP
 }
 // scan_binary_onechr_intcovar_weighted_highmem
 NumericMatrix scan_binary_onechr_intcovar_weighted_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scan_binary_onechr_intcovar_weighted_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_binary_onechr_intcovar_weighted_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1096,7 +1096,7 @@ END_RCPP
 }
 // scan_binary_onechr_intcovar_lowmem
 NumericMatrix scan_binary_onechr_intcovar_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scan_binary_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_binary_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1113,7 +1113,7 @@ END_RCPP
 }
 // scan_binary_onechr_intcovar_weighted_lowmem
 NumericMatrix scan_binary_onechr_intcovar_weighted_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scan_binary_onechr_intcovar_weighted_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_binary_onechr_intcovar_weighted_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1131,7 +1131,7 @@ END_RCPP
 }
 // scan_hk_onechr_nocovar
 NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const NumericMatrix& pheno, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr_nocovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1144,7 +1144,7 @@ END_RCPP
 }
 // scan_hk_onechr
 NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1158,7 +1158,7 @@ END_RCPP
 }
 // scan_hk_onechr_weighted
 NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr_weighted(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr_weighted(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1173,7 +1173,7 @@ END_RCPP
 }
 // scan_hk_onechr_intcovar_highmem
 NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1188,7 +1188,7 @@ END_RCPP
 }
 // scan_hk_onechr_intcovar_weighted_highmem
 NumericMatrix scan_hk_onechr_intcovar_weighted_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_weighted_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr_intcovar_weighted_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1204,7 +1204,7 @@ END_RCPP
 }
 // scan_hk_onechr_intcovar_lowmem
 NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1219,7 +1219,7 @@ END_RCPP
 }
 // scan_hk_onechr_intcovar_weighted_lowmem
 NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1235,7 +1235,7 @@ END_RCPP
 }
 // scan_pg_onechr
 NumericVector scan_pg_onechr(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scan_pg_onechr(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_pg_onechr(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1251,7 +1251,7 @@ END_RCPP
 }
 // scan_pg_onechr_intcovar_highmem
 NumericVector scan_pg_onechr_intcovar_highmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scan_pg_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_pg_onechr_intcovar_highmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1268,7 +1268,7 @@ END_RCPP
 }
 // scan_pg_onechr_intcovar_lowmem
 NumericVector scan_pg_onechr_intcovar_lowmem(const NumericVector& genoprobs, const NumericMatrix& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scan_pg_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scan_pg_onechr_intcovar_lowmem(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1285,7 +1285,7 @@ END_RCPP
 }
 // scanblup
 List scanblup(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const bool se, const bool reml, const bool preserve_intercept, const double tol);
-RcppExport SEXP qtl2scan_scanblup(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP seSEXP, SEXP remlSEXP, SEXP preserve_interceptSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scanblup(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP seSEXP, SEXP remlSEXP, SEXP preserve_interceptSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1302,7 +1302,7 @@ END_RCPP
 }
 // scancoef_binary_addcovar
 NumericMatrix scancoef_binary_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scancoef_binary_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoef_binary_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1319,7 +1319,7 @@ END_RCPP
 }
 // scancoef_binary_intcovar
 NumericMatrix scancoef_binary_intcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scancoef_binary_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoef_binary_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1337,7 +1337,7 @@ END_RCPP
 }
 // scancoefSE_binary_addcovar
 List scancoefSE_binary_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scancoefSE_binary_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoefSE_binary_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1354,7 +1354,7 @@ END_RCPP
 }
 // scancoefSE_binary_intcovar
 List scancoefSE_binary_intcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const int maxit, const double tol, const double qr_tol);
-RcppExport SEXP qtl2scan_scancoefSE_binary_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoefSE_binary_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1372,7 +1372,7 @@ END_RCPP
 }
 // scancoef_hk_addcovar
 NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoef_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoef_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1387,7 +1387,7 @@ END_RCPP
 }
 // scancoef_hk_intcovar
 NumericMatrix scancoef_hk_intcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoef_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoef_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1403,7 +1403,7 @@ END_RCPP
 }
 // scancoefSE_hk_addcovar
 List scancoefSE_hk_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoefSE_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoefSE_hk_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1418,7 +1418,7 @@ END_RCPP
 }
 // scancoefSE_hk_intcovar
 List scancoefSE_hk_intcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoefSE_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoefSE_hk_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1434,7 +1434,7 @@ END_RCPP
 }
 // scancoef_pg_addcovar
 NumericMatrix scancoef_pg_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoef_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoef_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1450,7 +1450,7 @@ END_RCPP
 }
 // scancoef_pg_intcovar
 NumericMatrix scancoef_pg_intcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoef_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoef_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1467,7 +1467,7 @@ END_RCPP
 }
 // scancoefSE_pg_addcovar
 List scancoefSE_pg_addcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoefSE_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoefSE_pg_addcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1483,7 +1483,7 @@ END_RCPP
 }
 // scancoefSE_pg_intcovar
 List scancoefSE_pg_intcovar(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const NumericMatrix& intcovar, const NumericMatrix& eigenvec, const NumericVector& weights, const double tol);
-RcppExport SEXP qtl2scan_scancoefSE_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2scan_scancoefSE_pg_intcovar(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP intcovarSEXP, SEXP eigenvecSEXP, SEXP weightsSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1500,7 +1500,7 @@ END_RCPP
 }
 // calc_sdp
 IntegerVector calc_sdp(const IntegerMatrix& geno);
-RcppExport SEXP qtl2scan_calc_sdp(SEXP genoSEXP) {
+RcppExport SEXP _qtl2scan_calc_sdp(SEXP genoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1511,7 +1511,7 @@ END_RCPP
 }
 // invert_sdp
 IntegerMatrix invert_sdp(const IntegerVector& sdp, const int n_str);
-RcppExport SEXP qtl2scan_invert_sdp(SEXP sdpSEXP, SEXP n_strSEXP) {
+RcppExport SEXP _qtl2scan_invert_sdp(SEXP sdpSEXP, SEXP n_strSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1523,7 +1523,7 @@ END_RCPP
 }
 // alleleprob_to_snpprob
 NumericVector alleleprob_to_snpprob(NumericVector alleleprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
-RcppExport SEXP qtl2scan_alleleprob_to_snpprob(SEXP alleleprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+RcppExport SEXP _qtl2scan_alleleprob_to_snpprob(SEXP alleleprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1537,7 +1537,7 @@ END_RCPP
 }
 // genocol_to_snpcol
 IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
-RcppExport SEXP qtl2scan_genocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
+RcppExport SEXP _qtl2scan_genocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1549,7 +1549,7 @@ END_RCPP
 }
 // genoprob_to_snpprob
 NumericVector genoprob_to_snpprob(NumericVector genoprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
-RcppExport SEXP qtl2scan_genoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+RcppExport SEXP _qtl2scan_genoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1563,7 +1563,7 @@ END_RCPP
 }
 // Xgenocol_to_snpcol
 IntegerVector Xgenocol_to_snpcol(const int n_str, const int sdp);
-RcppExport SEXP qtl2scan_Xgenocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
+RcppExport SEXP _qtl2scan_Xgenocol_to_snpcol(SEXP n_strSEXP, SEXP sdpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1575,7 +1575,7 @@ END_RCPP
 }
 // Xgenoprob_to_snpprob
 NumericVector Xgenoprob_to_snpprob(NumericVector genoprob, IntegerVector sdp, IntegerVector interval, LogicalVector on_map);
-RcppExport SEXP qtl2scan_Xgenoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
+RcppExport SEXP _qtl2scan_Xgenoprob_to_snpprob(SEXP genoprobSEXP, SEXP sdpSEXP, SEXP intervalSEXP, SEXP on_mapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1586,4 +1586,122 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(Xgenoprob_to_snpprob(genoprob, sdp, interval, on_map));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_qtl2scan_R_bayes_int_plain", (DL_FUNC) &_qtl2scan_R_bayes_int_plain, 3},
+    {"_qtl2scan_calc_ll_binreg_eigenchol", (DL_FUNC) &_qtl2scan_calc_ll_binreg_eigenchol, 4},
+    {"_qtl2scan_calc_ll_binreg_eigenqr", (DL_FUNC) &_qtl2scan_calc_ll_binreg_eigenqr, 5},
+    {"_qtl2scan_calc_coef_binreg_eigenqr", (DL_FUNC) &_qtl2scan_calc_coef_binreg_eigenqr, 5},
+    {"_qtl2scan_calc_coefSE_binreg_eigenqr", (DL_FUNC) &_qtl2scan_calc_coefSE_binreg_eigenqr, 5},
+    {"_qtl2scan_fit_binreg_eigenqr", (DL_FUNC) &_qtl2scan_fit_binreg_eigenqr, 6},
+    {"_qtl2scan_calc_ll_binreg_weighted_eigenchol", (DL_FUNC) &_qtl2scan_calc_ll_binreg_weighted_eigenchol, 5},
+    {"_qtl2scan_calc_ll_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2scan_calc_ll_binreg_weighted_eigenqr, 6},
+    {"_qtl2scan_calc_coef_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2scan_calc_coef_binreg_weighted_eigenqr, 6},
+    {"_qtl2scan_calc_coefSE_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2scan_calc_coefSE_binreg_weighted_eigenqr, 6},
+    {"_qtl2scan_fit_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2scan_fit_binreg_weighted_eigenqr, 7},
+    {"_qtl2scan_calc_ll_binreg_weighted", (DL_FUNC) &_qtl2scan_calc_ll_binreg_weighted, 6},
+    {"_qtl2scan_calc_coef_binreg_weighted", (DL_FUNC) &_qtl2scan_calc_coef_binreg_weighted, 6},
+    {"_qtl2scan_calc_coefSE_binreg_weighted", (DL_FUNC) &_qtl2scan_calc_coefSE_binreg_weighted, 6},
+    {"_qtl2scan_fit_binreg_weighted", (DL_FUNC) &_qtl2scan_fit_binreg_weighted, 7},
+    {"_qtl2scan_calc_ll_binreg", (DL_FUNC) &_qtl2scan_calc_ll_binreg, 5},
+    {"_qtl2scan_calc_coef_binreg", (DL_FUNC) &_qtl2scan_calc_coef_binreg, 5},
+    {"_qtl2scan_calc_coefSE_binreg", (DL_FUNC) &_qtl2scan_calc_coefSE_binreg, 5},
+    {"_qtl2scan_fit_binreg", (DL_FUNC) &_qtl2scan_fit_binreg, 6},
+    {"_qtl2scan_R_find_peaks", (DL_FUNC) &_qtl2scan_R_find_peaks, 3},
+    {"_qtl2scan_R_find_peaks_and_lodint", (DL_FUNC) &_qtl2scan_R_find_peaks_and_lodint, 4},
+    {"_qtl2scan_R_find_peaks_and_bayesint", (DL_FUNC) &_qtl2scan_R_find_peaks_and_bayesint, 5},
+    {"_qtl2scan_fit1_binary_addcovar", (DL_FUNC) &_qtl2scan_fit1_binary_addcovar, 8},
+    {"_qtl2scan_fit1_binary_intcovar", (DL_FUNC) &_qtl2scan_fit1_binary_intcovar, 9},
+    {"_qtl2scan_fit1_hk_addcovar", (DL_FUNC) &_qtl2scan_fit1_hk_addcovar, 6},
+    {"_qtl2scan_fit1_hk_intcovar", (DL_FUNC) &_qtl2scan_fit1_hk_intcovar, 7},
+    {"_qtl2scan_fit1_pg_addcovar", (DL_FUNC) &_qtl2scan_fit1_pg_addcovar, 7},
+    {"_qtl2scan_fit1_pg_intcovar", (DL_FUNC) &_qtl2scan_fit1_pg_intcovar, 8},
+    {"_qtl2scan_interpolate_map", (DL_FUNC) &_qtl2scan_interpolate_map, 3},
+    {"_qtl2scan_find_intervals", (DL_FUNC) &_qtl2scan_find_intervals, 3},
+    {"_qtl2scan_fit_linreg_eigenchol", (DL_FUNC) &_qtl2scan_fit_linreg_eigenchol, 3},
+    {"_qtl2scan_calc_coef_linreg_eigenchol", (DL_FUNC) &_qtl2scan_calc_coef_linreg_eigenchol, 2},
+    {"_qtl2scan_calc_coefSE_linreg_eigenchol", (DL_FUNC) &_qtl2scan_calc_coefSE_linreg_eigenchol, 2},
+    {"_qtl2scan_calc_rss_eigenchol", (DL_FUNC) &_qtl2scan_calc_rss_eigenchol, 2},
+    {"_qtl2scan_calc_fitted_linreg_eigenchol", (DL_FUNC) &_qtl2scan_calc_fitted_linreg_eigenchol, 2},
+    {"_qtl2scan_fit_linreg_eigenqr", (DL_FUNC) &_qtl2scan_fit_linreg_eigenqr, 4},
+    {"_qtl2scan_calc_coef_linreg_eigenqr", (DL_FUNC) &_qtl2scan_calc_coef_linreg_eigenqr, 3},
+    {"_qtl2scan_calc_coefSE_linreg_eigenqr", (DL_FUNC) &_qtl2scan_calc_coefSE_linreg_eigenqr, 3},
+    {"_qtl2scan_calc_rss_eigenqr", (DL_FUNC) &_qtl2scan_calc_rss_eigenqr, 3},
+    {"_qtl2scan_calc_fitted_linreg_eigenqr", (DL_FUNC) &_qtl2scan_calc_fitted_linreg_eigenqr, 3},
+    {"_qtl2scan_calc_mvrss_eigenchol", (DL_FUNC) &_qtl2scan_calc_mvrss_eigenchol, 2},
+    {"_qtl2scan_calc_mvrss_eigenqr", (DL_FUNC) &_qtl2scan_calc_mvrss_eigenqr, 3},
+    {"_qtl2scan_calc_resid_eigenchol", (DL_FUNC) &_qtl2scan_calc_resid_eigenchol, 2},
+    {"_qtl2scan_calc_resid_eigenqr", (DL_FUNC) &_qtl2scan_calc_resid_eigenqr, 3},
+    {"_qtl2scan_calc_rss_linreg", (DL_FUNC) &_qtl2scan_calc_rss_linreg, 3},
+    {"_qtl2scan_calc_coef_linreg", (DL_FUNC) &_qtl2scan_calc_coef_linreg, 3},
+    {"_qtl2scan_calc_coefSE_linreg", (DL_FUNC) &_qtl2scan_calc_coefSE_linreg, 3},
+    {"_qtl2scan_calc_resid_linreg", (DL_FUNC) &_qtl2scan_calc_resid_linreg, 3},
+    {"_qtl2scan_calc_resid_linreg_3d", (DL_FUNC) &_qtl2scan_calc_resid_linreg_3d, 3},
+    {"_qtl2scan_fit_linreg", (DL_FUNC) &_qtl2scan_fit_linreg, 4},
+    {"_qtl2scan_Rcpp_eigen_decomp", (DL_FUNC) &_qtl2scan_Rcpp_eigen_decomp, 1},
+    {"_qtl2scan_Rcpp_eigen_rotation", (DL_FUNC) &_qtl2scan_Rcpp_eigen_rotation, 3},
+    {"_qtl2scan_Rcpp_calc_logdetXpX", (DL_FUNC) &_qtl2scan_Rcpp_calc_logdetXpX, 1},
+    {"_qtl2scan_Rcpp_calcLL", (DL_FUNC) &_qtl2scan_Rcpp_calcLL, 6},
+    {"_qtl2scan_Rcpp_fitLMM", (DL_FUNC) &_qtl2scan_Rcpp_fitLMM, 7},
+    {"_qtl2scan_Rcpp_fitLMM_mat", (DL_FUNC) &_qtl2scan_Rcpp_fitLMM_mat, 7},
+    {"_qtl2scan_R_lod_int_plain", (DL_FUNC) &_qtl2scan_R_lod_int_plain, 2},
+    {"_qtl2scan_find_matching_cols", (DL_FUNC) &_qtl2scan_find_matching_cols, 2},
+    {"_qtl2scan_find_lin_indep_cols", (DL_FUNC) &_qtl2scan_find_lin_indep_cols, 2},
+    {"_qtl2scan_formX_intcovar", (DL_FUNC) &_qtl2scan_formX_intcovar, 5},
+    {"_qtl2scan_expand_genoprobs_intcovar", (DL_FUNC) &_qtl2scan_expand_genoprobs_intcovar, 2},
+    {"_qtl2scan_weighted_matrix", (DL_FUNC) &_qtl2scan_weighted_matrix, 2},
+    {"_qtl2scan_weighted_3darray", (DL_FUNC) &_qtl2scan_weighted_3darray, 2},
+    {"_qtl2scan_matrix_x_matrix", (DL_FUNC) &_qtl2scan_matrix_x_matrix, 2},
+    {"_qtl2scan_matrix_x_vector", (DL_FUNC) &_qtl2scan_matrix_x_vector, 2},
+    {"_qtl2scan_matrix_x_3darray", (DL_FUNC) &_qtl2scan_matrix_x_3darray, 2},
+    {"_qtl2scan_pick_marker_subset", (DL_FUNC) &_qtl2scan_pick_marker_subset, 3},
+    {"_qtl2scan_random_int", (DL_FUNC) &_qtl2scan_random_int, 3},
+    {"_qtl2scan_get_permutation", (DL_FUNC) &_qtl2scan_get_permutation, 1},
+    {"_qtl2scan_permute_nvector", (DL_FUNC) &_qtl2scan_permute_nvector, 2},
+    {"_qtl2scan_permute_ivector", (DL_FUNC) &_qtl2scan_permute_ivector, 2},
+    {"_qtl2scan_permute_nvector_stratified", (DL_FUNC) &_qtl2scan_permute_nvector_stratified, 4},
+    {"_qtl2scan_permute_ivector_stratified", (DL_FUNC) &_qtl2scan_permute_ivector_stratified, 4},
+    {"_qtl2scan_scan_binary_onechr", (DL_FUNC) &_qtl2scan_scan_binary_onechr, 6},
+    {"_qtl2scan_scan_binary_onechr_weighted", (DL_FUNC) &_qtl2scan_scan_binary_onechr_weighted, 7},
+    {"_qtl2scan_scan_binary_onechr_intcovar_highmem", (DL_FUNC) &_qtl2scan_scan_binary_onechr_intcovar_highmem, 7},
+    {"_qtl2scan_scan_binary_onechr_intcovar_weighted_highmem", (DL_FUNC) &_qtl2scan_scan_binary_onechr_intcovar_weighted_highmem, 8},
+    {"_qtl2scan_scan_binary_onechr_intcovar_lowmem", (DL_FUNC) &_qtl2scan_scan_binary_onechr_intcovar_lowmem, 7},
+    {"_qtl2scan_scan_binary_onechr_intcovar_weighted_lowmem", (DL_FUNC) &_qtl2scan_scan_binary_onechr_intcovar_weighted_lowmem, 8},
+    {"_qtl2scan_scan_hk_onechr_nocovar", (DL_FUNC) &_qtl2scan_scan_hk_onechr_nocovar, 3},
+    {"_qtl2scan_scan_hk_onechr", (DL_FUNC) &_qtl2scan_scan_hk_onechr, 4},
+    {"_qtl2scan_scan_hk_onechr_weighted", (DL_FUNC) &_qtl2scan_scan_hk_onechr_weighted, 5},
+    {"_qtl2scan_scan_hk_onechr_intcovar_highmem", (DL_FUNC) &_qtl2scan_scan_hk_onechr_intcovar_highmem, 5},
+    {"_qtl2scan_scan_hk_onechr_intcovar_weighted_highmem", (DL_FUNC) &_qtl2scan_scan_hk_onechr_intcovar_weighted_highmem, 6},
+    {"_qtl2scan_scan_hk_onechr_intcovar_lowmem", (DL_FUNC) &_qtl2scan_scan_hk_onechr_intcovar_lowmem, 5},
+    {"_qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem", (DL_FUNC) &_qtl2scan_scan_hk_onechr_intcovar_weighted_lowmem, 6},
+    {"_qtl2scan_scan_pg_onechr", (DL_FUNC) &_qtl2scan_scan_pg_onechr, 6},
+    {"_qtl2scan_scan_pg_onechr_intcovar_highmem", (DL_FUNC) &_qtl2scan_scan_pg_onechr_intcovar_highmem, 7},
+    {"_qtl2scan_scan_pg_onechr_intcovar_lowmem", (DL_FUNC) &_qtl2scan_scan_pg_onechr_intcovar_lowmem, 7},
+    {"_qtl2scan_scanblup", (DL_FUNC) &_qtl2scan_scanblup, 7},
+    {"_qtl2scan_scancoef_binary_addcovar", (DL_FUNC) &_qtl2scan_scancoef_binary_addcovar, 7},
+    {"_qtl2scan_scancoef_binary_intcovar", (DL_FUNC) &_qtl2scan_scancoef_binary_intcovar, 8},
+    {"_qtl2scan_scancoefSE_binary_addcovar", (DL_FUNC) &_qtl2scan_scancoefSE_binary_addcovar, 7},
+    {"_qtl2scan_scancoefSE_binary_intcovar", (DL_FUNC) &_qtl2scan_scancoefSE_binary_intcovar, 8},
+    {"_qtl2scan_scancoef_hk_addcovar", (DL_FUNC) &_qtl2scan_scancoef_hk_addcovar, 5},
+    {"_qtl2scan_scancoef_hk_intcovar", (DL_FUNC) &_qtl2scan_scancoef_hk_intcovar, 6},
+    {"_qtl2scan_scancoefSE_hk_addcovar", (DL_FUNC) &_qtl2scan_scancoefSE_hk_addcovar, 5},
+    {"_qtl2scan_scancoefSE_hk_intcovar", (DL_FUNC) &_qtl2scan_scancoefSE_hk_intcovar, 6},
+    {"_qtl2scan_scancoef_pg_addcovar", (DL_FUNC) &_qtl2scan_scancoef_pg_addcovar, 6},
+    {"_qtl2scan_scancoef_pg_intcovar", (DL_FUNC) &_qtl2scan_scancoef_pg_intcovar, 7},
+    {"_qtl2scan_scancoefSE_pg_addcovar", (DL_FUNC) &_qtl2scan_scancoefSE_pg_addcovar, 6},
+    {"_qtl2scan_scancoefSE_pg_intcovar", (DL_FUNC) &_qtl2scan_scancoefSE_pg_intcovar, 7},
+    {"_qtl2scan_calc_sdp", (DL_FUNC) &_qtl2scan_calc_sdp, 1},
+    {"_qtl2scan_invert_sdp", (DL_FUNC) &_qtl2scan_invert_sdp, 2},
+    {"_qtl2scan_alleleprob_to_snpprob", (DL_FUNC) &_qtl2scan_alleleprob_to_snpprob, 4},
+    {"_qtl2scan_genocol_to_snpcol", (DL_FUNC) &_qtl2scan_genocol_to_snpcol, 2},
+    {"_qtl2scan_genoprob_to_snpprob", (DL_FUNC) &_qtl2scan_genoprob_to_snpprob, 4},
+    {"_qtl2scan_Xgenocol_to_snpcol", (DL_FUNC) &_qtl2scan_Xgenocol_to_snpcol, 2},
+    {"_qtl2scan_Xgenoprob_to_snpprob", (DL_FUNC) &_qtl2scan_Xgenoprob_to_snpprob, 4},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_qtl2scan(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
