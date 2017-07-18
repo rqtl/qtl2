@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // calc_kinship
 NumericMatrix calc_kinship(const NumericVector& prob_array);
-RcppExport SEXP qtl2geno_calc_kinship(SEXP prob_arraySEXP) {
+RcppExport SEXP _qtl2geno_calc_kinship(SEXP prob_arraySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,7 @@ END_RCPP
 }
 // crosstype_supported
 bool crosstype_supported(const String& crosstype);
-RcppExport SEXP qtl2geno_crosstype_supported(SEXP crosstypeSEXP) {
+RcppExport SEXP _qtl2geno_crosstype_supported(SEXP crosstypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -29,7 +29,7 @@ END_RCPP
 }
 // count_invalid_genotypes
 IntegerVector count_invalid_genotypes(const String& crosstype, const IntegerMatrix& genotypes, const bool& is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info);
-RcppExport SEXP qtl2geno_count_invalid_genotypes(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_count_invalid_genotypes(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,7 +44,7 @@ END_RCPP
 }
 // check_crossinfo
 bool check_crossinfo(const String& crosstype, const IntegerMatrix& cross_info, const bool any_x_chr);
-RcppExport SEXP qtl2geno_check_crossinfo(SEXP crosstypeSEXP, SEXP cross_infoSEXP, SEXP any_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_check_crossinfo(SEXP crosstypeSEXP, SEXP cross_infoSEXP, SEXP any_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // check_is_female_vector
 bool check_is_female_vector(const String& crosstype, const LogicalVector& is_female, const bool any_x_chr);
-RcppExport SEXP qtl2geno_check_is_female_vector(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP any_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_check_is_female_vector(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP any_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,7 +70,7 @@ END_RCPP
 }
 // check_handle_x_chr
 bool check_handle_x_chr(const String& crosstype, const bool any_x_chr);
-RcppExport SEXP qtl2geno_check_handle_x_chr(SEXP crosstypeSEXP, SEXP any_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_check_handle_x_chr(SEXP crosstypeSEXP, SEXP any_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -82,7 +82,7 @@ END_RCPP
 }
 // chisq_colpairs
 NumericMatrix chisq_colpairs(const IntegerMatrix& input);
-RcppExport SEXP qtl2geno_chisq_colpairs(SEXP inputSEXP) {
+RcppExport SEXP _qtl2geno_chisq_colpairs(SEXP inputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -93,7 +93,7 @@ END_RCPP
 }
 // compare_geno
 IntegerMatrix compare_geno(const IntegerMatrix& geno);
-RcppExport SEXP qtl2geno_compare_geno(SEXP genoSEXP) {
+RcppExport SEXP _qtl2geno_compare_geno(SEXP genoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -104,7 +104,7 @@ END_RCPP
 }
 // count_xo
 IntegerVector count_xo(const IntegerMatrix geno, const String& crosstype, const bool is_X_chr);
-RcppExport SEXP qtl2geno_count_xo(SEXP genoSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
+RcppExport SEXP _qtl2geno_count_xo(SEXP genoSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -117,7 +117,7 @@ END_RCPP
 }
 // count_xo_3d
 IntegerMatrix count_xo_3d(const IntegerVector geno_array, const String& crosstype, const bool is_X_chr);
-RcppExport SEXP qtl2geno_count_xo_3d(SEXP geno_arraySEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
+RcppExport SEXP _qtl2geno_count_xo_3d(SEXP geno_arraySEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -130,7 +130,7 @@ END_RCPP
 }
 // mpp_encode_alleles
 int mpp_encode_alleles(const int allele1, const int allele2, const int n_alleles, const bool phase_known);
-RcppExport SEXP qtl2geno_mpp_encode_alleles(SEXP allele1SEXP, SEXP allele2SEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
+RcppExport SEXP _qtl2geno_mpp_encode_alleles(SEXP allele1SEXP, SEXP allele2SEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -144,7 +144,7 @@ END_RCPP
 }
 // mpp_decode_geno
 IntegerVector mpp_decode_geno(const int true_gen, const int n_alleles, const bool phase_known);
-RcppExport SEXP qtl2geno_mpp_decode_geno(SEXP true_genSEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
+RcppExport SEXP _qtl2geno_mpp_decode_geno(SEXP true_genSEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -157,7 +157,7 @@ END_RCPP
 }
 // mpp_is_het
 bool mpp_is_het(const int true_gen, const int n_alleles, const bool phase_known);
-RcppExport SEXP qtl2geno_mpp_is_het(SEXP true_genSEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
+RcppExport SEXP _qtl2geno_mpp_is_het(SEXP true_genSEXP, SEXP n_allelesSEXP, SEXP phase_knownSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -170,7 +170,7 @@ END_RCPP
 }
 // mpp_geno_names
 const std::vector<std::string> mpp_geno_names(const std::vector<std::string> alleles, const bool is_x_chr);
-RcppExport SEXP qtl2geno_mpp_geno_names(SEXP allelesSEXP, SEXP is_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_mpp_geno_names(SEXP allelesSEXP, SEXP is_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -182,7 +182,7 @@ END_RCPP
 }
 // invert_founder_index
 IntegerVector invert_founder_index(IntegerVector cross_info);
-RcppExport SEXP qtl2geno_invert_founder_index(SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_invert_founder_index(SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -193,7 +193,7 @@ END_RCPP
 }
 // find_ibd_segments
 NumericMatrix find_ibd_segments(const IntegerVector& g1, const IntegerVector& g2, const NumericVector& p, const double error_prob);
-RcppExport SEXP qtl2geno_find_ibd_segments(SEXP g1SEXP, SEXP g2SEXP, SEXP pSEXP, SEXP error_probSEXP) {
+RcppExport SEXP _qtl2geno_find_ibd_segments(SEXP g1SEXP, SEXP g2SEXP, SEXP pSEXP, SEXP error_probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -207,7 +207,7 @@ END_RCPP
 }
 // geno_names
 std::vector<std::string> geno_names(const String& crosstype, const std::vector<std::string> alleles, const bool is_x_chr);
-RcppExport SEXP qtl2geno_geno_names(SEXP crosstypeSEXP, SEXP allelesSEXP, SEXP is_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_geno_names(SEXP crosstypeSEXP, SEXP allelesSEXP, SEXP is_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -220,7 +220,7 @@ END_RCPP
 }
 // nalleles
 int nalleles(const String& crosstype);
-RcppExport SEXP qtl2geno_nalleles(SEXP crosstypeSEXP) {
+RcppExport SEXP _qtl2geno_nalleles(SEXP crosstypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -231,7 +231,7 @@ END_RCPP
 }
 // genoprob_to_alleleprob
 NumericVector genoprob_to_alleleprob(const String& crosstype, const NumericVector& prob_array, const bool is_x_chr);
-RcppExport SEXP qtl2geno_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_genoprob_to_alleleprob(SEXP crosstypeSEXP, SEXP prob_arraySEXP, SEXP is_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -244,7 +244,7 @@ END_RCPP
 }
 // get_x_covar
 NumericMatrix get_x_covar(const String& crosstype, const LogicalVector& is_female, const IntegerMatrix& cross_info);
-RcppExport SEXP qtl2geno_get_x_covar(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_get_x_covar(SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -257,7 +257,7 @@ END_RCPP
 }
 // calc_errorlod
 NumericMatrix calc_errorlod(const String& crosstype, const NumericVector& probs, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_calc_errorlod(SEXP crosstypeSEXP, SEXP probsSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_calc_errorlod(SEXP crosstypeSEXP, SEXP probsSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -274,7 +274,7 @@ END_RCPP
 }
 // calc_genoprob
 NumericVector calc_genoprob(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
-RcppExport SEXP qtl2geno_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+RcppExport SEXP _qtl2geno_calc_genoprob(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -293,7 +293,7 @@ END_RCPP
 }
 // calc_genoprob2
 NumericVector calc_genoprob2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const bool is_female, const IntegerVector& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
-RcppExport SEXP qtl2geno_calc_genoprob2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+RcppExport SEXP _qtl2geno_calc_genoprob2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -312,7 +312,7 @@ END_RCPP
 }
 // est_map
 NumericVector est_map(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const double error_prob, const int max_iterations, const double tol, const bool verbose);
-RcppExport SEXP qtl2geno_est_map(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _qtl2geno_est_map(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -333,7 +333,7 @@ END_RCPP
 }
 // est_map2
 NumericVector est_map2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const IntegerVector& cross_group, const IntegerVector& unique_cross_group, const NumericVector& rec_frac, const double error_prob, const int max_iterations, const double tol, const bool verbose);
-RcppExport SEXP qtl2geno_est_map2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP cross_groupSEXP, SEXP unique_cross_groupSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
+RcppExport SEXP _qtl2geno_est_map2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP cross_groupSEXP, SEXP unique_cross_groupSEXP, SEXP rec_fracSEXP, SEXP error_probSEXP, SEXP max_iterationsSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -356,7 +356,7 @@ END_RCPP
 }
 // sim_geno
 IntegerVector sim_geno(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob, const int n_draws);
-RcppExport SEXP qtl2geno_sim_geno(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP, SEXP n_drawsSEXP) {
+RcppExport SEXP _qtl2geno_sim_geno(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP, SEXP n_drawsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -376,7 +376,7 @@ END_RCPP
 }
 // sim_geno2
 IntegerVector sim_geno2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const bool is_female, const IntegerVector& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob, const int n_draws);
-RcppExport SEXP qtl2geno_sim_geno2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP, SEXP n_drawsSEXP) {
+RcppExport SEXP _qtl2geno_sim_geno2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP, SEXP n_drawsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -396,7 +396,7 @@ END_RCPP
 }
 // addlog
 double addlog(const double a, const double b);
-RcppExport SEXP qtl2geno_addlog(SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _qtl2geno_addlog(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -408,7 +408,7 @@ END_RCPP
 }
 // subtrlog
 double subtrlog(const double a, const double b);
-RcppExport SEXP qtl2geno_subtrlog(SEXP aSEXP, SEXP bSEXP) {
+RcppExport SEXP _qtl2geno_subtrlog(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -420,7 +420,7 @@ END_RCPP
 }
 // viterbi
 IntegerMatrix viterbi(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const LogicalVector& is_female, const IntegerMatrix& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
-RcppExport SEXP qtl2geno_viterbi(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+RcppExport SEXP _qtl2geno_viterbi(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -439,7 +439,7 @@ END_RCPP
 }
 // viterbi2
 IntegerMatrix viterbi2(const String& crosstype, const IntegerMatrix& genotypes, const IntegerMatrix& founder_geno, const bool is_X_chr, const bool is_female, const IntegerVector& cross_info, const NumericVector& rec_frac, const IntegerVector& marker_index, const double error_prob);
-RcppExport SEXP qtl2geno_viterbi2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
+RcppExport SEXP _qtl2geno_viterbi2(SEXP crosstypeSEXP, SEXP genotypesSEXP, SEXP founder_genoSEXP, SEXP is_X_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP, SEXP rec_fracSEXP, SEXP marker_indexSEXP, SEXP error_probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -458,7 +458,7 @@ END_RCPP
 }
 // locate_xo
 List locate_xo(const IntegerMatrix geno, const NumericVector map, const String& crosstype, const bool is_X_chr);
-RcppExport SEXP qtl2geno_locate_xo(SEXP genoSEXP, SEXP mapSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
+RcppExport SEXP _qtl2geno_locate_xo(SEXP genoSEXP, SEXP mapSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -472,7 +472,7 @@ END_RCPP
 }
 // maxmarg
 IntegerMatrix maxmarg(const NumericVector& prob_array, const double minprob, const double tol);
-RcppExport SEXP qtl2geno_maxmarg(SEXP prob_arraySEXP, SEXP minprobSEXP, SEXP tolSEXP) {
+RcppExport SEXP _qtl2geno_maxmarg(SEXP prob_arraySEXP, SEXP minprobSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -485,7 +485,7 @@ END_RCPP
 }
 // reduce_markers
 IntegerVector reduce_markers(const NumericVector& pos, const NumericVector& weights, const double min_dist);
-RcppExport SEXP qtl2geno_reduce_markers(SEXP posSEXP, SEXP weightsSEXP, SEXP min_distSEXP) {
+RcppExport SEXP _qtl2geno_reduce_markers(SEXP posSEXP, SEXP weightsSEXP, SEXP min_distSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -498,7 +498,7 @@ END_RCPP
 }
 // test_init
 double test_init(const String& crosstype, const int true_gen, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_init(SEXP crosstypeSEXP, SEXP true_genSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_init(SEXP crosstypeSEXP, SEXP true_genSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -513,7 +513,7 @@ END_RCPP
 }
 // test_emit
 double test_emit(const String& crosstype, const int obs_gen, const int true_gen, const double error_prob, const IntegerVector& founder_geno, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_emit(SEXP crosstypeSEXP, SEXP obs_genSEXP, SEXP true_genSEXP, SEXP error_probSEXP, SEXP founder_genoSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_emit(SEXP crosstypeSEXP, SEXP obs_genSEXP, SEXP true_genSEXP, SEXP error_probSEXP, SEXP founder_genoSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -531,7 +531,7 @@ END_RCPP
 }
 // test_step
 double test_step(const String& crosstype, const int gen_left, const int gen_right, const double rec_frac, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_step(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP rec_fracSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_step(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP rec_fracSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -548,7 +548,7 @@ END_RCPP
 }
 // test_check_geno
 bool test_check_geno(const String& crosstype, const int gen, const bool is_observed_value, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_check_geno(SEXP crosstypeSEXP, SEXP genSEXP, SEXP is_observed_valueSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_check_geno(SEXP crosstypeSEXP, SEXP genSEXP, SEXP is_observed_valueSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -564,7 +564,7 @@ END_RCPP
 }
 // test_possible_gen
 IntegerVector test_possible_gen(const String& crosstype, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_possible_gen(SEXP crosstypeSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_possible_gen(SEXP crosstypeSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -578,7 +578,7 @@ END_RCPP
 }
 // test_ngen
 int test_ngen(const String& crosstype, const bool is_x_chr);
-RcppExport SEXP qtl2geno_test_ngen(SEXP crosstypeSEXP, SEXP is_x_chrSEXP) {
+RcppExport SEXP _qtl2geno_test_ngen(SEXP crosstypeSEXP, SEXP is_x_chrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -590,7 +590,7 @@ END_RCPP
 }
 // test_nrec
 int test_nrec(const String& crosstype, const int gen_left, const int gen_right, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_nrec(SEXP crosstypeSEXP, SEXP gen_leftSEXP, SEXP gen_rightSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -606,7 +606,7 @@ END_RCPP
 }
 // test_founder_geno_values
 bool test_founder_geno_values(const String& crosstype, const IntegerMatrix& founder_geno);
-RcppExport SEXP qtl2geno_test_founder_geno_values(SEXP crosstypeSEXP, SEXP founder_genoSEXP) {
+RcppExport SEXP _qtl2geno_test_founder_geno_values(SEXP crosstypeSEXP, SEXP founder_genoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -618,7 +618,7 @@ END_RCPP
 }
 // need_founder_geno
 bool need_founder_geno(const String& crosstype);
-RcppExport SEXP qtl2geno_need_founder_geno(SEXP crosstypeSEXP) {
+RcppExport SEXP _qtl2geno_need_founder_geno(SEXP crosstypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -629,7 +629,7 @@ END_RCPP
 }
 // check_founder_geno_size
 bool check_founder_geno_size(const String& crosstype, const IntegerMatrix& founder_geno, const int n_markers);
-RcppExport SEXP qtl2geno_check_founder_geno_size(SEXP crosstypeSEXP, SEXP founder_genoSEXP, SEXP n_markersSEXP) {
+RcppExport SEXP _qtl2geno_check_founder_geno_size(SEXP crosstypeSEXP, SEXP founder_genoSEXP, SEXP n_markersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -642,7 +642,7 @@ END_RCPP
 }
 // test_emitmatrix
 std::vector<NumericMatrix> test_emitmatrix(const String& crosstype, const double error_prob, const int max_obsgeno, const IntegerMatrix& founder_geno, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_emitmatrix(SEXP crosstypeSEXP, SEXP error_probSEXP, SEXP max_obsgenoSEXP, SEXP founder_genoSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_emitmatrix(SEXP crosstypeSEXP, SEXP error_probSEXP, SEXP max_obsgenoSEXP, SEXP founder_genoSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -659,7 +659,7 @@ END_RCPP
 }
 // test_stepmatrix
 std::vector<NumericMatrix> test_stepmatrix(const String& crosstype, const NumericVector& rec_frac, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_stepmatrix(SEXP crosstypeSEXP, SEXP rec_fracSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_stepmatrix(SEXP crosstypeSEXP, SEXP rec_fracSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -674,7 +674,7 @@ END_RCPP
 }
 // test_initvector
 NumericVector test_initvector(const String& crosstype, const bool is_x_chr, const bool is_female, const IntegerVector& cross_info);
-RcppExport SEXP qtl2geno_test_initvector(SEXP crosstypeSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
+RcppExport SEXP _qtl2geno_test_initvector(SEXP crosstypeSEXP, SEXP is_x_chrSEXP, SEXP is_femaleSEXP, SEXP cross_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -685,4 +685,60 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(test_initvector(crosstype, is_x_chr, is_female, cross_info));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_qtl2geno_calc_kinship", (DL_FUNC) &_qtl2geno_calc_kinship, 1},
+    {"_qtl2geno_crosstype_supported", (DL_FUNC) &_qtl2geno_crosstype_supported, 1},
+    {"_qtl2geno_count_invalid_genotypes", (DL_FUNC) &_qtl2geno_count_invalid_genotypes, 5},
+    {"_qtl2geno_check_crossinfo", (DL_FUNC) &_qtl2geno_check_crossinfo, 3},
+    {"_qtl2geno_check_is_female_vector", (DL_FUNC) &_qtl2geno_check_is_female_vector, 3},
+    {"_qtl2geno_check_handle_x_chr", (DL_FUNC) &_qtl2geno_check_handle_x_chr, 2},
+    {"_qtl2geno_chisq_colpairs", (DL_FUNC) &_qtl2geno_chisq_colpairs, 1},
+    {"_qtl2geno_compare_geno", (DL_FUNC) &_qtl2geno_compare_geno, 1},
+    {"_qtl2geno_count_xo", (DL_FUNC) &_qtl2geno_count_xo, 3},
+    {"_qtl2geno_count_xo_3d", (DL_FUNC) &_qtl2geno_count_xo_3d, 3},
+    {"_qtl2geno_mpp_encode_alleles", (DL_FUNC) &_qtl2geno_mpp_encode_alleles, 4},
+    {"_qtl2geno_mpp_decode_geno", (DL_FUNC) &_qtl2geno_mpp_decode_geno, 3},
+    {"_qtl2geno_mpp_is_het", (DL_FUNC) &_qtl2geno_mpp_is_het, 3},
+    {"_qtl2geno_mpp_geno_names", (DL_FUNC) &_qtl2geno_mpp_geno_names, 2},
+    {"_qtl2geno_invert_founder_index", (DL_FUNC) &_qtl2geno_invert_founder_index, 1},
+    {"_qtl2geno_find_ibd_segments", (DL_FUNC) &_qtl2geno_find_ibd_segments, 4},
+    {"_qtl2geno_geno_names", (DL_FUNC) &_qtl2geno_geno_names, 3},
+    {"_qtl2geno_nalleles", (DL_FUNC) &_qtl2geno_nalleles, 1},
+    {"_qtl2geno_genoprob_to_alleleprob", (DL_FUNC) &_qtl2geno_genoprob_to_alleleprob, 3},
+    {"_qtl2geno_get_x_covar", (DL_FUNC) &_qtl2geno_get_x_covar, 3},
+    {"_qtl2geno_calc_errorlod", (DL_FUNC) &_qtl2geno_calc_errorlod, 7},
+    {"_qtl2geno_calc_genoprob", (DL_FUNC) &_qtl2geno_calc_genoprob, 9},
+    {"_qtl2geno_calc_genoprob2", (DL_FUNC) &_qtl2geno_calc_genoprob2, 9},
+    {"_qtl2geno_est_map", (DL_FUNC) &_qtl2geno_est_map, 11},
+    {"_qtl2geno_est_map2", (DL_FUNC) &_qtl2geno_est_map2, 13},
+    {"_qtl2geno_sim_geno", (DL_FUNC) &_qtl2geno_sim_geno, 10},
+    {"_qtl2geno_sim_geno2", (DL_FUNC) &_qtl2geno_sim_geno2, 10},
+    {"_qtl2geno_addlog", (DL_FUNC) &_qtl2geno_addlog, 2},
+    {"_qtl2geno_subtrlog", (DL_FUNC) &_qtl2geno_subtrlog, 2},
+    {"_qtl2geno_viterbi", (DL_FUNC) &_qtl2geno_viterbi, 9},
+    {"_qtl2geno_viterbi2", (DL_FUNC) &_qtl2geno_viterbi2, 9},
+    {"_qtl2geno_locate_xo", (DL_FUNC) &_qtl2geno_locate_xo, 4},
+    {"_qtl2geno_maxmarg", (DL_FUNC) &_qtl2geno_maxmarg, 3},
+    {"_qtl2geno_reduce_markers", (DL_FUNC) &_qtl2geno_reduce_markers, 3},
+    {"_qtl2geno_test_init", (DL_FUNC) &_qtl2geno_test_init, 5},
+    {"_qtl2geno_test_emit", (DL_FUNC) &_qtl2geno_test_emit, 8},
+    {"_qtl2geno_test_step", (DL_FUNC) &_qtl2geno_test_step, 7},
+    {"_qtl2geno_test_check_geno", (DL_FUNC) &_qtl2geno_test_check_geno, 6},
+    {"_qtl2geno_test_possible_gen", (DL_FUNC) &_qtl2geno_test_possible_gen, 4},
+    {"_qtl2geno_test_ngen", (DL_FUNC) &_qtl2geno_test_ngen, 2},
+    {"_qtl2geno_test_nrec", (DL_FUNC) &_qtl2geno_test_nrec, 6},
+    {"_qtl2geno_test_founder_geno_values", (DL_FUNC) &_qtl2geno_test_founder_geno_values, 2},
+    {"_qtl2geno_need_founder_geno", (DL_FUNC) &_qtl2geno_need_founder_geno, 1},
+    {"_qtl2geno_check_founder_geno_size", (DL_FUNC) &_qtl2geno_check_founder_geno_size, 3},
+    {"_qtl2geno_test_emitmatrix", (DL_FUNC) &_qtl2geno_test_emitmatrix, 7},
+    {"_qtl2geno_test_stepmatrix", (DL_FUNC) &_qtl2geno_test_stepmatrix, 5},
+    {"_qtl2geno_test_initvector", (DL_FUNC) &_qtl2geno_test_initvector, 4},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_qtl2geno(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
