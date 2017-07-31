@@ -153,7 +153,9 @@ IntegerVector guess_phase_X(const IntegerMatrix& geno, const String& crosstype,
         }
         else { // male
             for(int pos=0, offset=ind*matsize; pos < n_pos; pos++, offset += 2) {
-                result[offset] = geno(pos,ind)-n_gen_A;
+                int g = geno(pos,ind);
+                if(IntegerVector::is_na(g)) result[offset] = NA_INTEGER;
+                else result[offset] = geno(pos,ind)-n_gen_A;
                 result[offset+1] = NA_INTEGER;
             }
         }
