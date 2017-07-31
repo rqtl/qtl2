@@ -27,4 +27,7 @@ const std::vector<std::string> mpp_geno_names(const std::vector<std::string> all
 //
 Rcpp::IntegerVector invert_founder_index(Rcpp::IntegerVector cross_info);
 
+// is cross phase known (ie f2, ail, hs, do, ail3)
+bool is_phase_known(const Rcpp::String& crosstype);
+
 #endif // CROSS_UTIL_H

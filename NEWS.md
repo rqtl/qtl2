@@ -1,3 +1,13 @@
+## qtl2geno 0.5-28 (2017-07-31)
+
+### Minor changes
+
+- Added utility function `is_phase_known()` for determining whether a
+  cross is of phase-known type. This will be used in
+  [qtl2plot](https://github.com/rqtl/qtl2plot) when visualizing
+  genotypes. (Do we need to infer phase before plotting?)
+
+
 ## qtl2geno 0.5-26 (2017-06-29)
 
 ### New features

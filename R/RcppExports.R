@@ -61,6 +61,10 @@ invert_founder_index <- function(cross_info) {
     .Call(`_qtl2geno_invert_founder_index`, cross_info)
 }
 
+.is_phase_known <- function(crosstype) {
+    .Call(`_qtl2geno_is_phase_known`, crosstype)
+}
+
 .find_ibd_segments <- function(g1, g2, p, error_prob) {
     .Call(`_qtl2geno_find_ibd_segments`, g1, g2, p, error_prob)
 }

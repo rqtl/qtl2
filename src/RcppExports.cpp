@@ -191,6 +191,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// is_phase_known
+bool is_phase_known(const String& crosstype);
+RcppExport SEXP _qtl2geno_is_phase_known(SEXP crosstypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(is_phase_known(crosstype));
+    return rcpp_result_gen;
+END_RCPP
+}
 // find_ibd_segments
 NumericMatrix find_ibd_segments(const IntegerVector& g1, const IntegerVector& g2, const NumericVector& p, const double error_prob);
 RcppExport SEXP _qtl2geno_find_ibd_segments(SEXP g1SEXP, SEXP g2SEXP, SEXP pSEXP, SEXP error_probSEXP) {
@@ -703,6 +714,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2geno_mpp_is_het", (DL_FUNC) &_qtl2geno_mpp_is_het, 3},
     {"_qtl2geno_mpp_geno_names", (DL_FUNC) &_qtl2geno_mpp_geno_names, 2},
     {"_qtl2geno_invert_founder_index", (DL_FUNC) &_qtl2geno_invert_founder_index, 1},
+    {"_qtl2geno_is_phase_known", (DL_FUNC) &_qtl2geno_is_phase_known, 1},
     {"_qtl2geno_find_ibd_segments", (DL_FUNC) &_qtl2geno_find_ibd_segments, 4},
     {"_qtl2geno_geno_names", (DL_FUNC) &_qtl2geno_geno_names, 3},
     {"_qtl2geno_nalleles", (DL_FUNC) &_qtl2geno_nalleles, 1},

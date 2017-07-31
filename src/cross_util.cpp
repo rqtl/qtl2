@@ -1,6 +1,7 @@
 // cross utility functions
 
 #include "cross_util.h"
+#include "cross.h"
 #include <math.h>
 #include <Rcpp.h>
 using namespace Rcpp;
@@ -160,4 +161,17 @@ IntegerVector invert_founder_index(IntegerVector cross_info)
     }
 
     return(result);
+}
+
+// is cross phase known (ie f2, ail, hs, do, ail3)
+// [[Rcpp::export(".is_phase_known")]]
+bool is_phase_known(const String& crosstype)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    bool result = cross->crosstype == cross->phase_known_crosstype;
+
+    delete cross;
+
+    return result;
 }
