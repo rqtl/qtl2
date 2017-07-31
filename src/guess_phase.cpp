@@ -182,12 +182,12 @@ IntegerVector phase_geno(IntegerVector g1, IntegerVector g2)
            IntegerVector::is_na(g2[pos])) {
             result[offset] = result[offset+1] = NA_INTEGER;
         }
-        if(g1[pos]==g2[pos]) {
+        else if(g1[pos]==g2[pos]) { // homozygous so no need to guess
             result[offset] = result[offset+1] = cur1 = cur2 = g1[pos];
         }
         else {
             if(IntegerVector::is_na(cur1) ||
-               IntegerVector::is_na(cur2)) { // randomize
+               IntegerVector::is_na(cur2)) { // not yet determined, so randomize
                 if(R::runif(0.0, 1.0) < 0.5) {
                     result[offset] = cur1 = g1[pos];
                     result[offset+1] = cur2 = g2[pos];
