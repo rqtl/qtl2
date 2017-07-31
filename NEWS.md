@@ -1,3 +1,17 @@
+## qtl2geno 0.5-28 (2017-07-31)
+
+### New features
+
+- Added function `guess_phase()`, for guessing the phase of imputed
+  genotypes (such as from `maxmarg()`), mostly for visualization of
+  genotypes of one individual from a multi-parent population.
+
+### Bug fixes
+
+- Fix handling of missing values in internal functions
+  `mpp_decode_geno()` and `mpp_encode_alleles()`.
+
+
 ## qtl2geno 0.5-26 (2017-06-29)
 
 ### New features

@@ -85,6 +85,22 @@ nalleles <- function(crosstype) {
     .Call(`_qtl2geno_get_x_covar`, crosstype, is_female, cross_info)
 }
 
+.guess_phase_f2A <- function(geno) {
+    .Call(`_qtl2geno_guess_phase_f2A`, geno)
+}
+
+.guess_phase_f2X <- function(geno) {
+    .Call(`_qtl2geno_guess_phase_f2X`, geno)
+}
+
+.guess_phase_A <- function(geno, crosstype) {
+    .Call(`_qtl2geno_guess_phase_A`, geno, crosstype)
+}
+
+.guess_phase_X <- function(geno, crosstype, is_female) {
+    .Call(`_qtl2geno_guess_phase_X`, geno, crosstype, is_female)
+}
+
 .calc_errorlod <- function(crosstype, probs, genotypes, founder_geno, is_X_chr, is_female, cross_info) {
     .Call(`_qtl2geno_calc_errorlod`, crosstype, probs, genotypes, founder_geno, is_X_chr, is_female, cross_info)
 }
