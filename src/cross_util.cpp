@@ -1,6 +1,7 @@
 // cross utility functions
 
 #include "cross_util.h"
+#include "cross.h"
 #include <math.h>
 #include <Rcpp.h>
 using namespace Rcpp;
@@ -10,6 +11,11 @@ using namespace Rcpp;
 int mpp_encode_alleles(const int allele1, const int allele2,
                        const int n_alleles, const bool phase_known)
 {
+    // if either input is missing, return NA
+    if(IntegerVector::is_na(allele1) || allele1 <= 0 || allele1 > n_alleles ||
+       IntegerVector::is_na(allele2) || allele2 <= 0 || allele2 > n_alleles)
+        return NA_INTEGER;
+
     if(phase_known) {
         const int m = std::max(allele1, allele2);
         const int d = abs(allele1 - allele2);
@@ -34,6 +40,16 @@ IntegerVector mpp_decode_geno(const int true_gen,
                               const int n_alleles, const bool phase_known)
 {
     IntegerVector result(2);
+
+    // return NA if input is bad
+    if(IntegerVector::is_na(true_gen) || true_gen <= 0 ||
+       (phase_known && true_gen > n_alleles*n_alleles) ||
+       (!phase_known && true_gen > n_alleles*(n_alleles+1)/2)) {
+
+        result[0] = NA_INTEGER;
+        result[1] = NA_INTEGER;
+        return result;
+    }
 
     if(phase_known) {
         // number of phase-known genotypes
@@ -160,4 +176,17 @@ IntegerVector invert_founder_index(IntegerVector cross_info)
     }
 
     return(result);
+}
+
+// is cross phase known (ie f2, ail, hs, do, ail3)
+// [[Rcpp::export(".is_phase_known")]]
+bool is_phase_known(const String& crosstype)
+{
+    QTLCross* cross = QTLCross::Create(crosstype);
+
+    bool result = cross->crosstype == cross->phase_known_crosstype;
+
+    delete cross;
+
+    return result;
 }

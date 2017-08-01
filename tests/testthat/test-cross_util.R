@@ -20,6 +20,16 @@ test_that("mpp_encode_alleles works for 8 alleles, phase unknown", {
             expect_equal(mpp_encode_alleles(i, j, 8, FALSE), g[i,j])
         }
     }
+
+    for(i in 1:8) {
+        expect_equal(mpp_encode_alleles(NA, i, 8, FALSE), as.integer(NA))
+        expect_equal(mpp_encode_alleles(i, NA, 8, FALSE), as.integer(NA))
+        expect_equal(mpp_encode_alleles(0, i, 8, FALSE),  as.integer(NA))
+        expect_equal(mpp_encode_alleles(9, i, 8, FALSE),  as.integer(NA))
+        expect_equal(mpp_encode_alleles(i, 0, 8, FALSE),  as.integer(NA))
+        expect_equal(mpp_encode_alleles(i, 9, 8, FALSE),  as.integer(NA))
+    }
+
 })
 
 test_that("mpp_decode_geno works for 8 alleles, phase unknown", {
@@ -32,6 +42,11 @@ test_that("mpp_decode_geno works for 8 alleles, phase unknown", {
             expect_equal(mpp_decode_geno(g[i, j], 8, FALSE), sort(c(i,j)))
         }
     }
+
+    expect_equal(mpp_decode_geno(NA, 8, FALSE), rep(as.integer(NA), 2))
+    expect_equal(mpp_decode_geno(0, 8, FALSE), rep(as.integer(NA), 2))
+    expect_equal(mpp_decode_geno(37, 8, FALSE), rep(as.integer(NA), 2))
+
 })
 
 test_that("mpp_is_het works for 8 alleles, phase unknown", {
@@ -76,6 +91,16 @@ test_that("mpp_encode_alleles works for 8 alleles, phase known", {
             expect_equal(mpp_encode_alleles(i, j, 8, TRUE), g[i,j])
         }
     }
+
+    for(i in 1:8) {
+        expect_equal(mpp_encode_alleles(NA, i, 8, FALSE), as.integer(NA))
+        expect_equal(mpp_encode_alleles(i, NA, 8, FALSE), as.integer(NA))
+        expect_equal(mpp_encode_alleles(0, i, 8, FALSE),  as.integer(NA))
+        expect_equal(mpp_encode_alleles(9, i, 8, FALSE),  as.integer(NA))
+        expect_equal(mpp_encode_alleles(i, 0, 8, FALSE),  as.integer(NA))
+        expect_equal(mpp_encode_alleles(i, 9, 8, FALSE),  as.integer(NA))
+    }
+
 })
 
 test_that("mpp_decode_geno works for 8 alleles, phase known", {
@@ -88,6 +113,11 @@ test_that("mpp_decode_geno works for 8 alleles, phase known", {
             expect_equal(mpp_decode_geno(g[i, j], 8, TRUE), c(i,j))
         }
     }
+
+    expect_equal(mpp_decode_geno(NA, 8, TRUE), rep(as.integer(NA), 2))
+    expect_equal(mpp_decode_geno(0, 8, TRUE), rep(as.integer(NA), 2))
+    expect_equal(mpp_decode_geno(65, 8, TRUE), rep(as.integer(NA), 2))
+
 })
 
 test_that("mpp_is_het works for 8 alleles, phase known", {
