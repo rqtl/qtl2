@@ -28,6 +28,14 @@ Turn imputed genotypes into phased genotypes along chromosomes by
 attempting to pick the phase that leads to the fewest recombination
 events.
 }
+\details{
+We randonly assign the pair of alleles at the first locus
+    to two haplotypes, and then work left to right, assigning
+    alleles to haplotypes one locus at a time seeking the fewest
+    recombination events. The results are subject to arbitrary and
+    random choices. For example, to the right of a homozygous
+    region, either orientation is equally reasonable.
+}
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 gmap <- insert_pseudomarkers(iron$gmap, step=1)
