@@ -1,3 +1,14 @@
+## qtl2plot 0.5-12
+
+### New features
+
+- Added `plot_peaks()`, for plotting the locations (and optionally
+  confidence intervals) of inferred QTL.
+
+- Added `plot_onegeno()` for plotting the genome-wide genotypes for
+  one individual.
+
+
 ## qtl2plot 0.5-10
 
 ### Bug fixes
