@@ -90,7 +90,6 @@ IntegerVector guess_phase_f2X(const IntegerMatrix& geno) // pos x ind
 IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
-    const int n_gen = cross->ngen(false);
     const int n_alleles = cross->nalleles();
     delete cross;
 
