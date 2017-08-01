@@ -54,7 +54,7 @@ test_that("guess_phase works with DO", {
 
     # fake cross2 object
     x <- list(crosstype="do",
-              geno=list("19"=NULL, X=NULL),
+              geno=list("19"=rbind(ind1=0, ind2=0, ind3=0), X=rbind(ind1=0, ind2=0, ind3=0)),
               is_female=c(ind1=FALSE, ind2=TRUE, ind3=TRUE),
               is_x_chr=c("19"=FALSE,X=TRUE))
     class(x) <- c("cross2", "list")

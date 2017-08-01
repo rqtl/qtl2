@@ -38,9 +38,35 @@
 guess_phase <-
     function(cross, geno, cores=1)
 {
+    # match chromosomes
     if(n_chr(cross) != length(geno) ||
-       names(cross$geno) != names(geno))
-        stop("Mismatch in chromosomes between cross and geno")
+       names(cross$geno) != names(geno)) {
+        chr_cross <- chrnames(cross)
+        chr_geno <- names(geno)
+        common_chr <- chr_cross[chr_cross %in% chr_geno]
+        if(length(common_chr) == 0)
+            stop("No chromosomes in common between cross and geno")
+        cross <- subset(cross, chr=common_chr)
+        geno <- geno[common_chr]
+        warning("Considering only the ", length(common_chr), " chr in common between cross and geno")
+    }
+
+    # match individuals, if X chr
+    if(any(cross$is_x_chr)) {
+        ind_cross <- names(cross$is_female)
+        xchr <- names(geno)[cross$is_x_chr]
+        ind_geno <- rownames(geno[[xchr[1]]])
+
+        common_ind <- ind_cross[ind_cross %in% ind_geno]
+        if(length(common_ind) == 0)
+            stop("No individuals in common between cross and geno")
+        cross <- subset(cross, ind=common_ind)
+        for(i in names(geno)[cross$is_x_chr])
+            geno[[i]] <- geno[[i]][common_ind,,drop=FALSE]
+        if(length(common_ind) < length(ind_cross) ||
+           length(common_ind) < length(ind_geno))
+            warning("On X chr, considering only the ", length(common_ind), " individuals in common between cross and geno")
+    }
 
     if(is_phase_known(cross)) return(geno)
 
