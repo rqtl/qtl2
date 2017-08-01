@@ -59,6 +59,8 @@ test_that("guess_phase works with DO", {
               is_x_chr=c("19"=FALSE,X=TRUE))
     class(x) <- c("cross2", "list")
 
+    g <- guess_phase(x, m)
+
     expected <- list("19"=array(dim=c(3,20,2)),
                      X=array(dim=c(3,20,2)))
     for(i in 1:2)
