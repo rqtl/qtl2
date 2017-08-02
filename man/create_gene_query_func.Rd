@@ -5,7 +5,7 @@
 \title{Create a function to query genes}
 \usage{
 create_gene_query_func(dbfile = NULL, db = NULL, table_name = "genes",
-  chr_field = "chr", start_field = "start_Mbp", stop_field = "stop_Mbp",
+  chr_field = "chr", start_field = "start", stop_field = "stop",
   filter = NULL)
 }
 \arguments{
@@ -17,26 +17,32 @@ create_gene_query_func(dbfile = NULL, db = NULL, table_name = "genes",
 
 \item{chr_field}{Name of chromosome field}
 
-\item{start_field}{Name of field with start position (in Mbp)}
+\item{start_field}{Name of field with start position (in basepairs)}
 
-\item{stop_field}{Name of field with stop position (in Mbp)}
+\item{stop_field}{Name of field with stop position (in basepairs)}
 
 \item{filter}{Additional SQL filter (as a character string).}
 }
 \value{
 Function with three arguments, \code{chr}, \code{start},
     and \code{end}, which returns a data frame with the genes
-    overlapping that region. The output should contain at least the
-    columns \code{Name}, \code{chr}, \code{start}, and \code{stop}, the latter
-    two being positions in Mbp.
+    overlapping that region, with \code{start} and \code{end} being
+    in Mbp. The output should contain at least the columns
+    \code{Name}, \code{chr}, \code{start}, and \code{stop}, the
+    latter two being positions in Mbp.
 }
 \description{
 Create a function that will connect to a SQLite database of gene
 information and return a data frame with gene information for a
 selected region.
 }
+\details{
+Note that this function assumes that the database has
+    \code{start} and \code{stop} fields that are in basepairs, but
+    the select uses positions in Mbp, and the output data frame
+    should have \code{start} and \code{stop} columns in Mbp.
+}
 \examples{
-\dontrun{
 # create query function by connecting to file
 dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2db")
 query_genes <- create_gene_query_func(dbfile, filter="(source=='MGI')")
@@ -49,5 +55,4 @@ db <- dbConnect(SQLite(), dbfile)
 query_genes <- create_gene_query_func(db=db, filter="(source=='MGI')")
 genes <- query_genes("2", 97.0, 98.0)
 dbDisconnect(db)
-}
 }

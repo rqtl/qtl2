@@ -8,21 +8,26 @@
 #' @param db Optional database connection (provide one of \code{file} and \code{db}).
 #' @param table_name Name of table in the database
 #' @param chr_field Name of chromosome field
-#' @param start_field Name of field with start position (in Mbp)
-#' @param stop_field Name of field with stop position (in Mbp)
+#' @param start_field Name of field with start position (in basepairs)
+#' @param stop_field Name of field with stop position (in basepairs)
 #' @param filter Additional SQL filter (as a character string).
 #'
 #' @return Function with three arguments, \code{chr}, \code{start},
 #'     and \code{end}, which returns a data frame with the genes
-#'     overlapping that region. The output should contain at least the
-#'     columns \code{Name}, \code{chr}, \code{start}, and \code{stop}, the latter
-#'     two being positions in Mbp.
+#'     overlapping that region, with \code{start} and \code{end} being
+#'     in Mbp. The output should contain at least the columns
+#'     \code{Name}, \code{chr}, \code{start}, and \code{stop}, the
+#'     latter two being positions in Mbp.
+#'
+#' @details Note that this function assumes that the database has
+#'     \code{start} and \code{stop} fields that are in basepairs, but
+#'     the select uses positions in Mbp, and the output data frame
+#'     should have \code{start} and \code{stop} columns in Mbp.
 #'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery
 #'
 #' @examples
-#' \dontrun{
 #' # create query function by connecting to file
 #' dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2db")
 #' query_genes <- create_gene_query_func(dbfile, filter="(source=='MGI')")
@@ -35,11 +40,10 @@
 #' query_genes <- create_gene_query_func(db=db, filter="(source=='MGI')")
 #' genes <- query_genes("2", 97.0, 98.0)
 #' dbDisconnect(db)
-#' }
 
 create_gene_query_func <-
     function(dbfile=NULL, db=NULL, table_name="genes",
-             chr_field="chr", start_field="start_Mbp", stop_field="stop_Mbp",
+             chr_field="chr", start_field="start", stop_field="stop",
              filter=NULL)
 {
     if(!is.null(db)) {
@@ -47,6 +51,10 @@ create_gene_query_func <-
             warning("Provide just one of dbfile or db; using db")
 
         query_func <- function(chr, start, end) {
+
+            # convert input positions from Mbp to basepairs
+            start <- round(start * 1e6)
+            end <- round(end * 1e6)
 
             # bits of the query
             chrselect <- paste0(chr_field, " == '", chr, "'")
@@ -64,15 +72,9 @@ create_gene_query_func <-
             # do the query
             result <- RSQLite::dbGetQuery(db, query)
 
-            # clean up start/stop names: make them 'start' and 'stop'
-            start_col <- result$start_field
-            stop_col <- result$stop_field
-
-            cols <- names(result)
-            cols_keep <- cols[is.na(match(cols, c("start", "stop", start_field, stop_field)))]
-            result <- result[,cols,drop=FALSE]
-            result$start <- start_col
-            result$stop <- stop_col
+            # include start/stop columns in Mbp
+            result$start <- result[,start_field]/1e6
+            result$stop <- result[,stop_field]/1e6
 
             result
         }
@@ -87,6 +89,10 @@ create_gene_query_func <-
             db <- RSQLite::dbConnect(RSQLite::SQLite(), dbfile)
             on.exit(RSQLite::dbDisconnect(db)) # disconnect on exit
 
+            # convert input positions from Mbp to basepairs
+            start <- round(start * 1e6)
+            end <- round(end * 1e6)
+
             # bits of the query
             chrselect <- paste0(chr_field, " == '", chr, "'")
             pos_select1 <- paste0("(", start_field, " >= ", start, " AND ", start_field, " <= ", end, ")")
@@ -103,15 +109,9 @@ create_gene_query_func <-
             # do the query
             result <- RSQLite::dbGetQuery(db, query)
 
-            # clean up start/stop names: make them 'start' and 'stop'
-            start_col <- result$start_field
-            stop_col <- result$stop_field
-
-            cols <- names(result)
-            cols_keep <- cols[is.na(match(cols, c("start", "stop", start_field, stop_field)))]
-            result <- result[,cols,drop=FALSE]
-            result$start <- start_col
-            result$stop <- stop_col
+            # include start/stop columns in Mbp
+            result$start <- result[,start_field]/1e6
+            result$stop <- result[,stop_field]/1e6
 
             result
         }

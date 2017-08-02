@@ -11,7 +11,14 @@ Collaborative Cross (CC) and Diversity Outbred (DO) mouse populations:
 - `create_mousegenes.R` creates the database `mouse_genes.sqlite`
   which mouse gene locations from the
   [Mouse Genome Informatics (MGI)](http://www.informatics.jax.org/)
-  database.
+  database. Key fields in the resulting database include
+
+  - `source` (e.g., `"MGI"`)
+  - `type`
+  - `start` (in basepairs)
+  - `stop` (in basepairs)
+  - `strand`
+  - `Name`
 
 - `create_ccsnps_small.R` creates
   `../extdata/cc_snps_small.sqlite`, a small version of

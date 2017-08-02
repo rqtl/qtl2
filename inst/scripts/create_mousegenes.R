@@ -52,10 +52,6 @@ tab$strand[tab$strand=="."] <- NA
 # seqid -> chr
 names(tab)[1] <- "chr"
 
-# Add start,stop in Mbp
-tab$start_Mbp <- tab$start/1e6
-tab$stop_Mbp <- tab$stop/1e6
-
 # write to database
 dbfile <- "mouse_genes.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)
@@ -64,9 +60,6 @@ dbWriteTable(db, "genes", tab)
 dbGetQuery(db, "CREATE INDEX chr_start ON genes (chr, start)")
 dbGetQuery(db, "CREATE INDEX chr_stop ON genes (chr, stop)")
 dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
-dbGetQuery(db, "CREATE INDEX chr_start_Mbp ON genes (chr, start_Mbp)")
-dbGetQuery(db, "CREATE INDEX chr_stop_Mbp ON genes (chr, stop_Mbp)")
-dbGetQuery(db, "CREATE INDEX chr_start_stop_Mbp ON genes (chr, start_Mbp, stop_Mbp)")
 
 # add description table
 description <- data.frame(description="mouse gene information",

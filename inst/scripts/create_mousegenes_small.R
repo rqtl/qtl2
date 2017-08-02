@@ -6,13 +6,13 @@ library(RSQLite)
 db <- dbConnect(SQLite(), "mouse_genes.sqlite")
 tab <- dbGetQuery(db, paste("SELECT * FROM genes WHERE",
                             "((chr=='2' AND",
-                            "((start_Mbp >= 97.5-1 AND start_Mbp <= 97.5-1) OR",
-                            "(stop_Mbp >= 97.5-1 AND stop_Mbp <= 97.5-1) OR",
-                            "(start_Mbp <= 97.5+1 AND stop_Mbp >= 97.5-1))) OR",
+                            "((start >= 96500000 AND start <= 98500000) OR",
+                            "(stop >=   96500000 AND stop <=  98500000) OR",
+                            "(start <=  98500000 AND stop >=  96500000))) OR",
                             "(chr=='3' AND",
-                            "((start_Mbp >= 15.0-1 AND start_Mbp <= 15.0-1) OR",
-                            "(stop_Mbp >= 15.0-1 AND stop_Mbp <= 15.0-1) OR",
-                            "(start_Mbp <= 15.0+1 AND stop_Mbp >= 15.0-1))))",
+                            "((start >= 14000000 AND start <= 16000000) OR",
+                            "(stop >=   14000000 AND stop <=  16000000) OR",
+                            "(start <=  16000000 AND stop >=  14000000))))",
                             "AND source=='MGI'"))
 dbDisconnect(db)
 
@@ -21,9 +21,9 @@ dbfile <- "../extdata/mouse_genes_small.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)
 db <- dbConnect(SQLite(), dbfile)
 dbWriteTable(db, "genes", tab)
-dbGetQuery(db, "CREATE INDEX chr_start_Mbp ON genes (chr, start_Mbp)")
-dbGetQuery(db, "CREATE INDEX chr_stop_Mbp ON genes (chr, stop_Mbp)")
-dbGetQuery(db, "CREATE INDEX chr_start_stop_Mbp ON genes (chr, start_Mbp, stop_Mbp)")
+dbGetQuery(db, "CREATE INDEX chr_start ON genes (chr, start)")
+dbGetQuery(db, "CREATE INDEX chr_stop ON genes (chr, stop)")
+dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
 
 # add description table
 description <- data.frame(description="mouse gene information (subset to 2 regions)",
