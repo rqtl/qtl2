@@ -4,7 +4,7 @@
 \alias{create_snp_query_func}
 \title{Create a function to query SNPs}
 \usage{
-create_snp_query_func(dbfile = NULL, db = NULL, table = "snps",
+create_snp_query_func(dbfile = NULL, db = NULL, table_name = "snps",
   chr_field = "chr", pos_field = "pos_Mbp")
 }
 \arguments{
@@ -12,7 +12,7 @@ create_snp_query_func(dbfile = NULL, db = NULL, table = "snps",
 
 \item{db}{Optional database connection (provide one of \code{file} and \code{db}).}
 
-\item{table}{Name of table in the database}
+\item{table_name}{Name of table in the database}
 
 \item{chr_field}{Name of chromosome field}
 
