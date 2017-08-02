@@ -20,12 +20,13 @@
 #' @examples
 #' \dontrun{
 #' # create query function by connecting to file
-#' query_snps <- create_snp_query_func("ccvariants.sqlite")
+#' query_snps <- create_snp_query_func("cc_snps.sqlite")
 #' # query_snps will connect and disconnect each time
 #' snps <- query_snps("19", 25.1, 26.1)
 #'
 #' # connect and disconnect separately
-#' db <- dbConnect(SQLite(), "ccvariants.sqlite")
+#' library(RSQLite)
+#' db <- dbConnect(SQLite(), "cc_snps.sqlite")
 #' query_snps <- create_snp_query_func(db=db)
 #' snps <- query_snps("19", 25.1, 26.1)
 #' dbDisconnect(db)
