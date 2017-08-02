@@ -1,7 +1,7 @@
-#' Create a function to query SNPs
+#' Create a function to query variants
 #'
-#' Create a function that will connect to a SQLite database of founder SNP
-#' information and return a data frame with SNP information for a
+#' Create a function that will connect to a SQLite database of founder
+#' variant information and return a data frame with variants for a
 #' selected region.
 #'
 #' @param dbfile Name of database file
@@ -11,7 +11,7 @@
 #' @param pos_field Name of position field
 #'
 #' @return Function with three arguments, \code{chr}, \code{start}, and \code{end},
-#' which returns a data frame with the SNPs in that region. The output should contain
+#' which returns a data frame with the variants in that region. The output should contain
 #' at least the columns \code{chr} and \code{pos}, the latter being position in Mbp.
 #'
 #' @export
@@ -20,20 +20,20 @@
 #' @examples
 #' \dontrun{
 #' # create query function by connecting to file
-#' query_snps <- create_snp_query_func("cc_snps.sqlite")
-#' # query_snps will connect and disconnect each time
-#' snps <- query_snps("19", 25.1, 26.1)
+#' query_variants <- create_variant_query_func("cc_variants.sqlite")
+#' # query_variants will connect and disconnect each time
+#' variants <- query_variants("19", 25.1, 26.1)
 #'
 #' # connect and disconnect separately
 #' library(RSQLite)
-#' db <- dbConnect(SQLite(), "cc_snps.sqlite")
-#' query_snps <- create_snp_query_func(db=db)
-#' snps <- query_snps("19", 25.1, 26.1)
+#' db <- dbConnect(SQLite(), "cc_variants.sqlite")
+#' query_variants <- create_variant_query_func(db=db)
+#' variants <- query_variants("19", 25.1, 26.1)
 #' dbDisconnect(db)
 #' }
 
-create_snp_query_func <-
-    function(dbfile=NULL, db=NULL, table_name="snps", chr_field="chr", pos_field="pos_Mbp")
+create_variant_query_func <-
+    function(dbfile=NULL, db=NULL, table_name="variants", chr_field="chr", pos_field="pos_Mbp")
 {
     if(!is.null(db)) {
         if(!is.null(dbfile))
