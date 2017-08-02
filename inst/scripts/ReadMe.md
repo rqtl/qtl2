@@ -4,7 +4,7 @@ This directory contains four R scripts, for creating
 [SQLite](https://www.sqlite.org) databases for use with the
 Collaborative Cross (CC) and Diversity Outbred (DO) mouse populations:
 
-- `create_ccsnps.R` creates the database `cc_snps.sqlite` which
+- `create_ccvariants.R` creates the database `cc_variants.sqlite` which
   combines data on SNPs, indels, and structural variants in the eight
   CC founders.
 
@@ -20,9 +20,9 @@ Collaborative Cross (CC) and Diversity Outbred (DO) mouse populations:
   - `strand`
   - `Name`
 
-- `create_ccsnps_small.R` creates
-  `../extdata/cc_snps_small.sqlite`, a small version of
-  `cc_snps.sqlite` for use in tests. This contains the variants within
+- `create_ccvariants_small.R` creates
+  `../extdata/cc_variants_small.sqlite`, a small version of
+  `cc_variants.sqlite` for use in tests. This contains the variants within
   two small regions (one on chr 2 and one on chr 3).
 
 - `create_mousegenes_small.R` creates
@@ -41,5 +41,5 @@ following R packages:
 The larger database files created by these scripts are available for
 direct download from [figshare](https://figshare.com):
 
-- [`cc_snps.sqlite`]()
+- [`cc_variants.sqlite`]()
 - [`mouse_genes.sqlite`]()
