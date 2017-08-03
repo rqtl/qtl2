@@ -9,6 +9,7 @@
 #' @param table_name Name of table in the database
 #' @param chr_field Name of chromosome field
 #' @param pos_field Name of position field
+#' @param filter Additional SQL filter (as a character string)
 #'
 #' @return Function with three arguments, \code{chr}, \code{start},
 #'     and \code{end}, which returns a data frame with the variants in
@@ -31,6 +32,12 @@
 #' # query_variants will connect and disconnect each time
 #' variants <- query_variants("19", 25.1, 26.1)
 #'
+#' # create query function to just grab SNPs
+#' query_snps <- create_variant_query_func("cc_variants.sqlite", filter="type=='snp'")
+#' # query_variants will connect and disconnect each time
+#' snps <- query_snps("19", 25.1, 26.1)
+#'
+#'
 #' # connect and disconnect separately
 #' library(RSQLite)
 #' db <- dbConnect(SQLite(), "cc_variants.sqlite")
@@ -40,7 +47,8 @@
 #' }
 
 create_variant_query_func <-
-    function(dbfile=NULL, db=NULL, table_name="variants", chr_field="chr", pos_field="pos")
+    function(dbfile=NULL, db=NULL, table_name="variants",
+             chr_field="chr", pos_field="pos", filter=NULL)
 {
     if(!is.null(db)) {
         if(!is.null(dbfile))
@@ -62,6 +70,9 @@ create_variant_query_func <-
                             chrselect, " AND ",
                             startselect, " AND ",
                             endselect)
+
+            if(!is.null(filter) && filter != "")
+                query <- paste0(query, " AND (", filter, ")")
 
             # do the query
             result <- RSQLite::dbGetQuery(db, query)
@@ -96,6 +107,9 @@ create_variant_query_func <-
                             chrselect, " AND ",
                             startselect, " AND ",
                             endselect)
+
+            if(!is.null(filter) && filter != "")
+                query <- paste0(query, " AND (", filter, ")")
 
             # do the query
             result <- RSQLite::dbGetQuery(db, query)

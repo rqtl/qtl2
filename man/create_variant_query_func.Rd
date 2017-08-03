@@ -5,7 +5,8 @@
 \title{Create a function to query variants}
 \usage{
 create_variant_query_func(dbfile = NULL, db = NULL,
-  table_name = "variants", chr_field = "chr", pos_field = "pos")
+  table_name = "variants", chr_field = "chr", pos_field = "pos",
+  filter = NULL)
 }
 \arguments{
 \item{dbfile}{Name of database file}
@@ -17,6 +18,8 @@ create_variant_query_func(dbfile = NULL, db = NULL,
 \item{chr_field}{Name of chromosome field}
 
 \item{pos_field}{Name of position field}
+
+\item{filter}{Additional SQL filter (as a character string)}
 }
 \value{
 Function with three arguments, \code{chr}, \code{start},
@@ -42,6 +45,12 @@ Note that this function assumes that the database has a
 query_variants <- create_variant_query_func("cc_variants.sqlite")
 # query_variants will connect and disconnect each time
 variants <- query_variants("19", 25.1, 26.1)
+
+# create query function to just grab SNPs
+query_snps <- create_variant_query_func("cc_variants.sqlite", filter="type=='snp'")
+# query_variants will connect and disconnect each time
+snps <- query_snps("19", 25.1, 26.1)
+
 
 # connect and disconnect separately
 library(RSQLite)
