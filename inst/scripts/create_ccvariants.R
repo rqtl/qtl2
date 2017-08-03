@@ -53,7 +53,7 @@ for(i in seq_along(files)) {
 ##############################
 ### SNPs
 ##############################
-chr <- c(1:19, "X", "Y")
+chr <- c(1:19, "X", "Y", "MT")
 cc_founders <- c("A/J", "C57BL/6J", "129S1/SvImJ", "NOD/ShiLtJ", "NZO/HlLtJ",
                  "CAST/EiJ", "PWK/PhJ", "WSB/EiJ")
 strains <- sub("/", "_", cc_founders[-2])
@@ -195,6 +195,7 @@ for(thechr in chr) {
 ### indels
 ##############################
 cat(" -InDels\n")
+chr <- c(1:19, "X", "Y") # drop MT because not present in indel file
 tabfile <- TabixFile(files[2], paste0(files[2], ".tbi"))
 
 for(thechr in chr) {
