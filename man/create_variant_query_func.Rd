@@ -44,17 +44,17 @@ Note that this function assumes that the database has a
 dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
 query_variants <- create_variant_query_func(dbfile)
 # query_variants will connect and disconnect each time
-variants <- query_variants("19", 25.1, 26.1)
+variants <- query_variants("2", 97.0, 98.0)
 
 # create query function to just grab SNPs
 query_snps <- create_variant_query_func(dbfile, filter="type=='snp'")
 # query_variants will connect and disconnect each time
-snps <- query_snps("19", 25.1, 26.1)
+snps <- query_snps("2", 97.0, 98.0)
 
 # connect and disconnect separately
 library(RSQLite)
 db <- dbConnect(SQLite(), dbfile)
 query_variants <- create_variant_query_func(db=db)
-variants <- query_variants("19", 25.1, 26.1)
+variants <- query_variants("2", 97.0, 98.0)
 dbDisconnect(db)
 }
