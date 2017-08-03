@@ -1,6 +1,6 @@
 # create a tiny example SQLite database with just the variants that overlap two small regions:
-#   chr 2, 2 Mbp interval centered at 97.5 Mbp
-#   chr 3, 2 Mbp interval centered at 15.0 Mbp
+#   chr 2, 1 Mbp interval centered at 97.5 Mbp
+#   chr 3, 1 Mbp interval centered at 15.0 Mbp
 
 library(RSQLite)
 db <- dbConnect(SQLite(), "cc_variants.sqlite")
@@ -10,8 +10,8 @@ description <- dbGetQuery(db, "SELECT * FROM description")
 description$description <- paste(description$description, "(subset to 2 regions)")
 
 tab <- dbGetQuery(db, paste("SELECT * FROM variants WHERE",
-                            "(chr=='2' AND pos >= 96500000 AND pos <= 98500000) OR",
-                            "(chr=='3' AND pos >= 14000000 AND pos <= 16000000)"))
+                            "(chr=='2' AND pos >= 97000000 AND pos <= 98000000) OR",
+                            "(chr=='3' AND pos >= 14500000 AND pos <= 15500000)"))
 dbDisconnect(db)
 
 # write to new database
