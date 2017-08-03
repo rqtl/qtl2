@@ -21,8 +21,6 @@ dbfile <- "../extdata/mouse_genes_small.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)
 db <- dbConnect(SQLite(), dbfile)
 dbWriteTable(db, "genes", tab)
-dbGetQuery(db, "CREATE INDEX chr_start ON genes (chr, start)")
-dbGetQuery(db, "CREATE INDEX chr_stop ON genes (chr, stop)")
 dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
 
 # add description table
