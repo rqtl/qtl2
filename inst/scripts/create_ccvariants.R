@@ -181,8 +181,11 @@ for(thechr in chr) {
                            sdp=qtl2scan::calc_sdp(gbin),
                            ensembl_gene=csq[1,],
                            consequence=csq[2,],
+                           gnum,
                            type="snp",
                            stringsAsFactors=FALSE)
+        # make sure column names are what we want
+        colnames(snps)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
 
         dbWriteTable(db, "variants", snps, row.names=FALSE, overwrite=!db_started,
                      append=db_started, field.types=NULL)
@@ -316,8 +319,11 @@ for(thechr in chr) {
                              sdp=qtl2scan::calc_sdp(gbin),
                              ensembl_gene=csq[2,],
                              consequence=csq[3,],
+                             gnum,
                              type="indel",
                              stringsAsFactors=FALSE)
+        # make sure column names are what we want
+        colnames(indels)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
 
         dbWriteTable(db, "variants", indels, row.names=FALSE, overwrite=FALSE,
                      append=TRUE, field.types=NULL)
@@ -387,8 +393,8 @@ svs <- data.frame(snp_id=paste0("SV_", svs[,"#CHROM"], "_", svs[,"START"], "_", 
                   gnum,
                   type="SV",
                   stringsAsFactors=FALSE)
-# fix column names to match what we got in the other variant types
-colnames(svs)[8:15] <- sub("_", ".", colnames(svs)[8:15], fixed=TRUE)
+# make sure column names are what we want
+colnames(snps)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
 
 dbWriteTable(db, "variants", svs, row.names=FALSE, overwrite=FALSE,
              append=TRUE, field.types=NULL)
