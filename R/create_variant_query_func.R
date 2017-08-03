@@ -10,9 +10,16 @@
 #' @param chr_field Name of chromosome field
 #' @param pos_field Name of position field
 #'
-#' @return Function with three arguments, \code{chr}, \code{start}, and \code{end},
-#' which returns a data frame with the variants in that region. The output should contain
-#' at least the columns \code{chr} and \code{pos}, the latter being position in Mbp.
+#' @return Function with three arguments, \code{chr}, \code{start},
+#'     and \code{end}, which returns a data frame with the variants in
+#'     that region, with \code{start} and \code{end} being in Mbp. The
+#'     output should contain at least the columns \code{chr} and
+#'     \code{pos}, the latter being position in Mbp.
+#'
+#' @details Note that this function assumes that the database has a
+#'     \code{pos} field that is in basepairs, but the selection uses
+#'     \code{start} and \code{end} positions in Mbp, and the output
+#'     data frame should have \code{pos} in Mbp.
 #'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery
@@ -33,13 +40,17 @@
 #' }
 
 create_variant_query_func <-
-    function(dbfile=NULL, db=NULL, table_name="variants", chr_field="chr", pos_field="pos_Mbp")
+    function(dbfile=NULL, db=NULL, table_name="variants", chr_field="chr", pos_field="pos")
 {
     if(!is.null(db)) {
         if(!is.null(dbfile))
             warning("Provide just one of dbfile or db; using db")
 
         query_func <- function(chr, start, end) {
+
+            # convert start and end to basepairs
+            start <- round(start*1e6)
+            end <- round(end*1e6)
 
             # bits of the query
             chrselect <- paste0(chr_field, " == '", chr, "'")
@@ -53,7 +64,12 @@ create_variant_query_func <-
                             endselect)
 
             # do the query
-            RSQLite::dbGetQuery(db, query)
+            result <- RSQLite::dbGetQuery(db, query)
+
+            # include pos column in Mbp
+            result$pos <- result[,pos_field]/1e6
+
+            result
         }
 
     }
@@ -66,6 +82,10 @@ create_variant_query_func <-
             db <- RSQLite::dbConnect(RSQLite::SQLite(), dbfile)
             on.exit(RSQLite::dbDisconnect(db)) # disconnect on exit
 
+            # convert start and end to basepairs
+            start <- round(start*1e6)
+            end <- round(end*1e6)
+
             # bits of the query
             chrselect <- paste0(chr_field, " == '", chr, "'")
             startselect <- paste0(pos_field, " >= ", start)
@@ -78,7 +98,12 @@ create_variant_query_func <-
                             endselect)
 
             # do the query
-            RSQLite::dbGetQuery(db, query)
+            result <- RSQLite::dbGetQuery(db, query)
+
+            # include pos column in Mbp
+            result$pos <- result[,pos_field]/1e6
+
+            result
         }
     }
 

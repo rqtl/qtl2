@@ -5,7 +5,7 @@
 \title{Create a function to query variants}
 \usage{
 create_variant_query_func(dbfile = NULL, db = NULL,
-  table_name = "variants", chr_field = "chr", pos_field = "pos_Mbp")
+  table_name = "variants", chr_field = "chr", pos_field = "pos")
 }
 \arguments{
 \item{dbfile}{Name of database file}
@@ -19,14 +19,22 @@ create_variant_query_func(dbfile = NULL, db = NULL,
 \item{pos_field}{Name of position field}
 }
 \value{
-Function with three arguments, \code{chr}, \code{start}, and \code{end},
-which returns a data frame with the variants in that region. The output should contain
-at least the columns \code{chr} and \code{pos}, the latter being position in Mbp.
+Function with three arguments, \code{chr}, \code{start},
+    and \code{end}, which returns a data frame with the variants in
+    that region, with \code{start} and \code{end} being in Mbp. The
+    output should contain at least the columns \code{chr} and
+    \code{pos}, the latter being position in Mbp.
 }
 \description{
 Create a function that will connect to a SQLite database of founder
 variant information and return a data frame with variants for a
 selected region.
+}
+\details{
+Note that this function assumes that the database has a
+    \code{pos} field that is in basepairs, but the selection uses
+    \code{start} and \code{end} positions in Mbp, and the output
+    data frame should have \code{pos} in Mbp.
 }
 \examples{
 \dontrun{
