@@ -26,25 +26,23 @@
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery
 #'
 #' @examples
-#' \dontrun{
 #' # create query function by connecting to file
-#' query_variants <- create_variant_query_func("cc_variants.sqlite")
+#' dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+#' query_variants <- create_variant_query_func(dbfile)
 #' # query_variants will connect and disconnect each time
 #' variants <- query_variants("19", 25.1, 26.1)
 #'
 #' # create query function to just grab SNPs
-#' query_snps <- create_variant_query_func("cc_variants.sqlite", filter="type=='snp'")
+#' query_snps <- create_variant_query_func(dbfile, filter="type=='snp'")
 #' # query_variants will connect and disconnect each time
 #' snps <- query_snps("19", 25.1, 26.1)
 #'
-#'
 #' # connect and disconnect separately
 #' library(RSQLite)
-#' db <- dbConnect(SQLite(), "cc_variants.sqlite")
+#' db <- dbConnect(SQLite(), dbfile)
 #' query_variants <- create_variant_query_func(db=db)
 #' variants <- query_variants("19", 25.1, 26.1)
 #' dbDisconnect(db)
-#' }
 
 create_variant_query_func <-
     function(dbfile=NULL, db=NULL, table_name="variants",
