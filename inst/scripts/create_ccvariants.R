@@ -53,7 +53,7 @@ for(i in seq_along(files)) {
 ##############################
 ### SNPs
 ##############################
-chr <- c(1:19, "X", "Y", "MT")
+chr <- c(1:19, "X", "Y")
 cc_founders <- c("A/J", "C57BL/6J", "129S1/SvImJ", "NOD/ShiLtJ", "NZO/HlLtJ",
                  "CAST/EiJ", "PWK/PhJ", "WSB/EiJ")
 strains <- sub("/", "_", cc_founders[-2])
@@ -65,6 +65,7 @@ library(VariantAnnotation)
 library(RSQLite)
 db_file <- "cc_variants.sqlite"
 db <- dbConnect(SQLite(), dbname=db_file)
+
 dbGetQuery(db, paste0("ATTACH '", db_file, "' AS NEW"))
 
 cat(" -SNPs\n")
@@ -91,12 +92,13 @@ for(thechr in chr) {
         # drop snps that are all 0/0
         g <- geno(snps)$GT
         snps <- snps[rowSums(is.na(g)) == 0 & rowSums(g=="0/0") < n_strains]
+        g <- geno(snps)$GT
         if(nrow(snps)==0) next
 
         # grab genotypes
         g <- geno(snps)$GT
         # add B6 genotypes (reference) and change column names
-        g <- cbind(g[,1,drop=FALSE], B6="0/0", g[,-1])
+        g <- cbind(g[,1,drop=FALSE], C57BL_6J="0/0", g[,-1])
         colnames(g) <- cc_founders
 
         # alleles
@@ -127,7 +129,7 @@ for(thechr in chr) {
 
                 # swap genotypes
                 pat <- paste0(i-1, "/", i-1)
-                gg <- g[wh,]
+                gg <- g[wh,,drop=FALSE]
                 gg[gg==pat] <- "x/x"
                 gg[gg=="0/0"] <- pat
                 gg[gg=="x/x"] <- "0/0"
@@ -155,12 +157,13 @@ for(thechr in chr) {
 
         # alleles as a pattern A|C/G/T
         alleles_char <- paste(alleles[,1],
-                              apply(alleles[,-1], 1,
+                              apply(alleles[,-1,drop=FALSE], 1,
                                     function(a) paste(a[!is.na(a)], collapse="/")),
                               sep="|")
 
         # convert to 1/3
-        gnum[gnum > 1] <- 3
+        gbin <- gnum
+        gbin[gbin > 1] <- 3
 
         # Consequence. Reverse engineered. Likely fragile.
         csq <- sapply(info(snps)$CSQ, function(x) {
@@ -175,7 +178,7 @@ for(thechr in chr) {
                            chr=as.vector(seqnames(snps)),
                            pos=start(snps),
                            alleles=alleles_char,
-                           sdp=qtl2scan::calc_sdp(gnum),
+                           sdp=qtl2scan::calc_sdp(gbin),
                            ensembl_gene=csq[1,],
                            consequence=csq[2,],
                            type="snp",
@@ -215,24 +218,29 @@ for(thechr in chr) {
         # drop indels that are all 0/0
         g <- geno(indels)$GT
         indels <- indels[rowSums(is.na(g)) == 0 & rowSums(g=="0/0") < n_strains]
+        g <- geno(indels)$GT
         if(nrow(indels)==0) next
 
         # add B6 genotypes (reference) and change column names
-        g <- cbind(g[,1,drop=FALSE], B6="0/0", g[,-1])
+        g <- cbind(g[,1,drop=FALSE], C57BL_6J="0/0", g[,-1,drop=FALSE])
         colnames(g) <- cc_founders
 
         # alleles
         major <- as.character(ref(indels))
         minor <- CharacterList(alt(indels))
         max_minor <- max(sapply(minor, length))
-        alleles <- matrix("", nrow=nrow(g), ncol=max_minor)
+        alleles <- matrix("", nrow=nrow(g), ncol=max_minor+1)
         alleles[,1] <- major
-        for(i in 2:max_minor)
+        for(i in 2:(max_minor+1))
             alleles[,i] <- sapply(minor, "[", i-1)
 
         # numbers of each genotype
-        pat <- sort(unique(as.character(g)))
+        pat <- paste0(0:max_minor, "/", 0:max_minor)
         rs <- sapply(pat, function(a) rowSums(g==a))
+        if(!is.matrix(rs)) {
+            rs <- matrix(rs, nrow=1)
+            dimnames(rs) <- list(rownames(g), pat)
+        }
 
         # rows should all sum to 8
         stopifnot(all(rowSums(rs)==8))
@@ -250,7 +258,7 @@ for(thechr in chr) {
 
                 # swap genotypes
                 pat <- colnames(rs)[i]
-                gg <- g[wh,]
+                gg <- g[wh,,drop=FALSE]
                 gg[gg==pat] <- "x/x"
                 gg[gg=="0/0"] <- pat
                 gg[gg=="x/x"] <- "0/0"
@@ -271,19 +279,20 @@ for(thechr in chr) {
         }
 
         # NAs in alleles when not seen
-        for(i in 1:4) {
+        for(i in 1:ncol(alleles)) {
             wh <- which(rowSums(gnum==i)==0)
             alleles[wh,i] <- NA
         }
 
         # alleles as a pattern A|C/G/T
         alleles_char <- paste(alleles[,1],
-                              apply(alleles[,-1], 1,
+                              apply(alleles[,-1,drop=FALSE], 1,
                                     function(a) paste(a[!is.na(a)], collapse="/")),
                               sep="|")
 
         # convert to 1/3
-        gnum[gnum > 1] <- 3
+        gbin <- gnum
+        gbin[gbin > 1] <- 3
 
         # Consequence. Reverse engineered. Likely fragile.
         csq <- sapply(info(indels)$CSQ, function(x) {
@@ -303,7 +312,7 @@ for(thechr in chr) {
                              chr=thechr,
                              pos=start(indels),
                              alleles=alleles_char,
-                             sdp=qtl2scan::calc_sdp(gnum),
+                             sdp=qtl2scan::calc_sdp(gbin),
                              ensembl_gene=csq[2,],
                              consequence=csq[3,],
                              type="indel",
@@ -325,11 +334,11 @@ svs <- data.table::fread(tmpfile, data.table=FALSE)
 unlink(tmpfile)
 
 # pull out genotypes
-g <- svs[,colnames(z) %in% strains]
+g <- svs[,colnames(svs) %in% strains]
 g <- g[,strains]
 
 # add B6 ref genotype
-g <- cbind(g[,1,drop=FALSE], B6="0", g[,-1], stringsAsFactors=FALSE)
+g <- cbind(g[,1,drop=FALSE], C57BL_6J="0", g[,-1,drop=FALSE], stringsAsFactors=FALSE)
 
 # drop monomorphic ones
 n_allele <- apply(g, 1, function(a) length(unique(a)))
@@ -358,26 +367,26 @@ for(i in 1:ncol(alleles)) {
 
 # alleles as a pattern A|C/G/T
 alleles_char <- paste(alleles[,1],
-                      apply(alleles[,-1], 1,
+                      apply(alleles[,-1,drop=FALSE], 1,
                             function(a) paste(a[!is.na(a)], collapse="/")),
                       sep="|")
 
 # convert to 1/3
-gnum[gnum > 1] <- 3
+gbin <- gnum
+gbin[gbin > 1] <- 3
 
 # create full table of info
 svs <- data.frame(snp_id=paste0("SV_", svs[,"#CHROM"], "_", svs[,"START"], "_", svs[,"END"]),
                   chr=svs[,"#CHROM"],
                   pos=round((svs[,"START"] + svs[,"END"])/2), # average of start and end
                   alleles=alleles_char,
-                  sdp=qtl2scan::calc_sdp(gnum),
+                  sdp=qtl2scan::calc_sdp(gbin),
                   ensembl_gene=NA,
                   consequence=NA,
                   type="SV",
-                  g,
                   stringsAsFactors=FALSE)
 
-dbWriteTable(db, "variants", xvs, row.names=FALSE, overwrite=FALSE,
+dbWriteTable(db, "variants", svs, row.names=FALSE, overwrite=FALSE,
              append=TRUE, field.types=NULL)
 
 
