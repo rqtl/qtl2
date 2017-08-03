@@ -384,8 +384,11 @@ svs <- data.frame(snp_id=paste0("SV_", svs[,"#CHROM"], "_", svs[,"START"], "_", 
                   sdp=qtl2scan::calc_sdp(gbin),
                   ensembl_gene=NA,
                   consequence=NA,
+                  gnum,
                   type="SV",
                   stringsAsFactors=FALSE)
+# fix column names to match what we got in the other variant types
+colnames(svs)[8:15] <- sub("_", ".", colnames(svs)[8:15], fixed=TRUE)
 
 dbWriteTable(db, "variants", svs, row.names=FALSE, overwrite=FALSE,
              append=TRUE, field.types=NULL)
