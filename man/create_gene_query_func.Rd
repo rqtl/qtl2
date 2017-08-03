@@ -39,7 +39,7 @@ selected region.
 \details{
 Note that this function assumes that the database has
     \code{start} and \code{stop} fields that are in basepairs, but
-    the select uses positions in Mbp, and the output data frame
+    the selection uses positions in Mbp, and the output data frame
     should have \code{start} and \code{stop} columns in Mbp.
 }
 \examples{
