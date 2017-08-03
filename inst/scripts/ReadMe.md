@@ -36,7 +36,8 @@ following R packages:
 
 - data.table
 - RSQLite
-- ...
+- VariantAnnotation
+- R/qtl2scan
 
 The larger database files created by these scripts are available for
 direct download from [figshare](https://figshare.com):
