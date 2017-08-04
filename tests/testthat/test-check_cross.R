@@ -96,7 +96,7 @@ test_that("check_cross2 gives proper warnings", {
 })
 
 
-test_that("check_cross2 works for DO data", {
+test_that("check_cross2 works for MPP data", {
 
     if(isnt_karl()) skip("this test only run locally")
 
@@ -132,5 +132,127 @@ test_that("check_cross2 works for DO data", {
     do_bad <- do
     colnames(do_bad$founder_geno[[13]])[50:52] <- colnames(do$founder_geno[[13]])[52:50]
     expect_warning(check_cross2(do_bad))
+
+    ### HS need founder geno
+    hs <- do
+    hs$crosstype <- "hs"
+    expect_true(check_cross2(hs))
+
+    hs_bad <- hs
+    hs_bad$founder_geno <- NULL
+    expect_warning(check_cross2(hs_bad))
+
+    ### AIL3
+    ail3 <- do
+    ail3$crosstype <- "ail3"
+    for(i in seq_along(ail3$founder_geno))
+        ail3$founder_geno[[i]] <- ail3$founder_geno[[i]][1:3,,drop=FALSE]
+    expect_true(check_cross2(ail3))
+
+    ail3_bad <- ail3
+    ail3_bad$founder_geno <- NULL
+    expect_warning(check_cross2(ail3_bad))
+
+    ### riself4
+    riself4 <- do
+    riself4$crosstype <- "riself4"
+    for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
+        riself4[[x]] <- riself4[[x]][1:19]
+    riself4$cross_info <- cbind(riself4$cross_info, 1L, 2L, 3L, 4L)[,-1,drop=FALSE]
+    for(i in seq_along(riself4$founder_geno)) {
+        riself4$founder_geno[[i]] <- riself4$founder_geno[[i]][1:4,,drop=FALSE]
+        riself4$geno[[i]][riself4$geno[[i]] == 2] <- 0
+    }
+    expect_true(check_cross2(riself4))
+
+    riself4_bad <- riself4
+    riself4_bad$founder_geno <- NULL
+    expect_warning(check_cross2(riself4_bad))
+
+    ### riself8
+    riself8 <- do
+    riself8$crosstype <- "riself8"
+    for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
+        riself8[[x]] <- riself8[[x]][1:19]
+    riself8$cross_info <- cbind(riself8$cross_info, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)[,-1,drop=FALSE]
+    for(i in seq_along(riself8$founder_geno)) {
+        riself8$geno[[i]][riself8$geno[[i]] == 2] <- 0
+    }
+    expect_true(check_cross2(riself8))
+
+    riself8_bad <- riself8
+    riself8_bad$founder_geno <- NULL
+    expect_warning(check_cross2(riself8_bad))
+
+    ### riself16
+    riself16 <- do
+    riself16$crosstype <- "riself16"
+    for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
+        riself16[[x]] <- riself16[[x]][1:19]
+    riself16$cross_info <- cbind(riself16$cross_info, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L,
+                                 9L, 10L, 11L, 12L, 13L, 14L, 15L, 16L)[,-1,drop=FALSE]
+    for(i in seq_along(riself16$founder_geno)) {
+        riself16$founder_geno[[i]] <- rbind(riself16$founder_geno[[i]], riself16$founder_geno[[i]])
+        riself16$geno[[i]][riself16$geno[[i]] == 2] <- 0
+    }
+    expect_true(check_cross2(riself16))
+
+    riself16_bad <- riself16
+    riself16_bad$founder_geno <- NULL
+    expect_warning(check_cross2(riself16_bad))
+
+    ### risib4
+    risib4 <- do
+    risib4$crosstype <- "risib4"
+    risib4$cross_info <- cbind(risib4$cross_info, 1L, 2L, 3L, 4L)[,-1,drop=FALSE]
+    for(i in seq_along(risib4$founder_geno)) {
+        risib4$founder_geno[[i]] <- risib4$founder_geno[[i]][1:4,,drop=FALSE]
+        risib4$geno[[i]][risib4$geno[[i]] == 2] <- 0
+    }
+    expect_true(check_cross2(risib4))
+
+    risib4_bad <- risib4
+    risib4_bad$founder_geno <- NULL
+    expect_warning(check_cross2(risib4_bad))
+
+    ### risib8
+    risib8 <- do
+    risib8$crosstype <- "risib8"
+    risib8$cross_info <- cbind(risib8$cross_info, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L)[,-1,drop=FALSE]
+    for(i in seq_along(risib8$founder_geno)) {
+        risib8$geno[[i]][risib8$geno[[i]] == 2] <- 0
+    }
+    expect_true(check_cross2(risib8))
+
+    risib8_bad <- risib8
+    risib8_bad$founder_geno <- NULL
+    expect_warning(check_cross2(risib8_bad))
+
+    ### dh6
+    dh6 <- do
+    dh6$crosstype <- "dh6"
+    for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
+        dh6[[x]] <- dh6[[x]][1:19]
+    for(i in seq_along(dh6$founder_geno)) {
+        dh6$founder_geno[[i]] <- dh6$founder_geno[[i]][1:6,]
+        dh6$geno[[i]][dh6$geno[[i]] == 2] <- 0
+    }
+    expect_true(check_cross2(dh6))
+
+    dh6_bad <- dh6
+    dh6_bad$founder_geno <- NULL
+    expect_warning(check_cross2(dh6_bad))
+
+    ### dof1
+    dof1 <- do
+    dof1$crosstype <- "dof1"
+    for(i in seq_along(dof1$founder_geno)) {
+        dof1$founder_geno[[i]] <- dof1$founder_geno[[i]][c(1:8, 5),,drop=FALSE]
+    }
+    expect_true(check_cross2(dof1))
+
+    dof1_bad <- dof1
+    dof1_bad$founder_geno <- NULL
+    expect_warning(check_cross2(dof1_bad))
 
 })
