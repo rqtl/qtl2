@@ -145,6 +145,7 @@ test_that("check_cross2 works for MPP data", {
     ### AIL3
     ail3 <- do
     ail3$crosstype <- "ail3"
+    ail3$alleles <- ail3$alleles[1:3]
     for(i in seq_along(ail3$founder_geno))
         ail3$founder_geno[[i]] <- ail3$founder_geno[[i]][1:3,,drop=FALSE]
     expect_true(check_cross2(ail3))
@@ -156,6 +157,7 @@ test_that("check_cross2 works for MPP data", {
     ### riself4
     riself4 <- do
     riself4$crosstype <- "riself4"
+    riself4$alleles <- riself4$alleles[1:4]
     for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
         riself4[[x]] <- riself4[[x]][1:19]
     riself4$cross_info <- cbind(riself4$cross_info, 1L, 2L, 3L, 4L)[,-1,drop=FALSE]
@@ -187,6 +189,7 @@ test_that("check_cross2 works for MPP data", {
     ### riself16
     riself16 <- do
     riself16$crosstype <- "riself16"
+    riself16$alleles <- LETTERS[1:16]
     for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
         riself16[[x]] <- riself16[[x]][1:19]
     riself16$cross_info <- cbind(riself16$cross_info, 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L,
@@ -204,6 +207,7 @@ test_that("check_cross2 works for MPP data", {
     ### risib4
     risib4 <- do
     risib4$crosstype <- "risib4"
+    risib4$alleles <- risib4$alleles[1:4]
     risib4$cross_info <- cbind(risib4$cross_info, 1L, 2L, 3L, 4L)[,-1,drop=FALSE]
     for(i in seq_along(risib4$founder_geno)) {
         risib4$founder_geno[[i]] <- risib4$founder_geno[[i]][1:4,,drop=FALSE]
@@ -231,6 +235,7 @@ test_that("check_cross2 works for MPP data", {
     ### dh6
     dh6 <- do
     dh6$crosstype <- "dh6"
+    dh6$alleles <- dh6$alleles[1:6]
     for(x in c("geno", "founder_geno", "is_x_chr", "gmap", "pmap"))
         dh6[[x]] <- dh6[[x]][1:19]
     for(i in seq_along(dh6$founder_geno)) {

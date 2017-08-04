@@ -93,6 +93,7 @@ function(cross2)
     #     covar
     #     phenocovar
     #     pmap
+    #     alleles
 
     crosstype <- cross2$crosstype
     if(is.null(crosstype)) {
@@ -404,6 +405,21 @@ function(cross2)
         if(any(d < 0)) {
             result <- FALSE
             warning("Physical map out of order on chr ", paste(names(pmap)[d < 0], collapse=", "))
+        }
+    }
+
+    # check alleles
+    alleles <- cross2$alleles
+    if(!is.null(alleles)) {
+        n_alleles <- length(alleles)
+        expected_n <- nalleles(crosstype)
+        if(n_alleles != expected_n) {
+            result <- FALSE
+            warning("length(alleles) (", n_alleles, ") != ", expected_n)
+        }
+        else if(length(unique(alleles)) != n_alleles) {
+            result <- FALSE
+            warning("alleles are not distinct")
         }
     }
 
