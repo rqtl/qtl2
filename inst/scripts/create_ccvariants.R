@@ -394,7 +394,7 @@ svs <- data.frame(snp_id=paste0("SV_", svs[,"#CHROM"], "_", svs[,"START"], "_", 
                   type="SV",
                   stringsAsFactors=FALSE)
 # make sure column names are what we want
-colnames(snps)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
+colnames(svs)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
 
 dbWriteTable(db, "variants", svs, row.names=FALSE, overwrite=FALSE,
              append=TRUE, field.types=NULL)
