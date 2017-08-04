@@ -13,15 +13,12 @@ Depends:
 Imports:
     RSQLite
 Suggests:
-    knitr,
-    rmarkdown,
     testthat,
     devtools,
     roxygen2
 License: GPL-3
 URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2db
 BugReports: https://github.com/rqtl/qtl2db/issues
-VignetteBuilder: knitr
 LazyData: true
 Encoding: UTF-8
 RoxygenNote: 6.0.1
