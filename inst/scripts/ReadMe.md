@@ -34,13 +34,13 @@ Collaborative Cross (CC) and Diversity Outbred (DO) mouse populations:
 Using these scripts to constructing these databases requires the
 following R packages:
 
-- data.table
-- RSQLite
-- VariantAnnotation
-- R/qtl2scan
+- [data.table](https://github.com/Rdatatable/data.table/wiki)
+- [RSQLite](https://rstats-db.github.io/RSQLite/)
+- [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html)
+- [R/qtl2scan](https://github.com/rqtl/qtl2scan)
 
 The larger database files created by these scripts are available for
 direct download from [figshare](https://figshare.com):
 
-- [`cc_variants.sqlite`]()
-- [`mouse_genes.sqlite`]()
+- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v1](https://doi.org/10.6084/m9.figshare.5280238.v1)

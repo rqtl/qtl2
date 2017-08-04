@@ -73,6 +73,50 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 
 ---
 
+### Usage
+
+The [R/qtl2db](https://github.com/rqtl/qtl2db) package contains two
+key functions, `create_genes_query_func()` and
+`create_variants_query_func()`, for creating functions that access
+databases of genes and variants.
+
+For example, we've prepared SQLite databases with mouse genes, and with
+variants (SNPs, indels, and structural variants) in the eight mouse
+founder lines for the Collaborative Cross.
+
+- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v1](https://doi.org/10.6084/m9.figshare.5280238.v1)
+
+If you download those two files locally, you could use the following
+code to create "accessor" functions:
+
+```r
+library(qtl2db)
+query_genes <- create_gene_query_func("mouse_genes.sqlite")
+query_variants <- create_variant_query_func("cc_variants.sqlite")
+```
+
+You can then use these two functions to grab the records for mouse
+genes on the one hand, and CC variants on the other. For example, to
+grab the genes and variants in a 2 Mbp region centered at 97.5 Mbp on
+mouse chromosome 2, we'd do the following:
+
+```r
+genes <- query_genes(2, 96.5, 98.5)
+variants <- query_variants(2, 96.5, 98.5)
+```
+
+Why the complexity? We want [R/qtl2](http://kbroman.org) functions to
+be able to query SNPs or genes, but we don't want to prescribe how the
+databases might be set up; they could be sitting in a SQLite database
+(as above), or they might be in some other database or accessed via
+some Web API. Rather than requiring the SNP and gene databases to be
+in a certain form, we'll instead ask users to provide query functions
+like `query_genes()` and `query_variants()`.
+
+
+---
+
 ### Vignettes
 
 - [user guide](http://kbroman.org/qtl2/assets/vignettes/user_guide.html)
