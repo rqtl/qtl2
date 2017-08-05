@@ -448,3 +448,49 @@ const NumericVector AIL3::est_map2(const IntegerMatrix& genotypes,
     for(int i=0; i<n_rf; i++) result[i] = NA_REAL;
     return result ;
 }
+
+// check that founder genotype data has correct no. founders and markers
+const bool AIL3::check_founder_geno_size(const IntegerMatrix& founder_geno, const int n_markers)
+{
+    bool result=true;
+
+    const int fg_mar = founder_geno.cols();
+    const int fg_f   = founder_geno.rows();
+
+    if(fg_mar != n_markers) {
+        result = false;
+        r_message("founder_geno has incorrect number of markers");
+    }
+
+    if(fg_f != 3) {
+        result = false;
+        r_message("founder_geno should have 3 founders");
+    }
+
+    return result;
+}
+
+// check that founder genotype data has correct values
+const bool AIL3::check_founder_geno_values(const IntegerMatrix& founder_geno)
+{
+    const int fg_mar = founder_geno.cols();
+    const int fg_f   = founder_geno.rows();
+
+    for(int f=0; f<fg_f; f++) {
+        for(int mar=0; mar<fg_mar; mar++) {
+            int fg = founder_geno(f,mar);
+            if(fg != 0 && fg != 1 && fg != 3) {
+                // at least one invalid value
+                r_message("founder_geno contains invalid values; should be in {0, 1, 3}");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+const bool AIL3::need_founder_geno()
+{
+    return true;
+}

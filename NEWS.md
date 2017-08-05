@@ -1,3 +1,18 @@
+## qtl2geno 0.5-29 (2017-08-04)
+
+### Minor changes
+
+- Added additional tests of check_cross2()
+
+### Bug fixes
+
+- For crosstype "ail3", forgot to include the functions for requiring
+  and checking the founder genotypes.
+
+- check_cross2 wasn't checking for missing names in gmap, pmap, and
+  founder_geno
+
+
 ## qtl2geno 0.5-28 (2017-07-31)
 
 ### New features

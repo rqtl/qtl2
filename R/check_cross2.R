@@ -93,6 +93,7 @@ function(cross2)
     #     covar
     #     phenocovar
     #     pmap
+    #     alleles
 
     crosstype <- cross2$crosstype
     if(is.null(crosstype)) {
@@ -212,6 +213,10 @@ function(cross2)
     }
 
     # check dimnames of geno
+    if(is.null(names(geno))) {
+        result <- FALSE
+        warning("names(geno) is missing")
+    }
     for(i in seq(along=geno)) {
         if(is.null(rownames(geno[[i]]))) {
             result <- FALSE
@@ -235,11 +240,11 @@ function(cross2)
         warning("length(geno) (", length(geno), ") != length(gmap) (", length(gmap), ")")
     }
     else {
-        if(is.null(names(geno))) {
+        if(is.null(names(gmap))) {
             result <- FALSE
             warning("names(geno) is missing")
         }
-        if(any(names(geno) != names(gmap))) {
+        else if(any(names(geno) != names(gmap))) {
             result <- FALSE
             warning("names(geno) != names(gmap)")
         }
@@ -334,14 +339,18 @@ function(cross2)
                 warning("length(geno) (", length(geno), ") != length(founder_geno) (", length(founder_geno), ")")
             }
             else {
-                if(any(names(geno) != names(founder_geno))) {
+                if(is.null(names(founder_geno))) {
+                    result <- FALSE
+                    warning("names(founder_geno) is NULL")
+                }
+                else if(any(names(geno) != names(founder_geno))) {
                     result <- FALSE
                     warning("names(geno) != names(founder_geno)")
                 }
                 for(i in seq(along=geno)) {
                     if(!check_founder_geno_size(crosstype, founder_geno[[i]], ncol(geno[[i]]))) {
                         result <- FALSE
-                        break
+                        warning("founder_geno has incorrect size on chr ", names(geno)[i])
                     }
                 }
                 for(i in seq(along=geno)) {
@@ -371,7 +380,11 @@ function(cross2)
             warning("length(gmap) (", length(gmap), ") != length(pmap) (", length(pmap), ")")
         }
         else {
-            if(any(names(gmap) != names(pmap))) {
+            if(is.null(names(pmap))) {
+                result <- FALSE
+                warning("names(pmap) is NULL")
+            }
+            else if(any(names(gmap) != names(pmap))) {
                 result <- FALSE
                 warning("names(gmap) != names(pmap)")
             }
@@ -392,6 +405,21 @@ function(cross2)
         if(any(d < 0)) {
             result <- FALSE
             warning("Physical map out of order on chr ", paste(names(pmap)[d < 0], collapse=", "))
+        }
+    }
+
+    # check alleles
+    alleles <- cross2$alleles
+    if(!is.null(alleles)) {
+        n_alleles <- length(alleles)
+        expected_n <- nalleles(crosstype)
+        if(n_alleles != expected_n) {
+            result <- FALSE
+            warning("length(alleles) (", n_alleles, ") != ", expected_n)
+        }
+        else if(length(unique(alleles)) != n_alleles) {
+            result <- FALSE
+            warning("alleles are not distinct")
         }
     }
 
