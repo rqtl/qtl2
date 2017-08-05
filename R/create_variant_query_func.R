@@ -88,6 +88,9 @@ create_variant_query_func <-
 
         query_func <- function(chr, start, end)
         {
+            if(!file.exists(dbfile))
+                stop("File ", dbfile, " doesn't exist")
+
             db <- RSQLite::dbConnect(RSQLite::SQLite(), dbfile)
             on.exit(RSQLite::dbDisconnect(db)) # disconnect on exit
 
