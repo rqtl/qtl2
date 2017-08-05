@@ -109,7 +109,7 @@ variants <- query_variants(2, 96.5, 98.5)
 Why the complexity? We want [R/qtl2](http://kbroman.org) functions to
 be able to query SNPs or genes, but we don't want to prescribe how the
 databases might be set up; they could be sitting in a SQLite database
-(as above), or they might be in some other database or accessed via
+(as above), or they might be in some other kind of database or accessed via
 some Web API. Rather than requiring the SNP and gene databases to be
 in a certain form, we'll instead ask users to provide query functions
 like `query_genes()` and `query_variants()`.
