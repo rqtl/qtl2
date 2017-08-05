@@ -1,3 +1,12 @@
+## qtl2plot 0.5-13
+
+### Minor changes
+
+- Added arguments to plot_genes to make it more flexible; in
+  particular, to allow differences in column names and to allow start
+  and stop positions to be in either bp or Mbp.
+
+
 ## qtl2plot 0.5-12
 
 ### New features

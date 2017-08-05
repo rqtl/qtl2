@@ -7,9 +7,14 @@
 #' bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 #' \code{Name}.
 #' @param xlim x-axis limits (in Mbp)
-#' @param minrow Minimum number of rows of genes
+#' @param minrow Minimum number of rows of genes in the plot
 #' @param padding Proportion to pad with white space around the genes
 #' @param colors Vectors of colors, used sequentially and then re-used.
+#' @param scale_pos Factor by which to scale position (default converts bp to Mbp)
+#' @param start_field Character string with name of column containing the genes' start positions.
+#' @param stop_field Character string with name of column containing the genes' stop positions.
+#' @param strand_field Character string with name of column containing the genes' strands.
+#' @param name_field Character string with name of column containing the genes' names.
 #' @param ... Optional arguments passed to \code{\link[graphics]{plot}}.
 #'
 #' @return None.
@@ -34,20 +39,36 @@
 plot_genes <-
     function(genes, xlim=NULL, minrow=4, padding=0.2,
              colors=c("black", "red3", "green4", "blue3", "orange"),
-             ...)
+             scale_pos=1e-6, start_field="start", stop_field="stop",
+             strand_field="strand", name_field="Name", ...)
 {
-    # need both 'start' and 'stop' columns with no missing values
-    stopifnot(!any(is.na(genes$start)), !any(is.na(genes$stop)))
+    # make sure the columns are there
+    fields <- c(start_field, stop_field, strand_field, name_field)
+    fields_found <- fields %in% colnames(genes)
+    if(!all(fields_found)) {
+        stop("Columns not found: ", paste(fields[!fields_found], collapse=", "))
+    }
+
+    # grab just the start and stop
+    start <- genes[,start_field]
+    end <- genes[,stop_field]
+
+    # drop genes with missing start or stop
+    missing_pos <- is.na(start) | is.na(end)
+    if(any(missing_pos)) {
+        warning("Dropping ", sum(missing_pos), " rows with missing positions")
+        genes <- genes[!missing_pos, , drop=FALSE]
+    }
 
     # make sure genes are ordered by their start values
-    if(any(diff(genes$start) < 0))
-        genes <- genes[order(genes$start, genes$stop),]
+    if(any(diff(start) < 0))
+        genes <- genes[order(start, stop),]
 
     # grab data
-    start <- genes$start/10^6 # convert to Mbp
-    end <- genes$stop/10^6   # convert to Mbp
-    strand <- as.character(genes$strand)
-    name <- as.character(genes$Name)
+    start <- genes[,start_field]*scale_pos # convert to Mbp
+    end <- genes[,stop_field]*scale_pos    # convert to Mbp
+    strand <- as.character(genes[,strand_field])
+    name <- as.character(genes[,name_field])
 
     if(is.null(xlim)) {
         xlim <- range(c(start, end), na.rm=TRUE)
