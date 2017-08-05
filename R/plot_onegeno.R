@@ -145,8 +145,14 @@ plot_onegeno <-
 
         max_geno <- max(unlist(geno), na.rm=TRUE)
         if(is.null(col)) {
-            if(max_geno <= 8) col <- CCcolors
-            else stop("With ", max_geno, " genotypes, you'll need to provide the vector of colors")
+            data(CCcolors)
+            if(max_geno <= 8) {
+                col <- CCcolors
+            }
+            else {
+                warning("With ", max_geno, " genotypes, you need to provide the vector of colors; recycling some")
+                col <- rep(CCcolors, max_geno)
+            }
         }
         else if(max_geno > length(col)) {
             warning("not enough colors; recycling them")
