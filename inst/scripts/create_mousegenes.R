@@ -46,6 +46,10 @@ tab9_list <- lapply(tab9_spl, function(a) {
     spl <- strsplit(a, "=", fixed=TRUE)
     setNames(sapply(spl, "[", 2), sapply(spl, "[", 1)) })
 
+# check the names of that thing
+nam <- unique(unlist(lapply(tab9_list, names)))
+stopifnot(length(nam) == length(attrib), all(sort(nam) == sort(attrib)))
+
 # turn into a list with all of the attributes (with NAs as needed)
 tab9_df <- lapply(attrib, function(lab) sapply(tab9_list, "[", lab))
 names(tab9_df) <- attrib
