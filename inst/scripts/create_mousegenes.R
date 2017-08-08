@@ -37,6 +37,11 @@ tab <- read.table(file, sep="\t", header=FALSE, comment.char="#",
                   colClasses=rep(rep(c("character", "numeric"), 3), c(3,3,1,1,1,0)))
 colnames(tab) <- fields
 
+# remove temporary file
+if(remove_tmpfile) {
+    unlink(tmpfile)
+}
+
 # remove things not on chr 1-19, "X", "Y", "MT"
 tab <- tab[tab$chr %in% c(1:19, "X", "Y", "MT"),]
 
@@ -56,11 +61,6 @@ names(tab9_df) <- attrib
 
 # add to data as columns
 tab <- cbind(tab[,1:8], as.data.frame(tab9_df, stringsAsFactors=FALSE))
-
-# remove temporary file
-if(remove_tmpfile) {
-    unlink(tmpfile)
-}
 
 # write to database
 dbfile <- "mouse_genes.sqlite"
