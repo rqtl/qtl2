@@ -31,8 +31,8 @@ fields <- c("chr", "source", "type", "start", "stop", "score", "strand",
 attrib <- c("ID", "Name", "Parent", "Dbxref", "mgiName", "bioType")
 
 # read data
-tab <- read.table(file, sep="\t", header=FALSE, comment.char="#",
-                  stringsAsFactors=FALSE, na.strings=".",
+tab <- read.delim(file, sep="\t", header=FALSE, comment.char="#",
+                  na.strings=".", stringsAsFactors=FALSE,
                   colClasses=rep(rep(c("character", "numeric"), 3), c(3,3,1,1,1,0)))
 colnames(tab) <- fields
 
