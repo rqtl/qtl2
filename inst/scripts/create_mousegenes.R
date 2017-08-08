@@ -28,7 +28,7 @@ if(!file.exists(file)) { # need to unzip
 fields <- c("chr", "source", "type", "start", "stop", "score", "strand",
             "phase", "attributes")
 # within attributes field:
-attrib <- c("ID", "Name", "Parent", "Dbxref", "mgiName", "bioType")
+attrib <- c("ID", "Name", "Parent", "Dbxref", "mgiName", "bioType", "Alias")
 
 # read data
 tab <- read.table(file, sep="\t", header=FALSE, comment.char="#",
