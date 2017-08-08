@@ -1,6 +1,6 @@
 Package: qtl2db
-Version: 0.5-2
-Date: 2017-08-04
+Version: 0.5-3
+Date: 2017-08-08
 Title: Connect to Genome Databases for QTL Experiments
 Description: Functions to connect to genome databases with SNP/variant
     and/or gene information, to obtain auxilary information for QTL
