@@ -31,6 +31,9 @@ Collaborative Cross (CC) and Diversity Outbred (DO) mouse populations:
   `source=="MGI"` that overlap two small regions (one on chr 2 and one
   on chr 3).
 
+- `create_mousegenes_mgi.R` creates `mouse_genes_mgi.sqlite`, a version
+  with just the records with `source=="MGI"`.
+
 Using these scripts to constructing these databases requires the
 following R packages:
 
@@ -43,4 +46,10 @@ The larger database files created by these scripts are available for
 direct download from [figshare](https://figshare.com):
 
 - [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1)
-- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v1](https://doi.org/10.6084/m9.figshare.5280238.v1)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v2](https://doi.org/10.6084/m9.figshare.5280238.v2)
+
+A smaller version of the mouse genes database, with just the records
+with `source=="MGI"`, is also available at
+[figshare](https://figshare.com):
+
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v1](https://doi.org/10.6084/m9.figshare.5286019.v1)
