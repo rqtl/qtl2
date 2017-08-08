@@ -9,7 +9,7 @@ library(RSQLite)
 
 ### download files
 site <- "http://www.informatics.jax.org/downloads/mgigff"
-file <- "MGI.gff3.gz"
+file <- "MGI.20170803.gff3.gz"
 url <- paste0(site, "/", file)
 if(!file.exists(file))
     download.file(url, file)
