@@ -14,6 +14,7 @@ tab <- dbGetQuery(db, paste("SELECT * FROM genes WHERE",
                             "(stop >=   14000000 AND stop <=  16000000) OR",
                             "(start <=  16000000 AND stop >=  14000000))))",
                             "AND source=='MGI'"))
+description <- dbGetQuery(db, "SELECT * FROM description")
 dbDisconnect(db)
 
 # write to new database
@@ -24,12 +25,7 @@ dbWriteTable(db, "genes", tab)
 dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
 
 # add description table
-description <- data.frame(description="mouse gene information (subset to 2 regions)",
-                          source="Mouse Genome Informatics (MGI), Jackson Lab",
-                          url=url,
-                          date_created=as.character(Sys.Date()),
-                          date_source="2016-02-24",
-                          genome_build="GRCm38/mm10")
+description[1] <- paste(description[1], "(subset to 2 regions)")
 dbWriteTable(db, "description", description, append=TRUE)
 
 dbDisconnect(db)
