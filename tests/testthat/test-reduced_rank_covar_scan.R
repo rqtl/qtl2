@@ -32,7 +32,7 @@ test_that("scan1 etc work with reduced-rank covariates", {
     out_k <- scan1(pr, phe, k, Xcovar=Xcovar, addcovar=X)
     expected_k <- cbind(scan1(pr, phe[!is.na(phe[,1]),1,drop=FALSE], k, Xcovar=Xcovar, addcovar=X[,-3]),
                         scan1(pr, phe[!is.na(phe[,2]),2,drop=FALSE], k, Xcovar=Xcovar, addcovar=X[,-3]))
-    expect_equal(out_k, expected_k, tol=1e-6)
+    expect_equal(out_k, expected_k, tol=5e-6)
 
     # scan1coef with no kinship
     for(phecol in 1:2) {
