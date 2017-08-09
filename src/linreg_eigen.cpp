@@ -25,6 +25,11 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
     const VectorXd yy(as<Map<VectorXd> >(y));
 
     const int n = XX.rows(), p=XX.cols();
+    #ifndef NDEBUG
+    if(n != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     LLT<MatrixXd> llt ( calc_XpX(XX) );
 
     VectorXd betahat = llt.solve(XX.adjoint() * yy);
@@ -60,6 +65,11 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
 // [[Rcpp::export]]
 NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -75,6 +85,11 @@ NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVe
 // [[Rcpp::export]]
 List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -97,6 +112,11 @@ List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y
 // [[Rcpp::export]]
 double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -113,6 +133,11 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 // [[Rcpp::export]]
 NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -128,6 +153,11 @@ NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const Numeric
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         const bool se, const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -204,6 +234,11 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                        const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -242,6 +277,11 @@ NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVect
 List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                 const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -299,6 +339,11 @@ List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -335,6 +380,11 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
 NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                          const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != y.size())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
 
@@ -369,6 +419,11 @@ NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVe
 // [[Rcpp::export]]
 NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
+    #ifndef NDEBUG
+    if(X.rows() != Y.rows())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const int ncolY = Y.cols();
     const int ncolX = X.cols();
 
@@ -396,6 +451,11 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
                                  const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != Y.rows())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
@@ -444,6 +504,11 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
 // [[Rcpp::export]]
 NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
+    #ifndef NDEBUG
+    if(X.rows() != Y.rows())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const int ncolY = Y.cols();
     const int ncolX = X.cols();
 
@@ -472,6 +537,11 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
                                  const double tol=1e-12)
 {
+    #ifndef NDEBUG
+    if(X.rows() != Y.rows())
+        throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
+
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const MatrixXd YY(as<Map<MatrixXd> >(Y));
 
