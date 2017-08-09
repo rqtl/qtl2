@@ -1,4 +1,15 @@
-## qtl2scan 0.5-18 (2016-07-09)
+## qtl2scan 0.5-20 (2017-08-08)
+
+### New features
+
+- Removed the `preserve_intercept` argument from `scan1blup()`. The
+  default (`FALSE`), adding the intercept to the BLUPs, no longer
+  makes sense to me. (Better to have an option in `scan1coef()` to get
+  estimated genetic effects that sum to 0; which we'll add in the
+  future.)
+
+
+## qtl2scan 0.5-18 (2017-07-09)
 
 ### Bug fixes
 

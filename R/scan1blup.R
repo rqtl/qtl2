@@ -27,11 +27,6 @@
 #' @param se If TRUE, also calculate the standard errors.
 #' @param reml If \code{reml=TRUE}, use
 #' REML to estimate variance components; otherwise maximum likelihood.
-#' @param preserve_intercept If TRUE, the BLUPs will have mean zero
-#'     and there will be a separate column for the intercept. If FALSE
-#'     (the default), we'll add the intercept to the BLUPs to give results
-#'     that are comparable to \code{\link{scan1coef}}.
-#'     Taken as TRUE if \code{contrasts} provided.
 #' @param tol Tolerance value for convergence of linear mixed model fit.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
@@ -102,14 +97,12 @@
 #' @export
 scan1blup <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
-             contrasts=NULL, se=FALSE, reml=TRUE, preserve_intercept=FALSE,
+             contrasts=NULL, se=FALSE, reml=TRUE,
              tol=1e-12, cores=1, quiet=TRUE)
 {
-    if(!is.null(contrasts)) preserve_intercept <- TRUE # force preserve_intercept if using contrasts
-
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1blup_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                            contrasts, se, reml, preserve_intercept, tol, cores, quiet))
+                            contrasts, se, reml, tol, cores, quiet))
     }
 
     stopifnot(tol > 0)
@@ -183,11 +176,11 @@ scan1blup <-
     batches <- batch_vec(seq_len(n_pos), ceiling(n_pos/n_cores(cores)))
 
     by_group_func <- function(i)
-        scanblup(genoprobs[,,batches[[i]],drop=FALSE], pheno, addcovar, se, reml, preserve_intercept, tol)
+        scanblup(genoprobs[,,batches[[i]],drop=FALSE], pheno, addcovar, se, reml, tol)
 
     # scan to get BLUPs and coefficient estimates
     if(n_cores(cores)==1) {
-        result <- scanblup(genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol)
+        result <- scanblup(genoprobs, pheno, addcovar, se, reml, tol)
         coef <- t(result$coef)
         if(se) SE <- t(result$SE)
         else SE <- NULL
@@ -208,10 +201,7 @@ scan1blup <-
     }
 
     # add names
-    if(preserve_intercept)
-        coefnames <- scan1coef_names(genoprobs, addcovar, NULL)
-    else
-        coefnames <- scan1coef_names(genoprobs, addcovar[,-1,drop=FALSE], NULL)
+    coefnames <- scan1coef_names(genoprobs, addcovar, NULL)
     dimnames(coef) <- list(dimnames(genoprobs)[[3]], coefnames)
     if(se) dimnames(SE) <- dimnames(coef)
 

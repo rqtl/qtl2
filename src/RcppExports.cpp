@@ -1284,8 +1284,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // scanblup
-List scanblup(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const bool se, const bool reml, const bool preserve_intercept, const double tol);
-RcppExport SEXP _qtl2scan_scanblup(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP seSEXP, SEXP remlSEXP, SEXP preserve_interceptSEXP, SEXP tolSEXP) {
+List scanblup(const NumericVector& genoprobs, const NumericVector& pheno, const NumericMatrix& addcovar, const bool se, const bool reml, const double tol);
+RcppExport SEXP _qtl2scan_scanblup(SEXP genoprobsSEXP, SEXP phenoSEXP, SEXP addcovarSEXP, SEXP seSEXP, SEXP remlSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1294,9 +1294,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type addcovar(addcovarSEXP);
     Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
     Rcpp::traits::input_parameter< const bool >::type reml(remlSEXP);
-    Rcpp::traits::input_parameter< const bool >::type preserve_intercept(preserve_interceptSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(scanblup(genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol));
+    rcpp_result_gen = Rcpp::wrap(scanblup(genoprobs, pheno, addcovar, se, reml, tol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1678,7 +1677,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2scan_scan_pg_onechr", (DL_FUNC) &_qtl2scan_scan_pg_onechr, 6},
     {"_qtl2scan_scan_pg_onechr_intcovar_highmem", (DL_FUNC) &_qtl2scan_scan_pg_onechr_intcovar_highmem, 7},
     {"_qtl2scan_scan_pg_onechr_intcovar_lowmem", (DL_FUNC) &_qtl2scan_scan_pg_onechr_intcovar_lowmem, 7},
-    {"_qtl2scan_scanblup", (DL_FUNC) &_qtl2scan_scanblup, 7},
+    {"_qtl2scan_scanblup", (DL_FUNC) &_qtl2scan_scanblup, 6},
     {"_qtl2scan_scancoef_binary_addcovar", (DL_FUNC) &_qtl2scan_scancoef_binary_addcovar, 7},
     {"_qtl2scan_scancoef_binary_intcovar", (DL_FUNC) &_qtl2scan_scancoef_binary_intcovar, 8},
     {"_qtl2scan_scancoefSE_binary_addcovar", (DL_FUNC) &_qtl2scan_scancoefSE_binary_addcovar, 7},
