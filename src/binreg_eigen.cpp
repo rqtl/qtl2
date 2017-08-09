@@ -19,8 +19,10 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
                                 const int maxit=100, const double tol=1e-6)
 {
     const int n_ind = y.size();
+    #ifndef NDEBUG
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
 
     double curllik = 0.0;
     NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
@@ -77,8 +79,10 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                               const double qr_tol=1e-12)
 {
     const int n_ind = y.size();
+    #ifndef NDEBUG
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
 
     double curllik = 0.0;
     NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
@@ -171,8 +175,10 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
                               const double qr_tol=1e-12)
 {
     const int n_ind = y.size();
+    #ifndef NDEBUG
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
+    #endif
 
     double curllik = 0.0;
     NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
