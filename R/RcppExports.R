@@ -357,8 +357,8 @@ scan_pg_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar,
     .Call(`_qtl2scan_scan_pg_onechr_intcovar_lowmem`, genoprobs, pheno, addcovar, intcovar, eigenvec, weights, tol)
 }
 
-scanblup <- function(genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol = 1e-12) {
-    .Call(`_qtl2scan_scanblup`, genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol)
+scanblup <- function(genoprobs, pheno, addcovar, se, reml, tol = 1e-12) {
+    .Call(`_qtl2scan_scanblup`, genoprobs, pheno, addcovar, se, reml, tol)
 }
 
 scancoef_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {

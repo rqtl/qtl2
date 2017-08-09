@@ -20,7 +20,6 @@ using namespace Eigen;
 // se        = If TRUE, calculate SEs
 // reml      = If TRUE, use REML to estimate variance components; otherwise use maximum
 //             likelihood
-// preserve_intercept = If FALSE, add the intercept to the BLUPs and remove that column
 // tol       = Numeric tolerance
 //
 // output    = List with twomatrix of coefficients (genotypes x positions)
@@ -31,7 +30,6 @@ List scanblup(const NumericVector& genoprobs,
               const NumericMatrix& addcovar,
               const bool se,
               const bool reml,
-              const bool preserve_intercept,
               const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -41,7 +39,6 @@ List scanblup(const NumericVector& genoprobs,
     const int n_addcovar = addcovar.cols();
     const int x_size = n_ind * n_gen;
     int n_coef = n_gen + n_addcovar;
-    if(!preserve_intercept) n_coef--;
     NumericMatrix coef(n_coef, n_pos); // to contain the estimated coefficients
     NumericMatrix SE(n_coef, n_pos); // to contain the estimated SEs
 
@@ -74,14 +71,8 @@ List scanblup(const NumericVector& genoprobs,
         VectorXd blup = Z.transpose() * resid;
 
         // insert estimated coefficients
-        if(!preserve_intercept) { // add intercept to BLUPs and drop the intercept column
-            for(int i=0; i<n_gen; i++) coef(i,pos) = blup[i] + lmm_out.beta[0];
-            for(int i=0; i<n_addcovar-1; i++) coef(n_gen+i,pos) = lmm_out.beta[i+1];
-        }
-        else {
-            for(int i=0; i<n_gen; i++) coef(i,pos) = blup[i];
-            for(int i=0; i<n_addcovar; i++) coef(n_gen+i,pos) = lmm_out.beta[i];
-        }
+        for(int i=0; i<n_gen; i++) coef(i,pos) = blup[i];
+        for(int i=0; i<n_addcovar; i++) coef(n_gen+i,pos) = lmm_out.beta[i];
 
         if(se) { // get SEs
             // construct variance matrix
@@ -95,14 +86,7 @@ List scanblup(const NumericVector& genoprobs,
             MatrixXd V = Vinv.inverse()*lmm_out.sigmasq;
 
             // insert estimated SEs
-            if(!preserve_intercept) { // add intercept to BLUPs and drop the intercept column
-                for(int i=0; i<n_gen; i++) SE(i,pos) = sqrt(V(i,i) + V(n_gen,n_gen) + 2.0*V(i,n_gen));
-                for(int i=0; i<n_addcovar-1; i++) SE(n_gen+i,pos) = sqrt(V(n_gen+i+1,n_gen+i+1));
-            }
-            else {
-                for(int i=0; i<n_coef; i++) SE(i,pos) = sqrt(V(i,i));
-            }
-
+            for(int i=0; i<n_coef; i++) SE(i,pos) = sqrt(V(i,i));
         }
     }
 

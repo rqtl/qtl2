@@ -1,7 +1,7 @@
 # Calculate BLUPs of QTL effects in scan along one chromosome, with residual polygenic effect
 scan1blup_pg <-
     function(genoprobs, pheno, kinship, addcovar=NULL, nullcovar=NULL,
-             contrasts=NULL, se=FALSE, reml=TRUE, preserve_intercept=FALSE,
+             contrasts=NULL, se=FALSE, reml=TRUE,
              tol=1e-12, cores=1, quiet=TRUE)
 {
     stopifnot(tol > 0)
@@ -122,11 +122,11 @@ scan1blup_pg <-
     batches <- batch_vec(seq_len(n_pos), ceiling(n_pos/n_cores(cores)))
 
     by_group_func <- function(i)
-        scanblup(genoprobs[,,batches[[i]],drop=FALSE], pheno, addcovar, se, reml, preserve_intercept, tol)
+        scanblup(genoprobs[,,batches[[i]],drop=FALSE], pheno, addcovar, se, reml, tol)
 
     # scan to get BLUPs and coefficient estimates
     if(n_cores(cores)==1) {
-        result <- scanblup(genoprobs, pheno, addcovar, se, reml, preserve_intercept, tol)
+        result <- scanblup(genoprobs, pheno, addcovar, se, reml, tol)
         if(se) SE <- t(result$SE)
         else SE <- NULL
         coef <- t(result$coef)
@@ -147,10 +147,7 @@ scan1blup_pg <-
     }
 
     # add names
-    if(preserve_intercept)
-        coefnames <- scan1coef_names(genoprobs, addcovar, NULL)
-    else
-        coefnames <- scan1coef_names(genoprobs, addcovar[,-1,drop=FALSE], NULL)
+    coefnames <- scan1coef_names(genoprobs, addcovar, NULL)
     dimnames(coef) <- list(dimnames(genoprobs)[[3]], coefnames)
     if(se) dimnames(SE) <- dimnames(coef)
 

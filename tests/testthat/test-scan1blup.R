@@ -54,15 +54,11 @@ test_that("scan1blup works with no kinship matrix", {
     blup_se <- scan1blup(pr, phe, se=TRUE)
     expect_equivalent(blup, blup_se)
 
-    # cf preserve intercept vs not
-    blup_int <- scan1blup(pr, phe, preserve_intercept=TRUE)
-    expect_equivalent(unclass(blup), unclass(blup_int)[,1:3] + unclass(blup_int)[,4])
-
     # brute force BLUPs
     for(i in 1:dim(pr[[1]])[[3]]) {
         blup_alt <- calc_blup(pr[[1]][,,i], phe)
-        names(blup_alt) <- colnames(blup_int)
-        expect_equal(unclass(blup_int)[i,], blup_alt, tol=1e-6)
+        names(blup_alt) <- colnames(blup)
+        expect_equal(unclass(blup)[i,], blup_alt, tol=1e-6)
     }
 
     # repeat with an additive covariate
@@ -73,15 +69,11 @@ test_that("scan1blup works with no kinship matrix", {
     blup_se <- scan1blup(pr, phe, addcovar=sex, se=TRUE)
     expect_equivalent(blup, blup_se)
 
-    # cf preserve intercept vs not
-    blup_int <- scan1blup(pr, phe, addcovar=sex, preserve_intercept=TRUE)
-    expect_equivalent(unclass(blup), unclass(blup_int)[,c(1:3,5)] + cbind(unclass(blup_int)[,c(4,4,4)], 0))
-
     # brute force BLUPs
     for(i in 1:dim(pr[[1]])[[3]]) {
         blup_alt <- calc_blup(pr[[1]][,,i], phe, addcovar=sex)
-        names(blup_alt) <- colnames(blup_int)
-        expect_equal(unclass(blup_int)[i,], blup_alt, tolerance=1e-5)
+        names(blup_alt) <- colnames(blup)
+        expect_equal(unclass(blup)[i,], blup_alt, tolerance=1e-5)
     }
 
 })
@@ -100,15 +92,11 @@ test_that("scan1blup works with kinship matrix", {
     blup_se <- scan1blup(pr, phe, K, sex, se=TRUE)
     expect_equivalent(blup, blup_se)
 
-    # cf preserve intercept vs not
-    blup_int <- scan1blup(pr, phe, K, sex, preserve_intercept=TRUE)
-    expect_equivalent(unclass(blup), unclass(blup_int)[,c(1:3,5)] + cbind(unclass(blup_int)[,c(4,4,4)], 0))
-
     # brute force BLUPs
     for(i in 1:dim(pr[[1]])[[3]]) {
         blup_alt <- calc_blup(pr[[1]][,,i], phe, K, sex)
-        names(blup_alt) <- colnames(blup_int)
-        expect_equal(unclass(blup_int)[i,], blup_alt, tolerance=1e-5)
+        names(blup_alt) <- colnames(blup)
+        expect_equal(unclass(blup)[i,], blup_alt, tolerance=1e-5)
     }
 
 })
@@ -127,15 +115,11 @@ test_that("scan1blup works with kinship matrix on another chromosome", {
     blup_se <- scan1blup(pr, phe, K, sex, se=TRUE)
     expect_equivalent(blup, blup_se)
 
-    # cf preserve intercept vs not
-    blup_int <- scan1blup(pr, phe, K, sex, preserve_intercept=TRUE)
-    expect_equivalent(unclass(blup), unclass(blup_int)[,c(1:3,5)] + cbind(unclass(blup_int)[,c(4,4,4)], 0))
-
     # brute force BLUPs
     for(i in 1:dim(pr[[1]])[[3]]) {
         blup_alt <- calc_blup(pr[[1]][,,i], phe, K, sex)
-        names(blup_alt) <- colnames(blup_int)
-        expect_equal(unclass(blup_int)[i,], blup_alt, tolerance=1e-5)
+        names(blup_alt) <- colnames(blup)
+        expect_equal(unclass(blup)[i,], blup_alt, tolerance=1e-5)
     }
 
 })

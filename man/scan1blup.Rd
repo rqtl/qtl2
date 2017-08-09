@@ -6,8 +6,7 @@
 \usage{
 scan1blup(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   nullcovar = NULL, contrasts = NULL, se = FALSE, reml = TRUE,
-  preserve_intercept = FALSE, tol = 0.000000000001, cores = 1,
-  quiet = TRUE)
+  tol = 0.000000000001, cores = 1, quiet = TRUE)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -40,12 +39,6 @@ identity matrix.}
 
 \item{reml}{If \code{reml=TRUE}, use
 REML to estimate variance components; otherwise maximum likelihood.}
-
-\item{preserve_intercept}{If TRUE, the BLUPs will have mean zero
-and there will be a separate column for the intercept. If FALSE
-(the default), we'll add the intercept to the BLUPs to give results
-that are comparable to \code{\link{scan1coef}}.
-Taken as TRUE if \code{contrasts} provided.}
 
 \item{tol}{Tolerance value for convergence of linear mixed model fit.}
 
