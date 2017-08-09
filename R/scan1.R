@@ -180,7 +180,7 @@ scan1 <-
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
                                weights, complete.cases=TRUE)
-    ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
+    ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(is.finite(pheno)) > 0])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")

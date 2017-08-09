@@ -220,7 +220,7 @@ scan1perm <-
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
                                kinshipIDs, weights, perm_strata, complete.cases=TRUE)
-    ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(!is.na(pheno)) > 0])
+    ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(is.finite(pheno)) > 0])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")
@@ -247,7 +247,7 @@ scan1perm <-
 
     if(model=="normal" && is.null(addcovar) && is.null(Xcovar) &&
        is.null(intcovar) && is.null(weights)
-       && sum(is.na(pheno[ind2keep,]))==0) # no covariates, no weights, no missing phenotypes
+       && sum(!is.finite(pheno[ind2keep,]))==0) # no covariates, no weights, no missing phenotypes
         result <- scan1perm_nocovar(genoprobs=genoprobs,
                                     pheno=pheno,
                                     n_perm=n_perm,

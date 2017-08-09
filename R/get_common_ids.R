@@ -46,18 +46,27 @@ get_common_ids <-
                 stop("Can't handle arrays with >3 dimensions")
             these <- rownames(args[[i]])
             if(complete.cases && (is.matrix(args[[i]]) || is.data.frame(args[[i]])))
-                these <- these[complete.cases(args[[i]])]
+                these <- these[rowSums(!is.finite(args[[i]]))==0]
         }
         else if(is.list(args[[i]]) && !is.null(rownames(args[[i]][[1]]))) {
             these <- rownames(args[[i]][[1]])
         }
         else if(is.vector(args[[i]])) {
-            if(is.character(args[[i]]) && is.null(names(args[[i]])))
-                these <- args[[i]]
+            if(is.character(args[[i]])) {
+                if(is.null(names(args[[i]]))) {
+                    these <- args[[i]]
+                } else {
+                    these <- names(args[[i]])
+                    if(complete.cases) {
+                        these <- these[!is.na(args[[i]])]
+                    }
+                }
+            }
             else {
                 these <- names(args[[i]])
-                if(complete.cases)
-                    these <- these[!is.na(args[[i]])]
+                if(complete.cases) {
+                    these <- these[is.finite(args[[i]])]
+                }
             }
         }
         else {
