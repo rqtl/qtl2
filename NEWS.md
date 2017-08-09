@@ -1,4 +1,4 @@
-## qtl2scan 0.5-20 (2017-08-08)
+## qtl2scan 0.5-20 (2017-08-09)
 
 ### New features
 
@@ -7,6 +7,17 @@
   makes sense to me. (Better to have an option in `scan1coef()` to get
   estimated genetic effects that sum to 0; which we'll add in the
   future.)
+
+### Minor changes
+
+- Check for linearly dependent columns in covariate matrices _after_
+  omitting individuals.
+
+- Check for +/- Inf in the phenotypes and covariates, rather than just
+  NAs.
+
+- In linear regression routines, and checks that inputs are
+  appropriately sized.
 
 
 ## qtl2scan 0.5-18 (2017-07-09)

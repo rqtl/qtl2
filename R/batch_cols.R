@@ -25,7 +25,7 @@ batch_cols <-
     if(is.null(max_batch) || max_batch<=0)
         max_batch <- ncol(mat)
 
-    mat <- is.na(mat)
+    mat <- !is.finite(mat)
     n <- nrow(mat)
     all_true <- rep(TRUE, n)
     result <- NULL
