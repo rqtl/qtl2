@@ -1,3 +1,10 @@
+## qtl2scan 0.5-21 (2017-08-11)
+
+### Minor changes
+
+- Turn off debug C++ code
+
+
 ## qtl2scan 0.5-20 (2017-08-09)
 
 ### New features

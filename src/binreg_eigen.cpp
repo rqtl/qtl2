@@ -6,7 +6,7 @@
 #include <RcppEigen.h>
 #include "matrix.h"
 #include "linreg_eigen.h"
-#include "r_message.h"
+#include "r_message.h" // defines RQTL2_NODEBUG + r_warning()
 
 using namespace Rcpp;
 using namespace Eigen;
@@ -19,7 +19,7 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
                                 const int maxit=100, const double tol=1e-6)
 {
     const int n_ind = y.size();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -79,7 +79,7 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                               const double qr_tol=1e-12)
 {
     const int n_ind = y.size();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -175,7 +175,7 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
                               const double qr_tol=1e-12)
 {
     const int n_ind = y.size();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif

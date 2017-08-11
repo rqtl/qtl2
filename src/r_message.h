@@ -5,13 +5,13 @@
 #include <Rcpp.h>
 #include <R_ext/Error.h>
 
+#define RQTL2_NODEBUG 1 // ignore debugging code
+
 void r_message(std::string text);
 void r_warning(std::string text);
 
-#undef NDEBUG // doesn't seem like it should be defined, but it is(?)
-
 // Following based on code from Luke Miratrix, http://bit.ly/rcpp_assert
-#ifdef NDEBUG
+#ifdef RQTL2_NODEBUG
 #define r_assert(EX)
 #else
 #define r_assert(EX) (void)((EX) || (__r_assert (#EX, __FILE__, __LINE__),0))

@@ -4,6 +4,7 @@
 
 #include "linreg_eigen.h"
 #include <RcppEigen.h>
+#include "r_message.h" // defines RQTL2_NODEBUG
 
 using namespace Rcpp;
 using namespace Eigen;
@@ -25,7 +26,7 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
     const VectorXd yy(as<Map<VectorXd> >(y));
 
     const int n = XX.rows(), p=XX.cols();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -65,7 +66,7 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
 // [[Rcpp::export]]
 NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -85,7 +86,7 @@ NumericVector calc_coef_linreg_eigenchol(const NumericMatrix& X, const NumericVe
 // [[Rcpp::export]]
 List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -112,7 +113,7 @@ List calc_coefSE_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y
 // [[Rcpp::export]]
 double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -133,7 +134,7 @@ double calc_rss_eigenchol(const NumericMatrix& X, const NumericVector& y)
 // [[Rcpp::export]]
 NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -153,7 +154,7 @@ NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const Numeric
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         const bool se, const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -234,7 +235,7 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                        const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -277,7 +278,7 @@ NumericVector calc_coef_linreg_eigenqr(const NumericMatrix& X, const NumericVect
 List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                 const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -339,7 +340,7 @@ List calc_coefSE_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
                         const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -380,7 +381,7 @@ double calc_rss_eigenqr(const NumericMatrix& X, const NumericVector& y,
 NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                          const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -419,7 +420,7 @@ NumericVector calc_fitted_linreg_eigenqr(const NumericMatrix& X, const NumericVe
 // [[Rcpp::export]]
 NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != Y.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -451,7 +452,7 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
                                  const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != Y.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -504,7 +505,7 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
 // [[Rcpp::export]]
 NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& Y)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != Y.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
@@ -537,7 +538,7 @@ NumericMatrix calc_resid_eigenchol(const NumericMatrix& X, const NumericMatrix& 
 NumericMatrix calc_resid_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
                                  const double tol=1e-12)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(X.rows() != Y.rows())
         throw std::invalid_argument("nrow(X) != length(y)");
     #endif
