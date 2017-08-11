@@ -4,14 +4,14 @@
 #include <math.h>
 #include <Rcpp.h>
 #include "cross.h"
-#include "r_message.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 enum gen {AA=1, BB=2};
 
 const double RISELF::step(const int gen_left, const int gen_right, const double rec_frac,
                           const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");

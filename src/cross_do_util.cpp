@@ -7,6 +7,7 @@ using namespace Rcpp;
 #include "cross.h"
 #include "cross_do.h"
 #include "cross_util.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 //////////////////////////////////////////////////////////////////////
 // 1. Stuff related to partially inbred 4-way RIL
@@ -158,7 +159,7 @@ double DOrec_auto(double r, int s, IntegerVector precc_gen, NumericVector precc_
 {
     double hapAA;
     int n_precc = precc_gen.size();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
@@ -190,7 +191,7 @@ double DOrec_femX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
 {
     double result;
     int n_precc = precc_gen.size();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
@@ -218,7 +219,7 @@ double DOrec_malX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
 {
     double result;
     int n_precc = precc_gen.size();
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
     #endif
@@ -247,7 +248,7 @@ double DOrec_malX_s1(double r, IntegerVector precc_gen, NumericVector precc_alph
 double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double result;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -284,7 +285,7 @@ double DOrec_femX(double r, int s, IntegerVector precc_gen, NumericVector precc_
 double DOrec_malX(double r, int s, IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double result;
-#ifndef NDEBUG
+#ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -325,7 +326,7 @@ const double DOstep_auto(int left, int right, double r, int s,
                            IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -391,7 +392,7 @@ const double DOstep_femX(int left, int right, double r, int s,
                           IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -456,7 +457,7 @@ const double DOstep_malX(int left, int right, double r, int s,
                          IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -486,7 +487,7 @@ const double DOPKstep_auto(int left, int right, double r, int s,
                            IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -555,7 +556,7 @@ const double DOPKstep_femX(int left, int right, double r, int s,
                            IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");
@@ -624,7 +625,7 @@ const double DOPKstep_malX(int left, int right, double r, int s,
                            IntegerVector precc_gen, NumericVector precc_alpha)
 {
     double recprob;
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     int n_precc = precc_gen.size();
     if(n_precc != precc_alpha.size())
         throw std::invalid_argument("precc_gen and precc_alpha should be the same length");

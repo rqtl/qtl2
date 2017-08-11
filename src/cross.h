@@ -7,6 +7,7 @@
 
 #include <Rcpp.h>
 #include "hmm_estmap2.h"
+#include "r_message.h" // defines RQTL2_NODEBUG
 
 using namespace Rcpp;
 
@@ -36,7 +37,7 @@ public:
                               const bool is_x_chr, const bool is_female,
                               const Rcpp::IntegerVector& cross_info)
     {
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
@@ -48,7 +49,7 @@ public:
                               const Rcpp::IntegerVector& founder_geno, const bool is_x_chr,
                               const bool is_female, const Rcpp::IntegerVector& cross_info)
     {
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
         #endif
@@ -66,7 +67,7 @@ public:
                               const bool is_x_chr, const bool is_female,
                               const Rcpp::IntegerVector& cross_info)
     {
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
            !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");
@@ -99,7 +100,7 @@ public:
                            const bool is_x_chr, const bool is_female,
                            const Rcpp::IntegerVector& cross_info)
     {
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
            !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
             throw std::range_error("genotype value not allowed");

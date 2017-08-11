@@ -11,13 +11,13 @@
 #include "cross.h"
 #include "cross_util.h"
 #include "cross_do_util.h"
-#include "r_message.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
 
 const bool MAGIC19::check_geno(const int gen, const bool is_observed_value,
-                                const bool is_x_chr, const bool is_female,
-                                const IntegerVector& cross_info)
+                               const bool is_x_chr, const bool is_female,
+                               const IntegerVector& cross_info)
 {
     // allow any value 0-5 for observed
     if(is_observed_value) {
@@ -34,10 +34,10 @@ const bool MAGIC19::check_geno(const int gen, const bool is_observed_value,
 }
 
 const double MAGIC19::init(const int true_gen,
-                            const bool is_x_chr, const bool is_female,
-                            const IntegerVector& cross_info)
+                           const bool is_x_chr, const bool is_female,
+                           const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -46,10 +46,10 @@ const double MAGIC19::init(const int true_gen,
 }
 
 const double MAGIC19::emit(const int obs_gen, const int true_gen, const double error_prob,
-                            const IntegerVector& founder_geno, const bool is_x_chr,
-                            const bool is_female, const IntegerVector& cross_info)
+                           const IntegerVector& founder_geno, const bool is_x_chr,
+                           const bool is_female, const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -66,10 +66,10 @@ const double MAGIC19::emit(const int obs_gen, const int true_gen, const double e
 
 
 const double MAGIC19::step(const int gen_left, const int gen_right, const double rec_frac,
-                            const bool is_x_chr, const bool is_female,
-                            const IntegerVector& cross_info)
+                           const bool is_x_chr, const bool is_female,
+                           const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
@@ -84,7 +84,7 @@ const double MAGIC19::step(const int gen_left, const int gen_right, const double
 }
 
 const IntegerVector MAGIC19::possible_gen(const bool is_x_chr, const bool is_female,
-                                       const IntegerVector& cross_info)
+                                          const IntegerVector& cross_info)
 {
     int n_geno = 19;
     IntegerVector result(n_geno);
@@ -152,7 +152,7 @@ const bool MAGIC19::need_founder_geno()
 
 // geno_names from allele names
 const std::vector<std::string> MAGIC19::geno_names(const std::vector<std::string> alleles,
-                                                const bool is_x_chr)
+                                                   const bool is_x_chr)
 {
     if(alleles.size() < 19)
         throw std::range_error("alleles must have length 19");
@@ -169,10 +169,10 @@ const std::vector<std::string> MAGIC19::geno_names(const std::vector<std::string
 
 
 const int MAGIC19::nrec(const int gen_left, const int gen_right,
-                         const bool is_x_chr, const bool is_female,
-                         const Rcpp::IntegerVector& cross_info)
+                        const bool is_x_chr, const bool is_female,
+                        const Rcpp::IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
@@ -183,9 +183,9 @@ const int MAGIC19::nrec(const int gen_left, const int gen_right,
 }
 
 const double MAGIC19::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
-                                    const Rcpp::IntegerMatrix& cross_info, const int n_gen)
+                                   const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(cross_info.rows() != 19) // incorrect number of founders
         throw std::range_error("cross_info should contain 19 founders");
     #endif

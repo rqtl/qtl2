@@ -7,7 +7,7 @@
 #include "cross.h"
 #include "cross_util.h"
 #include "cross_do_util.h"
-#include "r_message.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
 
@@ -33,7 +33,7 @@ const double DH6::init(const int true_gen,
                        const bool is_x_chr, const bool is_female,
                        const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -45,7 +45,7 @@ const double DH6::emit(const int obs_gen, const int true_gen, const double error
                        const IntegerVector& founder_geno, const bool is_x_chr,
                        const bool is_female, const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -65,7 +65,7 @@ const double DH6::step(const int gen_left, const int gen_right, const double rec
                             const bool is_x_chr, const bool is_female,
                             const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
@@ -203,7 +203,7 @@ const int DH6::nrec(const int gen_left, const int gen_right,
                          const bool is_x_chr, const bool is_female,
                          const Rcpp::IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");

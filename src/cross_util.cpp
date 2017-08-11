@@ -5,6 +5,7 @@
 #include <math.h>
 #include <Rcpp.h>
 using namespace Rcpp;
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 // allele pair -> genotype code (for multi-parent crosses with heterozygosity)
 // [[Rcpp::export]]
@@ -55,7 +56,7 @@ IntegerVector mpp_decode_geno(const int true_gen,
         // number of phase-known genotypes
         const int n_puk_geno = n_alleles + (int)round(R::choose((double)n_alleles, 2.0));
 
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         const int n_geno = n_alleles * n_alleles;
         if(true_gen < 0 || true_gen > n_geno)
             throw std::range_error("genotype value not allowed");
@@ -91,7 +92,7 @@ IntegerVector mpp_decode_geno(const int true_gen,
     }
     else {
         // number of phase-unknown genotypes
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         const int n_geno = n_alleles + (int)round(R::choose((double)n_alleles, 2.0));
         if(true_gen < 0 || true_gen > n_geno)
             throw std::range_error("genotype value not allowed");
@@ -168,7 +169,7 @@ IntegerVector invert_founder_index(IntegerVector cross_info)
 
     for(int i=0; i<n; i++) {
         const int f = cross_info[i];
-        #ifndef NDEBUG
+        #ifndef RQTL2_NODEBUG
         if(f < 1 || f > n)
             throw std::range_error("cross_info has values out of range");
         #endif

@@ -1,3 +1,10 @@
+## qtl2geno 0.5-30 (2017-08-11)
+
+### Minor changes
+
+- Turn off debug C++ code
+
+
 ## qtl2geno 0.5-29 (2017-08-04)
 
 ### Minor changes

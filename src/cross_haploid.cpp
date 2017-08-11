@@ -3,6 +3,7 @@
 #include "cross_haploid.h"
 #include <Rcpp.h>
 #include "cross.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 // geno_names from allele names
 const std::vector<std::string> HAPLOID::geno_names(const std::vector<std::string> alleles,

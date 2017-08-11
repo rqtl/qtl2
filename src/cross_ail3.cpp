@@ -6,7 +6,7 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_util.h" // mpp_encode_alleles and mpp_decode_geno
-#include "r_message.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 enum gen {AA=1, AB=2, BB=3, notA=5, notB=4,
           A=1, H=2, B=3};
@@ -38,7 +38,7 @@ const double AIL3::init(const int true_gen,
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -56,7 +56,7 @@ const double AIL3::emit(const int obs_gen, const int true_gen, const double erro
                         const IntegerVector& founder_geno, const bool is_x_chr,
                         const bool is_female, const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(true_gen, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
     #endif
@@ -152,7 +152,7 @@ const double AIL3::step(const int gen_left, const int gen_right, const double re
                         const bool is_x_chr, const bool is_female,
                         const IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");
@@ -392,7 +392,7 @@ const int AIL3::nrec(const int gen_left, const int gen_right,
                      const bool is_x_chr, const bool is_female,
                      const Rcpp::IntegerVector& cross_info)
 {
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
        !check_geno(gen_right, false, is_x_chr, is_female, cross_info))
         throw std::range_error("genotype value not allowed");

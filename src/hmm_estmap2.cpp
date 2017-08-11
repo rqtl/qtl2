@@ -13,7 +13,7 @@
 #include "hmm_util.h"
 #include "hmm_forwback2.h"
 #include "hmm_estmap.h"
-#include "r_message.h"
+#include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 #include "cross_util.h"
 
 // re-estimate inter-marker recombination fractions
@@ -134,7 +134,7 @@ NumericVector est_map2_grouped(const String crosstype,
     const double rf_tol = tol/1000.0; // smallest allowed recombination fraction
     const double rf_uptol = 0.999;    // largest allowed recombination fraction
 
-    #ifndef NDEBUG
+    #ifndef RQTL2_NODEBUG
     for(int i=0; i<n_cross_group; i++) {
         if(unique_cross_group[i] < 0 || unique_cross_group[i] >= n_ind)
             throw std::range_error("unique_cross_group values out of range [0, n_ind-1]");
