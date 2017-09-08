@@ -24,4 +24,9 @@ test_that("plot_scan1 works", {
 
     vdiffr::expect_doppelganger("plot_scan1", test_plot_scan1)
 
+
+    # single chromosome
+    test_plot_scan1_onechr <- function() plot(out, map, chr=2)
+    vdiffr::expect_doppelganger("plot_scan1_onechr", test_plot_scan1_onechr)
+
 })
