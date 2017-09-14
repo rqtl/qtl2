@@ -120,9 +120,9 @@ To use this script, you'll need to edit three lines near the top:
   batches
 
 - `ostem` defines the path and file "stem" for the output files. For
-  example, if you use `ostem <- "Data/gm4qtl2"`, the output files will
+  example, if you use `ostem <- "Data/forqtl2"`, the output files will
   be placed in the `Data` subdirectory and will have names like
-  `gm4qtl2_geno1.csv`.
+  `forqtl2_geno1.csv`.
 
 An issue you may need to contend with is a possible
 recoding of the sample identifiers. For example, you may have one batch
@@ -177,3 +177,97 @@ mice from the Jackson Lab.
 
 Finally, you need to prepare a control file which includes details of
 the file names and the various encodings and variable names.
+
+We'll use `write_control_file()` from
+[R/qtl2geno](https://github.com/rqtl/qtl2geno) to make the control
+file. It's a bit complicated, because there's a lot of stuff to
+specify, and some of the pieces are sort of confusing.
+
+```r
+library(qtl2geno)
+chr <- c(1:19, "X")
+write_control_file("forqtl2.json",
+                   crosstype="do",
+                   description="My awesome DO project",
+                   founder_geno_file=paste0("GM/GM_foundergeno", chr, ".csv"),
+                   founder_geno_transposed=TRUE,
+                   gmap_file=paste0("GM/GM_gmap", chr, ".csv"),
+                   pmap_file=paste0("GM/GM_pmap", chr, ".csv"),
+                   geno_file=paste0("forqtl2_geno", chr, ".csv"),
+                   geno_transposed=TRUE,
+                   geno_codes=list(A=1, H=2, B=3),
+                   xchr="X",
+                   pheno_file="forqtl2_pheno.csv",
+                   covar_file="forqtl2_covar.csv",
+                   sex_covar="sex",
+                   sex_codes=list(F="Female", M="Male"),
+                   crossinfo_covar="ngen")
+```
+
+The first three arguments are the name of the file to be created (with
+extension either `.json` or `.yaml`), the cross type (`"do"` for DO
+mice), and a description.
+
+The argument `founder_geno_file` gives the name of the file that contains the founder
+genotypes, here a vector of file names since we have the genotypes
+split by chromosome. Then `founder_geno_transposed=TRUE` indicates that we
+have the founder strains as columns and the markers as rows, rather
+than the default orientation with strains as the rows.
+
+The arguments `gmap_file` and `pmap_file` indicate the names of the
+files that contain the genetic (`gmap`) and physical (`pmap`) marker
+positions. These are again each a vector of file names, since the
+files are split by chromosome.
+
+The argument `geno_file` indicates the name of the file with the DO genotype data (again, a
+vector of file names as they're split by chromosome), and we use
+`geno_tranposed=TRUE` because the
+[`geneseek2qtl2.R`](../assets/geneseek2qtl2.R) script discussed above
+writes the CSV files with individuals as columns and markers as rows.
+
+The argument `geno_codes` indicates the encodings for both the DO genotypes
+and the founder genotypes. This may be a bit confusing, but we want to
+make a list with the names being the codes used in the data and the
+values being the integers 1, 2, and 3. So `geno_codes=list(A=1, H=2,
+B=3)`.
+
+The argument `xchr` indicates the chromosome identifier for the X
+chromosome.
+
+The `pheno_file` and `covar_file` arguments indicate the names of the
+files with the phenotype and covariate data, respectively. We then
+provide some details about specific covariates that are important: sex
+(via `sex_covar`) plus `sex_codes` to explain the encodings, with
+the names `F` and `M` being the codes used in the data and the values
+`"Female"` and `"Male"` indicating which sexes the codes correspond
+to. And finally `crossinfo_covar` indicates the name of the covariate
+column that contains the cross information (`"ngen"` for number of
+generations, for cross type `"do"`).
+
+Note that it's sometimes useful to create chromosome-specific control
+files, for the case that you want to just load one chromosome worth of
+data. You can do this by first defining `chr` to be a single value,
+e.g. `chr <- "1"`. You can then use exactly the same
+`write_control_file()` code, though perhaps changing the first line,
+with the name of the file to be produced. For example:
+
+```r
+library(qtl2geno)
+chr <- "1"
+write_control_file("forqtl2_chr1.json",
+                   crosstype="do",
+                   description="My awesome DO project",
+                   founder_geno_file=paste0("GM/GM_foundergeno", chr, ".csv"),
+                   founder_geno_transposed=TRUE,
+                   gmap_file=paste0("GM/GM_gmap", chr, ".csv"),
+                   pmap_file=paste0("GM/GM_pmap", chr, ".csv"),
+                   geno_file=paste0("forqtl2_geno", chr, ".csv"),
+                   geno_transposed=TRUE,
+                   geno_codes=list(A=1, H=2, B=3),
+                   xchr="X",
+                   pheno_file="forqtl2_pheno.csv",
+                   covar_file="forqtl2_covar.csv",
+                   sex_covar="sex",
+                   sex_codes=list(F="Female", M="Male"),
+                   crossinfo_covar="ngen")
+```
