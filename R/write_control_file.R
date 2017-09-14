@@ -195,12 +195,17 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
             warning("if crossinfo_file is specified, crossinfo_codes is ignored")
         result$cross_info <- list(file=crossinfo_file)
     }
-    else if(!is.null(crossinfo_covar)) {
-        if(is.null(crossinfo_codes))
-            stop("if crossinfo_covar is specified, crossinfo_codes must be as well")
-        storage.mode(crossinfo_codes) <- "integer"
-        result$cross_info <- c(list(covar=crossinfo_covar),
-                               as.list(crossinfo_codes))
+    else {
+        if(!is.null(crossinfo_codes)) {
+            if(is.null(crossinfo_covar))
+                stop("if crossinfo_codes is provided, crossinfo_covar must also be provided")
+            storage.mode(crossinfo_codes) <- "integer"
+            result$cross_info <- c(list(covar=crossinfo_covar),
+                                   as.list(crossinfo_codes))
+        }
+        else if(!is.null(crossinfo_covar)) {
+            result$cross_info <- list(covar=crossinfo_covar)
+        }
     }
 
     # JSON or YAML?
