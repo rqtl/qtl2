@@ -132,7 +132,7 @@ Search for the following line, and do some reformatting of the sample
 IDs there.
 
 ```
-# Note: may need to revise the IDs in the second column`
+# Note: may need to revise the IDs in the second column
 ```
 
 You'll need to have the
