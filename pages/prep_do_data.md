@@ -94,8 +94,63 @@ Download the appropriate file and unzip it somewhere.
 
 ### Encoding the DO genotypes
 
+Now to the actual DO genotypes. GeneSeek will provide a zip file that
+contains a series of files. We'll use only the `FinalReport.txt` file,
+which is the biggest of them, with one line for each SNP and for each
+sample. For 200 mice, it'll be about 1 GB, and maybe a quarter of that
+size when compressed as a zip file.
+
+We provide an example R script,
+[`geneseek2qtl2.R`](../assets/geneseek2qtl2.R), to convert this file
+into what's needed for R/qtl2. It does two things:
+
+- Encodes the genotypes as `A/H/B/-` and writes them to a series of
+  CSV files, one per chromosome
+- Extracts the SNP array intensities for the SNPs on the X and Y
+  chromosome, which we find useful for verifying the sex of the mice.
+
+To use this script, you'll need to edit three lines near the top:
+
+- `codefile` defines the path to the `GM_allelecodes.csv` file (or
+  `MM_` or `MMnGM_` version, if you're using MegaMUGA or both arrays
+  in your project)
+
+- `ifiles` defines the path to your `FinalReport.txt` file. This can
+  be a vector of such file paths, if your genotyping was performed in
+  batches
+
+- `ostem` defines the path and file "stem" for the output files. For
+  example, if you use `ostem <- "Data/gm4qtl2"`, the output files will
+  be placed in the `Data` subdirectory and will have names like
+  `gm4qtl2_geno1.csv`.
+
+An issue you may need to contend with is a possible
+recoding of the sample identifiers. For example, you may have one batch
+where the samples are labeled like `DO-146` and another where they're
+labeled simply `146` and another where they're labeled `AA-DO-146`.
+Search for the following line, and do some reformatting of the sample
+IDs there.
+
+```
+# Note: may need to revise the IDs in the second column`
+```
+
+You'll need to have the
+[R/qtl2convert](https://github.com/rqtl/qtl2convert) package
+installed. And note that, since this script reads in the full data
+into memory, you'll need a computer with appreciable RAM.
+
+The result of the [`geneseek2qtl2.R`](../assets/geneseek2qtl2.R)
+script will be a series of CSV files containing the re-coded
+genotypes, with one file per chromosome, plus four files containing
+the SNP array intensities for the X and Y chromosomes (one file per
+allele per chromosome).
+
+
 
 ### Preparing the phenotype and covariate data
+
+
 
 
 ### Preparing the control file
