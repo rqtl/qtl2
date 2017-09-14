@@ -150,7 +150,30 @@ allele per chromosome).
 
 ### Preparing the phenotype and covariate data
 
+You next need to prepare files with the phenotype data (with strictly
+numeric phenotypes) and covariate data (which can include non-numeric
+variables). Each should be arranged with samples as rows and variables
+as columns, and with the first column being the sample IDs, exactly as
+used in the genotype data.
 
+For examples of these files, see the
+[qtl2data repository](https://github.com/rqtl/qtl2data), in particular
+[`do_pheno.csv`](https://github.com/rqtl/qtl2data/blob/master/DO_Gatti2014/do_pheno.csv)
+and
+[`do_covar.csv`](https://github.com/rqtl/qtl2data/blob/master/DO_Gatti2014/do_covar.csv),
+for the [Gatti et al. (2014)](http://www.g3journal.org/content/ggg/4/9/1623.full.pdf) data.
+
+The covariate data needs to contain a `sex` column, plus a column
+giving the generation number (e.g., `ngen`) for each DO animal.
+
+For help in determining the generation numbers, see
+the file
+[`DO_generation_dates.csv`](../assets/DO_generation_dates.csv) which
+lists the generation number for different dates of distribution of
+mice from the Jackson Lab.
 
 
 ### Preparing the control file
+
+Finally, you need to prepare a control file which includes details of
+the file names and the various encodings and variable names.
