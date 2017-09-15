@@ -1,6 +1,6 @@
 Package: qtl2scan
-Version: 0.5-21
-Date: 2017-08-11
+Version: 0.5-22
+Date: 2017-09-15
 Title: Genome Scans for QTL Experiments
 Description: Functions to perform QTL analysis.  Part of R/qtl2, a
     reimplementation of the R/qtl package to better handle
@@ -14,22 +14,17 @@ Imports:
     parallel,
     stats
 Suggests:
-    knitr,
-    rmarkdown,
     testthat,
     devtools,
     roxygen2,
     qtl,
-    qtl2geno (>= 0.5-4),
-    qtl2plot (>= 0.5-3)
+    qtl2geno (>= 0.5-4)
 License: GPL-3
 URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2scan
 BugReports: https://github.com/rqtl/qtl2scan/issues
-VignetteBuilder: knitr
 LinkingTo: Rcpp, RcppEigen
 LazyData: true
 Encoding: UTF-8
 RoxygenNote: 6.0.1
 Remotes:
-    rqtl/qtl2geno,
-    rqtl/qtl2plot
+    rqtl/qtl2geno
