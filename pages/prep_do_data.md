@@ -45,7 +45,7 @@ single-letter codes `N`/`C`/`T`/`A`/`G`/`H`.
 To use these data with R/qtl2, we need to reformat the files and
 recode the SNP genotypes (for example, as `A`/`H`/`B`/`-`). We've
 placed an R script to do this at the figshare site,
-[`parse_muga.R` doi:10.6084/m9.figshare.5405260](https://doi.org/10.6084/m9.figshare.5405260).
+[`parse_muga.R` (doi:10.6084/m9.figshare.5405260)](https://doi.org/10.6084/m9.figshare.5405260).
 This uses the [R/qtl2convert](https://github.com/rqtl/qtl2convert)
 package, in particular `find_consensus_geno()` to determine consensus
 genotypes for each founder strain at each SNP from the multiple
