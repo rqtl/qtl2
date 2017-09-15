@@ -244,7 +244,7 @@ to. And finally `crossinfo_covar` indicates the name of the covariate
 column that contains the cross information (`"ngen"` for number of
 generations, for cross type `"do"`).
 
-Note that it's sometimes useful to create chromosome-specific control
+It's sometimes useful to create chromosome-specific control
 files, for the case that you want to just load one chromosome worth of
 data. You can do this by first defining `chr` to be a single value,
 e.g. `chr <- "1"`. You can then use exactly the same
