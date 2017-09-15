@@ -34,7 +34,7 @@ routines from the [Eigen library](http://eigen.tuxfamily.org)
 (QR decomposition with column pivoting and Cholesky decomposition; the
 latter doesn't handle the rank-deficient case). We compare these to
 the [LAPACK](http://www.netlib.org/lapack/) routines used in
-[R/qtl](http://rqtl.org):
+[R/qtl](https://rqtl.org):
 [`dgels`](http://www.netlib.org/lapack/explore-html/d8/dde/dgels_8f.html)
 and
 [`dgelsy`](http://www.netlib.org/lapack/explore-html/d6/d4b/dgelsy_8f.html).

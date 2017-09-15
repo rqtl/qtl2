@@ -72,7 +72,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <p><a href="https://github.com/kbroman/qtl2geno">R/qtl2geno</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
 <p>The new HMM code can potentially handle more general cases and uses C++ classes to simplify the extension to new cross types. I’ve also split out the forward and backward equations as separate functions, to reduce code duplication. And the basic calculations are separated by individual, which may allow for low-level parallel processing (i.e., <a href="https://en.wikipedia.org/wiki/Concurrency_(computer_science)">concurrency</a>). (I’m considered using <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a> for this.)</p>
-<p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="http://www.rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="http://www.rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
+<p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="https://rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="https://rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
 <div id="genotype-probabilities" class="section level2">
 <h2>Genotype probabilities</h2>
 <p>First let’s look at the calculation of conditional genotype probabilities (given multiple genetic marker genotypes). We’ll consider simulated data, first of a backcross with 500 individuals (250 males and 250 females) and with markers at a 1 cM spacing on 20 chromosomes (including the X chromosome), and 5% missing data. We use <code>qtl::sim.map()</code> and <code>qtl:sim.cross()</code> to simulate the data.</p>
@@ -96,9 +96,9 @@ probbc &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<spa
                          <span class="dt">times=</span><span class="dv">25</span>)
 <span class="kw">print</span>(probbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
-##  expr       min        lq      mean    median        uq      max neval cld
-##   qtl 1.0799567 1.0868793 1.1032730 1.0911020 1.0978109 1.169801    25   b
-##  qtl2 0.8402393 0.8513209 0.8694808 0.8563172 0.8666195 1.050022    25  a</code></pre>
+##  expr       min       lq      mean    median        uq      max neval cld
+##   qtl 1.0420229 1.049512 1.0897630 1.0588333 1.0749538 1.583892    25   b
+##  qtl2 0.8447251 0.860328 0.8879964 0.8666601 0.8758329 1.076109    25  a</code></pre>
 <p>Let’s do the same for an intercross, also including the X chromosome, and with crosses in both directions and with both sexes. Again, with R/qtl2, I need to use <code>insert_pseudomarkers</code> to create a map with pseudomarkers inserted, prior to running <code>calc_genoprob</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span><span class="kw">sim.cross</span>(map, <span class="dt">n.ind=</span>n, <span class="dt">type=</span><span class="st">&quot;f2&quot;</span>, <span class="dt">missing.prob=</span><span class="fl">0.05</span>)
 f2$pheno$sex &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>:<span class="dv">1</span>, <span class="dt">each=</span>n/<span class="dv">2</span>)
@@ -112,8 +112,8 @@ f2_2_pmarkmap &lt;-<span class="st"> </span>qtl2geno::<span class="kw">insert_ps
 <span class="kw">print</span>(probf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 2.646663 2.660546 2.669483 2.667213 2.672160 2.710538    10   b
-##  qtl2 1.796203 1.913149 1.928840 1.921409 1.923194 2.144731    10  a</code></pre>
+##   qtl 2.506977 2.638704 2.644074 2.643813 2.650559 2.781655    10   b
+##  qtl2 1.896741 1.906769 1.925714 1.911452 1.918307 2.036555    10  a</code></pre>
 </div>
 <div id="genetic-map-estimation" class="section level2">
 <h2>Genetic map estimation</h2>
@@ -128,8 +128,8 @@ bc2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(bc)</co
 <span class="kw">print</span>(mapbc, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 1.379063 1.381583 1.383991 1.383686 1.387074 1.388547     5  a 
-##  qtl2 1.637470 1.653812 1.659821 1.656770 1.670041 1.681014     5   b</code></pre>
+##   qtl 1.505558 1.512556 1.594503 1.514041 1.517071 1.923289     5  a 
+##  qtl2 1.832302 1.835156 1.869817 1.848742 1.906856 1.926029     5   b</code></pre>
 <p>Now to the intercross. Again, we’ll look at just chromosomes 1 and X, and we’ll perform just 5 replicates.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f2 &lt;-<span class="st"> </span>f2[<span class="kw">c</span>(<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>),]
 f2_2 &lt;-<span class="st"> </span><span class="kw">convert2cross2</span>(f2)
@@ -139,13 +139,13 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 <span class="kw">print</span>(mapf2, <span class="dt">unit=</span><span class="st">&quot;s&quot;</span>)</code></pre></div>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 3.858236 3.861335 3.866668 3.865346 3.873071 3.875353     5   b
-##  qtl2 3.121583 3.140473 3.208224 3.231638 3.263488 3.283941     5  a</code></pre>
+##   qtl 4.209004 4.216213 4.220859 4.218208 4.227645 4.233225     5   b
+##  qtl2 3.468959 3.478439 3.512348 3.478599 3.481871 3.653874     5  a</code></pre>
 <p>For the backcross, the new code takes 1.2 times longer; for the intercross, the new code takes 0.8 times longer.</p>
 </div>
 <div id="why-the-differences-in-speed" class="section level2">
 <h2>Why the differences in speed?</h2>
-<p>I made a number of changes to the HMM code between <a href="http://www.rqtl.org">R/qtl</a> and <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
+<p>I made a number of changes to the HMM code between <a href="https://rqtl.org">R/qtl</a> and <a href="http://kbroman.org/qtl2">R/qtl2</a>.</p>
 <ul>
 <li>Split out the forward/backward equations as separate functions (to avoid code duplication and to make the code potentially clearer).</li>
 <li>Calculations are by individual, with an eye towards low-level parallel processing</li>
@@ -159,56 +159,69 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
 <h2>Session information</h2>
 <p>The following shows the R and package versions I was using.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">session_info</span>()</code></pre></div>
-<pre><code>## Session info ---------------------------------------------------------------------------------------</code></pre>
+<pre><code>## Session info --------------------------------------------------------------------------------------</code></pre>
 <pre><code>##  setting  value                       
-##  version  R version 3.3.3 (2017-03-06)
-##  system   x86_64, darwin13.4.0        
+##  version  R version 3.4.1 (2017-06-30)
+##  system   x86_64, darwin15.6.0        
 ##  ui       X11                         
 ##  language en_US.UTF-8                 
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-04-19</code></pre>
-<pre><code>## Packages -------------------------------------------------------------------------------------------</code></pre>
+##  date     2017-09-15</code></pre>
+<pre><code>## Packages ------------------------------------------------------------------------------------------</code></pre>
 <pre><code>##  package        * version date       source        
-##  assertthat       0.2.0   2017-04-11 CRAN (R 3.3.2)
-##  backports        1.0.5   2017-01-18 CRAN (R 3.3.2)
-##  broman         * 0.65-2  2017-02-21 local         
-##  codetools        0.2-15  2016-10-05 CRAN (R 3.3.0)
-##  colorspace       1.3-2   2016-12-14 CRAN (R 3.3.2)
-##  data.table       1.10.4  2017-02-01 CRAN (R 3.3.2)
-##  devtools         1.12.0  2016-06-24 CRAN (R 3.3.0)
-##  digest           0.6.12  2017-01-27 CRAN (R 3.3.2)
-##  evaluate         0.10    2016-10-11 CRAN (R 3.3.0)
-##  ggplot2          2.2.1   2016-12-30 CRAN (R 3.3.2)
-##  gtable           0.2.0   2016-02-26 CRAN (R 3.3.0)
-##  htmltools        0.3.5   2016-03-21 CRAN (R 3.3.0)
-##  knitr            1.15.1  2016-11-22 CRAN (R 3.3.2)
-##  lattice          0.20-35 2017-03-25 CRAN (R 3.3.2)
-##  lazyeval         0.2.0   2016-06-12 CRAN (R 3.3.0)
-##  magrittr       * 1.5     2014-11-22 CRAN (R 3.3.0)
-##  MASS             7.3-45  2016-04-21 CRAN (R 3.3.0)
-##  Matrix           1.2-8   2017-01-20 CRAN (R 3.3.2)
-##  memoise          1.0.0   2016-01-29 CRAN (R 3.3.0)
-##  microbenchmark * 1.4-2.1 2015-11-25 CRAN (R 3.3.0)
-##  multcomp         1.4-6   2016-07-14 CRAN (R 3.3.0)
-##  munsell          0.4.3   2016-02-13 CRAN (R 3.3.0)
-##  mvtnorm          1.0-6   2017-03-02 CRAN (R 3.3.2)
-##  plyr             1.8.4   2016-06-08 CRAN (R 3.3.0)
-##  qtl            * 1.41-2  2017-03-10 local         
-##  qtl2geno       * 0.5-18  2017-04-19 local         
-##  Rcpp             0.12.10 2017-03-19 CRAN (R 3.3.3)
-##  rmarkdown        1.4     2017-03-24 CRAN (R 3.3.2)
-##  rprojroot        1.2     2017-01-16 CRAN (R 3.3.2)
-##  sandwich         2.3-4   2015-09-24 CRAN (R 3.3.0)
-##  scales           0.4.1   2016-11-09 CRAN (R 3.3.2)
-##  stringi          1.1.5   2017-04-07 CRAN (R 3.3.2)
-##  stringr          1.2.0   2017-02-18 CRAN (R 3.3.2)
-##  survival         2.41-3  2017-04-04 CRAN (R 3.3.2)
-##  TH.data          1.0-8   2017-01-23 CRAN (R 3.3.2)
-##  tibble           1.3.0   2017-04-01 CRAN (R 3.3.2)
-##  withr            1.0.2   2016-06-20 CRAN (R 3.3.0)
-##  yaml             2.1.14  2016-11-12 CRAN (R 3.3.2)
-##  zoo              1.8-0   2017-04-12 CRAN (R 3.3.3)</code></pre>
+##  assertthat       0.2.0   2017-04-11 CRAN (R 3.4.0)
+##  backports        1.1.0   2017-05-22 CRAN (R 3.4.0)
+##  base           * 3.4.1   2017-07-07 local         
+##  broman         * 0.65-4  2017-05-28 local         
+##  codetools        0.2-15  2016-10-05 CRAN (R 3.4.0)
+##  colorspace       1.3-2   2016-12-14 CRAN (R 3.4.0)
+##  compiler         3.4.1   2017-07-07 local         
+##  data.table       1.10.4  2017-02-01 CRAN (R 3.4.0)
+##  datasets       * 3.4.1   2017-07-07 local         
+##  devtools         1.13.3  2017-08-02 CRAN (R 3.4.1)
+##  digest           0.6.12  2017-01-27 CRAN (R 3.4.0)
+##  evaluate         0.10.1  2017-06-24 CRAN (R 3.4.0)
+##  ggplot2          2.2.1   2016-12-30 CRAN (R 3.4.0)
+##  graphics       * 3.4.1   2017-07-07 local         
+##  grDevices      * 3.4.1   2017-07-07 local         
+##  grid             3.4.1   2017-07-07 local         
+##  gtable           0.2.0   2016-02-26 CRAN (R 3.4.0)
+##  htmltools        0.3.6   2017-04-28 CRAN (R 3.4.0)
+##  knitr            1.17    2017-08-10 CRAN (R 3.4.1)
+##  lattice          0.20-35 2017-03-25 CRAN (R 3.4.0)
+##  lazyeval         0.2.0   2016-06-12 CRAN (R 3.4.0)
+##  magrittr       * 1.5     2014-11-22 CRAN (R 3.4.0)
+##  MASS             7.3-47  2017-02-26 CRAN (R 3.4.0)
+##  Matrix           1.2-11  2017-08-16 CRAN (R 3.4.1)
+##  memoise          1.1.0   2017-04-21 CRAN (R 3.4.0)
+##  methods        * 3.4.1   2017-07-07 local         
+##  microbenchmark * 1.4-2.1 2015-11-25 CRAN (R 3.4.0)
+##  multcomp         1.4-6   2016-07-14 CRAN (R 3.4.0)
+##  munsell          0.4.3   2016-02-13 CRAN (R 3.4.0)
+##  mvtnorm          1.0-6   2017-03-02 CRAN (R 3.4.0)
+##  parallel         3.4.1   2017-07-07 local         
+##  plyr             1.8.4   2016-06-08 CRAN (R 3.4.0)
+##  qtl            * 1.42-2  2017-09-13 local         
+##  qtl2geno       * 0.5-32  2017-09-15 local         
+##  Rcpp             0.12.12 2017-07-15 CRAN (R 3.4.1)
+##  rlang            0.1.2   2017-08-09 CRAN (R 3.4.1)
+##  rmarkdown        1.6     2017-06-15 CRAN (R 3.4.0)
+##  rprojroot        1.2     2017-01-16 CRAN (R 3.4.0)
+##  sandwich         2.4-0   2017-07-26 CRAN (R 3.4.1)
+##  scales           0.5.0   2017-08-24 CRAN (R 3.4.1)
+##  splines          3.4.1   2017-07-07 local         
+##  stats          * 3.4.1   2017-07-07 local         
+##  stringi          1.1.5   2017-04-07 CRAN (R 3.4.0)
+##  stringr          1.2.0   2017-02-18 CRAN (R 3.4.0)
+##  survival         2.41-3  2017-04-04 CRAN (R 3.4.0)
+##  TH.data          1.0-8   2017-01-23 CRAN (R 3.4.0)
+##  tibble           1.3.4   2017-08-22 CRAN (R 3.4.1)
+##  tools            3.4.1   2017-07-07 local         
+##  utils          * 3.4.1   2017-07-07 local         
+##  withr            2.0.0   2017-07-28 CRAN (R 3.4.1)
+##  yaml             2.1.14  2016-11-12 CRAN (R 3.4.0)
+##  zoo              1.8-0   2017-04-12 CRAN (R 3.4.0)</code></pre>
 </div>
 
 
@@ -218,7 +231,7 @@ mapf2 &lt;-<span class="st"> </span><span class="kw">microbenchmark</span>(<span
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

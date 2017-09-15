@@ -6,7 +6,7 @@ description: R/qtl2, a reimplementation of R/qtl to better handle high-dimension
 ---
 
 R/qtl2 (aka qtl2) is a reimplementation of the QTL analysis software
-[R/qtl](http://www.rqtl.org), to better handle high-dimensional data
+[R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.  It is split
 into [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
 genotype probabilities, imputations, and genetic maps),
@@ -16,7 +16,7 @@ related calculations), and
 A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](http://rqtl.org) formats, for example to convert genotype
+and [R/qtl](https://rqtl.org) formats, for example to convert genotype
 probabilities produced by DOQTL to the format needed by qtl2scan, or
 to convert qtl2scan results to the format produced by `scanone` in
 R/qtl, so that they may be graphed with the R/qtl functions.
@@ -54,9 +54,9 @@ First, make sure you have the latest version of
 [R (3.4.1)](https://cran-r.project.org).
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
 
-    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
 The [qtl2](https://github.com/rqtl/qtl2) package is
 inspired by the

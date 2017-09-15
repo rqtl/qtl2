@@ -32,7 +32,7 @@
 
 
 
-<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="http://rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
+<p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="https://rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
 <p>We expect that basic analyses with R/qtl2 will generally be performed in “batch” (for example, on a cluster) rather than interactively. And so the software is split into two parts: <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans.</p>
 <p>In this document, we’ll describe the technical details of interest to developers wishing to contribute to R/qtl2.</p>
 <p>There are three basic aspects to the software:</p>
@@ -45,7 +45,7 @@
 <p>We are also redefining the input data file formats.</p>
 <div id="qtl-data-structure" class="section level2">
 <h2>QTL data structure</h2>
-<p>The basic data structure in <a href="http://rqtl.org">R/qtl</a>, the <code>&quot;cross&quot;</code> class, has been redesigned.</p>
+<p>The basic data structure in <a href="https://rqtl.org">R/qtl</a>, the <code>&quot;cross&quot;</code> class, has been redesigned.</p>
 <p>A basic principle in the new design is to have the data as close as possible in the form in which it will be used, and to have a more-flat (i.e., less nested) data structure. So don’t entangle the marker maps with the genotype data, and pull out the sex information rather than have to find it within the phenotype data whenever it is needed.</p>
 <p>A key design decision concerns whether to split out the genotype data and marker maps by chromosome, or to keep them as a simpler table. I’m choosing to have these data split out by chromosome, as much of the analysis tends to proceed by chromosome, and it tends to be easier to combine then to split.</p>
 <p><strong>Note: I am fully open to modifying this design. I would be glad for suggestions.</strong></p>
@@ -99,7 +99,7 @@
 </div>
 <div id="cross-information-cross_info" class="section level3">
 <h3>Cross information (<code>&quot;cross_info&quot;</code>)</h3>
-<p>For many cross types, and particularly for the treatment of the X chromosome, we need individual-level information about the nature of the cross. For an intercross, this is like <code>pgm</code> (for paternal grandmother) in <a href="http://rqtl.org">R/qtl</a>. For the Collaborative Cross, we need the order of the founders in the set of crosses that led to each line. For the AIL and the Diversity Outcross, we need to know the number of generations of outbreeding.</p>
+<p>For many cross types, and particularly for the treatment of the X chromosome, we need individual-level information about the nature of the cross. For an intercross, this is like <code>pgm</code> (for paternal grandmother) in <a href="https://rqtl.org">R/qtl</a>. For the Collaborative Cross, we need the order of the founders in the set of crosses that led to each line. For the AIL and the Diversity Outcross, we need to know the number of generations of outbreeding.</p>
 <p>This <code>&quot;cross_info&quot;</code> component will be a matrix of integers with <code>n_ind</code> rows, and with the number of columns depending on the cross type.</p>
 <p>This information is highly cross-type-specific. We’ll leave the details to the discussion of the format of input files.</p>
 </div>
@@ -162,8 +162,8 @@
 </div>
 <div id="input-data-file-formats" class="section level2">
 <h2>Input data file formats</h2>
-<p>For simple cross types, we can use the file formats for <a href="http://rqtl.org">R/qtl</a>, use <code>qtl::read.cross</code> to read in the data, and then use a conversion function (<code>qtl2geno::convert2cross2</code>) to convert the data into the new format.</p>
-<p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="http://rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
+<p>For simple cross types, we can use the file formats for <a href="https://rqtl.org">R/qtl</a>, use <code>qtl::read.cross</code> to read in the data, and then use a conversion function (<code>qtl2geno::convert2cross2</code>) to convert the data into the new format.</p>
+<p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="https://rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
 <p>Another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>’s <a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: the inclusion of metadata, such as genotype encodings, with the primary data. This will simplify the handling of multiple files and will help to avoid mistakes.</p>
 <p>And so the basic idea for the new format is to have a separate file for each part of the primary data (genotypes, founder genotypes, genetic map, physical map, phenotypes, covariates, and phenotype covariates), and then a control file which specifies the names of all of those files, the genotype encodings and missing value codes, and things like the name of the sex column within the covariate data (and the encodings for the sexes) and which chromosome is the X chromosome.</p>
 <p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>qtl2geno::read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="https://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">https://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly (with the same function, <code>qtl2geno::read_cross2()</code>). The function <code>qtl2geno::zip_datafiles()</code> can be used to create the zip file.</p>
@@ -249,7 +249,7 @@ na.strings:
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

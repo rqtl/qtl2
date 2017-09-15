@@ -12,7 +12,7 @@
 [Karl Broman](http://kbroman.org)
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
-the QTL analysis software [R/qtl](http://www.rqtl.org), to better
+the QTL analysis software [R/qtl](https://rqtl.org), to better
 handle high-dimensional data and complex cross designs. It is split
 into [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
 genotype probabilities, imputations, and genetic maps),
@@ -22,7 +22,7 @@ related calculations), and
 A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](http://rqtl.org) formats, for example to convert genotype
+and [R/qtl](https://rqtl.org) formats, for example to convert genotype
 probabilities produced by DOQTL to the format needed by qtl2scan, or
 to convert qtl2scan results to the format produced by `scanone` in
 R/qtl, so that they may be graphed with the R/qtl functions.
@@ -32,10 +32,10 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
 
     install.packages(paste0("qtl2", c("geno", "scan", "plot", "convert")),
-                     repos="http://rqtl.org/qtl2cran")
+                     repos="https://rqtl.org/qtl2cran")
 
 This will also install a bunch of dependencies.
 
