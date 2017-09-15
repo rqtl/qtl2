@@ -4,24 +4,15 @@ all: vignettes data external_vignettes extdata
 # R_OPTS: --vanilla without --no-environ
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 
-VIGNETTES = assets/vignettes/linreg_benchmarks.html assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/version05_new.html
+VIGNETTES = assets/vignettes/linreg_benchmarks.html assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/version05_new.html assets/vignettes/input_files.html assets/vignettes/developer_guide.html assets/vignettes/user_guide.html
 vignettes: ${VIGNETTES}
-
-EXTERNAL_VIGNETTES = assets/vignettes/developer_guide.html assets/vignettes/input_files.html assets/vignettes/user_guide.html
-external_vignettes: ${EXTERNAL_VIGNETTES}
 
 assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
 	R $(R_OPTS) -e "devtools::install_github('kbroman/qtl2scan@0.3-8')" # install version that had lapack code
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
 	R $(R_OPTS) -e "devtools::install_github('rqtl/qtl2scan')" # re-install latest version
 
-assets/vignettes/hmm_benchmarks.html: assets/vignettes/hmm_benchmarks.Rmd
-	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
-
-assets/vignettes/version05_new.html: assets/vignettes/version05_new.Rmd
-	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
-
-assets/vignettes/rqtl_diff.html: assets/vignettes/rqtl_diff.Rmd
+assets/vignettes/%.html: assets/vignettes/%.Rmd
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
 
 data: assets/sampledata/grav2/grav2.yaml assets/sampledata/iron/iron.yaml
@@ -31,21 +22,6 @@ assets/sampledata/grav2/grav2.yaml: assets/sampledata/scripts/grav2cross2.R
 
 assets/sampledata/iron/iron.yaml: assets/sampledata/scripts/iron2cross2.R
 	cd $(<D);R CMD BATCH ${R_OPTS} iron2cross2.R
-
-assets/vignettes/developer_guide.html: ../qtl2scan/vignettes/developer_guide.Rmd
-	cd $(<D); \
-	R $(R_OPTS) -e "rmarkdown::render('$(<F)')"; \
-	mv $(@F) ../../Web/$(@D)
-
-assets/vignettes/input_files.html: ../qtl2geno/vignettes/input_files.Rmd
-	cd $(<D); \
-	R $(R_OPTS) -e "rmarkdown::render('$(<F)')"; \
-	mv $(@F) ../../Web/$(@D)
-
-assets/vignettes/user_guide.html: ../qtl2scan/vignettes/user_guide.Rmd
-	cd $(<D); \
-	R $(R_OPTS) -e "rmarkdown::render('$(<F)')"; \
-	mv $(@F) ../../Web/$(@D)
 
 EXTDATA = ../qtl2geno/inst/extdata/grav2.zip ../qtl2geno/inst/extdata/iron.zip
 extdata: ${EXTDATA}
