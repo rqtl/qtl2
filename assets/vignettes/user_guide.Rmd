@@ -1,10 +1,6 @@
 ---
 title: R/qtl2 user guide
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{R/qtl2 user guide}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8](inputenc)
 ---
 
 ```{r knitr_opts, include=FALSE}

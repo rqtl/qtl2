@@ -1,10 +1,6 @@
 ---
 title: R/qtl2 developer guide
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{R/qtl2 developer guide}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8](inputenc)
 ---
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
