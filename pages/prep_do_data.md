@@ -216,7 +216,7 @@ than the default orientation with strains as the rows.
 
 The arguments `gmap_file` and `pmap_file` indicate the names of the
 files that contain the genetic (`gmap`) and physical (`pmap`) marker
-positions. These are again each a vector of file names, since the
+positions, respectively. These are again each a vector of file names, since the
 files are split by chromosome.
 
 The argument `geno_file` indicates the name of the file with the DO genotype data (again, a
