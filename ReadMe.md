@@ -22,7 +22,7 @@ related calculations), and
 A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](http://rqtl.org) formats, for example to convert genotype
+and [R/qtl](https://rqtl.org) formats, for example to convert genotype
 probabilities produced by DOQTL to the format needed by qtl2scan, or
 to convert qtl2scan results to the format produced by `scanone` in
 R/qtl, so that they may be graphed with the R/qtl functions.
@@ -32,9 +32,9 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
 
-    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
 The [qtl2](https://github.com/rqtl/qtl2) package is
 inspired by the

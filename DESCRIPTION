@@ -1,6 +1,6 @@
 Package: qtl2
-Version: 0.5-2
-Date: 2017-06-05
+Version: 0.5-5
+Date: 2017-10-04
 Title: Easily Install and Load R/qtl2
 Description: R/qtl2 is a set of packages that are used together to
     perform QTL analysis. It is a reimplementation of the R/qtl
@@ -12,10 +12,11 @@ Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
 Depends:
     R (>= 3.1.0)
 Imports:
-    qtl2geno (>= 0.5-22),
-    qtl2scan (>= 0.5-13),
-    qtl2plot (>= 0.5-6),
-    qtl2convert (>= 0.5-4)
+    qtl2geno (>= 0.5-31),
+    qtl2scan (>= 0.5-21),
+    qtl2plot (>= 0.5-14),
+    qtl2convert (>= 0.5-8),
+    qtl2db (>= 0.5-3)
 License: GPL-3
 URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2
 BugReports: https://github.com/rqtl/qtl2/issues
@@ -26,4 +27,5 @@ Remotes:
     rqtl/qtl2geno,
     rqtl/qtl2scan,
     rqtl/qtl2plot,
-    rqtl/qtl2convert
+    rqtl/qtl2convert,
+    rqtl/qtl2db
