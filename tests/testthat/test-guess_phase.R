@@ -83,4 +83,13 @@ test_that("guess_phase works with DO", {
 
     expect_equal(g, expected)
 
+    # deterministic version
+    set.seed(57407965) # the seed shouldn't matter here
+    g <- guess_phase(x, m, deterministic=TRUE)
+
+    # expected when deterministic: just one change
+    expected[[2]][2,,1:2] <- expected[[2]][2,,2:1]
+
+    expect_equal(g, expected)
+
 })

@@ -4,13 +4,16 @@
 \alias{guess_phase}
 \title{Guess phase of imputed genotypes}
 \usage{
-guess_phase(cross, geno, cores = 1)
+guess_phase(cross, geno, deterministic = FALSE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{geno}{Imputed genotypes, as a list of matrices, as from \code{\link{maxmarg}}.}
+
+\item{deterministic}{If TRUE, preferentially put smaller allele first when there's uncertainty.
+If FALSE, the order of alleles is random in such cases.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel]{detectCores}}.)
