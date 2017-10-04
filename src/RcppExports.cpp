@@ -267,49 +267,53 @@ BEGIN_RCPP
 END_RCPP
 }
 // guess_phase_f2A
-IntegerVector guess_phase_f2A(const IntegerMatrix& geno);
-RcppExport SEXP _qtl2geno_guess_phase_f2A(SEXP genoSEXP) {
+IntegerVector guess_phase_f2A(const IntegerMatrix& geno, bool deterministic);
+RcppExport SEXP _qtl2geno_guess_phase_f2A(SEXP genoSEXP, SEXP deterministicSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
-    rcpp_result_gen = Rcpp::wrap(guess_phase_f2A(geno));
+    Rcpp::traits::input_parameter< bool >::type deterministic(deterministicSEXP);
+    rcpp_result_gen = Rcpp::wrap(guess_phase_f2A(geno, deterministic));
     return rcpp_result_gen;
 END_RCPP
 }
 // guess_phase_f2X
-IntegerVector guess_phase_f2X(const IntegerMatrix& geno);
-RcppExport SEXP _qtl2geno_guess_phase_f2X(SEXP genoSEXP) {
+IntegerVector guess_phase_f2X(const IntegerMatrix& geno, bool deterministic);
+RcppExport SEXP _qtl2geno_guess_phase_f2X(SEXP genoSEXP, SEXP deterministicSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
-    rcpp_result_gen = Rcpp::wrap(guess_phase_f2X(geno));
+    Rcpp::traits::input_parameter< bool >::type deterministic(deterministicSEXP);
+    rcpp_result_gen = Rcpp::wrap(guess_phase_f2X(geno, deterministic));
     return rcpp_result_gen;
 END_RCPP
 }
 // guess_phase_A
-IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype);
-RcppExport SEXP _qtl2geno_guess_phase_A(SEXP genoSEXP, SEXP crosstypeSEXP) {
+IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype, bool deterministic);
+RcppExport SEXP _qtl2geno_guess_phase_A(SEXP genoSEXP, SEXP crosstypeSEXP, SEXP deterministicSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
     Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
-    rcpp_result_gen = Rcpp::wrap(guess_phase_A(geno, crosstype));
+    Rcpp::traits::input_parameter< bool >::type deterministic(deterministicSEXP);
+    rcpp_result_gen = Rcpp::wrap(guess_phase_A(geno, crosstype, deterministic));
     return rcpp_result_gen;
 END_RCPP
 }
 // guess_phase_X
-IntegerVector guess_phase_X(const IntegerMatrix& geno, const String& crosstype, const LogicalVector& is_female);
-RcppExport SEXP _qtl2geno_guess_phase_X(SEXP genoSEXP, SEXP crosstypeSEXP, SEXP is_femaleSEXP) {
+IntegerVector guess_phase_X(const IntegerMatrix& geno, const String& crosstype, const LogicalVector& is_female, bool deterministic);
+RcppExport SEXP _qtl2geno_guess_phase_X(SEXP genoSEXP, SEXP crosstypeSEXP, SEXP is_femaleSEXP, SEXP deterministicSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type geno(genoSEXP);
     Rcpp::traits::input_parameter< const String& >::type crosstype(crosstypeSEXP);
     Rcpp::traits::input_parameter< const LogicalVector& >::type is_female(is_femaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(guess_phase_X(geno, crosstype, is_female));
+    Rcpp::traits::input_parameter< bool >::type deterministic(deterministicSEXP);
+    rcpp_result_gen = Rcpp::wrap(guess_phase_X(geno, crosstype, is_female, deterministic));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -767,10 +771,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2geno_nalleles", (DL_FUNC) &_qtl2geno_nalleles, 1},
     {"_qtl2geno_genoprob_to_alleleprob", (DL_FUNC) &_qtl2geno_genoprob_to_alleleprob, 3},
     {"_qtl2geno_get_x_covar", (DL_FUNC) &_qtl2geno_get_x_covar, 3},
-    {"_qtl2geno_guess_phase_f2A", (DL_FUNC) &_qtl2geno_guess_phase_f2A, 1},
-    {"_qtl2geno_guess_phase_f2X", (DL_FUNC) &_qtl2geno_guess_phase_f2X, 1},
-    {"_qtl2geno_guess_phase_A", (DL_FUNC) &_qtl2geno_guess_phase_A, 2},
-    {"_qtl2geno_guess_phase_X", (DL_FUNC) &_qtl2geno_guess_phase_X, 3},
+    {"_qtl2geno_guess_phase_f2A", (DL_FUNC) &_qtl2geno_guess_phase_f2A, 2},
+    {"_qtl2geno_guess_phase_f2X", (DL_FUNC) &_qtl2geno_guess_phase_f2X, 2},
+    {"_qtl2geno_guess_phase_A", (DL_FUNC) &_qtl2geno_guess_phase_A, 3},
+    {"_qtl2geno_guess_phase_X", (DL_FUNC) &_qtl2geno_guess_phase_X, 4},
     {"_qtl2geno_calc_errorlod", (DL_FUNC) &_qtl2geno_calc_errorlod, 7},
     {"_qtl2geno_calc_genoprob", (DL_FUNC) &_qtl2geno_calc_genoprob, 9},
     {"_qtl2geno_calc_genoprob2", (DL_FUNC) &_qtl2geno_calc_genoprob2, 9},

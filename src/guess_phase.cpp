@@ -7,7 +7,8 @@
 
 // guess phase, F2 autosome
 // [[Rcpp::export(".guess_phase_f2A")]]
-IntegerVector guess_phase_f2A(const IntegerMatrix& geno) // pos x ind
+IntegerVector guess_phase_f2A(const IntegerMatrix& geno,
+                              bool deterministic) // pos x ind
 {
     const int n_pos = geno.rows();
     const int n_ind = geno.cols();
@@ -31,7 +32,7 @@ IntegerVector guess_phase_f2A(const IntegerMatrix& geno) // pos x ind
             }
         }
 
-        IntegerVector phased_geno = phase_geno(g1, g2);
+        IntegerVector phased_geno = phase_geno(g1, g2, deterministic);
         for(int i=0; i<matsize; i++)
             result[ind*matsize+i] = phased_geno[i];
 
@@ -44,7 +45,8 @@ IntegerVector guess_phase_f2A(const IntegerMatrix& geno) // pos x ind
 
 // guess phase, F2 X chr
 // [[Rcpp::export(".guess_phase_f2X")]]
-IntegerVector guess_phase_f2X(const IntegerMatrix& geno) // pos x ind
+IntegerVector guess_phase_f2X(const IntegerMatrix& geno,
+                              bool deterministic) // pos x ind
 {
     const int n_pos = geno.rows();
     const int n_ind = geno.cols();
@@ -87,7 +89,8 @@ IntegerVector guess_phase_f2X(const IntegerMatrix& geno) // pos x ind
 
 // guess phase, MPP autosome
 // [[Rcpp::export(".guess_phase_A")]]
-IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype)
+IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype,
+                            bool deterministic)
 {
     QTLCross* cross = QTLCross::Create(crosstype);
     const int n_alleles = cross->nalleles();
@@ -109,7 +112,7 @@ IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype)
             g2[pos] = this_g[1];
         }
 
-        IntegerVector phased_geno = phase_geno(g1, g2);
+        IntegerVector phased_geno = phase_geno(g1, g2, deterministic);
         for(int i=0; i<matsize; i++)
             result[ind*matsize+i] = phased_geno[i];
     }
@@ -122,7 +125,8 @@ IntegerVector guess_phase_A(const IntegerMatrix& geno, const String& crosstype)
 // guess phase, MPP X chr
 // [[Rcpp::export(".guess_phase_X")]]
 IntegerVector guess_phase_X(const IntegerMatrix& geno, const String& crosstype,
-                            const LogicalVector& is_female) // pos x ind
+                            const LogicalVector& is_female,
+                            bool deterministic) // pos x ind
 {
     QTLCross* cross = QTLCross::Create(crosstype);
     const int n_gen_A = cross->ngen(false);
@@ -146,7 +150,7 @@ IntegerVector guess_phase_X(const IntegerMatrix& geno, const String& crosstype,
                 g2[pos] = this_g[1];
             }
 
-            IntegerVector phased_geno = phase_geno(g1, g2);
+            IntegerVector phased_geno = phase_geno(g1, g2, deterministic);
             for(int i=0; i<matsize; i++)
                 result[ind*matsize+i] = phased_geno[i];
         }
@@ -167,7 +171,8 @@ IntegerVector guess_phase_X(const IntegerMatrix& geno, const String& crosstype,
 
 
 // guess phase of genotypes for one individual along one chromosome
-IntegerVector phase_geno(IntegerVector g1, IntegerVector g2)
+IntegerVector phase_geno(IntegerVector g1, IntegerVector g2,
+                         bool deterministic)
 {
     const int n_pos = g1.size();
     if(n_pos != g2.size())
@@ -187,7 +192,8 @@ IntegerVector phase_geno(IntegerVector g1, IntegerVector g2)
         else {
             if(IntegerVector::is_na(cur1) ||
                IntegerVector::is_na(cur2)) { // not yet determined, so randomize
-                if(R::runif(0.0, 1.0) < 0.5) {
+                if((deterministic && cur1 <= cur2) ||
+                   (!deterministic && R::runif(0.0, 1.0) < 0.5)) {
                     result[offset] = cur1 = g1[pos];
                     result[offset+1] = cur2 = g2[pos];
                 }
@@ -206,7 +212,8 @@ IntegerVector phase_geno(IntegerVector g1, IntegerVector g2)
                     result[offset+1] = cur2 = g1[pos];
                 }
                 else { // randomize
-                    if(R::runif(0.0, 1.0) < 0.5) {
+                    if((deterministic && cur1 <= cur2) ||
+                       (!deterministic && R::runif(0.0, 1.0) < 0.5)) {
                         result[offset] = cur1 = g1[pos];
                         result[offset+1] = cur2 = g2[pos];
                     }

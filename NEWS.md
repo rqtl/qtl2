@@ -1,8 +1,15 @@
+## qtl2geno 0.5-33 (2017-10-04)
+
+### Minor changes
+
+- Added `deterministic` argument to `guess_phase()`.
+
+
 ## qtl2geno 0.5-30 (2017-08-11)
 
 ### Minor changes
 
-- Turn off debug C++ code
+- Turned off debug C++ code.
 
 
 ## qtl2geno 0.5-29 (2017-08-04)

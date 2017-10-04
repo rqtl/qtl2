@@ -7,6 +7,8 @@
 #' @param cross Object of class \code{"cross2"}. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param geno Imputed genotypes, as a list of matrices, as from \code{\link{maxmarg}}.
+#' @param deterministic If TRUE, preferentially put smaller allele first when there's uncertainty.
+#' If FALSE, the order of alleles is random in such cases.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -36,7 +38,7 @@
 #' imp_geno <- maxmarg(probs)
 #' ph_geno <- guess_phase(iron, imp_geno)
 guess_phase <-
-    function(cross, geno, cores=1)
+    function(cross, geno, deterministic=FALSE, cores=1)
 {
     # match chromosomes
     if(n_chr(cross) != length(geno) ||
@@ -80,12 +82,12 @@ guess_phase <-
 
         by_chr_func <- function(i) {
             if(crosstype=="f2") {
-                if(is_x_chr[i]) result <- .guess_phase_f2X(t(geno[[i]]))
-                else result <- .guess_phase_f2A(t(geno[[i]]))
+                if(is_x_chr[i]) result <- .guess_phase_f2X(t(geno[[i]]), deterministic)
+                else result <- .guess_phase_f2A(t(geno[[i]]), deterministic)
             }
             else {
-                if(is_x_chr[i]) result <- .guess_phase_X(t(geno[[i]]), crosstype, is_female)
-                else result <- .guess_phase_A(t(geno[[i]]), crosstype)
+                if(is_x_chr[i]) result <- .guess_phase_X(t(geno[[i]]), crosstype, is_female, deterministic)
+                else result <- .guess_phase_A(t(geno[[i]]), crosstype, deterministic)
             }
             dn <- dimnames(geno[[i]])
             result <- aperm(result, c(3,2,1))
