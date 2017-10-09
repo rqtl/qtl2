@@ -142,7 +142,7 @@ into memory, you'll need a computer with appreciable RAM.
 
 The result of the [`geneseek2qtl2.R`](../assets/geneseek2qtl2.R)
 script will be a series of CSV files containing the re-coded
-genotypes, with one file per chromosome, plus four files containing
+genotypes, with one file per chromosome, plus two files containing
 the SNP array intensities for the X and Y chromosomes (one file per
 allele per chromosome).
 

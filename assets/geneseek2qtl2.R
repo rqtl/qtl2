@@ -54,8 +54,7 @@ cbind_smother <-
 codes <- myfread(codefile)
 
 full_geno <- NULL
-cXint1 <- cXint2 <- NULL
-cYint1 <- cYint2 <- NULL
+cXint <- cYint <- NULL
 
 for(ifile in ifiles) {
     cat(" -File:", ifile, "\n")
@@ -101,35 +100,27 @@ for(ifile in ifiles) {
     cat(" -Grab X and Y intensities\n")
     gX <- g[g[,1] %in% codes[codes$chr=="X",1],]
     gY <- g[g[,1] %in% codes[codes$chr=="Y",1],]
-    cX1 <- matrix(nrow=sum(codes$chr=="X"),
-                  ncol=length(samples))
-    dimnames(cX1) <- list(codes[codes$chr=="X",1], samples)
-    cX2 <- cX1
-    cY1 <- matrix(nrow=sum(codes$chr=="Y"),
-                  ncol=length(samples))
-    dimnames(cY1) <- list(codes[codes$chr=="Y",1], samples)
-    cY2 <- cY1
+    cX <- matrix(nrow=sum(codes$chr=="X"),
+                 ncol=length(samples))
+    dimnames(cX) <- list(codes[codes$chr=="X",1], samples)
+    cY <- matrix(nrow=sum(codes$chr=="Y"),
+                 ncol=length(samples))
+    dimnames(cY) <- list(codes[codes$chr=="Y",1], samples)
     for(i in seq(along=samples)) {
         if(i==round(i,-1)) cat(" --Sample", i, "of", length(samples), "\n")
         wh <- (gX[,2]==samples[i])
-        cX1[gX[wh,1],i] <- gX$X[wh]
-        cX2[gX[wh,1],i] <- gX$Y[wh]
+        cX[gX[wh,1],i] <- (gX$X[wh] + gX$Y[wh])/2
 
         wh <- (gY[,2]==samples[i])
-        cY1[gY[wh,1],i] <- gY$X[wh]
-        cY2[gY[wh,1],i] <- gY$Y[wh]
+        cY[gY[wh,1],i] <- (gY$X[wh] + gY$Y[wh])/2
     }
-    if(is.null(cXint1)) {
-        cXint1 <- cX1
-        cXint2 <- cX2
-        cYint1 <- cY1
-        cYint2 <- cY2
+    if(is.null(cXint)) {
+        cXint <- cX
+        cYint <- cY
     } else {
         # if any columns in both, use those from second set
-        cXint1 <- cbind_smother(cXint1, cX1)
-        cXint2 <- cbind_smother(cXint2, cX2)
-        cYint1 <- cbind_smother(cYint1, cY1)
-        cYint2 <- cbind_smother(cYint2, cY2)
+        cXint <- cbind_smother(cXint, cX)
+        cYint <- cbind_smother(cYint, cY)
     }
 
     if(rezip) {
@@ -140,21 +131,13 @@ for(ifile in ifiles) {
 
 # write X and Y intensities
 cat(" -Writing X and Y intensities\n")
-qtl2convert::write2csv(cbind(marker=rownames(cXint1), cXint1),
-                       paste0(ostem, "_chrXint1.csv"),
-                       paste(ostem, "X chr intensities, channel 1"),
+qtl2convert::write2csv(cbind(marker=rownames(cXint), cXint),
+                       paste0(ostem, "_chrXint.csv"),
+                       paste(ostem, "X chr intensities"),
                        overwrite=TRUE)
-qtl2convert::write2csv(cbind(marker=rownames(cXint2), cXint2),
-                       paste0(ostem, "_chrXint2.csv"),
-                       paste(ostem, "X chr intensities, channel 2"),
-                       overwrite=TRUE)
-qtl2convert::write2csv(cbind(marker=rownames(cYint1), cYint1),
-                       paste0(ostem, "_chrYint1.csv"),
-                       paste(ostem, "Y chr intensities, channel 1"),
-                       overwrite=TRUE)
-qtl2convert::write2csv(cbind(marker=rownames(cYint2), cYint2),
-                       paste0(ostem, "_chrYint2.csv"),
-                       paste(ostem, "Y chr intensities, channel 2"),
+qtl2convert::write2csv(cbind(marker=rownames(cYint), cYint),
+                       paste0(ostem, "_chrYint.csv"),
+                       paste(ostem, "Y chr intensities"),
                        overwrite=TRUE)
 
 # write data to chromosome-specific files
