@@ -1,8 +1,14 @@
-## qtl2scan 0.5-21 (2017-08-11)
+## qtl2scan 0.5-23 (2017-10-17)
 
 ### Minor changes
 
 - Turn off debug C++ code
+
+### Bug fixes
+
+- Fix bug in `est_herit()` regarding dependent covariate columns when
+  missing values in the phenotypes. Need to call `drop_depcols()`
+  again after having omitted individuals with missing phenotypes.
 
 
 ## qtl2scan 0.5-20 (2017-08-09)
