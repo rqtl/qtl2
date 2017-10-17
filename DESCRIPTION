@@ -1,6 +1,6 @@
 Package: qtl2plot
-Version: 0.5-15
-Date: 2017-09-15
+Version: 0.5-16
+Date: 2017-10-17
 Title: Data Visualization for QTL Experiments
 Description: Functions to plot QTL analysis results and related
     diagnostics. Part of R/qtl2, a reimplementation of the R/qtl
