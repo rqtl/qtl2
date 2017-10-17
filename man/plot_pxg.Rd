@@ -8,7 +8,8 @@ plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
   jitter = 0.2, bgcolor = "gray90", seg_width = 0.4, seg_lwd = 2,
   seg_col = "black", hlines = NULL, hlines_col = "white",
   hlines_lty = 1, hlines_lwd = 1, vlines_col = "gray80", vlines_lty = 1,
-  vlines_lwd = 3, force_labels = TRUE, alternate_labels = FALSE, ...)
+  vlines_lwd = 3, force_labels = TRUE, alternate_labels = FALSE,
+  omit_points = FALSE, ...)
 }
 \arguments{
 \item{geno}{Vector of genotypes, as produced by
@@ -55,6 +56,8 @@ of length > 0, it is taken to be the actual jitter amounts
 \item{force_labels}{If TRUE, force all genotype labels to be shown.}
 
 \item{alternate_labels}{If TRUE, place genotype labels in two rows}
+
+\item{omit_points}{If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).}
 
 \item{...}{Additional graphics parameters, passed to \code{\link[graphics]{plot}}.}
 }

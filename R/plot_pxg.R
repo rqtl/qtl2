@@ -28,6 +28,7 @@
 #' @param vlines_lwd Line width of vertical grid lines
 #' @param force_labels If TRUE, force all genotype labels to be shown.
 #' @param alternate_labels If TRUE, place genotype labels in two rows
+#' @param omit_points If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).
 #' @param ... Additional graphics parameters, passed to \code{\link[graphics]{plot}}.
 #'
 #' @export
@@ -60,7 +61,8 @@ plot_pxg <-
              seg_width=0.4, seg_lwd=2, seg_col="black",
              hlines=NULL, hlines_col="white", hlines_lty=1, hlines_lwd=1,
              vlines_col="gray80", vlines_lty=1, vlines_lwd=3,
-             force_labels=TRUE, alternate_labels=FALSE, ...)
+             force_labels=TRUE, alternate_labels=FALSE,
+             omit_points=FALSE, ...)
 {
     if(length(jitter) > 1 && length(jitter) != length(geno)) {
         stop("length(jitter) > 1 but length(jitter) != length(geno)")
@@ -119,11 +121,23 @@ plot_pxg <-
                  seg_width=0.2, seg_lwd=2, seg_col="slateblue",
                  hlines=NULL, hlines_col="white", hlines_lty=1, hlines_lwd=1,
                  vlines_col="gray80", vlines_lty=1, vlines_lwd=3,
-                 xlim=c(0.5, length(ugeno)+0.5), ylim=range(pheno, na.rm=TRUE),
+                 xlim=c(0.5, length(ugeno)+0.5), ylim=NULL,
                  xaxs="i", yaxs="r", xlab="Genotype", ylab="Phenotype",
                  mgp=c(2.6, 0.3, 0), mgp.x=mgp, mgp.y=mgp, las=1,
                  pch=21, bg="lightblue", ...)
         {
+            # get y-axis limits
+            if(is.null(ylim)) {
+                if(omit_points) {
+                    ylim <- range(me, na.rm=TRUE)
+                } else {
+                    ylim <- range(pheno, na.rm=TRUE)
+                }
+                if(!is.null(SEmult)) {
+                    ylim <- range(c(ylim, me-se*SEmult, me+se*SEmult), na.rm=TRUE)
+                }
+            }
+
             plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab="", ylab="", xaxt="n",
                  yaxt="n", xaxs=xaxs, yaxs=yaxs)
             title(xlab=xlab, mgp=mgp.x)
@@ -161,7 +175,8 @@ plot_pxg <-
                    mgp=mgp.y)
             axis(side=2, at=hlines, mgp=mgp.y, tick=FALSE, las=las)
 
-            points(match(geno, ugeno) + jitter, pheno, pch=pch, bg=bg, ...)
+            if(!omit_points)
+                points(match(geno, ugeno) + jitter, pheno, pch=pch, bg=bg, ...)
 
             if(seg_width > 0) {
                 segments(x-seg_width/2, me, x+seg_width/2, me,
