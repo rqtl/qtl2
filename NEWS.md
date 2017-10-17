@@ -1,4 +1,12 @@
-## qtl2plot 0.5-13
+## qtl2plot 0.5-16 (2017-10-17)
+
+### New features
+
+- Added function `plot_pxg()` for plotting phenotypes versus genotype
+  at a putative QTL.
+
+
+## qtl2plot 0.5-13 (2017-08-04)
 
 ### Minor changes
 
@@ -7,7 +15,7 @@
   and stop positions to be in either bp or Mbp.
 
 
-## qtl2plot 0.5-12
+## qtl2plot 0.5-12 (2017-07-31)
 
 ### New features
 
@@ -18,7 +26,7 @@
   one individual.
 
 
-## qtl2plot 0.5-10
+## qtl2plot 0.5-10 (2017-07-11)
 
 ### Bug fixes
 
