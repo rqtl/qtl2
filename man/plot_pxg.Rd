@@ -82,6 +82,18 @@ geno <- maxmarg(probs, map, chr=16, pos=28.6, return_char=TRUE)
 
 # plot phenotype vs genotype
 plot_pxg(geno, log10(iron$pheno[,1]), ylab=expression(log[10](Liver)))
+
+# include +/- 2 SE intervals
+plot_pxg(geno, log10(iron$pheno[,1]), ylab=expression(log[10](Liver)),
+         SEmult=2)
+
+# plot just the means
+plot_pxg(geno, log10(iron$pheno[,1]), ylab=expression(log[10](Liver)),
+         omit_points=TRUE)
+
+# plot just the means +/- 2 SEs
+plot_pxg(geno, log10(iron$pheno[,1]), ylab=expression(log[10](Liver)),
+         omit_points=TRUE, SEmult=2)
 }
 \seealso{
 \code{\link{plot_coef}}
