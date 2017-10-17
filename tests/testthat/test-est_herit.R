@@ -57,3 +57,35 @@ test_that("est_herit with intercross with an additive covariate", {
     expect_equal(est_herit(iron$pheno, kinship[subind,subind], addcovar=X[subind]), expected)
 
 })
+
+test_that("est_herit handles dependent covariate columns", {
+
+    library(qtl2geno)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    kinship <- calc_kinship(probs)
+    pheno <- iron$pheno
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+
+    covar2 <- cbind(a=covar,b=0)
+    pheno[1:2,1] <- NA
+    covar2[1:2,2] <- 1
+    hsq <- est_herit(pheno, kinship, covar)
+    hsq2 <- est_herit(pheno, kinship, covar2)
+    hsq3 <- est_herit(pheno, kinship, covar2[,-2, drop=FALSE])
+
+    expect_equal(hsq[1], hsq2[1])
+    expect_equal(hsq2[2], structure(0.545220193658054, .Names = "spleen"))
+    expect_equal(hsq, hsq3)
+
+    pheno[1:2,1:2] <- NA
+    hsq <- est_herit(pheno, kinship, covar)
+    hsq2 <- est_herit(pheno, kinship, covar2)
+    hsq3 <- est_herit(pheno, kinship, covar2[,-2, drop=FALSE])
+
+    expect_equal(hsq, hsq2)
+    expect_equal(hsq, hsq3)
+
+})
