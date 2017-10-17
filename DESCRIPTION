@@ -13,6 +13,7 @@ Depends:
 Imports:
     Rcpp (>= 0.12.12),
     graphics,
+    stats,
     qtl2scan (>= 0.5-3)
 Suggests:
     devtools,

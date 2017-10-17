@@ -30,6 +30,7 @@
 #'
 #' @export
 #' @importFrom graphics par plot segments title axis points
+#' @importFrom stats lm runif sd
 #'
 #' @seealso \code{\link{plot_coef}}
 #'

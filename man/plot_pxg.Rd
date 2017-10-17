@@ -74,7 +74,7 @@ probs <- calc_genoprob(iron, map, error_prob=0.002)
 geno <- maxmarg(probs, map, chr=16, pos=28.6, return_char=TRUE)
 
 # plot phenotype vs genotype
-plot_pxg(geno, iron$pheno[,1])
+plot_pxg(geno, log10(iron$pheno[,1]), ylab=expression(log[10](Liver)))
 }
 \seealso{
 \code{\link{plot_coef}}
