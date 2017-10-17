@@ -132,7 +132,7 @@ est_herit <-
 
         # subset the rest
         K <- kinship[these2keep, these2keep]
-        ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
+        ac <- addcovar; if(!is.null(ac)) { ac <- ac[these2keep,,drop=FALSE]; ac <- drop_depcols(ac, TRUE, tol) }
         ph <- pheno[these2keep,phecol,drop=FALSE]
 
         # eigen decomposition of kinship matrix
