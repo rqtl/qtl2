@@ -26,6 +26,8 @@
 #' @param vlines_col Color of vertical grid lines
 #' @param vlines_lty Line type of vertical grid lines
 #' @param vlines_lwd Line width of vertical grid lines
+#' @param force_labels If TRUE, force all genotype labels to be shown.
+#' @param alternate_labels If TRUE, place genotype labels in two rows
 #' @param ... Additional graphics parameters, passed to \code{\link[graphics]{plot}}.
 #'
 #' @export
@@ -58,7 +60,7 @@ plot_pxg <-
              seg_width=0.4, seg_lwd=2, seg_col="black",
              hlines=NULL, hlines_col="white", hlines_lty=1, hlines_lwd=1,
              vlines_col="gray80", vlines_lty=1, vlines_lwd=3,
-             ...)
+             force_labels=TRUE, alternate_labels=FALSE, ...)
 {
     if(length(jitter) > 1 && length(jitter) != length(geno)) {
         stop("length(jitter) > 1 but length(jitter) != length(geno)")
@@ -118,12 +120,12 @@ plot_pxg <-
                  hlines=NULL, hlines_col="white", hlines_lty=1, hlines_lwd=1,
                  vlines_col="gray80", vlines_lty=1, vlines_lwd=3,
                  xlim=c(0.5, length(ugeno)+0.5), ylim=range(pheno, na.rm=TRUE),
-                 xaxs="i", xlab="Genotype", ylab="Phenotype",
-                 mgp=c(2.6, 0.5, 0), mgp.x=mgp, mgp.y=mgp, las=1,
+                 xaxs="i", yaxs="r", xlab="Genotype", ylab="Phenotype",
+                 mgp=c(2.6, 0.3, 0), mgp.x=mgp, mgp.y=mgp, las=1,
                  pch=21, bg="lightblue", ...)
         {
             plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab="", ylab="", xaxt="n",
-                 yaxt="n")
+                 yaxt="n", xaxs=xaxs, yaxs=yaxs)
             title(xlab=xlab, mgp=mgp.x)
             title(ylab=ylab, mgp=mgp.y)
 
@@ -132,7 +134,27 @@ plot_pxg <-
 
             x <- seq_along(ugeno)
             abline(v=x, lwd=vlines_lwd, lty=vlines_lty, col=vlines_col)
-            axis(side=1, at=x, labels=ugeno, mgp=mgp.x, tick=FALSE)
+            if(force_labels) {
+                if(alternate_labels) {
+                    for(i in x)
+                        axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE,
+                             line=2 - (i %% 2)-1)
+                } else {
+                    for(i in x)
+                        axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE)
+                }
+            } else {
+                if(alternate_labels) {
+                    odd <- seq(1, length(ugeno), by=2)
+                    axis(side=1, at=x[odd], labels=ugeno[odd], mgp=mgp.x, tick=FALSE)
+                    if(length(ugeno) > 1) {
+                        axis(side=1, at=x[-odd], labels=ugeno[-odd], mgp=mgp.x, tick=FALSE,
+                             line=1)
+                    }
+                } else {
+                    axis(side=1, at=x, labels=ugeno, mgp=mgp.x, tick=FALSE)
+                }
+            }
 
             if(is.null(hlines)) hlines <- pretty(ylim)
             abline(h=hlines, lwd=hlines_lwd, lty=hlines_lty, col=hlines_col,

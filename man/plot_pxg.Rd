@@ -8,7 +8,7 @@ plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
   jitter = 0.2, bgcolor = "gray90", seg_width = 0.4, seg_lwd = 2,
   seg_col = "black", hlines = NULL, hlines_col = "white",
   hlines_lty = 1, hlines_lwd = 1, vlines_col = "gray80", vlines_lty = 1,
-  vlines_lwd = 3, ...)
+  vlines_lwd = 3, force_labels = TRUE, alternate_labels = FALSE, ...)
 }
 \arguments{
 \item{geno}{Vector of genotypes, as produced by
@@ -51,6 +51,10 @@ of length > 0, it is taken to be the actual jitter amounts
 \item{vlines_lty}{Line type of vertical grid lines}
 
 \item{vlines_lwd}{Line width of vertical grid lines}
+
+\item{force_labels}{If TRUE, force all genotype labels to be shown.}
+
+\item{alternate_labels}{If TRUE, place genotype labels in two rows}
 
 \item{...}{Additional graphics parameters, passed to \code{\link[graphics]{plot}}.}
 }
