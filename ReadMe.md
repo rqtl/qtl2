@@ -33,6 +33,7 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
+Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org).
 
     install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
@@ -42,8 +43,9 @@ inspired by the
 it is basically empty, but when you install it, the
 [qtl2geno](https://github.com/rqtl/qtl2geno),
 [qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot), and
-[qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
+[qtl2plot](https://github.com/rqtl/qtl2plot),
+[qtl2convert](https://github.com/rqtl/qtl2convert) and
+[qtl2db](https://github.com/rqtl/qtl2db) packages, plus a
 bunch of dependencies, will be installed.
 
 Alternatively, you can install R/qtl2 from its source on
