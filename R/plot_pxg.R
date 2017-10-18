@@ -164,21 +164,21 @@ plot_pxg <-
                 if(alternate_labels) {
                     for(i in x)
                         axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE,
-                             line=2 - (i %% 2)-1)
+                             line=2 - (i %% 2)-1, las=las)
                 } else {
                     for(i in x)
-                        axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE)
+                        axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE, las=las)
                 }
             } else {
                 if(alternate_labels) {
                     odd <- seq(1, length(ugeno), by=2)
-                    axis(side=1, at=x[odd], labels=ugeno[odd], mgp=mgp.x, tick=FALSE)
+                    axis(side=1, at=x[odd], labels=ugeno[odd], mgp=mgp.x, tick=FALSE, las=las)
                     if(length(ugeno) > 1) {
                         axis(side=1, at=x[-odd], labels=ugeno[-odd], mgp=mgp.x, tick=FALSE,
-                             line=1)
+                             line=1, las=las)
                     }
                 } else {
-                    axis(side=1, at=x, labels=ugeno, mgp=mgp.x, tick=FALSE)
+                    axis(side=1, at=x, labels=ugeno, mgp=mgp.x, tick=FALSE, las=las)
                 }
             }
 
@@ -196,10 +196,6 @@ plot_pxg <-
 
                 if(!is.null(SEmult)) {
                     segments(x, me[ugeno]-se[ugeno]*SEmult, x, me[ugeno]+se[ugeno]*SEmult,
-                             lwd=seg_lwd, col=seg_col)
-                    segments(x-seg_width/4, me-se*SEmult, x+seg_width/4, me-se*SEmult,
-                             lwd=seg_lwd, col=seg_col)
-                    segments(x-seg_width/4, me+se*SEmult, x+seg_width/4, me+se*SEmult,
                              lwd=seg_lwd, col=seg_col)
                 }
 
