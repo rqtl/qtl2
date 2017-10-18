@@ -25,7 +25,7 @@ multiple packages:
   for converting data among the R/qtl2,
   [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
   and [R/qtl](https://rqtl.org) formats
-- [qtl2db](https://github.com/qtl2db), for connecting to genome databases
+- [qtl2db](https://github.com/rqtl/qtl2db), for connecting to genome databases
 
 ---
 
