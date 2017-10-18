@@ -63,7 +63,9 @@ You then need to install the
 package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [jsonlite](https://cran.r-project.org/package=jsonlite),
 [data.table](https://cran.r-project.org/package=data.table),
-and [RcppEigen](https://github.com/RcppCore/RcppEigen).
+[RcppEigen](https://github.com/RcppCore/RcppEigen),
+[RSQLite](https://github.com/rstats-db/RSQLite), and
+[qtl](https://rqtl.org).
 (Additional, secondary dependencies will also be installed.)
 
     install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))
