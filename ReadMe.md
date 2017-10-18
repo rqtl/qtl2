@@ -66,12 +66,12 @@ package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 and [RcppEigen](https://github.com/RcppCore/RcppEigen).
 (Additional, secondary dependencies will also be installed.)
 
-    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
+    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))
 
 Finally, install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
-    install_github(paste0("rqtl/qtl2", c("geno", "scan", "plot", "convert")))
+    install_github("rqtl/qtl2")
 
 ---
 
