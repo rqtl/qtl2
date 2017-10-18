@@ -7,7 +7,10 @@
 [R/qtl2plot](https://github.com/rqtl/qtl2plot):
 [![Build Status](https://travis-ci.org/rqtl/qtl2plot.png?branch=master)](https://travis-ci.org/rqtl/qtl2plot) <br/>
 [R/qtl2convert](https://github.com/rqtl/qtl2convert):
-[![Build Status](https://travis-ci.org/rqtl/qtl2convert.png?branch=master)](https://travis-ci.org/rqtl/qtl2convert)
+[![Build Status](https://travis-ci.org/rqtl/qtl2convert.png?branch=master)](https://travis-ci.org/rqtl/qtl2convert) <br/>
+[R/qtl2db](https://github.com/rqtl/qtl2db):
+[![Build Status](https://travis-ci.org/rqtl/qtl2db.png?branch=master)](https://travis-ci.org/rqtl/qtl2db)
+
 
 [Karl Broman](http://kbroman.org)
 
