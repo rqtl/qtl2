@@ -12,20 +12,20 @@
 [Karl Broman](http://kbroman.org)
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
-the QTL analysis software [R/qtl](https://rqtl.org), to better
-handle high-dimensional data and complex cross designs. It is split
-into [qtl2geno](https://github.com/rqtl/qtl2geno) (for calculating
-genotype probabilities, imputations, and genetic maps),
-[qtl2scan](https://github.com/rqtl/qtl2scan) (for QTL genome scans and
-related calculations), and
-[qtl2plot](https://github.com/rqtl/qtl2plot) (for data visualization).
-A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
-contains functions for converting data among the R/qtl2,
-[DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](https://rqtl.org) formats, for example to convert genotype
-probabilities produced by DOQTL to the format needed by qtl2scan, or
-to convert qtl2scan results to the format produced by `scanone` in
-R/qtl, so that they may be graphed with the R/qtl functions.
+the QTL analysis software [R/qtl](https://rqtl.org), to better handle
+high-dimensional data and complex cross designs. It is split into
+multiple packages:
+
+- [qtl2geno](https://github.com/rqtl/qtl2geno), for calculating genotype
+  probabilities, imputations, and genetic maps
+- [qtl2scan](https://github.com/rqtl/qtl2scan), for QTL genome scans and
+  related calculations
+- [qtl2plot](https://github.com/rqtl/qtl2plot), for data visualization
+- [qtl2convert](https://github.com/rqtl/qtl2convert),
+  for converting data among the R/qtl2,
+  [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
+  and [R/qtl](https://rqtl.org) formats
+- [qtl2db](https://github.com/qtl2db), for connecting to genome databases
 
 ---
 
@@ -33,11 +33,20 @@ R/qtl, so that they may be graphed with the R/qtl functions.
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
+Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org).
 
-    install.packages(paste0("qtl2", c("geno", "scan", "plot", "convert")),
-                     repos="https://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
-This will also install a bunch of dependencies.
+The [qtl2](https://github.com/rqtl/qtl2) package is
+inspired by the
+[tidyverse package](https://cran.r-project.org/package=tidyverse);
+it is basically empty, but when you install it, the
+[qtl2geno](https://github.com/rqtl/qtl2geno),
+[qtl2scan](https://github.com/rqtl/qtl2scan),
+[qtl2plot](https://github.com/rqtl/qtl2plot),
+[qtl2convert](https://github.com/rqtl/qtl2convert) and
+[qtl2db](https://github.com/rqtl/qtl2db) packages, plus a
+bunch of dependencies, will be installed.
 
 Alternatively, it can be installed from source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
