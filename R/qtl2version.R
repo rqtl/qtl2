@@ -7,6 +7,7 @@
 #' @examples
 #' qtl2version()
 #'
+#' @importFrom utils installed.packages
 #' @export
 
 qtl2version <-
