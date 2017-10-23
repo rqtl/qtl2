@@ -68,22 +68,22 @@ for(ifile in ifiles) {
     cat(" -Reading data\n")
     g <- myfread(ifile)
     # subset to the markers in the codes object
-    g <- g[g[,1] %in% codes[,1],]
+    g <- g[g[,"SNP Name"] %in% codes[,"marker"],]
 
     # NOTE: may need to revise the IDs in the 2nd column
     # We're assuming the IDs are numbers and creating revised IDs as DO-###
-    samples <- unique(g[,2])
+    samples <- unique(g[,"Sample ID"])
 
     # matrix to contain the genotypes
     geno <- matrix(nrow=nrow(codes), ncol=length(samples))
-    dimnames(geno) <- list(codes[,1], samples)
+    dimnames(geno) <- list(codes[,"marker"], samples)
 
     # fill in matrix
     cat(" -Reorganizing data\n")
     for(i in seq(along=samples)) {
         if(i==round(i,-1)) cat(" --Sample", i, "of", length(samples), "\n")
-        wh <- (g[,2]==samples[i])
-        geno[g[wh,1],i] <- paste0(g[wh,3], g[wh,4])
+        wh <- (g[,"Sample ID"]==samples[i])
+        geno[g[wh,"SNP Name"],i] <- paste0(g[wh,"Allele1 - Forward"], g[wh,"Allele2 - Forward"])
     }
 
     cat(" -Encode genotypes\n")
@@ -98,21 +98,21 @@ for(ifile in ifiles) {
 
     # grab X and Y intensities
     cat(" -Grab X and Y intensities\n")
-    gX <- g[g[,1] %in% codes[codes$chr=="X",1],]
-    gY <- g[g[,1] %in% codes[codes$chr=="Y",1],]
+    gX <- g[g[,"SNP Name"] %in% codes[codes$chr=="X","marker"],]
+    gY <- g[g[,"SNP Name"] %in% codes[codes$chr=="Y","marker"],]
     cX <- matrix(nrow=sum(codes$chr=="X"),
                  ncol=length(samples))
-    dimnames(cX) <- list(codes[codes$chr=="X",1], samples)
+    dimnames(cX) <- list(codes[codes$chr=="X","marker"], samples)
     cY <- matrix(nrow=sum(codes$chr=="Y"),
                  ncol=length(samples))
-    dimnames(cY) <- list(codes[codes$chr=="Y",1], samples)
+    dimnames(cY) <- list(codes[codes$chr=="Y","marker"], samples)
     for(i in seq(along=samples)) {
         if(i==round(i,-1)) cat(" --Sample", i, "of", length(samples), "\n")
-        wh <- (gX[,2]==samples[i])
-        cX[gX[wh,1],i] <- (gX$X[wh] + gX$Y[wh])/2
+        wh <- (gX[,"Sample ID"]==samples[i])
+        cX[gX[wh,"SNP Name"],i] <- (gX$X[wh] + gX$Y[wh])/2
 
-        wh <- (gY[,2]==samples[i])
-        cY[gY[wh,1],i] <- (gY$X[wh] + gY$Y[wh])/2
+        wh <- (gY[,"Sample ID"]==samples[i])
+        cY[gY[wh,"SNP Name"],i] <- (gY$X[wh] + gY$Y[wh])/2
     }
     if(is.null(cXint)) {
         cXint <- cX
@@ -143,7 +143,7 @@ qtl2convert::write2csv(cbind(marker=rownames(cYint), cYint),
 # write data to chromosome-specific files
 cat(" -Writing genotypes\n")
 for(chr in c(1:19,"X","Y","M")) {
-    mar <- codes[codes$chr==chr,1]
+    mar <- codes[codes$chr==chr,"marker"]
     g <- full_geno[mar,]
     qtl2convert::write2csv(cbind(marker=rownames(g), g),
                            paste0(ostem, "_geno", chr, ".csv"),
