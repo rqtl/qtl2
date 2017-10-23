@@ -71,7 +71,6 @@ for(ifile in ifiles) {
     g <- g[g[,"SNP Name"] %in% codes[,"marker"],]
 
     # NOTE: may need to revise the IDs in the 2nd column
-    # We're assuming the IDs are numbers and creating revised IDs as DO-###
     samples <- unique(g[,"Sample ID"])
 
     # matrix to contain the genotypes
