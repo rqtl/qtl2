@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Sample input data files
-description: Sample input data files for the R/qtl2 package
+description: Sample input data files for R/qtl2
 ---
 
 The internal data structure for [R/qtl2](http://kbroman.org/qtl2) is
