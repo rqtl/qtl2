@@ -5,7 +5,7 @@ output: rmarkdown::html_vignette
 
 ```{r knitr_opts, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=4)
-options(width=140)
+options(width=107)
 ```
 
 

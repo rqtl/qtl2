@@ -12,8 +12,9 @@ assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
 	R $(R_OPTS) -e "devtools::install_github('rqtl/qtl2scan')" # re-install latest version
 
-assets/vignettes/%.html: assets/vignettes/%.Rmd
+assets/vignettes/%.html: assets/vignettes/%.Rmd ruby/add_headfoot.rb
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
+	ruby/add_headfoot.rb $@
 
 data: assets/sampledata/grav2/grav2.yaml assets/sampledata/iron/iron.yaml
 

@@ -6,7 +6,7 @@ output: rmarkdown::html_vignette
 
 ```{r change_width, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=4)
-options(width=100)
+options(width=107)
 ```
 
 The internal data structures for [R/qtl2](http://kbroman.org/qtl2)
