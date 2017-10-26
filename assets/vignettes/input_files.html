@@ -279,7 +279,78 @@ founder_geno:
 </div>
 <div id="detailed-specifications-for-each-cross-type" class="section level2">
 <h2>Detailed specifications for each cross type</h2>
-<p>[to be provided, eventually]</p>
+<div id="backcross" class="section level3">
+<h3>Backcross</h3>
+<p>The cross type for a backcross is <code>&quot;bc&quot;</code>. In the case that the X chromosome is included, a sex covariate needs to be included. The genotype codes are <code>1</code> for homozygotes and <code>2</code> for heterozygotes, and so the yaml control file will contain lines like the following:</p>
+<pre><code>genotypes:
+  AA: 1
+  AB: 2</code></pre>
+<p>The values on the left-hand side are the genotype codes in the genotype data file; the numbers on the right are the numeric codes they’ll be converted into.</p>
+<p>The equivalent genotype code specification for a json control file is</p>
+<pre><code>&quot;genotypes&quot;: {&quot;AA&quot;: 1, &quot;AB&quot;: 2}</code></pre>
+</div>
+<div id="f2-intercross" class="section level3">
+<h3>F<sub>2</sub> intercross</h3>
+<p>The cross type for an intercross between two inbred strains is <code>&quot;f2&quot;</code>.</p>
+<p>The genotypes will be encoded as <code>1</code>, <code>2</code>, and <code>3</code> for say AA, AB, and BB. The yaml control file will contain lines like the following:</p>
+<pre><code>genotypes:
+  AA: 1
+  AB: 2
+  BB: 3</code></pre>
+<p>The values on the left-hand side are the genotype codes in the genotype data file; the numbers on the right are the numeric codes they’ll be converted into. The equivalent JSON specification is:</p>
+<pre><code>&quot;genotypes&quot;: {&quot;AA&quot;: 1, &quot;AB&quot;: 2, &quot;BB&quot;: 3}</code></pre>
+<p>If the X chromosome is included in the data, we will need a sex covariate as well as cross information. The cross information for an intercross indicates the direction of the cross, with <code>0</code> corresponding to the forward direction, for example (A×B)&amp;times(A×B) with females listed first, and <code>1</code> corresponding to the reverse direction, for example (B×A)×(B×A). What matters is the direction for the cross that led to the males, since the F<sub>2</sub> females get an intact X chromosome from their father, which is A for the forward direction and B for the reverse. Different individuals can come from different directions, and you indicate the encodings with lines like the following:</p>
+<pre><code>cross_info:
+  covar: cross_direction
+  (AxB)x(AxB): 0
+  (BxA)x(BxA): 1</code></pre>
+<p>Here, we’re saying that the covariate file has a column named “<code>cross_direction</code>” that contains the cross information, and that the forward direction is encoded as <code>(AxB)x(AxB)</code> and the reverse direction as <code>(BxA)x(BxA)</code>.</p>
+<p>You can have multiple codes for the cross direction information. For example, the <code>cross_direction</code> covariate might use four possible codes, including not just <code>(AxB)x(AxB)</code> and <code>(BxA)x(BxA)</code>, but also <code>(BxA)x(AxB)</code>, and <code>(AxB)x(BxA)</code>.</p>
+<p>In this case, the YAML control file should contain the following:</p>
+<pre><code>cross_info:
+  covar: cross_direction
+  (AxB)x(AxB): 0
+  (BxA)x(AxB): 0
+  (BxA)x(BxA): 1
+  (AxB)x(BxA): 1</code></pre>
+<p>The equivalent JSON specification is:</p>
+<pre><code>&quot;cross_info&quot;:{&quot;covar&quot;:&quot;cross_direction&quot;, &quot;(AxB)x(AxB)&quot;:0, &quot;(BxA)x(AxB)&quot;:0, &quot;(BxA)x(BxA)&quot;:1, &quot;(AxB)x(BxA)&quot;:1}</code></pre>
+<p>Here are some example data files for F<sub>2</sub> intercrosses, in R/qtl2 format:</p>
+<ul>
+<li><p><a href="http://kbroman.org/qtl2/assets/sampledata/iron/"><code>iron</code></a> from <a href="https://www.ncbi.nlm.nih.gov/pubmed/16799992">Grant et al. (2006) Hepatology 44:174-185</a>. A <a href="http://kbroman.org/qtl2/assets/sampledata/iron/iron.zip">zip file for these data</a> is distributed with the <a href="https://github.com/rqtl/qtl2geno">R/qtl2geno</a> package.</p></li>
+<li><p><a href="https://github.com/rqtl/qtl2data/tree/master/B6BTBR"><code>B6BTBR</code></a> from <a href="https://doi.org/10.1534/genetics.115.179432">Tian et al. (2015) Genetics 201:1253-1262</a> and <a href="https://doi.org/10.1534/g3.115.019778">Broman et al. (2015) G3 5:2177-2186</a>.</p></li>
+<li><p><a href="https://github.com/rqtl/qtl2data/tree/master/Gough"><code>Gough</code></a> from <a href="https://doi.org/10.1534/genetics.115.177790">Gray et al. (2015) Genetics 201:213-228</a>.</p></li>
+</ul>
+</div>
+<div id="recombinant-inbred-lines-ril" class="section level3">
+<h3>Recombinant inbred lines (RIL)</h3>
+<p>The cross types for a recombinant inbred lines derived from two inbred strains are <code>&quot;riself&quot;</code> and <code>&quot;risib&quot;</code> for RIL by selfing and sib-mating, respectively.</p>
+</div>
+<div id="doubled-haploids-dh" class="section level3">
+<h3>Doubled haploids (DH)</h3>
+<p>The cross type for doubled haploids is <code>&quot;dh&quot;</code>.</p>
+</div>
+<div id="haploids" class="section level3">
+<h3>Haploids</h3>
+<p>The cross type for haploids is <code>&quot;haploid&quot;</code>.</p>
+</div>
+<div id="advanced-intercross-lines-ail" class="section level3">
+<h3>Advanced intercross lines (AIL)</h3>
+<p>The cross type for advanced intercross lines derived from two inbred strains is <code>&quot;ail&quot;</code>.</p>
+</div>
+<div id="diversity-outbreds-do" class="section level3">
+<h3>Diversity Outbreds (DO)</h3>
+<p>The cross type for the Diversity Outbred mouse population is <code>&quot;do&quot;</code>.</p>
+</div>
+<div id="heterogeneous-stock-hs" class="section level3">
+<h3>Heterogeneous stock (HS)</h3>
+<p>The cross type for the heterogenous stock derived from 8 inbred strains is <code>&quot;hs&quot;</code>.</p>
+</div>
+<div id="multi-parent-recombinant-inbred-lines" class="section level3">
+<h3>Multi-parent recombinant inbred lines</h3>
+<p>R/qtl2 can handle multi-parent recombinant inbred lines by selfing in the case of 4, 8, or 16 founder lines (<code>&quot;riself4&quot;</code>, <code>&quot;riself8&quot;</code>, and <code>&quot;riself16&quot;</code>), and by sib-mating in the case of 4 or 8 founder lines (<code>&quot;risib4&quot;</code> and <code>&quot;risib8&quot;</code>). The Collaborative Cross (CC) is an example of 8-way RIL by sib-mating (<code>&quot;risib8&quot;</code>). Many MAGIC populations are also examples of multi-way RIL by sibling mating.</p>
+<p>Two related cross types are <code>&quot;magic19&quot;</code> and <code>&quot;dh6&quot;</code>. The <code>&quot;magic19&quot;</code> cross type is specific for the 19-way Arabidopsis MAGIC lines of <a href="https://doi.org/10.1371/journal.pgen.1000551">Kover et al (2009) PLOS Genet 5:e1000551 doi:10.1371/journal.pgen.1000551</a>. This was derived from a full diallel (in both directions) among 19 strains followed by 3 generations of random mating (to F4) and then selfing for 6 generations. The <code>&quot;dh6&quot;</code> cross type is for a set of maize MAGIC populations developed at the Wisconsin Crop Innovation Center: A diallel of 6 founders followed by random mating for some number of generations and then derivation of doubled haploids.</p>
+</div>
 </div>
 
 
