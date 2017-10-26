@@ -23,17 +23,16 @@ f.each_line do |line|
         title = $1;
     end
 
-    if /<meta name=\"description\" content=\"(.*)\">/ =~ line
+    if /<meta name="description" content="([^"]*)">/ =~ line
         description = $1;
-        puts "DESCRIPTION: '${description}'"
     end
 
-    if /<meta name="author" content="(.*)">/ =~ line
+    if /<meta name="author" content="([^"]*)">/ =~ line
         author = $1;
-        puts "AUTHOR: '${author}'"
     end
 
     next if /<h1 class="title toc-ignore">/ =~ line
+    next if /<meta/ =~ line
 
     break if /<\/body>/ =~ line
 

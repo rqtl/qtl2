@@ -3,6 +3,9 @@ title: Benchmarks of linear regression routines
 output: rmarkdown::html_vignette
 ---
 
+<meta name="description" content="Benchmarks of linear regression routines in R/qtl2">
+<meta name="author" content="Karl Broman">
+
 ```{r change_width, include=FALSE}
 options(width=100)
 ```

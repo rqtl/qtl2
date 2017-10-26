@@ -4,6 +4,9 @@ description: Changes to the data structures in R/qtl2 version 0.5
 output: rmarkdown::html_vignette
 ---
 
+<meta name="description" content="Changes to the data structures in R/qtl2 version 0.5">
+<meta name="author" content="Karl Broman">
+
 ```{r change_width, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=4)
 options(width=107)

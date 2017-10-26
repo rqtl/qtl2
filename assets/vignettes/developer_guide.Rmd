@@ -3,6 +3,9 @@ title: R/qtl2 developer guide
 output: rmarkdown::html_vignette
 ---
 
+<meta name="description" content="Developer guide for R/qtl2, a reimplementation of the QTL analysis software R/qtl, to better handle high-dimensional data and complex cross designs.">
+<meta name="author" content="Karl Broman">
+
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
 [R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.

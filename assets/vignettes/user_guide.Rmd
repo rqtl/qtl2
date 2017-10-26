@@ -3,6 +3,9 @@ title: R/qtl2 user guide
 output: rmarkdown::html_vignette
 ---
 
+<meta name="description" content="User guide for R/qtl2, a reimplementation of the QTL analysis software R/qtl, to better handle high-dimensional data and complex cross designs.">
+<meta name="author" content="Karl Broman">
+
 ```{r knitr_opts, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=4)
 options(width=107)
