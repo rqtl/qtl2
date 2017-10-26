@@ -9,3 +9,8 @@ code {
 a code {
   color: #08c;
 }
+
+/* make the column a bit wider (780px rather than 700px) */
+.container-narrow {
+  max-width: 780px;
+}
