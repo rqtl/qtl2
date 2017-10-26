@@ -297,7 +297,7 @@ founder_geno:
   AA: 1
   AB: 2
   BB: 3</code></pre>
-<p>The values on the left-hand side are the genotype codes in the genotype data file; the numbers on the right are the numeric codes they’ll be converted into. The equivalent JSON specification is:</p>
+<p>The values on the left-hand side are the genotype codes in the genotype data file; the numbers on the right are the numeric codes they’ll be converted into. The equivalent json specification is:</p>
 <pre><code>&quot;genotypes&quot;: {&quot;AA&quot;: 1, &quot;AB&quot;: 2, &quot;BB&quot;: 3}</code></pre>
 <p>If the X chromosome is included in the data, we will need a sex covariate as well as cross information. The cross information for an intercross indicates the direction of the cross, with <code>0</code> corresponding to the forward direction, for example (A×B)&amp;times(A×B) with females listed first, and <code>1</code> corresponding to the reverse direction, for example (B×A)×(B×A). What matters is the direction for the cross that led to the males, since the F<sub>2</sub> females get an intact X chromosome from their father, which is A for the forward direction and B for the reverse. Different individuals can come from different directions, and you indicate the encodings with lines like the following:</p>
 <pre><code>cross_info:
@@ -306,16 +306,23 @@ founder_geno:
   (BxA)x(BxA): 1</code></pre>
 <p>Here, we’re saying that the covariate file has a column named “<code>cross_direction</code>” that contains the cross information, and that the forward direction is encoded as <code>(AxB)x(AxB)</code> and the reverse direction as <code>(BxA)x(BxA)</code>.</p>
 <p>You can have multiple codes for the cross direction information. For example, the <code>cross_direction</code> covariate might use four possible codes, including not just <code>(AxB)x(AxB)</code> and <code>(BxA)x(BxA)</code>, but also <code>(BxA)x(AxB)</code>, and <code>(AxB)x(BxA)</code>.</p>
-<p>In this case, the YAML control file should contain the following:</p>
+<p>In this case, the yaml control file should contain the following:</p>
 <pre><code>cross_info:
   covar: cross_direction
   (AxB)x(AxB): 0
   (BxA)x(AxB): 0
   (BxA)x(BxA): 1
   (AxB)x(BxA): 1</code></pre>
-<p>The equivalent JSON specification is:</p>
+<p>The equivalent json specification is:</p>
 <pre><code>&quot;cross_info&quot;:{&quot;covar&quot;:&quot;cross_direction&quot;, &quot;(AxB)x(AxB)&quot;:0, &quot;(BxA)x(AxB)&quot;:0, &quot;(BxA)x(BxA)&quot;:1, &quot;(AxB)x(BxA)&quot;:1}</code></pre>
-<p>Here are some example data files for F<sub>2</sub> intercrosses, in R/qtl2 format:</p>
+<p>If you’ve coded the cross direction as in <a href="http://rqtl.org">R/qtl</a>, with a covariate <code>pgm</code> with values <code>0</code> and <code>1</code>, your yaml file would contain the following lines.</p>
+<pre><code>cross_info:
+  covar: pgm
+  0: 0
+  1: 1</code></pre>
+<p>The equivalent json is:</p>
+<pre><code>&quot;cross_info&quot;: {&quot;covar&quot;: &quot;pgm&quot;, &quot;0&quot;: 0, &quot;1&quot;: 1}</code></pre>
+<p>Here are some example R/qtl2 data files for F<sub>2</sub> intercrosses:</p>
 <ul>
 <li><p><a href="http://kbroman.org/qtl2/assets/sampledata/iron/"><code>iron</code></a> from <a href="https://www.ncbi.nlm.nih.gov/pubmed/16799992">Grant et al. (2006) Hepatology 44:174-185</a>. A <a href="http://kbroman.org/qtl2/assets/sampledata/iron/iron.zip">zip file for these data</a> is distributed with the <a href="https://github.com/rqtl/qtl2geno">R/qtl2geno</a> package.</p></li>
 <li><p><a href="https://github.com/rqtl/qtl2data/tree/master/B6BTBR"><code>B6BTBR</code></a> from <a href="https://doi.org/10.1534/genetics.115.179432">Tian et al. (2015) Genetics 201:1253-1262</a> and <a href="https://doi.org/10.1534/g3.115.019778">Broman et al. (2015) G3 5:2177-2186</a>.</p></li>

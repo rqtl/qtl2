@@ -565,7 +565,7 @@ genotypes:
 
 The values on the left-hand side are the genotype codes in the
 genotype data file; the numbers on the right are the numeric codes
-they'll be converted into. The equivalent JSON specification is:
+they'll be converted into. The equivalent json specification is:
 
 ```
 "genotypes": {"AA": 1, "AB": 2, "BB": 3}
@@ -601,7 +601,7 @@ example, the `cross_direction` covariate might use four possible
 codes, including not just `(AxB)x(AxB)` and `(BxA)x(BxA)`, but also
 `(BxA)x(AxB)`, and `(AxB)x(BxA)`.
 
-In this case, the YAML control file should contain the following:
+In this case, the yaml control file should contain the following:
 
 ```
 cross_info:
@@ -612,14 +612,30 @@ cross_info:
   (AxB)x(BxA): 1
 ```
 
-The equivalent JSON specification is:
+The equivalent json specification is:
 
 ```
 "cross_info":{"covar":"cross_direction", "(AxB)x(AxB)":0, "(BxA)x(AxB)":0, "(BxA)x(BxA)":1, "(AxB)x(BxA)":1}
 ```
 
-Here are some example data files for F~2~ intercrosses, in R/qtl2
-format:
+If you've coded the cross direction as in [R/qtl](http://rqtl.org),
+with a covariate `pgm` with values `0` and `1`, your yaml file would
+contain the following lines.
+
+```
+cross_info:
+  covar: pgm
+  0: 0
+  1: 1
+```
+
+The equivalent json is:
+
+```
+"cross_info": {"covar": "pgm", "0": 0, "1": 1}
+```
+
+Here are some example R/qtl2 data files for F~2~ intercrosses:
 
 - [`iron`](http://kbroman.org/qtl2/assets/sampledata/iron/)
   from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992).
