@@ -656,18 +656,116 @@ The cross types for a recombinant inbred lines derived from two inbred
 strains are `"riself"` and
 `"risib"` for RIL by selfing and sib-mating, respectively.
 
+The genotypes will be encoded as `1` and `2`, and so the yaml control
+file needs lines like:
+
+```
+genotypes:
+  AA: 1
+  BB: 2
+```
+
+The json equivalent is:
+
+```
+"genotypes": {"AA":1, "BB":2}
+```
+
+For RIL by selfing (`"riself"`), no X chromosome is allowed. For RIL
+by sib-mating (`"risib"`) with an X chromosome, no sex covariate
+is needed, as we're working with genotypes that correspond to `_lines_`
+rather than _individuals_, and the males and females within a line
+will have the same X chromosome, it's just that the females will have
+two copies of it.
+
+But for RIL by sib-mating with the X chromosome, we do need a cross
+information covariate which indicates the direction in which the cross
+was performed: `0` for the forward direction A&times;B (where a female
+A was crossed to a male B) and `1` for the reverse direction B&times;A
+(where a female B was crossed to a male A). If the cross information
+column is absent, we assume that all individuals came from the forward
+direction.
+
+The yaml control file needs lines to indicate the cross information
+covariate and the encodings; if there is a covariate named
+`cross_direction` with values `AxB` and `BxA`, the yaml
+lines would be like this:
+
+```
+cross_info:
+  covar: cross_direction
+  AxB: 0
+  BxA: 1
+```
+
+The equivalent json is:
+
+```
+"cross_info": {"covar": "cross_direction", "AxB": 0, "BxA": 1}
+```
+
+We don't have example data files for RIL by sib-mating, but the
+[R/qtl2geno](https://github.com/rqtl/qtl2geno) package includes data
+for a set of arabidopsis RIL by selfing from
+[Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346),
+[`grav2`](http://kbroman.org/qtl2/assets/sampledata/grav2/). Here's a
+zip file: [`grav2.zip`](http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip).
+
+
 ### Doubled haploids (DH)
 
-The cross type for doubled haploids is `"dh"`.
+The cross type for doubled haploids is `"dh"`. We don't allow an X
+chromosome, and don't require sex or cross information. The
+genotypes will be encoded as `1` and `2`, just as for recombinant
+inbred lines, and the yaml or json control file will have lines for
+`genotype` that look just like those for `riself` and `risib`.
 
 ### Haploids
 
-The cross type for haploids is `"haploid"`.
+The cross type for haploids is `"haploid"`. As with doubled haploids,
+we don't require sex or cross information, and the genotypes are coded
+as `1` and `2`. The only difference between the `"haploid"` and `"dh"`
+cross types is the labels that are attached to the two genotypes:
+single-letter codes for haploids and double-letter homozygotes for
+doubled haploids.
+
 
 ### Advanced intercross lines (AIL)
 
 The cross type for advanced intercross lines derived from two inbred
-strains is `"ail"`.
+strains is `"ail"`. Genotypes are coded `1`, `2`, and `3`, just as
+with the F~2~ intercross (cross type `"f2")`. If an X chromosome is
+included, we need a sex covariate just as for the intercross.
+
+Cross information needs to include two columns: the number of
+generations (for example, 12 for an AIL individual from generation
+F~12~), and the cross direction. Cross direction takes 3 possible
+values: `0` if the initial F~1~ individuals all came from an A&times;B
+cross (with a female A crossed to a male B), `1` if
+the initial F~1~ individuals all came from a B&times;A
+cross (with a female B crossed to a male A), and `2` if the
+initial F~1~ individuals were a balanced mixture of the two cross
+directions.
+
+Because the cross information needs two columns, it can be provided
+through a covariate but rather needs to be included as a separate
+file, and the columns won't be re-coded in any way; the first column
+needs to contain the generation numbers and the second column needs to
+contain cross direction coded as `0`, `1`, and `2`.
+
+If cross information is stored in a file `mycross_crossinfo.csv`,
+the yaml control file shoul contain a line like:
+
+```
+cross_info: mycross_crossinfo.csv
+```
+
+The json equivalent is the same but needs quotes:
+
+```
+"cross_info": "mycross_crossinfo.csv"
+```
+
 
 ### Diversity Outbreds (DO)
 
