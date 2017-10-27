@@ -542,11 +542,14 @@ The values on the left-hand side are the genotype codes in the
 genotype data file; the numbers on the right are the numeric codes
 they'll be converted into.
 
-The equivalent genotype code specification for a json control file is
+The equivalent genotype code specification for a json control file is:
 
 ```
 "genotypes": {"AA": 1, "AB": 2}
 ```
+
+If the X chromosome is included, we will need a sex covariate. No
+cross information covariate is needed.
 
 
 ### F~2~ intercross
@@ -575,7 +578,7 @@ If the X chromosome is included in the data, we will need a sex
 covariate as well as cross information. The cross information for an
 intercross indicates the direction of the cross, with `0`
 corresponding to the forward direction, for example
-(A&times;B)&times(A&times;B) with females listed first, and `1`
+(A&times;B)&times;(A&times;B) with females listed first, and `1`
 corresponding to the reverse direction, for example
 (B&times;A)&times;(B&times;A). What matters is the direction for the
 cross that led to the males, since the F~2~ females get an intact X
@@ -592,7 +595,7 @@ cross_info:
 ```
 
 Here, we're saying that the covariate file has a column named
-"`cross_direction`" that contains the cross information, and that the
+`cross_direction` that contains the cross information, and that the
 forward direction is encoded as `(AxB)x(AxB)` and the reverse
 direction as `(BxA)x(BxA)`.
 
@@ -652,7 +655,7 @@ Here are some example R/qtl2 data files for F~2~ intercrosses:
 
 ### Recombinant inbred lines (RIL)
 
-The cross types for a recombinant inbred lines derived from two inbred
+The cross types for recombinant inbred lines derived from two inbred
 strains are `"riself"` and
 `"risib"` for RIL by selfing and sib-mating, respectively.
 
@@ -673,9 +676,9 @@ The json equivalent is:
 
 For RIL by selfing (`"riself"`), no X chromosome is allowed. For RIL
 by sib-mating (`"risib"`) with an X chromosome, no sex covariate
-is needed, as we're working with genotypes that correspond to `_lines_`
+is needed, as we're working with genotypes that correspond to _lines_
 rather than _individuals_, and the males and females within a line
-will have the same X chromosome, it's just that the females will have
+will have the same X chromosome; it's just that the females will have
 two copies of it.
 
 But for RIL by sib-mating with the X chromosome, we do need a cross
@@ -718,16 +721,17 @@ The cross type for doubled haploids is `"dh"`. We don't allow an X
 chromosome, and don't require sex or cross information. The
 genotypes will be encoded as `1` and `2`, just as for recombinant
 inbred lines, and the yaml or json control file will have lines for
-`genotype` that look just like those for `riself` and `risib`.
+`genotypes` that look just like those for `riself` and `risib`.
+
 
 ### Haploids
 
 The cross type for haploids is `"haploid"`. As with doubled haploids,
 we don't require sex or cross information, and the genotypes are coded
 as `1` and `2`. The only difference between the `"haploid"` and `"dh"`
-cross types is the labels that are attached to the two genotypes:
-single-letter codes for haploids and double-letter homozygotes for
-doubled haploids.
+cross types is the labels that are attached to the two genotypes in
+the output of various analyses: single-letter codes for haploids and
+double-letter homozygotes for doubled haploids.
 
 
 ### Advanced intercross lines (AIL)
@@ -747,14 +751,14 @@ cross (with a female B crossed to a male A), and `2` if the
 initial F~1~ individuals were a balanced mixture of the two cross
 directions.
 
-Because the cross information needs two columns, it can be provided
+Because the cross information needs two columns, it can't be provided
 through a covariate but rather needs to be included as a separate
 file, and the columns won't be re-coded in any way; the first column
 needs to contain the generation numbers and the second column needs to
 contain cross direction coded as `0`, `1`, and `2`.
 
 If cross information is stored in a file `mycross_crossinfo.csv`,
-the yaml control file shoul contain a line like:
+the yaml control file should contain a line like:
 
 ```
 cross_info: mycross_crossinfo.csv
@@ -778,9 +782,9 @@ SNP genotypes for both the individuals
 and the founders. They'll be coded as `1`, `2`, and `3`,
 with `1` and `3` being the two homozygotes and `2` the heterozygote.
 In the genotype and founder genotype files, the genotypes need to have
-a consistent coding scheme, like `A`, `H`, and `B`, for all markers.
+a consistent coding scheme (like `A`, `H`, and `B`) for all markers.
 While the data might arrive with nucleotide codes, they need to be
-recoded before input into R. (The
+recoded before they can be read into R. (The
 [R/qtl2convert](https://github.com/rqtl/qtl2convert) package includes
 some tools to assist with this.)
 
@@ -813,10 +817,10 @@ If the X chromosome is included, a sex covariate is also needed.
 ### Diversity Outbreds (DO)
 
 The cross type for the Diversity Outbred mouse population is `"do"`.
-This is similar to HS, but with a specific design that started with
-individuals taken from intermediate generations in the
-formation of a set of 8-way recombinant inbred lines. See
-[Svenson et al (2012) Genetics 190:437-447](https://doi.org/10.1534/genetics.111.132597).
+This is similar to HS, but with a specific design in which random
+mating started with individuals taken from intermediate generations in
+the formation of a set of 8-way recombinant inbred lines. (See
+[Svenson et al (2012) Genetics 190:437-447](https://doi.org/10.1534/genetics.111.132597).)
 
 The needs regarding genotypes, founder genotypes, cross information,
 and sex are all the same as for HS. In particular, the cross
@@ -841,8 +845,9 @@ Here are some example R/qtl2 data files for two populations of DO mice:
 R/qtl2 can handle multi-parent recombinant inbred lines by selfing in
 the case of 4, 8, or 16 founder lines (`"riself4"`, `"riself8"`, and
 `"riself16"`), and by sib-mating in the case of 4 or 8 founder lines
-(`"risib4"` and `"risib8"`). The Collaborative Cross (CC) is an
-example of 8-way RIL by sib-mating (`"risib8"`). Many MAGIC
+(`"risib4"` and `"risib8"`). The
+[Collaborative Cross (CC)](http://compgen.unc.edu/wp/?page_id=99) is
+an example of 8-way RIL by sib-mating (`"risib8"`). Many MAGIC
 populations are also examples of multi-way RIL by sibling mating.
 
 As with `"hs"` and `"do"`, we need SNP genotypes for both the individuals
@@ -879,9 +884,9 @@ needed or will be used.
 
 The `"magic19"` cross type is specific for the 19-way Arabidopsis
 MAGIC lines of
-[Kover et al (2009) PLOS Genet 5:e1000551 doi:10.1371/journal.pgen.1000551](https://doi.org/10.1371/journal.pgen.1000551).
-This was derived from a full diallel (in both directions) among 19
-strains followed by 3 generations of random mating (to F4) and then
+[Kover et al (2009) PLOS Genet 5:e1000551](https://doi.org/10.1371/journal.pgen.1000551).
+These were derived from a full diallel (in both directions) among 19
+strains followed by 3 generations of random mating (to F~4~) and then
 selfing for 6 generations.
 
 As with `"hs"`, `"do"`, and the multi-parent RIL, we need both
@@ -896,9 +901,10 @@ full diallel followed by random mating.
 ### 6-way doubled haploids
 
 The `"dh6"` cross type is for a set of maize MAGIC populations
-developed at the Wisconsin Crop Innovation Center: A diallel of 6
-founders followed by random mating for some number of generations and
-then derivation of doubled haploids.
+developed at the
+[Wisconsin Crop Innovation Center](https://cropinnovation.cals.wisc.edu/):
+A diallel of 6 founders followed by random mating for some number of
+generations and then derivation of doubled haploids.
 
 Again, we need both individual genotypes and genotypes on the 6
 founder lines, and these must be SNPs and will be coded as `1` and `3`
