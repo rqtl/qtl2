@@ -823,6 +823,18 @@ and sex are all the same as for HS. In particular, the cross
 information is the number of generations of random mating, and sex is
 needed if the X chromosome is included.
 
+Here are some example R/qtl2 data files for two populations of DO mice:
+
+- [`DO_Gatti2014`](https://github.com/rqtl/qtl2data/tree/master/DO_Gatti2014),
+  from
+  [Gatti et al. (2014) G3 4:1623-1633](https://doi.org/10.1534/g3.114.013748)
+
+- [`DO_Recla`](https://github.com/rqtl/qtl2data/tree/master/DO_Recla),
+  from
+  [Recla et al. (2013) Mamm Genome 25:211-222](https://doi.org/10.1007/s00335-014-9508-0)
+  and
+  [Logan et al. (2013) Genes Brain Behav 12:424-437](https://doi.org/10.1111/gbb.12029)
+
 
 ### Multi-parent recombinant inbred lines
 
