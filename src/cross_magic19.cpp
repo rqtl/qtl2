@@ -185,11 +185,6 @@ const int MAGIC19::nrec(const int gen_left, const int gen_right,
 const double MAGIC19::est_rec_frac(const Rcpp::NumericVector& gamma, const bool is_x_chr,
                                    const Rcpp::IntegerMatrix& cross_info, const int n_gen)
 {
-    #ifndef RQTL2_NODEBUG
-    if(cross_info.rows() != 19) // incorrect number of founders
-        throw std::range_error("cross_info should contain 19 founders");
-    #endif
-
     double R = QTLCross::est_rec_frac(gamma, is_x_chr, cross_info, n_gen);
 
     // inverse of R = (90-54r+18r^2)/19/(1+2r)
