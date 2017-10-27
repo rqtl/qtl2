@@ -767,14 +767,61 @@ The json equivalent is the same but needs quotes:
 ```
 
 
+### Heterogeneous stock (HS)
+
+The cross type for heterogenous stock (HS) derived from 8 inbred
+strains is `"hs"`. HS is similar to AIL, but starting with 8 inbred
+strains rather than 2.
+
+For HS and other multi-parent populations, we need
+SNP genotypes for both the individuals
+and the founders. They'll be coded as `1`, `2`, and `3`,
+with `1` and `3` being the two homozygotes and `2` the heterozygote.
+In the genotype and founder genotype files, the genotypes need to have
+a consistent coding scheme, like `A`, `H`, and `B`, for all markers.
+While the data might arrive with nucleotide codes, they need to be
+recoded before input into R. (The
+[R/qtl2convert](https://github.com/rqtl/qtl2convert) package includes
+some tools to assist with this.)
+
+The yaml control file will includes lines similar to those for the
+F~2~ intercross:
+
+```
+genotypes:
+  A: 1
+  H: 2
+  B: 3
+```
+
+The json equivalent is the following:
+
+```
+"genotypes": {"A":1, "H": 2, "B":3}
+```
+
+The genotype codes need not be single-character codes; for example,
+you could use `AA`, `AB`, and `BB`.
+
+A single cross info covariate is needed: the generation number for
+each individual. This could be included with the other covariates, or
+it can be in a separate file.
+
+If the X chromosome is included, a sex covariate is also needed.
+
+
 ### Diversity Outbreds (DO)
 
 The cross type for the Diversity Outbred mouse population is `"do"`.
+This is similar to HS, but with a specific design that started with
+individuals taken from intermediate generations in the
+formation of a set of 8-way recombinant inbred lines. See
+[Svenson et al (2012) Genetics 190:437-447](https://doi.org/10.1534/genetics.111.132597).
 
-### Heterogeneous stock (HS)
-
-The cross type for the heterogenous stock derived from 8 inbred
-strains is `"hs"`.
+The needs regarding genotypes, founder genotypes, cross information,
+and sex are all the same as for HS. In particular, the cross
+information is the number of generations of random mating, and sex is
+needed if the X chromosome is included.
 
 
 ### Multi-parent recombinant inbred lines
@@ -786,12 +833,76 @@ the case of 4, 8, or 16 founder lines (`"riself4"`, `"riself8"`, and
 example of 8-way RIL by sib-mating (`"risib8"`). Many MAGIC
 populations are also examples of multi-way RIL by sibling mating.
 
-Two related cross types are `"magic19"` and `"dh6"`. The `"magic19"`
-cross type is specific for the 19-way Arabidopsis MAGIC lines of
+As with `"hs"` and `"do"`, we need SNP genotypes for both the individuals
+and the founders. They'll be coded as `1` and `3` in these cases (any
+heterozygotes, `2`, in either the individuals' or founders' genotypes
+will be ignored). In the genotype and founder genotype files, they
+might be coded as `A` and `B`, in which case the yaml control file
+will need lines like:
+
+```
+genotypes:
+  A: 1
+  B: 3
+```
+
+The json equivalent is the following:
+
+```
+"genotypes": {"A":1, "B":3}
+```
+
+For these crosses, we need cross information, in a file separate
+from any other covariates, the indicates the order
+in which the founder lines were crossed when producing each line. This
+will have as many columns as there are founders (for example, 8
+columns for `"risib8"`) and each row should be a permutation of the
+integers from 1 to the number of founders.
+
+As with 2-way RIL by sib-mating (`"risib"`), no sex covariate is
+needed or will be used.
+
+
+### 19-way MAGIC lines
+
+The `"magic19"` cross type is specific for the 19-way Arabidopsis
+MAGIC lines of
 [Kover et al (2009) PLOS Genet 5:e1000551 doi:10.1371/journal.pgen.1000551](https://doi.org/10.1371/journal.pgen.1000551).
 This was derived from a full diallel (in both directions) among 19
 strains followed by 3 generations of random mating (to F4) and then
-selfing for 6 generations. The `"dh6"` cross type is for a set of
-maize MAGIC populations developed at the Wisconsin Crop Innovation
-Center: A diallel of 6 founders followed by random mating for some
-number of generations and then derivation of doubled haploids.
+selfing for 6 generations.
+
+As with `"hs"`, `"do"`, and the multi-parent RIL, we need both
+individual genotypes and genotypes on the 19 founder lines, and these
+must be SNPs and will be coded as `1` and `3` (with any heterozygotes
+treated as missing).
+
+No cross info is needed, because the population was derived using a
+full diallel followed by random mating.
+
+
+### 6-way doubled haploids
+
+The `"dh6"` cross type is for a set of maize MAGIC populations
+developed at the Wisconsin Crop Innovation Center: A diallel of 6
+founders followed by random mating for some number of generations and
+then derivation of doubled haploids.
+
+Again, we need both individual genotypes and genotypes on the 6
+founder lines, and these must be SNPs and will be coded as `1` and `3`
+(with any heterozygotes treated as missing).
+
+We need one cross information covariate: the number of generations of
+random mating prior to forming the doubled haploids. The yaml control
+file might includes lines like the following:
+
+```
+cross_info:
+  covar: n_gen
+```
+
+The json equivalent is:
+
+```
+"cross_info": {"covar": "n_gen"}
+```
