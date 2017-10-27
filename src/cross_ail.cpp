@@ -40,7 +40,13 @@ const double AIL::init(const int true_gen,
     #endif
 
     const int n_gen = cross_info[0];
-    const int dir   = cross_info[1];
+    int dir;
+    if(cross_info.size() > 1) {
+       dir = cross_info[1];
+    }
+    else { // assume balanced case
+        dir = 2;
+    }
 
     if(is_x_chr) {
         if(dir==2) { // balanced case
@@ -151,7 +157,13 @@ const double AIL::step(const int gen_left, const int gen_right, const double rec
     #endif
 
     const int n_gen = cross_info[0];
-    const int dir = cross_info[1];
+    int dir;
+    if(cross_info.size() > 1) {
+       dir = cross_info[1];
+    }
+    else { // assume balanced case
+        dir = 2;
+    }
 
     if(is_x_chr) {
         if(dir == 2) { // balanced case
