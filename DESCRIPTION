@@ -26,6 +26,7 @@ URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2plot
 BugReports: https://github.com/rqtl/qtl2plot/issues
 LinkingTo: Rcpp
 LazyData: true
+Encoding: UTF-8
 RoxygenNote: 6.0.1
 Remotes:
     rqtl/qtl2scan,
