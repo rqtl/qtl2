@@ -11,7 +11,7 @@ test_that("find_lin_indep_cols works", {
 
     X <- matrix(rnorm(1000*10), ncol=10)
     expect_equal(sort(find_lin_indep_cols(X)), 1:10)
-    expect_equal(sort(find_lin_indep_cols(cbind(rowSums(X), X))), c(1, 3:11))
+    expect_equal(length(find_lin_indep_cols(cbind(rowSums(X), X))), 10)
 
 })
 
@@ -29,7 +29,7 @@ test_that("drop_depcols works", {
         expect_equal(drop_depcols(x[,i]), x[,i,drop=FALSE])
 
     X <- cbind(rowSums(x), x)
-    expect_equal(drop_depcols(X), X[,c(1,3,4)])
+    expect_equal(ncol(drop_depcols(X)), 3)
 
 })
 
