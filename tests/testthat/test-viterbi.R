@@ -4,7 +4,7 @@ suppressMessages(library(qtl))
 test_that("backcross autosome", {
 
     data(hyper)
-    chr <- c(1, 3, 4, 17, 19)
+    chr <- c(1, 4)
     hyper <- hyper[chr,]
 
     hyper <- convert2cross2(hyper)
@@ -38,7 +38,7 @@ test_that("intercross autosome", {
 test_that("risib autosome", {
 
     data(hyper)
-    chr <- c(1, 3, 4, 17, 19)
+    chr <- c(1, 4)
     hyper <- hyper[chr,]
     class(hyper)[1] <- "risib"
 
@@ -56,7 +56,7 @@ test_that("risib autosome", {
 test_that("riself autosome", {
 
     data(hyper)
-    chr <- c(1, 3, 4, 17, 19)
+    chr <- c(1, 4)
     hyper <- hyper[chr,]
     class(hyper)[1] <- "riself"
 
