@@ -23,6 +23,8 @@ or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}
 \item{geno}{Optional vector of genotypes or alleles to be shown
 (vector of integers or character strings)}
 
+\item{color_scheme}{Color scheme for the heatmap (ignored if \code{col} is provided).}
+
 \item{col}{Optional vector of colors for the heatmap.}
 
 \item{threshold}{Threshold for genotype probabilities; only genotypes that achieve
@@ -48,8 +50,6 @@ on the x-axis and the chromosome position is on the y-axis.}
 \item{vlines.lty}{Line type of vertical grid lines.}
 
 \item{...}{Additional graphics parameters passed to \code{\link[graphics]{image}}.}
-
-\item{colscheme}{Color scheme for the heatmap (ignored if \code{col} is provided).}
 }
 \description{
 Plot the genotype probabilities for one individual on one chromosome, as a heat map.

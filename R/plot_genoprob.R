@@ -9,7 +9,7 @@
 #' @param chr Selected chromosome to plot; a single character string.
 #' @param geno Optional vector of genotypes or alleles to be shown
 #' (vector of integers or character strings)
-#' @param colscheme Color scheme for the heatmap (ignored if \code{col} is provided).
+#' @param color_scheme Color scheme for the heatmap (ignored if \code{col} is provided).
 #' @param col Optional vector of colors for the heatmap.
 #' @param threshold Threshold for genotype probabilities; only genotypes that achieve
 #' this value somewhere on the chromosome will be shown.
