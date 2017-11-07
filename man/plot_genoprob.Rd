@@ -20,7 +20,8 @@ or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}
 
 \item{chr}{Selected chromosome to plot; a single character string.}
 
-\item{geno}{Optional vector of genotypes or alleles to be shown.}
+\item{geno}{Optional vector of genotypes or alleles to be shown
+(vector of integers or character strings)}
 
 \item{col}{Optional vector of colors for the heatmap.}
 
@@ -52,4 +53,55 @@ on the x-axis and the chromosome position is on the y-axis.}
 }
 \description{
 Plot the genotype probabilities for one individual on one chromosome, as a heat map.
+}
+\examples{
+# load data and calculate genotype probabilities
+library(qtl2geno)
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- iron[,"2"] # subset to chr 2
+map <- insert_pseudomarkers(iron$gmap, step=1)
+pr <- calc_genoprob(iron, map, error_prob=0.002)
+
+# plot the probabilities for the individual labeled "262"
+#  (white = 0, black = 1)
+plot_genoprob(pr, map, ind="262")
+
+# change the x-axis label
+plot_genoprob(pr, map, ind="262", xlab="Position (cM)")
+
+# tranpose the axes
+plot_genoprob(pr, map, ind="262", transpose=TRUE, ylab="Position (cM)")
+
+# This is more interesting for a Diversity Outbred mouse example
+\dontrun{
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DOex/DOex.zip")
+DOex <- read_cross2(file)
+# subset to chr 2 and X and individuals labeled "232" and "256"
+DOex <- DOex[c("232", "256"), c("2", "X")]
+pr <- calc_genoprob(DOex, error_prob=0.002)
+# plot individual "256" on chr 2 (default is to pick first chr in the probs)
+plot_genoprob(pr, DOex$pmap, ind="256")
+
+# omit states that never have probability >= 0.5
+plot_genoprob(pr, DOex$pmap, ind="256", threshold=0.05)
+
+# X chr male 232: just show the AY-HY genotype probabilities
+plot_genoprob(pr, DOex$pmap, ind="232", chr="X", geno=paste0(LETTERS[1:8], "Y"))
+# could also indicate genotypes by number
+plot_genoprob(pr, DOex$pmap, ind="232", chr="X", geno=37:44)
+# and can use negative indexes
+plot_genoprob(pr, DOex$pmap, ind="232", chr="X", geno=-(1:36))
+
+# X chr female 256: just show the first 36 genotype probabilities
+plot_genoprob(pr, DOex$pmap, ind="256", chr="X", geno=1:36)
+
+# again, can give threshold to omit genotypes whose probabilities never reach that threshold
+plot_genoprob(pr, DOex$pmap, ind="256", chr="X", geno=1:36, threshold=0.5)
+
+# can also look at the allele dosages
+apr <- genoprob_to_alleleprob(pr)
+plot_genoprob(apr, DOex$pmap, ind="232")
+}
+
 }
