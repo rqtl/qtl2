@@ -152,7 +152,7 @@ plot_genoprob <-
     # the function that does the work
     plot_genoprob_internal <-
         function(probs, map, col=NULL, transpose=FALSE,
-                 zlim=c(0,1), xlab=NULL, ylab=NULL, main="", las=NULL,
+                 zlim=c(0,1), xlab=NULL, ylab=NULL, las=NULL,
                  hlines=NULL, hlines.col="gray70", hlines.lwd=1, hlines.lty=1,
                  vlines=NULL, vlines.col="gray70", vlines.lwd=1, vlines.lty=1,
                  mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
