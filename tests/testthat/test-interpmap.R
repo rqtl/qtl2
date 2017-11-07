@@ -93,3 +93,13 @@ test_that("interp_map works in simplest case", {
                  chr23_doubled)
 
 })
+
+test_that("interp_map preserves positions", {
+
+    oldmap <- list("1"=c(0, 5,  5,  5, 10, 20))
+    newmap <- list("1"=c(0, 5, 10, 15, 20, 30))
+    names(oldmap[[1]]) <- names(newmap[[1]]) <- paste0("marker", seq_along(oldmap[[1]]))
+
+    expect_equal(newmap, interp_map(oldmap, oldmap, newmap))
+
+})

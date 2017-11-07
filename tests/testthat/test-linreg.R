@@ -71,9 +71,12 @@ test_that("lin regr works for reduced-rank example", {
     # QR-based regression
     qrFit <- fit_linreg_eigenqr(mm, y, TRUE)
     expect_equal(rss, qrFit$rss)
-    expect_equivalent(lm.out$coef, qrFit$coef)
     expect_equivalent(lm.out$fitted, qrFit$fitted)
-    expect_equivalent(lm_se, qrFit$SE)
+    lm_reduced <- lm(y ~ -1 + mm[,!is.na(qrFit$coef)])
+    lm_reduced_se <- lm_reduced$coef
+    lm_reduced_se <- summary(lm_reduced)$coef[,2]
+    expect_equivalent(lm_reduced$coef, qrFit$coef[!is.na(qrFit$coef)])
+    expect_equivalent(lm_reduced_se, qrFit$SE[!is.na(qrFit$coef)])
 
     qrRSS <- calc_rss_eigenqr(mm, y)
     expect_equal(rss, qrRSS)
@@ -89,17 +92,13 @@ test_that("lin regr works for reduced-rank example", {
     expect_equal(linreg_resid, as.matrix(resid))
 
     # just the coefficients
-    coef <- calc_coef_linreg(mm,y)
-    expect_equal(coef, as.numeric(lm.out$coef))
+    coef <- calc_coef_linreg(mm, y)
+    expect_equivalent(coef[!is.na(coef)], lm_reduced$coef)
 
     # coefficients and SEs
-    coefSE <- calc_coefSE_linreg(mm,y)
-    ### a bit of effort due to one coefficient being NA
-    expected <- list(coef=as.numeric(lm.out$coef),
-                     SE=as.numeric(lm.out$coef))
-    lm.coef <- summary(lm.out)$coef
-    for(i in 1:2) expected[[i]][!is.na(coef)] <- lm.coef[,i]
-    expect_equal(coefSE, expected)
+    coefSE <- calc_coefSE_linreg(mm, y)
+    expect_equivalent(coefSE$coef[!is.na(coefSE$coef)], lm_reduced$coef)
+    expect_equivalent(coefSE$SE[!is.na(coefSE$coef)], lm_reduced_se)
 
 })
 
@@ -208,7 +207,7 @@ test_that("calculation of residuals for 3d arrays works", {
     data(hyper)
     hyper <- hyper[1,]
     hyper2 <- qtl2geno::convert2cross2(hyper)
-    map <- insert_pseudomarkers(hyper2$gmap, step=1)
+    map <- qtl2geno::insert_pseudomarkers(hyper2$gmap, step=1)
     pr <- qtl2geno::calc_genoprob(hyper2, map, error_prob=0.002)
     pr <- aperm(pr[[1]], c(1,3,2)) # reorient to have genomic position last
 

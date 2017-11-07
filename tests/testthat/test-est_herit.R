@@ -77,7 +77,7 @@ test_that("est_herit handles dependent covariate columns", {
     hsq3 <- est_herit(pheno, kinship, covar2[,-2, drop=FALSE])
 
     expect_equal(hsq[1], hsq2[1])
-    expect_equal(hsq2[2], structure(0.545220193658054, .Names = "spleen"), tolerance=1e-7)
+    expect_equal(hsq2[2], structure(0.545220193658054, .Names = "spleen"), tolerance=5e-7)
     expect_equal(hsq, hsq3)
 
     pheno[1:2,1:2] <- NA

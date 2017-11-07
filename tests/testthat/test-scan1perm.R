@@ -241,7 +241,7 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
     attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
     attr(expected, "chr_lengths") <- L
     class(expected) <- c("scan1perm", "list")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=4e-7)
 
 })
 
@@ -323,10 +323,10 @@ test_that("scan1 permutations work with LOCO kinship matrix (regression test)", 
     expected <- cbind(liver= c(1.56455340995486880118, 1.0297698518383779920, 2.0850243087458522062),
                       spleen=c(0.91750143650706161846, 1.0096069617524108253, 2.8456095237817189414))
     class(expected) <- c("scan1perm", "matrix")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
     set.seed(seed)
     operm <- scan1perm(pr, pheno2, kinship_loco, addcovar=sex, Xcovar=Xcovar, n_perm=3, perm_strata=perm_strata)
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
     # one missing phenotype, sex and X-chr covariates, plus sex interactive
     set.seed(seed)
@@ -356,6 +356,6 @@ test_that("scan1 permutations work with LOCO kinship matrix (regression test)", 
     attr(L, "is_x_chr") <- c(A=FALSE, X=TRUE)
     attr(expected, "chr_lengths") <- L
     class(expected) <- c("scan1perm", "list")
-    expect_equal(operm, expected, tolerance=1e-7)
+    expect_equal(operm, expected, tolerance=2e-7)
 
 })
