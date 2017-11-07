@@ -11,6 +11,8 @@
 #' @param colscheme Color scheme for the heatmap (ignored if \code{col} is provided).
 #' @param col Optional vector of colors for the heatmap.
 #' @param threshold Threshold for genotype probabilities; only genotypes that achieve
+#' @param transpose If TRUE, swap the axes, so that the genotypes are
+#' on the x-axis and the chromosome position is on the y-axis.
 #' @param hlines Position of horizontal grid lines (use \code{NA} to avoid lines).
 #' @param hlines.col Color of horizontal grid lines.
 #' @param hlines.lwd Line width of horizontal grid lines.
@@ -28,7 +30,7 @@
 plot_genoprob <-
     function(probs, map, ind=1, chr=NULL, geno=NULL,
              color_scheme=c("gray", "viridis"), col=NULL,
-             threshold=0,
+             threshold=0, transpose=FALSE,
              hlines=NULL, hlines.col="#B3B3B370", hlines.lwd=1, hlines.lty=1,
              vlines=NULL, vlines.col="#B3B3B370", vlines.lwd=1, vlines.lty=1,
              ...)
@@ -89,43 +91,79 @@ plot_genoprob <-
 
     # the function that does the work
     plot_genoprob_internal <-
-        function(probs, map, col=NULL, zlim=c(0,1),
-                 xlab="Position (Mbp)", ylab="", main="", las=1,
+        function(probs, map, col=NULL, transpose=FALSE,
+                 zlim=c(0,1), xlab=NULL, ylab=NULL, main="", las=NULL,
                  hlines=NULL, hlines.col="gray70", hlines.lwd=1, hlines.lty=1,
                  vlines=NULL, vlines.col="gray70", vlines.lwd=1, vlines.lty=1,
                  mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
                  ...)
     {
-        image(map, 1:ncol(probs), probs,
-              ylab="", yaxt="n", xlab="", xaxt="n",
-              las=1, zlim=zlim, col=col, ...)
-
         dots <- list(...)
         if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
-        title(xlab=xlab, mgp=mgp.x)
-        title(ylab=ylab, mgp=mgp.y)
-
         if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
         if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
 
+        if(transpose) {
+            # reverse order of genotypes back so that first appears at left
+            #    then transpose
+            probs <- t(probs[,ncol(probs):1,drop=FALSE])
+
+            x <- 1:nrow(probs)
+            y <- map
+
+            if(is.null(xlab)) xlab <- ""
+            if(is.null(ylab)) ylab <- "Position"
+
+            ytick <- pretty(map)
+            yticklab <- NULL
+
+            xtick <- x
+            xticklab <- rownames(probs)
+
+            if(is.null(hlines)) hlines <- pretty(map, n=10)
+            if(is.null(vlines)) vlines <- 1:nrow(probs)
+
+            if(is.null(las)) las <- 2
+        } else {
+            x <- map
+            y <- 1:ncol(probs)
+
+            if(is.null(xlab)) xlab <- "Position"
+            if(is.null(ylab)) ylab <- ""
+
+            xtick <- pretty(map)
+            xticklab <- NULL
+
+            ytick <- y
+            yticklab <- colnames(probs)
+
+            if(is.null(hlines)) hlines <- 1:nrow(probs)
+            if(is.null(vlines)) vlines <- pretty(map, n=10)
+
+            if(is.null(las)) las <- 1
+        }
+
+        image(x, y, probs,
+              ylab="", yaxt="n", xlab="", xaxt="n",
+              las=1, zlim=zlim, col=col, ...)
+
         if(dots$xaxt != "n")
-            axis(side=1, at=pretty(map), las=las, mgp=mgp.y, tick=FALSE)
+            axis(side=1, at=xtick, labels=xticklab, las=las, mgp=mgp.x, tick=FALSE)
         if(dots$yaxt != "n")
-            axis(side=2, at=1:ncol(probs), colnames(probs), las=las, mgp=mgp.x, tick=FALSE)
+            axis(side=2, at=ytick, labels=yticklab, las=las, mgp=mgp.y, tick=FALSE)
+
 
         # add grid lines
-        if(is.null(hlines)) hlines <- 1:ncol(probs)
-        if(is.null(vlines)) vlines <- pretty(map, n=10)
-
         if(!(length(hlines)==1 && is.na(hlines)))
             abline(h=hlines, lty=hlines.lty, lwd=hlines.lwd, col=hlines.col)
         if(!(length(vlines)==1 && is.na(vlines)))
             abline(v=vlines, lty=vlines.lty, lwd=vlines.lwd, col=vlines.col)
 
-
+        title(xlab=xlab, mgp=mgp.x)
+        title(ylab=ylab, mgp=mgp.y)
     }
 
-    plot_genoprob_internal(probs, map, col=col,
+    plot_genoprob_internal(probs, map, col=col, transpose=transpose,
                            hlines=hlines, hlines.col=hlines.col, hlines.lty=hlines.lty, hlines.lwd=hlines.lwd,
                            vlines=vlines, vlines.col=vlines.col, vlines.lty=vlines.lty, vlines.lwd=vlines.lwd,
                            ...)

@@ -6,9 +6,9 @@
 \usage{
 plot_genoprob(probs, map, ind = 1, chr = NULL, geno = NULL,
   color_scheme = c("gray", "viridis"), col = NULL, threshold = 0,
-  hlines = NULL, hlines.col = "#B3B3B370", hlines.lwd = 1,
-  hlines.lty = 1, vlines = NULL, vlines.col = "#B3B3B370",
-  vlines.lwd = 1, vlines.lty = 1, ...)
+  transpose = FALSE, hlines = NULL, hlines.col = "#B3B3B370",
+  hlines.lwd = 1, hlines.lty = 1, vlines = NULL,
+  vlines.col = "#B3B3B370", vlines.lwd = 1, vlines.lty = 1, ...)
 }
 \arguments{
 \item{probs}{Genotype probabilities (as produced by \code{\link[qtl2geno]{calc_genoprob}})
@@ -25,6 +25,9 @@ or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}
 \item{col}{Optional vector of colors for the heatmap.}
 
 \item{threshold}{Threshold for genotype probabilities; only genotypes that achieve}
+
+\item{transpose}{If TRUE, swap the axes, so that the genotypes are
+on the x-axis and the chromosome position is on the y-axis.}
 
 \item{hlines}{Position of horizontal grid lines (use \code{NA} to avoid lines).}
 
