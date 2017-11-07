@@ -1,3 +1,12 @@
+## qtl2plot 0.5-17 (2017-11-07)
+
+### New features
+
+- Added function `plot_genoprob()` for plotting a heat map of the
+  genotype probabilities for a single individual on a single
+  chromosome.
+
+
 ## qtl2plot 0.5-16 (2017-10-17)
 
 ### New features
