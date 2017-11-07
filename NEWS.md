@@ -1,3 +1,12 @@
+## qtl2scan 0.5-24 (2017-11-06)
+
+### Minor changes
+
+- Improve handling of missing names in interp_map(), and ensure that
+  when markers are on top of each other in the oldmap, their positions
+  in the newmap don't get changed.
+
+
 ## qtl2scan 0.5-23 (2017-10-17)
 
 ### Minor changes
