@@ -51,6 +51,10 @@ interp_map <-
             stop("If length(oldmap) != length(newmap), they both need marker names")
 
         if(!is.null(nom) && !is.null(nnm)) {
+            if(length(unique(nom)) != length(nom) ||
+               length(unique(nnm)) != length(nnm))
+                stop("marker names should be distinct")
+
             drop_om <- !(nom %in% nnm)
             if(any(drop_om)) {
                 dropped_old <- c(dropped_old, nom[drop_om])
@@ -77,7 +81,8 @@ interp_map <-
         names(result[[thechr]]) <- ntm
 
         # make sure markers that are in both map and newmap are kept in the newmap position
-        if(!is.null(ntm) && !is.null(nom) && !is.null(nnm) && any(ntm %in% nom)) {
+        if(!is.null(ntm) && !is.null(nom) && !is.null(nnm) && any(ntm %in% nom)
+           && length(unique(ntm)) == length(ntm)) { # skip if marker names aren't distinct
             overlap <- ntm[ntm %in% nom] # markers in both old and to-be-transformed map
             overlap <- overlap[abs(tm[overlap] - om[overlap]) < 1e-6] # ...that are in the same position
 
