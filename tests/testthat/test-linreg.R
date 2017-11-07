@@ -72,6 +72,11 @@ test_that("lin regr works for reduced-rank example", {
     qrFit <- fit_linreg_eigenqr(mm, y, TRUE)
     expect_equal(rss, qrFit$rss)
     expect_equivalent(lm.out$fitted, qrFit$fitted)
+    lm_reduced <- lm(y ~ -1 + mm[,!is.na(qrFit$coef)])
+    lm_reduced_se <- lm_reduced$coef
+    lm_reduced_se <- summary(lm_reduced)$coef[,2]
+    expect_equivalent(lm_reduced$coef, qrFit$coef[!is.na(qrFit$coef)])
+    expect_equivalent(lm_reduced_se, qrFit$SE[!is.na(qrFit$coef)])
 
     qrRSS <- calc_rss_eigenqr(mm, y)
     expect_equal(rss, qrRSS)
@@ -85,6 +90,16 @@ test_that("lin regr works for reduced-rank example", {
     expect_equal(linreg_rss, rss)
     linreg_resid <- calc_resid_linreg(mm,Y)
     expect_equal(linreg_resid, as.matrix(resid))
+
+    # just the coefficients
+    coef <- calc_coef_linreg(mm, y)
+    expect_equivalent(coef[!is.na(coef)], lm_reduced$coef)
+
+    # coefficients and SEs
+    coefSE <- calc_coefSE_linreg(mm, y)
+    expect_equivalent(coefSE$coef[!is.na(coefSE$coef)], lm_reduced$coef)
+    expect_equivalent(coefSE$SE[!is.na(coefSE$coef)], lm_reduced_se)
+
 })
 
 
