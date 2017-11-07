@@ -6,6 +6,9 @@
   genotype probabilities for a single individual on a single
   chromosome.
 
+- Added `transpose` argument to `plot_onegeno()` to have the option of
+  chromosomes running horizontally rather than vertically.
+
 
 ## qtl2plot 0.5-16 (2017-10-17)
 
