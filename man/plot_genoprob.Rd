@@ -24,7 +24,8 @@ or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}
 
 \item{col}{Optional vector of colors for the heatmap.}
 
-\item{threshold}{Threshold for genotype probabilities; only genotypes that achieve}
+\item{threshold}{Threshold for genotype probabilities; only genotypes that achieve
+this value somewhere on the chromosome will be shown.}
 
 \item{transpose}{If TRUE, swap the axes, so that the genotypes are
 on the x-axis and the chromosome position is on the y-axis.}
@@ -43,9 +44,7 @@ on the x-axis and the chromosome position is on the y-axis.}
 
 \item{vlines.lwd}{Line width of vertical grid lines.}
 
-\item{vlines.lty}{Line type of vertical grid lines.
-
-this value somewhere on the chromosome will be shown.}
+\item{vlines.lty}{Line type of vertical grid lines.}
 
 \item{...}{Additional graphics parameters passed to \code{\link[graphics]{image}}.}
 

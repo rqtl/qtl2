@@ -11,6 +11,7 @@
 #' @param colscheme Color scheme for the heatmap (ignored if \code{col} is provided).
 #' @param col Optional vector of colors for the heatmap.
 #' @param threshold Threshold for genotype probabilities; only genotypes that achieve
+#' this value somewhere on the chromosome will be shown.
 #' @param transpose If TRUE, swap the axes, so that the genotypes are
 #' on the x-axis and the chromosome position is on the y-axis.
 #' @param hlines Position of horizontal grid lines (use \code{NA} to avoid lines).
@@ -22,7 +23,6 @@
 #' @param vlines.lwd Line width of vertical grid lines.
 #' @param vlines.lty Line type of vertical grid lines.
 #'
-#' this value somewhere on the chromosome will be shown.
 #' @param ... Additional graphics parameters passed to \code{\link[graphics]{image}}.
 #'
 #' @export
