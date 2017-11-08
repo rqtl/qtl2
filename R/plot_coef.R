@@ -137,25 +137,17 @@ plot_coef <-
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, map, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", ...)
+    function(x, map, scan1_output=NULL, add=FALSE, gap=25, ...)
 {
     plot_coef(x, map, columns=1:8, col=qtl2plot::CCcolors,
-              scan1_output=scan1_output, add=add, gap=gap,
-              ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
-              ylab=ylab, ...)
+              scan1_output=scan1_output, add=add, gap=gap, ...)
 }
 
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
-    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", ...)
+    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ...)
 {
     plot_coef(x, map, columns=columns, col=col, scan1_output=scan1_output,
-              add=add, gap=gap, ylim=ylim,
-              bgcolor=bgcolor, altbgcolor=altbgcolor,
-              ylab=ylab, ...)
+              add=add, gap=gap, ...)
 }

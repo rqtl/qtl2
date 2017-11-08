@@ -9,13 +9,10 @@
 plot_coef(x, map, columns = NULL, col = NULL, scan1_output = NULL,
   add = FALSE, gap = 25, top_panel_prop = 0.65, ...)
 
-plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25,
-  ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
-  ylab = "QTL effects", ...)
+plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25, ...)
 
 \method{plot}{scan1coef}(x, map, columns = 1, col = NULL,
-  scan1_output = NULL, add = FALSE, gap = 25, ylim = NULL,
-  bgcolor = "gray90", altbgcolor = "gray85", ylab = "QTL effects", ...)
+  scan1_output = NULL, add = FALSE, gap = 25, ...)
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
