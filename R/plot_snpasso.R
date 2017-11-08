@@ -86,7 +86,6 @@
 #' out_snps <- scan1(snp_pr, DOex$pheno)
 #'
 #' # plot results
-#' library(qtl2plot)
 #' plot_snpasso(out_snps, snpinfo)
 #'
 #' # can also just type plot()
@@ -129,22 +128,34 @@ plot_snpasso <-
     # maximum LOD
     maxlod <- max(unclass(scan1output)[,1], na.rm=TRUE)
 
-    if(is.null(ylim))
-        ylim <- c(0, maxlod*1.02)
-
-    if(!is.na(drop_hilit) && !is.null(drop_hilit))
-        col <- c(col, col_hilit)[(scan1output >= maxlod-drop_hilit)+1]
-
     # internal function to give defaults to hidden graphics parameters
     plot_snpasso_internal <-
         function(pch=16, cex=0.5, ylim=NULL, bgcolor="gray90",
-                 altbgcolor="gray85", ...)
+                 altbgcolor="gray85",
+                 drop_hilit=NA, col_hilit="violetred",
+                 drop.hilit=NULL, col.hilit=NULL, ...)
     {
+        if(missing(drop_hilit) && !is.null(drop.hilit)) {
+            warning("drop.hilit is deprecated; use drop_hilit")
+            drop_hilit <- drop.hilit
+        }
+
+        if(missing(col_hilit) && !is.null(col.hilit)) {
+            warning("col.hilit is deprecated; use col_hilit")
+            col_hilit <- col.hilit
+        }
+
+        if(is.null(ylim))
+            ylim <- c(0, maxlod*1.02)
+
+        if(!is.na(drop_hilit) && !is.null(drop_hilit))
+            col <- c(col, col_hilit)[(scan1output >= maxlod-drop_hilit)+1]
+
         plot_scan1(scan1output, map, lodcolumn=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
                    gap=gap, add=add, col = col, type="p", cex=cex, pch=pch, ...)
     }
 
-    plot_snpasso_internal(...)
+    plot_snpasso_internal(drop_hilit=drop_hilit, col_hilit=col_hilit, ...)
 }
 
 

@@ -98,7 +98,6 @@ snp_pr <- genoprob_to_snpprob(apr, snpinfo)
 out_snps <- scan1(snp_pr, DOex$pheno)
 
 # plot results
-library(qtl2plot)
 plot_snpasso(out_snps, snpinfo)
 
 # can also just type plot()
