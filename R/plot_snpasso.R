@@ -31,9 +31,9 @@
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
-#' @param drop.hilit SNPs with LOD score within this amount of the maximum SNP association will be highlighted.
+#' @param drop_hilit SNPs with LOD score within this amount of the maximum SNP association will be highlighted.
 #'
-#' @param col.hilit Color of highlighted points
+#' @param col_hilit Color of highlighted points
 #'
 #' @param col Color of other points
 #'
@@ -96,7 +96,7 @@
 #' plot_snpasso(out_snps, snpinfo, show_all_snps=FALSE)
 #'
 #' # highlight the top snps (with LOD within 1.5 of max)
-#' plot(out_snps, snpinfo, drop.hilit=1.5)
+#' plot(out_snps, snpinfo, drop_hilit=1.5)
 #' }
 #'
 #' @seealso [plot_scan1()], [plot_coef()], [plot_coefCC()]
@@ -104,7 +104,7 @@
 #'
 plot_snpasso <-
     function(scan1output, snpinfo, show_all_snps=TRUE, add=FALSE,
-             drop.hilit=NA, col.hilit="violetred", col="darkslateblue",
+             drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, ...)
 {
     uindex <- unique(snpinfo$index)
@@ -132,8 +132,8 @@ plot_snpasso <-
     if(is.null(ylim))
         ylim <- c(0, maxlod*1.02)
 
-    if(!is.na(drop.hilit) && !is.null(drop.hilit))
-        col <- c(col, col.hilit)[(scan1output >= maxlod-drop.hilit)+1]
+    if(!is.na(drop_hilit) && !is.null(drop_hilit))
+        col <- c(col, col_hilit)[(scan1output >= maxlod-drop_hilit)+1]
 
     # internal function to give defaults to hidden graphics parameters
     plot_snpasso_internal <-

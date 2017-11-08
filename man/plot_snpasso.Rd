@@ -5,7 +5,7 @@
 \title{Plot SNP associations}
 \usage{
 plot_snpasso(scan1output, snpinfo, show_all_snps = TRUE, add = FALSE,
-  drop.hilit = NA, col.hilit = "violetred", col = "darkslateblue",
+  drop_hilit = NA, col_hilit = "violetred", col = "darkslateblue",
   gap = 25, ...)
 }
 \arguments{
@@ -38,9 +38,9 @@ in the \code{genoprobs}
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
 
-\item{drop.hilit}{SNPs with LOD score within this amount of the maximum SNP association will be highlighted.}
+\item{drop_hilit}{SNPs with LOD score within this amount of the maximum SNP association will be highlighted.}
 
-\item{col.hilit}{Color of highlighted points}
+\item{col_hilit}{Color of highlighted points}
 
 \item{col}{Color of other points}
 
@@ -108,7 +108,7 @@ plot(out_snps, snpinfo)
 plot_snpasso(out_snps, snpinfo, show_all_snps=FALSE)
 
 # highlight the top snps (with LOD within 1.5 of max)
-plot(out_snps, snpinfo, drop.hilit=1.5)
+plot(out_snps, snpinfo, drop_hilit=1.5)
 }
 
 }
