@@ -9,6 +9,11 @@
 - Added `transpose` argument to `plot_onegeno()` to have the option of
   chromosomes running horizontally rather than vertically.
 
+## Minor changes
+
+- Throughout, changed arguments like `hlines.col` to use an underscore
+  rather than a period: `hlines_col`.
+
 
 ## qtl2plot 0.5-16 (2017-10-17)
 

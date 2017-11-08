@@ -16,13 +16,13 @@
 #' @param transpose If TRUE, swap the axes, so that the genotypes are
 #' on the x-axis and the chromosome position is on the y-axis.
 #' @param hlines Position of horizontal grid lines (use \code{NA} to avoid lines).
-#' @param hlines.col Color of horizontal grid lines.
-#' @param hlines.lwd Line width of horizontal grid lines.
-#' @param hlines.lty Line type of horizontal grid lines.
+#' @param hlines_col Color of horizontal grid lines.
+#' @param hlines_lwd Line width of horizontal grid lines.
+#' @param hlines_lty Line type of horizontal grid lines.
 #' @param vlines Position of vertical grid lines (use \code{NA} to avoid lines).
-#' @param vlines.col Color of vertical grid lines.
-#' @param vlines.lwd Line width of vertical grid lines.
-#' @param vlines.lty Line type of vertical grid lines.
+#' @param vlines_col Color of vertical grid lines.
+#' @param vlines_lwd Line width of vertical grid lines.
+#' @param vlines_lty Line type of vertical grid lines.
 #' @param ... Additional graphics parameters passed to \code{\link[graphics]{image}}.
 #'
 #' @examples
@@ -81,8 +81,8 @@ plot_genoprob <-
     function(probs, map, ind=1, chr=NULL, geno=NULL,
              color_scheme=c("gray", "viridis"), col=NULL,
              threshold=0, transpose=FALSE,
-             hlines=NULL, hlines.col="#B3B3B370", hlines.lwd=1, hlines.lty=1,
-             vlines=NULL, vlines.col="#B3B3B370", vlines.lwd=1, vlines.lty=1,
+             hlines=NULL, hlines_col="#B3B3B370", hlines_lwd=1, hlines_lty=1,
+             vlines=NULL, vlines_col="#B3B3B370", vlines_lwd=1, vlines_lty=1,
              ...)
 {
     # check inputs
@@ -153,8 +153,8 @@ plot_genoprob <-
     plot_genoprob_internal <-
         function(probs, map, col=NULL, transpose=FALSE,
                  zlim=c(0,1), xlab=NULL, ylab=NULL, las=NULL,
-                 hlines=NULL, hlines.col="gray70", hlines.lwd=1, hlines.lty=1,
-                 vlines=NULL, vlines.col="gray70", vlines.lwd=1, vlines.lty=1,
+                 hlines=NULL, hlines_col="gray70", hlines_lwd=1, hlines_lty=1,
+                 vlines=NULL, vlines_col="gray70", vlines_lwd=1, vlines_lty=1,
                  mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
                  ...)
     {
@@ -215,17 +215,17 @@ plot_genoprob <-
 
         # add grid lines
         if(!(length(hlines)==1 && is.na(hlines)))
-            abline(h=hlines, lty=hlines.lty, lwd=hlines.lwd, col=hlines.col)
+            abline(h=hlines, lty=hlines_lty, lwd=hlines_lwd, col=hlines_col)
         if(!(length(vlines)==1 && is.na(vlines)))
-            abline(v=vlines, lty=vlines.lty, lwd=vlines.lwd, col=vlines.col)
+            abline(v=vlines, lty=vlines_lty, lwd=vlines_lwd, col=vlines_col)
 
         title(xlab=xlab, mgp=mgp.x)
         title(ylab=ylab, mgp=mgp.y)
     }
 
     plot_genoprob_internal(probs, map, col=col, transpose=transpose,
-                           hlines=hlines, hlines.col=hlines.col, hlines.lty=hlines.lty, hlines.lwd=hlines.lwd,
-                           vlines=vlines, vlines.col=vlines.col, vlines.lty=vlines.lty, vlines.lwd=vlines.lwd,
+                           hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
+                           vlines=vlines, vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd,
                            ...)
 
 }

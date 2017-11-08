@@ -130,8 +130,8 @@ plot_onegeno <-
                  xlab=NULL, ylab=NULL,
                  xlim=NULL, ylim=NULL, las=1, xaxs=NULL, yaxs=NULL,
                  mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
-                 hlines=NULL, hlines.col="white", hlines.lwd=1, hlines.lty=1,
-                 vlines=NULL, vlines.col="gray80", vlines.lwd=1, vlines.lty=1,
+                 hlines=NULL, hlines_col="white", hlines_lwd=1, hlines_lty=1,
+                 vlines=NULL, vlines_col="gray80", vlines_lwd=1, vlines_lty=1,
                  ...)
     {
         dots <- list(...)
@@ -215,10 +215,10 @@ plot_onegeno <-
 
         # grid lines
         if(!(length(vlines)==1 && is.na(vlines))) {
-            abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+            abline(v=vlines, col=vlines_col, lwd=vlines_lwd, lty=vlines_lty)
         }
         if(!(length(hlines)==1 && is.na(hlines))) {
-            abline(h=hlines, col=hlines.col, lwd=hlines.lwd, lty=hlines.lty)
+            abline(h=hlines, col=hlines_col, lwd=hlines_lwd, lty=hlines_lty)
         }
 
         # x and y axis labels
