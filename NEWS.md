@@ -1,10 +1,14 @@
-## qtl2plot 0.5-17 (2017-11-07)
+## qtl2plot 0.5-17 (2017-11-08)
 
 ### New features
 
 - Added function `plot_genoprob()` for plotting a heat map of the
   genotype probabilities for a single individual on a single
   chromosome.
+
+- Added function `plot_genoprobcomp()` for plotting a bivariate heat
+  map comparing two sets of genotype probabilities for a single
+  individual on a single chromosome.
 
 - Added `swap_axes` argument to `plot_onegeno()` (to have the option of
   chromosomes running horizontally rather than vertically) and to

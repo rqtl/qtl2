@@ -135,8 +135,6 @@ plot_genoprob <-
         if(sum(geno_keep) == 0) stop("No genotype probabilities exceed the threshold")
         probs <- probs[,geno_keep,drop=FALSE]
     }
-    # reverse order of genotypes, so that the first appears at the top
-    probs <- probs[,ncol(probs):1,drop=FALSE]
 
     # set up colors
     if(is.null(col)) {
@@ -150,83 +148,89 @@ plot_genoprob <-
     if(any(diff(map) < tol))
         map <- map + seq(0, tol, length.out=length(map))
 
-    # the function that does the work
-    plot_genoprob_internal <-
-        function(probs, map, col=NULL, swap_axes=FALSE,
-                 zlim=c(0,1), xlab=NULL, ylab=NULL, las=NULL,
-                 hlines=NULL, hlines_col="gray70", hlines_lwd=1, hlines_lty=1,
-                 vlines=NULL, vlines_col="gray70", vlines_lwd=1, vlines_lty=1,
-                 mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
-                 ...)
-    {
-        dots <- list(...)
-        if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
-        if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
-        if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
-
-        if(swap_axes) {
-            # reverse order of genotypes back so that first appears at left
-            #    then swap_axes
-            probs <- t(probs[,ncol(probs):1,drop=FALSE])
-
-            x <- 1:nrow(probs)
-            y <- map
-
-            if(is.null(xlab)) xlab <- ""
-            if(is.null(ylab)) ylab <- "Position"
-
-            ytick <- pretty(map)
-            yticklab <- NULL
-
-            xtick <- x
-            xticklab <- rownames(probs)
-
-            if(is.null(hlines)) hlines <- pretty(map, n=10)
-            if(is.null(vlines)) vlines <- 1:nrow(probs)
-
-            if(is.null(las)) las <- 2
-        } else {
-            x <- map
-            y <- 1:ncol(probs)
-
-            if(is.null(xlab)) xlab <- "Position"
-            if(is.null(ylab)) ylab <- ""
-
-            xtick <- pretty(map)
-            xticklab <- NULL
-
-            ytick <- y
-            yticklab <- colnames(probs)
-
-            if(is.null(hlines)) hlines <- 1:nrow(probs)
-            if(is.null(vlines)) vlines <- pretty(map, n=10)
-
-            if(is.null(las)) las <- 1
-        }
-
-        image(x, y, probs,
-              ylab="", yaxt="n", xlab="", xaxt="n",
-              las=1, zlim=zlim, col=col, ...)
-
-        if(dots$xaxt != "n")
-            axis(side=1, at=xtick, labels=xticklab, las=las, mgp=mgp.x, tick=FALSE)
-        if(dots$yaxt != "n")
-            axis(side=2, at=ytick, labels=yticklab, las=las, mgp=mgp.y, tick=FALSE)
-
-
-        # add grid lines
-        if(!(length(hlines)==1 && is.na(hlines)))
-            abline(h=hlines, lty=hlines_lty, lwd=hlines_lwd, col=hlines_col)
-        if(!(length(vlines)==1 && is.na(vlines)))
-            abline(v=vlines, lty=vlines_lty, lwd=vlines_lwd, col=vlines_col)
-
-        title(xlab=xlab, mgp=mgp.x)
-        title(ylab=ylab, mgp=mgp.y)
-    }
-
     plot_genoprob_internal(probs, map, col=col, swap_axes=swap_axes,
                            hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
                            vlines=vlines, vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd,
                            ...)
 
+}
+
+
+
+# the function that does the work
+plot_genoprob_internal <-
+    function(probs, map, col=NULL, swap_axes=FALSE,
+             zlim=c(0,1), xlab=NULL, ylab=NULL, las=NULL,
+             hlines=NULL, hlines_col="gray70", hlines_lwd=1, hlines_lty=1,
+             vlines=NULL, vlines_col="gray70", vlines_lwd=1, vlines_lty=1,
+             mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
+             ...)
+{
+    dots <- list(...)
+    if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
+    if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
+    if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
+
+    if(swap_axes) {
+        probs <- t(probs)
+
+        x <- 1:nrow(probs)
+        y <- map
+
+        if(is.null(xlab)) xlab <- ""
+        if(is.null(ylab)) ylab <- "Position"
+
+        ytick <- pretty(map)
+        yticklab <- NULL
+
+        xtick <- x
+        xticklab <- rownames(probs)
+
+        if(is.null(hlines)) hlines <- pretty(map, n=10)
+        if(is.null(vlines)) vlines <- 1:nrow(probs)
+
+        if(is.null(las)) las <- 2
+    } else {
+        # reverse order of genotypes, so that the first appears at the top
+        probs <- probs[,ncol(probs):1,drop=FALSE]
+
+        x <- map
+        y <- 1:ncol(probs)
+
+        if(is.null(xlab)) xlab <- "Position"
+        if(is.null(ylab)) ylab <- ""
+
+        xtick <- pretty(map)
+        xticklab <- NULL
+
+        ytick <- y
+        yticklab <- colnames(probs)
+
+        if(is.null(hlines)) hlines <- 1:nrow(probs)
+        if(is.null(vlines)) vlines <- pretty(map, n=10)
+
+        if(is.null(las)) las <- 1
+    }
+
+    image(x, y, probs,
+          ylab="", yaxt="n", xlab="", xaxt="n",
+          las=1, zlim=zlim, col=col, ...)
+
+    if(dots$xaxt != "n")
+        axis(side=1, at=xtick, labels=xticklab, las=las, mgp=mgp.x, tick=FALSE)
+    if(dots$yaxt != "n")
+        axis(side=2, at=ytick, labels=yticklab, las=las, mgp=mgp.y, tick=FALSE)
+
+
+    # add grid lines
+    if(!(length(hlines)==1 && is.na(hlines)))
+        abline(h=hlines, lty=hlines_lty, lwd=hlines_lwd, col=hlines_col)
+    if(!(length(vlines)==1 && is.na(vlines)))
+        abline(v=vlines, lty=vlines_lty, lwd=vlines_lwd, col=vlines_col)
+
+    title(xlab=xlab, mgp=mgp.x)
+    title(ylab=ylab, mgp=mgp.y)
+
+    # add outer box
+    box()
 }
