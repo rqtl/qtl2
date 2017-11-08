@@ -5,15 +5,12 @@
 \title{Plot phenotype vs genotype}
 \usage{
 plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
-  swap_axes = FALSE, jitter = 0.2, bgcolor = "gray90", seg_width = NULL,
-  seg_lwd = 2, seg_col = "black", hlines = NULL, hlines_col = NULL,
-  hlines_lty = NULL, hlines_lwd = NULL, vlines = NULL,
-  vlines_col = NULL, vlines_lty = NULL, vlines_lwd = NULL,
-  force_labels = TRUE, alternate_labels = FALSE, omit_points = FALSE, ...)
+  swap_axes = FALSE, jitter = 0.2, force_labels = TRUE,
+  alternate_labels = FALSE, omit_points = FALSE, ...)
 }
 \arguments{
 \item{geno}{Vector of genotypes, as produced by
-\code{\link[qtl2geno]{maxmarg}} with specific \code{chr} and
+\code{\link[qtl2geno:maxmarg]{qtl2geno::maxmarg()}} with specific \code{chr} and
 \code{pos}.}
 
 \item{pheno}{Vector of phenotypes.}
@@ -34,41 +31,30 @@ on the y-axis and the phenotype is on the x-axis.}
 of length > 0, it is taken to be the actual jitter amounts
 (with values between -0.5 and 0.5).}
 
-\item{bgcolor}{Background color for the plot.}
-
-\item{seg_width}{Width of segments at the estimated within-group averages}
-
-\item{seg_lwd}{Line width used to plot estimated within-group averages}
-
-\item{seg_col}{Line color used to plot estimated within-group averages}
-
-\item{hlines}{Locations of horizontal grid lines.}
-
-\item{hlines_col}{Color of horizontal grid lines}
-
-\item{hlines_lty}{Line type of horizontal grid lines}
-
-\item{hlines_lwd}{Line width of horizontal grid lines}
-
-\item{vlines}{Locations of vertical grid lines.}
-
-\item{vlines_col}{Color of vertical grid lines}
-
-\item{vlines_lty}{Line type of vertical grid lines}
-
-\item{vlines_lwd}{Line width of vertical grid lines}
-
 \item{force_labels}{If TRUE, force all genotype labels to be shown.}
 
 \item{alternate_labels}{If TRUE, place genotype labels in two rows}
 
 \item{omit_points}{If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).}
 
-\item{...}{Additional graphics parameters, passed to \code{\link[graphics]{plot}}.}
+\item{...}{Additional graphics parameters, passed to \code{\link[graphics:plot]{graphics::plot()}}.}
 }
 \description{
 Plot phenotype vs genotype for a single putative QTL and a single phenotype.
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color, and
+\code{seg_width}, \code{seg_lwd}, and \code{seg_col} to control the lines at the
+confidence intervals. Further, \code{hlines}, \code{hlines_col},
+\code{hlines_lwd}, and \code{hlines_lty} to control the horizontal grid
+lines. (Use \code{hlines=NA} to avoid plotting horizontal grid lines.)
+Similarly \code{vlines}, \code{vlines_col}, \code{vlines_lwd}, and \code{vlines_lty}
+for vertical grid lines. These are not included as formal
+parameters in order to avoid cluttering the function definition.
+}
+
 \examples{
 # load qtl2geno package for data and genoprob calculation
 library(qtl2geno)
@@ -101,5 +87,5 @@ plot_pxg(geno, log10(iron$pheno[,1]), ylab=expression(log[10](Liver)),
          omit_points=TRUE, SEmult=2)
 }
 \seealso{
-\code{\link{plot_coef}}
+\code{\link[=plot_coef]{plot_coef()}}
 }
