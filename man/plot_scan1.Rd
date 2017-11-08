@@ -6,16 +6,16 @@
 \title{Plot a genome scan}
 \usage{
 plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = 25,
-  bgcolor = "gray90", altbgcolor = "gray85", ...)
+  ...)
 
 \method{plot}{scan1}(x, map, lodcolumn = 1, chr = NULL, add = FALSE,
-  gap = 25, bgcolor = "gray90", altbgcolor = "gray85", ...)
+  gap = 25, ...)
 }
 \arguments{
-\item{x}{Output of \code{\link[qtl2scan]{scan1}}.}
+\item{x}{Output of \code{\link[qtl2scan:scan1]{qtl2scan::scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{lodcolumn}{LOD score column to plot (a numeric index, or a
 character string for a column name). Only one value allowed.}
@@ -28,10 +28,6 @@ chromosomes).}
 
 \item{gap}{Gap between chromosomes.}
 
-\item{bgcolor}{Background color for the plot.}
-
-\item{altbgcolor}{Background color for alternate chromosomes.}
-
 \item{...}{Additional graphics parameters.}
 }
 \value{
@@ -40,6 +36,15 @@ None.
 \description{
 Plot LOD curves for a genome scan
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color and
+\code{altbgcolor} to control the background color on alternate chromosomes.
+These are not included as formal parameters in order to avoid
+cluttering the function definition.
+}
+
 \examples{
 # load qtl2geno package for data and genoprob calculation
 library(qtl2geno)
@@ -80,5 +85,5 @@ plot(out, map, lodcolumn="liver", ylim=ylim)
 plot(out, map, lodcolumn="spleen", col="violetred", add=TRUE)
 }
 \seealso{
-\code{\link{plot_coef}}, \code{\link{plot_coefCC}}, \code{\link{plot_snpasso}}
+\code{\link[=plot_coef]{plot_coef()}}, \code{\link[=plot_coefCC]{plot_coefCC()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
 }
