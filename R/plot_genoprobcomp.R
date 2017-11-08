@@ -49,8 +49,7 @@
 #' plot_genoprobcomp(pr_e, pr_ne, map, main="Comparison")
 #'
 #' @export
-#' @importFrom graphics image par axis title box
-#' @importFrom grDevices gray
+#' @importFrom grDevices rgb
 plot_genoprobcomp <-
     function(probs1, probs2, map, ind=1, chr=NULL, geno=NULL,
              threshold=0, n_colors=256, swap_axes=FALSE,

@@ -230,4 +230,7 @@ plot_genoprob_internal <-
 
     title(xlab=xlab, mgp=mgp.x)
     title(ylab=ylab, mgp=mgp.y)
+
+    # add outer box
+    box()
 }
