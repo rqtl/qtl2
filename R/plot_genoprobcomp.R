@@ -115,8 +115,22 @@ plot_genoprobcomp <-
         probs2 <- probs2[,geno_keep,drop=FALSE]
     }
 
-    # combine them into a single array
-    probs <- floor(probs1*(n_colors-1))*(n_colors-1) + floor(probs2*(n_colors-1))
+    # save dimnames
+    dn <- dimnames(probs1)
+
+    # split probabilities into integer levels
+    #    need to screw around a bit with case of 1+epsilon
+    probs1[probs1 > 1] <- 1
+    probs1 <- matrix(as.numeric(cut(probs1, breaks=seq(0, 1, length=n_colors+1), include.lowest=TRUE, right=TRUE)),
+                     ncol=ncol(probs1), nrow=nrow(probs1))
+
+    probs2[probs2 > 1] <- 1
+    probs2 <- matrix(as.numeric(cut(probs2, breaks=seq(0, 1, length=n_colors+1), include.lowest=TRUE, right=TRUE)),
+                     ncol=ncol(probs2), nrow=nrow(probs2))
+
+    # combine into one object
+    probs <- (probs1-1)*n_colors + probs2
+    dimnames(probs) <- dn
 
     # create color palette
     redmat <- bluemat <- matrix(ncol=3, nrow=n_colors)
