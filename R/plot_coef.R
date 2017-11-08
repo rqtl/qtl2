@@ -5,10 +5,10 @@
 #' @md
 #'
 #' @param x Estimated QTL effects ("coefficients") as obtained from
-#' `\link[qtl2scan]{scan1coef}`.
+#' [qtl2scan::scan1coef()].
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' `\link[qtl2geno]{insert_pseudomarkers}`.
+#' [qtl2geno::insert_pseudomarkers()].
 #'
 #' @param columns Vector of columns to plot
 #'
@@ -35,9 +35,9 @@
 #' @details
 #' `plot_coefCC()` is the same as `plot_coef()`, but forcing
 #' `columns=1:8` and using the Collaborative Cross colors,
-#' `\link{CCcolors}`.
+#' [CCcolors].
 #'
-#' @seealso `\link{CCcolors}`, `\link{plot_scan1}`, `\link{plot_snpasso}`
+#' @seealso [CCcolors], [plot_scan1()], [plot_snpasso()]
 #'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For

@@ -19,10 +19,10 @@ plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25,
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
-\code{\link[qtl2scan]{scan1coef}}.}
+\code{\link[qtl2scan:scan1coef]{qtl2scan::scan1coef()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{columns}{Vector of columns to plot}
 
@@ -49,7 +49,7 @@ Plot estimated QTL effects along a chromosomes.
 \details{
 \code{plot_coefCC()} is the same as \code{plot_coef()}, but forcing
 \code{columns=1:8} and using the Collaborative Cross colors,
-\code{\link{CCcolors}}.
+\link{CCcolors}.
 }
 \section{Hidden graphics parameters}{
 
@@ -90,5 +90,5 @@ coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 }
 \seealso{
-\code{\link{CCcolors}}, \code{\link{plot_scan1}}, \code{\link{plot_snpasso}}
+\link{CCcolors}, \code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
 }

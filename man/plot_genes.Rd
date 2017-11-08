@@ -29,7 +29,7 @@ bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 
 \item{name_field}{Character string with name of column containing the genes' names.}
 
-\item{...}{Optional arguments passed to \code{\link[graphics]{plot}}.}
+\item{...}{Optional arguments passed to \code{\link[graphics:plot]{graphics::plot()}}.}
 }
 \value{
 None.
