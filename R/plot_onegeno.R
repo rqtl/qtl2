@@ -10,6 +10,7 @@
 #' @param chr Selected chromosomes to plot; a vector of character strings.
 #' @param col Vector of colors for the different genotypes.
 #' @param na_col Color for missing segments.
+#' @param swap_axes If TRUE, swap the axes, so that the chromosomes run horizontally.
 #' @param border Color of outer border around chromosome rectangles.
 #' @param shift If TRUE, shift the chromosomes so they all start at 0.
 #' @param bgcolor Color for background rectangle
@@ -17,10 +18,49 @@
 #'     fraction of the distance between them.
 #' @param ... Additional graphics parameters
 #'
+#'
+#' @examples
+#' # load data and calculate genotype probabilities
+#' library(qtl2geno)
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- iron["146", ] # subset to individual 146
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#' pr <- calc_genoprob(iron, map, error_prob=0.002)
+#'
+#' # infer genotypes, as those with maximal marginal probability
+#' m <- maxmarg(pr)
+#'
+#' # guess phase
+#' ph <- guess_phase(iron, m)
+#'
+#' # plot phased genotypes
+#' plot_onegeno(ph, map, shift=TRUE, col=c("slateblue", "Orchid"))
+#'
+#' # this is more interesting for Diversity Outbred mouse data
+#' \dontrun{
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/master/DOex/DOex.zip")
+#' DOex <- read_cross2(file)
+#' # subset to individuals labeled "232" and "256"
+#' DOex <- DOex[c("232", "256"), ]
+#' pr <- calc_genoprob(DOex, error_prob=0.002)
+#'
+#' # infer genotypes, as those with maximal marginal probability
+#' m <- maxmarg(pr, minprob=0.5)
+#' # guess phase
+#' ph <- guess_phase(DOex, m)
+#'
+#' # plot phased genotypes
+#' plot_onegeno(ph, DOex$gmap, shift=TRUE)
+#' plot_onegeno(ph, DOex$gmap, ind="256", shift=TRUE)
+#' }
+#'
 #' @export
 #' @importFrom graphics plot rect par axis title abline box
 plot_onegeno <-
-    function(geno, map, ind=1, chr=NULL, col=NULL, na_col="white",
+    function(geno, map, ind=1, chr=NULL,
+             col=NULL, na_col="white",
+             swap_axes=FALSE,
              border="black", shift=FALSE, bgcolor="gray90",
              chrwidth=0.5, ...)
 {
@@ -84,27 +124,53 @@ plot_onegeno <-
 
     plot_onegeno_internal <-
         function(geno, map, col=NULL, na_col="white",
+                 swap_axes=FALSE,
                  border="black", bgcolor="gray90",
                  chrwidth=0.5,
-                 xlab="Chromosome", ylab="Position (Mbp)",
-                 ylim=NULL, main="", las=1, xaxs="i", yaxs="r",
+                 xlab=NULL, ylab=NULL,
+                 xlim=NULL, ylim=NULL, las=1, xaxs=NULL, yaxs=NULL,
                  mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
-                 hlines=NULL, hlines.col="white", hlines.lwd=1, hlines.lty=1,
-                 vlines=NULL, vlines.col="gray80", vlines.lwd=1, vlines.lty=1,
+                 hlines=NULL, hlines_col="white", hlines_lwd=1, hlines_lty=1,
+                 vlines=NULL, vlines_col="gray80", vlines_lwd=1, vlines_lty=1,
                  ...)
     {
         dots <- list(...)
-        if(is.null(ylim)) ylim <- rev(range(unlist(map), na.rm=TRUE))
 
         nchr <- length(map)
-        xlim <- c(0.5, nchr+0.5)
 
         # margin parameters
         if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
 
-        plot(0, 0, type="n", xlab="", ylab="", main=main,
+        if(swap_axes) {
+            if(is.null(xlab)) xlab <- "Position"
+            if(is.null(ylab)) ylab <- "Chromosome"
+
+            if(is.null(xlim)) xlim <- range(unlist(map), na.rm=TRUE)
+            if(is.null(ylim)) ylim <- c(nchr+0.5, 0.5)
+
+            if(is.null(hlines)) hlines <- 1:nchr
+            if(is.null(vlines)) vlines <- pretty(xlim)
+
+            if(is.null(xaxs)) xaxs <- "r"
+            if(is.null(yaxs)) yaxs <- "i"
+        }
+        else {
+            if(is.null(xlab)) xlab <- "Chromosome"
+            if(is.null(ylab)) ylab <- "Position"
+
+            if(is.null(xlim)) xlim <- c(0.5, nchr+0.5)
+            if(is.null(ylim)) ylim <- rev(range(unlist(map), na.rm=TRUE))
+
+            if(is.null(hlines)) hlines <- pretty(ylim)
+            if(is.null(vlines)) vlines <- 1:nchr
+
+            if(is.null(xaxs)) xaxs <- "i"
+            if(is.null(yaxs)) yaxs <- "r"
+        }
+
+        plot(0, 0, type="n", xlab="", ylab="",
              xaxs=xaxs, yaxs=yaxs,
-             xaxt="n", yaxt="n", xlim=xlim, ylim=ylim)
+             xaxt="n", yaxt="n", xlim=xlim, ylim=ylim, ...)
         u <- par("usr")
         if(!is.null(bgcolor))
             rect(u[1], u[3], u[2], u[4], col=bgcolor, border=NA)
@@ -113,30 +179,46 @@ plot_onegeno <-
         if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
         if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
 
-        # add x axis unless par(xaxt="n")
-        if(dots$xaxt != "n") {
-            odd <- seq(1, nchr, by=2)
-            axis(side=1, at=odd, names(map)[odd],
-                 mgp=mgp.x, las=las, tick=FALSE)
-            if(nchr > 1) {
-                even <- seq(2, nchr, by=2)
-                axis(side=1, at=even, names(map)[even],
-                     mgp=mgp.x, las=las, tick=FALSE)
+        if(swap_axes) {
+            # add y axis unless par(yaxt="n")
+            if(dots$yaxt != "n") {
+                odd <- seq(1, nchr, by=2)
+                axis(side=2, at=odd, names(map)[odd],
+                     mgp=mgp.y, las=las, tick=FALSE)
+                if(nchr > 1) {
+                    even <- seq(2, nchr, by=2)
+                    axis(side=2, at=even, names(map)[even],
+                         mgp=mgp.y, las=las, tick=FALSE)
+                }
             }
-        }
-        # add y axis unless par(yaxt="n")
-        if(dots$yaxt != "n") {
-            axis(side=2, at=pretty(ylim), mgp=mgp.y, las=las, tick=FALSE)
+            # add x axis unless par(xaxt="n")
+            if(dots$xaxt != "n") {
+                axis(side=1, at=pretty(xlim), mgp=mgp.x, las=las, tick=FALSE)
+            }
+        } else {
+            # add x axis unless par(xaxt="n")
+            if(dots$xaxt != "n") {
+                odd <- seq(1, nchr, by=2)
+                axis(side=1, at=odd, names(map)[odd],
+                     mgp=mgp.x, las=las, tick=FALSE)
+                if(nchr > 1) {
+                    even <- seq(2, nchr, by=2)
+                    axis(side=1, at=even, names(map)[even],
+                         mgp=mgp.x, las=las, tick=FALSE)
+                }
+            }
+            # add y axis unless par(yaxt="n")
+            if(dots$yaxt != "n") {
+                axis(side=2, at=pretty(ylim), mgp=mgp.y, las=las, tick=FALSE)
+            }
         }
 
         # grid lines
         if(!(length(vlines)==1 && is.na(vlines))) {
-            if(is.null(vlines)) vlines <- 1:nchr
-            abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+            abline(v=vlines, col=vlines_col, lwd=vlines_lwd, lty=vlines_lty)
         }
         if(!(length(hlines)==1 && is.na(hlines))) {
-            if(is.null(hlines)) hlines <- pretty(ylim)
-            abline(h=hlines, col=hlines.col, lwd=hlines.lwd, lty=hlines.lty)
+            abline(h=hlines, col=hlines_col, lwd=hlines_lwd, lty=hlines_lty)
         }
 
         # x and y axis labels
@@ -161,51 +243,84 @@ plot_onegeno <-
         for(i in 1:nchr) {
             g <- geno[[i]]
 
-            # if completely missing the second chr, treat as if we have just the one
+            # if completely missing the second chr but not the first, treat as if we have just the one
+            #   (this is a kludge to deal with males on X chr;
+            #    really should use is_x_chr and is_female but we don't have it)
             this_chrwidth <- chrwidth
-            if(!is.matrix(g) && all(is.na(g[,,2]))) {
+            if(!is.matrix(g) && !all(is.na(g[,,1])) && all(is.na(g[,,2]))) {
                 g <- rbind(g[,,1]) # make it a row matrix
                 this_chrwidth <- this_chrwidth/2
             }
 
             if(is.matrix(g)) { # phase-known
-                rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
-                     i+this_chrwidth/2, max(map[[i]], na.rm=TRUE),
-                     col=na_col, border=border, lend=1, ljoin=1)
+                if(swap_axes) {
+                    rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
+                         max(map[[i]], na.rm=TRUE), i+this_chrwidth/2,
+                         col=na_col, border=border, lend=1, ljoin=1)
+                } else {
+                    rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
+                         i+this_chrwidth/2, max(map[[i]], na.rm=TRUE),
+                         col=na_col, border=border, lend=1, ljoin=1)
+                }
 
                 addgenorect(g[1,], map[[i]], i-this_chrwidth/2, i+this_chrwidth/2,
-                            col=col)
+                            col=col, swap_axes=swap_axes)
 
-                rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
-                     i+this_chrwidth/2, max(map[[i]], na.rm=TRUE),
-                     col=NULL, border=border, lend=1, ljoin=1)
+                if(swap_axes) {
+                    rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
+                         max(map[[i]], na.rm=TRUE), i+this_chrwidth/2,
+                         col=NULL, border=border, lend=1, ljoin=1)
+                } else {
+                    rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
+                         i+this_chrwidth/2, max(map[[i]], na.rm=TRUE),
+                         col=NULL, border=border, lend=1, ljoin=1)
+                }
             }
             else {
-                rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
-                     i, max(map[[i]], na.rm=TRUE),
-                     col=na_col, border=border, lend=1, ljoin=1)
-                rect(i+this_chrwidth/2, min(map[[i]], na.rm=TRUE),
-                     i, max(map[[i]], na.rm=TRUE),
-                     col=na_col, border=border, lend=1, ljoin=1)
+                if(swap_axes) {
+                    rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
+                         max(map[[i]], na.rm=TRUE), i,
+                         col=na_col, border=border, lend=1, ljoin=1)
+                    rect(min(map[[i]], na.rm=TRUE), i+this_chrwidth/2,
+                         max(map[[i]], na.rm=TRUE), i,
+                         col=na_col, border=border, lend=1, ljoin=1)
+                } else {
+                    rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
+                         i, max(map[[i]], na.rm=TRUE),
+                         col=na_col, border=border, lend=1, ljoin=1)
+                    rect(i+this_chrwidth/2, min(map[[i]], na.rm=TRUE),
+                         i, max(map[[i]], na.rm=TRUE),
+                         col=na_col, border=border, lend=1, ljoin=1)
+                }
 
                 addgenorect(g[1,,1], map[[i]], i-this_chrwidth/2, i,
-                            col=col)
+                            col=col, swap_axes=swap_axes)
                 addgenorect(g[1,,2], map[[i]], i+this_chrwidth/2, i,
-                            col=col)
+                            col=col, swap_axes=swap_axes)
 
-                rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
-                     i, max(map[[i]], na.rm=TRUE),
-                     col=NULL, border=border, lend=1, ljoin=1)
-                rect(i+this_chrwidth/2, min(map[[i]], na.rm=TRUE),
-                     i, max(map[[i]], na.rm=TRUE),
-                     col=NULL, border=border, lend=1, ljoin=1)
+                if(swap_axes) {
+                    rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
+                         max(map[[i]], na.rm=TRUE), i,
+                         col=NULL, border=border, lend=1, ljoin=1)
+                    rect(min(map[[i]], na.rm=TRUE), i+this_chrwidth/2,
+                         max(map[[i]], na.rm=TRUE), i,
+                         col=NULL, border=border, lend=1, ljoin=1)
+                } else {
+                    rect(i-this_chrwidth/2, min(map[[i]], na.rm=TRUE),
+                         i, max(map[[i]], na.rm=TRUE),
+                         col=NULL, border=border, lend=1, ljoin=1)
+                    rect(i+this_chrwidth/2, min(map[[i]], na.rm=TRUE),
+                         i, max(map[[i]], na.rm=TRUE),
+                         col=NULL, border=border, lend=1, ljoin=1)
+                }
             }
         }
 
         box()
     }
 
-    plot_onegeno_internal(geno, map, col=col, na_col=na_col, border=border,
+    plot_onegeno_internal(geno, map, col=col, na_col=na_col,
+                          swap_axes=swap_axes, border=border,
                           bgcolor=bgcolor, chrwidth=chrwidth, ...)
 
 
@@ -213,16 +328,23 @@ plot_onegeno <-
 
 # add rectangles for the genotypes
 addgenorect <-
-    function(geno, map, x1, x2, col)
+    function(geno, map, x1, x2, col, swap_axes=FALSE)
 {
     intervals <- geno2intervals(geno, map)
     if(is.null(intervals) || nrow(intervals) < 1) return(NULL)
 
     for(i in 1:nrow(intervals)) {
-        rect(x1, intervals[i,1],
-             x2, intervals[i,2],
-             col=col[intervals[i,3]],
-             border=NA, lend=1, ljoin=1)
+        if(swap_axes) {
+            rect(intervals[i,1], x1,
+                 intervals[i,2], x2,
+                 col=col[intervals[i,3]],
+                 border=NA, lend=1, ljoin=1)
+        } else{
+            rect(x1, intervals[i,1],
+                 x2, intervals[i,2],
+                 col=col[intervals[i,3]],
+                 border=NA, lend=1, ljoin=1)
+        }
     }
 }
 

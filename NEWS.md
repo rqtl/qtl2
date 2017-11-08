@@ -1,3 +1,22 @@
+## qtl2plot 0.5-17 (2017-11-07)
+
+### New features
+
+- Added function `plot_genoprob()` for plotting a heat map of the
+  genotype probabilities for a single individual on a single
+  chromosome.
+
+- Added `swap_axes` argument to `plot_onegeno()` (to have the option of
+  chromosomes running horizontally rather than vertically) and to
+  `plot_pxg()` (to have the option of having genotypes on y-axis and
+  phenotypes horizontally).
+
+## Minor changes
+
+- Throughout, changed arguments like `hlines.col` to use an underscore
+  rather than a period: `hlines_col`.
+
+
 ## qtl2plot 0.5-16 (2017-10-17)
 
 ### New features

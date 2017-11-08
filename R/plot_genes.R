@@ -78,8 +78,8 @@ plot_genes <-
         function(xlab="Position (Mbp)", xaxs="i",
                  bgcolor="gray92", xat=NULL,
                  mgp=c(1.6,0.2,0),
-                 vlines=NULL, vlines.col="white",
-                 vlines.lwd=1, vlines.lty=1)
+                 vlines=NULL, vlines_col="white",
+                 vlines_lwd=1, vlines_lty=1)
         {
             plot(0, 0, type="n",
                  xlim=xlim,   xlab=xlab, xaxs=xaxs, xaxt="n",
@@ -97,7 +97,7 @@ plot_genes <-
             # vertical lines
             if(is.null(vlines)) vlines <- xat
             if(length(vlines) > 1 || !is.na(vlines))
-                abline(v=vlines, col=vlines.col, lwd=vlines.lwd, lty=vlines.lty)
+                abline(v=vlines, col=vlines_col, lwd=vlines_lwd, lty=vlines_lty)
 
             box()
         }

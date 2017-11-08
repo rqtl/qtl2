@@ -5,8 +5,8 @@
 \title{Plot one individual's genome-wide genotypes}
 \usage{
 plot_onegeno(geno, map, ind = 1, chr = NULL, col = NULL,
-  na_col = "white", border = "black", shift = FALSE, bgcolor = "gray90",
-  chrwidth = 0.5, ...)
+  na_col = "white", swap_axes = FALSE, border = "black", shift = FALSE,
+  bgcolor = "gray90", chrwidth = 0.5, ...)
 }
 \arguments{
 \item{geno}{Imputed phase-known genotypes, as a list of matrices
@@ -23,6 +23,8 @@ three-dimensional arrays (as produced by \code{\link[qtl2geno]{guess_phase}}).}
 
 \item{na_col}{Color for missing segments.}
 
+\item{swap_axes}{If TRUE, swap the axes, so that the chromosomes run horizontally.}
+
 \item{border}{Color of outer border around chromosome rectangles.}
 
 \item{shift}{If TRUE, shift the chromosomes so they all start at 0.}
@@ -36,4 +38,41 @@ fraction of the distance between them.}
 }
 \description{
 Plot one individual's genome-wide genotypes
+}
+\examples{
+# load data and calculate genotype probabilities
+library(qtl2geno)
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- iron["146", ] # subset to individual 146
+map <- insert_pseudomarkers(iron$gmap, step=1)
+pr <- calc_genoprob(iron, map, error_prob=0.002)
+
+# infer genotypes, as those with maximal marginal probability
+m <- maxmarg(pr)
+
+# guess phase
+ph <- guess_phase(iron, m)
+
+# plot phased genotypes
+plot_onegeno(ph, map, shift=TRUE, col=c("slateblue", "Orchid"))
+
+# this is more interesting for Diversity Outbred mouse data
+\dontrun{
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DOex/DOex.zip")
+DOex <- read_cross2(file)
+# subset to individuals labeled "232" and "256"
+DOex <- DOex[c("232", "256"), ]
+pr <- calc_genoprob(DOex, error_prob=0.002)
+
+# infer genotypes, as those with maximal marginal probability
+m <- maxmarg(pr, minprob=0.5)
+# guess phase
+ph <- guess_phase(DOex, m)
+
+# plot phased genotypes
+plot_onegeno(ph, DOex$gmap, shift=TRUE)
+plot_onegeno(ph, DOex$gmap, ind="256", shift=TRUE)
+}
+
 }

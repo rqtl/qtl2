@@ -12,6 +12,8 @@
 #' @param pooledSD If TRUE and \code{SEmult} is specified, calculated
 #' a pooled within-group SD. Otherwise, get separate estimates of
 #' the within-group SD for each group.
+#' @param swap_axes If TRUE, swap the axes, so that the genotypes are
+#' on the y-axis and the phenotype is on the x-axis.
 #' @param jitter Amount to jitter the points horizontally, if a vector
 #' of length > 0, it is taken to be the actual jitter amounts
 #' (with values between -0.5 and 0.5).
@@ -23,6 +25,7 @@
 #' @param hlines_col Color of horizontal grid lines
 #' @param hlines_lty Line type of horizontal grid lines
 #' @param hlines_lwd Line width of horizontal grid lines
+#' @param vlines Locations of vertical grid lines.
 #' @param vlines_col Color of vertical grid lines
 #' @param vlines_lty Line type of vertical grid lines
 #' @param vlines_lwd Line width of vertical grid lines
@@ -69,10 +72,10 @@
 #'          omit_points=TRUE, SEmult=2)
 plot_pxg <-
     function(geno, pheno, sort=TRUE, SEmult=NULL, pooledSD=TRUE,
-             jitter=0.2, bgcolor="gray90",
-             seg_width=0.4, seg_lwd=2, seg_col="black",
-             hlines=NULL, hlines_col="white", hlines_lty=1, hlines_lwd=1,
-             vlines_col="gray80", vlines_lty=1, vlines_lwd=3,
+             swap_axes=FALSE, jitter=0.2, bgcolor="gray90",
+             seg_width=NULL, seg_lwd=2, seg_col="black",
+             hlines=NULL, hlines_col=NULL, hlines_lty=NULL, hlines_lwd=NULL,
+             vlines=NULL, vlines_col=NULL, vlines_lty=NULL, vlines_lwd=NULL,
              force_labels=TRUE, alternate_labels=FALSE,
              omit_points=FALSE, ...)
 {
@@ -129,25 +132,87 @@ plot_pxg <-
     }
 
     plot_pxg_internal <-
-        function(geno, pheno, bgcolor="gray90",
-                 seg_width=0.2, seg_lwd=2, seg_col="slateblue",
-                 hlines=NULL, hlines_col="white", hlines_lty=1, hlines_lwd=1,
-                 vlines_col="gray80", vlines_lty=1, vlines_lwd=3,
-                 xlim=c(0.5, length(ugeno)+0.5), ylim=NULL,
-                 xaxs="i", yaxs="r", xlab="Genotype", ylab="Phenotype",
-                 mgp=c(2.6, 0.3, 0), mgp.x=mgp, mgp.y=mgp, las=1,
+        function(geno, pheno, swap_axes=FALSE, bgcolor="gray90",
+                 seg_width=NULL, seg_lwd=2, seg_col="slateblue",
+                 hlines=NULL, hlines_col=NULL, hlines_lty=NULL, hlines_lwd=NULL,
+                 vlines=NULL, vlines_col=NULL, vlines_lty=NULL, vlines_lwd=NULL,
+                 xlim=NULL, ylim=NULL,
+                 xaxs=NULL, yaxs=NULL, xlab=NULL, ylab=NULL,
+                 mgp=c(2.6, 0.3, 0), mgp.x=mgp, mgp.y=mgp, las=NULL,
                  pch=21, bg="lightblue", ...)
         {
-            # get y-axis limits
-            if(is.null(ylim)) {
-                if(omit_points) {
-                    ylim <- range(me, na.rm=TRUE)
-                } else {
-                    ylim <- range(pheno, na.rm=TRUE)
+            if(swap_axes) {
+                if(is.null(ylim)) ylim <- c(0.5, length(ugeno)+0.5)
+
+                # get x-axis limits
+                if(is.null(xlim)) {
+                    if(omit_points) {
+                        xlim <- range(me, na.rm=TRUE)
+                    } else {
+                        xlim <- range(pheno, na.rm=TRUE)
+                    }
+                    if(!is.null(SEmult)) {
+                        xlim <- range(c(xlim, me-se*SEmult, me+se*SEmult), na.rm=TRUE)
+                    }
                 }
-                if(!is.null(SEmult)) {
-                    ylim <- range(c(ylim, me-se*SEmult, me+se*SEmult), na.rm=TRUE)
+
+                if(is.null(xlab)) xlab <- "Phenotype"
+                if(is.null(ylab)) ylab <- "Genotype"
+
+                if(is.null(yaxs)) yaxs <- "i"
+                if(is.null(xaxs)) xaxs <- "r"
+
+                if(is.null(las)) las <- 1
+
+                if(is.null(hlines)) hlines <- 1:length(ugeno)
+                if(is.null(vlines)) vlines <- pretty(pheno)
+                if(is.null(hlines_col)) hlines_col <- "gray80"
+                if(is.null(hlines_lwd)) hlines_lwd <- 3
+                if(is.null(hlines_lty)) hlines_lty <- 1
+                if(is.null(vlines_col)) vlines_col <- "white"
+                if(is.null(vlines_lwd)) vlines_lwd <- 1
+                if(is.null(vlines_lty)) vlines_lty <- 1
+
+                x <- pheno
+                y <- match(geno, ugeno) + jitter
+
+            } else {
+                if(is.null(xlim)) xlim <- c(0.5, length(ugeno)+0.5)
+
+                # get y-axis limits
+                if(is.null(ylim)) {
+                    if(omit_points) {
+                        ylim <- range(me, na.rm=TRUE)
+                    } else {
+                        ylim <- range(pheno, na.rm=TRUE)
+                    }
+                    if(!is.null(SEmult)) {
+                        ylim <- range(c(ylim, me-se*SEmult, me+se*SEmult), na.rm=TRUE)
+                    }
                 }
+
+                if(is.null(ylab)) ylab <- "Phenotype"
+                if(is.null(xlab)) xlab <- "Genotype"
+
+                if(is.null(xaxs)) xaxs <- "i"
+                if(is.null(yaxs)) yaxs <- "r"
+
+                if(is.null(las)) {
+                    las <- ifelse(length(ugeno) > 4, 2, 1)
+                }
+
+                if(is.null(hlines)) hlines <- pretty(pheno)
+                if(is.null(vlines)) vlines <- 1:length(ugeno)
+                if(is.null(vlines_col)) vlines_col <- "gray80"
+                if(is.null(vlines_lwd)) vlines_lwd <- 3
+                if(is.null(vlines_lty)) vlines_lty <- 1
+                if(is.null(hlines_col)) hlines_col <- "white"
+                if(is.null(hlines_lwd)) hlines_lwd <- 1
+                if(is.null(hlines_lty)) hlines_lty <- 1
+
+                y <- pheno
+                x <- match(geno, ugeno) + jitter
+
             }
 
             plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab="", ylab="", xaxt="n",
@@ -158,45 +223,81 @@ plot_pxg <-
             u <- par("usr")
             rect(u[1], u[3], u[2], u[4], col=bgcolor, border=NA)
 
-            x <- seq_along(ugeno)
-            abline(v=x, lwd=vlines_lwd, lty=vlines_lty, col=vlines_col)
+            # grid lines (if swap_axes, horizontal over vertical
+            if(!swap_axes) {
+                if(!(length(vlines)==1 && is.na(vlines)))
+                    abline(v=vlines, lwd=vlines_lwd, lty=vlines_lty, col=vlines_col)
+            }
+            if(!(length(hlines)==1 && is.na(hlines)))
+                abline(h=hlines, lwd=hlines_lwd, lty=hlines_lty, col=hlines_col)
+            if(swap_axes) {
+                if(!(length(vlines)==1 && is.na(vlines)))
+                    abline(v=vlines, lwd=vlines_lwd, lty=vlines_lty, col=vlines_col)
+            }
+
+            # x-axis labels
+            xtick <- seq_along(ugeno)
+            side <- swap_axes + 1
+            this_mgp <- list(mgp.x, mgp.y)[[side]]
             if(force_labels) {
-                if(alternate_labels) {
-                    for(i in x)
-                        axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE,
-                             line=2 - (i %% 2)-1, las=las)
-                } else {
-                    for(i in x)
-                        axis(side=1, at=i, labels=ugeno[i], mgp=mgp.x, tick=FALSE, las=las)
-                }
+                    if(alternate_labels) {
+                        for(i in xtick)
+                            axis(side=side, at=i, labels=ugeno[i], mgp=this_mgp, tick=FALSE,
+                                 line=2 - (i %% 2)-1, las=las)
+                    } else {
+                        for(i in xtick)
+                            axis(side=side, at=i, labels=ugeno[i], mgp=this_mgp, tick=FALSE, las=las)
+                    }
             } else {
                 if(alternate_labels) {
                     odd <- seq(1, length(ugeno), by=2)
-                    axis(side=1, at=x[odd], labels=ugeno[odd], mgp=mgp.x, tick=FALSE, las=las)
+                    axis(side=side, at=xtick[odd], labels=ugeno[odd], mgp=this_mgp, tick=FALSE, las=las)
                     if(length(ugeno) > 1) {
-                        axis(side=1, at=x[-odd], labels=ugeno[-odd], mgp=mgp.x, tick=FALSE,
+                        axis(side=side, at=xtick[-odd], labels=ugeno[-odd], mgp=this_mgp, tick=FALSE,
                              line=1, las=las)
                     }
                 } else {
-                    axis(side=1, at=x, labels=ugeno, mgp=mgp.x, tick=FALSE, las=las)
+                    axis(side=side, at=xtick, labels=ugeno, mgp=this_mgp, tick=FALSE, las=las)
                 }
             }
 
-            if(is.null(hlines)) hlines <- pretty(ylim)
-            abline(h=hlines, lwd=hlines_lwd, lty=hlines_lty, col=hlines_col,
-                   mgp=mgp.y)
-            axis(side=2, at=hlines, mgp=mgp.y, tick=FALSE, las=las)
-
+            # add points
             if(!omit_points)
-                points(match(geno, ugeno) + jitter, pheno, pch=pch, bg=bg, ...)
+                points(x, y, pch=pch, bg=bg, ...)
 
+            # y-axis labels
+            if(swap_axes) {
+                axis(side=1, at=vlines, mgp=mgp.x, tick=FALSE, las=las)
+            } else {
+                axis(side=2, at=hlines, mgp=mgp.y, tick=FALSE, las=las)
+            }
+
+            # determine default CI segment width; use width of plot but make it no bigger than 0.2 and no smaller than 0.05
+            if(is.null(seg_width)) {
+                seg_width <- ifelse(swap_axes, diff(par("usr"))[3:4], diff(par("usr"))[1:2])/20
+                if(seg_width > 0.2) seg_width <- 0.2
+                if(seg_width < 0.05) seg_width <- 0.05
+            }
+
+            # add CIs
             if(seg_width > 0) {
-                segments(x-seg_width/2, me, x+seg_width/2, me,
-                         lwd=seg_lwd, col=seg_col)
+                if(swap_axes) {
+                    segments(me, xtick-seg_width/2, me, xtick+seg_width/2,
+                             lwd=seg_lwd, col=seg_col)
+                }
+                else {
+                    segments(xtick-seg_width/2, me, xtick+seg_width/2, me,
+                             lwd=seg_lwd, col=seg_col)
+                }
 
                 if(!is.null(SEmult)) {
-                    segments(x, me[ugeno]-se[ugeno]*SEmult, x, me[ugeno]+se[ugeno]*SEmult,
-                             lwd=seg_lwd, col=seg_col)
+                    if(swap_axes) {
+                        segments(me[ugeno]+se[ugeno]*SEmult, xtick, me[ugeno]-se[ugeno]*SEmult, xtick,
+                                 lwd=seg_lwd, col=seg_col)
+                    } else {
+                        segments(xtick, me[ugeno]-se[ugeno]*SEmult, xtick, me[ugeno]+se[ugeno]*SEmult,
+                                 lwd=seg_lwd, col=seg_col)
+                    }
                 }
 
             }
@@ -204,7 +305,7 @@ plot_pxg <-
             box()
         }
 
-    plot_pxg_internal(geno, pheno, bgcolor=bgcolor,
+    plot_pxg_internal(geno, pheno, swap_axes=swap_axes, bgcolor=bgcolor,
                       seg_width=seg_width, seg_lwd=seg_lwd, seg_col=seg_col,
                       hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
                       vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd, ...)
