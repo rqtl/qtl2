@@ -5,11 +5,11 @@
 \title{Plot phenotype vs genotype}
 \usage{
 plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
-  jitter = 0.2, bgcolor = "gray90", seg_width = 0.4, seg_lwd = 2,
-  seg_col = "black", hlines = NULL, hlines_col = "white",
-  hlines_lty = 1, hlines_lwd = 1, vlines_col = "gray80", vlines_lty = 1,
-  vlines_lwd = 3, force_labels = TRUE, alternate_labels = FALSE,
-  omit_points = FALSE, ...)
+  swap_axes = FALSE, jitter = 0.2, bgcolor = "gray90", seg_width = 0.4,
+  seg_lwd = 2, seg_col = "black", hlines = NULL, hlines_col = NULL,
+  hlines_lty = NULL, hlines_lwd = NULL, vlines = NULL,
+  vlines_col = NULL, vlines_lty = NULL, vlines_lwd = NULL,
+  force_labels = TRUE, alternate_labels = FALSE, omit_points = FALSE, ...)
 }
 \arguments{
 \item{geno}{Vector of genotypes, as produced by
@@ -26,6 +26,9 @@ averages will be displayed, as \code{mean +/- SE * SEmult}.}
 \item{pooledSD}{If TRUE and \code{SEmult} is specified, calculated
 a pooled within-group SD. Otherwise, get separate estimates of
 the within-group SD for each group.}
+
+\item{swap_axes}{If TRUE, swap the axes, so that the genotypes are
+on the y-axis and the phenotype is on the x-axis.}
 
 \item{jitter}{Amount to jitter the points horizontally, if a vector
 of length > 0, it is taken to be the actual jitter amounts
@@ -46,6 +49,8 @@ of length > 0, it is taken to be the actual jitter amounts
 \item{hlines_lty}{Line type of horizontal grid lines}
 
 \item{hlines_lwd}{Line width of horizontal grid lines}
+
+\item{vlines}{Locations of vertical grid lines.}
 
 \item{vlines_col}{Color of vertical grid lines}
 

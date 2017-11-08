@@ -6,8 +6,10 @@
   genotype probabilities for a single individual on a single
   chromosome.
 
-- Added `swap_axes` argument to `plot_onegeno()` to have the option of
-  chromosomes running horizontally rather than vertically.
+- Added `swap_axes` argument to `plot_onegeno()` (to have the option of
+  chromosomes running horizontally rather than vertically) and to
+  `plot_pxg()` (to have the option of having genotypes on y-axis and
+  phenotypes horizontally).
 
 ## Minor changes
 
