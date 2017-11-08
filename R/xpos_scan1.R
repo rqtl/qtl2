@@ -1,21 +1,21 @@
 #' Get x-axis position for genomic location
 #'
-#' For a plot of \code{\link[qtl2scan]{scan1}} results, get the x-axis
+#' For a plot of [qtl2scan::scan1()] results, get the x-axis
 #' location that corresponds to a particular genomic location
 #' (chromosome ID and position).
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #' @param chr Selected chromosomes that were plotted (if used in the
-#' call to \code{\link{plot_scan1}}).
+#' call to [plot_scan1()].
 #' @param gap The gap between chromosomes used in the call to
-#' \code{\link{plot_scan1}}.
+#' [plot_scan1()].
 #' @param thechr Vector of chromosome IDs
 #' @param thepos Vector of chromosomal positions
 #'
 #' @return A vector of x-axis locations.
 #'
-#' @details \code{thechr} and \code{thepos} should be the same length,
+#' @details `thechr` and `thepos` should be the same length,
 #' or should have length 1 (in which case they are expanded to the
 #' length of the other vector).
 #'
