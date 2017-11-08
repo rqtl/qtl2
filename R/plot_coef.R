@@ -2,15 +2,17 @@
 #'
 #' Plot estimated QTL effects along a chromosomes.
 #'
+#' @md
+#'
 #' @param x Estimated QTL effects ("coefficients") as obtained from
-#' \code{\link[qtl2scan]{scan1coef}}.
+#' `\link[qtl2scan]{scan1coef}`.
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' `\link[qtl2geno]{insert_pseudomarkers}`.
 #'
 #' @param columns Vector of columns to plot
 #'
-#' @param col Vector of colors, same length as \code{columns}. If
+#' @param col Vector of colors, same length as `columns`. If
 #' NULL, some default choices are made.
 #'
 #' @param scan1_output If provided, we make a two-panel plot with
@@ -31,22 +33,22 @@
 #' @importFrom graphics layout par
 #'
 #' @details
-#' \code{plot_coefCC()} is the same as \code{plot_coef()}, but forcing
-#' \code{columns=1:8} and using the Collaborative Cross colors,
-#' \code{\link{CCcolors}}.
+#' `plot_coefCC()` is the same as `plot_coef()`, but forcing
+#' `columns=1:8` and using the Collaborative Cross colors,
+#' `\link{CCcolors}`.
 #'
-#' @seealso \code{\link{CCcolors}}, \code{\link{plot_scan1}}, \code{\link{plot_snpasso}}
+#' @seealso `\link{CCcolors}`, `\link{plot_scan1}`, `\link{plot_snpasso}`
 #'
 #' @section Hidden graphics parameters:
-#' A number of graphics parameters can be passed via \code{...}. For
-#' example, \code{bgcolor} to control the background color, and things
-#' like \code{ylab} and \code{ylim}. These are not included as formal
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color, and things
+#' like `ylab` and `ylim`. These are not included as formal
 #' parameters in order to avoid cluttering the function definition.
 #'
-#' In the case that \code{scan1_output} is provided, \code{col},
-#' \code{ylab}, and \code{ylim} all control the panel with estimated
-#' QTL effects, while \code{col_lod}, \code{ylab_lod}, and
-#' \code{ylim_lod} control the LOD curve panel.
+#' In the case that `scan1_output` is provided, `col`,
+#' `ylab`, and `ylim` all control the panel with estimated
+#' QTL effects, while `col_lod`, `ylab_lod`, and
+#' `ylim_lod` control the LOD curve panel.
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation

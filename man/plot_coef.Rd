@@ -38,7 +38,7 @@ chromosomes).}
 
 \item{gap}{Gap between chromosomes.}
 
-\item{top_panel_prop}{If `scan1_output` provided, this gives the
+\item{top_panel_prop}{If \code{scan1_output} provided, this gives the
 proportion of the plot that is devoted to the top panel.}
 
 \item{...}{Additional graphics parameters.}
