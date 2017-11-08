@@ -5,7 +5,7 @@
 \title{Plot one individual's genome-wide genotypes}
 \usage{
 plot_onegeno(geno, map, ind = 1, chr = NULL, col = NULL,
-  na_col = "white", transpose = FALSE, border = "black", shift = FALSE,
+  na_col = "white", swap_axes = FALSE, border = "black", shift = FALSE,
   bgcolor = "gray90", chrwidth = 0.5, ...)
 }
 \arguments{
@@ -23,7 +23,7 @@ three-dimensional arrays (as produced by \code{\link[qtl2geno]{guess_phase}}).}
 
 \item{na_col}{Color for missing segments.}
 
-\item{transpose}{If TRUE, swap the axes, so that the chromosomes run horizontally.}
+\item{swap_axes}{If TRUE, swap the axes, so that the chromosomes run horizontally.}
 
 \item{border}{Color of outer border around chromosome rectangles.}
 

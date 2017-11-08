@@ -6,9 +6,9 @@
 \usage{
 plot_genoprob(probs, map, ind = 1, chr = NULL, geno = NULL,
   color_scheme = c("gray", "viridis"), col = NULL, threshold = 0,
-  transpose = FALSE, hlines = NULL, hlines.col = "#B3B3B370",
-  hlines.lwd = 1, hlines.lty = 1, vlines = NULL,
-  vlines.col = "#B3B3B370", vlines.lwd = 1, vlines.lty = 1, ...)
+  swap_axes = FALSE, hlines = NULL, hlines_col = "#B3B3B370",
+  hlines_lwd = 1, hlines_lty = 1, vlines = NULL,
+  vlines_col = "#B3B3B370", vlines_lwd = 1, vlines_lty = 1, ...)
 }
 \arguments{
 \item{probs}{Genotype probabilities (as produced by \code{\link[qtl2geno]{calc_genoprob}})
@@ -30,24 +30,24 @@ or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}
 \item{threshold}{Threshold for genotype probabilities; only genotypes that achieve
 this value somewhere on the chromosome will be shown.}
 
-\item{transpose}{If TRUE, swap the axes, so that the genotypes are
+\item{swap_axes}{If TRUE, swap the axes, so that the genotypes are
 on the x-axis and the chromosome position is on the y-axis.}
 
 \item{hlines}{Position of horizontal grid lines (use \code{NA} to avoid lines).}
 
-\item{hlines.col}{Color of horizontal grid lines.}
+\item{hlines_col}{Color of horizontal grid lines.}
 
-\item{hlines.lwd}{Line width of horizontal grid lines.}
+\item{hlines_lwd}{Line width of horizontal grid lines.}
 
-\item{hlines.lty}{Line type of horizontal grid lines.}
+\item{hlines_lty}{Line type of horizontal grid lines.}
 
 \item{vlines}{Position of vertical grid lines (use \code{NA} to avoid lines).}
 
-\item{vlines.col}{Color of vertical grid lines.}
+\item{vlines_col}{Color of vertical grid lines.}
 
-\item{vlines.lwd}{Line width of vertical grid lines.}
+\item{vlines_lwd}{Line width of vertical grid lines.}
 
-\item{vlines.lty}{Line type of vertical grid lines.}
+\item{vlines_lty}{Line type of vertical grid lines.}
 
 \item{...}{Additional graphics parameters passed to \code{\link[graphics]{image}}.}
 }
@@ -69,8 +69,8 @@ plot_genoprob(pr, map, ind="262")
 # change the x-axis label
 plot_genoprob(pr, map, ind="262", xlab="Position (cM)")
 
-# tranpose the axes
-plot_genoprob(pr, map, ind="262", transpose=TRUE, ylab="Position (cM)")
+# swap the axes so that the chromosome runs vertically
+plot_genoprob(pr, map, ind="262", swap_axes=TRUE, ylab="Position (cM)")
 
 # This is more interesting for a Diversity Outbred mouse example
 \dontrun{

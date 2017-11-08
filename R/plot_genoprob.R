@@ -13,7 +13,7 @@
 #' @param col Optional vector of colors for the heatmap.
 #' @param threshold Threshold for genotype probabilities; only genotypes that achieve
 #' this value somewhere on the chromosome will be shown.
-#' @param transpose If TRUE, swap the axes, so that the genotypes are
+#' @param swap_axes If TRUE, swap the axes, so that the genotypes are
 #' on the x-axis and the chromosome position is on the y-axis.
 #' @param hlines Position of horizontal grid lines (use \code{NA} to avoid lines).
 #' @param hlines_col Color of horizontal grid lines.
@@ -40,8 +40,8 @@
 #' # change the x-axis label
 #' plot_genoprob(pr, map, ind="262", xlab="Position (cM)")
 #'
-#' # tranpose the axes
-#' plot_genoprob(pr, map, ind="262", transpose=TRUE, ylab="Position (cM)")
+#' # swap the axes so that the chromosome runs vertically
+#' plot_genoprob(pr, map, ind="262", swap_axes=TRUE, ylab="Position (cM)")
 #'
 #' # This is more interesting for a Diversity Outbred mouse example
 #' \dontrun{
@@ -80,7 +80,7 @@
 plot_genoprob <-
     function(probs, map, ind=1, chr=NULL, geno=NULL,
              color_scheme=c("gray", "viridis"), col=NULL,
-             threshold=0, transpose=FALSE,
+             threshold=0, swap_axes=FALSE,
              hlines=NULL, hlines_col="#B3B3B370", hlines_lwd=1, hlines_lty=1,
              vlines=NULL, vlines_col="#B3B3B370", vlines_lwd=1, vlines_lty=1,
              ...)
@@ -151,7 +151,7 @@ plot_genoprob <-
 
     # the function that does the work
     plot_genoprob_internal <-
-        function(probs, map, col=NULL, transpose=FALSE,
+        function(probs, map, col=NULL, swap_axes=FALSE,
                  zlim=c(0,1), xlab=NULL, ylab=NULL, las=NULL,
                  hlines=NULL, hlines_col="gray70", hlines_lwd=1, hlines_lty=1,
                  vlines=NULL, vlines_col="gray70", vlines_lwd=1, vlines_lty=1,
@@ -163,9 +163,9 @@ plot_genoprob <-
         if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
         if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
 
-        if(transpose) {
+        if(swap_axes) {
             # reverse order of genotypes back so that first appears at left
-            #    then transpose
+            #    then swap_axes
             probs <- t(probs[,ncol(probs):1,drop=FALSE])
 
             x <- 1:nrow(probs)
@@ -223,7 +223,7 @@ plot_genoprob <-
         title(ylab=ylab, mgp=mgp.y)
     }
 
-    plot_genoprob_internal(probs, map, col=col, transpose=transpose,
+    plot_genoprob_internal(probs, map, col=col, swap_axes=swap_axes,
                            hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
                            vlines=vlines, vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd,
                            ...)

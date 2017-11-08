@@ -10,7 +10,7 @@
 #' @param chr Selected chromosomes to plot; a vector of character strings.
 #' @param col Vector of colors for the different genotypes.
 #' @param na_col Color for missing segments.
-#' @param transpose If TRUE, swap the axes, so that the chromosomes run horizontally.
+#' @param swap_axes If TRUE, swap the axes, so that the chromosomes run horizontally.
 #' @param border Color of outer border around chromosome rectangles.
 #' @param shift If TRUE, shift the chromosomes so they all start at 0.
 #' @param bgcolor Color for background rectangle
@@ -60,7 +60,7 @@
 plot_onegeno <-
     function(geno, map, ind=1, chr=NULL,
              col=NULL, na_col="white",
-             transpose=FALSE,
+             swap_axes=FALSE,
              border="black", shift=FALSE, bgcolor="gray90",
              chrwidth=0.5, ...)
 {
@@ -124,7 +124,7 @@ plot_onegeno <-
 
     plot_onegeno_internal <-
         function(geno, map, col=NULL, na_col="white",
-                 transpose=FALSE,
+                 swap_axes=FALSE,
                  border="black", bgcolor="gray90",
                  chrwidth=0.5,
                  xlab=NULL, ylab=NULL,
@@ -141,7 +141,7 @@ plot_onegeno <-
         # margin parameters
         if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
 
-        if(transpose) {
+        if(swap_axes) {
             if(is.null(xlab)) xlab <- "Position"
             if(is.null(ylab)) ylab <- "Chromosome"
 
@@ -179,7 +179,7 @@ plot_onegeno <-
         if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
         if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
 
-        if(transpose) {
+        if(swap_axes) {
             # add y axis unless par(yaxt="n")
             if(dots$yaxt != "n") {
                 odd <- seq(1, nchr, by=2)
@@ -253,7 +253,7 @@ plot_onegeno <-
             }
 
             if(is.matrix(g)) { # phase-known
-                if(transpose) {
+                if(swap_axes) {
                     rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
                          max(map[[i]], na.rm=TRUE), i+this_chrwidth/2,
                          col=na_col, border=border, lend=1, ljoin=1)
@@ -264,9 +264,9 @@ plot_onegeno <-
                 }
 
                 addgenorect(g[1,], map[[i]], i-this_chrwidth/2, i+this_chrwidth/2,
-                            col=col, transpose=transpose)
+                            col=col, swap_axes=swap_axes)
 
-                if(transpose) {
+                if(swap_axes) {
                     rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
                          max(map[[i]], na.rm=TRUE), i+this_chrwidth/2,
                          col=NULL, border=border, lend=1, ljoin=1)
@@ -277,7 +277,7 @@ plot_onegeno <-
                 }
             }
             else {
-                if(transpose) {
+                if(swap_axes) {
                     rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
                          max(map[[i]], na.rm=TRUE), i,
                          col=na_col, border=border, lend=1, ljoin=1)
@@ -294,11 +294,11 @@ plot_onegeno <-
                 }
 
                 addgenorect(g[1,,1], map[[i]], i-this_chrwidth/2, i,
-                            col=col, transpose=transpose)
+                            col=col, swap_axes=swap_axes)
                 addgenorect(g[1,,2], map[[i]], i+this_chrwidth/2, i,
-                            col=col, transpose=transpose)
+                            col=col, swap_axes=swap_axes)
 
-                if(transpose) {
+                if(swap_axes) {
                     rect(min(map[[i]], na.rm=TRUE), i-this_chrwidth/2,
                          max(map[[i]], na.rm=TRUE), i,
                          col=NULL, border=border, lend=1, ljoin=1)
@@ -320,7 +320,7 @@ plot_onegeno <-
     }
 
     plot_onegeno_internal(geno, map, col=col, na_col=na_col,
-                          transpose=transpose, border=border,
+                          swap_axes=swap_axes, border=border,
                           bgcolor=bgcolor, chrwidth=chrwidth, ...)
 
 
@@ -328,13 +328,13 @@ plot_onegeno <-
 
 # add rectangles for the genotypes
 addgenorect <-
-    function(geno, map, x1, x2, col, transpose=FALSE)
+    function(geno, map, x1, x2, col, swap_axes=FALSE)
 {
     intervals <- geno2intervals(geno, map)
     if(is.null(intervals) || nrow(intervals) < 1) return(NULL)
 
     for(i in 1:nrow(intervals)) {
-        if(transpose) {
+        if(swap_axes) {
             rect(intervals[i,1], x1,
                  intervals[i,2], x2,
                  col=col[intervals[i,3]],
