@@ -3,10 +3,11 @@
 #' Plot gene locations for a genomic interval, as rectangles with gene
 #' symbol (and arrow indicating strand/direction) below.
 #'
-#' @param genes Data frame containing \code{start} and \code{stop} in
-#' bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
-#' \code{Name}.
-#' @param xlim x-axis limits (in Mbp)
+#' @md
+#'
+#' @param genes Data frame containing `start` and `stop` in
+#' bp, `strand` (as `"-"`, `"+"`, or `NA`), and
+#' `Name`.
 #' @param minrow Minimum number of rows of genes in the plot
 #' @param padding Proportion to pad with white space around the genes
 #' @param colors Vectors of colors, used sequentially and then re-used.
@@ -15,13 +16,18 @@
 #' @param stop_field Character string with name of column containing the genes' stop positions.
 #' @param strand_field Character string with name of column containing the genes' strands.
 #' @param name_field Character string with name of column containing the genes' names.
-#' @param ... Optional arguments passed to \code{\link[graphics]{plot}}.
+#' @param ... Optional arguments passed to `\link[graphics]{plot}`.
 #'
 #' @return None.
 #'
 #' @keywords hgraphics
 #' @export
 #' @importFrom graphics strheight strwidth text plot par rect abline box
+#'
+#' @section Hidden graphics parameters:
+#' Graphics parameters can be passed via `...`. For
+#' example, `xlim` to control the x-axis limits.
+#' These are not included as formal
 #'
 #' @examples
 #' genes <- data.frame(chr = c("6", "6", "6", "6", "6", "6", "6", "6"),
@@ -37,7 +43,7 @@
 
 # create an empty plot with test x- and y-axis limits
 plot_genes <-
-    function(genes, xlim=NULL, minrow=4, padding=0.2,
+    function(genes, minrow=4, padding=0.2,
              colors=c("black", "red3", "green4", "blue3", "orange"),
              scale_pos=1e-6, start_field="start", stop_field="stop",
              strand_field="strand", name_field="Name", ...)
@@ -70,17 +76,17 @@ plot_genes <-
     strand <- as.character(genes[,strand_field])
     name <- as.character(genes[,name_field])
 
-    if(is.null(xlim)) {
-        xlim <- range(c(start, end), na.rm=TRUE)
-    }
-
-    internal_plot_genes <-
+    plot_genes_internal <-
         function(xlab="Position (Mbp)", xaxs="i",
                  bgcolor="gray92", xat=NULL,
-                 mgp=c(1.6,0.2,0),
+                 mgp=c(1.6,0.2,0), xlim=NULL,
                  vlines=NULL, vlines_col="white",
                  vlines_lwd=1, vlines_lty=1)
         {
+            if(is.null(xlim)) {
+                xlim <- range(c(start, end), na.rm=TRUE)
+            }
+
             plot(0, 0, type="n",
                  xlim=xlim,   xlab=xlab, xaxs=xaxs, xaxt="n",
                  ylim=c(1,0), ylab="", yaxs="i", yaxt="n", mgp=mgp)
@@ -102,7 +108,7 @@ plot_genes <-
             box()
         }
 
-    internal_plot_genes(...)
+    plot_genes_internal(...)
 
     # missing names: use ?
     name[is.na(name)] <- "?"
