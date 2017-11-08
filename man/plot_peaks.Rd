@@ -4,12 +4,11 @@
 \alias{plot_peaks}
 \title{Plot QTL peak locations}
 \usage{
-plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = 25,
-  bgcolor = "gray90", altbgcolor = "gray85", ...)
+plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = 25, ...)
 }
 \arguments{
 \item{peaks}{Data frame such as that produced by
-\code{\link[qtl2scan]{find_peaks}}) containing columns
+\code{\link[qtl2scan:find_peaks]{qtl2scan::find_peaks()}}) containing columns
 \code{chr}, \code{pos}, \code{lodindex}, and \code{lodcolumn}.
 May also contain columns \code{ci_lo} and \code{ci_hi}, in
 which case intervals will be plotted.}
@@ -24,10 +23,6 @@ strings.}
 
 \item{gap}{Gap between chromosomes.}
 
-\item{bgcolor}{Background color for the plot.}
-
-\item{altbgcolor}{Background color for alternate chromosomes.}
-
 \item{...}{Additional graphics parameters}
 }
 \value{
@@ -36,6 +31,15 @@ None.
 \description{
 Plot QTL peak locations (possibly with intervals) for multiple traits.
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color and
+\code{altbgcolor} to control the background color on alternate chromosomes.
+These are not included as formal parameters in order to avoid
+cluttering the function definition.
+}
+
 \examples{
 # load qtl2geno package for data and genoprob calculation
 library(qtl2geno)
@@ -65,5 +69,5 @@ peaks <- find_peaks(out, map, threshold=3.5, drop=1.5)
 plot_peaks(peaks, map)
 }
 \seealso{
-\code{\link[qtl2scan]{find_peaks}}
+\code{\link[qtl2scan:find_peaks]{qtl2scan::find_peaks()}}
 }

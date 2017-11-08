@@ -2,22 +2,29 @@
 #'
 #' Plot QTL peak locations (possibly with intervals) for multiple traits.
 #'
+#' @md
+#'
 #' @param peaks Data frame such as that produced by
-#'     \code{\link[qtl2scan]{find_peaks}}) containing columns
-#'     \code{chr}, \code{pos}, \code{lodindex}, and \code{lodcolumn}.
-#'     May also contain columns \code{ci_lo} and \code{ci_hi}, in
+#'     [qtl2scan::find_peaks()]) containing columns
+#'     `chr`, `pos`, `lodindex`, and `lodcolumn`.
+#'     May also contain columns `ci_lo` and `ci_hi`, in
 #'     which case intervals will be plotted.
 #' @param map Marker map, used to get chromosome lengths (and start
 #'     and end positions).
 #' @param chr Selected chromosomes to plot; a vector of character
 #'     strings.
 #' @param tick_height Height of tick marks at the peaks (a number between 0 and 1).
-#' @param bgcolor Background color for the plot.
-#' @param altbgcolor Background color for alternate chromosomes.
 #' @param gap Gap between chromosomes.
 #' @param ... Additional graphics parameters
 #'
-#' @seealso \code{\link[qtl2scan]{find_peaks}}
+#' @seealso [qtl2scan::find_peaks()]
+#'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color and
+#' `altbgcolor` to control the background color on alternate chromosomes.
+#' These are not included as formal parameters in order to avoid
+#' cluttering the function definition.
 #'
 #' @export
 #' @importFrom graphics plot segments abline par axis title box rect
@@ -54,8 +61,7 @@
 
 plot_peaks <-
     function(peaks, map, chr=NULL, tick_height = 0.3,
-             gap=25, bgcolor="gray90", altbgcolor="gray85",
-             ...)
+             gap=25, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -74,7 +80,7 @@ plot_peaks <-
 
     plot_peaks_internal <-
         function(peaks, map, tick_height,
-                 gap, bgcolor, algbgcolor,
+                 gap, bgcolor="gray90", altbgcolor="gray85",
                  lwd=2, col="slateblue", xlab=NULL, ylab="",
                  xlim=NULL, ylim=NULL, xaxs="i", yaxs="i",
                  main="", mgp.x=c(2.6, 0.5, 0), mgp.y=c(2.6, 0.5, 0),
@@ -183,6 +189,6 @@ plot_peaks <-
         }
 
     plot_peaks_internal(peaks=peaks, map=map, tick_height=tick_height,
-                        gap=gap, bgcolor=bgcolor, algbgcolor=altbgcolor, ...)
+                        gap=gap, ...)
 
 }
