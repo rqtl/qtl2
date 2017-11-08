@@ -52,7 +52,7 @@ plot_coef_and_lod <-
               vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 
     par(mar=bottom_mar)
-    plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod,
+    plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod, ylab=ylab_lod,
                add=FALSE, gap=gap, vlines=vlines, vlines.col=vlines.col,
                vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
 }

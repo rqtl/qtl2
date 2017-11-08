@@ -7,8 +7,7 @@
 \title{Plot QTL effects along chromosome}
 \usage{
 plot_coef(x, map, columns = NULL, col = NULL, scan1_output = NULL,
-  add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
-  altbgcolor = "gray85", ylab = "QTL effects", top_panel_prop = 0.65, ...)
+  add = FALSE, gap = 25, top_panel_prop = 0.65, ...)
 
 plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25,
   ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
@@ -39,15 +38,6 @@ chromosomes).}
 
 \item{gap}{Gap between chromosomes.}
 
-\item{ylim}{y-axis limits. If NULL, we use the range of the plotted
-coefficients.}
-
-\item{bgcolor}{Background color for the plot.}
-
-\item{altbgcolor}{Background color for alternate chromosomes.}
-
-\item{ylab}{y-axis label}
-
 \item{top_panel_prop}{If `scan1_output` provided, this gives the
 proportion of the plot that is devoted to the top panel.}
 
@@ -61,6 +51,19 @@ Plot estimated QTL effects along a chromosomes.
 \code{columns=1:8} and using the Collaborative Cross colors,
 \code{\link{CCcolors}}.
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color, and things
+like \code{ylab} and \code{ylim}. These are not included as formal
+parameters in order to avoid cluttering the function definition.
+
+In the case that \code{scan1_output} is provided, \code{col},
+\code{ylab}, and \code{ylim} all control the panel with estimated
+QTL effects, while \code{col_lod}, \code{ylab_lod}, and
+\code{ylim_lod} control the LOD curve panel.
+}
+
 \examples{
 # load qtl2geno package for data and genoprob calculation
 library(qtl2geno)

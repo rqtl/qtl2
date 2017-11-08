@@ -22,15 +22,6 @@
 #'
 #' @param gap Gap between chromosomes.
 #'
-#' @param ylim y-axis limits. If NULL, we use the range of the plotted
-#' coefficients.
-#'
-#' @param bgcolor Background color for the plot.
-#'
-#' @param altbgcolor Background color for alternate chromosomes.
-#'
-#' @param ylab y-axis label
-#'
 #' @param top_panel_prop If `scan1_output` provided, this gives the
 #' proportion of the plot that is devoted to the top panel.
 #'
@@ -45,6 +36,17 @@
 #' \code{\link{CCcolors}}.
 #'
 #' @seealso \code{\link{CCcolors}}, \code{\link{plot_scan1}}, \code{\link{plot_snpasso}}
+#'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via \code{...}. For
+#' example, \code{bgcolor} to control the background color, and things
+#' like \code{ylab} and \code{ylim}. These are not included as formal
+#' parameters in order to avoid cluttering the function definition.
+#'
+#' In the case that \code{scan1_output} is provided, \code{col},
+#' \code{ylab}, and \code{ylim} all control the panel with estimated
+#' QTL effects, while \code{col_lod}, \code{ylab_lod}, and
+#' \code{ylim_lod} control the LOD curve panel.
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -72,9 +74,7 @@
 #' plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
     function(x, map, columns=NULL, col=NULL, scan1_output=NULL,
-             add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", top_panel_prop=0.65, ...)
+             add=FALSE, gap=25, top_panel_prop=0.65, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -89,8 +89,7 @@ plot_coef <-
 
     if(!is.null(scan1_output)) { # call internal function for both coef and LOD
         return(plot_coef_and_lod(x, map, columns=columns, col=col, scan1_output=scan1_output,
-                                 gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
-                                 ylab="QTL effects", xaxt=NULL, top_panel_prop=top_panel_prop,
+                                 gap=gap, xaxt=NULL, top_panel_prop=top_panel_prop,
                                  ...))
     }
 
@@ -111,15 +110,16 @@ plot_coef <-
             stop("Need at least ", length(columns), " colors")
     }
 
-    if(is.null(ylim)) {
-        ylim <- range(unclass(x)[,columns], na.rm=TRUE)
-        d <- diff(ylim) * 0.02 # add 2% on either side
-        ylim <- ylim + c(-d, d)
-    }
-
     plot_coef_internal <-
-        function(x, map, columns, ylim, col, add, gap, bgcolor, altbgcolor, ylab, ...)
+        function(x, map, columns, ylim=NULL, col, add, gap, bgcolor="gray90", altbgcolor="gray85",
+                 ylab="QTL effects", ...)
         {
+            if(is.null(ylim)) {
+                ylim <- range(unclass(x)[,columns], na.rm=TRUE)
+                d <- diff(ylim) * 0.02 # add 2% on either side
+                ylim <- ylim + c(-d, d)
+            }
+
             plot_scan1(x, map, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
                        gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
                        ylab=ylab, ...)
@@ -129,8 +129,7 @@ plot_coef <-
                                add=TRUE, ...)
             }
         }
-    plot_coef_internal(unclass(x), map, columns=columns, ylim=ylim, col=col, add=add, gap=gap,
-                       bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
+    plot_coef_internal(unclass(x), map, columns=columns, col=col, add=add, gap=gap, ...)
 }
 
 #' @export
