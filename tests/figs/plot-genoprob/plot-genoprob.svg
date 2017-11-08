@@ -181,6 +181,12 @@
 </defs>
 <g clip-path='url(#cpMHw3MjB8Mjg4fDA=)'><text x='353.05' y='263.52' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='42.69px' lengthAdjust='spacingAndGlyphs'>Position</text></g>
 <defs>
+  <clipPath id='cpMHw3MjB8NTc2fDA='>
+    <rect x='0.00' y='0.00' width='720.00' height='576.00' />
+  </clipPath>
+</defs>
+<polyline points='59.04,214.56 689.76,214.56 689.76,59.04 59.04,59.04 59.04,214.56 ' style='stroke-width: 0.75;' clip-path='url(#cpMHw3MjB8NTc2fDA=)' />
+<defs>
   <clipPath id='cpNTkuMDR8Njg5Ljc2fDUwMi41NnwzNDcuMDQ='>
     <rect x='59.04' y='347.04' width='630.72' height='155.52' />
   </clipPath>
@@ -364,4 +370,10 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMHw3MjB8NTc2fDI4OA==)'><text x='353.05' y='551.52' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='42.69px' lengthAdjust='spacingAndGlyphs'>Position</text></g>
+<defs>
+  <clipPath id='cpMHw3MjB8NTc2fDA='>
+    <rect x='0.00' y='0.00' width='720.00' height='576.00' />
+  </clipPath>
+</defs>
+<polyline points='59.04,502.56 689.76,502.56 689.76,347.04 59.04,347.04 59.04,502.56 ' style='stroke-width: 0.75;' clip-path='url(#cpMHw3MjB8NTc2fDA=)' />
 </svg>
