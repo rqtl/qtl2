@@ -133,20 +133,12 @@ plot_genoprobcomp <-
     dimnames(probs) <- dn
 
     # create color palette
-    redmat <- bluemat <- matrix(ncol=3, nrow=n_colors)
-    bluemat[,1] <- bluemat[,2] <- redmat[,2] <- redmat[,3] <- seq(1, 0, length=n_colors)
-    bluemat[,3] <- redmat[,1] <- 1
-    joint_colors <- 1:(n_colors^2)
-    k <- 1
-    for(i in 1:n_colors) {
-        for(j in 1:n_colors) {
-            joint_colors[k] <- rgb(bluemat[i,1]*redmat[j,1],
-                                   bluemat[i,2]*redmat[j,2],
-                                   bluemat[i,3]*redmat[j,3],
-                                   maxColorValue=1)
-            k <- k+1
-        }
-    }
+    red <- blue <- matrix(1, ncol=3, nrow=n_colors^2)
+    # using 0.2 - 1 for the range of colors so that the combination is more purple rather than black
+    # (also if ending at 0, the blue is a bit ugly)
+    blue[,1] <- blue[,2] <- rep(seq(1, 0.2, length=n_colors), each=n_colors)
+    red[,2] <- red[,3] <-   rep(seq(1, 0.2, length=n_colors), n_colors)
+    joint_colors <- apply(blue*red, 1, function(a) rgb(a[1], a[2], a[3], maxColorValue=1))
 
     # separate positions if necessary
     tol <- 1e-6
