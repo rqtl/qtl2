@@ -25,6 +25,8 @@
 #' them, for colors that are white, some amount of blue or red, or
 #' where both are large something like blackish purple.
 #'
+#' @seealso [plot_genoprob()]
+#'
 #' @examples
 #' library(qtl2geno)
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

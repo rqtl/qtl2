@@ -59,3 +59,6 @@ plot_genoprob(pr_ne, map, main="Assume very low error error")
 plot_genoprobcomp(pr_e, pr_ne, map, main="Comparison")
 
 }
+\seealso{
+\code{\link[=plot_genoprob]{plot_genoprob()}}
+}

@@ -99,3 +99,6 @@ plot_genoprob(apr, DOex$pmap, ind="232")
 }
 
 }
+\seealso{
+\code{\link[=plot_genoprobcomp]{plot_genoprobcomp()}}
+}

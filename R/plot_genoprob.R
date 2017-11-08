@@ -29,6 +29,8 @@
 #' These are not included as formal parameters in order to avoid
 #' cluttering the function definition.
 #'
+#' @seealso [plot_genoprobcomp()]
+#'
 #' @examples
 #' # load data and calculate genotype probabilities
 #' library(qtl2geno)
