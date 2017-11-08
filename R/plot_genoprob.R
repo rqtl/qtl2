@@ -144,11 +144,6 @@ plot_genoprob <-
         else if(color_scheme=="viridis") col <- viridis_qtl2(256)
     }
 
-    # separate positions if necessary
-    tol <- 1e-6
-    if(any(diff(map) < tol))
-        map <- map + seq(0, tol, length.out=length(map))
-
     plot_genoprob_internal(probs, map, col=col, swap_axes=swap_axes, ...)
 
 }
@@ -168,6 +163,11 @@ plot_genoprob_internal <-
     if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
     if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
     if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
+
+    # separate positions if necessary
+    tol <- 1e-6
+    if(any(diff(map) < tol))
+        map <- map + seq(0, tol, length.out=length(map))
 
     if(swap_axes) {
         probs <- t(probs)

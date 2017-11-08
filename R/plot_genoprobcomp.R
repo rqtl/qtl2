@@ -147,11 +147,6 @@ plot_genoprobcomp <-
     red[,2] <- red[,3] <-   rep(seq(1, 0.2, length=n_colors), n_colors)
     joint_colors <- apply(blue*red, 1, function(a) rgb(a[1], a[2], a[3], maxColorValue=1))
 
-    # separate positions if necessary
-    tol <- 1e-6
-    if(any(diff(map) < tol))
-        map <- map + seq(0, tol, length.out=length(map))
-
     plot_genoprob_internal(probs, map, col=joint_colors, swap_axes=swap_axes,
                            zlim=c(1,n_colors^2), ...)
 
