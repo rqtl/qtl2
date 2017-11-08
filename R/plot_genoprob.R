@@ -77,6 +77,7 @@
 #'
 #' @export
 #' @importFrom graphics image par axis title box
+#' @importFrom grDevices gray
 plot_genoprob <-
     function(probs, map, ind=1, chr=NULL, geno=NULL,
              color_scheme=c("gray", "viridis"), col=NULL,
