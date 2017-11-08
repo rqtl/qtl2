@@ -31,6 +31,23 @@
 #' them, for colors that are white, some amount of blue or red, or
 #' where both are large something like blackish purple.
 #'
+#' @examples
+#' library(qtl2geno)
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- iron[1,"2"]   # subset to first individual on chr 2
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
+#' # in presence of a genotyping error, how much does error_prob matter?
+#' iron$geno[[1]][1,3] <- 3
+#' pr_e <- calc_genoprob(iron, map, error_prob=0.002)
+#' pr_ne <- calc_genoprob(iron, map, error_prob=1e-15)
+#'
+#' # image of probabilities + comparison
+#' par(mfrow=c(3,1))
+#' plot_genoprob(pr_e, map, main="Allow errors")
+#' plot_genoprob(pr_ne, map, main="Assume very low error error")
+#' plot_genoprobcomp(pr_e, pr_ne, map, main="Comparison")
+#'
 #' @export
 #' @importFrom graphics image par axis title box
 #' @importFrom grDevices gray
