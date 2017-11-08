@@ -1,4 +1,3 @@
-all: doc
 .PHONY: doc
 
 # build package documentation
