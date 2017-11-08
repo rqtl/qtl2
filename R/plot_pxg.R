@@ -73,7 +73,7 @@
 plot_pxg <-
     function(geno, pheno, sort=TRUE, SEmult=NULL, pooledSD=TRUE,
              swap_axes=FALSE, jitter=0.2, bgcolor="gray90",
-             seg_width=0.4, seg_lwd=2, seg_col="black",
+             seg_width=NULL, seg_lwd=2, seg_col="black",
              hlines=NULL, hlines_col=NULL, hlines_lty=NULL, hlines_lwd=NULL,
              vlines=NULL, vlines_col=NULL, vlines_lty=NULL, vlines_lwd=NULL,
              force_labels=TRUE, alternate_labels=FALSE,
@@ -133,7 +133,7 @@ plot_pxg <-
 
     plot_pxg_internal <-
         function(geno, pheno, swap_axes=FALSE, bgcolor="gray90",
-                 seg_width=0.2, seg_lwd=2, seg_col="slateblue",
+                 seg_width=NULL, seg_lwd=2, seg_col="slateblue",
                  hlines=NULL, hlines_col=NULL, hlines_lty=NULL, hlines_lwd=NULL,
                  vlines=NULL, vlines_col=NULL, vlines_lty=NULL, vlines_lwd=NULL,
                  xlim=NULL, ylim=NULL,
@@ -272,7 +272,14 @@ plot_pxg <-
                 axis(side=2, at=hlines, mgp=mgp.y, tick=FALSE, las=las)
             }
 
-            # CIs
+            # determine default CI segment width; use width of plot but make it no bigger than 0.2 and no smaller than 0.05
+            if(is.null(seg_width)) {
+                seg_width <- ifelse(swap_axes, diff(par("usr"))[3:4], diff(par("usr"))[1:2])/20
+                if(seg_width > 0.2) seg_width <- 0.2
+                if(seg_width < 0.05) seg_width <- 0.05
+            }
+
+            # add CIs
             if(seg_width > 0) {
                 if(swap_axes) {
                     segments(me, xtick-seg_width/2, me, xtick+seg_width/2,

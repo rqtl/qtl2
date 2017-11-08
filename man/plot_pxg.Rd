@@ -5,7 +5,7 @@
 \title{Plot phenotype vs genotype}
 \usage{
 plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
-  swap_axes = FALSE, jitter = 0.2, bgcolor = "gray90", seg_width = 0.4,
+  swap_axes = FALSE, jitter = 0.2, bgcolor = "gray90", seg_width = NULL,
   seg_lwd = 2, seg_col = "black", hlines = NULL, hlines_col = NULL,
   hlines_lty = NULL, hlines_lwd = NULL, vlines = NULL,
   vlines_col = NULL, vlines_lty = NULL, vlines_lwd = NULL,
