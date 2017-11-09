@@ -1,3 +1,12 @@
+## qtl2geno 0.5-36 (2017-11-09)
+
+### New features
+
+- Added `compare_genoprob()` for getting tabular comparison of two
+  sets of genotype probabilities, for a single individual on a single
+  chromosome.
+
+
 ## qtl2geno 0.5-33 (2017-10-04)
 
 ### Minor changes

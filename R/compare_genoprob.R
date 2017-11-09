@@ -14,6 +14,10 @@
 #' @param minprob Minimum probability for inferring genotypes (passed to [maxmarg()]).
 #' @param minmarkers Minimum number of markers in results.
 #' @param minwidth Minimum width in results.
+#' @param annotate If TRUE, add some annotations to the `geno1` and
+#' `geno2` columns to indicate, where they differ, which one
+#' matches what appears to be the best genotype. (`*` = matches
+#' the best genotype; `-` = lower match).
 #'
 #' @details
 #' The function does the following:
@@ -23,20 +27,32 @@
 #' - Within each segment, compare the observed SNP genotypes to the founders' genotypes.
 #'
 #' @return
-#' An object of class `"compare_genoprob`", which is a data frame with
-#' each row corresponding to an interval over which `probs1` and
-#' `probs2` each have a fixed inferred genotype. Columns include the
-#' two inferred genotypes, the start and end points and width of the
-#' interval, and when founder genotypes are in `cross`, the
-#' proportions of SNPs where the individual matches each possible
+#' A data frame with each row corresponding to an interval over which
+#' `probs1` and `probs2` each have a fixed inferred genotype. Columns
+#' include the two inferred genotypes, the start and end points and
+#' width of the interval, and when founder genotypes are in `cross`,
+#' the proportions of SNPs where the individual matches each possible
 #' genotypes.
 #'
 #' @seealso [qtl2plot::plot_genoprobcomp()]
 #'
+#' @examples
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- iron[1,"2"]   # subset to first individual on chr 2
+#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#'
+#' # in presence of a genotyping error, how much does error_prob matter?
+#' iron$geno[[1]][1,3] <- 3
+#' pr_e <- calc_genoprob(iron, map, error_prob=0.002)
+#' pr_ne <- calc_genoprob(iron, map, error_prob=1e-15)
+#'
+#' compare_genoprob(pr_e, pr_ne, iron, minmarkers=1, minprob=0.5)
+#'
 #' @export
 compare_genoprob <-
     function(probs1, probs2, cross, ind=1, chr=NULL,
-             minprob=0.95, minmarkers=10, minwidth=0)
+             minprob=0.95, minmarkers=10, minwidth=0,
+             annotate=FALSE)
 {
     # check inputs
     if(is.null(chr)) chr <- names(probs1)[1]
@@ -60,6 +76,7 @@ compare_genoprob <-
             stop("If ind is numeric, must have nrow(probs1) == nrow(probs2)")
         if(ind < 1 || ind > nrow(probs1[[chr]]))
             stop("ind ", ind, " should be in the range [1, ", nrow(probs1[[chr]]), "]")
+        ind <- rownames(probs1[[1]])[ind]
     }
 
     # make sure they have the same genotypes
@@ -150,13 +167,10 @@ compare_genoprob <-
     if(!is.null(col2drop)) result <- result[,-col2drop,drop=FALSE]
 
     result <- result[value_num != -1 & n_markers >= minmarkers & width >= minwidth, , drop=FALSE]
-    rownames(result) <- 1:nrow(result)
+    if(nrow(result) > 0) rownames(result) <- 1:nrow(result)
 
     ### if no founder_geno in cross, return what we've got
-    if(is.null(cross$founder_geno)) {
-        class(result) <- c("compare_genoprob", "data.frame")
-        return(result)
-    }
+    if(is.null(cross$founder_geno)) return(result)
 
     # construct F1-type individuals
     f1 <- infer_f1_geno(founder_geno)
@@ -200,13 +214,19 @@ compare_genoprob <-
         result$what_next[i] <- names(z)[2]
     }
 
-    result <- result[,c(1:2,5:ncol(result))]
+    if(annotate) result <- compare_genoprob_add_annotation(result)
+
+    # drop the index columns
+    result <- result[,-grep("index", colnames(result))]
+
+    # add matrix of proportion of matches for each possible genotype, as an attribute
+    rownames(p_match) <- rownames(result)
     attr(result, "prop_match") <- p_match
-    class(result) <- c("compare_genoprob", "data.frame")
+
     result
 }
 
-
+# from founders, infer all F1 SNP genotypes
 infer_f1_geno <-
     function(founders)
 {
@@ -233,31 +253,26 @@ infer_f1_geno <-
     result
 }
 
-#' @export
-#' @rdname compare_genoprob
-print.compare_genoprob <-
-    function(x, digits=2, ...)
+compare_genoprob_add_annotation <-
+    function(x)
 {
-    # strip off attribute
-    attr(x, "prop_match") <- NULL
-
     if("match_best" %in% names(x)) { # add some annotations
         for(i in 1:nrow(x)) {
-            if(x[i,1]==x[i,2]) {
-                x[i,1] <- paste0(x[i,1], " ")
-                x[i,2] <- paste0(x[i,2], " ")
+            if(x[i,"geno1"]==x[i,"geno2"]) {
+                x[i,"geno1"] <- paste0(x[i,"geno1"], " ")
+                x[i,"geno2"] <- paste0(x[i,"geno2"], " ")
             } else {
                 if(x$match1[i] >= x$match_best[i])
-                    x[i,1] <- paste0(x[i,1], "*")
+                    x[i,"geno1"] <- paste0(x[i,"geno1"], "*")
                 else
-                    x[i,1] <- paste0(x[i,1], "-")
+                    x[i,"geno1"] <- paste0(x[i,"geno1"], "-")
                 if(x$match2[i] >= x$match_best[i])
-                    x[i,2] <- paste0(x[i,2], "*")
+                    x[i,"geno2"] <- paste0(x[i,"geno2"], "*")
                 else
-                    x[i,2] <- paste0(x[i,2], "-")
+                    x[i,"geno2"] <- paste0(x[i,"geno2"], "-")
             }
         }
     }
 
-    print.data.frame(x, digits=2)
+    x
 }

@@ -2,13 +2,10 @@
 % Please edit documentation in R/compare_genoprob.R
 \name{compare_genoprob}
 \alias{compare_genoprob}
-\alias{print.compare_genoprob}
 \title{Compare two sets of genotype probabilities}
 \usage{
 compare_genoprob(probs1, probs2, cross, ind = 1, chr = NULL,
-  minprob = 0.95, minmarkers = 10, minwidth = 0)
-
-\method{print}{compare_genoprob}(x, digits = 2, ...)
+  minprob = 0.95, minmarkers = 10, minwidth = 0, annotate = FALSE)
 }
 \arguments{
 \item{probs1}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
@@ -28,14 +25,18 @@ or allele dosages (as produced by \code{\link[qtl2geno:genoprob_to_alleleprob]{q
 \item{minmarkers}{Minimum number of markers in results.}
 
 \item{minwidth}{Minimum width in results.}
+
+\item{annotate}{If TRUE, add some annotations to the \code{geno1} and
+\code{geno2} columns to indicate, where they differ, which one
+matches what appears to be the best genotype. (\code{*} = matches
+the best genotype; \code{-} = lower match).}
 }
 \value{
-An object of class \code{"compare_genoprob}", which is a data frame with
-each row corresponding to an interval over which \code{probs1} and
-\code{probs2} each have a fixed inferred genotype. Columns include the
-two inferred genotypes, the start and end points and width of the
-interval, and when founder genotypes are in \code{cross}, the
-proportions of SNPs where the individual matches each possible
+A data frame with each row corresponding to an interval over which
+\code{probs1} and \code{probs2} each have a fixed inferred genotype. Columns
+include the two inferred genotypes, the start and end points and
+width of the interval, and when founder genotypes are in \code{cross},
+the proportions of SNPs where the individual matches each possible
 genotypes.
 }
 \description{
@@ -49,6 +50,19 @@ The function does the following:
 \item Identify intervals where the two inferred genotypes are constant.
 \item Within each segment, compare the observed SNP genotypes to the founders' genotypes.
 }
+}
+\examples{
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- iron[1,"2"]   # subset to first individual on chr 2
+map <- insert_pseudomarkers(iron$gmap, step=1)
+
+# in presence of a genotyping error, how much does error_prob matter?
+iron$geno[[1]][1,3] <- 3
+pr_e <- calc_genoprob(iron, map, error_prob=0.002)
+pr_ne <- calc_genoprob(iron, map, error_prob=1e-15)
+
+compare_genoprob(pr_e, pr_ne, iron, minmarkers=1, minprob=0.5)
+
 }
 \seealso{
 \code{\link[qtl2plot:plot_genoprobcomp]{qtl2plot::plot_genoprobcomp()}}
