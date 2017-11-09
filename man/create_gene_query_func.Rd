@@ -25,11 +25,11 @@ create_gene_query_func(dbfile = NULL, db = NULL, table_name = "genes",
 }
 \value{
 Function with three arguments, \code{chr}, \code{start},
-    and \code{end}, which returns a data frame with the genes
-    overlapping that region, with \code{start} and \code{end} being
-    in Mbp. The output should contain at least the columns
-    \code{Name}, \code{chr}, \code{start}, and \code{stop}, the
-    latter two being positions in Mbp.
+and \code{end}, which returns a data frame with the genes
+overlapping that region, with \code{start} and \code{end} being
+in Mbp. The output should contain at least the columns
+\code{Name}, \code{chr}, \code{start}, and \code{stop}, the
+latter two being positions in Mbp.
 }
 \description{
 Create a function that will connect to a SQLite database of gene
@@ -38,9 +38,9 @@ selected region.
 }
 \details{
 Note that this function assumes that the database has
-    \code{start} and \code{stop} fields that are in basepairs, but
-    the selection uses positions in Mbp, and the output data frame
-    should have \code{start} and \code{stop} columns in Mbp.
+\code{start} and \code{stop} fields that are in basepairs, but
+the selection uses positions in Mbp, and the output data frame
+should have \code{start} and \code{stop} columns in Mbp.
 }
 \examples{
 # create query function by connecting to file

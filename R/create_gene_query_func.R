@@ -4,25 +4,27 @@
 #' information and return a data frame with gene information for a
 #' selected region.
 #'
+#' @md
+#'
 #' @param dbfile Name of database file
-#' @param db Optional database connection (provide one of \code{file} and \code{db}).
+#' @param db Optional database connection (provide one of `file` and `db`).
 #' @param table_name Name of table in the database
 #' @param chr_field Name of chromosome field
 #' @param start_field Name of field with start position (in basepairs)
 #' @param stop_field Name of field with stop position (in basepairs)
 #' @param filter Additional SQL filter (as a character string).
 #'
-#' @return Function with three arguments, \code{chr}, \code{start},
-#'     and \code{end}, which returns a data frame with the genes
-#'     overlapping that region, with \code{start} and \code{end} being
+#' @return Function with three arguments, `chr`, `start`,
+#'     and `end`, which returns a data frame with the genes
+#'     overlapping that region, with `start` and `end` being
 #'     in Mbp. The output should contain at least the columns
-#'     \code{Name}, \code{chr}, \code{start}, and \code{stop}, the
+#'     `Name`, `chr`, `start`, and `stop`, the
 #'     latter two being positions in Mbp.
 #'
 #' @details Note that this function assumes that the database has
-#'     \code{start} and \code{stop} fields that are in basepairs, but
+#'     `start` and `stop` fields that are in basepairs, but
 #'     the selection uses positions in Mbp, and the output data frame
-#'     should have \code{start} and \code{stop} columns in Mbp.
+#'     should have `start` and `stop` columns in Mbp.
 #'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery

@@ -4,23 +4,25 @@
 #' variant information and return a data frame with variants for a
 #' selected region.
 #'
+#' @md
+#'
 #' @param dbfile Name of database file
-#' @param db Optional database connection (provide one of \code{file} and \code{db}).
+#' @param db Optional database connection (provide one of `file` and `db`).
 #' @param table_name Name of table in the database
 #' @param chr_field Name of chromosome field
 #' @param pos_field Name of position field
 #' @param filter Additional SQL filter (as a character string)
 #'
-#' @return Function with three arguments, \code{chr}, \code{start},
-#'     and \code{end}, which returns a data frame with the variants in
-#'     that region, with \code{start} and \code{end} being in Mbp. The
-#'     output should contain at least the columns \code{chr} and
-#'     \code{pos}, the latter being position in Mbp.
+#' @return Function with three arguments, `chr`, `start`,
+#'     and `end`, which returns a data frame with the variants in
+#'     that region, with `start` and `end` being in Mbp. The
+#'     output should contain at least the columns `chr` and
+#'     `pos`, the latter being position in Mbp.
 #'
 #' @details Note that this function assumes that the database has a
-#'     \code{pos} field that is in basepairs, but the selection uses
-#'     \code{start} and \code{end} positions in Mbp, and the output
-#'     data frame should have \code{pos} in Mbp.
+#'     `pos` field that is in basepairs, but the selection uses
+#'     `start` and `end` positions in Mbp, and the output
+#'     data frame should have `pos` in Mbp.
 #'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery
