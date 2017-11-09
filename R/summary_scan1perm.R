@@ -1,25 +1,27 @@
 #' Summarize scan1perm results
 #'
-#' Summarize permutation test results from \code{\link{scan1perm}}, as significance thresholds.
+#' Summarize permutation test results from [scan1perm()], as significance thresholds.
 #'
-#' @param object Output of \code{\link{scan1perm}}
+#' @md
+#'
+#' @param object Output of [scan1perm()]
 #' @param alpha Vector of significance levels
 #'
 #' @return
-#' An object of class \code{summary.scan1perm}. If
-#' \code{\link{scan1perm}} was run with \code{perm_Xsp=FALSE}, this is
+#' An object of class `summary.scan1perm`. If
+#' [scan1perm()] was run with `perm_Xsp=FALSE`, this is
 #' a single matrix of significance thresholds, with rows being
 #' signicance levels and columns being the columns in the input. If
-#' \code{\link{scan1perm}} was run with \code{perm_Xsp=TRUE}, this is
+#' [scan1perm()] was run with `perm_Xsp=TRUE`, this is
 #' a list of two matrices, with the significance thresholds for the
 #' autosomes and X chromosome, respectively.
 #'
-#' The result has an attribute \code{"n_perm"} that has the numbers of
+#' The result has an attribute `"n_perm"` that has the numbers of
 #' permutation replicates (either a matrix or a list of two matrices).
 #'
 #' @details
 #' In the case of X-chromosome-specific permutations (when
-#' \code{\link{scan1perm}} was run with \code{perm_Xsp=TRUE}, we
+#' [scan1perm()] was run with `perm_Xsp=TRUE`, we
 #' follow the approach of Broman et al. (2006) to get separate
 #' thresholds for the autosomes and X chromosome, using
 #'
@@ -127,6 +129,7 @@ summary_scan1perm <-
 #' @rdname summary_scan1perm
 #' @param ... Ignored
 #' @export
+#' @aliases summary.scan1perm
 summary.scan1perm <-
     function(object, alpha=0.05, ...)
 {
@@ -137,13 +140,15 @@ summary.scan1perm <-
 #'
 #' Print summary of scan1perm permutations
 #'
-#' @param x Object of class \code{"summary.scan1perm"}, as produced by \code{\link{summary_scan1perm}}.
-#' @param digits Number of digits in printing significance thresholds; passed to \code{\link[base]{print}}.
+#' @md
+#'
+#' @param x Object of class `"summary.scan1perm"`, as produced by [summary_scan1perm()].
+#' @param digits Number of digits in printing significance thresholds; passed to [base::print()].
 #' @param ... Ignored.
 #'
-#' @return Invisibly returns the input, \code{x}.
+#' @return Invisibly returns the input, `x`.
 #'
-#' @details This is to go with \code{\link{summary_scan1perm}}, so
+#' @details This is to go with [summary_scan1perm()], so
 #' that the summary output is printed in a nice format. Generally
 #' not called directly, but it can be in order to control the
 #' number of digits that appear.

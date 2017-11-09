@@ -1,19 +1,21 @@
 #' Join genome scan results for different chromosomes.
 #'
-#' Join multiple \code{\link{scan1}} results for different
+#' Join multiple [scan1()] results for different
 #' chromosomes; must have the same set of lod score column.
 #'
-#' @param ... Genome scan objects as produced by \code{\link{scan1}}.
+#' @md
+#'
+#' @param ... Genome scan objects as produced by [scan1()].
 #' Must have the same lod score columns.
 #'
 #' @return A single genome scan object with the results for
 #' different sets of chromosomes combined.
 #'
-#' @details If components \code{addcovar}, \code{Xcovar},
-#' \code{intcovar}, \code{weights}, \code{sample_size} do not match
+#' @details If components `addcovar`, `Xcovar`,
+#' `intcovar`, `weights`, `sample_size` do not match
 #' between objects, we omit this information.
 #'
-#' If \code{hsq} present, we simply \code{rbind()} the contents.
+#' If `hsq` present, we simply `rbind()` the contents.
 #'
 #' @examples
 #' library(qtl2geno)
@@ -27,6 +29,7 @@
 #' out <- rbind(out1, out2)
 #'
 #' @export
+#' @aliases rbind.scan1
 rbind.scan1 <-
     function(...)
 {

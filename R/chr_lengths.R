@@ -2,18 +2,20 @@
 #'
 #' Calculate chromosome lengths for a map object
 #'
+#' @md
+#'
 #' @param map A list of vectors, each specifying locations of the markers.
 #' @param collapse_to_AX If TRUE, collapse to the total lengths of the
 #' autosomes and X chromosome.
 #'
 #' @return A vector of chromosome lengths. If
-#' \code{collapse_to_AX=TRUE}, the result is a vector of length 2
+#' `collapse_to_AX=TRUE`, the result is a vector of length 2
 #' (autosomal and X chromosome lengths).
 #'
-#' @details We take \code{diff(range(v))} for each vector, \code{v}.
+#' @details We take `diff(range(v))` for each vector, `v`.
 #'
 #' @export
-#' @seealso \code{\link{scan1perm}}
+#' @seealso [scan1perm()]
 chr_lengths <-
     function(map, collapse_to_AX=FALSE)
 {

@@ -2,30 +2,30 @@
 #'
 #' Create a table of the top snp associations
 #'
-#' @param scan1_output Output of \code{\link[qtl2scan]{scan1}}.
-#' Should contain a component \code{"snpinfo"}, as when
-#' \code{\link[qtl2scan]{scan1}} is run with SNP probabilities
-#' produced by \code{\link[qtl2scan]{genoprob_to_snpprob}}.
+#' @md
+#'
+#' @param scan1_output Output of [scan1()].
+#' Should contain a component `"snpinfo"`, as when
+#' [scan1()] is run with SNP probabilities
+#' produced by [genoprob_to_snpprob()].
 #'
 #' @param snpinfo Data frame with SNP information with the following
-#'     columns (the last three are generally derived from with
-#'     \code{\link{index_snps}}):
-#' \itemize{
-#' \item \code{chr} - Character string or factor with chromosome
-#' \item \code{pos} - Position (in same units as in the \code{"map"}
-#'     attribute in \code{genoprobs}.
-#' \item \code{sdp} - Strain distribution pattern: an integer, between
+#'     columns (the last three are generally derived with
+#'     [index_snps()]):
+#' * `chr` - Character string or factor with chromosome
+#' * `pos` - Position (in same units as in the `"map"`
+#'     attribute in `genoprobs`.
+#' * `sdp` - Strain distribution pattern: an integer, between
 #'     1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
 #'     binary encoding indicates the founder genotypes
-#' \item \code{snp} - Character string with SNP identifier (if
+#' * `snp` - Character string with SNP identifier (if
 #'     missing, the rownames are used).
-#' \item \code{index} - Indices that indicate equivalent
-#'     groups of SNPs, calculated by \code{\link{index_snps}}.
-#' \item \code{intervals} - Indexes that indicate which marker
+#' * `index` - Indices that indicate equivalent
+#'     groups of SNPs, calculated by [index_snps()].
+#' * `intervals` - Indexes that indicate which marker
 #'     intervals the SNPs reside.
-#' \item \code{on_map} - Indicate whether SNP coincides with a marker
-#'     in the \code{genoprobs}
-#' }
+#' * `on_map` - Indicate whether SNP coincides with a marker
+#'     in the `genoprobs`
 #'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
@@ -77,7 +77,7 @@
 #' top_snps(out_snps, snpinfo, 0.5)
 #' }
 #' @export
-#' @seealso \code{\link{index_snps}}, \code{\link{genoprob_to_snpprob}}, \code{\link[qtl2plot]{plot_snpasso}}
+#' @seealso [index_snps()], [genoprob_to_snpprob()], [qtl2plot::plot_snpasso()]
 top_snps <-
     function(scan1_output, snpinfo, drop=1.5, show_all_snps=TRUE)
 {

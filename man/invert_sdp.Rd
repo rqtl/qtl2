@@ -25,5 +25,5 @@ sdp <- c(m1=1, m2=12, m3=240)
 invert_sdp(sdp, 8)
 }
 \seealso{
-\code{\link{calc_sdp}}
+\code{\link[=calc_sdp]{calc_sdp()}}
 }

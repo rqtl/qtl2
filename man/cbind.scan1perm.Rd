@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{...}{A set of permutation results from
-\code{\link{scan1perm}} (objects of class \code{scan1perm}). If
+\code{\link[=scan1perm]{scan1perm()}} (objects of class \code{"scan1perm"}. If
 different numbers of permutation replicates were used, those
 columns with fewer replicates are padded with missing values
 \code{NA}. However, if any include autosome/X
@@ -23,9 +23,9 @@ Column-bind multiple scan1perm objects with the same numbers of rows.
 \details{
 The aim of this function is to concatenate the results
 from multiple runs of a permutation test with
-\code{\link{scan1perm}}, generally with different phenotypes
+\code{\link[=scan1perm]{scan1perm()}}, generally with different phenotypes
 and/or methods, to be used in parallel with
-\code{\link{rbind.scan1perm}}.
+\code{\link[=rbind.scan1perm]{rbind.scan1perm()}}.
 }
 \examples{
 # load qtl2geno package for data and genoprob calculation
@@ -65,5 +65,5 @@ operm <- cbind(operm1, operm2)
 
 }
 \seealso{
-\code{\link{rbind.scan1perm}}, \code{\link{scan1perm}}, \code{\link{scan1}}
+\code{\link[=rbind.scan1perm]{rbind.scan1perm()}}, \code{\link[=scan1perm]{scan1perm()}}, \code{\link[=scan1]{scan1()}}
 }

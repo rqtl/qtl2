@@ -8,26 +8,26 @@ genoprob_to_snpprob(genoprobs, snpinfo)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as
-calculated by \code{\link[qtl2geno]{calc_genoprob}}.}
+calculated by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
 
 \item{snpinfo}{Data frame with SNP information with the following
-    columns (the last three are generally derived from with
-    \code{\link{index_snps}}):
+columns (the last three are generally derived with
+\code{\link[=index_snps]{index_snps()}}):
 \itemize{
 \item \code{chr} - Character string or factor with chromosome
 \item \code{pos} - Position (in same units as in the \code{"map"}
-    attribute in \code{genoprobs}.
+attribute in \code{genoprobs}.
 \item \code{sdp} - Strain distribution pattern: an integer, between
-    1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
-    binary encoding indicates the founder genotypes
+1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
+binary encoding indicates the founder genotypes
 \item \code{snp} - Character string with SNP identifier (if
-    missing, the rownames are used).
+missing, the rownames are used).
 \item \code{index} - Indices that indicate equivalent
-    groups of SNPs, calculated by \code{\link{index_snps}}.
+groups of SNPs, calculated by \code{\link[=index_snps]{index_snps()}}.
 \item \code{intervals} - Indexes that indicate which marker
-    intervals the SNPs reside.
+intervals the SNPs reside.
 \item \code{on_map} - Indicate whether SNP coincides with a marker
-    in the \code{genoprobs}
+in the \code{genoprobs}
 }}
 }
 \value{
@@ -93,5 +93,5 @@ snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 
 }
 \seealso{
-\code{\link{index_snps}}, \code{\link[qtl2geno]{calc_genoprob}}
+\code{\link[=index_snps]{index_snps()}}, \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}
 }

@@ -11,7 +11,7 @@ scan1perm(genoprobs, pheno, kinship = NULL, addcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno]{calc_genoprob}}.}
+\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
 
 \item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
 
@@ -35,7 +35,7 @@ REML; otherwise maximum likelihood.}
 
 \item{model}{Indicates whether to use a normal model (least
 squares) or binary model (logistic regression) for the phenotype.
-If \code{model="binary"}, the phenotypes must have values in [0, 1].}
+If \code{model="binary"}, the phenotypes must have values in \link{0, 1}.}
 
 \item{n_perm}{Number of permutation replicates.}
 
@@ -47,12 +47,12 @@ test. Should be named in the same way as the rows of
 \code{pheno}. The unique values define the strata.}
 
 \item{chr_lengths}{Lengths of the chromosomes; needed only if
-\code{perm_Xsp=TRUE}. See \code{\link{chr_lengths}}.}
+\code{perm_Xsp=TRUE}. See \code{\link[=chr_lengths]{chr_lengths()}}.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 
 \item{...}{Additional control parameters; see Details.}
 }
@@ -159,5 +159,5 @@ E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
 }
 \seealso{
-\code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strata}}
+\code{\link[=scan1]{scan1()}}, \code{\link[=chr_lengths]{chr_lengths()}}, \code{\link[=mat2strata]{mat2strata()}}
 }

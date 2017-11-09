@@ -2,12 +2,14 @@
 
 #' Subset scan1 output
 #'
-#' Subset the output of \code{\link{scan1}} by chromosome or column
+#' Subset the output of [scan1()] by chromosome or column
 #'
-#' @param x An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}}.
+#' @md
+#'
+#' @param x An object of class `"scan1"` as returned by
+#' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #' @param chr Vector of chromosomes.
 #' @param lodcolumn Vector of integers or character strings indicating the LOD
 #' score columns, either as a numeric indexes or column names.
@@ -141,6 +143,7 @@ subset_scan1 <-
 
 #' @export
 #' @rdname subset_scan1
+#' @aliases subset.scan1
 subset.scan1 <- subset_scan1
 
 

@@ -12,10 +12,10 @@ max_scan1(scan1_output, map, lodcolumn = 1, chr = NULL, na.rm = TRUE, ...)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}}.}
+\code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{lodcolumn}{An integer or character string indicating the LOD
 score column, either as a numeric index or column name.}

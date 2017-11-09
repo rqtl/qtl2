@@ -11,7 +11,7 @@
 }
 \arguments{
 \item{...}{A set of permutation results from
-\code{\link{scan1perm}} (objects of class \code{scan1perm}).
+\code{\link[=scan1perm]{scan1perm()}} (objects of class \code{"scan1perm"}.
 They must have the same set of columns. If any include
 autosome/X chromosome-specific permutations, they must all be
 such.}
@@ -25,7 +25,7 @@ Row-bind multiple scan1perm objects with the same set of columns
 \details{
 The aim of this function is to concatenate the results
 from multiple runs of a permutation test with
-\code{\link{scan1perm}}, to assist in the case that such
+\code{\link[=scan1perm]{scan1perm()}}, to assist in the case that such
 permutations are done on multiple processors in parallel.
 }
 \examples{
@@ -66,5 +66,5 @@ operm <- rbind(operm1, operm2)
 
 }
 \seealso{
-\code{\link{cbind.scan1perm}}, \code{\link{scan1perm}}, \code{\link{scan1}}
+\code{\link[=cbind.scan1perm]{cbind.scan1perm()}}, \code{\link[=scan1perm]{scan1perm()}}, \code{\link[=scan1]{scan1()}}
 }

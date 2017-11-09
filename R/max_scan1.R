@@ -5,10 +5,12 @@
 #' Return data frame with the positions having maximum LOD score for a
 #' particular LOD score column
 #'
-#' @param scan1_output An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}}.
+#' @md
+#'
+#' @param scan1_output An object of class `"scan1"` as returned by
+#' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
@@ -113,6 +115,7 @@ max_scan1 <-
 
 #' @export
 #' @rdname max_scan1
+#' @aliases max.scan1
 max.scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
     max_scan1(scan1_output, map, lodcolumn, chr, na.rm, ...)
@@ -121,10 +124,12 @@ max.scan1 <-
 #'
 #' Find overall maximum LOD score in genome scan results, across all positions and columns.
 #'
-#' @param scan1_output An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}}.
+#' @md
+#'
+#' @param scan1_output An object of class `"scan1"` as returned by
+#' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #' @param chr Option vector of chromosomes to consider.
 #'
 #' @export

@@ -11,10 +11,10 @@ subset_scan1(x, map = NULL, chr = NULL, lodcolumn = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}}.}
+\code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{chr}{Vector of chromosomes.}
 
@@ -27,7 +27,7 @@ score columns, either as a numeric indexes or column names.}
 Object of same form as input, but subset by chromosome and/or column.
 }
 \description{
-Subset the output of \code{\link{scan1}} by chromosome or column
+Subset the output of \code{\link[=scan1]{scan1()}} by chromosome or column
 }
 \examples{
 \dontrun{

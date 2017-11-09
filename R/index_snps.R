@@ -5,36 +5,36 @@
 #' have the same strain distribution pattern, and then create an index
 #' to a set of distinct SNPs, one per partition.
 #'
+#' @md
+#'
 #' @param map Physical map of markers and pseudomarkers; generally
-#'     created from \code{\link[qtl2geno]{insert_pseudomarkers}} and
+#'     created from [qtl2geno::insert_pseudomarkers()] and
 #'     used for a set of genotype probabilities (calculated with
-#'     \code{\link[qtl2geno]{calc_genoprob}}) that are to be used to
+#'     [qtl2geno::calc_genoprob()]) that are to be used to
 #'     interpolate SNP genotype probabilities (with
-#'     \code{\link{genoprob_to_snpprob}}).
+#'     [genoprob_to_snpprob()]).
 #' @param snpinfo Data frame with SNP information with the following columns:
-#' \itemize{
-#' \item \code{chr} - Character string or factor with chromosome
-#' \item \code{pos} - Position (in same units as in the \code{"map"}).
-#' \item \code{sdp} - Strain distribution pattern: an integer, between
+#' * `chr` - Character string or factor with chromosome
+#' * `pos` - Position (in same units as in the `"map"`).
+#' * `sdp` - Strain distribution pattern: an integer, between
 #'     1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
 #'     binary encoding indicates the founder genotypes
-#' \item \code{snp} - Character string with SNP identifier (if
+#' * `snp` - Character string with SNP identifier (if
 #'     missing, the rownames are used).
-#' }
 #' @param tol Tolerance for determining whether a SNP is exactly at a
 #' position at which genotype probabilities were already calculated.
 #'
-#' @return A data frame containin the input \code{snpinfo} with three
-#' added columns: \code{"index"} (which indicate the groups of
-#' equivalent SNPs), \code{"interval"} (which indicates the map
+#' @return A data frame containin the input `snpinfo` with three
+#' added columns: `"index"` (which indicate the groups of
+#' equivalent SNPs), `"interval"` (which indicates the map
 #' interval containing the SNP, with values starting at 0), and
-#' \code{on_map} (which indicates that the SNP is within
-#' \code{tol} of a position on the map). The rows get reordered,
+#' `on_map` (which indicates that the SNP is within
+#' `tol` of a position on the map). The rows get reordered,
 #' so that they are ordered by chromosome and position, and the
-#' values in the \code{"index"} column are \emph{by chromosome}.
+#' values in the `"index"` column are _by chromosome_.
 #'
 #' @details We split the SNPs by chromosome and identify the intervals
-#' in the \code{map} that contain each. For SNPs within \code{tol}
+#' in the `map` that contain each. For SNPs within `tol`
 #' of a position at which the genotype probabilities were
 #' calculated, we take the SNP to be at that position. For each
 #' marker position or interval, we then partition the SNPs into
@@ -64,7 +64,7 @@
 #' snpinfo <- index_snps(recla$pmap, snpinfo)
 #' }
 #'
-#' @seealso \code{\link{genoprob_to_snpprob}}
+#' @seealso [genoprob_to_snpprob()]
 #' @export
 index_snps <-
     function(map, snpinfo, tol=1e-8)

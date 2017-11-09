@@ -10,7 +10,7 @@ scan1blup(genoprobs, pheno, kinship = NULL, addcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno]{calc_genoprob}}.}
+\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
@@ -43,22 +43,22 @@ REML to estimate variance components; otherwise maximum likelihood.}
 \item{tol}{Tolerance value for convergence of linear mixed model fit.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 
 \item{quiet}{If FALSE, print message about number of cores used when multi-core.}
 }
 \value{
 A matrix of estimated regression coefficients, of dimension
-    positions x number of effects. The number of effects is
-    \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+positions x number of effects. The number of effects is
+\code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
 May also contain the following attributes:
 \itemize{
 \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
-    standard errors, of same dimension as \code{coef}.
+standard errors, of same dimension as \code{coef}.
 \item \code{sample_size} - Vector of sample sizes used for each
-    phenotype
+phenotype
 }
 }
 \description{

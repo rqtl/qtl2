@@ -3,18 +3,20 @@
 #' Estimate the heritability of a set of traits via a linear mixed
 #' model, with possible allowance for covariates.
 #'
+#' @md
+#'
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param kinship A kinship matrix.
 #' @param addcovar An optional matrix of additive covariates.
 #' @param reml If true, use REML; otherwise, use maximimum likelihood.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #' @param ... Additional control parameters (see details).
 #'
 #' @return A vector of estimated heritabilities, corresponding to the
-#' columns in \code{pheno}.
+#' columns in `pheno`.
 #'
 #' @details
 #' We fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e} where
@@ -25,13 +27,13 @@
 #' For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
 #'
-#' If \code{reml=TRUE}, restricted maximum likelihood (reml) is used
+#' If `reml=TRUE`, restricted maximum likelihood (reml) is used
 #' to estimate the heritability, separately for each phenotype.
 #'
-#' Additional control parameters include \code{tol} for the tolerance
-#' for convergence, \code{quiet} for controlling whether messages will
-#' be display, \code{max_batch} for the maximum number of phenotypes
-#' in a batch, and \code{check_boundary} for whether the 0 and 1
+#' Additional control parameters include `tol` for the tolerance
+#' for convergence, `quiet` for controlling whether messages will
+#' be display, `max_batch` for the maximum number of phenotypes
+#' in a batch, and `check_boundary` for whether the 0 and 1
 #' boundary values for the estimated heritability will be checked
 #' explicitly.
 #'

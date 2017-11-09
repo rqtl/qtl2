@@ -8,10 +8,10 @@ maxlod(scan1_output, map = NULL, chr = NULL)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}}.}
+\code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{chr}{Option vector of chromosomes to consider.}
 }

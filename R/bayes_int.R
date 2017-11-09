@@ -5,10 +5,12 @@
 #' chromosome, with the ability to identify intervals for multiple LOD
 #' peaks.
 #'
-#' @param scan1_output An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}}.
+#' @md
+#'
+#' @param scan1_output An object of class `"scan1"` as returned by
+#' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #' @param chr Chromosome ID to consider (must be a single value).
 #' @param lodcolumn LOD score column to consider (must be a single value).
 #' @param threshold Minimum LOD score for a peak.
@@ -19,29 +21,28 @@
 #' that their endpoints are at genetic markers.
 #'
 #' @return A matrix with three columns:
-#' \itemize{
-#' \item \code{ci_lo} - lower bound of interval
-#' \item \code{pos} - peak position
-#' \item \code{ci_hi} - upper bound of interval
-#' }
+#' * `ci_lo` - lower bound of interval
+#' * `pos` - peak position
+#' * `ci_hi` - upper bound of interval
+#'
 #' Each row corresponds to a different peak.
 #'
 #' @details We identify a set of peaks defined as local maxima that
-#' exceed the specified \code{threshold}, with the requirement that
-#' the LOD score must have dropped by at least \code{peakdrop} below
+#' exceed the specified `threshold`, with the requirement that
+#' the LOD score must have dropped by at least `peakdrop` below
 #' the lowest of any two adjacent peaks.
 #'
 #' At a given peak, if there are ties, with multiple positions jointly
 #' achieving the maximum LOD score, we take the average of these
 #' positions as the location of the peak.
 #'
-#' The default is to use \code{threshold=0}, \code{peakdrop=Inf}, and
-#' \code{prob=0.95}. We then return results a single peak, no matter the
+#' The default is to use `threshold=0`, `peakdrop=Inf`, and
+#' `prob=0.95`. We then return results a single peak, no matter the
 #' maximum LOD score, and give a 95% Bayes credible interval.
 #'
 #' @export
 #'
-#' @seealso \code{\link{lod_int}}, \code{\link{find_peaks}}, \code{\link{scan1}}
+#' @seealso [lod_int()], [find_peaks()], [scan1()]
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation

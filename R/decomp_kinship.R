@@ -2,17 +2,19 @@
 #'
 #' Calculate the eigen decomposition of a kinship matrix, or of a list of such matrices.
 #'
+#' @md
+#'
 #' @param kinship A square matrix, or a list of square matrices.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
-#' @return The eigen values and the \bold{transposed} eigen vectors,
-#' as a list containing a vector \code{values} and a matrix
-#' \code{vectors}.
+#' @return The eigen values and the **transposed** eigen vectors,
+#' as a list containing a vector `values` and a matrix
+#' `vectors`.
 #'
-#' @details The result contains an attribute \code{"eigen_decomp"}.
+#' @details The result contains an attribute `"eigen_decomp"`.
 #'
 #' @examples
 #' library(qtl2geno)

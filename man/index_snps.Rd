@@ -8,21 +8,21 @@ index_snps(map, snpinfo, tol = 0.00000001)
 }
 \arguments{
 \item{map}{Physical map of markers and pseudomarkers; generally
-created from \code{\link[qtl2geno]{insert_pseudomarkers}} and
+created from \code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}} and
 used for a set of genotype probabilities (calculated with
-\code{\link[qtl2geno]{calc_genoprob}}) that are to be used to
+\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}) that are to be used to
 interpolate SNP genotype probabilities (with
-\code{\link{genoprob_to_snpprob}}).}
+\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}).}
 
 \item{snpinfo}{Data frame with SNP information with the following columns:
 \itemize{
 \item \code{chr} - Character string or factor with chromosome
 \item \code{pos} - Position (in same units as in the \code{"map"}).
 \item \code{sdp} - Strain distribution pattern: an integer, between
-    1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
-    binary encoding indicates the founder genotypes
+1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
+binary encoding indicates the founder genotypes
 \item \code{snp} - Character string with SNP identifier (if
-    missing, the rownames are used).
+missing, the rownames are used).
 }}
 
 \item{tol}{Tolerance for determining whether a SNP is exactly at a
@@ -78,5 +78,5 @@ snpinfo <- index_snps(recla$pmap, snpinfo)
 
 }
 \seealso{
-\code{\link{genoprob_to_snpprob}}
+\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}
 }

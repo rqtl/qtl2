@@ -7,9 +7,9 @@
 \method{print}{summary.scan1perm}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{Object of class \code{"summary.scan1perm"}, as produced by \code{\link{summary_scan1perm}}.}
+\item{x}{Object of class \code{"summary.scan1perm"}, as produced by \code{\link[=summary_scan1perm]{summary_scan1perm()}}.}
 
-\item{digits}{Number of digits in printing significance thresholds; passed to \code{\link[base]{print}}.}
+\item{digits}{Number of digits in printing significance thresholds; passed to \code{\link[base:print]{base::print()}}.}
 
 \item{...}{Ignored.}
 }
@@ -20,7 +20,7 @@ Invisibly returns the input, \code{x}.
 Print summary of scan1perm permutations
 }
 \details{
-This is to go with \code{\link{summary_scan1perm}}, so
+This is to go with \code{\link[=summary_scan1perm]{summary_scan1perm()}}, so
 that the summary output is printed in a nice format. Generally
 not called directly, but it can be in order to control the
 number of digits that appear.

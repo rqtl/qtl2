@@ -2,17 +2,19 @@
 #'
 #' Row-bind multiple scan1perm objects with the same set of columns
 #'
+#' @md
+#'
 #' @param ... A set of permutation results from
-#' \code{\link{scan1perm}} (objects of class \code{scan1perm}).
+#' [scan1perm()] (objects of class `"scan1perm"`.
 #' They must have the same set of columns. If any include
 #' autosome/X chromosome-specific permutations, they must all be
 #' such.
 #'
-#' @return The combined row-binded input, as a \code{scan1perm} object.
+#' @return The combined row-binded input, as a `scan1perm` object.
 #'
 #' @details The aim of this function is to concatenate the results
 #' from multiple runs of a permutation test with
-#' \code{\link{scan1perm}}, to assist in the case that such
+#' [scan1perm()], to assist in the case that such
 #' permutations are done on multiple processors in parallel.
 #'
 #' @examples
@@ -51,9 +53,10 @@
 #'
 #' operm <- rbind(operm1, operm2)
 #'
-#' @seealso \code{\link{cbind.scan1perm}}, \code{\link{scan1perm}}, \code{\link{scan1}}
+#' @seealso [cbind.scan1perm()], [scan1perm()], [scan1()]
 #'
 #' @export
+#' @aliases rbind.scan1perm
 rbind.scan1perm <-
     function(...)
 {
@@ -141,6 +144,7 @@ rbind.scan1perm <-
 
 #' @export
 #' @rdname rbind.scan1perm
+#' @aliases c.scan1perm
 c.scan1perm <- rbind.scan1perm
 
 
@@ -148,20 +152,22 @@ c.scan1perm <- rbind.scan1perm
 #'
 #' Column-bind multiple scan1perm objects with the same numbers of rows.
 #'
+#' @md
+#'
 #' @param ... A set of permutation results from
-#' \code{\link{scan1perm}} (objects of class \code{scan1perm}). If
+#' [scan1perm()] (objects of class `"scan1perm"`. If
 #' different numbers of permutation replicates were used, those
 #' columns with fewer replicates are padded with missing values
-#' \code{NA}. However, if any include autosome/X
+#' `NA`. However, if any include autosome/X
 #' chromosome-specific permutations, they must all be such.
 #'
-#' @return The combined column-binded input, as a \code{scan1perm} object.
+#' @return The combined column-binded input, as a `scan1perm` object.
 #'
 #' @details The aim of this function is to concatenate the results
 #' from multiple runs of a permutation test with
-#' \code{\link{scan1perm}}, generally with different phenotypes
+#' [scan1perm()], generally with different phenotypes
 #' and/or methods, to be used in parallel with
-#' \code{\link{rbind.scan1perm}}.
+#' [rbind.scan1perm()].
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -199,9 +205,10 @@ c.scan1perm <- rbind.scan1perm
 #'
 #' operm <- cbind(operm1, operm2)
 #'
-#' @seealso \code{\link{rbind.scan1perm}}, \code{\link{scan1perm}}, \code{\link{scan1}}
+#' @seealso [rbind.scan1perm()], [scan1perm()], [scan1()]
 #'
 #' @export
+#' @aliases cbind.scan1perm
 cbind.scan1perm <-
     function(...)
 {

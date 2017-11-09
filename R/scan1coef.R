@@ -5,8 +5,10 @@
 #' model (the latter to account for a residual polygenic effect), with
 #' possible allowance for covariates.
 #'
+#' @md
+#'
 #' @param genoprobs Genotype probabilities as calculated by
-#' \code{\link[qtl2geno]{calc_genoprob}}.
+#' [qtl2geno::calc_genoprob()].
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
@@ -18,47 +20,45 @@
 #' chromosome, where we might need sex as a additive covariate under
 #' the null hypothesis, but we wouldn't want to include it under the
 #' alternative as it would be collinear with the QTL effects. Only
-#' used if \code{kinship} is provided but \code{hsq} is not, to get
+#' used if `kinship` is provided but `hsq` is not, to get
 #' estimate of residual heritability.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
-#' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers. Ignored if \code{kinship} is provided.
+#' individuals. As with the other inputs, it must have `names`
+#' for individual identifiers. Ignored if `kinship` is provided.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
-#' \code{cbind(c(1,1,1), c(-1, 0, 1), c(-0.5, 1, -0.5))} to get
+#' `cbind(c(1,1,1), c(-1, 0, 1), c(-0.5, 1, -0.5))` to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
-#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
+#'     If `model="binary"`, the phenotypes must have values in [0, 1].
 #' @param se If TRUE, also calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
-#' \code{kinship} provided.
-#' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
+#' `kinship` provided.
+#' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
 #' @param maxit Maximum number of iterations in logistic regression
-#'     fit (when \code{model="binary"}).
+#'     fit (when `model="binary"`).
 #'
 #' @return A matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
-#'     \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+#'     `n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar`.
 #' May also contain the following attributes:
-#' \itemize{
-#' \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
-#'     standard errors, of same dimension as \code{coef}.
-#' \item \code{sample_size} - Vector of sample sizes used for each
-#'     phenotype
-#' }
+#' * `SE` - Present if `se=TRUE`: a matrix of estimated
+#'   standard errors, of same dimension as `coef`.
+#' * `sample_size` - Vector of sample sizes used for each
+#'   phenotype
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
 #'
-#' If \code{kinship} is absent, Haley-Knott regression is performed.
-#' If \code{kinship} is provided, a linear mixed model is used, with a
+#' If `kinship` is absent, Haley-Knott regression is performed.
+#' If `kinship` is provided, a linear mixed model is used, with a
 #' polygenic effect estimated under the null hypothesis of no (major)
 #' QTL, and then taken as fixed as known in the genome scan.
 #'

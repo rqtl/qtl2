@@ -10,7 +10,7 @@ scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL, Xcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno]{calc_genoprob}}.}
+\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
 
 \item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
 
@@ -34,12 +34,12 @@ REML; otherwise maximum likelihood.}
 
 \item{model}{Indicates whether to use a normal model (least
 squares) or binary model (logistic regression) for the phenotype.
-If \code{model="binary"}, the phenotypes must have values in [0, 1].}
+If \code{model="binary"}, the phenotypes must have values in \eqn{[0, 1]}.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 
 \item{...}{Additional control parameters; see Details.}
 }
@@ -48,15 +48,15 @@ A matrix of LOD scores, positions x phenotypes.
 Also contains one or more of the following attributes:
 \itemize{
 \item \code{sample_size} - Vector of sample sizes used for each
-    phenotype
+phenotype
 \item \code{hsq} - Included if \code{kinship} provided: A matrix of
-    estimated heritabilities under the null hypothesis of no
-    QTL. Columns are the phenotypes. If the \code{"loco"} method was
-    used with \code{\link[qtl2geno]{calc_kinship}} to calculate a list
-    of kinship matrices, one per chromosome, the rows of \code{hsq}
-    will be the heritabilities for the different chromosomes (well,
-    leaving out each one). If \code{Xcovar} was not NULL, there will at
-    least be an autosome and X chromosome row.
+estimated heritabilities under the null hypothesis of no
+QTL. Columns are the phenotypes. If the \code{"loco"} method was
+used with \code{\link[qtl2geno:calc_kinship]{qtl2geno::calc_kinship()}} to calculate a list
+of kinship matrices, one per chromosome, the rows of \code{hsq}
+will be the heritabilities for the different chromosomes (well,
+leaving out each one). If \code{Xcovar} was not NULL, there will at
+least be an autosome and X chromosome row.
 }
 }
 \description{
@@ -144,5 +144,5 @@ E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
 }
 \seealso{
-\code{\link{scan1perm}}
+\code{\link[=scan1perm]{scan1perm()}}
 }

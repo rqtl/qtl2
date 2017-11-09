@@ -4,8 +4,10 @@
 #' Haley-Knott regression or a linear mixed model, with possible
 #' allowance for covariates.
 #'
+#' @md
+#'
 #' @param genoprobs Genotype probabilities as calculated by
-#' \code{\link[qtl2geno]{calc_genoprob}}.
+#' [qtl2geno::calc_genoprob()].
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param kinship Optional kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
@@ -15,59 +17,59 @@
 #' null hypothesis when scanning the X chromosome.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
-#' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers. Ignored if \code{kinship} is provided.
-#' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
+#' individuals. As with the other inputs, it must have `names`
+#' for individual identifiers. Ignored if `kinship` is provided.
+#' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
-#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
+#'     If `model="binary"`, the phenotypes must have values in [0, 1].
 #' @param n_perm Number of permutation replicates.
 #' @param perm_Xsp If TRUE, do separate permutations for the autosomes
 #' and the X chromosome.
 #' @param perm_strata Vector of strata, for a stratified permutation
 #' test. Should be named in the same way as the rows of
-#' \code{pheno}. The unique values define the strata.
+#' `pheno`. The unique values define the strata.
 #' @param chr_lengths Lengths of the chromosomes; needed only if
-#' \code{perm_Xsp=TRUE}. See \code{\link{chr_lengths}}.
+#' `perm_Xsp=TRUE`. See [chr_lengths()].
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return If \code{perm_Xsp=FALSE}, the result is matrix of
+#' @return If `perm_Xsp=FALSE`, the result is matrix of
 #' genome-wide maximum LOD scores, permutation replicates x
-#' phenotypes. If \code{perm_Xsp=TRUE}, the result is a list of
+#' phenotypes. If `perm_Xsp=TRUE`, the result is a list of
 #' two matrices, one for the autosomes and one for the X
 #' chromosome.
 #'
 #' @details
-#' If \code{kinship} is not provided, so that analysis proceeds by
+#' If `kinship` is not provided, so that analysis proceeds by
 #' Haley-Knott regression, we permute the rows of the phenotype data;
 #' the same permutations are also applied to the rows of the
-#' covariates (\code{addcovar}, \code{Xcovar}, and \code{intcovar})
+#' covariates (`addcovar`, `Xcovar`, and `intcovar`)
 #' are permuted.
 #'
-#' If \code{kinship} is provided, we instead permute the rows of the
+#' If `kinship` is provided, we instead permute the rows of the
 #' genotype data and fit an LMM with the same residual heritability
 #' (estimated under the null hypothesis of no QTL).
 #'
-#' If \code{Xcovar} is provided and \code{perm_strata=NULL}, we do a
+#' If `Xcovar` is provided and `perm_strata=NULL`, we do a
 #' stratified permutation test with the strata defined by the rows of
-#' \code{Xcovar}. If a simple permutation test is desired, provide
-#' \code{perm_strata} that is a vector containing a single repeated
+#' `Xcovar`. If a simple permutation test is desired, provide
+#' `perm_strata` that is a vector containing a single repeated
 #' value.
 #'
-#' The \code{...} argument can contain three additional control
+#' The `...` argument can contain three additional control
 #' parameters; suspended for simplicity (or confusion, depending on
-#' your point of view). \code{tol} is used as a tolerance value for
+#' your point of view). `tol` is used as a tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted);
-#' default \code{1e-12}. \code{intcovar_method} indicates whether to
+#' default `1e-12`. `intcovar_method` indicates whether to
 #' use a high-memory (but potentially faster) method or a low-memory
-#' (and possibly slower) method, with values \code{"highmem"} or
-#' \code{"lowmem"}; default \code{"lowmem"}.  Finally, \code{max_batch}
+#' (and possibly slower) method, with values `"highmem"` or
+#' `"lowmem"`; default `"lowmem"`.  Finally, `max_batch`
 #' indicates the maximum number of phenotypes to run together; default
 #' is 1000.
 #'
@@ -130,7 +132,7 @@
 #'                                  chr_lengths=chr_lengths(map))}
 #' summary(operm_lmm)
 #'
-#' @seealso \code{\link{scan1}}, \code{\link{chr_lengths}}, \code{\link{mat2strata}}
+#' @seealso [scan1()], [chr_lengths()], [mat2strata()]
 #' @export
 scan1perm <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,

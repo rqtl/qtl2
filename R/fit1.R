@@ -3,6 +3,8 @@
 #' Fit a single-QTL model at a single putative QTL position and get detailed results
 #' about estimated coefficients and individuals contributions to the LOD score.
 #'
+#' @md
+#'
 #' @param genoprobs A matrix of genotype probabilities, individuals x genotypes
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix.
@@ -16,40 +18,39 @@
 #' the QTL effects.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
-#' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers. Ignored if \code{kinship} is provided.
+#' individuals. As with the other inputs, it must have `names`
+#' for individual identifiers. Ignored if `kinship` is provided.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
-#' \code{cbind(c(1,1,1), c(-1, 0, 1), c(-0.5, 1, -0.5))} to get
+#' `cbind(c(1,1,1), c(-1, 0, 1), c(-0.5, 1, -0.5))` to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
-#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
+#'     If `model="binary"`, the phenotypes must have values in
+#'     \eqn{[0, 1]}.
 #' @param se If TRUE, calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
-#' \code{kinship} provided.
-#' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
+#' `kinship` provided.
+#' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param tol Tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted)
 #' @param maxit Maximum number of iterations in logistic regression
-#'     fit (when \code{model="binary"}).
+#'     fit (when `model="binary"`).
 #'
 #' @return A list containing
-#' \itemize{
-#' \item \code{coef} - Vector of estimated coefficients.
-#' \item \code{SE} - Vector of estimated standard errors (included if \code{se=TRUE}).
-#' \item \code{lod} - The overall lod score.
-#' \item \code{ind_lod} - Vector of individual contributions to the LOD score.
-#' }
+#' * `coef` - Vector of estimated coefficients.
+#' * `SE` - Vector of estimated standard errors (included if `se=TRUE`).
+#' * `lod` - The overall lod score.
+#' * `ind_lod` - Vector of individual contributions to the LOD score.
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
 #'
-#' If \code{kinship} is absent, Haley-Knott regression is performed.
-#' If \code{kinship} is provided, a linear mixed model is used, with a
+#' If `kinship` is absent, Haley-Knott regression is performed.
+#' If `kinship` is provided, a linear mixed model is used, with a
 #' polygenic effect estimated under the null hypothesis of no (major)
 #' QTL, and then taken as fixed as known in the genome scan.
 #'

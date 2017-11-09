@@ -4,37 +4,37 @@
 #' set of SNPs to convert founder-based genotype probabilities to SNP
 #' genotype probabilities.
 #'
+#' @md
+#'
 #' @param genoprobs Genotype probabilities as
-#' calculated by \code{\link[qtl2geno]{calc_genoprob}}.
+#' calculated by [qtl2geno::calc_genoprob()].
 #'
 #' @param snpinfo Data frame with SNP information with the following
-#'     columns (the last three are generally derived from with
-#'     \code{\link{index_snps}}):
-#' \itemize{
-#' \item \code{chr} - Character string or factor with chromosome
-#' \item \code{pos} - Position (in same units as in the \code{"map"}
-#'     attribute in \code{genoprobs}.
-#' \item \code{sdp} - Strain distribution pattern: an integer, between
+#'     columns (the last three are generally derived with
+#'     [index_snps()]):
+#' * `chr` - Character string or factor with chromosome
+#' * `pos` - Position (in same units as in the `"map"`
+#'     attribute in `genoprobs`.
+#' * `sdp` - Strain distribution pattern: an integer, between
 #'     1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
 #'     binary encoding indicates the founder genotypes
-#' \item \code{snp} - Character string with SNP identifier (if
+#' * `snp` - Character string with SNP identifier (if
 #'     missing, the rownames are used).
-#' \item \code{index} - Indices that indicate equivalent
-#'     groups of SNPs, calculated by \code{\link{index_snps}}.
-#' \item \code{intervals} - Indexes that indicate which marker
+#' * `index` - Indices that indicate equivalent
+#'     groups of SNPs, calculated by [index_snps()].
+#' * `intervals` - Indexes that indicate which marker
 #'     intervals the SNPs reside.
-#' \item \code{on_map} - Indicate whether SNP coincides with a marker
-#'     in the \code{genoprobs}
-#' }
+#' * `on_map` - Indicate whether SNP coincides with a marker
+#'     in the `genoprobs`
 #'
-#' @return An object like the \code{genoprobs} input, but with imputed
+#' @return An object like the `genoprobs` input, but with imputed
 #' genotype probabilities at the selected SNPs indicated in
-#' \code{snpinfo$index}.
+#' `snpinfo$index`.
 #'
-#' If the input \code{genoprobs} is for allele probabilities, the
-#' \code{probs} output has just two probability columns (for the two SNP
+#' If the input `genoprobs` is for allele probabilities, the
+#' `probs` output has just two probability columns (for the two SNP
 #' alleles). If the input has a full set of \eqn{n(n+1)/2}
-#' probabilities for \eqn{n} strains, the \code{probs} output has 3 probabilities
+#' probabilities for \eqn{n} strains, the `probs` output has 3 probabilities
 #' (for the three SNP genotypes). If the input has full genotype
 #' probabilities for the X chromosome (\eqn{n(n+1)/2} genotypes for
 #' the females followed by \eqn{n} hemizygous genotypes for the
@@ -42,8 +42,8 @@
 #' followed by the two male hemizygous SNP genotypes.
 #'
 #' @details We first split the SNPs by chromosome and use
-#' \code{snpinfo$index} to subset to non-equivalent SNPs.
-#' \code{snpinfo$interval} indicates the intervals in the genotype
+#' `snpinfo$index` to subset to non-equivalent SNPs.
+#' `snpinfo$interval` indicates the intervals in the genotype
 #' probabilities that contain each. For SNPs contained within an
 #' interval, we use the average of the probabilities for the two
 #' endpoints. We then collapse the probabilities according to the
@@ -81,7 +81,7 @@
 #' snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 #' }
 #'
-#' @seealso \code{\link{index_snps}}, \code{\link[qtl2geno]{calc_genoprob}}
+#' @seealso [index_snps()], [qtl2geno::calc_genoprob()]
 #' @export
 genoprob_to_snpprob <-
     function(genoprobs, snpinfo)

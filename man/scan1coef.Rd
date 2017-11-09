@@ -11,7 +11,7 @@ scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno]{calc_genoprob}}.}
+\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
@@ -44,7 +44,7 @@ identity matrix.}
 
 \item{model}{Indicates whether to use a normal model (least
 squares) or binary model (logistic regression) for the phenotype.
-If \code{model="binary"}, the phenotypes must have values in [0, 1].}
+If \code{model="binary"}, the phenotypes must have values in \link{0, 1}.}
 
 \item{se}{If TRUE, also calculate the standard errors.}
 
@@ -63,14 +63,14 @@ fit (when \code{model="binary"}).}
 }
 \value{
 A matrix of estimated regression coefficients, of dimension
-    positions x number of effects. The number of effects is
-    \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+positions x number of effects. The number of effects is
+\code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
 May also contain the following attributes:
 \itemize{
 \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
-    standard errors, of same dimension as \code{coef}.
+standard errors, of same dimension as \code{coef}.
 \item \code{sample_size} - Vector of sample sizes used for each
-    phenotype
+phenotype
 }
 }
 \description{

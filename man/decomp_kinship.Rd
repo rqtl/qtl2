@@ -10,12 +10,12 @@ decomp_kinship(kinship, cores = 1)
 \item{kinship}{A square matrix, or a list of square matrices.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-The eigen values and the \bold{transposed} eigen vectors,
+The eigen values and the \strong{transposed} eigen vectors,
 as a list containing a vector \code{values} and a matrix
 \code{vectors}.
 }

@@ -24,5 +24,5 @@ Calculate chromosome lengths for a map object
 We take \code{diff(range(v))} for each vector, \code{v}.
 }
 \seealso{
-\code{\link{scan1perm}}
+\code{\link[=scan1perm]{scan1perm()}}
 }

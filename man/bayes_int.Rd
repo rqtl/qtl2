@@ -9,10 +9,10 @@ bayes_int(scan1_output, map, chr, lodcolumn = 1, threshold = 0,
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}}.}
+\code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{chr}{Chromosome ID to consider (must be a single value).}
 
@@ -35,6 +35,7 @@ A matrix with three columns:
 \item \code{pos} - peak position
 \item \code{ci_hi} - upper bound of interval
 }
+
 Each row corresponds to a different peak.
 }
 \description{
@@ -83,5 +84,5 @@ out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 bayes_int(out, map, chr=7, lodcolum=1)
 }
 \seealso{
-\code{\link{lod_int}}, \code{\link{find_peaks}}, \code{\link{scan1}}
+\code{\link[=lod_int]{lod_int()}}, \code{\link[=find_peaks]{find_peaks()}}, \code{\link[=scan1]{scan1()}}
 }

@@ -1,19 +1,21 @@
 #' Join genome scan results for different phenotypes.
 #'
-#' Join multiple \code{\link{scan1}} results for different phenotypes;
+#' Join multiple [scan1()] results for different phenotypes;
 #' must have the same map.
 #'
-#' @param ... Genome scan objects as produced by \code{\link{scan1}}.
+#' @md
+#'
+#' @param ... Genome scan objects as produced by [scan1()].
 #' Must have the same map.
 #'
 #' @return A single genome scan object with the lod score columns
 #' combined as multiple columns.
 #'
-#' @details If components \code{addcovar}, \code{Xcovar},
-#' \code{intcovar}, \code{weights} do not match between objects, we
+#' @details If components [addcovar()], `Xcovar`,
+#' `intcovar`, `weights` do not match between objects, we
 #' omit this information.
 #'
-#' If \code{hsq} present but has differing numbers of rows, we omit this information.
+#' If `hsq` present but has differing numbers of rows, we omit this information.
 #'
 #' @examples
 #' library(qtl2geno)
@@ -27,6 +29,7 @@
 #' out2 <- scan1(probs, phe2) # phenotype 2
 #' out <- cbind(out1, out2)
 #'
+#' @aliases cbind.scan1
 #' @export
 cbind.scan1 <-
     function(...)

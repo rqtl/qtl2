@@ -3,6 +3,8 @@
 #' For a set objects with IDs as row names (or, for a vector, just
 #' names), find the IDs that are present in all of the objects.
 #'
+#' @md
+#'
 #' @param ... A set of objects: vectors, lists, matrices, data frames,
 #' and/or arrays. If one is a character vector with no names
 #' attribute, it's taken to be a set of IDs, itself.
@@ -14,7 +16,7 @@
 #'
 #' @details This is used (mostly internally) to align phenotypes,
 #' genotype probabilities, and covariates in preparation for a genome
-#' scan. The \code{complete.cases} argument is used to omit
+#' scan. The `complete.cases` argument is used to omit
 #' individuals with any missing covariate values.
 #'
 #' @examples

@@ -7,7 +7,7 @@
 \method{cbind}{scan1}(...)
 }
 \arguments{
-\item{...}{Genome scan objects as produced by \code{\link{scan1}}.
+\item{...}{Genome scan objects as produced by \code{\link[=scan1]{scan1()}}.
 Must have the same map.}
 }
 \value{
@@ -15,11 +15,11 @@ A single genome scan object with the lod score columns
 combined as multiple columns.
 }
 \description{
-Join multiple \code{\link{scan1}} results for different phenotypes;
+Join multiple \code{\link[=scan1]{scan1()}} results for different phenotypes;
 must have the same map.
 }
 \details{
-If components \code{addcovar}, \code{Xcovar},
+If components \code{\link[=addcovar]{addcovar()}}, \code{Xcovar},
 \code{intcovar}, \code{weights} do not match between objects, we
 omit this information.
 

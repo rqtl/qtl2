@@ -10,10 +10,10 @@ find_peaks(scan1_output, map, threshold = 3, peakdrop = Inf, drop = NULL,
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
-\code{\link{scan1}}.}
+\code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{threshold}{Minimum LOD score for a peak (can be a vector with
 separate thresholds for each lod score column in
@@ -61,9 +61,9 @@ provided, so that QTL intervals are calculated), QTL intervals are
 expanded so that their endpoints are at genetic markers.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A data frame with each row being a single peak on a single
@@ -81,7 +81,7 @@ two additional columns: \code{ci_lo} and \code{ci_hi}, with the
 endpoints of the LOD support intervals or Bayes credible wintervals.
 }
 \description{
-Find peaks in a set of LOD curves (output from \code{\link{scan1}}
+Find peaks in a set of LOD curves (output from \code{\link[=scan1]{scan1()}}
 }
 \details{
 For each lod score column on each chromosome, we return a
@@ -129,5 +129,5 @@ find_peaks(out, map, threshold=3, peakdrop=2, drop=1.5)
 find_peaks(out, map, threshold=3, peakdrop=2, prob=0.95)
 }
 \seealso{
-\code{\link{scan1}}, \code{\link{lod_int}}, \code{\link{bayes_int}}
+\code{\link[=scan1]{scan1()}}, \code{\link[=lod_int]{lod_int()}}, \code{\link[=bayes_int]{bayes_int()}}
 }

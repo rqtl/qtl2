@@ -5,24 +5,26 @@
 #' weights are provided, find the marker subset for which the sum of
 #' the weights is maximized.
 #'
+#' @md
+#'
 #' @param map Either a vector of marker positions, or a list of such
 #' vectors (one vector per chromosome)
 #'
 #' @param min_d Minimum distance between markers
 #'
-#' @param weights An object of the same shape as \code{map}: either a
+#' @param weights An object of the same shape as `map`: either a
 #' vector of the same length, or a list with the same length and whose
 #' components are the same lengths.
 #'
 #' @return The selected subset of marker positions, either as a vector
-#' or a list of vectors, according to the nature of \code{map}.
+#' or a list of vectors, according to the nature of `map`.
 #'
 #' @details Let \eqn{d_i}{d[i]} be the location of marker \eqn{i}, for
 #' \eqn{i \in 1, \dots, M}{i in 1, \dots, M}.  We use the dynamic
 #' programming algorithm of Broman and Weber (1999) to identify the
 #' subset of markers \eqn{i_1, \dots, i_k}{i[1], \dots, i[k]} for
 #' which \eqn{d_{i_{j+1}} - d_{i_j} \le}{d(i[j+1]) - d(i[j]) <=}
-#' \code{min.distance} and \eqn{\sum w_{i_j}}{sum w(i[j])} is
+#' `min.distance` and \eqn{\sum w_{i_j}}{sum w(i[j])} is
 #' maximized.
 #'
 #' If there are multiple optimal subsets, we pick one at random.

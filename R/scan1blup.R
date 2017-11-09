@@ -4,8 +4,10 @@
 #' single-QTL model treating the QTL effects as random, with possible
 #' allowance for covariates and for a residual polygenic effect.
 #'
+#' @md
+#'
 #' @param genoprobs Genotype probabilities as calculated by
-#' \code{\link[qtl2geno]{calc_genoprob}}.
+#' [qtl2geno::calc_genoprob()].
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
@@ -17,38 +19,36 @@
 #' chromosome, where we might need sex as a additive covariate under
 #' the null hypothesis, but we wouldn't want to include it under the
 #' alternative as it would be collinear with the QTL effects. Only
-#' used if \code{kinship} is provided but \code{hsq} is not, to get
+#' used if `kinship` is provided but `hsq` is not, to get
 #' estimate of residual heritability.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
-#' \code{cbind(c(1,0,0), c(-1, 0, 1), c(-0.5, 1, 0.5))} to get
+#' `cbind(c(1,0,0), c(-1, 0, 1), c(-0.5, 1, 0.5))` to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param se If TRUE, also calculate the standard errors.
-#' @param reml If \code{reml=TRUE}, use
+#' @param reml If `reml=TRUE`, use
 #' REML to estimate variance components; otherwise maximum likelihood.
 #' @param tol Tolerance value for convergence of linear mixed model fit.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #' @param quiet If FALSE, print message about number of cores used when multi-core.
 #'
 #' @return A matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
-#'     \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+#'     `n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar`.
 #' May also contain the following attributes:
-#' \itemize{
-#' \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated
-#'     standard errors, of same dimension as \code{coef}.
-#' \item \code{sample_size} - Vector of sample sizes used for each
-#'     phenotype
-#' }
+#' * `SE` - Present if `se=TRUE`: a matrix of estimated
+#'   standard errors, of same dimension as `coef`.
+#' * `sample_size` - Vector of sample sizes used for each
+#'   phenotype
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
 #'
-#' If \code{kinship} is provided, the linear mixed model accounts for
+#' If `kinship` is provided, the linear mixed model accounts for
 #' a residual polygenic effect, with a the polygenic variance
 #' estimated under the null hypothesis of no (major) QTL, and then
 #' taken as fixed as known in the scan to estimate QTL effects.

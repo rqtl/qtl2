@@ -1,71 +1,71 @@
 # find_peaks
 #' Find peaks in a set of LOD curves
 #'
-#' Find peaks in a set of LOD curves (output from \code{\link{scan1}}
+#' Find peaks in a set of LOD curves (output from [scan1()]
 #'
-#' @param scan1_output An object of class \code{"scan1"} as returned by
-#' \code{\link{scan1}}.
+#' @md
+#'
+#' @param scan1_output An object of class `"scan1"` as returned by
+#' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #' @param threshold Minimum LOD score for a peak (can be a vector with
 #' separate thresholds for each lod score column in
-#' \code{scan1_output})
+#' `scan1_output`)
 #' @param peakdrop Amount that the LOD score must drop between peaks,
 #' if multiple peaks are to be defined on a chromosome. (Can be a vector with
 #' separate values for each lod score column in
-#' \code{scan1_output}.)
+#' `scan1_output`.)
 #' @param drop If provided, LOD support intervals are included in the
 #' results, and this indicates the amount to drop in the support
 #' interval. (Can be a vector with
 #' separate values for each lod score column in
-#' \code{scan1_output}.) Must be \eqn{\le} \code{peakdrop}
+#' `scan1_output`.) Must be \eqn{\le} `peakdrop`
 #' @param prob If provided, Bayes credible intervals are included in the
 #' results, and this indicates the nominal coverage.
 #' (Can be a vector with
 #' separate values for each lod score column in
-#' \code{scan1_output}.) Provide just one of \code{drop} and \code{prob}.
+#' `scan1_output`.) Provide just one of `drop` and `prob`.
 #' @param thresholdX Separate threshold for the X chromosome; if
 #' unspecified, the same threshold is used for both autosomes and the
-#' X chromosome. (Like \code{threshold}, this can be a vector with
+#' X chromosome. (Like `threshold`, this can be a vector with
 #' separate thresholds for each lod score column.)
-#' @param peakdropX Like \code{peakdrop}, but for the X chromosome; if
+#' @param peakdropX Like `peakdrop`, but for the X chromosome; if
 #' unspecified, the same value is used for both autosomes and the X
 #' chromosome.  (Can be a vector with separate values for each lod
-#' score column in \code{scan1_output}.)
+#' score column in `scan1_output`.)
 #' @param dropX Amount to drop for LOD support intervals on the X
-#' chromosome.  Ignored if \code{drop} is not provided. (Can be a
+#' chromosome.  Ignored if `drop` is not provided. (Can be a
 #' vector with separate values for each lod score column in
-#' \code{scan1_output}.)
+#' `scan1_output`.)
 #' @param probX Nominal coverage for Bayes intervals on the X
-#' chromosome.  Ignored if \code{prob} is not provided. (Can be a
+#' chromosome.  Ignored if `prob` is not provided. (Can be a
 #' vector with separate values for each lod score column in
-#' \code{scan1_output}.)
-#' @param expand2markers If TRUE (and if \code{drop} or \code{prob} is
+#' `scan1_output`.)
+#' @param expand2markers If TRUE (and if `drop` or `prob` is
 #' provided, so that QTL intervals are calculated), QTL intervals are
 #' expanded so that their endpoints are at genetic markers.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A data frame with each row being a single peak on a single
 #' chromosome for a single LOD score column, and with columns
-#' \itemize{
-#' \item \code{lodindex} - lod column index
-#' \item \code{lodcolumn} - lod column name
-#' \item \code{chr} - chromosome ID
-#' \item \code{pos} - peak position
-#' \item \code{lod} - lod score at peak
-#' }
+#' * `lodindex` - lod column index
+#' * `lodcolumn` - lod column name
+#' * `chr` - chromosome ID
+#' * `pos` - peak position
+#' * `lod` - lod score at peak
 #'
-#' If \code{drop} or \code{prob} is provided, the results will include
-#' two additional columns: \code{ci_lo} and \code{ci_hi}, with the
+#' If `drop` or `prob` is provided, the results will include
+#' two additional columns: `ci_lo` and `ci_hi`, with the
 #' endpoints of the LOD support intervals or Bayes credible wintervals.
 #'
 #' @details For each lod score column on each chromosome, we return a
 #' set of peaks defined as local maxima that exceed the specified
-#' \code{threshold}, with the requirement that the LOD score must have
-#' dropped by at least \code{peakdrop} below the lowest of any two
+#' `threshold`, with the requirement that the LOD score must have
+#' dropped by at least `peakdrop` below the lowest of any two
 #' adjacent peaks.
 #'
 #' At a given peak, if there are ties, with multiple positions jointly
@@ -74,7 +74,7 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link{scan1}}, \code{\link{lod_int}}, \code{\link{bayes_int}}
+#' @seealso [scan1()], [lod_int()], [bayes_int()]
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation

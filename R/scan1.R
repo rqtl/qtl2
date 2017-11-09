@@ -3,8 +3,10 @@
 #' Genome scan with a single-QTL model by Haley-Knott regression or a
 #' linear mixed model, with possible allowance for covariates.
 #'
+#' @md
+#'
 #' @param genoprobs Genotype probabilities as calculated by
-#' \code{\link[qtl2geno]{calc_genoprob}}.
+#' [qtl2geno::calc_genoprob()].
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param kinship Optional kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
@@ -14,33 +16,31 @@
 #' null hypothesis when scanning the X chromosome.
 #' @param intcovar An optional matrix of interactive covariates.
 #' @param weights An optional vector of positive weights for the
-#' individuals. As with the other inputs, it must have \code{names}
-#' for individual identifiers. Ignored if \code{kinship} is provided.
-#' @param reml If \code{kinship} provided: if \code{reml=TRUE}, use
+#' individuals. As with the other inputs, it must have `names`
+#' for individual identifiers. Ignored if `kinship` is provided.
+#' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
-#'     If \code{model="binary"}, the phenotypes must have values in [0, 1].
+#'     If `model="binary"`, the phenotypes must have values in \eqn{[0, 1]}.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #' @param ... Additional control parameters; see Details.
 #'
 #' @return A matrix of LOD scores, positions x phenotypes.
 #' Also contains one or more of the following attributes:
-#' \itemize{
-#' \item \code{sample_size} - Vector of sample sizes used for each
-#'     phenotype
-#' \item \code{hsq} - Included if \code{kinship} provided: A matrix of
-#'     estimated heritabilities under the null hypothesis of no
-#'     QTL. Columns are the phenotypes. If the \code{"loco"} method was
-#'     used with \code{\link[qtl2geno]{calc_kinship}} to calculate a list
-#'     of kinship matrices, one per chromosome, the rows of \code{hsq}
-#'     will be the heritabilities for the different chromosomes (well,
-#'     leaving out each one). If \code{Xcovar} was not NULL, there will at
-#'     least be an autosome and X chromosome row.
-#' }
+#' * `sample_size` - Vector of sample sizes used for each
+#'    phenotype
+#' * `hsq` - Included if `kinship` provided: A matrix of
+#'    estimated heritabilities under the null hypothesis of no
+#'    QTL. Columns are the phenotypes. If the `"loco"` method was
+#'    used with [qtl2geno::calc_kinship()] to calculate a list
+#'    of kinship matrices, one per chromosome, the rows of `hsq`
+#'    will be the heritabilities for the different chromosomes (well,
+#'    leaving out each one). If `Xcovar` was not NULL, there will at
+#'    least be an autosome and X chromosome row.
 #'
 #' @details
 #' We first fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e}
@@ -58,31 +58,31 @@
 #' I]}{sigmasq*[hsq*2*K+I]}, taking \eqn{h^2}{hsq} to be known.
 #'
 #' For each of the inputs, the row names are used as
-#' individual identifiers, to align individuals. The \code{genoprobs}
-#' object should have a component \code{"is_x_chr"} that indicates
+#' individual identifiers, to align individuals. The `genoprobs`
+#' object should have a component `"is_x_chr"` that indicates
 #' which of the chromosomes is the X chromosome, if any.
 #'
-#' The \code{...} argument can contain three additional control
+#' The `...` argument can contain three additional control
 #' parameters; suspended for simplicity (or confusion, depending on
-#' your point of view). \code{tol} is used as a tolerance value for
+#' your point of view). `tol` is used as a tolerance value for
 #' linear regression by QR decomposition (in determining whether
 #' columns are linearly dependent on others and should be omitted);
-#' default \code{1e-12}. \code{intcovar_method} indicates whether to
+#' default `1e-12`. `intcovar_method` indicates whether to
 #' use a high-memory (but potentially faster) method or a low-memory
-#' (and possibly slower) method, with values \code{"highmem"} or
-#' \code{"lowmem"}; default \code{"lowmem"}. Finally, \code{max_batch}
+#' (and possibly slower) method, with values `"highmem"` or
+#' `"lowmem"`; default `"lowmem"`. Finally, `max_batch`
 #' indicates the maximum number of phenotypes to run together; default
 #' is unlimited.
 #'
-#' If \code{kinship} is absent, Haley-Knott regression is performed.
-#' If \code{kinship} is provided, a linear mixed model is used, with a
+#' If `kinship` is absent, Haley-Knott regression is performed.
+#' If `kinship` is provided, a linear mixed model is used, with a
 #' polygenic effect estimated under the null hypothesis of no (major)
 #' QTL, and then taken as fixed as known in the genome scan.
 #'
-#' If \code{kinship} is a single matrix, then the \code{hsq}
+#' If `kinship` is a single matrix, then the `hsq`
 #' in the results is a vector of heritabilities (one value for each phenotype). If
-#' \code{kinship} is a list (one matrix per chromosome), then
-#' \code{hsq} is a matrix, chromosomes x phenotypes.
+#' `kinship` is a list (one matrix per chromosome), then
+#' `hsq` is a matrix, chromosomes x phenotypes.
 #'
 #' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line
@@ -120,7 +120,7 @@
 #' # genome scan with a linear mixed model
 #' out_lmm <- scan1(probs, pheno, kinship, covar, Xcovar)
 #'
-#' @seealso \code{\link{scan1perm}}
+#' @seealso [scan1perm()]
 #' @export
 scan1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,

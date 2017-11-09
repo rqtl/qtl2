@@ -11,7 +11,7 @@ mat2strata(mat)
 }
 \value{
 A vector of character strings: for each row of \code{mat},
-we use \code{\link[base]{paste}} with \code{collapse="|"}.
+we use \code{\link[base:paste]{base::paste()}} with \code{collapse="|"}.
 }
 \description{
 Use the rows of a matrix to define a set of strata for a stratified permutation test
@@ -25,5 +25,5 @@ perm_strata <- mat2strata(Xcovar)
 
 }
 \seealso{
-\code{\link[qtl2geno]{get_x_covar}}, \code{\link{scan1perm}}
+\code{\link[qtl2geno:get_x_covar]{qtl2geno::get_x_covar()}}, \code{\link[=scan1perm]{scan1perm()}}
 }

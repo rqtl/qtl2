@@ -10,7 +10,7 @@ summary_scan1perm(object, alpha = 0.05)
 \method{summary}{scan1perm}(object, alpha = 0.05, ...)
 }
 \arguments{
-\item{object}{Output of \code{\link{scan1perm}}}
+\item{object}{Output of \code{\link[=scan1perm]{scan1perm()}}}
 
 \item{alpha}{Vector of significance levels}
 
@@ -18,10 +18,10 @@ summary_scan1perm(object, alpha = 0.05)
 }
 \value{
 An object of class \code{summary.scan1perm}. If
-\code{\link{scan1perm}} was run with \code{perm_Xsp=FALSE}, this is
+\code{\link[=scan1perm]{scan1perm()}} was run with \code{perm_Xsp=FALSE}, this is
 a single matrix of significance thresholds, with rows being
 signicance levels and columns being the columns in the input. If
-\code{\link{scan1perm}} was run with \code{perm_Xsp=TRUE}, this is
+\code{\link[=scan1perm]{scan1perm()}} was run with \code{perm_Xsp=TRUE}, this is
 a list of two matrices, with the significance thresholds for the
 autosomes and X chromosome, respectively.
 
@@ -29,11 +29,11 @@ The result has an attribute \code{"n_perm"} that has the numbers of
 permutation replicates (either a matrix or a list of two matrices).
 }
 \description{
-Summarize permutation test results from \code{\link{scan1perm}}, as significance thresholds.
+Summarize permutation test results from \code{\link[=scan1perm]{scan1perm()}}, as significance thresholds.
 }
 \details{
 In the case of X-chromosome-specific permutations (when
-\code{\link{scan1perm}} was run with \code{perm_Xsp=TRUE}, we
+\code{\link[=scan1perm]{scan1perm()}} was run with \code{perm_Xsp=TRUE}, we
 follow the approach of Broman et al. (2006) to get separate
 thresholds for the autosomes and X chromosome, using
 

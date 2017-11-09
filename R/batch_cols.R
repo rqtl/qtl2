@@ -3,12 +3,14 @@
 #' Identify batches of columns of a matrix that have the same pattern
 #' of missing values.
 #'
+#' @md
+#'
 #' @param mat A numeric matrix
 #' @param max_batch Maximum batch size
 #'
 #' @return A list containing the batches, each with two components:
-#' \code{cols} containing numeric indices of the columns in the
-#' corresponding batch, and \code{omit} containing a vector of row indices
+#' `cols` containing numeric indices of the columns in the
+#' corresponding batch, and `omit` containing a vector of row indices
 #' that have missing values in this batch.
 #'
 #' @export
