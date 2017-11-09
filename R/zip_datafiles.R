@@ -21,6 +21,11 @@
 #'
 #' The \code{\link[utils]{zip}} function is used to do the zipping.
 #'
+#' The files should all be contained within the directory where the
+#' \code{control_file} sits, or in a subdirectory of that directory.
+#' If file paths use \code{..}, these get stripped by zip, and so the
+#' resulting zip file may not work with \code{\link{read_cross2}}.
+#'
 #' @export
 #' @keywords IO
 #' @seealso \code{\link{read_cross2}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
@@ -68,6 +73,14 @@ function(control_file, zip_file=NULL, quiet=TRUE)
     cwd <- getwd()
     on.exit(setwd(cwd)) # move back on exit
     setwd(dir)
+
+    # check for ".." in file paths
+    patterns <- c("^\\.\\.\\/", "\\/\\.\\.\\/")
+    patterns <- gsub("/", .Platform$file.sep, patterns, fixed=TRUE)
+    if(any(grepl(patterns[1], files) | grepl(patterns[2], files))) {
+        warning('zip strips ".." from file paths, so ', zip_file,
+                ' may not work with read_cross2().')
+    }
 
     # do the zipping
     utils::zip(zip_file, files, flags=zip_flags)

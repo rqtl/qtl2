@@ -31,6 +31,11 @@ to be read by \code{\link{read_cross2}}.  (See the
 \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
 
 The \code{\link[utils]{zip}} function is used to do the zipping.
+
+The files should all be contained within the directory where the
+\code{control_file} sits, or in a subdirectory of that directory.
+If file paths use \code{..}, these get stripped by zip, and so the
+resulting zip file may not work with \code{\link{read_cross2}}.
 }
 \examples{
 \dontrun{

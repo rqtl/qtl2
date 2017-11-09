@@ -1,3 +1,9 @@
+## qtl2geno 0.5-37 (2017-11-09)
+
+- Have `zip_datafiles()` give a warning if any of the paths include
+  `".."`.
+
+
 ## qtl2geno 0.5-36 (2017-11-09)
 
 ### New features
