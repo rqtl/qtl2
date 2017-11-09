@@ -5,7 +5,7 @@
 \title{Compare two sets of genotype probabilities}
 \usage{
 compare_genoprob(probs1, probs2, cross, ind = 1, chr = NULL,
-  minprob = 0.95, minmarkers = 10)
+  minprob = 0.95, minmarkers = 10, minwidth = 0)
 }
 \arguments{
 \item{probs1}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
@@ -23,10 +23,6 @@ or allele dosages (as produced by \code{\link[qtl2geno:genoprob_to_alleleprob]{q
 \item{minprob}{Minimum probability for inferring genotypes (passed to \code{\link[=maxmarg]{maxmarg()}}).}
 
 \item{minmarkers}{Minimum number of markers in results.}
-
-\item{map_type}{Whether to use the physical or genetic map for
-widths and positions (if selected map is not available, use
-whichever one is available.}
 
 \item{minwidth}{Minimum width in results.}
 }

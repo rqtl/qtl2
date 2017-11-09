@@ -11,9 +11,6 @@
 #' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosome; a single character string.
-#' @param map_type Whether to use the physical or genetic map for
-#' widths and positions (if selected map is not available, use
-#' whichever one is available.
 #' @param minprob Minimum probability for inferring genotypes (passed to [maxmarg()]).
 #' @param minmarkers Minimum number of markers in results.
 #' @param minwidth Minimum width in results.
@@ -38,8 +35,8 @@
 #'
 #' @export
 compare_genoprob <-
-    function(probs1, probs2, cross, ind=1, chr=NULL, minprob=0.95,
-             minmarkers=10)
+    function(probs1, probs2, cross, ind=1, chr=NULL,
+             minprob=0.95, minmarkers=10, minwidth=0)
 {
     # check inputs
     if(is.null(chr)) chr <- names(probs1)[1]
@@ -74,26 +71,42 @@ compare_genoprob <-
     ginf1 <- maxmarg(probs1[ind,chr], minprob=minprob)[[1]]
     ginf2 <- maxmarg(probs2[ind,chr], minprob=minprob)[[1]]
 
+    if("pmap" %in% names(cross)) {
+        map <- cross$pmap
+        map_units <- "Mbp"
+    } else {
+        map <- cross$gmap
+        map_units <- "cM"
+    }
+    gmap <- cross$gmap
+    pmap <- cross$pmap
+
     # pull out selected chromosomes
     probs1 <- probs1[[chr]]
     probs2 <- probs2[[chr]]
-    pmap <- cross$pmap[[chr]]
-    gmap <- cross$gmap[[chr]]
+    map <- map[[chr]]
+
+    if(!is.null(gmap)) gmap <- gmap[[chr]]
+    if(!is.null(pmap)) pmap <- pmap[[chr]]
     geno <- cross$geno[[chr]]
-    founder_geno <- cross$founder_geno[[chr]]
 
     # find common markers
     mar1 <- dimnames(probs1)[[3]]
     mar2 <- dimnames(probs2)[[3]]
-    marm <- names(pmap)
+    marm <- names(map)
     mar <- mar1[mar1 %in% mar2 & mar1 %in% marm]
     if(length(mar) < 2) stop("<2 markers in common")
-    pmap <- pmap[mar]
-    gmap <- gmap[mar]
+    map <- map[mar]
+    if(!is.null(gmap)) gmap <- gmap[mar]
+    if(!is.null(pmap)) pmap <- pmap[mar]
     geno <- geno[,mar,drop=FALSE]
-    founder_geno <- founder_geno[,mar,drop=FALSE]
     ginf1 <- ginf1[,mar]
     ginf2 <- ginf2[,mar]
+
+    if(!is.null(cross$founder_geno)) {
+        founder_geno <- cross$founder_geno[[chr]]
+        founder_geno <- founder_geno[,mar,drop=FALSE]
+    }
 
     # now pull out individual from the genotypes
     geno <- geno[ind,]
@@ -107,25 +120,43 @@ compare_genoprob <-
     value_num <- c(ginf_num[1], ginf_num[jump+1])
     value <- c(ginf[1], ginf[jump+1])
     left_i <- c(1, jump+1)
-    right_i <- c(jump, length(pmap))
+    right_i <- c(jump, length(map))
     n_markers=right_i - left_i + 1
-    left_Mbp <- c(pmap[1], pmap[jump+1])
-    right_Mbp <- c(pmap[jump], pmap[length(pmap)])
-    width_Mbp <- right_Mbp - left_Mbp
-    width_cM <- c(gmap[jump], gmap[length(gmap)]) - c(gmap[1], gmap[jump+1])
+    left <- c(map[1], map[jump+1])
+    right <- c(map[jump], map[length(map)])
+    width <- right - left
+    if(!is.null(gmap)) gwidth <- c(gmap[jump], gmap[length(gmap)]) - c(gmap[1], gmap[jump+1])
+    if(!is.null(pmap)) { cat("hi\n"); pwidth <- c(pmap[jump], pmap[length(pmap)]) - c(pmap[1], pmap[jump+1]) }
+
 
     result <- data.frame(geno1=geno_names[c(ginf1[1], ginf1[jump+1])],
                          geno2=geno_names[c(ginf2[1], ginf2[jump+1])],
                          left_index = left_i,
                          right_index = right_i,
                          n_markers = n_markers,
-                         left_Mbp = left_Mbp,
-                         right_Mbp = right_Mbp,
-                         width_Mbp = width_Mbp,
-                         width_cM = width_cM,
+                         left = left,
+                         right = right,
+                         width_Mbp = width,
+                         width_cM = width,
                          stringsAsFactors=FALSE)
 
-    result <- result[value_num != -1,]
+    # add units to left/right
+    colnames(result)[6:7] <- paste(colnames(result)[6:7], map_units, sep="_")
+
+    col2drop <- NULL
+    if(!is.null(gmap)) result$width_cM <- gwidth
+    else col2drop <- 9
+    if(!is.null(pmap)) result$width_Mbp <- pwidth
+    else col2drop <- c(col2drop, 8)
+    if(!is.null(col2drop)) result <- result[,-col2drop,drop=FALSE]
+
+    result <- result[value_num != -1 & n_markers >= minmarkers & width >= minwidth, , drop=FALSE]
+    rownames(result) <- 1:nrow(result)
+
+#    if(is.null(cross$founder_geno)) {
+        class(result) <- c("compare_genoprob", "data.frame")
+        return(result)
+#    }
 
     # look at corresponding markers
     f1 <- infer_f1_geno(founder_geno)
@@ -134,7 +165,6 @@ compare_genoprob <-
     else
         rownames(founder_geno) <- paste0(rownames(founder_geno), rownames(founder_geno))
     founder_geno <- rbind(founder_geno, f1)
-
 
     p_match <- matrix(nrow=nrow(result), ncol=nrow(founder_geno))
     colnames(p_match) <- rownames(founder_geno)
@@ -153,7 +183,6 @@ compare_genoprob <-
                     match_next=rep(0, nrow(result)),
                     what_next=rep("", nrow(result)),
                     stringsAsFactors=FALSE)
-    rownames(result) <- 1:nrow(result)
 
     for(i in 1:nrow(result)) {
         result$match1[i] <- p_match[i,result$geno1[i]]
@@ -179,7 +208,9 @@ compare_genoprob <-
         }
     }
 
-    result[,c(1:2,5:ncol(result))]
+    result <- result[,c(1:2,5:ncol(result))]
+    class(result) <- c("compare_genoprob", "data.frame")
+    result
 }
 
 
@@ -207,4 +238,10 @@ infer_f1_geno <-
     }
 
     result
+}
+
+print.compare_genoprob <-
+    function(x, digits=2, ...)
+{
+    print.data.frame(x, digits=2)
 }
