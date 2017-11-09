@@ -10,7 +10,8 @@ qtl2version()
 Data frame with two columns: package name and version.
 }
 \description{
-List versions of all installed R/qtl2 packages.
+List versions of all installed R/qtl2 packages, as shown in the
+results of \code{\link[utils:installed.packages]{utils::installed.packages()}}.
 }
 \examples{
 qtl2version()
