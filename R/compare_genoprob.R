@@ -126,8 +126,7 @@ compare_genoprob <-
     right <- c(map[jump], map[length(map)])
     width <- right - left
     if(!is.null(gmap)) gwidth <- c(gmap[jump], gmap[length(gmap)]) - c(gmap[1], gmap[jump+1])
-    if(!is.null(pmap)) { cat("hi\n"); pwidth <- c(pmap[jump], pmap[length(pmap)]) - c(pmap[1], pmap[jump+1]) }
-
+    if(!is.null(pmap)) pwidth <- c(pmap[jump], pmap[length(pmap)]) - c(pmap[1], pmap[jump+1])
 
     result <- data.frame(geno1=geno_names[c(ginf1[1], ginf1[jump+1])],
                          geno2=geno_names[c(ginf2[1], ginf2[jump+1])],
@@ -153,28 +152,35 @@ compare_genoprob <-
     result <- result[value_num != -1 & n_markers >= minmarkers & width >= minwidth, , drop=FALSE]
     rownames(result) <- 1:nrow(result)
 
-#    if(is.null(cross$founder_geno)) {
+    ### if no founder_geno in cross, return what we've got
+    if(is.null(cross$founder_geno)) {
         class(result) <- c("compare_genoprob", "data.frame")
         return(result)
-#    }
+    }
 
-    # look at corresponding markers
+    # construct F1-type individuals
     f1 <- infer_f1_geno(founder_geno)
-    if(cross$is_x_chr[chr] && !cross$is_female[ind])
+
+    # adjust genotype labels
+    if("is_x_chr" %in% names(cross) && cross$is_x_chr[chr] &&
+       "is_female" %in% names(cross) && !cross$is_female[ind])
         rownames(founder_geno) <- paste0(rownames(founder_geno), "Y")
     else
         rownames(founder_geno) <- paste0(rownames(founder_geno), rownames(founder_geno))
+
+    # add F1s to founders
     founder_geno <- rbind(founder_geno, f1)
 
+    # calculate proportion SNPs that match each possible genotype
     p_match <- matrix(nrow=nrow(result), ncol=nrow(founder_geno))
     colnames(p_match) <- rownames(founder_geno)
-
     for(k in 1:nrow(result)) {
         gsub <- geno[result$left_index[k]:result$right_index[k]]
         p_match[k,] <- apply(founder_geno[,result$left_index[k]:result$right_index[k],drop=FALSE], 1,
                              function(a) sum(a != 0 & gsub != 0 & gsub == a) / sum(a != 0 & gsub != 0))
     }
 
+    # paste detailed results onto the end
     result <- cbind(result,
                     match1=rep(0, nrow(result)),
                     match2=rep(0, nrow(result)),
@@ -192,23 +198,10 @@ compare_genoprob <-
         result$match_next[i] <- z[2]
         result$what_best[i] <- names(z)[1]
         result$what_next[i] <- names(z)[2]
-
-        if(result[i,1]==result[i,2]) {
-            result[i,1] <- paste0(result[i,1], " ")
-            result[i,2] <- paste0(result[i,2], " ")
-        } else {
-            if(result$match1[i] >= result$match_best[i])
-                result[i,1] <- paste0(result[i,1], "*")
-            else
-                result[i,1] <- paste0(result[i,1], "-")
-            if(result$match2[i] >= result$match_best[i])
-                result[i,2] <- paste0(result[i,2], "*")
-            else
-                result[i,2] <- paste0(result[i,2], "-")
-        }
     }
 
     result <- result[,c(1:2,5:ncol(result))]
+    attr(result, "prop_match") <- p_match
     class(result) <- c("compare_genoprob", "data.frame")
     result
 }
@@ -240,8 +233,31 @@ infer_f1_geno <-
     result
 }
 
+#' @export
+#' @rdname compare_genoprob
 print.compare_genoprob <-
     function(x, digits=2, ...)
 {
+    # strip off attribute
+    attr(x, "prop_match") <- NULL
+
+    if("match_best" %in% names(x)) { # add some annotations
+        for(i in 1:nrow(x)) {
+            if(x[i,1]==x[i,2]) {
+                x[i,1] <- paste0(x[i,1], " ")
+                x[i,2] <- paste0(x[i,2], " ")
+            } else {
+                if(x$match1[i] >= x$match_best[i])
+                    x[i,1] <- paste0(x[i,1], "*")
+                else
+                    x[i,1] <- paste0(x[i,1], "-")
+                if(x$match2[i] >= x$match_best[i])
+                    x[i,2] <- paste0(x[i,2], "*")
+                else
+                    x[i,2] <- paste0(x[i,2], "-")
+            }
+        }
+    }
+
     print.data.frame(x, digits=2)
 }

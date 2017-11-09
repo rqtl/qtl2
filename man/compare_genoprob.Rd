@@ -2,10 +2,13 @@
 % Please edit documentation in R/compare_genoprob.R
 \name{compare_genoprob}
 \alias{compare_genoprob}
+\alias{print.compare_genoprob}
 \title{Compare two sets of genotype probabilities}
 \usage{
 compare_genoprob(probs1, probs2, cross, ind = 1, chr = NULL,
   minprob = 0.95, minmarkers = 10, minwidth = 0)
+
+\method{print}{compare_genoprob}(x, digits = 2, ...)
 }
 \arguments{
 \item{probs1}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
