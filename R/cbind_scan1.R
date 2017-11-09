@@ -11,7 +11,7 @@
 #' @return A single genome scan object with the lod score columns
 #' combined as multiple columns.
 #'
-#' @details If components [addcovar()], `Xcovar`,
+#' @details If components `addcovar()`, `Xcovar`,
 #' `intcovar`, `weights` do not match between objects, we
 #' omit this information.
 #'

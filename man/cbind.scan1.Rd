@@ -19,7 +19,7 @@ Join multiple \code{\link[=scan1]{scan1()}} results for different phenotypes;
 must have the same map.
 }
 \details{
-If components \code{\link[=addcovar]{addcovar()}}, \code{Xcovar},
+If components \code{addcovar()}, \code{Xcovar},
 \code{intcovar}, \code{weights} do not match between objects, we
 omit this information.
 

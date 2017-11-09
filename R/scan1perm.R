@@ -23,7 +23,7 @@
 #' REML; otherwise maximum likelihood.
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
-#'     If `model="binary"`, the phenotypes must have values in [0, 1].
+#'     If `model="binary"`, the phenotypes must have values in \eqn{[0, 1]}.
 #' @param n_perm Number of permutation replicates.
 #' @param perm_Xsp If TRUE, do separate permutations for the autosomes
 #' and the X chromosome.

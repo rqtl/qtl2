@@ -35,7 +35,7 @@ REML; otherwise maximum likelihood.}
 
 \item{model}{Indicates whether to use a normal model (least
 squares) or binary model (logistic regression) for the phenotype.
-If \code{model="binary"}, the phenotypes must have values in \link{0, 1}.}
+If \code{model="binary"}, the phenotypes must have values in \eqn{[0, 1]}.}
 
 \item{n_perm}{Number of permutation replicates.}
 
