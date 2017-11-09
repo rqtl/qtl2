@@ -65,5 +65,5 @@ compare_genoprob(pr_e, pr_ne, iron, minmarkers=1, minprob=0.5)
 
 }
 \seealso{
-\code{\link[qtl2plot:plot_genoprobcomp]{qtl2plot::plot_genoprobcomp()}}
+\code{plot_genoprobcomp()} in \href{https://github.com/rqtl/qtl2plot}{R/qtl2plot}
 }

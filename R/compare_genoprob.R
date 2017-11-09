@@ -34,7 +34,7 @@
 #' the proportions of SNPs where the individual matches each possible
 #' genotypes.
 #'
-#' @seealso [qtl2plot::plot_genoprobcomp()]
+#' @seealso `plot_genoprobcomp()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
