@@ -19,6 +19,6 @@ None.
 Summarize a cross2 object
 }
 \seealso{
-\link\link{=basic_summaries}{basic summaries}
+\link{basic_summaries}
 }
 \keyword{utilities}

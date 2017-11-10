@@ -323,7 +323,7 @@ function(x, ...)
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \link[=basic_summaries]{basic summaries}
+#' @seealso [basic_summaries]
 summary.cross2 <-
 function(object, ...)
 {
