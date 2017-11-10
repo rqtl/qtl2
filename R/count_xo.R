@@ -2,16 +2,18 @@
 #'
 #' Estimate the numbers of crossovers in each individual on each chromosome.
 #'
-#' @param geno List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}})
-#' or a list of 3d-arrays of genotypes (output of \code{\link{sim_geno}}).
+#' @md
+#'
+#' @param geno List of matrices of genotypes (output of [maxmarg()] or [viterbi()])
+#' or a list of 3d-arrays of genotypes (output of [sim_geno()]).
 #' @param quiet If FALSE, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A matrix of crossover counts, individuals x chromosomes, or
-#' (if the input was the output of \code{\link{sim_geno}}) a
+#' (if the input was the output of [sim_geno()]) a
 #' 3d-array of crossover counts, individuals x chromosomes x
 #' imputations.
 #'

@@ -3,23 +3,25 @@
 #'
 #' Find markers closest to specified set of positions, or within a specified interval.
 #'
+#' @md
+#'
 #' @param map A map object: a list (corresponding to chromosomes) of vectors of marker positions.
 #' @param chr A vector of chromosomes
 #' @param pos A vector of positions
-#' @param interval A pair of positions (provide either \code{pos} or \code{interval} but not both)
+#' @param interval A pair of positions (provide either `pos` or `interval` but not both)
 #'
 #' @return A vector of marker names, either closest to the positions
-#' specified by \code{pos}, or within the interval defined by
-#' \code{interval}.
+#' specified by `pos`, or within the interval defined by
+#' `interval`.
 #'
 #' @details
-#' If \code{pos} is provided, \code{interval} should not be, and vice versa.
+#' If `pos` is provided, `interval` should not be, and vice versa.
 #'
-#' If \code{pos} is provided, then \code{chr} and \code{pos} should
+#' If `pos` is provided, then `chr` and `pos` should
 #' either be the same length, or one of them should have length 1 (to
 #' be expanded to the length of the other).
 #'
-#' If \code{interval} is provided, then \code{chr} should have length 1.
+#' If `interval` is provided, then `chr` should have length 1.
 #'
 #' @export
 #' @examples

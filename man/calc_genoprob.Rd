@@ -29,23 +29,23 @@ memory.}
 \item{quiet}{If \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list of three-dimensional arrays of probabilities,
-    individuals x genotypes x positions. (Note that the arrangement is
-    different from R/qtl.) Also contains four attributes:
+individuals x genotypes x positions. (Note that the arrangement is
+different from R/qtl.) Also contains four attributes:
 \itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
-    are to be treated as the X chromosome or not, from input \code{cross}.
+are to be treated as the X chromosome or not, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
-    \code{cross}.
+\code{cross}.
 \item \code{alleleprobs} - Logical value (\code{FALSE}) that
-    indicates whether the probabilities are compressed to allele
-    probabilities, as from \code{\link{genoprob_to_alleleprob}}.
+indicates whether the probabilities are compressed to allele
+probabilities, as from \code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}.
 }
 }
 \description{
@@ -55,21 +55,21 @@ data, with possible allowance for genotyping errors.
 }
 \details{
 Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
- \eqn{k}, and \eqn{g_k}{g[k]} denote the corresponding true underlying
- genotype.
+\eqn{k}, and \eqn{g_k}{g[k]} denote the corresponding true underlying
+genotype.
 
- We use the forward-backward equations to calculate
- \eqn{\alpha_{kv} = \log Pr(O_1, \ldots, O_k, g_k = v)}{%
+We use the forward-backward equations to calculate
+\eqn{\alpha_{kv} = \log Pr(O_1, \ldots, O_k, g_k = v)}{%
    a[k][v] = log Pr(O[1], \ldots, O[k], g[k] = v)}
- and
- \eqn{\beta_{kv} = \log Pr(O_{k+1}, \ldots, O_n | g_k = v)}{%
+and
+\eqn{\beta_{kv} = \log Pr(O_{k+1}, \ldots, O_n | g_k = v)}{%
    b[k][v] = log Pr(O[k+1], \ldots, O[n] | g[k] = v)}
 
- We then obtain
- \eqn{Pr(g_k | O_1, \ldots, O_n) = \exp(\alpha_{kv} + \beta_{kv}) / s}{%
+We then obtain
+\eqn{Pr(g_k | O_1, \ldots, O_n) = \exp(\alpha_{kv} + \beta_{kv}) / s}{%
    Pr(g[k] | O[1], \ldots, O[n] = exp(a[k][v] + b[k][v]) / s}
- where
- \eqn{s = \sum_v \exp(\alpha_{kv} + \beta_{kv})}{%
+where
+\eqn{s = \sum_v \exp(\alpha_{kv} + \beta_{kv})}{%
    s = sum_v exp(a[k][v] + b[k][v])}
 }
 \examples{
@@ -78,6 +78,6 @@ gmap_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, gmap_w_pmar, error_prob=0.002)
 }
 \seealso{
-\code{\link{insert_pseudomarkers}}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}
 }
 \keyword{utilities}

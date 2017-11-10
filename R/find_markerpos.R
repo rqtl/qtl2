@@ -3,15 +3,17 @@
 #'
 #' Find positions of markers within a cross object
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param markers A vector of marker names.
 #' @param na.rm If TRUE, don't include not-found markers in the
 #' results (but issue a warning if some markers weren't found). If
-#' FALSE, include those markers with \code{NA} for chr and position.
+#' FALSE, include those markers with `NA` for chr and position.
 #'
 #' @return A data frame with chromosome and genetic and physical
-#' positions (in columns \code{"gmap"} and \code{"pmap"}), with
+#' positions (in columns `"gmap"` and `"pmap"`), with
 #' markers as row names.
 #'
 #' @export

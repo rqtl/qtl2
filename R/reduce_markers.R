@@ -3,19 +3,21 @@
 #' Find the largest subset of markers such that no two adjacent
 #' markers are separated by less than some distance.
 #'
+#' @md
+#'
 #' @param map A list with each component being a vector with the
 #' marker positions for a chromosome.
 #' @param weights A (optional) list of weights on the markers; same
-#' size as \code{map}.
+#' size as `map`.
 #' @param min_distance Minimum distance between markers.
 #'
-#' @return A list like the input \code{map}, but with the selected
+#' @return A list like the input `map`, but with the selected
 #' subset of markers.
 #'
 #' @details Uses a dynamic programming algorithm to find, for each
-#' chromosome, the subset of markers for with max(\code{weights}) is
+#' chromosome, the subset of markers for with max(`weights`) is
 #' maximal, subject to the constraint that no two adjacent markers may
-#' be separated by more than \code{min_distance}.
+#' be separated by more than `min_distance`.
 #'
 #' @references Broman KW, Weber JL (1999) Method for constructing
 #' confidently ordered linkage maps. Genet Epidemiol 16:337--343

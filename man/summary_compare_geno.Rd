@@ -14,24 +14,24 @@ summary_compare_geno(object, threshold = 0.9, ...)
 }
 \arguments{
 \item{object}{A square matrix with genotype comparisons for pairs
-of individuals, as output by \code{\link{compare_geno}}.}
+of individuals, as output by \code{\link[=compare_geno]{compare_geno()}}.}
 
 \item{threshold}{Minimum proportion matches for a pair of individuals to be shown.}
 
 \item{...}{Ignored}
 
-\item{x}{Results of \code{\link{summary.compare_geno}}}
+\item{x}{Results of \code{\link[=summary.compare_geno]{summary.compare_geno()}}}
 
 \item{digits}{Number of digits to print}
 }
 \value{
 Data frame with names of individuals in pair, proportion
-    matches, number of mismatches, number of matches, and total
-    markers genotyped. Last two columns are the numeric indexes of
-    the individuals in the pair.
+matches, number of mismatches, number of matches, and total
+markers genotyped. Last two columns are the numeric indexes of
+the individuals in the pair.
 }
 \description{
-From results of \code{\link{compare_geno}}, show pairs of individuals with similar genotypes.
+From results of \code{\link[=compare_geno]{compare_geno()}}, show pairs of individuals with similar genotypes.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

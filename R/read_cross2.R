@@ -3,19 +3,21 @@
 #'
 #' Read QTL data from a set of files
 #'
+#' @md
+#'
 #' @param file Character string with path to the
-#' \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} file containing all of the control
+#' [YAML](http://www.yaml.org) or [JSON](http://www.json.org/) file containing all of the control
 #' information. This could instead be a zip file containing all of the
 #' data files, in which case the contents are unzipped to a temporary
 #' directory and then read.
-#' @param quiet If \code{FALSE}, print progress messages.
+#' @param quiet If `FALSE`, print progress messages.
 #'
-#' @return Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @return Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @details
-#' A control file in \href{http://www.yaml.org}{YAML} or
-#' \href{http://www.json.org/}{JSON} format contains information
+#' A control file in [YAML](http://www.yaml.org) or
+#' [JSON](http://www.json.org/) format contains information
 #' about basic parameters as well as the names of the series of
 #' data files to be read. See the
 #' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample
@@ -25,7 +27,7 @@
 #'
 #' @export
 #' @keywords IO
-#' @seealso \code{\link{read_pheno}}, \code{\link{write_control_file}},
+#' @seealso [read_pheno()], [write_control_file()],
 #' sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' and \url{https://github.com/rqtl/qtl2data}
 #'

@@ -2,13 +2,15 @@
 #'
 #' Estimate the locations of crossovers in each individual on each chromosome.
 #'
-#' @param geno List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}}).
+#' @md
+#'
+#' @param geno List of matrices of genotypes (output of [maxmarg()] or [viterbi()]).
 #' @param map List of vectors with the map positions of the markers.
 #' @param quiet If FALSE, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A list of lists of estimated crossover locations, with
 #'     crossovers placed at the midpoint of the intervals that contain

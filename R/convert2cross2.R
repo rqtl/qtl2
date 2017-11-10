@@ -3,15 +3,17 @@
 #'
 #' Convert a cross object from the R/qtl format to the R/qtl2 format
 #'
-#' @param cross An object of class \code{"cross"}; see
-#' \code{\link[qtl]{read.cross}} for details.
+#' @md
 #'
-#' @return Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @param cross An object of class `"cross"`; see
+#' [qtl::read.cross()] for details.
+#'
+#' @return Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{read_cross2}}
+#' @seealso [read_cross2()]
 #' @examples
 #' library(qtl)
 #' data(hyper)

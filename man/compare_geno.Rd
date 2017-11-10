@@ -21,9 +21,9 @@ genotypes.}
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A square matrix; diagonal is number of observed genotypes

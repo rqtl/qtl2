@@ -3,40 +3,40 @@
 #'
 #' For each individual at each position, find the genotype with the maximum marginal probability.
 #'
+#' @md
+#'
 #' @param probs Genotype probabilities, as calculated from
-#' \code{\link{calc_genoprob}}.
-#' @param map Map of pseudomarkers in \code{probs}. Used only if \code{chr} and \code{pos} are provided.
+#' [calc_genoprob()].
+#' @param map Map of pseudomarkers in `probs`. Used only if `chr` and `pos` are provided.
 #' @param minprob Minimum probability for making a call. If maximum
-#' probability is less then this value, give \code{NA}.
-#' @param chr If provided (along with \code{pos}), consider only the single specified position.
-#' @param pos If provided (along with \code{chr}), consider only the single specified position.
+#' probability is less then this value, give `NA`.
+#' @param chr If provided (along with `pos`), consider only the single specified position.
+#' @param pos If provided (along with `chr`), consider only the single specified position.
 #' @param return_char If TRUE, return genotype names as character strings.
-#' @param quiet IF \code{FALSE}, print progress messages.
+#' @param quiet IF `FALSE`, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #' @param tol Tolerance value; genotypes with probability that are within
-#'     \code{tol} of each other are treated as equivalent.
+#'     `tol` of each other are treated as equivalent.
 #'
-#' @return If \code{chr} and \code{pos} are provided, a vector of
-#' genotypes is returned. In this case, \code{map} is needed.
+#' @return If `chr` and `pos` are provided, a vector of
+#' genotypes is returned. In this case, `map` is needed.
 #'
-#' Otherwise, the result is a object like that returned by \code{\link{viterbi}},
+#' Otherwise, the result is a object like that returned by [viterbi()],
 #' A list of two-dimensional arrays of imputed genotypes,
 #' individuals x positions. Also includes these attributes:
-#' \itemize{
-#' \item \code{crosstype} - The cross type of the input \code{cross}.
-#' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
-#'     are to be treated as the X chromosome or not, from input \code{cross}.
-#' \item \code{alleles} - Vector of allele codes, from input
-#'     \code{cross}.
-#' }
+#' * `crosstype` - The cross type of the input `cross`.
+#' * `is_x_chr` - Logical vector indicating whether chromosomes
+#'     are to be treated as the X chromosome or not, from input `cross`.
+#' * `alleles` - Vector of allele codes, from input
+#'     `cross`.
 #'
 #' @details
 #' If multiple genotypes share the maximum probability, one is chosen at random.
 #'
-#' @seealso \code{\link{sim_geno}}, \code{\link{viterbi}}
+#' @seealso [sim_geno()], [viterbi()]
 #'
 #' @export
 #'

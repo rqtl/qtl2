@@ -9,11 +9,11 @@ scale_kinship(kinship)
 \arguments{
 \item{kinship}{A kinship matrix, or a list of such in the case of
 the "leave one chromosome out" method, as calculated by
-\code{\link{calc_kinship}}.}
+\code{\link[=calc_kinship]{calc_kinship()}}.}
 }
 \value{
 A matrix or list of matrices, as with the input, but with
-    the matrices scaled to be like correlation matrices.
+the matrices scaled to be like correlation matrices.
 }
 \description{
 Scale kinship matrix to be like a correlation matrix.

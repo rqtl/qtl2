@@ -9,7 +9,7 @@ maxmarg(probs, map = NULL, minprob = 0.95, chr = NULL, pos = NULL,
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
-\code{\link{calc_genoprob}}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{map}{Map of pseudomarkers in \code{probs}. Used only if \code{chr} and \code{pos} are provided.}
 
@@ -25,9 +25,9 @@ probability is less then this value, give \code{NA}.}
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 
 \item{tol}{Tolerance value; genotypes with probability that are within
 \code{tol} of each other are treated as equivalent.}
@@ -36,15 +36,15 @@ produced by \code{\link[parallel]{makeCluster}}.}
 If \code{chr} and \code{pos} are provided, a vector of
 genotypes is returned. In this case, \code{map} is needed.
 
-Otherwise, the result is a object like that returned by \code{\link{viterbi}},
+Otherwise, the result is a object like that returned by \code{\link[=viterbi]{viterbi()}},
 A list of two-dimensional arrays of imputed genotypes,
 individuals x positions. Also includes these attributes:
 \itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
-    are to be treated as the X chromosome or not, from input \code{cross}.
+are to be treated as the X chromosome or not, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
-    \code{cross}.
+\code{cross}.
 }
 }
 \description{
@@ -68,5 +68,5 @@ g <- maxmarg(pr, iron$gmap, chr=8, pos=45.5)
 g <- maxmarg(pr, iron$gmap, chr=8, pos=45.5, return_char=TRUE)
 }
 \seealso{
-\code{\link{sim_geno}}, \code{\link{viterbi}}
+\code{\link[=sim_geno]{sim_geno()}}, \code{\link[=viterbi]{viterbi()}}
 }

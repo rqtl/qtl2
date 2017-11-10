@@ -8,7 +8,7 @@ convert2cross2(cross)
 }
 \arguments{
 \item{cross}{An object of class \code{"cross"}; see
-\code{\link[qtl]{read.cross}} for details.}
+\code{\link[qtl:read.cross]{qtl::read.cross()}} for details.}
 }
 \value{
 Object of class \code{"cross2"}. For details, see the
@@ -23,6 +23,6 @@ data(hyper)
 hyper2 <- convert2cross2(hyper)
 }
 \seealso{
-\code{\link{read_cross2}}
+\code{\link[=read_cross2]{read_cross2()}}
 }
 \keyword{utilities}

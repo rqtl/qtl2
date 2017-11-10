@@ -1,34 +1,36 @@
 # zip_datafiles
 #' Zip a set of data files
 #'
-#' Zip a set of data files (in format read by \code{\link{read_cross2}}).
+#' Zip a set of data files (in format read by [read_cross2()]).
+#'
+#' @md
 #'
 #' @param control_file Character string with path to the control file
-#' (\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON})
+#' ([YAML](http://www.yaml.org) or [JSON](http://www.json.org/))
 #' containing all of the control information.
 #' @param zip_file Name of zip file to use. If NULL, we use the
-#' stem of \code{control_file} but with a \code{.zip} extension.
-#' @param quiet If \code{FALSE}, print progress messages.
+#' stem of `control_file` but with a `.zip` extension.
+#' @param quiet If `FALSE`, print progress messages.
 #'
 #' @return Character string with the file name of the zip file that
 #' was created.
 #'
-#' @details The input \code{control_file} is the control file (in
-#' \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format)
-#' to be read by \code{\link{read_cross2}}.  (See the
-#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
+#' @details The input `control_file` is the control file (in
+#' [YAML](http://www.yaml.org) or [JSON](http://www.json.org/) format)
+#' to be read by [read_cross2()].  (See the
+#' [sample data files](http://kbroman.org/qtl2/pages/sampledata.html) and the
+#' [vignette describing the input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).)
 #'
-#' The \code{\link[utils]{zip}} function is used to do the zipping.
+#' The [utils::zip()] function is used to do the zipping.
 #'
 #' The files should all be contained within the directory where the
-#' \code{control_file} sits, or in a subdirectory of that directory.
-#' If file paths use \code{..}, these get stripped by zip, and so the
-#' resulting zip file may not work with \code{\link{read_cross2}}.
+#' `control_file` sits, or in a subdirectory of that directory.
+#' If file paths use `..`, these get stripped by zip, and so the
+#' resulting zip file may not work with [read_cross2()].
 #'
 #' @export
 #' @keywords IO
-#' @seealso \code{\link{read_cross2}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' @seealso [read_cross2()], sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
 #' \dontrun{
 #' control_file <- "~/grav2_data/grav2.yaml"

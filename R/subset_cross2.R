@@ -4,10 +4,12 @@
 #' Subsetting data for a QTL experiment
 #'
 #' Pull out a specified set of individuals and/or chromosomes from a
-#' \code{cross2} object.
+#' `cross2` object.
 #'
-#' @param x An object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param x An object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs.
 #' @param chr A vector of chromosomes: numeric indices, logical
@@ -15,32 +17,32 @@
 #' @param ... Ignored.
 #'
 #' @details
-#' When subsetting by individual, if \code{ind} is numeric, they're
+#' When subsetting by individual, if `ind` is numeric, they're
 #' assumed to be numeric indices; if character strings, they're
-#' assumed to be individual IDs. \code{ind} can be numeric or logical
+#' assumed to be individual IDs. `ind` can be numeric or logical
 #' only if the genotype, phenotype, and covariate data all have the
 #' same individuals in the same order.
 #'
-#' When subsetting by chromosome, \code{chr} is \emph{always}
+#' When subsetting by chromosome, `chr` is _always_
 #' converted to character strings and treated as chromosome IDs. So if
-#' there are three chromosomes with IDs \code{"18"}, \code{"19"}, and
-#' \code{"X"}, \code{mycross[,18]} will give the first of the
-#' chromosomes (labeled \code{"18"}) and \code{mycross[,3]} will give
+#' there are three chromosomes with IDs `"18"`, `"19"`, and
+#' `"X"`, `mycross[,18]` will give the first of the
+#' chromosomes (labeled `"18"`) and `mycross[,3]` will give
 #' an error.
 #'
-#' When using character string IDs for \code{ind} or \code{chr}, you
+#' When using character string IDs for `ind` or `chr`, you
 #' can use "negative" subscripts to indicate exclusions, for example
-#' \code{mycross[,c("-18", "-X")]} or \code{mycross["-Mouse2501",]}.
+#' `mycross[,c("-18", "-X")]` or `mycross["-Mouse2501",]`.
 #' But you can't mix "positive" and "negative" subscripts, and if any
-#' of the individuals has an ID that begins with \code{"-"}, you can't
+#' of the individuals has an ID that begins with `"-"`, you can't
 #' use negative subscripts like this.
 #'
-#' @return The input \code{cross2} object, with the selected
+#' @return The input `cross2` object, with the selected
 #' individuals and/or chromsomes.
 #'
 #' @section Warning:
 #' The order of the two arguments is reversed relative to the related
-#' function in \href{https://rqtl.org}{R/qtl}.
+#' function in [R/qtl](https://rqtl.org).
 #'
 #' @export
 #' @keywords utilities

@@ -18,13 +18,13 @@ founders x markers.}
 \item{error_prob}{Genotyping error/mutation probability}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A data frame whose rows are IBD segments and whose columns
-    are:
+are:
 \itemize{
 \item Strain 1
 \item Strain 2

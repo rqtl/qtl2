@@ -1,12 +1,14 @@
 # write_control_file
 #' Write a control file for QTL data
 #'
-#' Write the control file (in \href{http://www.yaml.org}{YAML} needed
-#' by \code{\link{read_cross2}} for a set of QTL data.
+#' Write the control file (in [YAML](http://www.yaml.org) needed
+#' by [read_cross2()] for a set of QTL data.
+#'
+#' @md
 #'
 #' @param output_file File name (with path) of the
-#' \href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON} file to be created, as a character
-#' string. If extension is \code{.json}, JSON format is used; otherwise, YAML is used.
+#' [YAML](http://www.yaml.org) or [JSON](http://www.json.org) file to be created, as a character
+#' string. If extension is `.json`, JSON format is used; otherwise, YAML is used.
 #'
 #' @param crosstype Character string with the cross type.
 #' @param geno_file File name for genotype data.
@@ -18,25 +20,25 @@
 #' @param phenocovar_file File name for the phenotype covariate data
 #' (i.e., metadata about the phenotypes).
 #' @param sex_file File name for the individuals' sex. (Specify just
-#' one of \code{sex_file} or \code{sex_covar}.)
+#' one of `sex_file` or `sex_covar`.)
 #' @param sex_covar Column name in the covariate data that corresponds
-#' to sex. (Specify just one of \code{sex_file} or \code{sex_covar}.)
+#' to sex. (Specify just one of `sex_file` or `sex_covar`.)
 #' @param sex_codes Named vector of character strings specifying the
 #' encoding of sex. The names attribute should be the codes used in
 #' the data files; the values within the vector should be
-#' \code{"female"} and \code{"male"}.
-#' @param crossinfo_file File name for the \code{cross_info} data. (Specify just
-#' one of \code{crossinfo_file} or \code{crossinfo_covar}.)
+#' `"female"` and `"male"`.
+#' @param crossinfo_file File name for the `cross_info` data. (Specify just
+#' one of `crossinfo_file` or `crossinfo_covar`.)
 #' @param crossinfo_covar Column name in the covariate data that
-#' corresponds to the \code{cross_info} data. (Specify just one of
-#' \code{crossinfo_file} or \code{crossinfo_covar}.)
-#' @param crossinfo_codes In the case that \code{crossinfo_covar} is
-#' provided (and not \code{crossinfo_file}; it would be left
+#' corresponds to the `cross_info` data. (Specify just one of
+#' `crossinfo_file` or `crossinfo_covar`.)
+#' @param crossinfo_codes In the case that `crossinfo_covar` is
+#' provided (and not `crossinfo_file`; it would be left
 #' untouched), a named vector of character strings specifying the
-#' encoding of \code{cross_info}. The names attribute should be the
+#' encoding of `cross_info`. The names attribute should be the
 #' codes used in the covariate column; the values within the vector
 #' should be the codes to which they will be converted (for example,
-#' \code{0} and \code{1} for an intercross).
+#' `0` and `1` for an intercross).
 #' @param geno_codes Named vector specifying the encoding of
 #' genotypes. The names attribute has the codes used within the
 #' genotype and founder genotype data files; the values within the
@@ -66,9 +68,9 @@
 #' @return (Invisibly) The data structure that was written.
 #'
 #' @details This function takes a set of parameters and creates the
-#' control file (in \href{http://www.yaml.org}{YAML} format) needed
+#' control file (in [YAML](http://www.yaml.org) format) needed
 #' for the new input data file format for
-#' \href{http://kbroman.org/qtl2}{R/qtl2}.  See the
+#' [R/qtl2](http://kbroman.org/qtl2).  See the
 #' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data
 #' files} and the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
@@ -76,7 +78,7 @@
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{read_cross2}}, sample data files at
+#' @seealso [read_cross2()], sample data files at
 #' \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
 #' \dontrun{

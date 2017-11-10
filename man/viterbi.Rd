@@ -29,9 +29,9 @@ memory.}
 \item{quiet}{If \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list of two-dimensional arrays of imputed genotypes,
@@ -39,9 +39,9 @@ individuals x positions. Also contains three attributes:
 \itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
-    are to be treated as the X chromosome or not, from input \code{cross}.
+are to be treated as the X chromosome or not, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
-    \code{cross}.
+\code{cross}.
 }
 }
 \description{
@@ -62,7 +62,7 @@ Consider the results with caution; the most probable sequence can
 have very low probability, and can have features that are quite
 unusual (for example, the number of recombination events can be too
 small). In most cases, the results of a single imputation with
-\code{\link{sim_geno}} will be more realistic.
+\code{\link[=sim_geno]{sim_geno()}} will be more realistic.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
@@ -70,5 +70,5 @@ map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 g <- viterbi(grav2, map_w_pmar, error_prob=0.002)
 }
 \seealso{
-\code{\link{sim_geno}}, \code{\link{maxmarg}}
+\code{\link[=sim_geno]{sim_geno()}}, \code{\link[=maxmarg]{maxmarg()}}
 }

@@ -1,11 +1,13 @@
 # probs_to_grid
 #' Subset genotype probability array to pseudomarkers on a grid
 #'
-#' Subset genotype probability array (from \code{\link{calc_genoprob}}
+#' Subset genotype probability array (from [calc_genoprob()]
 #' to a grid of pseudomarkers along each chromosome.
 #'
+#' @md
+#'
 #' @param probs Genotype probabilities as output from
-#' \code{\link{calc_genoprob}} with \code{stepwidth="fixed"}.
+#' [calc_genoprob()] with `stepwidth="fixed"`.
 #'
 #' @param grid List of logical vectors that indicate which positions
 #' are on the grid and should be retained.
@@ -13,16 +15,16 @@
 #' @return Same list as input, but subset to just include
 #' pseudomarkers along a grid. The map attribute is similarly subset.
 #'
-#' @details This only works if \code{\link{calc_genoprob}} was run
-#' with \code{stepwidth="fixed"}, so that the genotype
+#' @details This only works if [calc_genoprob()] was run
+#' with `stepwidth="fixed"`, so that the genotype
 #' probabilities were calculated at a grid of
 #' markers/pseudomarkers. When this is the case, we omit all but
-#' the probabilities on this grid. Use \code{\link{calc_grid}} to
+#' the probabilities on this grid. Use [calc_grid()] to
 #' find the grid positions.
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{calc_grid}}, \code{\link{map_to_grid}}
+#' @seealso [calc_grid()], [map_to_grid()]
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

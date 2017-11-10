@@ -3,21 +3,23 @@
 #'
 #' Subset a map object to the locations on some grid.
 #'
+#' @md
+#'
 #' @param map A list of vectors of marker positions.
 #' @param grid A list of logical vectors (aligned with
-#' \code{map}), with TRUE indicating the position is on the grid.
+#' `map`), with TRUE indicating the position is on the grid.
 #'
 #' @return Same list as input, but subset to just include
 #' pseudomarkers along a grid.
 #'
 #' @details This is generally for the case of a map created with
-#' \code{\link{insert_pseudomarkers}} with \code{step}>0 and
-#' \code{stepwidth="fixed"}, so that the pseudomarkers form a grid
+#' [insert_pseudomarkers()] with `step`>0 and
+#' `stepwidth="fixed"`, so that the pseudomarkers form a grid
 #' along each chromosome.
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{calc_grid}}, \code{\link{probs_to_grid}}
+#' @seealso [calc_grid()], [probs_to_grid()]
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

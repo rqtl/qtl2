@@ -1,10 +1,12 @@
 #' Join viterbi results for different chromosomes
 #'
 #' Join multiple viterbi objects, as produced by
-#' \code{\link{viterbi}} for different individuals.
+#' [viterbi()] for different individuals.
+#'
+#' @md
 #'
 #' @param ... Imputed genotype objects as produced by
-#' \code{\link{viterbi}}. Must have the same set of individuals.
+#' [viterbi()]. Must have the same set of individuals.
 #'
 #' @return A single imputed genotype object.
 #'
@@ -16,6 +18,7 @@
 #' g <- cbind(gA, gB)
 #'
 #' @export
+#' @aliases cbind.viterbi
 cbind.viterbi <-
     function(...)
 {

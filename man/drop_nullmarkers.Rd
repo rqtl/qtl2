@@ -30,5 +30,5 @@ grav2$geno[[2]][,c(3,25)] <- 0
 grav2_rev <- drop_nullmarkers(grav2)
 }
 \seealso{
-\code{\link{drop_markers}}, \code{\link{pull_markers}}
+\code{\link[=drop_markers]{drop_markers()}}, \code{\link[=pull_markers]{pull_markers()}}
 }

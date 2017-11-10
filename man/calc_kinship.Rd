@@ -9,7 +9,7 @@ calc_kinship(probs, type = c("overall", "loco", "chr"), omit_x = FALSE,
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
-\code{\link{calc_genoprob}}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{type}{Indicates whether to calculate the overall kinship
 (\code{"overall"}, using all chromosomes), the kinship matrix
@@ -21,15 +21,15 @@ kinship matrix for each chromosome (\code{"chr"}).}
 
 \item{use_allele_probs}{If \code{TRUE}, assess similarity with
 allele probabilities (that is, first run
-\code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
+\code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}); otherwise use the genotype
 probabilities.}
 
 \item{quiet}{IF \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 If \code{type="overall"} (the default), a matrix of
@@ -43,7 +43,7 @@ from conditional genotype probabilities.
 \details{
 If \code{use_allele_probs=TRUE} (the default), we first
 convert the genotype probabilities are converted to allele
-probabilities (using \code{\link{genoprob_to_alleleprob}}). This is
+probabilities (using \code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}). This is
 recommended, as then the result is twice the empirical kinship
 coefficient (e.g., the expected value for an intercross is 1/2;
 using genotype probabilities, the expected value is 3/8).

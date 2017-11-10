@@ -2,17 +2,19 @@
 #' Convert genotype probabilities to allele probabilities
 #'
 #' Reduce genotype probabilities (as calculated by
-#' \code{\link{calc_genoprob}}) to allele probabilities.
+#' [calc_genoprob()]) to allele probabilities.
+#'
+#' @md
 #'
 #' @param probs Genotype probabilities, as calculated from
-#' \code{\link{calc_genoprob}}.
-#' @param quiet IF \code{FALSE}, print progress messages.
+#' [calc_genoprob()].
+#' @param quiet IF `FALSE`, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
-#' @return The \code{probs} input with probabilities
+#' @return The `probs` input with probabilities
 #' collapsed to alleles rather than genotypes.
 #'
 #' @export

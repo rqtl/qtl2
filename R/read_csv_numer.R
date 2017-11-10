@@ -1,9 +1,11 @@
 #' Read a csv file that has numeric columns
 #'
-#' Read a csv file via \code{\link[data.table]{fread}} using a
+#' Read a csv file via [data.table::fread()] using a
 #' particular set of options, including the ability to transpose the
 #' result. This version assumes that the contents other than the first
 #' column and the header row are strictly numeric.
+#'
+#' @md
 #'
 #' @param filename Name of input file
 #' @param sep Field separator
@@ -20,7 +22,7 @@
 #'
 #' The first column is taken to be a set of row names
 #'
-#' @seealso \code{\link{read_csv}}
+#' @seealso [read_csv()]
 #'
 #' @importFrom data.table fread
 #' @export

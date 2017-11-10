@@ -24,5 +24,5 @@ rev_map <- reduce_map_gaps(iron$gmap, 30)
 
 }
 \seealso{
-\code{\link{find_map_gaps}}
+\code{\link[=find_map_gaps]{find_map_gaps()}}
 }

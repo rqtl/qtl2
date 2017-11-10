@@ -2,19 +2,21 @@
 #'
 #' Calculate genotype frequencies, by individual or by marker
 #'
+#' @md
+#'
 #' @param probs List of arrays of genotype probabilities, as
-#'     calculated by \code{\link{calc_genoprob}}.
+#'     calculated by [calc_genoprob()].
 #' @param by Whether to summarize by individual or marker
 #' @param omit_x If TRUE, results are just for the autosomes. If
 #'     FALSE, results are a list of length two, containing the results
 #'     for the autosomes and those for the X chromosome.
 #'
 #' @return
-#' If \code{omit_x=TRUE}, the result is a matrix of genotype
+#' If `omit_x=TRUE`, the result is a matrix of genotype
 #' frequencies; columns are genotypes and rows are either individuals
 #' or markers.
 #'
-#' If necessary (that is, if \code{omit_x=FALSE}, the data include the
+#' If necessary (that is, if `omit_x=FALSE`, the data include the
 #' X chromosome, and the set of genotypes on the X chromosome are
 #' different than on the autosomes), the result is a list with two
 #' components (for the autosomes and for the X chromosome), each being

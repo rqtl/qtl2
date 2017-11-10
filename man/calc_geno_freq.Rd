@@ -8,7 +8,7 @@ calc_geno_freq(probs, by = c("individual", "marker"), omit_x = TRUE)
 }
 \arguments{
 \item{probs}{List of arrays of genotype probabilities, as
-calculated by \code{\link{calc_genoprob}}.}
+calculated by \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{by}{Whether to summarize by individual or marker}
 

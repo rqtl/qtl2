@@ -7,21 +7,21 @@
 locate_xo(geno, map, quiet = TRUE, cores = 1)
 }
 \arguments{
-\item{geno}{List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}}).}
+\item{geno}{List of matrices of genotypes (output of \code{\link[=maxmarg]{maxmarg()}} or \code{\link[=viterbi]{viterbi()}}).}
 
 \item{map}{List of vectors with the map positions of the markers.}
 
 \item{quiet}{If FALSE, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list of lists of estimated crossover locations, with
-    crossovers placed at the midpoint of the intervals that contain
-    them.
+crossovers placed at the midpoint of the intervals that contain
+them.
 }
 \description{
 Estimate the locations of crossovers in each individual on each chromosome.

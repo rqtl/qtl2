@@ -4,12 +4,14 @@
 #' Uses a hidden Markov model to re-estimate the genetic map for an
 #' experimental cross, with possible allowance for genotyping errors.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
-#' @param lowmem If \code{FALSE}, precalculate initial and emission
+#' @param lowmem If `FALSE`, precalculate initial and emission
 #' probabilities, and at each iteration calculate the transition
 #' matrices for a chromosome; potentially a lot faster but using
 #' more memory. Needs to be tailored somewhat to cross type. For
@@ -18,17 +20,17 @@
 #' transition matrices for each generation.
 #' @param maxit Maximum number of iterations in EM algorithm.
 #' @param tol Tolerance for determining convergence
-#' @param quiet If \code{FALSE}, print progress messages.
-#' @param save_rf If \code{TRUE}, save the estimated recombination
-#' fractions as an attribute (\code{"rf"}) of the result.
+#' @param quiet If `FALSE`, print progress messages.
+#' @param save_rf If `TRUE`, save the estimated recombination
+#' fractions as an attribute (`"rf"`) of the result.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A list of numeric vectors, with the estimated marker
 #' locations (in cM). The location of the initial marker on each
-#' chromosome is kept the same as in the input \code{cross}.
+#' chromosome is kept the same as in the input `cross`.
 #'
 #' @details
 #' The map is estimated assuming no crossover interference,

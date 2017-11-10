@@ -4,26 +4,28 @@
 #' Count the number of matching genotypes between all pairs of
 #' individuals, to look for unusually closely related individuals.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param omit_x If TRUE, only use autosomal genotypes
 #' @param proportion If TRUE (the default), the upper triangle of the
 #'     result contains the proportions of matching genotypes. If
 #'     FALSE, the upper triangle contains counts of matching
 #'     genotypes.
-#' @param quiet IF \code{FALSE}, print progress messages.
+#' @param quiet IF `FALSE`, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A square matrix; diagonal is number of observed genotypes
 #' for each individual. The values in the lower triangle are the
 #' numbers of markers where both of a pair were genotyped. The
 #' values in the upper triangle are either proportions or counts
 #' of matching genotypes for each pair (depending on whether
-#' \code{proportion=TRUE} or \code{=FALSE}). The object is given
-#' class \code{"compare_geno"}.
+#' `proportion=TRUE` or `=FALSE`). The object is given
+#' class `"compare_geno"`.
 #'
 #' @export
 #' @keywords utilities
@@ -96,10 +98,12 @@ compare_geno <-
 
 #' Basic summary of compare_geno object
 #'
-#' From results of \code{\link{compare_geno}}, show pairs of individuals with similar genotypes.
+#' From results of [compare_geno()], show pairs of individuals with similar genotypes.
+#'
+#' @md
 #'
 #' @param object A square matrix with genotype comparisons for pairs
-#'     of individuals, as output by \code{\link{compare_geno}}.
+#'     of individuals, as output by [compare_geno()].
 #' @param threshold Minimum proportion matches for a pair of individuals to be shown.
 #' @param ... Ignored
 #'
@@ -190,7 +194,10 @@ summary_compare_geno <-
 summary.compare_geno <- summary_compare_geno
 
 #' @rdname summary_compare_geno
-#' @param x Results of \code{\link{summary.compare_geno}}
+#'
+#' @md
+#'
+#' @param x Results of [summary.compare_geno()]
 #' @param digits Number of digits to print
 #' @export
 print.summary.compare_geno <-
@@ -207,10 +214,12 @@ print.summary.compare_geno <-
 
 #' Find pair with most similar genotypes
 #'
-#' From results of \code{\link{compare_geno}}, show the pair with most similar genotypes.
+#' From results of [compare_geno()], show the pair with most similar genotypes.
+#'
+#' @md
 #'
 #' @param object A square matrix with genotype comparisons for pairs
-#'     of individuals, as output by \code{\link{compare_geno}}.
+#'     of individuals, as output by [compare_geno()].
 #' @param ... Ignored
 #'
 #' @return Data frame with individual pair, proportion matches, number

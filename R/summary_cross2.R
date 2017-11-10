@@ -4,12 +4,14 @@
 #'
 #' Basic summaries of a cross2 object.
 #'
-#' @param cross2 An object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross2 An object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @name basic_summaries
 #' @keywords utilities
-#' @seealso \code{\link{summary.cross2}}
+#' @seealso [summary.cross2()]
 NULL
 
 #' @describeIn basic_summaries Number of individuals (either genotyped or phenotyped)
@@ -288,8 +290,10 @@ function(cross2)
 #'
 #' Print a summary of a cross2 object
 #'
-#' @param x An object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param x An object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
 #'
 #' @return None.
@@ -309,8 +313,10 @@ function(x, ...)
 #'
 #' Summarize a cross2 object
 #'
-#' @param object An object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param object An object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
 #'
 #' @return None.

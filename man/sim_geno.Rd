@@ -31,9 +31,9 @@ memory.}
 \item{quiet}{If \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list of three-dimensional arrays of imputed genotypes,
@@ -41,9 +41,9 @@ individuals x positions x draws. Also contains three attributes:
 \itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes
-    are to be treated as the X chromosome or not, from input \code{cross}.
+are to be treated as the X chromosome or not, from input \code{cross}.
 \item \code{alleles} - Vector of allele codes, from input
-    \code{cross}.
+\code{cross}.
 }
 }
 \description{
@@ -54,7 +54,7 @@ for genotyping errors.
 }
 \details{
 After performing the backward equations, we draw from
- \eqn{Pr(g_1 = v | O)}{Pr(g[1] = v | O)} and then \eqn{Pr(g_{k+1} = v |
+\eqn{Pr(g_1 = v | O)}{Pr(g[1] = v | O)} and then \eqn{Pr(g_{k+1} = v |
    O, g_k = u)}{Pr(g[k+1] = v | O, g[k] = u)}.
 }
 \examples{

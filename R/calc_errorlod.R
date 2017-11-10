@@ -2,18 +2,20 @@
 #' Calculate genotyping error LOD scores
 #'
 #' Use the genotype probabilities calculated with
-#' \code{\link{calc_genoprob}} to calculate genotyping error LOD
+#' [calc_genoprob()] to calculate genotyping error LOD
 #' scores, to help identify potential genotyping errors (and problem
 #' markers and/or individuals).
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
 #' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param probs Genotype probabilities as calculated from \code{\link{calc_genoprob}}.
-#' @param quiet If \code{FALSE}, print progress messages.
+#' @param probs Genotype probabilities as calculated from [calc_genoprob()].
+#' @param quiet If `FALSE`, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A list of matrices of genotyping error LOD scores. Each
 #'     matrix corresponds to a chromosome and is arranged as
@@ -33,7 +35,7 @@
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{calc_genoprob}}
+#' @seealso [calc_genoprob()]
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

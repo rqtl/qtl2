@@ -24,7 +24,7 @@ read_csv_numer(filename, sep = ",", na.strings = c("NA", "-"),
 Data frame
 }
 \description{
-Read a csv file via \code{\link[data.table]{fread}} using a
+Read a csv file via \code{\link[data.table:fread]{data.table::fread()}} using a
 particular set of options, including the ability to transpose the
 result. This version assumes that the contents other than the first
 column and the header row are strictly numeric.
@@ -40,5 +40,5 @@ The first column is taken to be a set of row names
 \dontrun{mydata <- read_csv("myfile.csv", transpose=TRUE)}
 }
 \seealso{
-\code{\link{read_csv}}
+\code{\link[=read_csv]{read_csv()}}
 }

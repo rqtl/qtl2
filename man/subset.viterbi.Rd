@@ -10,7 +10,7 @@
 \method{[}{viterbi}(x, ind = NULL, chr = NULL)
 }
 \arguments{
-\item{x}{Imputed genotypes as output from \code{\link{viterbi}}.}
+\item{x}{Imputed genotypes as output from \code{\link[=viterbi]{viterbi()}}.}
 
 \item{ind}{A vector of individuals: numeric indices, logical
 values, or character string IDs}
@@ -26,7 +26,7 @@ individuals and/or chromsomes.
 }
 \description{
 Pull out a specified set of individuals and/or chromosomes from
-the results of \code{\link{viterbi}}
+the results of \code{\link[=viterbi]{viterbi()}}
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

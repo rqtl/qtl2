@@ -3,14 +3,16 @@
 #'
 #' Drop a vector of markers from a cross2 object.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param markers A vector of marker names.
 #'
-#' @return The input \code{cross} with the specified markers removed.
+#' @return The input `cross` with the specified markers removed.
 #'
 #' @export
-#' @seealso \code{\link{pull_markers}}, \code{\link{drop_nullmarkers}}
+#' @seealso [pull_markers()], [drop_nullmarkers()]
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
@@ -74,18 +76,20 @@ drop_markers <-
 #'
 #' Drop markers with no genotype data (or no informative genotypes)
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param quiet If FALSE, print information about how many markers were dropped.
 #'
-#' @return The input \code{cross} with the uninformative markers removed.
+#' @return The input `cross` with the uninformative markers removed.
 #'
 #' @details We omit any markers that have completely missing data, or
 #' if founder genotypes are present (e.g., for Diversity Outbreds),
 #' the founder genotypes are missing or are all the same.
 #'
 #' @export
-#' @seealso \code{\link{drop_markers}}, \code{\link{pull_markers}}
+#' @seealso [drop_markers()], [pull_markers()]
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
@@ -137,14 +141,16 @@ drop_nullmarkers <-
 #'
 #' Drop all markers from a cross2 object expect those in a specified vector.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param markers A vector of marker names.
 #'
-#' @return The input \code{cross} with only the specified markers.
+#' @return The input `cross` with only the specified markers.
 #'
 #' @export
-#' @seealso \code{\link{drop_markers}}, \code{\link{drop_nullmarkers}}
+#' @seealso [drop_markers()], [drop_nullmarkers()]
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

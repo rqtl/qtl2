@@ -7,19 +7,19 @@
 count_xo(geno, quiet = TRUE, cores = 1)
 }
 \arguments{
-\item{geno}{List of matrices of genotypes (output of \code{\link{maxmarg}} or \code{\link{viterbi}})
-or a list of 3d-arrays of genotypes (output of \code{\link{sim_geno}}).}
+\item{geno}{List of matrices of genotypes (output of \code{\link[=maxmarg]{maxmarg()}} or \code{\link[=viterbi]{viterbi()}})
+or a list of 3d-arrays of genotypes (output of \code{\link[=sim_geno]{sim_geno()}}).}
 
 \item{quiet}{If FALSE, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A matrix of crossover counts, individuals x chromosomes, or
-(if the input was the output of \code{\link{sim_geno}}) a
+(if the input was the output of \code{\link[=sim_geno]{sim_geno()}}) a
 3d-array of crossover counts, individuals x chromosomes x
 imputations.
 }

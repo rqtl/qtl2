@@ -8,14 +8,14 @@
 }
 \arguments{
 \item{...}{Genotype imputation objects as produced by
-\code{\link{sim_geno}}. Must have the same set of markers and
+\code{\link[=sim_geno]{sim_geno()}}. Must have the same set of markers and
 genotypes.}
 }
 \value{
 A single genotype probability object.
 }
 \description{
-Join multiple genotype imputation objects, as produced by \code{\link{sim_geno}} for different individuals.
+Join multiple genotype imputation objects, as produced by \code{\link[=sim_geno]{sim_geno()}} for different individuals.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

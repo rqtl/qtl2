@@ -1,9 +1,11 @@
 #' Join genotype imputations for different individuals
 #'
-#' Join multiple genotype imputation objects, as produced by \code{\link{sim_geno}} for different individuals.
+#' Join multiple genotype imputation objects, as produced by [sim_geno()] for different individuals.
+#'
+#' @md
 #'
 #' @param ... Genotype imputation objects as produced by
-#' \code{\link{sim_geno}}. Must have the same set of markers and
+#' [sim_geno()]. Must have the same set of markers and
 #' genotypes.
 #'
 #' @return A single genotype probability object.

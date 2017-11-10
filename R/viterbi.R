@@ -6,33 +6,33 @@
 #' multipoint marker data, with possible allowance for genotyping
 #' errors.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param map Genetic map of markers. May include pseudomarker
 #' locations (that is, locations that are not within the marker
-#' genotype data). If NULL, the genetic map in \code{cross} is used.
+#' genotype data). If NULL, the genetic map in `cross` is used.
 #' @param error_prob Assumed genotyping error probability
 #' @param map_function Character string indicating the map function to
 #' use to convert genetic distances to recombination fractions.
-#' @param lowmem If \code{FALSE}, split individuals into groups with
+#' @param lowmem If `FALSE`, split individuals into groups with
 #' common sex and crossinfo and then precalculate the transition
 #' matrices for a chromosome; potentially a lot faster but using more
 #' memory.
-#' @param quiet If \code{FALSE}, print progress messages.
+#' @param quiet If `FALSE`, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A list of two-dimensional arrays of imputed genotypes,
 #' individuals x positions. Also contains three attributes:
-#' \itemize{
-#' \item \code{crosstype} - The cross type of the input \code{cross}.
-#' \item \code{is_x_chr} - Logical vector indicating whether chromosomes
-#'     are to be treated as the X chromosome or not, from input \code{cross}.
-#' \item \code{alleles} - Vector of allele codes, from input
-#'     \code{cross}.
-#' }
+#' * `crosstype` - The cross type of the input `cross`.
+#' * `is_x_chr` - Logical vector indicating whether chromosomes
+#'     are to be treated as the X chromosome or not, from input `cross`.
+#' * `alleles` - Vector of allele codes, from input
+#'     `cross`.
 #'
 #' @details We use a hidden Markov model to find, for each individual
 #' on each chromosome, the most probable sequence of underlying
@@ -45,9 +45,9 @@
 #' have very low probability, and can have features that are quite
 #' unusual (for example, the number of recombination events can be too
 #' small). In most cases, the results of a single imputation with
-#' \code{\link{sim_geno}} will be more realistic.
+#' [sim_geno()] will be more realistic.
 #'
-#' @seealso \code{\link{sim_geno}}, \code{\link{maxmarg}}
+#' @seealso [sim_geno()], [maxmarg()]
 #'
 #' @export
 #'

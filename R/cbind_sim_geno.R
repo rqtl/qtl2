@@ -1,11 +1,13 @@
 #' Join genotype imputations for different chromosomes
 #'
 #' Join multiple genotype imputation objects, as produced by
-#' \code{\link{sim_geno}} for the same individuals but different
+#' [sim_geno()] for the same individuals but different
 #' chromosomes.
 #'
+#' @md
+#'
 #' @param ... Genotype imputation objects as produced by
-#' \code{\link{sim_geno}}. Must have the same set of individuals.
+#' [sim_geno()]. Must have the same set of individuals.
 #'
 #' @return A single genotype probability object.
 #'
@@ -17,6 +19,7 @@
 #' draws <- cbind(drawsA, drawsB)
 #'
 #' @export
+#' @aliases cbind.sim_geno
 cbind.sim_geno <-
     function(...)
     cbind.calc_genoprob(...)

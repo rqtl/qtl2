@@ -10,21 +10,21 @@ guess_phase(cross, geno, deterministic = FALSE, cores = 1)
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
-\item{geno}{Imputed genotypes, as a list of matrices, as from \code{\link{maxmarg}}.}
+\item{geno}{Imputed genotypes, as a list of matrices, as from \code{\link[=maxmarg]{maxmarg()}}.}
 
 \item{deterministic}{If TRUE, preferentially put smaller allele first when there's uncertainty.
 If FALSE, the order of alleles is random in such cases.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 If input cross is phase-known (e.g., recombinant inbred lines),
-    the output will be the input \code{geno}. Otherwise, the output
-    will be a list of three-dimensional arrays of imputed
-    genotypes, individual x position x haplotype (1/2).
+the output will be the input \code{geno}. Otherwise, the output
+will be a list of three-dimensional arrays of imputed
+genotypes, individual x position x haplotype (1/2).
 }
 \description{
 Turn imputed genotypes into phased genotypes along chromosomes by
@@ -33,11 +33,11 @@ events.
 }
 \details{
 We randonly assign the pair of alleles at the first locus
-    to two haplotypes, and then work left to right, assigning
-    alleles to haplotypes one locus at a time seeking the fewest
-    recombination events. The results are subject to arbitrary and
-    random choices. For example, to the right of a homozygous
-    region, either orientation is equally reasonable.
+to two haplotypes, and then work left to right, assigning
+alleles to haplotypes one locus at a time seeking the fewest
+recombination events. The results are subject to arbitrary and
+random choices. For example, to the right of a homozygous
+region, either orientation is equally reasonable.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -47,6 +47,6 @@ imp_geno <- maxmarg(probs)
 ph_geno <- guess_phase(iron, imp_geno)
 }
 \seealso{
-\code{\link{maxmarg}}
+\code{\link[=maxmarg]{maxmarg()}}
 }
 \keyword{utilities}

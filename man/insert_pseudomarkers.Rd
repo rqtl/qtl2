@@ -57,6 +57,6 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
 gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
 }
 \seealso{
-\code{\link{calc_genoprob}}, \code{\link{calc_grid}}
+\code{\link[=calc_genoprob]{calc_genoprob()}}, \code{\link[=calc_grid]{calc_grid()}}
 }
 \keyword{utilities}

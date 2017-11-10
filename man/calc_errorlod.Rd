@@ -10,33 +10,33 @@ calc_errorlod(cross, probs, quiet = TRUE, cores = 1)
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
-\item{probs}{Genotype probabilities as calculated from \code{\link{calc_genoprob}}.}
+\item{probs}{Genotype probabilities as calculated from \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
-(If \code{0}, use \code{\link[parallel]{detectCores}}.)
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
-produced by \code{\link[parallel]{makeCluster}}.}
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list of matrices of genotyping error LOD scores. Each
-    matrix corresponds to a chromosome and is arranged as
-    individuals x markers.
+matrix corresponds to a chromosome and is arranged as
+individuals x markers.
 }
 \description{
 Use the genotype probabilities calculated with
-\code{\link{calc_genoprob}} to calculate genotyping error LOD
+\code{\link[=calc_genoprob]{calc_genoprob()}} to calculate genotyping error LOD
 scores, to help identify potential genotyping errors (and problem
 markers and/or individuals).
 }
 \details{
 Let \eqn{O_k}{O[k]} denote the observed marker genotype at position
- \eqn{k}, and \eqn{g_k}{g[k]} denote the corresponding true underlying
- genotype.
+\eqn{k}, and \eqn{g_k}{g[k]} denote the corresponding true underlying
+genotype.
 
- Following Lincoln and Lander (1992), we calculate
- LOD = \eqn{log_{10} [ Pr(O_k | g_k = O_k) / Pr(O_k | g_k \ne O_K) ]}{
+Following Lincoln and Lander (1992), we calculate
+LOD = \eqn{log_{10} [ Pr(O_k | g_k = O_k) / Pr(O_k | g_k \ne O_K) ]}{
  log10[ Pr(O[k] | g[k] = O[k]) / Pr(O[k] | g[k] != O[k]) ]}
 }
 \examples{
@@ -51,6 +51,6 @@ errorlod <- do.call("cbind", errorlod)
 Lincoln SE, Lander ES (1992) Systematic detection of errors in genetic linkage data. Genomics 14:604--610.
 }
 \seealso{
-\code{\link{calc_genoprob}}
+\code{\link[=calc_genoprob]{calc_genoprob()}}
 }
 \keyword{utilities}

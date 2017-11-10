@@ -2,6 +2,8 @@
 #'
 #' Find gaps between markers in a genetic map
 #'
+#' @md
+#'
 #' @param map Genetic map as a list of vectors (each vector is a
 #' chromosome and contains the marker positions).
 #' @param min_gap Minimum gap length to return.
@@ -11,7 +13,7 @@
 #' numeric index of marker to left, marker to right of gap, numeric
 #' index of marker to right, and the length of the gap.
 #'
-#' @seealso \code{\link{reduce_map_gaps}}
+#' @seealso [reduce_map_gaps()]
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

@@ -120,6 +120,6 @@ Basic summaries of a cross2 object.
 }}
 
 \seealso{
-\code{\link{summary.cross2}}
+\code{\link[=summary.cross2]{summary.cross2()}}
 }
 \keyword{utilities}

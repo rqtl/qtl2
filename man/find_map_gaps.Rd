@@ -26,5 +26,5 @@ find_map_gaps(iron$gmap, 40)
 
 }
 \seealso{
-\code{\link{reduce_map_gaps}}
+\code{\link[=reduce_map_gaps]{reduce_map_gaps()}}
 }

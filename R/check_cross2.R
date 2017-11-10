@@ -55,10 +55,12 @@ function(cross2)
 #'
 #' Check the integrity of the data within a cross2 object.
 #'
-#' @param cross2 An object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
 #'
-#' @return If everything is correct, returns \code{TRUE}; otherwise \code{FALSE},
+#' @param cross2 An object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#'
+#' @return If everything is correct, returns `TRUE`; otherwise `FALSE`,
 #' with attributes that give the problems.
 #'
 #' @details Checks whether a cross2 object meets the

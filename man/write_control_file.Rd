@@ -107,7 +107,7 @@ within the control object.}
 }
 \description{
 Write the control file (in \href{http://www.yaml.org}{YAML} needed
-by \code{\link{read_cross2}} for a set of QTL data.
+by \code{\link[=read_cross2]{read_cross2()}} for a set of QTL data.
 }
 \details{
 This function takes a set of parameters and creates the
@@ -151,7 +151,7 @@ write_control_file("~/my_data/iron.yaml",
 }
 }
 \seealso{
-\code{\link{read_cross2}}, sample data files at
+\code{\link[=read_cross2]{read_cross2()}}, sample data files at
 \url{http://kbroman.org/qtl2/pages/sampledata.html}
 }
 \keyword{utilities}

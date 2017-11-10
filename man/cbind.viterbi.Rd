@@ -8,14 +8,14 @@
 }
 \arguments{
 \item{...}{Imputed genotype objects as produced by
-\code{\link{viterbi}}. Must have the same set of individuals.}
+\code{\link[=viterbi]{viterbi()}}. Must have the same set of individuals.}
 }
 \value{
 A single imputed genotype object.
 }
 \description{
 Join multiple viterbi objects, as produced by
-\code{\link{viterbi}} for different individuals.
+\code{\link[=viterbi]{viterbi()}} for different individuals.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))

@@ -1,10 +1,12 @@
 #' Join genotype probabilities for different individuals
 #'
 #' Join multiple genotype probability objects, as produced by
-#' \code{\link{calc_genoprob}} for different individuals.
+#' [calc_genoprob()] for different individuals.
+#'
+#' @md
 #'
 #' @param ... Genotype probability objects as produced by
-#' \code{\link{calc_genoprob}}. Must have the same set of markers and
+#' [calc_genoprob()]. Must have the same set of markers and
 #' genotypes.
 #'
 #' @return A single genotype probability object.

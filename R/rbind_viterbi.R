@@ -1,10 +1,12 @@
 #' Join Viterbi results for different individuals
 #'
 #' Join multiple imputed genotype objects, as produced by
-#' \code{\link{viterbi}} for different individuals.
+#' [viterbi()] for different individuals.
+#'
+#' @md
 #'
 #' @param ... Imputed genotype objects as produced by
-#' \code{\link{viterbi}}. Must have the same set of markers.
+#' [viterbi()]. Must have the same set of markers.
 #'
 #' @return A single viterbi object.
 #'

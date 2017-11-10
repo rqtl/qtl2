@@ -29,7 +29,7 @@ interpreted as \code{NA} values.}
 single character to denote comments within the CSV files.}
 
 \item{transpose}{If TRUE, the phenotype data will be transposed. The
-phenotype covariate information is \bold{never} transposed.}
+phenotype covariate information is \strong{never} transposed.}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}
 }
@@ -55,7 +55,7 @@ phe_list <- read_pheno(file, phecovfile)
 }
 }
 \seealso{
-\code{\link{read_cross2}},
+\code{\link[=read_cross2]{read_cross2()}},
 sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 and \url{https://github.com/rqtl/qtl2data}
 }

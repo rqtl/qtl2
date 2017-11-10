@@ -4,31 +4,33 @@
 #' Calculate genetic similarity among individuals (kinship matrix)
 #' from conditional genotype probabilities.
 #'
-#' @param probs Genotype probabilities, as calculated from
-#' \code{\link{calc_genoprob}}.
-#' @param type Indicates whether to calculate the overall kinship
-#' (\code{"overall"}, using all chromosomes), the kinship matrix
-#' leaving out one chromosome at a time (\code{"loco"}), or the
-#' kinship matrix for each chromosome (\code{"chr"}).
-#' @param omit_x If \code{TRUE}, only use the autosomes; ignored when
-#' \code{type="chr"}.
-#' @param use_allele_probs If \code{TRUE}, assess similarity with
-#' allele probabilities (that is, first run
-#' \code{\link{genoprob_to_alleleprob}}); otherwise use the genotype
-#' probabilities.
-#' @param quiet IF \code{FALSE}, print progress messages.
-#' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
-#' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' @md
 #'
-#' @return If \code{type="overall"} (the default), a matrix of
+#' @param probs Genotype probabilities, as calculated from
+#' [calc_genoprob()].
+#' @param type Indicates whether to calculate the overall kinship
+#' (`"overall"`, using all chromosomes), the kinship matrix
+#' leaving out one chromosome at a time (`"loco"`), or the
+#' kinship matrix for each chromosome (`"chr"`).
+#' @param omit_x If `TRUE`, only use the autosomes; ignored when
+#' `type="chr"`.
+#' @param use_allele_probs If `TRUE`, assess similarity with
+#' allele probabilities (that is, first run
+#' [genoprob_to_alleleprob()]); otherwise use the genotype
+#' probabilities.
+#' @param quiet IF `FALSE`, print progress messages.
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
+#'
+#' @return If `type="overall"` (the default), a matrix of
 #' proportion of matching alleles. Otherwise a list with one matrix
 #' per chromosome.
 #'
-#' @details If \code{use_allele_probs=TRUE} (the default), we first
+#' @details If `use_allele_probs=TRUE` (the default), we first
 #' convert the genotype probabilities are converted to allele
-#' probabilities (using \code{\link{genoprob_to_alleleprob}}). This is
+#' probabilities (using [genoprob_to_alleleprob()]). This is
 #' recommended, as then the result is twice the empirical kinship
 #' coefficient (e.g., the expected value for an intercross is 1/2;
 #' using genotype probabilities, the expected value is 3/8).

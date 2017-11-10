@@ -4,43 +4,45 @@
 #'
 #' Insert pseudomarkers into a map of genetic markers, for a single chromosome.
 #'
+#' @md
+#'
 #' @param map A list of numeric vectors; each vector gives marker
 #' positions for a single chromosome.
 #' @param step Distance between pseudomarkers and markers; if
-#' \code{step=0} no pseudomarkers are inserted.
+#' `step=0` no pseudomarkers are inserted.
 #' @param off_end Distance beyond terminal markers in which to insert
 #' pseudomarkers.
 #' @param stepwidth Indicates whether to use a fixed grid
-#' (\code{stepwidth="fixed"}) or to use the maximal distance between
+#' (`stepwidth="fixed"`) or to use the maximal distance between
 #' pseudomarkers to ensure that no two adjacent markers/pseudomarkers
-#' are more than \code{step} apart.
+#' are more than `step` apart.
 #' @param pseudomarker_map A map of pseudomarker locations; if provided the
-#' \code{step}, \code{off_end}, and \code{stepwidth} arguments are
+#' `step`, `off_end`, and `stepwidth` arguments are
 #' ignored.
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
 #'
-#' @return A list like the input \code{map} with pseudomarkers
-#' inserted. Will also have an attribute \code{"is_x_chr"}, taken
-#' from the input \code{map}.
+#' @return A list like the input `map` with pseudomarkers
+#' inserted. Will also have an attribute `"is_x_chr"`, taken
+#' from the input `map`.
 #'
-#' @details If \code{stepwidth="fixed"}, a grid of pseudomarkers is
+#' @details If `stepwidth="fixed"`, a grid of pseudomarkers is
 #' added to the marker map.
 #'
-#' If \code{stepwidth="max"}, a minimal set of pseudomarkers are
+#' If `stepwidth="max"`, a minimal set of pseudomarkers are
 #' added, so that the maximum distance between adjacent markers or
-#' pseudomarkers is at least \code{step}. If two adjacent markers are
-#' separated by less than \code{step}, no pseudomarkers will be added
-#' to the interval. If they are more then \code{step} apart, a set of
+#' pseudomarkers is at least `step`. If two adjacent markers are
+#' separated by less than `step`, no pseudomarkers will be added
+#' to the interval. If they are more then `step` apart, a set of
 #' equally-spaced pseudomarkers will be added.
 #'
-#' If \code{pseudomarker_map} is provided, then the \code{step},
-#' \code{off_end}, and \code{stepwidth} arguments are ignored, and the
-#' input \code{pseudomarker_map} is taken to be the set of
+#' If `pseudomarker_map` is provided, then the `step`,
+#' `off_end`, and `stepwidth` arguments are ignored, and the
+#' input `pseudomarker_map` is taken to be the set of
 #' pseudomarker positions.
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{calc_genoprob}}, \code{\link{calc_grid}}
+#' @seealso [calc_genoprob()], [calc_grid()]
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

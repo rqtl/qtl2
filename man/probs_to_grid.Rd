@@ -8,7 +8,7 @@ probs_to_grid(probs, grid)
 }
 \arguments{
 \item{probs}{Genotype probabilities as output from
-\code{\link{calc_genoprob}} with \code{stepwidth="fixed"}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}} with \code{stepwidth="fixed"}.}
 
 \item{grid}{List of logical vectors that indicate which positions
 are on the grid and should be retained.}
@@ -18,15 +18,15 @@ Same list as input, but subset to just include
 pseudomarkers along a grid. The map attribute is similarly subset.
 }
 \description{
-Subset genotype probability array (from \code{\link{calc_genoprob}}
+Subset genotype probability array (from \code{\link[=calc_genoprob]{calc_genoprob()}}
 to a grid of pseudomarkers along each chromosome.
 }
 \details{
-This only works if \code{\link{calc_genoprob}} was run
+This only works if \code{\link[=calc_genoprob]{calc_genoprob()}} was run
 with \code{stepwidth="fixed"}, so that the genotype
 probabilities were calculated at a grid of
 markers/pseudomarkers. When this is the case, we omit all but
-the probabilities on this grid. Use \code{\link{calc_grid}} to
+the probabilities on this grid. Use \code{\link[=calc_grid]{calc_grid()}} to
 find the grid positions.
 }
 \examples{
@@ -39,6 +39,6 @@ probs_sub <- probs_to_grid(probs, grid)
 sapply(probs_sub, dim)
 }
 \seealso{
-\code{\link{calc_grid}}, \code{\link{map_to_grid}}
+\code{\link[=calc_grid]{calc_grid()}}, \code{\link[=map_to_grid]{map_to_grid()}}
 }
 \keyword{utilities}

@@ -4,32 +4,34 @@
 #' covariate data from a separate zip file). The CSV files may be
 #' contained in zip files, separately or togther.
 #'
+#' @md
+#'
 #' @param file Character string with path to the phenotype data file
 #' (or a zip file containing both the phenotype and phenotype
 #' covariate files).
 #' @param phenocovarfile Character string with path to the phenotype
 #' covariate file. This can be a separate CSV or zip file; if a zip
 #' file, it must contain exactly one CSV file. Alternatively, if the
-#' \code{file} argument indicates a zip file that contains two files
+#' `file` argument indicates a zip file that contains two files
 #' (phenotypes and phenotype covariates), then this
-#' \code{phenocovarfile} argument must indicate the base name for the
+#' `phenocovarfile` argument must indicate the base name for the
 #' phenotype covariate file.
 #' @param sep the field separator character
 #' @param na.strings a character vector of strings which are to be
-#' interpreted as \code{NA} values.
+#' interpreted as `NA` values.
 #' @param comment.char A character vector of length one containing a
 #' single character to denote comments within the CSV files.
 #' @param transpose If TRUE, the phenotype data will be transposed. The
-#' phenotype covariate information is \bold{never} transposed.
-#' @param quiet If \code{FALSE}, print progress messages.
+#' phenotype covariate information is **never** transposed.
+#' @param quiet If `FALSE`, print progress messages.
 #'
 #' @return Either a matrix of phenotype data, or a list containing
-#' \code{pheno} (phenotype matrix) and \code{phenocovar} (phenotype
+#' `pheno` (phenotype matrix) and `phenocovar` (phenotype
 #' covariate matrix).
 #'
 #' @export
 #' @keywords IO
-#' @seealso \code{\link{read_cross2}},
+#' @seealso [read_cross2()],
 #' sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 #' and \url{https://github.com/rqtl/qtl2data}
 #'

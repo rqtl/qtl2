@@ -21,21 +21,21 @@ Character string with the file name of the zip file that
 was created.
 }
 \description{
-Zip a set of data files (in format read by \code{\link{read_cross2}}).
+Zip a set of data files (in format read by \code{\link[=read_cross2]{read_cross2()}}).
 }
 \details{
 The input \code{control_file} is the control file (in
 \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format)
-to be read by \code{\link{read_cross2}}.  (See the
+to be read by \code{\link[=read_cross2]{read_cross2()}}.  (See the
 \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
 \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
 
-The \code{\link[utils]{zip}} function is used to do the zipping.
+The \code{\link[utils:zip]{utils::zip()}} function is used to do the zipping.
 
 The files should all be contained within the directory where the
 \code{control_file} sits, or in a subdirectory of that directory.
 If file paths use \code{..}, these get stripped by zip, and so the
-resulting zip file may not work with \code{\link{read_cross2}}.
+resulting zip file may not work with \code{\link[=read_cross2]{read_cross2()}}.
 }
 \examples{
 \dontrun{
@@ -44,6 +44,6 @@ zip_datafiles(control_file, "grav2.zip")
 }
 }
 \seealso{
-\code{\link{read_cross2}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+\code{\link[=read_cross2]{read_cross2()}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
 }
 \keyword{IO}

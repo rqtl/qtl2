@@ -4,12 +4,14 @@
 #' Get the matrix of covariates to be used for the null hypothesis when
 #' performing QTL analysis with the X chromosome.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @return A matrix of size individuals x no. covariates.
 #'
-#' @details For most crosses, the result is either \code{NULL}
+#' @details For most crosses, the result is either `NULL`
 #' (indicating no additional covariates are needed) or a
 #' matrix with a single column containing sex indicators (1 for males
 #' and 0 for females).

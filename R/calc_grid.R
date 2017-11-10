@@ -5,10 +5,12 @@
 #' Construct vectors of logical indicators that indicate which
 #' positions correspond to locations along a grid
 #'
+#' @md
+#'
 #' @param map A list of numeric vectors; each vector gives marker
 #' positions for a single chromosome.
 #' @param step Distance between pseudomarkers and markers; if
-#' \code{step=0} no pseudomarkers are inserted.
+#' `step=0` no pseudomarkers are inserted.
 #' @param off_end Distance beyond terminal markers in which to insert
 #' pseudomarkers.
 #' @param tol Tolerance for determining whether a pseudomarker would
@@ -16,25 +18,25 @@
 #'
 #' @return A list of logical (TRUE/FALSE) vectors that indicate, for a
 #'     marker/pseudomarker map created by
-#'     \code{\link{insert_pseudomarkers}} with \code{step}>0 and
-#'     \code{stepwidth="fixed"}, which positions correspond to he
+#'     [insert_pseudomarkers()] with `step`>0 and
+#'     `stepwidth="fixed"`, which positions correspond to he
 #'     locations along the fixed grid.
 #'
-#' @details The function \code{\link{insert_pseudomarkers}}, with
-#'     \code{stepwidth="fixed"}, will insert a grid of pseudomarkers,
+#' @details The function [insert_pseudomarkers()], with
+#'     `stepwidth="fixed"`, will insert a grid of pseudomarkers,
 #'     to a marker map. The present function gives a series of
 #'     TRUE/FALSE vectors that indicate which positions fall on the
-#'     grid. This is for use with \code{\link{probs_to_grid}}, for
+#'     grid. This is for use with [probs_to_grid()], for
 #'     reducing genotype probabilities, calculated with
-#'     \code{\link{calc_genoprob}}, to just the positions on the grid.
+#'     [calc_genoprob()], to just the positions on the grid.
 #'     The main value of this is to speed up genome scan computations
 #'     in the case of very dense markers, by focusing on just a grid
 #'     of positions rather than on all marker locations.
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{insert_pseudomarkers}}, \code{\link{probs_to_grid}},
-#'     \code{\link{map_to_grid}}
+#' @seealso [insert_pseudomarkers()], [probs_to_grid()],
+#'     [map_to_grid()]
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

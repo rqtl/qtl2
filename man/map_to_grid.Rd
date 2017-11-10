@@ -21,7 +21,7 @@ Subset a map object to the locations on some grid.
 }
 \details{
 This is generally for the case of a map created with
-\code{\link{insert_pseudomarkers}} with \code{step}>0 and
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}} with \code{step}>0 and
 \code{stepwidth="fixed"}, so that the pseudomarkers form a grid
 along each chromosome.
 }
@@ -34,6 +34,6 @@ map_sub <- map_to_grid(map_w_pmar, grid)
 sapply(map_sub, length)
 }
 \seealso{
-\code{\link{calc_grid}}, \code{\link{probs_to_grid}}
+\code{\link[=calc_grid]{calc_grid()}}, \code{\link[=probs_to_grid]{probs_to_grid()}}
 }
 \keyword{utilities}

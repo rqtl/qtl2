@@ -4,21 +4,23 @@
 #' attempting to pick the phase that leads to the fewest recombination
 #' events.
 #'
-#' @param cross Object of class \code{"cross2"}. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
-#' @param geno Imputed genotypes, as a list of matrices, as from \code{\link{maxmarg}}.
+#' @md
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' @param geno Imputed genotypes, as a list of matrices, as from [maxmarg()].
 #' @param deterministic If TRUE, preferentially put smaller allele first when there's uncertainty.
 #' If FALSE, the order of alleles is random in such cases.
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return
-#'     If input cross is phase-known (e.g., recombinant inbred lines),
-#'     the output will be the input \code{geno}. Otherwise, the output
-#'     will be a list of three-dimensional arrays of imputed
-#'     genotypes, individual x position x haplotype (1/2).
+#' If input cross is phase-known (e.g., recombinant inbred lines),
+#' the output will be the input `geno`. Otherwise, the output
+#' will be a list of three-dimensional arrays of imputed
+#' genotypes, individual x position x haplotype (1/2).
 #'
 #' @details We randonly assign the pair of alleles at the first locus
 #'     to two haplotypes, and then work left to right, assigning
@@ -29,7 +31,7 @@
 #'
 #' @export
 #' @keywords utilities
-#' @seealso \code{\link{maxmarg}}
+#' @seealso [maxmarg()]
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))

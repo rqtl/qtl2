@@ -3,6 +3,8 @@
 #' Find IBD segments (regions with a lot of shared SNP genotypes) for
 #' a set of strains
 #'
+#' @md
+#'
 #' @param geno List of matrices of founder genotypes. The matrices
 #'     correspond to the genotypes on chromosomes and are arrayed as
 #'     founders x markers.
@@ -10,27 +12,25 @@
 #' @param min_lod Threshold for minimum LOD score for a segment
 #' @param error_prob Genotyping error/mutation probability
 #' @param cores Number of CPU cores to use, for parallel calculations.
-#' (If \code{0}, use \code{\link[parallel]{detectCores}}.)
+#' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
-#' produced by \code{\link[parallel]{makeCluster}}.
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A data frame whose rows are IBD segments and whose columns
 #'     are:
-#' \itemize{
-#' \item Strain 1
-#' \item Strain 2
-#' \item Chromosome
-#' \item Left marker
-#' \item Right marker
-#' \item Left position
-#' \item Right position
-#' \item Left marker index
-#' \item Right marker index
-#' \item Interval length
-#' \item Number of markers
-#' \item Number of mismatches
-#' \item LOD score
-#' }
+#' * Strain 1
+#' * Strain 2
+#' * Chromosome
+#' * Left marker
+#' * Right marker
+#' * Left position
+#' * Right position
+#' * Left marker index
+#' * Right marker index
+#' * Interval length
+#' * Number of markers
+#' * Number of mismatches
+#' * LOD score
 #'
 #' @details For each strain pair on each chromosome, we consider all
 #' marker intervals and calculate a LOD score comparing the two

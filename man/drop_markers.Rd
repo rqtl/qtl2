@@ -24,5 +24,5 @@ markers2drop <- c("BH.342C/347L-Col", "GH.94L", "EG.357C/359L-Col", "CD.245L", "
 grav2_rev <- drop_markers(grav2, markers2drop)
 }
 \seealso{
-\code{\link{pull_markers}}, \code{\link{drop_nullmarkers}}
+\code{\link[=pull_markers]{pull_markers()}}, \code{\link[=drop_nullmarkers]{drop_nullmarkers()}}
 }

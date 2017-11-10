@@ -21,26 +21,26 @@ duplicate a marker position.}
 }
 \value{
 A list of logical (TRUE/FALSE) vectors that indicate, for a
-    marker/pseudomarker map created by
-    \code{\link{insert_pseudomarkers}} with \code{step}>0 and
-    \code{stepwidth="fixed"}, which positions correspond to he
-    locations along the fixed grid.
+marker/pseudomarker map created by
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}} with \code{step}>0 and
+\code{stepwidth="fixed"}, which positions correspond to he
+locations along the fixed grid.
 }
 \description{
 Construct vectors of logical indicators that indicate which
 positions correspond to locations along a grid
 }
 \details{
-The function \code{\link{insert_pseudomarkers}}, with
-    \code{stepwidth="fixed"}, will insert a grid of pseudomarkers,
-    to a marker map. The present function gives a series of
-    TRUE/FALSE vectors that indicate which positions fall on the
-    grid. This is for use with \code{\link{probs_to_grid}}, for
-    reducing genotype probabilities, calculated with
-    \code{\link{calc_genoprob}}, to just the positions on the grid.
-    The main value of this is to speed up genome scan computations
-    in the case of very dense markers, by focusing on just a grid
-    of positions rather than on all marker locations.
+The function \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}, with
+\code{stepwidth="fixed"}, will insert a grid of pseudomarkers,
+to a marker map. The present function gives a series of
+TRUE/FALSE vectors that indicate which positions fall on the
+grid. This is for use with \code{\link[=probs_to_grid]{probs_to_grid()}}, for
+reducing genotype probabilities, calculated with
+\code{\link[=calc_genoprob]{calc_genoprob()}}, to just the positions on the grid.
+The main value of this is to speed up genome scan computations
+in the case of very dense markers, by focusing on just a grid
+of positions rather than on all marker locations.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -48,7 +48,7 @@ gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
 grid <- calc_grid(iron$gmap, step=1)
 }
 \seealso{
-\code{\link{insert_pseudomarkers}}, \code{\link{probs_to_grid}},
-    \code{\link{map_to_grid}}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}, \code{\link[=probs_to_grid]{probs_to_grid()}},
+\code{\link[=map_to_grid]{map_to_grid()}}
 }
 \keyword{utilities}

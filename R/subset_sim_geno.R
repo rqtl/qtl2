@@ -3,9 +3,11 @@
 #' Subsetting imputed genotypes
 #'
 #' Pull out a specified set of individuals and/or chromosomes from
-#' the results of \code{\link{sim_geno}}.
+#' the results of [sim_geno()].
 #'
-#' @param x Imputed genotypes as output from \code{\link{sim_geno}}.
+#' @md
+#'
+#' @param x Imputed genotypes as output from [sim_geno()].
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs
 #' @param chr A vector of chromosomes: logical values, or character

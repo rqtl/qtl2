@@ -11,9 +11,9 @@ chisq_colpairs(x)
 }
 \value{
 A matrix of size p x p, where p is the number of columns in
-    the input matrix \code{x}, containing the chi-square test
-    statistics for independence, applied to pairs of columns of
-    \code{x}. The diagonal of the result will be all \code{NA}s.
+the input matrix \code{x}, containing the chi-square test
+statistics for independence, applied to pairs of columns of
+\code{x}. The diagonal of the result will be all \code{NA}s.
 }
 \description{
 Perform a chi-square test for independence for all pairs of columns of a matrix.
