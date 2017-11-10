@@ -143,7 +143,6 @@ subset_scan1 <-
 
 #' @export
 #' @rdname subset_scan1
-#' @aliases subset.scan1
 subset.scan1 <- subset_scan1
 
 

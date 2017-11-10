@@ -115,7 +115,6 @@ max_scan1 <-
 
 #' @export
 #' @rdname max_scan1
-#' @aliases max.scan1
 max.scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
     max_scan1(scan1_output, map, lodcolumn, chr, na.rm, ...)

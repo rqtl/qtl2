@@ -29,7 +29,6 @@
 #' out2 <- scan1(probs, phe2) # phenotype 2
 #' out <- cbind(out1, out2)
 #'
-#' @aliases cbind.scan1
 #' @export
 cbind.scan1 <-
     function(...)

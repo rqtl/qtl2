@@ -129,7 +129,6 @@ summary_scan1perm <-
 #' @rdname summary_scan1perm
 #' @param ... Ignored
 #' @export
-#' @aliases summary.scan1perm
 summary.scan1perm <-
     function(object, alpha=0.05, ...)
 {

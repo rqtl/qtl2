@@ -29,7 +29,6 @@
 #' out <- rbind(out1, out2)
 #'
 #' @export
-#' @aliases rbind.scan1
 rbind.scan1 <-
     function(...)
 {

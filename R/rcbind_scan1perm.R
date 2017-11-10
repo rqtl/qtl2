@@ -56,7 +56,6 @@
 #' @seealso [cbind.scan1perm()], [scan1perm()], [scan1()]
 #'
 #' @export
-#' @aliases rbind.scan1perm
 rbind.scan1perm <-
     function(...)
 {
@@ -144,7 +143,6 @@ rbind.scan1perm <-
 
 #' @export
 #' @rdname rbind.scan1perm
-#' @aliases c.scan1perm
 c.scan1perm <- rbind.scan1perm
 
 
@@ -208,7 +206,6 @@ c.scan1perm <- rbind.scan1perm
 #' @seealso [rbind.scan1perm()], [scan1perm()], [scan1()]
 #'
 #' @export
-#' @aliases cbind.scan1perm
 cbind.scan1perm <-
     function(...)
 {
