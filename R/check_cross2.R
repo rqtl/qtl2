@@ -465,3 +465,31 @@ handle_null_isxchr <-
     }
     is_x_chr
 }
+
+check_is_female_vector <-
+    function(crosstype, is_female, any_x_chr)
+{
+    if(is.null(crosstype) || !is.character(crosstype))
+        stop("crosstype should be a character string.")
+    if(!is.logical(is_female))
+        stop("is_female should be a logical vector")
+    if(!is.logical(any_x_chr))
+        stop("any_x_chr should be a TRUE/FALSE value")
+
+    .check_is_female_vector(crosstype, is_female, any_x_chr)
+
+}
+
+check_crossinfo <-
+    function(crosstype, cross_info, any_x_chr)
+{
+    if(is.null(crosstype) || !is.character(crosstype))
+        stop("crosstype should be a character string.")
+    if(!is.numeric(cross_info) || !is.matrix(cross_info))
+        stop("cross_info should be a numeric matrix")
+    if(!is.logical(any_x_chr))
+        stop("any_x_chr should be a TRUE/FALSE value")
+
+    .check_crossinfo(crosstype, cross_info, any_x_chr)
+
+}

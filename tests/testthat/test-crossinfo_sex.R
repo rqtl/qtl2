@@ -37,6 +37,10 @@ test_that("checks of cross_info, sex, and X are correct", {
         expect_true(check_is_female_vector(crosstype, c(TRUE, NA, FALSE), FALSE))
     }
 
+    # if is_female is numeric, should give an error
+    expect_error( check_is_female_vector("do", c(1,0,1,1,0,0,0), TRUE) )
+    expect_error( check_is_female_vector("do", c(1,0,1,1,0,0,0), 5) )
+
     # dh, haploid, riself, bc ignore cross_info
     for(crosstype in c("dh", "haploid", "riself", "bc")) {
         expect_true(check_crossinfo(crosstype, null_crossinfo, FALSE))
@@ -103,5 +107,11 @@ test_that("checks of cross_info, sex, and X are correct", {
     expect_false(check_crossinfo("do", cbind(c(2,NA,25,50)), TRUE))
     expect_false(check_crossinfo("do", cbind(c(2,3,0,50)), TRUE))
     expect_false(check_crossinfo("do", cbind(c(2,3,25,NA)), TRUE))
+
+    # if cross_info is not a numeric matrix, should give an error
+    expect_error( check_crossinfo("do", c(0, 1, 2, 1), TRUE) )
+    expect_error( check_crossinfo("do", matrix(letters[1:4], 2, 2), TRUE) )
+    expect_error( check_crossinfo("do", matrix(letters[1:4], 2, 2), 5) )
+
 
 })

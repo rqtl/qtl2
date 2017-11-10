@@ -13,11 +13,11 @@
     .Call(`_qtl2geno_count_invalid_genotypes`, crosstype, genotypes, is_X_chr, is_female, cross_info)
 }
 
-check_crossinfo <- function(crosstype, cross_info, any_x_chr) {
+.check_crossinfo <- function(crosstype, cross_info, any_x_chr) {
     .Call(`_qtl2geno_check_crossinfo`, crosstype, cross_info, any_x_chr)
 }
 
-check_is_female_vector <- function(crosstype, is_female, any_x_chr) {
+.check_is_female_vector <- function(crosstype, is_female, any_x_chr) {
     .Call(`_qtl2geno_check_is_female_vector`, crosstype, is_female, any_x_chr)
 }
 

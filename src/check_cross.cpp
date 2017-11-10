@@ -52,7 +52,7 @@ IntegerVector count_invalid_genotypes(const String& crosstype,
 }
 
 // check cross info
-// [[Rcpp::export]]
+// [[Rcpp::export(".check_crossinfo")]]
 bool check_crossinfo(const String& crosstype,
                      const IntegerMatrix& cross_info,
                      const bool any_x_chr)
@@ -67,7 +67,7 @@ bool check_crossinfo(const String& crosstype,
 }
 
 // check is_female vector
-// [[Rcpp::export]]
+// [[Rcpp::export(".check_is_female_vector")]]
 bool check_is_female_vector(const String& crosstype,
                             const LogicalVector& is_female,
                             const bool any_x_chr)
