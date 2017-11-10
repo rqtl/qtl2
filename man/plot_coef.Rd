@@ -7,23 +7,19 @@
 \title{Plot QTL effects along chromosome}
 \usage{
 plot_coef(x, map, columns = NULL, col = NULL, scan1_output = NULL,
-  add = FALSE, gap = 25, ylim = NULL, bgcolor = "gray90",
-  altbgcolor = "gray85", ylab = "QTL effects", top_panel_prop = 0.65, ...)
+  add = FALSE, gap = 25, top_panel_prop = 0.65, ...)
 
-plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25,
-  ylim = NULL, bgcolor = "gray90", altbgcolor = "gray85",
-  ylab = "QTL effects", ...)
+plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25, ...)
 
 \method{plot}{scan1coef}(x, map, columns = 1, col = NULL,
-  scan1_output = NULL, add = FALSE, gap = 25, ylim = NULL,
-  bgcolor = "gray90", altbgcolor = "gray85", ylab = "QTL effects", ...)
+  scan1_output = NULL, add = FALSE, gap = 25, ...)
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
-\code{\link[qtl2scan]{scan1coef}}.}
+\code{\link[qtl2scan:scan1coef]{qtl2scan::scan1coef()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno]{insert_pseudomarkers}}.}
+\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
 
 \item{columns}{Vector of columns to plot}
 
@@ -39,16 +35,7 @@ chromosomes).}
 
 \item{gap}{Gap between chromosomes.}
 
-\item{ylim}{y-axis limits. If NULL, we use the range of the plotted
-coefficients.}
-
-\item{bgcolor}{Background color for the plot.}
-
-\item{altbgcolor}{Background color for alternate chromosomes.}
-
-\item{ylab}{y-axis label}
-
-\item{top_panel_prop}{If `scan1_output` provided, this gives the
+\item{top_panel_prop}{If \code{scan1_output} provided, this gives the
 proportion of the plot that is devoted to the top panel.}
 
 \item{...}{Additional graphics parameters.}
@@ -59,8 +46,21 @@ Plot estimated QTL effects along a chromosomes.
 \details{
 \code{plot_coefCC()} is the same as \code{plot_coef()}, but forcing
 \code{columns=1:8} and using the Collaborative Cross colors,
-\code{\link{CCcolors}}.
+\link{CCcolors}.
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color, and things
+like \code{ylab} and \code{ylim}. These are not included as formal
+parameters in order to avoid cluttering the function definition.
+
+In the case that \code{scan1_output} is provided, \code{col},
+\code{ylab}, and \code{ylim} all control the panel with estimated
+QTL effects, while \code{col_lod}, \code{ylab_lod}, and
+\code{ylim_lod} control the LOD curve panel.
+}
+
 \examples{
 # load qtl2geno package for data and genoprob calculation
 library(qtl2geno)
@@ -87,5 +87,5 @@ coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 }
 \seealso{
-\code{\link{CCcolors}}, \code{\link{plot_scan1}}, \code{\link{plot_snpasso}}
+\link{CCcolors}, \code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
 }

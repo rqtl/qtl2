@@ -4,17 +4,14 @@
 \alias{plot_genes}
 \title{Plot gene locations for a genomic interval}
 \usage{
-plot_genes(genes, xlim = NULL, minrow = 4, padding = 0.2,
-  colors = c("black", "red3", "green4", "blue3", "orange"),
-  scale_pos = 0.000001, start_field = "start", stop_field = "stop",
-  strand_field = "strand", name_field = "Name", ...)
+plot_genes(genes, minrow = 4, padding = 0.2, colors = c("black", "red3",
+  "green4", "blue3", "orange"), scale_pos = 0.000001, start_field = "start",
+  stop_field = "stop", strand_field = "strand", name_field = "Name", ...)
 }
 \arguments{
 \item{genes}{Data frame containing \code{start} and \code{stop} in
 bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 \code{Name}.}
-
-\item{xlim}{x-axis limits (in Mbp)}
 
 \item{minrow}{Minimum number of rows of genes in the plot}
 
@@ -32,7 +29,7 @@ bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 
 \item{name_field}{Character string with name of column containing the genes' names.}
 
-\item{...}{Optional arguments passed to \code{\link[graphics]{plot}}.}
+\item{...}{Optional arguments passed to \code{\link[graphics:plot]{graphics::plot()}}.}
 }
 \value{
 None.
@@ -41,6 +38,13 @@ None.
 Plot gene locations for a genomic interval, as rectangles with gene
 symbol (and arrow indicating strand/direction) below.
 }
+\section{Hidden graphics parameters}{
+
+Graphics parameters can be passed via \code{...}. For
+example, \code{xlim} to control the x-axis limits.
+These are not included as formal
+}
+
 \examples{
 genes <- data.frame(chr = c("6", "6", "6", "6", "6", "6", "6", "6"),
                     start = c(139988753, 140680185, 141708118, 142234227, 142587862,

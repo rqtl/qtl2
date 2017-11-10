@@ -2,14 +2,16 @@
 #'
 #' Plot phenotype vs genotype for a single putative QTL and a single phenotype.
 #'
+#' @md
+#'
 #' @param geno Vector of genotypes, as produced by
-#' \code{\link[qtl2geno]{maxmarg}} with specific \code{chr} and
-#' \code{pos}.
+#' [qtl2geno::maxmarg()] with specific `chr` and
+#' `pos`.
 #' @param pheno Vector of phenotypes.
 #' @param sort If TRUE, sort genotypes from largest to smallest.
 #' @param SEmult If specified, interval estimates of the within-group
-#' averages will be displayed, as \code{mean +/- SE * SEmult}.
-#' @param pooledSD If TRUE and \code{SEmult} is specified, calculated
+#' averages will be displayed, as `mean +/- SE * SEmult`.
+#' @param pooledSD If TRUE and `SEmult` is specified, calculated
 #' a pooled within-group SD. Otherwise, get separate estimates of
 #' the within-group SD for each group.
 #' @param swap_axes If TRUE, swap the axes, so that the genotypes are
@@ -17,28 +19,27 @@
 #' @param jitter Amount to jitter the points horizontally, if a vector
 #' of length > 0, it is taken to be the actual jitter amounts
 #' (with values between -0.5 and 0.5).
-#' @param seg_width Width of segments at the estimated within-group averages
-#' @param seg_lwd Line width used to plot estimated within-group averages
-#' @param seg_col Line color used to plot estimated within-group averages
-#' @param bgcolor Background color for the plot.
-#' @param hlines Locations of horizontal grid lines.
-#' @param hlines_col Color of horizontal grid lines
-#' @param hlines_lty Line type of horizontal grid lines
-#' @param hlines_lwd Line width of horizontal grid lines
-#' @param vlines Locations of vertical grid lines.
-#' @param vlines_col Color of vertical grid lines
-#' @param vlines_lty Line type of vertical grid lines
-#' @param vlines_lwd Line width of vertical grid lines
 #' @param force_labels If TRUE, force all genotype labels to be shown.
 #' @param alternate_labels If TRUE, place genotype labels in two rows
 #' @param omit_points If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).
-#' @param ... Additional graphics parameters, passed to \code{\link[graphics]{plot}}.
+#' @param ... Additional graphics parameters, passed to [graphics::plot()].
 #'
 #' @export
 #' @importFrom graphics par plot segments title axis points
 #' @importFrom stats lm runif sd
 #'
-#' @seealso \code{\link{plot_coef}}
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color, and
+#' `seg_width`, `seg_lwd`, and `seg_col` to control the lines at the
+#' confidence intervals. Further, `hlines`, `hlines_col`,
+#' `hlines_lwd`, and `hlines_lty` to control the horizontal grid
+#' lines. (Use `hlines=NA` to avoid plotting horizontal grid lines.)
+#' Similarly `vlines`, `vlines_col`, `vlines_lwd`, and `vlines_lty`
+#' for vertical grid lines. These are not included as formal
+#' parameters in order to avoid cluttering the function definition.
+#'
+#' @seealso [plot_coef()]
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -72,10 +73,7 @@
 #'          omit_points=TRUE, SEmult=2)
 plot_pxg <-
     function(geno, pheno, sort=TRUE, SEmult=NULL, pooledSD=TRUE,
-             swap_axes=FALSE, jitter=0.2, bgcolor="gray90",
-             seg_width=NULL, seg_lwd=2, seg_col="black",
-             hlines=NULL, hlines_col=NULL, hlines_lty=NULL, hlines_lwd=NULL,
-             vlines=NULL, vlines_col=NULL, vlines_lty=NULL, vlines_lwd=NULL,
+             swap_axes=FALSE, jitter=0.2,
              force_labels=TRUE, alternate_labels=FALSE,
              omit_points=FALSE, ...)
 {
@@ -133,7 +131,7 @@ plot_pxg <-
 
     plot_pxg_internal <-
         function(geno, pheno, swap_axes=FALSE, bgcolor="gray90",
-                 seg_width=NULL, seg_lwd=2, seg_col="slateblue",
+                 seg_width=NULL, seg_lwd=2, seg_col="black",
                  hlines=NULL, hlines_col=NULL, hlines_lty=NULL, hlines_lwd=NULL,
                  vlines=NULL, vlines_col=NULL, vlines_lty=NULL, vlines_lwd=NULL,
                  xlim=NULL, ylim=NULL,
@@ -305,10 +303,8 @@ plot_pxg <-
             box()
         }
 
-    plot_pxg_internal(geno, pheno, swap_axes=swap_axes, bgcolor=bgcolor,
-                      seg_width=seg_width, seg_lwd=seg_lwd, seg_col=seg_col,
-                      hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
-                      vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd, ...)
+    plot_pxg_internal(geno, pheno, swap_axes=swap_axes, ...)
+
 
     # return mean and SE
     invisible(cbind(mean=me, SE=se))

@@ -6,13 +6,11 @@
 \usage{
 plot_genoprob(probs, map, ind = 1, chr = NULL, geno = NULL,
   color_scheme = c("gray", "viridis"), col = NULL, threshold = 0,
-  swap_axes = FALSE, hlines = NULL, hlines_col = "#B3B3B370",
-  hlines_lwd = 1, hlines_lty = 1, vlines = NULL,
-  vlines_col = "#B3B3B370", vlines_lwd = 1, vlines_lty = 1, ...)
+  swap_axes = FALSE, ...)
 }
 \arguments{
-\item{probs}{Genotype probabilities (as produced by \code{\link[qtl2geno]{calc_genoprob}})
-or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}).}
+\item{probs}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
+or allele dosages (as produced by qtl2geno::genoprob_to_alleleprob()]).}
 
 \item{map}{Marker map (a list of vectors of marker positions).}
 
@@ -33,27 +31,23 @@ this value somewhere on the chromosome will be shown.}
 \item{swap_axes}{If TRUE, swap the axes, so that the genotypes are
 on the x-axis and the chromosome position is on the y-axis.}
 
-\item{hlines}{Position of horizontal grid lines (use \code{NA} to avoid lines).}
-
-\item{hlines_col}{Color of horizontal grid lines.}
-
-\item{hlines_lwd}{Line width of horizontal grid lines.}
-
-\item{hlines_lty}{Line type of horizontal grid lines.}
-
-\item{vlines}{Position of vertical grid lines (use \code{NA} to avoid lines).}
-
-\item{vlines_col}{Color of vertical grid lines.}
-
-\item{vlines_lwd}{Line width of vertical grid lines.}
-
-\item{vlines_lty}{Line type of vertical grid lines.}
-
-\item{...}{Additional graphics parameters passed to \code{\link[graphics]{image}}.}
+\item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
 }
 \description{
 Plot the genotype probabilities for one individual on one chromosome, as a heat map.
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{hlines}, \code{hlines_col}, \code{hlines_lwd}, and \code{hlines_lty} to
+control the horizontal grid lines. (Use \code{hlines=NA} to avoid
+plotting horizontal grid lines.) Similarly \code{vlines}, \code{vlines_col},
+\code{vlines_lwd}, and \code{vlines_lty} for vertical grid lines. You can
+also use many standard graphics parameters like \code{xlab} and \code{xlim}.
+These are not included as formal parameters in order to avoid
+cluttering the function definition.
+}
+
 \examples{
 # load data and calculate genotype probabilities
 library(qtl2geno)
@@ -104,4 +98,7 @@ apr <- genoprob_to_alleleprob(pr)
 plot_genoprob(apr, DOex$pmap, ind="232")
 }
 
+}
+\seealso{
+\code{\link[=plot_genoprobcomp]{plot_genoprobcomp()}}
 }

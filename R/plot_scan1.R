@@ -2,10 +2,12 @@
 #'
 #' Plot LOD curves for a genome scan
 #'
-#' @param x Output of \code{\link[qtl2scan]{scan1}}.
+#' @md
+#'
+#' @param x Output of [qtl2scan::scan1()].
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #'
 #' @param lodcolumn LOD score column to plot (a numeric index, or a
 #' character string for a column name). Only one value allowed.
@@ -16,15 +18,18 @@
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
-#' @param bgcolor Background color for the plot.
-#'
-#' @param altbgcolor Background color for alternate chromosomes.
-#'
 #' @param gap Gap between chromosomes.
 #'
 #' @param ... Additional graphics parameters.
 #'
-#' @seealso \code{\link{plot_coef}}, \code{\link{plot_coefCC}}, \code{\link{plot_snpasso}}
+#' @seealso [plot_coef()], [plot_coefCC()], [plot_snpasso()]
+#'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color and
+#' `altbgcolor` to control the background color on alternate chromosomes.
+#' These are not included as formal parameters in order to avoid
+#' cluttering the function definition.
 #'
 #' @export
 #' @importFrom graphics plot rect lines par axis title abline box
@@ -71,8 +76,7 @@
 #' plot(out, map, lodcolumn="liver", ylim=ylim)
 #' plot(out, map, lodcolumn="spleen", col="violetred", add=TRUE)
 plot_scan1 <-
-    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
-             bgcolor="gray90", altbgcolor="gray85", ...)
+    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -115,7 +119,7 @@ plot_scan1 <-
     #    but still have some defaults for them
     plot_scan1_internal <-
         function(map, lod, add=FALSE, gap,
-                 bgcolor, altbgcolor,
+                 bgcolor="gray90", altbgcolor="gray85",
                  lwd=2, col="darkslateblue", xlab=NULL, ylab="LOD score",
                  xlim=NULL, ylim=NULL, xaxs="i", yaxs="i",
                  main="", mgp.x=c(2.6, 0.5, 0), mgp.y=c(2.6, 0.5, 0),
@@ -216,26 +220,21 @@ plot_scan1 <-
         }
 
     # make the plot
-    plot_scan1_internal(map=map, lod=lod, add=add, gap=gap,
-                       bgcolor=bgcolor, altbgcolor=altbgcolor,
-                       ...)
+    plot_scan1_internal(map=map, lod=lod, add=add, gap=gap, ...)
 }
 
 
 #' @export
 #' @rdname plot_scan1
 plot.scan1 <-
-    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25,
-             bgcolor="gray90", altbgcolor="gray85", ...)
+    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25, ...)
 {
     # if map looks like snpinfo, assume this is a snp asso result and use plot_snpasso()
     if(is.data.frame(map) && "index" %in% names(map)) {
-        plot_snpasso(x, snpinfo=map, add=add, gap=gap, bgcolor=bgcolor,
-                     altbgcolor=altbgcolor, ...)
+        plot_snpasso(x, snpinfo=map, add=add, gap=gap, ...)
     }
     else { # mostly, use plot_scan1()
-        plot_scan1(x, map=map, lodcolumn=lodcolumn, chr=chr, add=add, gap=gap,
-                   bgcolor=bgcolor, altbgcolor=altbgcolor, ...)
+        plot_scan1(x, map=map, lodcolumn=lodcolumn, chr=chr, add=add, gap=gap, ...)
     }
 }
 

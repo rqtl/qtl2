@@ -6,12 +6,12 @@
 \usage{
 plot_onegeno(geno, map, ind = 1, chr = NULL, col = NULL,
   na_col = "white", swap_axes = FALSE, border = "black", shift = FALSE,
-  bgcolor = "gray90", chrwidth = 0.5, ...)
+  chrwidth = 0.5, ...)
 }
 \arguments{
 \item{geno}{Imputed phase-known genotypes, as a list of matrices
-(as produced by \code{\link[qtl2geno]{maxmarg}}) or a list of
-three-dimensional arrays (as produced by \code{\link[qtl2geno]{guess_phase}}).}
+(as produced by \code{\link[qtl2geno:maxmarg]{qtl2geno::maxmarg()}}) or a list of
+three-dimensional arrays (as produced by \code{\link[qtl2geno:guess_phase]{qtl2geno::guess_phase()}}).}
 
 \item{map}{Marker map (a list of vectors of marker positions).}
 
@@ -29,8 +29,6 @@ three-dimensional arrays (as produced by \code{\link[qtl2geno]{guess_phase}}).}
 
 \item{shift}{If TRUE, shift the chromosomes so they all start at 0.}
 
-\item{bgcolor}{Color for background rectangle}
-
 \item{chrwidth}{Total width of rectangles for each chromosome, as a
 fraction of the distance between them.}
 
@@ -39,6 +37,14 @@ fraction of the distance between them.}
 \description{
 Plot one individual's genome-wide genotypes
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color.
+These are not included as formal parameters in order to avoid
+cluttering the function definition.
+}
+
 \examples{
 # load data and calculate genotype probabilities
 library(qtl2geno)

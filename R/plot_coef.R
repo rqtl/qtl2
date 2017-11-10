@@ -2,15 +2,17 @@
 #'
 #' Plot estimated QTL effects along a chromosomes.
 #'
+#' @md
+#'
 #' @param x Estimated QTL effects ("coefficients") as obtained from
-#' \code{\link[qtl2scan]{scan1coef}}.
+#' [qtl2scan::scan1coef()].
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' \code{\link[qtl2geno]{insert_pseudomarkers}}.
+#' [qtl2geno::insert_pseudomarkers()].
 #'
 #' @param columns Vector of columns to plot
 #'
-#' @param col Vector of colors, same length as \code{columns}. If
+#' @param col Vector of colors, same length as `columns`. If
 #' NULL, some default choices are made.
 #'
 #' @param scan1_output If provided, we make a two-panel plot with
@@ -22,15 +24,6 @@
 #'
 #' @param gap Gap between chromosomes.
 #'
-#' @param ylim y-axis limits. If NULL, we use the range of the plotted
-#' coefficients.
-#'
-#' @param bgcolor Background color for the plot.
-#'
-#' @param altbgcolor Background color for alternate chromosomes.
-#'
-#' @param ylab y-axis label
-#'
 #' @param top_panel_prop If `scan1_output` provided, this gives the
 #' proportion of the plot that is devoted to the top panel.
 #'
@@ -40,11 +33,22 @@
 #' @importFrom graphics layout par
 #'
 #' @details
-#' \code{plot_coefCC()} is the same as \code{plot_coef()}, but forcing
-#' \code{columns=1:8} and using the Collaborative Cross colors,
-#' \code{\link{CCcolors}}.
+#' `plot_coefCC()` is the same as `plot_coef()`, but forcing
+#' `columns=1:8` and using the Collaborative Cross colors,
+#' [CCcolors].
 #'
-#' @seealso \code{\link{CCcolors}}, \code{\link{plot_scan1}}, \code{\link{plot_snpasso}}
+#' @seealso [CCcolors], [plot_scan1()], [plot_snpasso()]
+#'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color, and things
+#' like `ylab` and `ylim`. These are not included as formal
+#' parameters in order to avoid cluttering the function definition.
+#'
+#' In the case that `scan1_output` is provided, `col`,
+#' `ylab`, and `ylim` all control the panel with estimated
+#' QTL effects, while `col_lod`, `ylab_lod`, and
+#' `ylim_lod` control the LOD curve panel.
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -72,9 +76,7 @@
 #' plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
     function(x, map, columns=NULL, col=NULL, scan1_output=NULL,
-             add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", top_panel_prop=0.65, ...)
+             add=FALSE, gap=25, top_panel_prop=0.65, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -89,8 +91,7 @@ plot_coef <-
 
     if(!is.null(scan1_output)) { # call internal function for both coef and LOD
         return(plot_coef_and_lod(x, map, columns=columns, col=col, scan1_output=scan1_output,
-                                 gap=gap, ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
-                                 ylab="QTL effects", xaxt=NULL, top_panel_prop=top_panel_prop,
+                                 gap=gap, xaxt=NULL, top_panel_prop=top_panel_prop,
                                  ...))
     }
 
@@ -111,15 +112,16 @@ plot_coef <-
             stop("Need at least ", length(columns), " colors")
     }
 
-    if(is.null(ylim)) {
-        ylim <- range(unclass(x)[,columns], na.rm=TRUE)
-        d <- diff(ylim) * 0.02 # add 2% on either side
-        ylim <- ylim + c(-d, d)
-    }
-
     plot_coef_internal <-
-        function(x, map, columns, ylim, col, add, gap, bgcolor, altbgcolor, ylab, ...)
+        function(x, map, columns, ylim=NULL, col, add, gap, bgcolor="gray90", altbgcolor="gray85",
+                 ylab="QTL effects", ...)
         {
+            if(is.null(ylim)) {
+                ylim <- range(unclass(x)[,columns], na.rm=TRUE)
+                d <- diff(ylim) * 0.02 # add 2% on either side
+                ylim <- ylim + c(-d, d)
+            }
+
             plot_scan1(x, map, lodcolumn=columns[1], ylim=ylim, col=col[1], add=add,
                        gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
                        ylab=ylab, ...)
@@ -129,32 +131,23 @@ plot_coef <-
                                add=TRUE, ...)
             }
         }
-    plot_coef_internal(unclass(x), map, columns=columns, ylim=ylim, col=col, add=add, gap=gap,
-                       bgcolor=bgcolor, altbgcolor=altbgcolor, ylab=ylab, ...)
+    plot_coef_internal(unclass(x), map, columns=columns, col=col, add=add, gap=gap, ...)
 }
 
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, map, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", ...)
+    function(x, map, scan1_output=NULL, add=FALSE, gap=25, ...)
 {
     plot_coef(x, map, columns=1:8, col=qtl2plot::CCcolors,
-              scan1_output=scan1_output, add=add, gap=gap,
-              ylim=ylim, bgcolor=bgcolor, altbgcolor=altbgcolor,
-              ylab=ylab, ...)
+              scan1_output=scan1_output, add=add, gap=gap, ...)
 }
 
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
-    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ylim=NULL,
-             bgcolor="gray90", altbgcolor="gray85",
-             ylab="QTL effects", ...)
+    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ...)
 {
     plot_coef(x, map, columns=columns, col=col, scan1_output=scan1_output,
-              add=add, gap=gap, ylim=ylim,
-              bgcolor=bgcolor, altbgcolor=altbgcolor,
-              ylab=ylab, ...)
+              add=add, gap=gap, ...)
 }

@@ -2,28 +2,34 @@
 #'
 #' Plot the genotype probabilities for one individual on one chromosome, as a heat map.
 #'
-#' @param probs Genotype probabilities (as produced by \code{\link[qtl2geno]{calc_genoprob}})
-#' or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}).
+#' @md
+#'
+#' @param probs Genotype probabilities (as produced by [qtl2geno::calc_genoprob()])
+#' or allele dosages (as produced by qtl2geno::genoprob_to_alleleprob()]).
 #' @param map Marker map (a list of vectors of marker positions).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosome to plot; a single character string.
 #' @param geno Optional vector of genotypes or alleles to be shown
 #' (vector of integers or character strings)
-#' @param color_scheme Color scheme for the heatmap (ignored if \code{col} is provided).
+#' @param color_scheme Color scheme for the heatmap (ignored if `col` is provided).
 #' @param col Optional vector of colors for the heatmap.
 #' @param threshold Threshold for genotype probabilities; only genotypes that achieve
 #' this value somewhere on the chromosome will be shown.
 #' @param swap_axes If TRUE, swap the axes, so that the genotypes are
 #' on the x-axis and the chromosome position is on the y-axis.
-#' @param hlines Position of horizontal grid lines (use \code{NA} to avoid lines).
-#' @param hlines_col Color of horizontal grid lines.
-#' @param hlines_lwd Line width of horizontal grid lines.
-#' @param hlines_lty Line type of horizontal grid lines.
-#' @param vlines Position of vertical grid lines (use \code{NA} to avoid lines).
-#' @param vlines_col Color of vertical grid lines.
-#' @param vlines_lwd Line width of vertical grid lines.
-#' @param vlines_lty Line type of vertical grid lines.
-#' @param ... Additional graphics parameters passed to \code{\link[graphics]{image}}.
+#' @param ... Additional graphics parameters passed to [graphics::image()].
+#'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `hlines`, `hlines_col`, `hlines_lwd`, and `hlines_lty` to
+#' control the horizontal grid lines. (Use `hlines=NA` to avoid
+#' plotting horizontal grid lines.) Similarly `vlines`, `vlines_col`,
+#' `vlines_lwd`, and `vlines_lty` for vertical grid lines. You can
+#' also use many standard graphics parameters like `xlab` and `xlim`.
+#' These are not included as formal parameters in order to avoid
+#' cluttering the function definition.
+#'
+#' @seealso [plot_genoprobcomp()]
 #'
 #' @examples
 #' # load data and calculate genotype probabilities
@@ -81,10 +87,7 @@
 plot_genoprob <-
     function(probs, map, ind=1, chr=NULL, geno=NULL,
              color_scheme=c("gray", "viridis"), col=NULL,
-             threshold=0, swap_axes=FALSE,
-             hlines=NULL, hlines_col="#B3B3B370", hlines_lwd=1, hlines_lty=1,
-             vlines=NULL, vlines_col="#B3B3B370", vlines_lwd=1, vlines_lty=1,
-             ...)
+             threshold=0, swap_axes=FALSE, ...)
 {
     # check inputs
     if(is.null(map)) stop("map is NULL")
@@ -143,15 +146,7 @@ plot_genoprob <-
         else if(color_scheme=="viridis") col <- viridis_qtl2(256)
     }
 
-    # separate positions if necessary
-    tol <- 1e-6
-    if(any(diff(map) < tol))
-        map <- map + seq(0, tol, length.out=length(map))
-
-    plot_genoprob_internal(probs, map, col=col, swap_axes=swap_axes,
-                           hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
-                           vlines=vlines, vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd,
-                           ...)
+    plot_genoprob_internal(probs, map, col=col, swap_axes=swap_axes, ...)
 
 }
 
@@ -161,8 +156,8 @@ plot_genoprob <-
 plot_genoprob_internal <-
     function(probs, map, col=NULL, swap_axes=FALSE,
              zlim=c(0,1), xlab=NULL, ylab=NULL, las=NULL,
-             hlines=NULL, hlines_col="gray70", hlines_lwd=1, hlines_lty=1,
-             vlines=NULL, vlines_col="gray70", vlines_lwd=1, vlines_lty=1,
+             hlines=NULL, hlines_col="#B3B3B370", hlines_lwd=1, hlines_lty=1,
+             vlines=NULL, vlines_col="#B3B3B370", vlines_lwd=1, vlines_lty=1,
              mgp.x=c(2.6,0.5,0), mgp.y=c(2.6,0.5,0), mgp=NULL,
              ...)
 {
@@ -170,6 +165,11 @@ plot_genoprob_internal <-
     if(!is.null(mgp)) mgp.x <- mgp.y <- mgp
     if(is.null(dots$xaxt)) dots$xaxt <- par("xaxt")
     if(is.null(dots$yaxt)) dots$yaxt <- par("yaxt")
+
+    # separate positions if necessary
+    tol <- 1e-6
+    if(any(diff(map) < tol))
+        map <- map + seq(0, tol, length.out=length(map))
 
     if(swap_axes) {
         probs <- t(probs)

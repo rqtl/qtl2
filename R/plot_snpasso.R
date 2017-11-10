@@ -2,54 +2,52 @@
 #'
 #' Plot SNP associations, with possible expansion from distinct snps to all snps.
 #'
-#' @param scan1output Output of \code{\link[qtl2scan]{scan1}} using
+#' @md
+#'
+#' @param scan1output Output of [qtl2scan::scan1()] using
 #' SNP probabilities derived by
-#' \code{\link[qtl2scan]{genoprob_to_snpprob}}.
+#' [qtl2scan::genoprob_to_snpprob()].
 #'
 #' @param snpinfo Data frame with SNP information with the following
 #'     columns (the last three are generally derived from with
-#'     \code{\link[qtl2scan]{index_snps}}):
-#' \itemize{
-#' \item \code{chr} - Character string or factor with chromosome
-#' \item \code{pos} - Position (in same units as in the \code{"map"}
-#'     attribute in \code{genoprobs}.
-#' \item \code{sdp} - Strain distribution pattern: an integer, between
+#'     [qtl2scan::index_snps()]):
+#' * `chr` - Character string or factor with chromosome
+#' * `pos` - Position (in same units as in the `"map"`
+#'     attribute in `genoprobs`.
+#' * `sdp` - Strain distribution pattern: an integer, between
 #'     1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
 #'     binary encoding indicates the founder genotypes
-#' \item \code{snp} - Character string with SNP identifier (if
+#' * `snp` - Character string with SNP identifier (if
 #'     missing, the rownames are used).
-#' \item \code{index} - Indices that indicate equivalent
+#' * `index` - Indices that indicate equivalent
 #'     groups of SNPs.
-#' \item \code{intervals} - Indexes that indicate which marker
+#' * `intervals` - Indexes that indicate which marker
 #'     intervals the SNPs reside.
-#' \item \code{on_map} - Indicate whether SNP coincides with a marker
-#'     in the \code{genoprobs}
-#' }
+#' * `on_map` - Indicate whether SNP coincides with a marker
+#'     in the `genoprobs`
 #'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
-#' @param cex Character expansion for the points (default 0.5)
+#' @param drop_hilit SNPs with LOD score within this amount of the maximum SNP association will be highlighted.
 #'
-#' @param pch Plotting character for the points (default 16)
-#'
-#' @param drop.hilit SNPs with LOD score within this amount of the maximum SNP association will be highlighted.
-#'
-#' @param col.hilit Color of highlighted points
+#' @param col_hilit Color of highlighted points
 #'
 #' @param col Color of other points
 #'
 #' @param gap Gap between chromosomes.
 #'
-#' @param ylim y-axis limits
-#'
-#' @param bgcolor Background color for the plot.
-#'
-#' @param altbgcolor Background color for alternate chromosomes.
-#'
 #' @param ... Additional graphics parameters.
+#'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color and `altbgcolor`
+#' to control the background color on alternate chromosomes.
+#' `cex` for character expansion for the points (default 0.5),
+#' `pch` for the plotting character for the points (default 16),
+#' and `ylim` for y-axis limits.
 #'
 #' @examples
 #' \dontrun{
@@ -88,7 +86,6 @@
 #' out_snps <- scan1(snp_pr, DOex$pheno)
 #'
 #' # plot results
-#' library(qtl2plot)
 #' plot_snpasso(out_snps, snpinfo)
 #'
 #' # can also just type plot()
@@ -98,17 +95,16 @@
 #' plot_snpasso(out_snps, snpinfo, show_all_snps=FALSE)
 #'
 #' # highlight the top snps (with LOD within 1.5 of max)
-#' plot(out_snps, snpinfo, drop.hilit=1.5)
+#' plot(out_snps, snpinfo, drop_hilit=1.5)
 #' }
 #'
-#' @seealso \code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
+#' @seealso [plot_scan1()], [plot_coef()], [plot_coefCC()]
 #' @export
 #'
 plot_snpasso <-
-    function(scan1output, snpinfo, show_all_snps=TRUE, drop.hilit=NA,
-             col.hilit="violetred", col="darkslateblue",
-             pch=16, cex=0.5, ylim=NULL, add=FALSE, gap=25,
-             bgcolor="gray90", altbgcolor="gray85", ...)
+    function(scan1output, snpinfo, show_all_snps=TRUE, add=FALSE,
+             drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
+             gap=25, ...)
 {
     uindex <- unique(snpinfo$index)
     if(length(uindex) != nrow(scan1output))
@@ -132,14 +128,34 @@ plot_snpasso <-
     # maximum LOD
     maxlod <- max(unclass(scan1output)[,1], na.rm=TRUE)
 
-    if(is.null(ylim))
-        ylim <- c(0, maxlod*1.02)
+    # internal function to give defaults to hidden graphics parameters
+    plot_snpasso_internal <-
+        function(pch=16, cex=0.5, ylim=NULL, bgcolor="gray90",
+                 altbgcolor="gray85",
+                 drop_hilit=NA, col_hilit="violetred",
+                 drop.hilit=NULL, col.hilit=NULL, ...)
+    {
+        if(missing(drop_hilit) && !is.null(drop.hilit)) {
+            warning("drop.hilit is deprecated; use drop_hilit")
+            drop_hilit <- drop.hilit
+        }
 
-    if(!is.na(drop.hilit) && !is.null(drop.hilit))
-        col <- c(col, col.hilit)[(scan1output >= maxlod-drop.hilit)+1]
+        if(missing(col_hilit) && !is.null(col.hilit)) {
+            warning("col.hilit is deprecated; use col_hilit")
+            col_hilit <- col.hilit
+        }
 
-    plot_scan1(scan1output, map, lodcolumn=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
-               gap=gap, add=add, col = col, type="p", cex=cex, pch=pch, ...)
+        if(is.null(ylim))
+            ylim <- c(0, maxlod*1.02)
+
+        if(!is.na(drop_hilit) && !is.null(drop_hilit))
+            col <- c(col, col_hilit)[(scan1output >= maxlod-drop_hilit)+1]
+
+        plot_scan1(scan1output, map, lodcolumn=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
+                   gap=gap, add=add, col = col, type="p", cex=cex, pch=pch, ...)
+    }
+
+    plot_snpasso_internal(drop_hilit=drop_hilit, col_hilit=col_hilit, ...)
 }
 
 

@@ -2,9 +2,11 @@
 #'
 #' Plot one individual's genome-wide genotypes
 #'
+#' @md
+#'
 #' @param geno Imputed phase-known genotypes, as a list of matrices
-#'     (as produced by \code{\link[qtl2geno]{maxmarg}}) or a list of
-#'     three-dimensional arrays (as produced by \code{\link[qtl2geno]{guess_phase}}).
+#'     (as produced by [qtl2geno::maxmarg()]) or a list of
+#'     three-dimensional arrays (as produced by [qtl2geno::guess_phase()]).
 #' @param map Marker map (a list of vectors of marker positions).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosomes to plot; a vector of character strings.
@@ -13,11 +15,15 @@
 #' @param swap_axes If TRUE, swap the axes, so that the chromosomes run horizontally.
 #' @param border Color of outer border around chromosome rectangles.
 #' @param shift If TRUE, shift the chromosomes so they all start at 0.
-#' @param bgcolor Color for background rectangle
 #' @param chrwidth Total width of rectangles for each chromosome, as a
 #'     fraction of the distance between them.
 #' @param ... Additional graphics parameters
 #'
+#' @section Hidden graphics parameters:
+#' A number of graphics parameters can be passed via `...`. For
+#' example, `bgcolor` to control the background color.
+#' These are not included as formal parameters in order to avoid
+#' cluttering the function definition.
 #'
 #' @examples
 #' # load data and calculate genotype probabilities
@@ -61,7 +67,7 @@ plot_onegeno <-
     function(geno, map, ind=1, chr=NULL,
              col=NULL, na_col="white",
              swap_axes=FALSE,
-             border="black", shift=FALSE, bgcolor="gray90",
+             border="black", shift=FALSE,
              chrwidth=0.5, ...)
 {
     if(is.null(map)) stop("map is NULL")
@@ -321,7 +327,7 @@ plot_onegeno <-
 
     plot_onegeno_internal(geno, map, col=col, na_col=na_col,
                           swap_axes=swap_axes, border=border,
-                          bgcolor=bgcolor, chrwidth=chrwidth, ...)
+                          chrwidth=chrwidth, ...)
 
 
 }

@@ -4,64 +4,63 @@
 \alias{plot_snpasso}
 \title{Plot SNP associations}
 \usage{
-plot_snpasso(scan1output, snpinfo, show_all_snps = TRUE, drop.hilit = NA,
-  col.hilit = "violetred", col = "darkslateblue", pch = 16, cex = 0.5,
-  ylim = NULL, add = FALSE, gap = 25, bgcolor = "gray90",
-  altbgcolor = "gray85", ...)
+plot_snpasso(scan1output, snpinfo, show_all_snps = TRUE, add = FALSE,
+  drop_hilit = NA, col_hilit = "violetred", col = "darkslateblue",
+  gap = 25, ...)
 }
 \arguments{
-\item{scan1output}{Output of \code{\link[qtl2scan]{scan1}} using
+\item{scan1output}{Output of \code{\link[qtl2scan:scan1]{qtl2scan::scan1()}} using
 SNP probabilities derived by
-\code{\link[qtl2scan]{genoprob_to_snpprob}}.}
+\code{\link[qtl2scan:genoprob_to_snpprob]{qtl2scan::genoprob_to_snpprob()}}.}
 
 \item{snpinfo}{Data frame with SNP information with the following
-    columns (the last three are generally derived from with
-    \code{\link[qtl2scan]{index_snps}}):
+columns (the last three are generally derived from with
+\code{\link[qtl2scan:index_snps]{qtl2scan::index_snps()}}):
 \itemize{
 \item \code{chr} - Character string or factor with chromosome
 \item \code{pos} - Position (in same units as in the \code{"map"}
-    attribute in \code{genoprobs}.
+attribute in \code{genoprobs}.
 \item \code{sdp} - Strain distribution pattern: an integer, between
-    1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
-    binary encoding indicates the founder genotypes
+1 and \eqn{2^n - 2} where \eqn{n} is the number of strains, whose
+binary encoding indicates the founder genotypes
 \item \code{snp} - Character string with SNP identifier (if
-    missing, the rownames are used).
+missing, the rownames are used).
 \item \code{index} - Indices that indicate equivalent
-    groups of SNPs.
+groups of SNPs.
 \item \code{intervals} - Indexes that indicate which marker
-    intervals the SNPs reside.
+intervals the SNPs reside.
 \item \code{on_map} - Indicate whether SNP coincides with a marker
-    in the \code{genoprobs}
+in the \code{genoprobs}
 }}
 
 \item{show_all_snps}{If TRUE, expand to show all SNPs.}
 
-\item{drop.hilit}{SNPs with LOD score within this amount of the maximum SNP association will be highlighted.}
-
-\item{col.hilit}{Color of highlighted points}
-
-\item{col}{Color of other points}
-
-\item{pch}{Plotting character for the points (default 16)}
-
-\item{cex}{Character expansion for the points (default 0.5)}
-
-\item{ylim}{y-axis limits}
-
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
 
+\item{drop_hilit}{SNPs with LOD score within this amount of the maximum SNP association will be highlighted.}
+
+\item{col_hilit}{Color of highlighted points}
+
+\item{col}{Color of other points}
+
 \item{gap}{Gap between chromosomes.}
-
-\item{bgcolor}{Background color for the plot.}
-
-\item{altbgcolor}{Background color for alternate chromosomes.}
 
 \item{...}{Additional graphics parameters.}
 }
 \description{
 Plot SNP associations, with possible expansion from distinct snps to all snps.
 }
+\section{Hidden graphics parameters}{
+
+A number of graphics parameters can be passed via \code{...}. For
+example, \code{bgcolor} to control the background color and \code{altbgcolor}
+to control the background color on alternate chromosomes.
+\code{cex} for character expansion for the points (default 0.5),
+\code{pch} for the plotting character for the points (default 16),
+and \code{ylim} for y-axis limits.
+}
+
 \examples{
 \dontrun{
 # load example DO data from web
@@ -99,7 +98,6 @@ snp_pr <- genoprob_to_snpprob(apr, snpinfo)
 out_snps <- scan1(snp_pr, DOex$pheno)
 
 # plot results
-library(qtl2plot)
 plot_snpasso(out_snps, snpinfo)
 
 # can also just type plot()
@@ -109,10 +107,10 @@ plot(out_snps, snpinfo)
 plot_snpasso(out_snps, snpinfo, show_all_snps=FALSE)
 
 # highlight the top snps (with LOD within 1.5 of max)
-plot(out_snps, snpinfo, drop.hilit=1.5)
+plot(out_snps, snpinfo, drop_hilit=1.5)
 }
 
 }
 \seealso{
-\code{\link{plot_scan1}}, \code{\link{plot_coef}}, \code{\link{plot_coefCC}}
+\code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_coef]{plot_coef()}}, \code{\link[=plot_coefCC]{plot_coefCC()}}
 }

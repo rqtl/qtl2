@@ -5,14 +5,11 @@
 \title{Plot comparison of two sets of genotype probabilities}
 \usage{
 plot_genoprobcomp(probs1, probs2, map, ind = 1, chr = NULL, geno = NULL,
-  threshold = 0, n_colors = 256, swap_axes = FALSE, hlines = NULL,
-  hlines_col = "#B3B3B370", hlines_lwd = 1, hlines_lty = 1,
-  vlines = NULL, vlines_col = "#B3B3B370", vlines_lwd = 1,
-  vlines_lty = 1, ...)
+  threshold = 0, n_colors = 256, swap_axes = FALSE, ...)
 }
 \arguments{
-\item{probs1}{Genotype probabilities (as produced by \code{\link[qtl2geno]{calc_genoprob}})
-or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}).}
+\item{probs1}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
+or allele dosages (as produced by \code{\link[qtl2geno:genoprob_to_alleleprob]{qtl2geno::genoprob_to_alleleprob()}}).}
 
 \item{probs2}{A second set of genotype probabilities, just like \code{probs1}.}
 
@@ -33,23 +30,7 @@ this value somewhere on the chromosome (in one or the other set of probabilities
 \item{swap_axes}{If TRUE, swap the axes, so that the genotypes are
 on the x-axis and the chromosome position is on the y-axis.}
 
-\item{hlines}{Position of horizontal grid lines (use \code{NA} to avoid lines).}
-
-\item{hlines_col}{Color of horizontal grid lines.}
-
-\item{hlines_lwd}{Line width of horizontal grid lines.}
-
-\item{hlines_lty}{Line type of horizontal grid lines.}
-
-\item{vlines}{Position of vertical grid lines (use \code{NA} to avoid lines).}
-
-\item{vlines_col}{Color of vertical grid lines.}
-
-\item{vlines_lwd}{Line width of vertical grid lines.}
-
-\item{vlines_lty}{Line type of vertical grid lines.}
-
-\item{...}{Additional graphics parameters passed to \code{\link[graphics]{image}}.}
+\item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
 }
 \description{
 Plot a comparison of two sets of genotype probabilities for one individual on one chromosome, as a heat map.
@@ -77,4 +58,7 @@ plot_genoprob(pr_e, map, main="Allow errors")
 plot_genoprob(pr_ne, map, main="Assume very low error error")
 plot_genoprobcomp(pr_e, pr_ne, map, main="Comparison")
 
+}
+\seealso{
+\code{\link[=plot_genoprob]{plot_genoprob()}}
 }

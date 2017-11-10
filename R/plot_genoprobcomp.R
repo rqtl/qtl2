@@ -2,9 +2,11 @@
 #'
 #' Plot a comparison of two sets of genotype probabilities for one individual on one chromosome, as a heat map.
 #'
-#' @param probs1 Genotype probabilities (as produced by \code{\link[qtl2geno]{calc_genoprob}})
-#' or allele dosages (as produced by \code{\link[qtl2geno]{genoprob_to_alleleprob}}).
-#' @param probs2 A second set of genotype probabilities, just like \code{probs1}.
+#' @md
+#'
+#' @param probs1 Genotype probabilities (as produced by [qtl2geno::calc_genoprob()])
+#' or allele dosages (as produced by [qtl2geno::genoprob_to_alleleprob()]).
+#' @param probs2 A second set of genotype probabilities, just like `probs1`.
 #' @param map Marker map (a list of vectors of marker positions).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosome to plot; a single character string.
@@ -15,21 +17,15 @@
 #' @param n_colors Number of colors in each color scale.
 #' @param swap_axes If TRUE, swap the axes, so that the genotypes are
 #' on the x-axis and the chromosome position is on the y-axis.
-#' @param hlines Position of horizontal grid lines (use \code{NA} to avoid lines).
-#' @param hlines_col Color of horizontal grid lines.
-#' @param hlines_lwd Line width of horizontal grid lines.
-#' @param hlines_lty Line type of horizontal grid lines.
-#' @param vlines Position of vertical grid lines (use \code{NA} to avoid lines).
-#' @param vlines_col Color of vertical grid lines.
-#' @param vlines_lwd Line width of vertical grid lines.
-#' @param vlines_lty Line type of vertical grid lines.
-#' @param ... Additional graphics parameters passed to \code{\link[graphics]{image}}.
+#' @param ... Additional graphics parameters passed to [graphics::image()].
 #'
 #' @details
 #' We plot the first set of probabilities in the range white to blue
 #' and the second set in the range white to red and attempt to combine
 #' them, for colors that are white, some amount of blue or red, or
 #' where both are large something like blackish purple.
+#'
+#' @seealso [plot_genoprob()]
 #'
 #' @examples
 #' library(qtl2geno)
@@ -52,10 +48,7 @@
 #' @importFrom grDevices rgb
 plot_genoprobcomp <-
     function(probs1, probs2, map, ind=1, chr=NULL, geno=NULL,
-             threshold=0, n_colors=256, swap_axes=FALSE,
-             hlines=NULL, hlines_col="#B3B3B370", hlines_lwd=1, hlines_lty=1,
-             vlines=NULL, vlines_col="#B3B3B370", vlines_lwd=1, vlines_lty=1,
-             ...)
+             threshold=0, n_colors=256, swap_axes=FALSE, ...)
 {
     # check inputs
     if(is.null(map)) stop("map is NULL")
@@ -156,15 +149,7 @@ plot_genoprobcomp <-
     red[,2] <- red[,3] <-   rep(seq(1, 0.2, length=n_colors), n_colors)
     joint_colors <- apply(blue*red, 1, function(a) rgb(a[1], a[2], a[3], maxColorValue=1))
 
-    # separate positions if necessary
-    tol <- 1e-6
-    if(any(diff(map) < tol))
-        map <- map + seq(0, tol, length.out=length(map))
-
     plot_genoprob_internal(probs, map, col=joint_colors, swap_axes=swap_axes,
-                           hlines=hlines, hlines_col=hlines_col, hlines_lty=hlines_lty, hlines_lwd=hlines_lwd,
-                           vlines=vlines, vlines_col=vlines_col, vlines_lty=vlines_lty, vlines_lwd=vlines_lwd,
-                           zlim=c(1,n_colors^2),
-                           ...)
+                           zlim=c(1,n_colors^2), ...)
 
 }

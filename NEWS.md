@@ -20,6 +20,13 @@
 - Throughout, changed arguments like `hlines.col` to use an underscore
   rather than a period: `hlines_col`.
 
+- Hid a bunch of graphics parameters, to be passed via `...`, so that
+  the function definitions aren't so cluttered.
+
+- For `plot_snpasso()`, changed arguments `drop.hilit` and `col.hilit`
+  to `drop_hilit` and `col_hilit` for consistency with other
+  functions' argument names.
+
 
 ## qtl2plot 0.5-16 (2017-10-17)
 
