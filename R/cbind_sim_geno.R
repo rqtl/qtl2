@@ -19,7 +19,6 @@
 #' draws <- cbind(drawsA, drawsB)
 #'
 #' @export
-#' @aliases cbind.sim_geno
 cbind.sim_geno <-
     function(...)
     cbind.calc_genoprob(...)

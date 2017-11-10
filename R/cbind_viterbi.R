@@ -18,7 +18,6 @@
 #' g <- cbind(gA, gB)
 #'
 #' @export
-#' @aliases cbind.viterbi
 cbind.viterbi <-
     function(...)
 {
