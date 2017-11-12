@@ -1,7 +1,12 @@
 ## qtl2geno 0.5-37 (2017-11-09)
 
+### Minor changes
+
 - Have `zip_datafiles()` give a warning if any of the paths include
   `".."`.
+
+- `insert_pseudomarkers()` now has a `cores` argument for doing
+  calculations in parallel on multiple CPUs.
 
 
 ## qtl2geno 0.5-36 (2017-11-09)

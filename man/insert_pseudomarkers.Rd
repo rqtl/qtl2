@@ -5,7 +5,7 @@
 \title{Insert pseudomarkers into a marker map}
 \usage{
 insert_pseudomarkers(map, step = 0, off_end = 0, stepwidth = c("fixed",
-  "max"), pseudomarker_map = NULL, tol = 0.01)
+  "max"), pseudomarker_map = NULL, tol = 0.01, cores = 1)
 }
 \arguments{
 \item{map}{A list of numeric vectors; each vector gives marker
@@ -27,6 +27,11 @@ are more than \code{step} apart.}
 ignored.}
 
 \item{tol}{Tolerance for determining whether a pseudomarker would duplicate a marker position.}
+
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list like the input \code{map} with pseudomarkers

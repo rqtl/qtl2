@@ -20,6 +20,10 @@
 #' `step`, `off_end`, and `stepwidth` arguments are
 #' ignored.
 #' @param tol Tolerance for determining whether a pseudomarker would duplicate a marker position.
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A list like the input `map` with pseudomarkers
 #' inserted. Will also have an attribute `"is_x_chr"`, taken
@@ -49,7 +53,7 @@
 #' gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
 insert_pseudomarkers <-
 function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
-         pseudomarker_map=NULL, tol=0.01)
+         pseudomarker_map=NULL, tol=0.01, cores=1)
 {
     if(is.null(map))
         stop("Input map is NULL")
@@ -74,14 +78,16 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
             stop("length(pseudomarker_map) != length(map)")
     }
 
-    newmap <- vector("list", length(map))
-    names(newmap) <- chr <- names(map)
+    chr <- names(map)
 
-    for(i in seq(along=map)) {
-        newmap[[i]] <- insert_pseudomarkers_onechr(map[[i]], step, off_end,
-                                                   stepwidth, pseudomarker_map[[i]], tol,
-                                                   paste0("c", chr[i], ".loc"))
-    }
+    # set up cluster
+    cores <- setup_cluster(cores)
+
+    # do the work, possible with multiple CPU
+    newmap <- cluster_lapply(cores, seq(along=map), function(i)
+        insert_pseudomarkers_onechr(map[[i]], step=step, off_end=off_end, stepwidth=stepwidth,
+                                    pseudomarker_map[[i]], tol=tol, paste0("c", chr[i], ".loc")))
+    names(newmap) <- chr
 
     attr(newmap, "is_x_chr") <- attr(map, "is_x_chr")
     newmap

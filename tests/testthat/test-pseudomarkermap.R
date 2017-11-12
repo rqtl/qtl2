@@ -126,3 +126,33 @@ test_that("insert_pseudomarkers gives distinct pseudomarker names with iron data
     expect_true(all(vapply(pmap$map, function(a) !any_duplicates(names(a)), TRUE)))
 
 })
+
+test_that("insert_pseudomarkers works with multi-core", {
+
+    if(isnt_karl()) skip("this test only run locally")
+
+    data(hyper)
+    map <- qtl::pull.map(hyper)
+
+    set.seed(99735998)
+    pseudomarker_map <- vector("list", length(map))
+    for(i in seq(along=map)) {
+        n.pmar <- 10
+        pseudomarker_map[[i]] <- sort(runif(n.pmar, 0, max(map[[i]])))
+        names(pseudomarker_map[[i]]) <- paste0("c", names(map)[i], ".loc", 1:n.pmar)
+    }
+
+    combined_map <- insert_pseudomarkers(map, pseudomarker_map = pseudomarker_map, cores=8)
+
+    expect_equal(sapply(map, length) + sapply(pseudomarker_map, length),
+                 sapply(combined_map, length))
+
+    for(i in seq(along=map)) {
+        combined_map_2 <- sort(c(map[[i]], pseudomarker_map[[i]]))
+        expect_equivalent(combined_map_2, combined_map[[i]])
+        expect_equal(names(combined_map_2), names(combined_map[[i]]))
+    }
+
+    expect_equal(names(map), names(combined_map))
+
+})
