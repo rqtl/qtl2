@@ -16,20 +16,16 @@ options(width=107)
 [R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-We expect that basic analyses with R/qtl2 will generally be performed
-in "batch" (for example, on a cluster) rather than interactively. And
-so the software is split into three parts:
+The software is split into multiple packages:
 [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
 calculations, [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
-scans, and [qtl2plot](https://github.com/rqtl/qtl2plot) for data
-visualization.
+scans, [qtl2plot](https://github.com/rqtl/qtl2plot) for data
+visualization, and [qtl2db] for connections to SNP and gene databases.
 A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
 and [R/qtl](https://rqtl.org) formats, for example to convert genotype
-probabilities produced by DOQTL to the format needed by qtl2scan, or
-to convert qtl2scan results to the format produced by `scanone` in
-R/qtl, so that they may be graphed with the R/qtl functions.
+probabilities produced by DOQTL to the format needed by qtl2scan.
 
 
 ## Installation
@@ -45,7 +41,9 @@ inspired by the
 it is basically empty, but when you install it, the
 [qtl2geno](https://github.com/rqtl/qtl2geno),
 [qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot), and
+[qtl2plot](https://github.com/rqtl/qtl2plot),
+[qtl2db](https://github.com/rqtl/qtl2db),
+and
 [qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
 bunch of dependencies, will be installed.
 
@@ -172,7 +170,7 @@ _compressed_ and so smaller than the combined set of CSV files.
 The control file may be confusing for some users. To assist in its
 construction, there's a function `write_control_file()` that takes the
 large set of control parameters as input and then writes the YAML
-control file in the appropriate format.
+or JSON control file in the appropriate format.
 
 
 ## Sample data sets
@@ -1010,6 +1008,89 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
+
+### Connecting to SNP and gene databases
+
+The perform SNP association analysis in the region of a QTL, we'll
+need to grab data on all of the SNPs in the region, including their
+genotypes in the eight founder strains for the CC and DO populations. We'll
+also want to identify the genes in the region.
+
+We want R/qtl2 to permit different ways of storing this information.
+For the CC and DO populations, we've prepared SQLite database files
+for the variants in the CC founders and for the MGI mouse gene
+annotations. But others might wish to use a different kind of
+database, or may wish to query an online database.
+
+The [qtl2db](https://github.com/rqtl/qtl2db) package provides a
+template for how R/qtl2 would connect to SNP and gene databases. It
+contains functions `create_variant_query_func()` and
+`create_gene_query_func()` that each each return a _function_ for
+querying variant and gene databases, respectively. The query functions
+returned take just three arguments (`chr`, `start`, end `end`), and
+return a data frame of variants on the one hand and genes on the
+other.
+
+If you are analyzing the CC lines or a DO population, you can download
+the SQLite databases that we have prepared and made available on
+[Figshare](https://figshare.com):
+
+- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1),
+  variants in the Collaborative Cross founders (3 GB)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v3](https://doi.org/10.6084/m9.figshare.5280238.v3)
+  full set of mouse gene annotations (677 MB)
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v4](https://doi.org/10.6084/m9.figshare.5286019.v4)
+  just the MGI mouse gene annotations (11 MB)
+
+For example, to download `cc_variants.sqlite` and
+`mouse_genes_mgi.sqlite`, we'd go to the figshare sites above and determine
+the URLs for downloading the files, and then do the following:
+
+```{r download_db, eval=FALSE}
+download.file("https://ndownloader.figshare.com/files/9039736", "cc_variants.sqlite")
+download.file("https://ndownloader.figshare.com/files/9737668", "mouse_genes_mgi.sqlite")
+```
+
+Store them locally on your computer, wherever it's convenient. For
+example, I've placed them in `~/Data/CCdb/`.
+
+To create a function for querying the CC variants, you load the
+[qtl2db](https://github.com/rqtl/qtl2db) package and call
+`create_variant_query_func()` with the path to the
+`cc_variants.sqlite` file:
+
+```{r create_variant_query_func}
+library(qtl2db)
+query_variants <- create_variant_query_func("~/Data/CCdb/cc_variants.sqlite")
+```
+
+To grab the variants in the interval 97-98 Mbp on chromosome 2,
+you'd then do the following:
+
+```{r query_variants}
+variants_2_97.5 <- query_variants(2, 97, 98)
+```
+
+Similarly, to create a function for querying the MGI mouse gene
+annotations, you call `create_gene_query_func()` with the path to the
+`mouse_genes_mgi.sqlite` file:
+
+```{r create_gene_query_func}
+query_genes <- create_gene_query_func("~/Data/CCdb/mouse_genes_mgi.sqlite")
+```
+
+To grab the genes overlapping the interval 97-98 Mbp on chromosome 2,
+you'd then do the following:
+
+```{r query_genes}
+genes_2_97.5 <- query_genes(2, 97, 98)
+```
+
+The way we've set this up is a bit complicated, but it allows greatest
+flexibility on the part of the user. And for our own work, we see
+great advantage in have a local SQLite database, for rapid queries of
+SNPs and genes.
+
 
 ### SNP associations
 
