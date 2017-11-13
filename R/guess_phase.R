@@ -42,23 +42,27 @@
 guess_phase <-
     function(cross, geno, deterministic=FALSE, cores=1)
 {
+    # if cross is phase-known, don't change geno
+    if(is_phase_known(cross)) return(geno)
+
+    geno <- unclass(geno) # treat geno as a plain list
+
     # match chromosomes
     if(n_chr(cross) != length(geno) ||
        names(cross$geno) != names(geno)) {
         chr_cross <- chr_names(cross)
         chr_geno <- names(geno)
-        common_chr <- chr_cross[chr_cross %in% chr_geno]
-        if(length(common_chr) == 0)
+        if(!any(chr_cross %in% chr_geno))
             stop("No chromosomes in common between cross and geno")
+        common_chr <- chr_cross[chr_cross %in% chr_geno]
         cross <- subset(cross, chr=common_chr)
         geno <- geno[common_chr]
-        warning("Considering only the ", length(common_chr), " chr in common between cross and geno")
     }
 
     # match individuals, if X chr
     if(any(cross$is_x_chr)) {
         ind_cross <- names(cross$is_female)
-        xchr <- names(geno)[cross$is_x_chr]
+        xchr <- chr_names(cross)[cross$is_x_chr]
         ind_geno <- rownames(geno[[xchr[1]]])
 
         common_ind <- ind_cross[ind_cross %in% ind_geno]
@@ -69,37 +73,34 @@ guess_phase <-
             geno[[i]] <- geno[[i]][common_ind,,drop=FALSE]
         if(length(common_ind) < length(ind_cross) ||
            length(common_ind) < length(ind_geno))
-            warning("On X chr, considering only the ", length(common_ind), " individuals in common between cross and geno")
+            warning("On X chr, considering only the ", length(common_ind),
+                    ifelse(length(common_ind)==1, " individual", " individuals"),
+                    " in common between cross and geno")
     }
 
-    if(is_phase_known(cross)) return(geno)
+    # set up cluster; use quiet=TRUE
+    cores <- setup_cluster(cores, TRUE)
 
-    else {
-        # set up cluster; use quiet=TRUE
-        cores <- setup_cluster(cores, TRUE)
+    is_x_chr <- cross$is_x_chr
+    crosstype <- cross$crosstype
+    is_female <- cross$is_female
 
-        is_x_chr <- cross$is_x_chr
-        crosstype <- cross$crosstype
-        is_female <- cross$is_female
-
-        by_chr_func <- function(i) {
-            if(crosstype=="f2") {
-                if(is_x_chr[i]) result <- .guess_phase_f2X(t(geno[[i]]), deterministic)
-                else result <- .guess_phase_f2A(t(geno[[i]]), deterministic)
-            }
-            else {
-                if(is_x_chr[i]) result <- .guess_phase_X(t(geno[[i]]), crosstype, is_female, deterministic)
-                else result <- .guess_phase_A(t(geno[[i]]), crosstype, deterministic)
-            }
-            dn <- dimnames(geno[[i]])
-            result <- aperm(result, c(3,2,1))
-            dimnames(result) <- list(dn[[1]], dn[[2]], c("mom", "dad"))
-            return(result)
+    by_chr_func <- function(i) {
+        if(crosstype=="f2") {
+            if(is_x_chr[i]) result <- .guess_phase_f2X(t(geno[[i]]), deterministic)
+            else result <- .guess_phase_f2A(t(geno[[i]]), deterministic)
         }
-
-        result <- cluster_lapply(cores, seq_along(geno), by_chr_func)
-        names(result) <- names(geno)
+        else {
+            if(is_x_chr[i]) result <- .guess_phase_X(t(geno[[i]]), crosstype, is_female, deterministic)
+            else result <- .guess_phase_A(t(geno[[i]]), crosstype, deterministic)
+        }
+        dn <- dimnames(geno[[i]])
+        result <- aperm(result, c(3,2,1))
+        dimnames(result) <- list(dn[[1]], dn[[2]], c("mom", "dad"))
         return(result)
     }
 
+    result <- cluster_lapply(cores, seq_along(geno), by_chr_func)
+    names(result) <- names(geno)
+    result
 }
