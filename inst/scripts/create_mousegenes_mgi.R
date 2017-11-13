@@ -6,6 +6,17 @@ tab <- dbGetQuery(db, "SELECT * FROM genes WHERE source='MGI'")
 description <- dbGetQuery(db, "SELECT * FROM description")
 dbDisconnect(db)
 
+# remove duplicates (they have multiple Dbxref but are otherwise identical)
+#    ... pick a random one of each
+tab_name <- table(tab$Name)
+dup <- names(tab_name)[tab_name > 1]
+omit <- NULL
+for(i in dup) {
+    z <- which(tab$Name==i)
+    omit <- c(omit, z[-sample(length(z),1)])
+}
+tab <- tab[-omit,]
+
 # write to new database
 dbfile <- "mouse_genes_mgi.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)

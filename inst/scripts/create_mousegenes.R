@@ -1,15 +1,15 @@
 # create sqlite database with mouse genes, from MGI
 #
-# source (dated 2017-08-03):
+# source (dated 2017-11-03):
 #      http://www.informatics.jax.org/downloads/mgigff/
-#          MGI.20170803.gff3.gz
+#          MGI.20171103.gff3.gz
 #          MGI_GFF_Spec.docx (annotations, e.g. column names)
 
 library(RSQLite)
 
 ### download files
 site <- "http://www.informatics.jax.org/downloads/mgigff"
-file <- "MGI.20170803.gff3.gz"
+file <- "MGI.20171103.gff3.gz"
 url <- paste0(site, "/", file)
 if(!file.exists(file))
     download.file(url, file)
