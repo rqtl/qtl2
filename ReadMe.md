@@ -82,7 +82,7 @@ variants (SNPs, indels, and structural variants) in the eight mouse
 founder lines for the Collaborative Cross.
 
 - [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1)
-- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v2](https://doi.org/10.6084/m9.figshare.5280238.v2)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v3](https://doi.org/10.6084/m9.figshare.5280238.v3)
 
 If you download those two files locally, you could use the following
 code to create "accessor" functions:
@@ -111,11 +111,13 @@ some Web API. Rather than requiring the SNP and gene databases to be
 in a certain form, we'll instead ask users to provide query functions
 like `query_genes()` and `query_variants()`.
 
-Finally, note that we've also created a smaller version of the mouse genes
-database, containing just the records with `source=="MGI"`. If you
-just want full genes, you can use this:
+Finally, note that we've also created a smaller version of the mouse
+genes database, containing just the records with `source=="MGI"` and
+combining duplicate records (which just differed in the `"Dbxref"`
+field; the new record has these `"Dbxref"` pasted together separated
+by commas). If you just want full genes, you can use this:
 
-- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v1](https://doi.org/10.6084/m9.figshare.5286019.v1)
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v4](https://doi.org/10.6084/m9.figshare.5286019.v4)
 
 ---
 

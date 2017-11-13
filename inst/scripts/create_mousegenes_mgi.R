@@ -13,7 +13,10 @@ dup <- names(tab_name)[tab_name > 1]
 omit <- NULL
 for(i in dup) {
     z <- which(tab$Name==i)
-    omit <- c(omit, z[-sample(length(z),1)])
+    dbxref <- unique(tab$Dbxref[z])
+    keep <- sample(length(z), 1)
+    tab$Dbxref[z[keep]] <- paste(dbxref, collapse=",")
+    omit <- c(omit, z[-keep])
 }
 tab <- tab[-omit,]
 
