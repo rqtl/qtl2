@@ -10,6 +10,8 @@ library(RSQLite)
 ### download files
 site <- "http://www.informatics.jax.org/downloads/mgigff"
 file <- "MGI.20171103.gff3.gz"
+date_source <- ymd(strsplit(file, "\\.")[[1]][2])
+genome_build <- "GRCm38/mm10"
 url <- paste0(site, "/", file)
 if(!file.exists(file))
     download.file(url, file)
@@ -74,8 +76,8 @@ description <- data.frame(description="mouse gene information",
                           source="Mouse Genome Informatics (MGI), Jackson Lab",
                           url=url,
                           date_created=as.character(Sys.Date()),
-                          date_source="2017-08-03",
-                          genome_build="GRCm38/mm10")
+                          date_source=date_source,
+                          genome_build=genome_build,
 dbWriteTable(db, "description", description, append=TRUE)
 
 dbDisconnect(db)
