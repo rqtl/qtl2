@@ -59,7 +59,6 @@ cc_founders <- c("A/J", "C57BL/6J", "129S1/SvImJ", "NOD/ShiLtJ", "NZO/HlLtJ",
 strains <- sub("/", "_", cc_founders[-2])
 n_strains <- length(strains)
 
-
 library(VariantAnnotation)
 
 library(RSQLite)
@@ -161,6 +160,17 @@ for(thechr in chr) {
                                     function(a) paste(a[!is.na(a)], collapse="/")),
                               sep="|")
 
+        # gnum: turn it into consecutive numbers
+        #   (if "2" is missing make 3 = 2)
+        for(i in 3:2) {
+            wh <- is.na(alleles[,i])
+            if(any(wh)) {
+                tmp <- gnum[wh,]
+                tmp[tmp >= i] <- tmp[tmp >= i] - 1
+                gnum[wh,] <- tmp
+            }
+        }
+
         # convert to 1/3
         gbin <- gnum
         gbin[gbin > 1] <- 3
@@ -183,6 +193,7 @@ for(thechr in chr) {
                            consequence=csq[2,],
                            gnum,
                            type="snp",
+                           sv_type=NA,
                            stringsAsFactors=FALSE)
         # make sure column names are what we want
         colnames(snps)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
@@ -294,6 +305,17 @@ for(thechr in chr) {
                                     function(a) paste(a[!is.na(a)], collapse="/")),
                               sep="|")
 
+        # gnum: turn it into consecutive numbers
+        #   (if "2" is missing make 3 = 2)
+        for(i in 3:2) {
+            wh <- is.na(alleles[,i])
+            if(any(wh)) {
+                tmp <- gnum[wh,]
+                tmp[tmp >= i] <- tmp[tmp >= i] - 1
+                gnum[wh,] <- tmp
+            }
+        }
+
         # convert to 1/3
         gbin <- gnum
         gbin[gbin > 1] <- 3
@@ -310,7 +332,6 @@ for(thechr in chr) {
             x <- strsplit(x, "|", fixed=TRUE)[[1]]
         })
 
-
         # create full table of info
         indels <- data.frame(snp_id=rownames(g),
                              chr=thechr,
@@ -321,6 +342,7 @@ for(thechr in chr) {
                              consequence=csq[3,],
                              gnum,
                              type="indel",
+                             sv_type=NA,
                              stringsAsFactors=FALSE)
         # make sure column names are what we want
         colnames(indels)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
