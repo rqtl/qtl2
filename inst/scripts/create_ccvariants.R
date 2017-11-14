@@ -33,6 +33,10 @@ subdir <- c("SNPtools/variants",
 files <- c("mgp.v5.merged.snps_all.dbSNP142.vcf.gz",
            "mgp.v5.merged.indels.dbSNP142.normed.vcf.gz",
            "28strains.REL-1410-SV.sdp.tab.gz")
+date_source <- c("2015-09-20",
+                 "2015-09-20",
+                 "2014-10-20")
+genome_build <- rep("GRCm38/mm10", 3)
 
 for(i in seq_along(files)) {
     file <- files[i]
@@ -434,10 +438,8 @@ description <- data.frame(description=c("SNPs in Collaborative Cross founders",
                                    "Sanger"),
                           url=paste0(site, "/", subdir, "/", files),
                           date_created=rep(as.character(Sys.Date()), 3),
-                          date_source=c("2015-09-20",
-                                        "2015-09-20",
-                                        "2014-10-20"),
-                          genome_build=rep("GRCm38/mm10", 3))
+                          date_source=date_source,
+                          genome_build=genome_build)
 dbWriteTable(db, "description", description, append=TRUE)
 
 
