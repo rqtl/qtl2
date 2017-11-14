@@ -28,4 +28,5 @@ LazyData: true
 Encoding: UTF-8
 RoxygenNote: 6.0.1
 Remotes:
-    rqtl/qtl2geno
+    rqtl/qtl2geno,
+    rqtl/qtl2db
