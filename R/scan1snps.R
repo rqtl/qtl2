@@ -59,7 +59,24 @@ scan1snps <-
     # set up parallel analysis
     cores <- setup_cluster(cores)
 
-    cluster_lapply(cores, 1:nrow(batches), by_batch_func)
+    result <- cluster_lapply(cores, 1:nrow(batches), by_batch_func)
+
+    # was one batch?
+    if(length(result)==1) return(result)
+
+    # combine the multiple results
+    ### lod scores are easy
+    lod <- do.call("rbind", lapply(result, "[[", "lod"))
+
+    ### snpinfo: need to revise the index column
+    nr <- vapply(result, function(a) nrow(a$snpinfo), 1)
+    cs <- cumsum(nr)
+    for(i in seq_along(result)[-1]) {
+        result[[i]]$snpinfo$index <- result[[i]]$snpinfo$index + cs[i-1]
+    }
+    snpinfo <- do.call("rbind", lapply(result, "[[", "snpinfo"))
+
+    list(lod=lod, snpinfo=snpinfo)
 }
 
 
@@ -81,7 +98,7 @@ scan1snps_snpinfo <-
     snp_pr <- genoprob_to_snpprob(genoprobs, snpinfo)
 
     # scan1
-    out <- scan1(snp_pr, pheno=pheno, kinship=kinship, addcovar=addcovar, Xcovar=Xcovar,
+    lod <- scan1(snp_pr, pheno=pheno, kinship=kinship, addcovar=addcovar, Xcovar=Xcovar,
                  intcovar=intcovar, weights=weights, reml=reml, model=model, ...)
 
     if(!keep_all_snps) {
@@ -90,5 +107,5 @@ scan1snps_snpinfo <-
     }
 
     # return list with lod scores + indexed snpinfo
-    list(lod=out, snpinfo=snpinfo)
+    list(lod=lod, snpinfo=snpinfo)
 }
