@@ -437,7 +437,8 @@ description <- data.frame(description=c("SNPs in Collaborative Cross founders",
                           url=paste0(site, "/", subdir, "/", files),
                           date_created=rep(as.character(Sys.Date()), 3),
                           date_source=date_source,
-                          genome_build=genome_build)
+                          genome_build=genome_build,
+                          stringsAsFactors=FALSE)
 dbWriteTable(db, "description", description, append=TRUE)
 
 
