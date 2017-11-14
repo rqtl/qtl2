@@ -47,6 +47,9 @@ if(remove_tmpfile) {
 # remove things not on chr 1-19, "X", "Y", "MT"
 tab <- tab[tab$chr %in% c(1:19, "X", "Y", "MT"),]
 
+# remove things where start > stop (all have stop==0 and start==999999999; presumably unknown position)
+tab <- tab[tab$start <= tab$stop,]
+
 # split 9th column at ';' then split at '=' and use first bit as key and second bit as value
 tab9_spl <- strsplit(tab[,9], ";")
 tab9_list <- lapply(tab9_spl, function(a) {
