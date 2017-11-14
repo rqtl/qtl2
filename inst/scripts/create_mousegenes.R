@@ -10,7 +10,7 @@ library(RSQLite)
 ### download files
 site <- "http://www.informatics.jax.org/downloads/mgigff"
 file <- "MGI.20171103.gff3.gz"
-date_source <- ymd(strsplit(file, "\\.")[[1]][2])
+date_source <- as.character(as.Date("20171103", format="%Y%m%d"))
 genome_build <- "GRCm38/mm10"
 url <- paste0(site, "/", file)
 if(!file.exists(file))
