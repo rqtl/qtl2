@@ -81,8 +81,8 @@ For example, we've prepared SQLite databases with mouse genes, and with
 variants (SNPs, indels, and structural variants) in the eight mouse
 founder lines for the Collaborative Cross.
 
-- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1)
-- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v3](https://doi.org/10.6084/m9.figshare.5280238.v3)
+- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v2](https://doi.org/10.6084/m9.figshare.5280229.v2)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v4](https://doi.org/10.6084/m9.figshare.5280238.v4)
 
 If you download those two files locally, you could use the following
 code to create "accessor" functions:
@@ -117,7 +117,7 @@ combining duplicate records (which just differed in the `"Dbxref"`
 field; the new record has these `"Dbxref"` pasted together separated
 by commas). If you just want full genes, you can use this:
 
-- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v4](https://doi.org/10.6084/m9.figshare.5286019.v4)
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v5](https://doi.org/10.6084/m9.figshare.5286019.v5)
 
 ---
 
