@@ -78,6 +78,7 @@ description <- data.frame(description="mouse gene information",
                           date_created=as.character(Sys.Date()),
                           date_source=date_source,
                           genome_build=genome_build,
+                          stringsAsFactors=FALSE)
 dbWriteTable(db, "description", description, append=TRUE)
 
 dbDisconnect(db)
