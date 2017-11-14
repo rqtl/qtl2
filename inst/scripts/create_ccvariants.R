@@ -197,7 +197,6 @@ for(thechr in chr) {
                            consequence=csq[2,],
                            gnum,
                            type="snp",
-                           sv_type=NA,
                            stringsAsFactors=FALSE)
         # make sure column names are what we want
         colnames(snps)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
@@ -346,7 +345,6 @@ for(thechr in chr) {
                              consequence=csq[3,],
                              gnum,
                              type="indel",
-                             sv_type=NA,
                              stringsAsFactors=FALSE)
         # make sure column names are what we want
         colnames(indels)[8:15] <- c(strains[1], "C57BL_6J", strains[-1])
