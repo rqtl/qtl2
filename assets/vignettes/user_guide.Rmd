@@ -1035,11 +1035,11 @@ If you are analyzing the CC lines or a DO population, you can download
 the SQLite databases that we have prepared and made available on
 [Figshare](https://figshare.com):
 
-- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v1](https://doi.org/10.6084/m9.figshare.5280229.v1),
+- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v2](https://doi.org/10.6084/m9.figshare.5280229.v2),
   variants in the Collaborative Cross founders (3 GB)
-- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v3](https://doi.org/10.6084/m9.figshare.5280238.v3)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v4](https://doi.org/10.6084/m9.figshare.5280238.v4)
   full set of mouse gene annotations (677 MB)
-- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v4](https://doi.org/10.6084/m9.figshare.5286019.v4)
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v5](https://doi.org/10.6084/m9.figshare.5286019.v5)
   just the MGI mouse gene annotations (11 MB)
 
 For example, to download `cc_variants.sqlite` and
@@ -1047,8 +1047,8 @@ For example, to download `cc_variants.sqlite` and
 the URLs for downloading the files, and then do the following:
 
 ```{r download_db, eval=FALSE}
-download.file("https://ndownloader.figshare.com/files/9039736", "cc_variants.sqlite")
-download.file("https://ndownloader.figshare.com/files/9737668", "mouse_genes_mgi.sqlite")
+download.file("https://ndownloader.figshare.com/files/9746485", "cc_variants.sqlite")
+download.file("https://ndownloader.figshare.com/files/9746452", "mouse_genes_mgi.sqlite")
 ```
 
 Store them locally on your computer, wherever it's convenient. For
