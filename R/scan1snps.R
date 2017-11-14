@@ -41,7 +41,7 @@ scan1snps <-
     chr_end <- vapply(map, max, 0)
     n_batch <- ceiling((chr_end - chr_start)/batch_length)
     endpts <- lapply(seq_along(chr), function(i) seq(chr_start[i], chr_end[i], length.out=n_batch[i]+1))
-    batches <- data.frame(chr=rep(chr, each=n_batch),
+    batches <- data.frame(chr=rep(chr, n_batch),
                           start=unlist(lapply(endpts, function(a) a[-length(a)])),
                           end=unlist(lapply(endpts, function(a) a[-1])),
                           stringsAsFactors=FALSE)
