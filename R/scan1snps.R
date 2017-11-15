@@ -69,12 +69,16 @@ scan1snps <-
     lod <- do.call("rbind", lapply(result, "[[", "lod"))
 
     ### snpinfo: need to revise the index column
-    nr <- vapply(result, function(a) nrow(a$snpinfo), 1)
-    cs <- cumsum(nr)
+    offset <- 0
     for(i in seq_along(result)[-1]) {
-        result[[i]]$snpinfo$index <- result[[i]]$snpinfo$index + cs[i-1]
+        offset <- offset + nrow(result[[i-1]]$snpinfo)
+        if(result[[i]]$snpinfo$chr[1] == result[[i-1]]$snpinfo$chr[1]) { # same chromosome so advanced indexes
+            result[[i]]$snpinfo$index <- result[[i]]$snpinfo$index + offset
+        }
+        else offset <- 0
     }
     snpinfo <- do.call("rbind", lapply(result, "[[", "snpinfo"))
+    rownames(snpinfo) <- 1:nrow(snpinfo)
 
     list(lod=lod, snpinfo=snpinfo)
 }
