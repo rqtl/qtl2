@@ -27,7 +27,7 @@ scan1snps <-
         return( scan1snps_snpinfo(genoprobs=genoprobs, map=map, pheno=pheno, kinship=kinship,
                                   addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar,
                                   weights=weights, reml=reml, model=model,
-                                  snpinfo=snpinfo, keep_all_snps=keep_all_snsp, ...) )
+                                  snpinfo=snpinfo, keep_all_snps=keep_all_snps, ...) )
     }
 
     if(is.null(query_func)) {
