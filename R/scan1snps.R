@@ -34,6 +34,17 @@ scan1snps <-
         stop("Need to provide either snpinfo or query_func()")
     }
 
+    # reduce to common chromosomes
+    pchr <- names(genoprobs)
+    mchr <- names(map)
+    cchr <- pchr[pchr %in% mchr]
+    if(length(cchr)==0) {
+        warning("No common chromosomes among genoprobs and map")
+        return(NULL)
+    }
+    genoprobs <- genoprobs[,cchr]
+    map <- map[cchr]
+
     # split into batches
     if(batch_length <= 0) stop("batch_length should be > 0")
     chr <- names(map)
@@ -51,7 +62,8 @@ scan1snps <-
     {
         snpinfo <- query_func(batches$chr[i], batches$start[i], batches$end[i])
 
-        scan1snps_snpinfo(genoprobs=genoprobs, map=map, pheno=pheno, kinship=kinship,
+        scan1snps_snpinfo(genoprobs=genoprobs, map=map, pheno=pheno,
+                          kinship=subset_kinship(kinship, chr=batches$chr[i]),
                           addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar,
                           weights=weights, reml=reml, model=model, snpinfo=snpinfo, ...)
     }
@@ -92,8 +104,20 @@ scan1snps_snpinfo <-
              keep_all_snps=FALSE, ...)
 {
     if(is.null(snpinfo) || nrow(snpinfo)==0) return(NULL) # no snps to study
-
     model <- match.arg(model)
+
+    # reduce to common chromosomes
+    pchr <- names(genoprobs)
+    mchr <- names(map)
+    schr <- unique(snpinfo$chr)
+    cchr <- pchr[pchr %in% mchr & pchr %in% schr]
+    if(length(cchr)==0) {
+        warning("No common chromosomes among genoprobs, map, and snpinfo")
+        return(NULL)
+    }
+    genoprobs <- genoprobs[,cchr]
+    map <- map[cchr]
+    snpinfo <- snpinfo[snpinfo$chr %in% cchr,,drop=FALSE]
 
     # snpinfo -> add index
     snpinfo <- index_snps(map, snpinfo)
@@ -102,8 +126,9 @@ scan1snps_snpinfo <-
     snp_pr <- genoprob_to_snpprob(genoprobs, snpinfo)
 
     # scan1
-    lod <- scan1(snp_pr, pheno=pheno, kinship=kinship, addcovar=addcovar, Xcovar=Xcovar,
-                 intcovar=intcovar, weights=weights, reml=reml, model=model, ...)
+    lod <- scan1(snp_pr, pheno=pheno, kinship=subset_kinship(kinship, chr=cchr),
+                 addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar,
+                 weights=weights, reml=reml, model=model, ...)
 
     if(!keep_all_snps) {
         snpinfo <- snpinfo[unique(snpinfo$index),,drop=FALSE]
