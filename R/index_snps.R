@@ -25,7 +25,7 @@
 #' position at which genotype probabilities were already calculated.
 #'
 #' @return A data frame containin the input `snpinfo` with three
-#' added columns: `"index"` (which indicate the groups of
+#' added columns: `"index"` (which indicates the groups of
 #' equivalent SNPs), `"interval"` (which indicates the map
 #' interval containing the SNP, with values starting at 0), and
 #' `on_map` (which indicates that the SNP is within
