@@ -162,7 +162,7 @@ plot_pxg <-
 
                 if(is.null(las)) las <- 1
 
-                if(is.null(hlines)) hlines <- 1:length(ugeno)
+                if(is.null(hlines)) hlines <- seq_len(length(ugeno))
                 if(is.null(vlines)) vlines <- pretty(pheno)
                 if(is.null(hlines_col)) hlines_col <- "gray80"
                 if(is.null(hlines_lwd)) hlines_lwd <- 3
@@ -200,7 +200,7 @@ plot_pxg <-
                 }
 
                 if(is.null(hlines)) hlines <- pretty(pheno)
-                if(is.null(vlines)) vlines <- 1:length(ugeno)
+                if(is.null(vlines)) vlines <- seq_len(length(ugeno))
                 if(is.null(vlines_col)) vlines_col <- "gray80"
                 if(is.null(vlines_lwd)) vlines_lwd <- 3
                 if(is.null(vlines_lty)) vlines_lty <- 1

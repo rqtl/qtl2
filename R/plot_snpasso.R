@@ -173,7 +173,7 @@ expand_snp_results <-
         stop("nrow(snp_results) [", nrow(snp_results), "] != length(unlist(map)) [",
              length(unlist(map)), "]")
 
-    lodindex <- split(1:nrow(snp_results), rep(names(map), vapply(map, length, 0)))
+    lodindex <- split(seq_len(nrow(snp_results)), rep(names(map), vapply(map, length, 0)))
 
     result <- NULL
     for(i in seq(along=map)) {
@@ -219,7 +219,7 @@ snpinfo_to_map <-
 rev_snp_index <-
     function(snpinfo)
 {
-    index_spl <- split(1:nrow(snpinfo), snpinfo$index)
+    index_spl <- split(seq_len(nrow(snpinfo)), snpinfo$index)
     revindex <- rep(seq(along=index_spl), vapply(index_spl, length, 1))
     revindex[unlist(index_spl)] <- revindex
 

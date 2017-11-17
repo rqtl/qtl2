@@ -154,7 +154,7 @@ plot_onegeno <-
             if(is.null(xlim)) xlim <- range(unlist(map), na.rm=TRUE)
             if(is.null(ylim)) ylim <- c(nchr+0.5, 0.5)
 
-            if(is.null(hlines)) hlines <- 1:nchr
+            if(is.null(hlines)) hlines <- seq_len(nchr)
             if(is.null(vlines)) vlines <- pretty(xlim)
 
             if(is.null(xaxs)) xaxs <- "r"
@@ -168,7 +168,7 @@ plot_onegeno <-
             if(is.null(ylim)) ylim <- rev(range(unlist(map), na.rm=TRUE))
 
             if(is.null(hlines)) hlines <- pretty(ylim)
-            if(is.null(vlines)) vlines <- 1:nchr
+            if(is.null(vlines)) vlines <- seq_len(nchr)
 
             if(is.null(xaxs)) xaxs <- "i"
             if(is.null(yaxs)) yaxs <- "r"
@@ -246,7 +246,7 @@ plot_onegeno <-
             col <- rep(col, max_geno)
         }
 
-        for(i in 1:nchr) {
+        for(i in seq_len(nchr)) {
             g <- geno[[i]]
 
             # if completely missing the second chr but not the first, treat as if we have just the one
@@ -339,7 +339,7 @@ addgenorect <-
     intervals <- geno2intervals(geno, map)
     if(is.null(intervals) || nrow(intervals) < 1) return(NULL)
 
-    for(i in 1:nrow(intervals)) {
+    for(i in seq_len(nrow(intervals))) {
         if(swap_axes) {
             rect(intervals[i,1], x1,
                  intervals[i,2], x2,

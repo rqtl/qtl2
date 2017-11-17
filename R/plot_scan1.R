@@ -286,5 +286,5 @@ map_to_index <-
     }
 
     lengths <- vapply(map, length, 0)
-    split(1:sum(lengths), rep(seq(along=map), lengths))
+    split(seq_len(sum(lengths)), rep(seq(along=map), lengths))
 }

@@ -96,7 +96,7 @@ plot_coef <-
     }
 
     if(is.null(columns))
-        columns <- 1:ncol(x)
+        columns <- seq_len(ncol(x))
 
     if(is.null(col)) {
         n_col <- length(columns)
@@ -104,7 +104,7 @@ plot_coef <-
         else if(n_col == 2) col <- c("slateblue", "violetred")
         else if (n_col==3) col=c("slateblue", "violetred", "green3")
         else if(n_col <= 8) col <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A",
-                "#66A61E", "#E6AB02", "#A6761D", "#666666")[1:n_col]
+                "#66A61E", "#E6AB02", "#A6761D", "#666666")[seq_len(n_col)]
         else
             stop("With >8 coefficients, you need to provide colors via col")
     } else {

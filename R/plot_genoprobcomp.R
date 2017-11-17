@@ -104,7 +104,7 @@ plot_genoprobcomp <-
             if(all(geno < 0)) {
                 if(any(geno > -1 | geno < -ncol(probs1)))
                     stop("negative geno should be in the range [", -ncol(probs1), " , -1]")
-                geno <- (1:ncol(probs1))[geno]
+                geno <- seq_len(ncol(probs1))[geno]
             }
             if(any(geno < 1 | geno > ncol(probs1)))
                 stop("numeric geno should be in the range [1, ", ncol(probs1))

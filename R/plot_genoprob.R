@@ -121,7 +121,7 @@ plot_genoprob <-
             if(all(geno < 0)) {
                 if(any(geno > -1 | geno < -ncol(probs)))
                     stop("negative geno should be in the range [", -ncol(probs), " , -1]")
-                geno <- (1:ncol(probs))[geno]
+                geno <- seq_len(ncol(probs))[geno]
             }
             if(any(geno < 1 | geno > ncol(probs)))
                 stop("numeric geno should be in the range [1, ", ncol(probs))
@@ -174,7 +174,7 @@ plot_genoprob_internal <-
     if(swap_axes) {
         probs <- t(probs)
 
-        x <- 1:nrow(probs)
+        x <- seq_len(nrow(probs))
         y <- map
 
         if(is.null(xlab)) xlab <- ""
@@ -187,7 +187,7 @@ plot_genoprob_internal <-
         xticklab <- rownames(probs)
 
         if(is.null(hlines)) hlines <- pretty(map, n=10)
-        if(is.null(vlines)) vlines <- 1:nrow(probs)
+        if(is.null(vlines)) vlines <- seq_len(nrow(probs))
 
         if(is.null(las)) las <- 2
     } else {
@@ -195,7 +195,7 @@ plot_genoprob_internal <-
         probs <- probs[,ncol(probs):1,drop=FALSE]
 
         x <- map
-        y <- 1:ncol(probs)
+        y <- seq_len(ncol(probs))
 
         if(is.null(xlab)) xlab <- "Position"
         if(is.null(ylab)) ylab <- ""
@@ -206,7 +206,7 @@ plot_genoprob_internal <-
         ytick <- y
         yticklab <- colnames(probs)
 
-        if(is.null(hlines)) hlines <- 1:nrow(probs)
+        if(is.null(hlines)) hlines <- seq_len(nrow(probs))
         if(is.null(vlines)) vlines <- pretty(map, n=10)
 
         if(is.null(las)) las <- 1
