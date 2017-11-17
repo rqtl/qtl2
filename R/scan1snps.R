@@ -191,10 +191,11 @@ scan1snps <-
     # set up parallel analysis
     cores <- setup_cluster(cores)
 
-    result <- cluster_lapply(cores, 1:nrow(batches), by_batch_func)
+    # the real work
+    result <- cluster_lapply(cores, seq_len(nrow(batches)), by_batch_func)
 
     # was one batch?
-    if(length(result)==1) return(result)
+    if(length(result)==1) return(result[[1]])
 
     # combine the multiple results
     ### lod scores are easy
@@ -210,7 +211,7 @@ scan1snps <-
         else offset <- 0
     }
     snpinfo <- do.call("rbind", lapply(result, "[[", "snpinfo"))
-    rownames(snpinfo) <- 1:nrow(snpinfo)
+    rownames(snpinfo) <- seq_len(nrow(snpinfo))
 
     list(lod=lod, snpinfo=snpinfo)
 }
@@ -252,7 +253,7 @@ scan1snps_snpinfo <-
 
     if(!keep_all_snps) {
         snpinfo <- snpinfo[unique(snpinfo$index),,drop=FALSE]
-        snpinfo$index <- 1:nrow(snpinfo)
+        snpinfo$index <- seq_len(nrow(snpinfo))
     }
 
     # return list with lod scores + indexed snpinfo
