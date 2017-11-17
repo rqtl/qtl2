@@ -86,6 +86,22 @@
 genoprob_to_snpprob <-
     function(genoprobs, snpinfo)
 {
+    if(nrow(snpinfo)==0) {
+        result <- genoprobs[,names(genoprobs)[1]]
+        if(length(attr(result, "alleles")) == ncol(result[[1]])) {
+            result[[1]] <- result[[1]][,1:2,numeric(0),drop=FALSE]
+            colnames(result[[1]]) <- c("A", "B")
+        } else if(attr(result, "is_x_chr")[1]) {
+            result[[1]] <- result[[1]][,1:5,numeric(0),drop=FALSE]
+            colnames(result[[1]]) <- c("AA", "AB", "BB", "AY", "BY")
+        } else {
+            result[[1]] <- result[[1]][,1:3,numeric(0),drop=FALSE]
+            colnames(result[[1]]) <- c("AA", "AB", "BB")
+        }
+        return(result)
+    }
+
+
     uchr <- unique(snpinfo$chr)
     chrID <- names(genoprobs)
     if(!all(uchr %in% chrID)) {
