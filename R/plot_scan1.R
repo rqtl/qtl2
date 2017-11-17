@@ -28,6 +28,8 @@
 #' A number of graphics parameters can be passed via `...`. For
 #' example, `bgcolor` to control the background color and
 #' `altbgcolor` to control the background color on alternate chromosomes.
+#' `col` controls the color of lines/curves; `altcol` can be used if
+#' you want alternative chromosomes in different colors.
 #' These are not included as formal parameters in order to avoid
 #' cluttering the function definition.
 #'
@@ -120,7 +122,8 @@ plot_scan1 <-
     plot_scan1_internal <-
         function(map, lod, add=FALSE, gap,
                  bgcolor="gray90", altbgcolor="gray85",
-                 lwd=2, col="darkslateblue", xlab=NULL, ylab="LOD score",
+                 lwd=2, col="darkslateblue", altcol=NULL,
+                 xlab=NULL, ylab="LOD score",
                  xlim=NULL, ylim=NULL, xaxs="i", yaxs="i",
                  main="", mgp.x=c(2.6, 0.5, 0), mgp.y=c(2.6, 0.5, 0),
                  mgp=NULL, las=1,
@@ -211,9 +214,13 @@ plot_scan1 <-
 
             # plot each chromosome
             indexes <- map_to_index(map)
-            for(i in seq(along=indexes))
+            for(i in seq(along=indexes)) {
+                # if altcol provided, have chromosomes alternate colors
+                this_col <- ifelse(is.null(altcol) || i %% 2, col, altcol)
+
                 lines(xpos[indexes[[i]]], lod[indexes[[i]]],
-                           lwd=lwd, col=col, ...)
+                           lwd=lwd, col=this_col, ...)
+            }
 
             # add box just in case
             box()

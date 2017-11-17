@@ -41,6 +41,8 @@ Plot LOD curves for a genome scan
 A number of graphics parameters can be passed via \code{...}. For
 example, \code{bgcolor} to control the background color and
 \code{altbgcolor} to control the background color on alternate chromosomes.
+\code{col} controls the color of lines/curves; \code{altcol} can be used if
+you want alternative chromosomes in different colors.
 These are not included as formal parameters in order to avoid
 cluttering the function definition.
 }
