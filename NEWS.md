@@ -1,3 +1,17 @@
+## qtl2plot 0.5-18 (2017-11-17)
+
+### New features
+
+- New (hidden) graphics paramater for `plot_scan1()`, `altcol`, for
+  having colors alternate between chromosomes, for the case of a
+  Manhattan plot particular of SNP association results.
+
+### Minor changes
+
+- Fixed `plot_snpasso()` so it can handle results for multiple
+  chromosomes.
+
+
 ## qtl2plot 0.5-17 (2017-11-08)
 
 ### New features
@@ -15,7 +29,7 @@
   `plot_pxg()` (to have the option of having genotypes on y-axis and
   phenotypes horizontally).
 
-## Minor changes
+### Minor changes
 
 - Throughout, changed arguments like `hlines.col` to use an underscore
   rather than a period: `hlines_col`.

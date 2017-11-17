@@ -106,16 +106,23 @@ plot_snpasso <-
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, ...)
 {
-    uindex <- unique(snpinfo$index)
-    if(length(uindex) != nrow(scan1output))
-        stop("Something is wrong with snpinfo$index.\n",
-             "      length(unique(snpinfo$index)) [",
-             length(unique(snpinfo$index)), "] != nrow(scan1output) [",
-             nrow(scan1output), "].")
+    snpinfo_spl <- split(snpinfo, snpinfo$chr)
 
-    if(any(snpinfo$index[uindex] != uindex))
+    uindex <- unlist(lapply(snpinfo_spl, function(a) unique(a$index)))
+    if(length(uindex) != nrow(scan1output)) {
         stop("Something is wrong with snpinfo$index.\n",
-             "      snpinfo$index[u] should == u for values in snpinfo$index")
+             "      no. unique indexes [",
+             length(uindex), "] != nrow(scan1output) [",
+             nrow(scan1output), "].")
+    }
+
+    for(i in seq_along(snpinfo_spl)) {
+        uindex <- unique(snpinfo_spl[[i]]$index)
+        if(any(snpinfo_spl[[i]]$index[uindex] != uindex)) {
+            stop("Something is wrong with snpinfo$index.\n",
+                 "      on each chr, index[u] should == u for each index u")
+        }
+    }
 
     map <- snpinfo_to_map(snpinfo)
 
@@ -181,8 +188,10 @@ expand_snp_results <-
 
         map[[i]] <- snpinfo[[i]]$pos
         names(map[[i]]) <- snpinfo[[i]]$snp
-        result <- rbind(result, unclass(snp_results)[lodindex[[i]],,drop=FALSE][revindex,,drop=FALSE])
-        rownames(result) <- snpinfo[[i]]$snp
+        this_result <- unclass(snp_results)[lodindex[[i]],,drop=FALSE][revindex,,drop=FALSE]
+        rownames(this_result) <- snpinfo[[i]]$snp
+
+        result <- rbind(result, this_result)
     }
 
     list(lod=result,
