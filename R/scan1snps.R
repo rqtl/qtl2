@@ -175,6 +175,13 @@ scan1snps <-
     {
         snpinfo <- query_func(batches$chr[i], batches$start[i], batches$end[i])
 
+        if(nrow(snpinfo) == 0) return( list(lod=NULL, snpinfo=snpinfo) )
+
+        # trim off end if necessary
+        if(i < nrow(batches) && batches$chr[i] == batches$chr[i+1] &&
+           batches$end[i] == batches$start[i+1])
+            snpinfo <- snpinfo[snpinfo$pos < batches$end[i], , drop=FALSE]
+
         scan1snps_snpinfo(genoprobs=genoprobs, map=map, pheno=pheno,
                           kinship=subset_kinship(kinship, chr=batches$chr[i]),
                           addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar,
