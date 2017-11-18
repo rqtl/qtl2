@@ -86,10 +86,10 @@
 #' probs <- calc_genoprob(DOex, error_prob=0.002)
 #'
 #' library(qtl2db)
-#' snpdb <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
-#' queryf <- create_variant_query_func(snpdb)
+#' snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+#' queryf <- create_variant_query_func(snpdb_file)
 #'
-#' out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=qf, chr=2, start=97, end=98)
+#' out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97, end=98)
 #' }
 #'
 #' @export
