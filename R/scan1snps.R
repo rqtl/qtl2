@@ -195,10 +195,14 @@ scan1snps <-
     # the real work
     result <- cluster_lapply(cores, seq_len(nrow(batches)), by_batch_func)
 
-    # was one batch?
+    # combine the multiple results
+    omit <- vapply(result, function(a) is.null(a$lod) || is.null(a$snpinfo) || nrow(a$snpinfo)==0, TRUE)
+    result <- result[!omit]
+
+    # one useful batch?
+    if(length(result)==0) return(NULL)
     if(length(result)==1) return(result[[1]])
 
-    # combine the multiple results
     ### lod scores are easy
     lod <- do.call("rbind", lapply(result, "[[", "lod"))
 
