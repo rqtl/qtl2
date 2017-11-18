@@ -2,11 +2,14 @@
 % Please edit documentation in R/plot_genoprob.R
 \name{plot_genoprob}
 \alias{plot_genoprob}
+\alias{plot.calc_genoprob}
 \title{Plot genotype probabilities for one individual on one chromosome.}
 \usage{
 plot_genoprob(probs, map, ind = 1, chr = NULL, geno = NULL,
   color_scheme = c("gray", "viridis"), col = NULL, threshold = 0,
   swap_axes = FALSE, ...)
+
+\method{plot}{calc_genoprob}(x, ...)
 }
 \arguments{
 \item{probs}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
@@ -32,6 +35,11 @@ this value somewhere on the chromosome will be shown.}
 on the x-axis and the chromosome position is on the y-axis.}
 
 \item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
+
+\item{x}{Genotype probabilities (as produced by
+[qtl2geno::calc_genoprob()]) or allele dosages (as produced by
+qtl2geno::genoprob_to_alleleprob()]). (For the S3 type plot
+function, this has to be called `x`.)}
 }
 \description{
 Plot the genotype probabilities for one individual on one chromosome, as a heat map.

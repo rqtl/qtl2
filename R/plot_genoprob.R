@@ -234,3 +234,12 @@ plot_genoprob_internal <-
     # add outer box
     box()
 }
+
+
+#' @export
+#' @rdname plot_genoprob
+#' @param x Genotype probabilities (as produced by
+#' [qtl2geno::calc_genoprob()]) or allele dosages (as produced by
+#' qtl2geno::genoprob_to_alleleprob()]). (For the S3 type plot
+#' function, this has to be called `x`.)
+plot.calc_genoprob <- function(x, ...) plot_genoprob(x, ...)
