@@ -185,7 +185,8 @@ scan1snps <-
         scan1snps_snpinfo(genoprobs=genoprobs, map=map, pheno=pheno,
                           kinship=subset_kinship(kinship, chr=batches$chr[i]),
                           addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar,
-                          weights=weights, reml=reml, model=model, snpinfo=snpinfo, ...)
+                          weights=weights, reml=reml, model=model, snpinfo=snpinfo,
+                          keep_all_snps=keep_all_snps, ...)
     }
 
     # set up parallel analysis
