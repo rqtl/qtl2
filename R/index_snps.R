@@ -64,7 +64,7 @@
 #' snpinfo <- index_snps(recla$pmap, snpinfo)
 #' }
 #'
-#' @seealso [genoprob_to_snpprob()]
+#' @seealso [genoprob_to_snpprob()], [scan1snps()]
 #' @export
 index_snps <-
     function(map, snpinfo, tol=1e-8)

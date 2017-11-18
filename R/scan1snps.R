@@ -74,7 +74,7 @@
 #' * Use [genoprob_to_snpprob()] to convert `genoprobs` to SNP probabilities.
 #' * Use [scan1()] to do a single-QTL scan at the SNPs.
 #'
-#' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [R/qtl2db](https://github.com/rqtl/qtl2db)
+#' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [R/qtl2db](https://github.com/rqtl/qtl2db), `plot_snpasso()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
 #'
 #' @examples
 #' \dontrun{

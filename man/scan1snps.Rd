@@ -116,13 +116,13 @@ DOex <- read_cross2(file)
 probs <- calc_genoprob(DOex, error_prob=0.002)
 
 library(qtl2db)
-snpdb <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
-queryf <- create_variant_query_func(snpdb)
+snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+queryf <- create_variant_query_func(snpdb_file)
 
-out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=qf, chr=2, start=97, end=98)
+out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97, end=98)
 }
 
 }
 \seealso{
-\code{\link[=scan1]{scan1()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=index_snps]{index_snps()}}, \href{https://github.com/rqtl/qtl2db}{R/qtl2db}
+\code{\link[=scan1]{scan1()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=index_snps]{index_snps()}}, \href{https://github.com/rqtl/qtl2db}{R/qtl2db}, \code{plot_snpasso()} in \href{https://github.com/rqtl/qtl2plot}{R/qtl2plot}
 }

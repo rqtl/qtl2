@@ -29,7 +29,7 @@ missing, the rownames are used).
 position at which genotype probabilities were already calculated.}
 }
 \value{
-A data frame containin the input \code{snpinfo} with three
+A data frame containing the input \code{snpinfo} with three
 added columns: \code{"index"} (which indicates the groups of
 equivalent SNPs), \code{"interval"} (which indicates the map
 interval containing the SNP, with values starting at 0), and
@@ -78,5 +78,5 @@ snpinfo <- index_snps(recla$pmap, snpinfo)
 
 }
 \seealso{
-\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}
+\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=scan1snps]{scan1snps()}}
 }

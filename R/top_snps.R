@@ -77,7 +77,7 @@
 #' top_snps(out_snps, snpinfo, 0.5)
 #' }
 #' @export
-#' @seealso [index_snps()], [genoprob_to_snpprob()], [qtl2plot::plot_snpasso()]
+#' @seealso [index_snps()], [genoprob_to_snpprob()], [scan1snps()], `plot_snpasso()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
 top_snps <-
     function(scan1_output, snpinfo, drop=1.5, show_all_snps=TRUE)
 {

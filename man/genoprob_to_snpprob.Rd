@@ -93,5 +93,5 @@ snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 
 }
 \seealso{
-\code{\link[=index_snps]{index_snps()}}, \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}
+\code{\link[=index_snps]{index_snps()}}, \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}, \code{\link[=scan1snps]{scan1snps()}}
 }

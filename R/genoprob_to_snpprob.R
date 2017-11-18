@@ -81,7 +81,7 @@
 #' snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 #' }
 #'
-#' @seealso [index_snps()], [qtl2geno::calc_genoprob()]
+#' @seealso [index_snps()], [qtl2geno::calc_genoprob()], [scan1snps()]
 #' @export
 genoprob_to_snpprob <-
     function(genoprobs, snpinfo)

@@ -86,5 +86,5 @@ top_snps(out_snps, snpinfo, 0.5)
 }
 }
 \seealso{
-\code{\link[=index_snps]{index_snps()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[qtl2plot:plot_snpasso]{qtl2plot::plot_snpasso()}}
+\code{\link[=index_snps]{index_snps()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=scan1snps]{scan1snps()}}, \code{plot_snpasso()} in \href{https://github.com/rqtl/qtl2plot}{R/qtl2plot}
 }
