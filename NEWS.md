@@ -1,3 +1,12 @@
+## qtl2scan 0.5-25 (2017-11-16)
+
+## New features
+
+- Added `scan1snps()` to do single-QTL scan at SNPs imputed from
+  founder genotypes; can be used to scan the full genome or a defined
+  region.
+
+
 ## qtl2scan 0.5-24 (2017-11-06)
 
 ### Minor changes

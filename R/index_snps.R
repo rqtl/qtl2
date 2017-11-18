@@ -24,8 +24,8 @@
 #' @param tol Tolerance for determining whether a SNP is exactly at a
 #' position at which genotype probabilities were already calculated.
 #'
-#' @return A data frame containin the input `snpinfo` with three
-#' added columns: `"index"` (which indicate the groups of
+#' @return A data frame containing the input `snpinfo` with three
+#' added columns: `"index"` (which indicates the groups of
 #' equivalent SNPs), `"interval"` (which indicates the map
 #' interval containing the SNP, with values starting at 0), and
 #' `on_map` (which indicates that the SNP is within
@@ -69,6 +69,11 @@
 index_snps <-
     function(map, snpinfo, tol=1e-8)
 {
+    if(nrow(snpinfo)==0) {
+        # no rows; return data frame with no rows
+        return( cbind(snpinfo, index=numeric(0), interval=numeric(0), on_map=logical(0)) )
+    }
+
     uchr <- unique(snpinfo$chr)
     chrID <- names(map)
     if(!all(uchr %in% chrID)) {

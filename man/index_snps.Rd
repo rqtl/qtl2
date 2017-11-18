@@ -30,7 +30,7 @@ position at which genotype probabilities were already calculated.}
 }
 \value{
 A data frame containin the input \code{snpinfo} with three
-added columns: \code{"index"} (which indicate the groups of
+added columns: \code{"index"} (which indicates the groups of
 equivalent SNPs), \code{"interval"} (which indicates the map
 interval containing the SNP, with values starting at 0), and
 \code{on_map} (which indicates that the SNP is within

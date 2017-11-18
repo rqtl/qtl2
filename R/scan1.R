@@ -284,6 +284,12 @@ scan1 <-
     # object to contain the LOD scores; also attr to contain sample size
     result <- matrix(nrow=totpos, ncol=ncol(pheno))
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
+    if(totpos==0) { # edge case of no genoprobs
+        colnames(result) <- colnames(pheno)
+        attr(result, "sample_size") <- n
+        class(result) <- c("scan1", "matrix")
+        return(result)
+    }
 
     if(n_cores(cores)==1) { # no parallel processing
         for(i in run_indexes) {
