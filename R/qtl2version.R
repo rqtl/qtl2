@@ -17,13 +17,13 @@ qtl2version <-
     function()
 {
     # grab all installed packages
-    z <- installed.packages(fields=c("Package", "Version"))
+    z <- installed.packages()
 
     # pull out those whose names start with "qtl2"
     qtl2 <- grep("^qtl2", z[,"Package"])
 
     # pull out the key columns, as a data frame
-    result <- as.data.frame(z[qtl2, , drop=FALSE],
+    result <- as.data.frame(z[qtl2,c("Package", "Version"),drop=FALSE],
                             stringsAsFactors=FALSE)
 
     # reorder to put core packages first
