@@ -23,10 +23,10 @@ NumericMatrix calc_errorlod(const String& crosstype,
     const int n_ind = genotypes.cols();
     const int n_mar = genotypes.rows();
     if(Rf_isNull(probs.attr("dim")))
-        throw std::invalid_argument("probs has no dimension attribute");
+        throw std::invalid_argument("probs should be a 3d array but has no dim attribute");
     const IntegerVector& dim_probs = probs.attr("dim");
     if(dim_probs.size() != 3)
-        throw std::invalid_argument("probs should be 3-dimensional array of probabilities");
+        throw std::invalid_argument("probs should be 3d array of probabilities");
     const double log_half = log(0.5);
 
     QTLCross* cross = QTLCross::Create(crosstype);

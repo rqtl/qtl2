@@ -50,10 +50,10 @@ IntegerMatrix count_xo_3d(const IntegerVector geno_array, // 3d array of genotyp
                           const bool is_X_chr)
 {
     if(Rf_isNull(geno_array.attr("dim")))
-        throw std::invalid_argument("geno_array has no dimension attribute");
+        throw std::invalid_argument("geno_array should be a 3d array but has no dim attribute");
     const IntegerVector& dim = geno_array.attr("dim");
     if(dim.size() != 3)
-        throw std::invalid_argument("geno_array should be 3-dimensional array of genotypes");
+        throw std::invalid_argument("geno_array should be 3d array of genotypes");
     const int n_pos = dim[0];
     const int n_ind = dim[1];
     const int n_imp = dim[2];

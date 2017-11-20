@@ -12,10 +12,10 @@ NumericVector genoprob_to_alleleprob(const String& crosstype,
                                      const bool is_x_chr)
 {
     if(Rf_isNull(prob_array.attr("dim")))
-        throw std::invalid_argument("prob_array has no dimension attribute");
+        throw std::invalid_argument("prob_array should be a 3d array but has no dimension attribute");
     const IntegerVector& dim = prob_array.attr("dim");
     if(dim.size() != 3)
-        throw std::invalid_argument("prob_array should be 3-dimensional array of probabilities");
+        throw std::invalid_argument("prob_array should be a 3d array of probabilities");
     const int n_gen = dim[0];
     const int n_ind = dim[1];
     const int n_pos = dim[2];

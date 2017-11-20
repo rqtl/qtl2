@@ -10,9 +10,11 @@ NumericVector interp_genoprob_onechr(const NumericVector& genoprob,
                                      const IntegerVector& pos_index)
 {
     // get dimensions
+    if(Rf_isNull(genoprob.attr("dim")))
+        throw std::invalid_argument("genoprob should be a 3d array but has no dim attribute");
     const IntegerVector& d = genoprob.attr("dim");
     if(d.size() != 3)
-        throw std::invalid_argument("genoprob shoudl be a 3d array");
+        throw std::invalid_argument("genoprob should be a 3d array");
     const int n_ind = d[0];
     const int n_gen = d[1];
     const int n_mar = d[2];
