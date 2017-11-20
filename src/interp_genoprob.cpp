@@ -35,7 +35,7 @@ NumericVector interp_genoprob_onechr(const NumericVector& genoprob,
 
     // find position to the right that has genoprobs
     IntegerVector right_index(n_pos);
-    last = n_pos;
+    last = -1;
     for(int pos=n_pos-1; pos>=0; pos--) {
         if(pos_index[pos] >= 0) last = pos;
         right_index[pos] = last;
@@ -66,12 +66,12 @@ NumericVector interp_genoprob_onechr(const NumericVector& genoprob,
             }
 
             for(int ind=0; ind<n_ind; ind++) {
-                for(int gen=0; gen<n_ind; gen++) {
+                for(int gen=0; gen<n_gen; gen++) {
                     result[ind + gen*n_ind + pos*matsize] = 0.0;
-                    if(q > 0)
+                    if(p > 0)
                         result[ind + gen*n_ind + pos*matsize] +=
                             (q*genoprob[ind + gen*n_ind + pos_index[left_index[pos]]*matsize]);
-                    if(p > 0)
+                    if(q > 0)
                         result[ind + gen*n_ind + pos*matsize] +=
                             (p*genoprob[ind + gen*n_ind + pos_index[right_index[pos]]*matsize]);
                 }

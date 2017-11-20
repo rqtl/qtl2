@@ -13,13 +13,21 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
-#' @return An object like the input `probs` but with additional positions present in `map`.
+#' @return An object like the input `probs` but with additional
+#' positions present in `map`.
 #'
-#' @details We reduce `probs` to those present in `map` and then
+#' @details We reduce `probs` to the positions present in `map` and then
 #' interpolate the genotype probabilities at additional positions
 #' in `map` by linear interpolation using the two adjacent
 #' positions. Off the ends, we just copy over the first or last
 #' value unchanged.
+#'
+#' In general, it's better to use [insert_pseudomarkers()] and
+#' [calc_genoprobs()] to get genotype probabilities at additional
+#' positions along a chromosome. This function is a **very** crude
+#' alternative that was implemented in order to compare genotype
+#' probabilities derived by different methods, where we first need to
+#' get them onto a common set of positions.
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
@@ -48,6 +56,10 @@ interp_genoprob <-
     cores <- setup_cluster(cores, quiet)
     result <- cluster_lapply(cores, seq_along(map), interp_genoprob_onechr, probs=probs, map=map)
 
+    names(result) <- names(probs)
+    for(x in c("crosstype", "is_x_chr", "alleles", "alleleprobs", "class"))
+        attr(result, x) <- attr(probs, x)
+
     result
 }
 
@@ -73,7 +85,7 @@ interp_genoprob_onechr <-
     m <- match(markers, pmar)
     if(any(diff(m) < 0)) stop("probs positions out of order on chr ", chr)
 
-    pos_index <- match(pmar, markers)
+    pos_index <- match(pmar, markers) - 1 # indexes start at 0
     if(!any(is.na(pos_index))) return(probs) # no new positions
     pos_index[is.na(pos_index)] <- -1
 

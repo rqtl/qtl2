@@ -18,17 +18,25 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-An object like the input \code{probs} but with additional positions present in \code{map}.
+An object like the input \code{probs} but with additional
+positions present in \code{map}.
 }
 \description{
 Linear interpolation of genotype probabilities, mostly to get two sets onto the same map for comparison purposes.
 }
 \details{
-We reduce \code{probs} to those present in \code{map} and then
+We reduce \code{probs} to the positions present in \code{map} and then
 interpolate the genotype probabilities at additional positions
 in \code{map} by linear interpolation using the two adjacent
 positions. Off the ends, we just copy over the first or last
 value unchanged.
+
+In general, it's better to use \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}} and
+\code{\link[=calc_genoprobs]{calc_genoprobs()}} to get genotype probabilities at additional
+positions along a chromosome. This function is a \strong{very} crude
+alternative that was implemented in order to compare genotype
+probabilities derived by different methods, where we first need to
+get them onto a common set of positions.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
