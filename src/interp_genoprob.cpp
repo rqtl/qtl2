@@ -70,10 +70,10 @@ NumericVector interp_genoprob_onechr(const NumericVector& genoprob,
                     result[ind + gen*n_ind + pos*matsize] = 0.0;
                     if(p > 0)
                         result[ind + gen*n_ind + pos*matsize] +=
-                            (q*genoprob[ind + gen*n_ind + pos_index[left_index[pos]]*matsize]);
+                            (p*genoprob[ind + gen*n_ind + pos_index[left_index[pos]]*matsize]);
                     if(q > 0)
                         result[ind + gen*n_ind + pos*matsize] +=
-                            (p*genoprob[ind + gen*n_ind + pos_index[right_index[pos]]*matsize]);
+                            (q*genoprob[ind + gen*n_ind + pos_index[right_index[pos]]*matsize]);
                 }
             }
         }
