@@ -17,7 +17,6 @@ NumericVector interp_genoprob_onechr(const NumericVector& genoprob,
         throw std::invalid_argument("genoprob should be a 3d array");
     const int n_ind = d[0];
     const int n_gen = d[1];
-    const int n_mar = d[2];
     const int matsize = n_ind * n_gen;
     const int n_pos = map.size();
     if(pos_index.size() != n_pos) {
