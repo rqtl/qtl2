@@ -1,3 +1,13 @@
+## qtl2geno 0.5-38 (2017-11-20)
+
+### New features
+
+- Added `interp_genoprob()` for linear interpolation of genotype
+  probabilities, useful when comparing two sets of genotype
+  probabilities derived by different methods and calculated at
+  slightly different positions.
+
+
 ## qtl2geno 0.5-37 (2017-11-09)
 
 ### Minor changes
