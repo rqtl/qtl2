@@ -1,7 +1,9 @@
 ---
 title: Changes in R/qtl2 version 0.5
-description: Changes to the data structures in R/qtl2 version 0.5
-output: rmarkdown::html_vignette
+output:
+    html_document:
+        toc: true
+        toc_float: true
 ---
 
 <meta name="description" content="Changes to the data structures in R/qtl2 version 0.5">
@@ -206,3 +208,8 @@ table.
 ```{r top_snps}
 top_snps(out_snps, snpinfo)
 ```
+
+---
+
+[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](http://kbroman.org)

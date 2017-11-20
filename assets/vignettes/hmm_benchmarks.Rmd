@@ -1,6 +1,9 @@
 ---
 title: Benchmarks of HMM routines
-output: rmarkdown::html_vignette
+output:
+    html_document:
+        toc: true
+        toc_float: true
 ---
 
 <meta name="description" content="Benchmarks for HMM calculations in R/qtl2">
@@ -190,3 +193,8 @@ The following shows the R and package versions I was using.
 ```{r sessionInfo, results="markup"}
 devtools::session_info()
 ```
+
+---
+
+[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](http://kbroman.org)

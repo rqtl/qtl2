@@ -1,6 +1,9 @@
 ---
 title: R/qtl2 user guide
-output: rmarkdown::html_vignette
+output:
+    html_document:
+        toc: true
+        toc_float: true
 ---
 
 <meta name="description" content="User guide for R/qtl2, a reimplementation of the QTL analysis software R/qtl, to better handle high-dimensional data and complex cross designs.">
@@ -1253,3 +1256,8 @@ We can highlight these top SNPs in the SNP association plot using the
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps, snpinfo, drop=1.5)
 ```
+
+---
+
+[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](http://kbroman.org)

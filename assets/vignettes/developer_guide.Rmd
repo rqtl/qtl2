@@ -1,6 +1,10 @@
 ---
 title: R/qtl2 developer guide
-output: rmarkdown::html_vignette
+output:
+    html_document:
+        toc: true
+        toc_depth: 2
+        toc_float: true
 ---
 
 <meta name="description" content="Developer guide for R/qtl2, a reimplementation of the QTL analysis software R/qtl, to better handle high-dimensional data and complex cross designs.">
@@ -511,3 +515,8 @@ For more detail, see
 ## Documentation with [Roxygen2](https://github.com/klutometis/roxygen)
 
 ## Tests with [testthat](https://github.com/hadley/testthat)
+
+---
+
+[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](http://kbroman.org)

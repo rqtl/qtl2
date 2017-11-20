@@ -1,6 +1,9 @@
 ---
 title: R/qtl2 input file format
-output: rmarkdown::html_vignette
+output:
+    html_document:
+        toc: true
+        toc_float: true
 ---
 
 <meta name="description" content="Input file format for R/qtl2">
@@ -924,3 +927,8 @@ The json equivalent is:
 ```
 "cross_info": {"covar": "n_gen"}
 ```
+
+---
+
+[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](http://kbroman.org)
