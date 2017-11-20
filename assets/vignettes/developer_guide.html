@@ -253,7 +253,6 @@ div.tocify {
 <p>The basic data structure in <a href="https://rqtl.org">R/qtl</a>, the <code>&quot;cross&quot;</code> class, has been redesigned.</p>
 <p>A basic principle in the new design is to have the data as close as possible in the form in which it will be used, and to have a more-flat (i.e., less nested) data structure. So don’t entangle the marker maps with the genotype data, and pull out the sex information rather than have to find it within the phenotype data whenever it is needed.</p>
 <p>A key design decision concerns whether to split out the genotype data and marker maps by chromosome, or to keep them as a simpler table. I’m choosing to have these data split out by chromosome, as much of the analysis tends to proceed by chromosome, and it tends to be easier to combine then to split.</p>
-<p><strong>Note: I am fully open to modifying this design. I would be glad for suggestions.</strong></p>
 <p>The data remains a list, now of class <code>&quot;cross2&quot;</code>. It has many components (some of them optional) in unspecified order; the names of the components are what matter.</p>
 <div id="cross-type-crosstype" class="section level3">
 <h3>Cross type (<code>&quot;crosstype&quot;</code>)</h3>

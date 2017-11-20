@@ -64,8 +64,6 @@ choosing to have these data split out by chromosome, as much of the
 analysis tends to proceed by chromosome, and it tends to be easier to
 combine then to split.
 
-**Note: I am fully open to modifying this design. I would be glad for suggestions.**
-
 The data remains a list, now of class `"cross2"`. It has many
 components (some of them optional) in unspecified order; the names of
 the components are what matter.
