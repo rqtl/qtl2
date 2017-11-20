@@ -23,7 +23,7 @@
 #' value unchanged.
 #'
 #' In general, it's better to use [insert_pseudomarkers()] and
-#' [calc_genoprobs()] to get genotype probabilities at additional
+#' [calc_genoprob()] to get genotype probabilities at additional
 #' positions along a chromosome. This function is a **very** crude
 #' alternative that was implemented in order to compare genotype
 #' probabilities derived by different methods, where we first need to
@@ -53,7 +53,7 @@ interp_genoprob <-
     }
 
     # set up cluster
-    cores <- setup_cluster(cores, quiet)
+    cores <- setup_cluster(cores)
     result <- cluster_lapply(cores, seq_along(map), interp_genoprob_onechr, probs=probs, map=map)
 
     names(result) <- names(probs)

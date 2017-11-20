@@ -32,7 +32,7 @@ positions. Off the ends, we just copy over the first or last
 value unchanged.
 
 In general, it's better to use \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}} and
-\code{\link[=calc_genoprobs]{calc_genoprobs()}} to get genotype probabilities at additional
+\code{\link[=calc_genoprob]{calc_genoprob()}} to get genotype probabilities at additional
 positions along a chromosome. This function is a \strong{very} crude
 alternative that was implemented in order to compare genotype
 probabilities derived by different methods, where we first need to
