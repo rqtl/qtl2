@@ -27,7 +27,11 @@ NumericMatrix scancoef_hk_addcovar(const NumericVector& genoprobs,
                                    const double tol=1e-12)
 {
     const int n_ind = pheno.size();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_gen = d[1];
     const int n_weights = weights.size();
@@ -86,7 +90,11 @@ NumericMatrix scancoef_hk_intcovar(const NumericVector& genoprobs,
                                    const double tol=1e-12)
 {
     const int n_ind = pheno.size();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_gen = d[1];
     const int n_weights = weights.size();
@@ -137,7 +145,11 @@ List scancoefSE_hk_addcovar(const NumericVector& genoprobs,
                             const double tol=1e-12)
 {
     const int n_ind = pheno.size();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_gen = d[1];
     const int n_weights = weights.size();
@@ -202,7 +214,11 @@ List scancoefSE_hk_intcovar(const NumericVector& genoprobs,
                             const double tol=1e-12)
 {
     const int n_ind = pheno.size();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_gen = d[1];
     const int n_weights = weights.size();

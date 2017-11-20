@@ -22,7 +22,11 @@ NumericMatrix scan_hk_onechr_nocovar(const NumericVector& genoprobs, const Numer
 {
     const int n_ind = pheno.rows();
     const int n_phe = pheno.cols();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_gen = d[1];
     const int x_size = n_ind * n_gen;
@@ -60,7 +64,11 @@ NumericMatrix scan_hk_onechr(const NumericVector& genoprobs, const NumericMatrix
                              const NumericMatrix& addcovar, const double tol=1e-12)
 {
     const int n_ind = pheno.rows();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -88,7 +96,11 @@ NumericMatrix scan_hk_onechr_weighted(const NumericVector& genoprobs, const Nume
                                       const double tol=1e-12)
 {
     const int n_ind = pheno.rows();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -130,7 +142,11 @@ NumericMatrix scan_hk_onechr_intcovar_highmem(const NumericVector& genoprobs,
                                               const double tol=1e-12)
 {
     const int n_ind = pheno.rows();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -171,7 +187,11 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_highmem(const NumericVector& geno
                                                        const double tol=1e-12)
 {
     const int n_ind = pheno.rows();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
     if(n_ind != addcovar.rows())
@@ -218,7 +238,11 @@ NumericMatrix scan_hk_onechr_intcovar_lowmem(const NumericVector& genoprobs,
                                              const double tol=1e-12)
 {
     const int n_ind = pheno.rows();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_phe = pheno.cols();
     if(n_ind != d[0])
@@ -266,7 +290,11 @@ NumericMatrix scan_hk_onechr_intcovar_weighted_lowmem(const NumericVector& genop
                                                       const double tol=1e-12)
 {
     const int n_ind = pheno.rows();
+    if(Rf_isNull(genoprobs.attr("dim")))
+        throw std::invalid_argument("genoprobs should be a 3d array but has no dim attribute");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     const int n_phe = pheno.cols();
     if(n_ind != d[0])

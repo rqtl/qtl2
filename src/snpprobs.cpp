@@ -66,12 +66,16 @@ IntegerMatrix invert_sdp(const IntegerVector& sdp, const int n_str)
 // on_map = logical vector indicating snp is at left endpoint of interval
 //
 // [[Rcpp::export(".alleleprob_to_snpprob")]]
-NumericVector alleleprob_to_snpprob(NumericVector alleleprob,
-                                    IntegerVector sdp,
-                                    IntegerVector interval,
-                                    LogicalVector on_map)
+NumericVector alleleprob_to_snpprob(const NumericVector& alleleprob,
+                                    const IntegerVector& sdp,
+                                    const IntegerVector& interval,
+                                    const LogicalVector& on_map)
 {
+    if(Rf_isNull(alleleprob.attr("dim")))
+        throw std::invalid_argument("alleleprob should be a 3d array but has no dim attribute");
     const IntegerVector& d = alleleprob.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("alleleprob should be a 3d array");
     const int n_ind = d[0];
     const int n_str = d[1];
     const int n_pos = d[2];
@@ -165,12 +169,16 @@ IntegerVector genocol_to_snpcol(const int n_str, const int sdp)
 // on_map = logical vector indicating snp is at left endpoint of interval
 //
 // [[Rcpp::export(".genoprob_to_snpprob")]]
-NumericVector genoprob_to_snpprob(NumericVector genoprob,
-                                  IntegerVector sdp,
-                                  IntegerVector interval,
-                                  LogicalVector on_map)
+NumericVector genoprob_to_snpprob(const NumericVector& genoprob,
+                                  const IntegerVector& sdp,
+                                  const IntegerVector& interval,
+                                  const LogicalVector& on_map)
 {
+    if(Rf_isNull(genoprob.attr("dim")))
+        throw std::invalid_argument("genoprob should be a 3d array but has no dim attribute");
     const IntegerVector& d = genoprob.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprob should be a 3d array");
     const int n_ind = d[0];
     const int n_gen = d[1];
     const int n_str = (sqrt(8*n_gen + 1) - 1)/2;
@@ -273,12 +281,16 @@ IntegerVector Xgenocol_to_snpcol(const int n_str, const int sdp)
 // on_map = logical vector indicating snp is at left endpoint of interval
 //
 // [[Rcpp::export(".Xgenoprob_to_snpprob")]]
-NumericVector Xgenoprob_to_snpprob(NumericVector genoprob,
-                                   IntegerVector sdp,
-                                   IntegerVector interval,
-                                   LogicalVector on_map)
+NumericVector Xgenoprob_to_snpprob(const NumericVector& genoprob,
+                                   const IntegerVector& sdp,
+                                   const IntegerVector& interval,
+                                   const LogicalVector& on_map)
 {
+    if(Rf_isNull(genoprob.attr("dim")))
+        throw std::invalid_argument("genoprob should be a 3d array but has no dim attribute");
     const IntegerVector& d = genoprob.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprob should be a 3d array");
     const int n_ind = d[0];
     const int n_gen = d[1];
     const int n_str = (sqrt(8*n_gen + 9) - 3)/2;

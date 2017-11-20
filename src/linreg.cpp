@@ -48,7 +48,11 @@ NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& 
                                    const double tol=1e-12)
 {
     const int nrowx = X.rows();
+    if(Rf_isNull(P.attr("dim")))
+        throw std::invalid_argument("P should be a 3d array but has no dim attribute");
     const Dimension d = P.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("P should be a 3d array");
     if(d[0] != nrowx)
         throw std::range_error("nrow(X) != nrow(P)");
 

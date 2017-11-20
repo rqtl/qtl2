@@ -32,6 +32,8 @@ NumericVector scan_pg_onechr(const NumericVector& genoprobs, const NumericMatrix
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("ncol(pheno) != nrow(genoprobs)");
@@ -101,6 +103,8 @@ NumericVector scan_pg_onechr_intcovar_highmem(const NumericVector& genoprobs,
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");
@@ -175,6 +179,8 @@ NumericVector scan_pg_onechr_intcovar_lowmem(const NumericVector& genoprobs,
     if(pheno.cols() != 1)
         throw std::range_error("ncol(pheno) != 1");
     const Dimension d = genoprobs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("genoprobs should be a 3d array");
     const int n_pos = d[2];
     if(n_ind != d[0])
         throw std::range_error("nrow(pheno) != nrow(genoprobs)");

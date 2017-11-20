@@ -68,7 +68,7 @@ NumericVector interpolate_map(const NumericVector& oldpos, const NumericVector& 
 // [[Rcpp::export]]
 IntegerMatrix find_intervals(const NumericVector& pos,
                              const NumericVector& map,
-                             double tol=1e-8)
+                             const double tol=1e-8)
 {
     const int n_pos = pos.size();
     const int n_map = map.size();

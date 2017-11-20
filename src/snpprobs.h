@@ -27,10 +27,10 @@ Rcpp::IntegerMatrix invert_sdp(const Rcpp::IntegerVector& sdp, const int n_str);
 // sdp = vector of strain distribution patterns
 // interval = map interval containing snp
 // on_map = logical vector indicating snp is at left endpoint of interval
-Rcpp::NumericVector alleleprob_to_snpprob(Rcpp::NumericVector alleleprob,
-                                          Rcpp::IntegerVector sdp,
-                                          Rcpp::IntegerVector interval,
-                                          Rcpp::LogicalVector on_map);
+Rcpp::NumericVector alleleprob_to_snpprob(const Rcpp::NumericVector& alleleprob,
+                                          const Rcpp::IntegerVector& sdp,
+                                          const Rcpp::IntegerVector& interval,
+                                          const Rcpp::LogicalVector& on_map);
 
 
 // convert genotype columns to SNP columns
@@ -46,10 +46,10 @@ Rcpp::IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
 // sdp = vector of strain distribution patterns
 // interval = map interval containing snp
 // on_map = logical vector indicating snp is at left endpoint of interval
-Rcpp::NumericVector genoprob_to_snpprob(Rcpp::NumericVector genoprob,
-                                        Rcpp::IntegerVector sdp,
-                                        Rcpp::IntegerVector interval,
-                                        Rcpp::LogicalVector on_map);
+Rcpp::NumericVector genoprob_to_snpprob(const Rcpp::NumericVector& genoprob,
+                                        const Rcpp::IntegerVector& sdp,
+                                        const Rcpp::IntegerVector& interval,
+                                        const Rcpp::LogicalVector& on_map);
 
 
 // convert X genotype columns to SNP columns
@@ -67,9 +67,9 @@ Rcpp::IntegerVector genocol_to_snpcol(const int n_str, const int sdp);
 // sdp = vector of strain distribution patterns
 // interval = map interval containing snp
 // on_map = logical vector indicating snp is at left endpoint of interval
-Rcpp::NumericVector Xgenoprob_to_snpprob(Rcpp::NumericVector genoprob,
-                                         Rcpp::IntegerVector sdp,
-                                         Rcpp::IntegerVector interval,
-                                         Rcpp::LogicalVector on_map);
+Rcpp::NumericVector Xgenoprob_to_snpprob(const Rcpp::NumericVector& genoprob,
+                                         const Rcpp::IntegerVector& sdp,
+                                         const Rcpp::IntegerVector& interval,
+                                         const Rcpp::LogicalVector& on_map);
 
 #endif // SNPPROBS_H

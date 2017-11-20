@@ -106,7 +106,13 @@ NumericMatrix formX_intcovar(const NumericVector& probs,
                              const bool has_intercept=true)
 {
 
+    if(Rf_isNull(probs.attr("dim")))
+        throw std::invalid_argument("probs should be a matrix or 3d array but has no dim attribute");
     const Dimension d = probs.attr("dim");
+    if(d.size() < 2)
+        throw std::invalid_argument("probs should be a matrix or 3d array");
+    if(position != 0 && d.size() != 3)
+        throw std::invalid_argument("probs should be a 3d array");
     const int nrow  = d[0];
     const int ngen = d[1];
     const int recsize = nrow*ngen;
@@ -164,7 +170,11 @@ NumericMatrix formX_intcovar(const NumericVector& probs,
 NumericVector expand_genoprobs_intcovar(const NumericVector& probs, // 3d array ind x prob x pos
                                         const NumericMatrix& intcovar)
 {
+    if(Rf_isNull(probs.attr("dim")))
+        throw std::invalid_argument("probs should be a 3d array but has no dim attribute");
     Dimension d = probs.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("probs should be a 3d array");
     const int nrow  = d[0];
     const int ngen = d[1];
     const int npos = d[2];
@@ -224,7 +234,11 @@ NumericMatrix weighted_matrix(const NumericMatrix& mat,
 NumericVector weighted_3darray(const NumericVector& array,
                                const NumericVector& weights)
 {
+    if(Rf_isNull(array.attr("dim")))
+        throw std::invalid_argument("array should be a 3d array but has no dim attribute");
     const Dimension d = array.attr("dim");
+    if(d.size() != 3)
+        throw std::invalid_argument("array should be a 3d array");
     const int n = d[0];
     const int ncol = d[1]*d[2];
     if(n != weights.size())
@@ -276,7 +290,7 @@ NumericVector matrix_x_3darray(const NumericMatrix& X,
                                NumericVector& A)
 {
     if(Rf_isNull(A.attr("dim")))
-        throw std::invalid_argument("A has no dimension attribute");
+        throw std::invalid_argument("A should be a 3d array but has no dim attribute");
     Dimension d = A.attr("dim");
     if(d.size() != 3)
         throw std::invalid_argument("A should be 3-dimensional array");

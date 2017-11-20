@@ -23,6 +23,6 @@ Rcpp::NumericVector interpolate_map(const Rcpp::NumericVector& oldpos,
 //
 Rcpp::IntegerMatrix find_intervals(const Rcpp::NumericVector& pos,
                                    const Rcpp::NumericVector& map,
-                                   double tol);
+                                   const double tol);
 
 #endif // INTERPOLATE_MAPS_H
