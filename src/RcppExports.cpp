@@ -518,6 +518,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// interp_genoprob_onechr
+NumericVector interp_genoprob_onechr(const NumericVector& genoprob, const NumericVector& map, const IntegerVector& pos_index);
+RcppExport SEXP _qtl2geno_interp_genoprob_onechr(SEXP genoprobSEXP, SEXP mapSEXP, SEXP pos_indexSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type genoprob(genoprobSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type map(mapSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type pos_index(pos_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(interp_genoprob_onechr(genoprob, map, pos_index));
+    return rcpp_result_gen;
+END_RCPP
+}
 // locate_xo
 List locate_xo(const IntegerMatrix geno, const NumericVector map, const String& crosstype, const bool is_X_chr);
 RcppExport SEXP _qtl2geno_locate_xo(SEXP genoSEXP, SEXP mapSEXP, SEXP crosstypeSEXP, SEXP is_X_chrSEXP) {
@@ -786,6 +799,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2geno_subtrlog", (DL_FUNC) &_qtl2geno_subtrlog, 2},
     {"_qtl2geno_viterbi", (DL_FUNC) &_qtl2geno_viterbi, 9},
     {"_qtl2geno_viterbi2", (DL_FUNC) &_qtl2geno_viterbi2, 9},
+    {"_qtl2geno_interp_genoprob_onechr", (DL_FUNC) &_qtl2geno_interp_genoprob_onechr, 3},
     {"_qtl2geno_locate_xo", (DL_FUNC) &_qtl2geno_locate_xo, 4},
     {"_qtl2geno_maxmarg", (DL_FUNC) &_qtl2geno_maxmarg, 3},
     {"_qtl2geno_reduce_markers", (DL_FUNC) &_qtl2geno_reduce_markers, 3},
