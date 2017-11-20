@@ -519,15 +519,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // interp_genoprob_onechr
-NumericVector interp_genoprob_onechr(const NumericVector& genoprob, const NumericVector& map, const LogicalVector& is_new_pos);
-RcppExport SEXP _qtl2geno_interp_genoprob_onechr(SEXP genoprobSEXP, SEXP mapSEXP, SEXP is_new_posSEXP) {
+NumericVector interp_genoprob_onechr(const NumericVector& genoprob, const NumericVector& map, const IntegerVector& pos_index);
+RcppExport SEXP _qtl2geno_interp_genoprob_onechr(SEXP genoprobSEXP, SEXP mapSEXP, SEXP pos_indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericVector& >::type genoprob(genoprobSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type map(mapSEXP);
-    Rcpp::traits::input_parameter< const LogicalVector& >::type is_new_pos(is_new_posSEXP);
-    rcpp_result_gen = Rcpp::wrap(interp_genoprob_onechr(genoprob, map, is_new_pos));
+    Rcpp::traits::input_parameter< const IntegerVector& >::type pos_index(pos_indexSEXP);
+    rcpp_result_gen = Rcpp::wrap(interp_genoprob_onechr(genoprob, map, pos_index));
     return rcpp_result_gen;
 END_RCPP
 }

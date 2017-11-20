@@ -6,6 +6,6 @@
 
 Rcpp::NumericVector interp_genoprob_onechr(const Rcpp::NumericVector& genoprob,
                                            const Rcpp::NumericVector& map,
-                                           const Rcpp::LogicalVector& is_new_pos);
+                                           const Rcpp::IntegerVector& pos_index);
 
 #endif // INTERP_GENOPROB_H

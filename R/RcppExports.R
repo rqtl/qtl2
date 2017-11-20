@@ -145,8 +145,8 @@ subtrlog <- function(a, b) {
     .Call(`_qtl2geno_viterbi2`, crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob)
 }
 
-.interp_genoprob_onechr <- function(genoprob, map, is_new_pos) {
-    .Call(`_qtl2geno_interp_genoprob_onechr`, genoprob, map, is_new_pos)
+.interp_genoprob_onechr <- function(genoprob, map, pos_index) {
+    .Call(`_qtl2geno_interp_genoprob_onechr`, genoprob, map, pos_index)
 }
 
 .locate_xo <- function(geno, map, crosstype, is_X_chr) {

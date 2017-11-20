@@ -69,10 +69,15 @@ interp_genoprob_onechr <-
         markers <- markers[keep]
     }
 
-    is_new_pos <- !(pmar %in% markers)
-    if(!any(is_new_pos)) return(probs)
+    # check that the marker order didn't change
+    m <- match(markers, pmar)
+    if(any(diff(m) < 0)) stop("probs positions out of order on chr ", chr)
 
-    result <- .interp_genoprob_onechr(probs, map, is_new_pos)
+    pos_index <- match(pmar, markers)
+    if(!any(is.na(pos_index))) return(probs) # no new positions
+    pos_index[is.na(pos_index)] <- -1
+
+    result <- .interp_genoprob_onechr(probs, map, pos_index)
     dimnames(result) <- c(dimnames(probs)[1:2], list(pmar))
 
     result
