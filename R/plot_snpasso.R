@@ -142,12 +142,12 @@ plot_snpasso <-
                  drop_hilit=NA, col_hilit="violetred",
                  drop.hilit=NULL, col.hilit=NULL, ...)
     {
-        if(missing(drop_hilit) && !is.null(drop.hilit)) {
+        if(!is.null(drop.hilit)) {
             warning("drop.hilit is deprecated; use drop_hilit")
             drop_hilit <- drop.hilit
         }
 
-        if(missing(col_hilit) && !is.null(col.hilit)) {
+        if(!is.null(col.hilit)) {
             warning("col.hilit is deprecated; use col_hilit")
             col_hilit <- col.hilit
         }
@@ -155,8 +155,9 @@ plot_snpasso <-
         if(is.null(ylim))
             ylim <- c(0, maxlod*1.02)
 
-        if(!is.na(drop_hilit) && !is.null(drop_hilit))
+        if(!is.na(drop_hilit) && !is.null(drop_hilit)) {
             col <- c(col, col_hilit)[(scan1output >= maxlod-drop_hilit)+1]
+        }
 
         plot_scan1(scan1output, map, lodcolumn=1, bgcolor=bgcolor, altbgcolor=altbgcolor, ylim=ylim,
                    gap=gap, add=add, col = col, type="p", cex=cex, pch=pch, ...)

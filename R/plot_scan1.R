@@ -216,7 +216,8 @@ plot_scan1 <-
             indexes <- map_to_index(map)
             for(i in seq(along=indexes)) {
                 # if altcol provided, have chromosomes alternate colors
-                this_col <- ifelse(is.null(altcol) || i %% 2, col, altcol)
+                if(is.null(altcol) || i %% 2) this_col <- col
+                else this_col <- altcol
 
                 lines(xpos[indexes[[i]]], lod[indexes[[i]]],
                            lwd=lwd, col=this_col, ...)
