@@ -968,8 +968,7 @@ reduced set of markers.
 You can download the data from a single zip file, as follows:
 
 ```{r read_DOex_data}
-file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip"
 DOex <- read_cross2(file)
 ```
 
@@ -986,8 +985,7 @@ apr <- genoprob_to_alleleprob(pr)
 
 ```{r download_alleleprobs, echo=FALSE, results="hide"}
 tmpfile <- tempfile()
-file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex_alleleprobs.rds")
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex_alleleprobs.rds"
 download.file(file, tmpfile, quiet=TRUE)
 apr <- readRDS(tmpfile)
 unlink(tmpfile)
@@ -1006,6 +1004,13 @@ IDs as names.
 ```{r DOex_create_sex_covar}
 sex <- (DOex$covar$Sex == "male")*1
 names(sex) <- rownames(DOex$covar)
+```
+
+Note that you can create the vector and assign the names in one step
+using the basic R function `setNames()`.
+
+```{r DOex_create_sex_covar_again}
+sex <- setNames( (DOex$covar$Sex == "male")*1, rownames(DOex$covar) )
 ```
 
 We perform a genome scan with a linear mixed model (adjusting for
@@ -1042,6 +1047,15 @@ with the _official_ colors.
 ```{r plot_DOex_effects}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
+legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
+```
+
+If you provide `plot_coefCC()` with the genome scan output, it will
+display the LOD curve below the coefficient estimates.
+
+```{r plot_DOex_effects_with_lod, fig.height=6}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_coefCC(coef_c2, DOex$gmap["2"], out, bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ```
 
