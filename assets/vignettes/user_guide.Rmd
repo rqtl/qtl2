@@ -899,6 +899,42 @@ for(i in seq(along=last_coef))
 ```
 
 
+Finally, to plot the raw phenotypes against the genotypes at a single
+putative QTL position, you can use the function `plot_pxg()` in
+[qtl2plot](https://github.com/rqtl/qtl2plot). This takes a vector of
+genotypes as produced by the `maxmarg()` function in
+[qtl2geno](https://github.com/rqtl/qtl2geno), which picks the most
+likely genotype from a set of genotype
+probabilities, provided it is greater than some specified value (the
+argument `minprob`). Note that the "`marg`" in "`maxmarg`" stands for
+"marginal", as this function is selecting the genotype at each
+position that has maximum marginal probability.
+
+For example, we could get inferred genotypes at the chr 2 QTL for the
+liver phenotype (at 28.6 cM) as follows:
+
+```{r maxmarg}
+g <- maxmarg(pr, map, chr=2, pos=28.6, return_char=TRUE)
+```
+
+We use `return_char=TRUE` to have `maxmarg()` return a vector of
+character strings with the genotype labels.
+
+We then plot the liver phenotype against these genotypes as follows:
+
+```{r plot_pxg}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype")
+```
+
+We can use `swap_axes=TRUE` to have the phenotype on the x-axis. And
+we can use `SEmult=2` to include mean &plusmn; 2 SE intervals.
+
+```{r plot_pxg_again}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotype")
+```
+
 
 
 ## SNP association
