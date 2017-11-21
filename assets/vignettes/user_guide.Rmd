@@ -10,7 +10,7 @@ output:
 <meta name="author" content="Karl Broman">
 
 ```{r knitr_opts, include=FALSE}
-knitr::opts_chunk$set(fig.width=7, fig.height=4)
+knitr::opts_chunk$set(fig.width=9, fig.height=5, warning=FALSE, message=FALSE)
 options(width=107, digits=5)
 ```
 
