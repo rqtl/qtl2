@@ -11,7 +11,7 @@ output:
 
 ```{r knitr_opts, include=FALSE}
 knitr::opts_chunk$set(fig.width=7, fig.height=4)
-options(width=107)
+options(width=107, digits=5)
 ```
 
 
@@ -23,7 +23,8 @@ The software is split into multiple packages:
 [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
 calculations, [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
 scans, [qtl2plot](https://github.com/rqtl/qtl2plot) for data
-visualization, and [qtl2db] for connections to SNP and gene databases.
+visualization, and [qtl2db](https://github.com/rqtl/qtl2db) for
+connections to SNP and gene databases.
 A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
@@ -222,7 +223,7 @@ arranged as individuals &times; genotypes &times; positions.
 If we wish to perform QTL calculations at positions between markers
 (so called "pseudomarkers"), we first need to insert such positions
 into the genetic map with the function `insert_pseudomarkers()`.
-Unlike [R/qtl], the map is kept separate from the genotype
+Unlike [R/qtl](https://rqtl.org), the map is kept separate from the genotype
 probabilities.
 
 We'll use the
@@ -303,7 +304,7 @@ the genome, and only use the
 probabilities along the grid of pseudomarkers (defined by the `step`
 argument to `insert_pseudomarkers()`. To do so, we need to first use
 `calc_grid()` to determine the grid of pseudomarkers, and then
-`probs_to_grid()` to probabilities for positions that are not on the
+`probs_to_grid()` to omit probabilities for positions that are not on the
 grid.
 
 ```{r calc_kinship_grid}
@@ -337,7 +338,7 @@ may need to be included under the null hypothesis of no QTL, to avoid
 spurious evidence of linkage. (See
 [Broman et al. (2006) Genetics 174:2151-2158](http://www.genetics.org/content/174/4/2151.long).)
 
-The particular X chromosome covariates depends on the cross, and can
+The particular X chromosome covariates depend on the cross, and can
 be obtained with the [qtl2geno](https://github.com/rqtl/qtl2geno)
 function `get_x_covar()`.
 
@@ -351,13 +352,10 @@ Xcovar <- get_x_covar(iron)
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
 use the function `scan1()` in
-[qtl2scan](https://github.com/rqtl/qtl2scan). (The functions above
-were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
-forward, the functions are all from
-[qtl2scan](https://github.com/rqtl/qtl2scan).)
+[qtl2scan](https://github.com/rqtl/qtl2scan).
 
 `scan1()` takes as input the genotype probabilities, a matrix of
-phenotypes, and then optional additive and interactive covariates, and
+phenotypes, optional additive and interactive covariates, and
 the special X chromosome covariates. Another option is to provide a
 vector of weights.
 
@@ -374,9 +372,7 @@ out <- scan1(pr, iron$pheno, Xcovar=Xcovar, cores=4)
 ```
 
 The output of `scan1()` is a matrix of LOD scores, positions &times;
-phenotypes. (Well, actually, the output is a list including
-`"lod"` which is this matrix of LOD scores, but also including the
-genetic map and other details.)
+phenotypes.
 
 The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to
@@ -417,7 +413,7 @@ find_peaks(out, map, threshold=4, drop=1.5)
 The `find_peaks()` function can also pick out multiple peaks on a
 chromosome: each peak must exceed the chosen threshold, and the
 argument `peakdrop` indicates the amount that the LOD curve must drop
-between the lowest of two adjacent peaks.  Use this feature with
+below the lowest of two adjacent peaks.  Use this feature with
 caution.
 
 ```{r find_multiple_peaks}
@@ -450,7 +446,7 @@ estimated QTL position, and the upper interval endpoint.
 
 To perform a genome scan using a linear mixed model, accounting for
 relationships among individuals using a random polygenic effect, you also use
-the function `scan1`; you just need to provide the argument `kinship`,
+the function `scan1()`; you just need to provide the argument `kinship`,
 a kinship matrix (or, for the LOCO method, a list of kinship
 matrices).
 
@@ -512,7 +508,7 @@ The genome scans above were performed assuming that the residual
 variation followed a normal distribution. This will often provide
 reasonable results even if the residuals are not normal, but an
 important special case is that of a binary trait, with values 0 and 1,
-which is best treated differently. The `scan1` function can perform a
+which is best treated differently. The `scan1()` function can perform a
 genome scan with binary traits by logistic regression, using the
 argument `model="binary"`. (The default value for the `model` argument
 is `"normal"`.) At present, we _can not_ account for relationships
@@ -528,14 +524,14 @@ rownames(bin_pheno) <- rownames(iron$pheno)
 ```
 
 We now perform the genome scan as before, including `model="binary"`
-to indicates that the phenotypes are binary traits with values 0 and
+to indicate that the phenotypes are binary traits with values 0 and
 1.
 
 ```{r binary_trait_scan}
 out_bin <- scan1(pr, bin_pheno, Xcovar=Xcovar, model="binary")
 ```
 
-Here is a plot of the two LOD curves.
+Here is a plot of the two sets of LOD curves.
 
 ```{r plot_bin_scan}
 par(mar=c(5.1, 4.1, 1.1, 1.1))
@@ -576,7 +572,7 @@ additional arguments to control the permutations:
 
 As with `scan1()`, you may provide a kinship matrix (or vector of
 kinship matrices, for the "leave one chromosome out" (loco) approach),
-in order to fit linear mixed models to account for accounting for the
+in order to fit linear mixed models to account for
 relationships among individuals (in other words, including a random
 polygenic effect). If `kinship` is unspecified, the function performs
 ordinary Haley-Knott regression.
@@ -777,10 +773,10 @@ c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 ```
 
 The result is a matrix, `r nrow(c2eff)` positions &times; `r ncol(c2eff)`
-genotypes. An attribute, `"map"` contains the positions of the
-calculations. To plot the effects, use the function `plot_coef()` from
+genotypes. To plot the effects, use the function `plot_coef()` from
 the [qtl2plot](https://github.com/rqtl/qtl2plot). There is again an S3
-method function `plot.scan1coef()`, so one can just type `plot()`.
+method function `plot.scan1coef()`, so one can just type `plot()`, but
+in either case you need to provide the map for the relevant chromosome.
 Use the argument `columns` to indicate which coefficient columns to plot.
 
 ```{r plot_effects_liver_c2}
@@ -867,7 +863,8 @@ c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ```
 
 Here is a plot of the BLUPs (as dashed curves) alongside the standard
-estimates. Note that
+estimates. Note that the BLUPs are centered at 0, which the
+coefficient estimates are centered at the phenotype average.
 
 ```{r plot_scan1blup}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
