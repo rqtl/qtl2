@@ -11,7 +11,7 @@ output:
 
 ```{r knitr_opts, include=FALSE}
 knitr::opts_chunk$set(fig.width=9, fig.height=5, warning=FALSE, message=FALSE)
-options(width=107, digits=5)
+options(width=127, digits=5)
 ```
 
 
@@ -991,6 +991,14 @@ apr <- readRDS(tmpfile)
 unlink(tmpfile)
 ```
 
+```{r download_genoprobs, echo=FALSE, results="hide"}
+tmpfile <- tempfile()
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex_genoprobs.rds"
+download.file(file, tmpfile, quiet=TRUE)
+pr <- readRDS(tmpfile)
+unlink(tmpfile)
+```
+
 We calculate kinship matrices (using the "loco" method, though with the
 caveat that here we are only considering genotypes on three chromosomes).
 
@@ -1160,64 +1168,40 @@ marker <- rownames(max(out, DOex$gmap, chr="2"))
 peak_Mbp <- DOex$pmap[["2"]][marker]
 ```
 
-The marker is at `r round(peak_Mbp, 1)` Mbp.
+The marker is at `r round(peak_Mbp, 1)` Mbp. We'll focus on a 2
+Mbp interval centered at `r round(peak_Mbp, 1)` Mbp.
 
-Now we need to identify the SNPs in this region. We'll focus on a 2
-Mbp interval centered at `r round(peak_Mbp, 1)` Mbp. We're still
-working on how best to quickly access SNP data. In the meantime, we
-can grab a predefined table of SNPs that's available in the
-[qtl2data repository](https://github.com/rqtl/qtl2data). It's saved as
-an RDS file, which is a slight hassle to load over the web.
+We can pull out the variants in the 2 Mbp interval centered at
+`r round(peak_Mbp, 1)` on chr 2 using the query function we defined
+above:
 
-```{r load_c2_snps}
-tmpfile <- tempfile()
-file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/c2_snpinfo.rds"
-download.file(file, tmpfile, quiet=TRUE)
-snpinfo <- readRDS(tmpfile)
-unlink(tmpfile)
+```{r query_variants_2Mbp}
+variants <- query_variants(2, peak_Mbp - 1, peak_Mbp + 1)
 ```
 
-Here's the first few rows of the data. The columns are the SNP name,
-the chromosome, the Mbp position (in Mouse genome build 38), the
-alleles (with the B6 allele before the `|` and any other alleles
-after; in the case of multiple alternate alleles, they are separated
-by `/`). Finally, there are eight columns of genotypes for the 8 CC
-founder strains, coded as `1`/`3`.
+There are `r nrow(variants)` variants in the interval, including
+`r sum(variants$type=="snp")` SNPs,
+`r sum(variants$type=="indel")` indels, and
+`r sum(variants$type=="SV")` structural variants. We're treating all of
+them as biallelic markers (all but the major allele in the eight
+founder strains binned into a single allele). In the following, we're
+going to just say "SNP" rather than "variant", even though the
+variants include indels and structural variants.
 
-```{r head_snpinfo}
-head(snpinfo)
-```
+After identifying the variants in the interval of interest, we use our
+genotype probabilities and the founder SNP genotypes to infer the SNP
+genotypes for the DO mice. That is, at each SNP, we want to collapse
+the eight founder allele probabilities to two SNP allele
+probabilities, using the SNP genotypes of the founders.
 
-We first convert the founder genotypes to a "strain distribution
-pattern" (SDP): an integer whose binary encoding corresponds to the 8
-founders' genotypes.
-
-```{r calc_sdp}
-snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
-```
-
-We've added the SDP as an additional column.
-
-```{r head_snpinfo_with_sdp}
-head(snpinfo)
-```
-
-(Note that there's also a function `invert_sdp()` for converting the
-SDPs back into founder genotypes.)
-
-To perform the SNP association analysis, we first use the allele
-probabilities and the founder SNP genotypes to infer the SNP genotypes
-for the DO mice. That is, at each SNP, we want to collapse the eight
-founder allele probabilities to two SNP allele probabilities, using
-the the SNP genotypes of the founders.
-
-We do this assuming that the allele probabilities were
+We do this assuming that the genotype probabilities were
 calculated sufficiently densely that they can be assumed to be
 constant in intervals. With this assumption, we then:
 
 - Find the interval for each SNP.
-- Reduce the SNPs to a "distinct" set: if two SNPs have the same SDP
-  and are in the same interval, by our assumption their allele
+- Reduce the SNPs to a "distinct" set: if two SNPs have the same
+  strain distribution pattern (SDP; the pattern of alleles in the
+  eight founders) and are in the same interval, by our assumption their allele
   probabilities will be the same.
 - Take the average of the allele probabilities at the two endpoints of
   each interval.
@@ -1227,82 +1211,98 @@ constant in intervals. With this assumption, we then:
 We further create a look-up table relating the full set of SNPs to the
 reduced set (one of each observed SDP in each interval).
 
-We first need to identify the equivalent SNPs, using the function
-`index_snps()`. This requires a physical map of the
-markers/pseudomarkers used to calculate the genotype probabilities.
-We take this directly from the `DOex`
-object, as we'd calculated the allele
-probabilities only at the observed markers. If we'd also calculated
-probabilities at pseudomarker positions between markers, we'd need to
-use interpolation to get Mbp positions for the
-pseudomarkers. There's a function `interp_map()` for assisting with
-that.
-
-The `index_snps()` function takes the physical map and the `snpinfo`
-data frame, include the strain distribution patterns we calculated above.
-It inserts three new columns into the data frame (`"index"`,
-`"interval"`, and `"on_map"`: indexes to a set of non-equivalent SNPs,
-map intervals in which the SNPs lie, and whether the SNPs correspond
-to marker/pseudomarker positions).
-
-```{r index_snps}
-snpinfo <- index_snps(DOex$pmap, snpinfo)
-```
-
-We can then use the function `genoprob_to_snpprob()`,
-which takes the allele probabilities (or the full genotype
-probabilities, if you want to use a full 3-genotype model at each
-SNP), to collapse the genotype probabilities to SNP genotype
-probabilities.
-
-```{r calc_snpprobs}
-snp_pr <- genoprob_to_snpprob(apr, snpinfo)
-```
-
-The output of this function, `snp_pr`, has the same form as the input
-`apr` object with allele probabilities, and can be used directly in a
-call to `scan1()`. And so we can now use the object to perform the SNP
-association analysis in the region, using the same linear mixed model.
-We need to be sure to use the correct kinship matrix.
+All of these steps are combined into a single function `scan1snps()`,
+which takes the genotype probabilities, a physical map of those
+locations, the phenotype, the kinship matrix, covariates, the query
+function for grabbing the SNPs in a given interval, and the
+chromosome, start, and end positions for the interval. (If
+`insert_pseudomarkers()` was used to insert pseudomarkers, you will
+need to use `interp_map()` to get interpolated Mbp positions for the
+pseudomarkers.)
 
 ```{r perform_snp_scan}
-out_snps <- scan1(snp_pr, DOex$pheno, k[["2"]], sex)
+out_snps <- scan1snps(pr, DOex$pmap, DOex$pheno, k[["2"]], sex, query_func=query_variants,
+                      chr=2, start=peak_Mbp-1, end=peak_Mbp+1, keep_all_snps=TRUE)
 ```
+
+The output is a list with two components: `lod` is a matrix of LOD
+scores (with a single column, since we're using just one phenotype),
+and `snpinfo` is a data frame with SNP information. With the argument
+`keep_all_snps=TRUE`, the `snpinfo` data frame contains information
+about _all_ of the variants in the region with an `index` column
+indicating the equivalence classes.
 
 The function `plot_snpasso()` in the qtl2plot package can be used to
 plot the results, with points at each of the SNPs. The default is to
-plot **all** SNPs: We calculated LOD scores only at a set of distinct
-SNPs, but SNPs in the same interval with the same SDP will have the
-same LOD score. It takes the `scan1()` output plus the `snpinfo` data
-frame.
+plot **all** SNPs. In this case, there are `r nrow(out_snps$snpinfo)`
+variants in the region, but only `r nrow(out_snps$lod)` distinct ones.
+
 
 ```{r plot_snp_asso}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps, snpinfo)
+plot_snpasso(out_snps$lod, out_snps$snpinfo)
+```
+
+We can actually just type `plot()` rather than `plot_snpasso()`,
+because with the `snpinfo` table in place of a genetic map, `plot()`
+detects that a SNP association plot should be created.
+
+```{r plot_snp_asso_again, eval=FALSE}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_snpasso(out_snps$lod, out_snps$snpinfo)
 ```
 
 To get a table of the SNPs with the largest LOD scores, use the
 function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
+We're going to display just a subset of the columns.
 
 ```{r top_snps}
-top_snps(out_snps, snpinfo)
+top <- top_snps(out_snps$lod, out_snps$snpinfo)
+print(top[,c(1, 8:15, 20)], row.names=FALSE)
 ```
 
 The top SNPs all have NZO and CAST with a common allele, different
-from the other 6 founders. The next-best SNPs have NZO with a unique
-allele. Note that there's one SNP with two alternate alleles
-(`C|G/T`). We are requiring that SNPs have just two alleles, and so we
-group the alternate alleles together, though there's not a good reason
-for this.
+from the other 6 founders. The next-best SNPs have NZO, CAST, and 129
+with a common allele, and then there's a group of SNPs where NZO has a
+unique allele.
 
 We can highlight these top SNPs in the SNP association plot using the
-`drop` argument.
+`drop_hilit` argument.
 
 ```{r plot_snp_asso_hilit}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps, snpinfo, drop=1.5)
+plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5)
 ```
+
+The `scan1snps()` function can also be used to perform a genome-wide
+SNP association scan, by providing a variant query function but
+leaving `chr`, `start`, and `end` unspecified. In this case it's maybe
+best to use `keep_all_snps=FALSE` (the default) and only save the
+index SNPs.
+
+```{r gwas_at_snps}
+out_gwas <- scan1snps(pr, DOex$pmap, DOex$pheno, k, sex, query_func=query_variants, cores=0)
+```
+
+We can make a Manhattan plot of the results as follows. We use
+`altcol` to define a color for alternate chromosomes and `gap=0` to
+have no gap between chromosomes.
+
+```{r plot_snp_gwas}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out_gwas$lod, out_gwas$snpinfo, altcol="green4", gap=0)
+```
+
+Note that while there are LOD scores on the X chromosome that are as
+large as those on chromosome 2, we're allowing a genotype &times; sex
+interaction on the X chromosome and so the test has 3 degrees of
+freedom (versus 2 degrees of freedom on the autosomes) and so the LOD scores will
+naturally be larger. If we'd used the allele probabilities (`apr`
+above, calculated from `genoprob_to_alleleprob()`) rather than the
+genotype probabilities, we would be performing a test with 1 degree of
+freedom on both the X chromosome and the autosomes.
+
 
 ---
 
