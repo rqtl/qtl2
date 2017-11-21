@@ -1252,6 +1252,20 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps$lod, out_snps$snpinfo)
 ```
 
+We can use our `query_genes()` function to identify the genes in the
+region, and `plot_genes()` from the
+[qtl2plot](https://github.com/rqtl/qtl2plot) package to plot the gene
+locations below the SNP association results. We specific `xlim` for both
+panels to ensure that the axes are properly aligned.
+
+```{r plot_snp_asso_with_genes}
+par(mfrow=c(2,1), mar=c(4.1, 4.1, 0.6, 0.6))
+xlim <- peak_Mbp + c(-1, 1)
+plot(out_snps$lod, out_snps$snpinfo, xlim=xlim, drop_hilit=1.5)
+genes <- query_genes(2, peak_Mbp - 1, peak_Mbp + 1)
+plot_genes(genes, xlim=xlim)
+```
+
 To get a table of the SNPs with the largest LOD scores, use the
 function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
