@@ -5,7 +5,7 @@
 \title{Plot gene locations for a genomic interval}
 \usage{
 plot_genes(genes, minrow = 4, padding = 0.2, colors = c("black", "red3",
-  "green4", "blue3", "orange"), scale_pos = 0.000001, start_field = "start",
+  "green4", "blue3", "orange"), scale_pos = 1, start_field = "start",
   stop_field = "stop", strand_field = "strand", name_field = "Name", ...)
 }
 \arguments{
@@ -19,7 +19,7 @@ bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 
 \item{colors}{Vectors of colors, used sequentially and then re-used.}
 
-\item{scale_pos}{Factor by which to scale position (default converts bp to Mbp)}
+\item{scale_pos}{Factor by which to scale position (for example, to convert basepairs to Mbp)}
 
 \item{start_field}{Character string with name of column containing the genes' start positions.}
 

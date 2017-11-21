@@ -11,7 +11,7 @@
 #' @param minrow Minimum number of rows of genes in the plot
 #' @param padding Proportion to pad with white space around the genes
 #' @param colors Vectors of colors, used sequentially and then re-used.
-#' @param scale_pos Factor by which to scale position (default converts bp to Mbp)
+#' @param scale_pos Factor by which to scale position (for example, to convert basepairs to Mbp)
 #' @param start_field Character string with name of column containing the genes' start positions.
 #' @param stop_field Character string with name of column containing the genes' stop positions.
 #' @param strand_field Character string with name of column containing the genes' strands.
@@ -45,7 +45,7 @@
 plot_genes <-
     function(genes, minrow=4, padding=0.2,
              colors=c("black", "red3", "green4", "blue3", "orange"),
-             scale_pos=1e-6, start_field="start", stop_field="stop",
+             scale_pos=1, start_field="start", stop_field="stop",
              strand_field="strand", name_field="Name", ...)
 {
     # make sure the columns are there
