@@ -1061,10 +1061,10 @@ legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 
 ### Connecting to SNP and gene databases
 
-The perform SNP association analysis in the region of a QTL, we'll
+To perform SNP association analysis in the region of a QTL, we'll
 need to grab data on all of the SNPs in the region, including their
-genotypes in the eight founder strains for the CC and DO populations. We'll
-also want to identify the genes in the region.
+genotypes in the eight founder strains for the CC and DO populations.
+As a related task, we'll also want to identify the genes in the region.
 
 We want R/qtl2 to permit different ways of storing this information.
 For the CC and DO populations, we've prepared SQLite database files
@@ -1077,8 +1077,8 @@ template for how R/qtl2 would connect to SNP and gene databases. It
 contains functions `create_variant_query_func()` and
 `create_gene_query_func()` that each each return a _function_ for
 querying variant and gene databases, respectively. The query functions
-returned take just three arguments (`chr`, `start`, end `end`), and
-return a data frame of variants on the one hand and genes on the
+that are returned take just three arguments (`chr`, `start`, end `end`), and
+themselves return a data frame of variants on the one hand and genes on the
 other.
 
 If you are analyzing the CC lines or a DO population, you can download
@@ -1137,8 +1137,8 @@ genes_2_97.5 <- query_genes(2, 97, 98)
 ```
 
 The way we've set this up is a bit complicated, but it allows greatest
-flexibility on the part of the user. And for our own work, we see
-great advantage in have a local SQLite database, for rapid queries of
+flexibility on the part of the user. And for our own work, we
+like to have a local SQLite database, for rapid queries of
 SNPs and genes.
 
 
