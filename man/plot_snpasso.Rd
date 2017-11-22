@@ -72,7 +72,7 @@ and \code{ylim} for y-axis limits.
 }
 
 \examples{
-\dontrun{
+\donttest{
 # load example DO data from web
 library(qtl2geno)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
