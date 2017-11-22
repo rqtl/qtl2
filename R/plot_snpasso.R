@@ -39,6 +39,10 @@
 #'
 #' @param gap Gap between chromosomes.
 #'
+#' @param minlod Minimum LOD to display. (Mostly for GWAS, in which
+#'     case using `minlod=1` will greatly increase the plotting speed,
+#'     since the vast majority of points would be omittted.
+#'
 #' @param ... Additional graphics parameters.
 #'
 #' @section Hidden graphics parameters:
@@ -104,32 +108,47 @@
 plot_snpasso <-
     function(scan1output, snpinfo, show_all_snps=TRUE, add=FALSE,
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
-             gap=25, ...)
+             gap=25, minlod=0, ...)
 {
-    snpinfo_spl <- split(snpinfo, factor(snpinfo$chr, unique(snpinfo$chr)))
+    scan1output[scan1output < minlod] <- NA
 
-    uindex <- unlist(lapply(snpinfo_spl, function(a) unique(a$index)))
-    if(length(uindex) != nrow(scan1output)) {
-        stop("Something is wrong with snpinfo$index.\n",
-             "      no. unique indexes [",
-             length(uindex), "] != nrow(scan1output) [",
-             nrow(scan1output), "].")
+    if(nrow(scan1output) == nrow(snpinfo) && all(rownames(scan1output) == snpinfo$snp)) {
+        show_all_snps <- FALSE
+
+        snpinfo <- snpinfo[scan1output[,1]>=minlod, , drop=FALSE]
+        scan1output <- scan1output[scan1output[,1]>=minlod, 1, drop=FALSE]
+
+        # skip the index business
+        # snpinfo -> map
+        map <- tapply(seq_len(nrow(snpinfo)), factor(snpinfo$chr, unique(snpinfo$chr)),
+                      function(i) setNames(snpinfo$pos[i], snpinfo$snp[i]))
     }
+    else {
+        snpinfo_spl <- split(snpinfo, factor(snpinfo$chr, unique(snpinfo$chr)))
 
-    for(i in seq_along(snpinfo_spl)) {
-        uindex <- unique(snpinfo_spl[[i]]$index)
-        if(any(snpinfo_spl[[i]]$index[uindex] != uindex)) {
+        uindex <- unlist(lapply(snpinfo_spl, function(a) unique(a$index)))
+        if(length(uindex) != nrow(scan1output)) {
             stop("Something is wrong with snpinfo$index.\n",
-                 "      on each chr, index[u] should == u for each index u")
+                 "      no. unique indexes [",
+                 length(uindex), "] != nrow(scan1output) [",
+                 nrow(scan1output), "].")
         }
-    }
 
-    map <- snpinfo_to_map(snpinfo)
+        for(i in seq_along(snpinfo_spl)) {
+            uindex <- unique(snpinfo_spl[[i]]$index)
+            if(any(snpinfo_spl[[i]]$index[uindex] != uindex)) {
+                stop("Something is wrong with snpinfo$index.\n",
+                     "      on each chr, index[u] should == u for each index u")
+            }
+        }
 
-    if(show_all_snps) {
-        tmp <- expand_snp_results(scan1output, map, snpinfo)
-        scan1output <- tmp$lod
-        map <- tmp$map
+        map <- snpinfo_to_map(snpinfo)
+
+        if(show_all_snps) {
+            tmp <- expand_snp_results(scan1output, map, snpinfo)
+            scan1output <- tmp$lod
+            map <- tmp$map
+        }
     }
 
     # maximum LOD

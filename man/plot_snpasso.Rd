@@ -6,7 +6,7 @@
 \usage{
 plot_snpasso(scan1output, snpinfo, show_all_snps = TRUE, add = FALSE,
   drop_hilit = NA, col_hilit = "violetred", col = "darkslateblue",
-  gap = 25, ...)
+  gap = 25, minlod = 0, ...)
 }
 \arguments{
 \item{scan1output}{Output of \code{\link[qtl2scan:scan1]{qtl2scan::scan1()}} using
@@ -45,6 +45,10 @@ chromosomes).}
 \item{col}{Color of other points}
 
 \item{gap}{Gap between chromosomes.}
+
+\item{minlod}{Minimum LOD to display. (Mostly for GWAS, in which
+case using \code{minlod=1} will greatly increase the plotting speed,
+since the vast majority of points would be omittted.}
 
 \item{...}{Additional graphics parameters.}
 }

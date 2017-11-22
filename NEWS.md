@@ -8,6 +8,9 @@
   There are hidden arguments `legend_lab` for labels and
   `legend_ncol` for the number of columns.
 
+- `plot_snpasso()` now takes a `minlod` argument; points with LOD less
+  than this value are omitted.
+
 - New (hidden) graphics paramater for `plot_scan1()`, `altcol`, for
   having colors alternate between chromosomes, for the case of a
   Manhattan plot particular of SNP association results.
