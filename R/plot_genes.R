@@ -77,19 +77,26 @@ plot_genes <-
     name <- as.character(genes[,name_field])
 
     plot_genes_internal <-
-        function(xlab="Position (Mbp)", xaxs="i",
+        function(xlab=NULL, xaxs="i",
                  bgcolor="gray92", xat=NULL,
                  mgp=c(1.6,0.2,0), xlim=NULL,
                  vlines=NULL, vlines_col="white",
-                 vlines_lwd=1, vlines_lty=1)
+                 vlines_lwd=1, vlines_lty=1,
+                 xaxt="s", ylab="", ...)
         {
+            if(is.null(xlab)) {
+                if(length(unique(genes$chr)) == 1)
+                    xlab <- paste("Chr", genes$chr[1], "position (Mbp)")
+                else xlab <- "Position (Mbp)"
+            }
+
             if(is.null(xlim)) {
                 xlim <- range(c(start, end), na.rm=TRUE)
             }
 
             plot(0, 0, type="n",
                  xlim=xlim,   xlab=xlab, xaxs=xaxs, xaxt="n",
-                 ylim=c(1,0), ylab="", yaxs="i", yaxt="n", mgp=mgp)
+                 ylim=c(1,0), ylab=ylab, yaxs="i", yaxt="n", mgp=mgp, ...)
 
             # gray background
             u <- par("usr")
@@ -97,7 +104,7 @@ plot_genes <-
 
             # axis
             if(is.null(xat)) xat <- pretty(xlim)
-            if(length(xat) > 1 || !is.na(xat))
+            if((length(xat) > 1 || !is.na(xat)) && xaxt != "n")
                 axis(side=1, at=xat, mgp=mgp, tick=FALSE)
 
             # vertical lines
