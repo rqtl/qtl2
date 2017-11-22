@@ -126,7 +126,7 @@ plot_snpasso <-
         } else {
             return( plot_snpasso_and_genes(scan1output, snpinfo, show_all_snps=show_all_snps,
                                            drop_hilit=drop_hilit, col_hilit=col_hilit,
-                                           col=col, minlod=minlod, genes=genes, ...) )
+                                           col=col, gap=gap, minlod=minlod, genes=genes, ...) )
         }
     }
 
