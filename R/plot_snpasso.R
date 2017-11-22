@@ -106,7 +106,7 @@ plot_snpasso <-
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, ...)
 {
-    snpinfo_spl <- split(snpinfo, snpinfo$chr)
+    snpinfo_spl <- split(snpinfo, factor(snpinfo$chr, unique(snpinfo$chr)))
 
     uindex <- unlist(lapply(snpinfo_spl, function(a) unique(a$index)))
     if(length(uindex) != nrow(scan1output)) {
@@ -171,7 +171,7 @@ plot_snpasso <-
 expand_snp_results <-
     function(snp_results, map, snpinfo)
 {
-    snpinfo <- split(snpinfo, snpinfo$chr)
+    snpinfo <- split(snpinfo, factor(snpinfo$chr, unique(snpinfo$chr)))
 
     if(length(map) != length(snpinfo))
         stop("length(map) [", length(map), "] != length(snpinfo) [",
@@ -181,7 +181,8 @@ expand_snp_results <-
         stop("nrow(snp_results) [", nrow(snp_results), "] != length(unlist(map)) [",
              length(unlist(map)), "]")
 
-    lodindex <- split(seq_len(nrow(snp_results)), rep(names(map), vapply(map, length, 0)))
+    cnames <- rep(names(map), vapply(map, length, 0))
+    lodindex <- split(seq_len(nrow(snp_results)), factor(cnames, unique(cnames)))
 
     result <- NULL
     for(i in seq(along=map)) {
