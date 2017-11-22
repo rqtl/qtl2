@@ -12,7 +12,7 @@ test_that("plot_genes works", {
                                  "4930407I02Rik", "Gm31777", "Bcat1"),
                         stringsAsFactors=FALSE)
 
-    test_plot_genes <- function() plot_genes(genes, xlim=c(140, 146))
+    test_plot_genes <- function() plot_genes(genes, xlim=c(140, 146), scale=1e-6)
 
     vdiffr::expect_doppelganger("plot_genes", test_plot_genes)
 
