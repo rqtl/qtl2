@@ -9,7 +9,7 @@ plot_coef_and_lod <-
              ylab="QTL effects",
              ylab_lod="LOD score", ylim_lod=NULL, col_lod="slateblue",
              xaxt=NULL,
-             vlines=NULL, vlines.col="white", vlines.lwd=1, vlines.lty=1,
+             vlines=NULL, vlines_col="white", vlines_lwd=1, vlines_lty=1,
              top_panel_prop=0.65, ...)
 {
     if(is.null(map)) stop("map is NULL")
@@ -48,11 +48,11 @@ plot_coef_and_lod <-
     plot_coef(x, map, columns=columns, col=col, scan1_output=NULL,
               add=FALSE, gap=gap, ylim=ylim, bgcolor=bgcolor,
               altbgcolor=altbgcolor, ylab=ylab,
-              xaxt="n", vlines=vlines, vlines.col=vlines.col,
-              vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
+              xaxt="n", vlines=vlines, vlines_col=vlines_col,
+              vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, ...)
 
     par(mar=bottom_mar)
     plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod, ylab=ylab_lod,
-               add=FALSE, gap=gap, vlines=vlines, vlines.col=vlines.col,
-               vlines.lwd=vlines.lwd, vlines.lty=vlines.lty, ...)
+               add=FALSE, gap=gap, vlines=vlines, vlines_col=vlines_col,
+               vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, ...)
 }
