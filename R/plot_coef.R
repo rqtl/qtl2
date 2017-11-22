@@ -27,6 +27,8 @@
 #' @param top_panel_prop If `scan1_output` provided, this gives the
 #' proportion of the plot that is devoted to the top panel.
 #'
+#' @param legend Location of legend, such as `"bottomleft"` or `"topright"` (NULL for no legend)
+#'
 #' @param ... Additional graphics parameters.
 #'
 #' @export
@@ -49,6 +51,10 @@
 #' `ylab`, and `ylim` all control the panel with estimated
 #' QTL effects, while `col_lod`, `ylab_lod`, and
 #' `ylim_lod` control the LOD curve panel.
+#'
+#' If `legend` is indicated so that a legend is shown, `legend_lab`
+#' controls the labels in the legend, and `legend_ncol` indicates the
+#' number of columns in the legend.
 #'
 #' @examples
 #' # load qtl2geno package for data and genoprob calculation
@@ -76,7 +82,8 @@
 #' plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
     function(x, map, columns=NULL, col=NULL, scan1_output=NULL,
-             add=FALSE, gap=25, top_panel_prop=0.65, ...)
+             add=FALSE, gap=25, top_panel_prop=0.65,
+             legend=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -92,7 +99,7 @@ plot_coef <-
     if(!is.null(scan1_output)) { # call internal function for both coef and LOD
         return(plot_coef_and_lod(x, map, columns=columns, col=col, scan1_output=scan1_output,
                                  gap=gap, xaxt=NULL, top_panel_prop=top_panel_prop,
-                                 ...))
+                                 legend=legend, ...))
     }
 
     if(is.null(columns))
@@ -114,7 +121,7 @@ plot_coef <-
 
     plot_coef_internal <-
         function(x, map, columns, ylim=NULL, col, add, gap, bgcolor="gray90", altbgcolor="gray85",
-                 ylab="QTL effects", ...)
+                 ylab="QTL effects", legend_lab=NULL, legend_ncol=NULL, ...)
         {
             if(is.null(ylim)) {
                 ylim <- range(unclass(x)[,columns], na.rm=TRUE)
@@ -130,6 +137,20 @@ plot_coef <-
                     plot_scan1(x, map, lodcolumn=columns[i], col=col[i], gap=gap,
                                add=TRUE, ...)
             }
+
+            if(!is.null(legend)) {
+                if(is.null(legend_lab)) {
+                    if(!is.null(names(col))) legend_lab <- names(col)
+                    else legend_lab <- colnames(x)[columns]
+                }
+                if(length(legend_lab) > length(columns))
+                    legend_lab <- legend_lab[seq_along(columns)]
+                this_col <- rep(col, length(legend_lab))[seq_along(legend_lab)]
+                if(is.null(legend_ncol)) legend_ncol <- ifelse(length(legend_lab) > 4, 2, 1)
+                legend(legend, lwd=2, col=this_col, legend_lab, bg=bgcolor,
+                       ncol=legend_ncol)
+            }
+
         }
     plot_coef_internal(unclass(x), map, columns=columns, col=col, add=add, gap=gap, ...)
 }
@@ -137,17 +158,21 @@ plot_coef <-
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, map, scan1_output=NULL, add=FALSE, gap=25, ...)
+    function(x, map, columns=1:8, scan1_output=NULL, add=FALSE, gap=25,
+             top_panel_prop=0.65, legend=NULL, ...)
 {
-    plot_coef(x, map, columns=1:8, col=qtl2plot::CCcolors,
-              scan1_output=scan1_output, add=add, gap=gap, ...)
+    plot_coef(x, map, columns=columns, col=qtl2plot::CCcolors[columns],
+              scan1_output=scan1_output, add=add, gap=gap,
+              top_panel_prop=top_panel_prop, legend=legend, ...)
 }
 
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
-    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25, ...)
+    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25,
+             top_panel_prop=0.65, legend=NULL, ...)
 {
     plot_coef(x, map, columns=columns, col=col, scan1_output=scan1_output,
-              add=add, gap=gap, ...)
+              add=add, gap=gap, top_panel_prop=top_panel_prop, legend=legend,
+              ...)
 }

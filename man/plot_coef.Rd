@@ -7,12 +7,14 @@
 \title{Plot QTL effects along chromosome}
 \usage{
 plot_coef(x, map, columns = NULL, col = NULL, scan1_output = NULL,
-  add = FALSE, gap = 25, top_panel_prop = 0.65, ...)
+  add = FALSE, gap = 25, top_panel_prop = 0.65, legend = NULL, ...)
 
-plot_coefCC(x, map, scan1_output = NULL, add = FALSE, gap = 25, ...)
+plot_coefCC(x, map, columns = 1:8, scan1_output = NULL, add = FALSE,
+  gap = 25, top_panel_prop = 0.65, legend = NULL, ...)
 
 \method{plot}{scan1coef}(x, map, columns = 1, col = NULL,
-  scan1_output = NULL, add = FALSE, gap = 25, ...)
+  scan1_output = NULL, add = FALSE, gap = 25, top_panel_prop = 0.65,
+  legend = NULL, ...)
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
@@ -38,6 +40,8 @@ chromosomes).}
 \item{top_panel_prop}{If \code{scan1_output} provided, this gives the
 proportion of the plot that is devoted to the top panel.}
 
+\item{legend}{Location of legend, such as \code{"bottomleft"} or \code{"topright"} (NULL for no legend)}
+
 \item{...}{Additional graphics parameters.}
 }
 \description{
@@ -59,6 +63,10 @@ In the case that \code{scan1_output} is provided, \code{col},
 \code{ylab}, and \code{ylim} all control the panel with estimated
 QTL effects, while \code{col_lod}, \code{ylab_lod}, and
 \code{ylim_lod} control the LOD curve panel.
+
+If \code{legend} is indicated so that a legend is shown, \code{legend_lab}
+controls the labels in the legend, and \code{legend_ncol} indicates the
+number of columns in the legend.
 }
 
 \examples{

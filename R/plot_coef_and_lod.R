@@ -5,12 +5,13 @@
 # internal function that is called by plot_coef
 plot_coef_and_lod <-
     function(x, map, columns=NULL, col=NULL, scan1_output,
-             gap=25, ylim=NULL, bgcolor="gray90", altbgcolor="gray85",
+             gap=25, top_panel_prop=0.65, legend=NULL,
+             ylim=NULL, bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects",
              ylab_lod="LOD score", ylim_lod=NULL, col_lod="slateblue",
              xaxt=NULL,
              vlines=NULL, vlines_col="white", vlines_lwd=1, vlines_lty=1,
-             top_panel_prop=0.65, ...)
+             legend_loc=NULL, legend_ncol=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -49,7 +50,9 @@ plot_coef_and_lod <-
               add=FALSE, gap=gap, ylim=ylim, bgcolor=bgcolor,
               altbgcolor=altbgcolor, ylab=ylab,
               xaxt="n", vlines=vlines, vlines_col=vlines_col,
-              vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, ...)
+              vlines_lwd=vlines_lwd, vlines_lty=vlines_lty,
+              legend=legend, legend_loc=legend_loc, legend_ncol=legend_ncol,
+              ...)
 
     par(mar=bottom_mar)
     plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod, ylab=ylab_lod,
