@@ -26,6 +26,12 @@
 #' * `on_map` - Indicate whether SNP coincides with a marker
 #'     in the `genoprobs`
 #'
+#' @param genes Optional data frame containing gene information for
+#' the region, with columns `start` and `stop` in Mbp, `strand`
+#' (as `"-"`, `"+"`, or `NA`), and `Name`. If included, a
+#' two-panel plot is produced, with SNP associations above and
+#' gene locations below.
+#'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
 #' @param add If TRUE, add to current plot (must have same map and
@@ -76,30 +82,32 @@
 #' snpinfo <- readRDS(tmpfile)
 #' unlink(tmpfile)
 #'
-#' # calculate strain distribution patterns
+#' # SNP association scan
 #' library(qtl2scan)
-#' snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
-#'
-#' # identify equivalent snps
-#' snpinfo <- index_snps(DOex$pmap, snpinfo)
-#'
-#' # convert to snp probabilities
-#' snp_pr <- genoprob_to_snpprob(apr, snpinfo)
-#'
-#' # perform SNP association analysis (here, ignoring residual kinship)
-#' out_snps <- scan1(snp_pr, DOex$pheno)
+#' out_snps <- scan1snps(apr, DOex$pmap, DOex$pheno, snpinfo=snpinfo, keep_all_snps=TRUE)
 #'
 #' # plot results
-#' plot_snpasso(out_snps, snpinfo)
+#' plot_snpasso(out_snps$lod, out_snps$snpinfo)
 #'
 #' # can also just type plot()
-#' plot(out_snps, snpinfo)
+#' plot(out_snps$lod, out_snps$snpinfo)
 #'
 #' # plot just subset of distinct SNPs
-#' plot_snpasso(out_snps, snpinfo, show_all_snps=FALSE)
+#' plot_snpasso(out_snps$lod, out_snps$snpinfo, show_all_snps=FALSE)
 #'
 #' # highlight the top snps (with LOD within 1.5 of max)
-#' plot(out_snps, snpinfo, drop_hilit=1.5)
+#' plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5)
+#'
+#' # download gene info from web
+#' tmpfile <- tempfile()
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/master/DOex/c2_genes.rds")
+#' download.file(file, tmpfile, quiet=TRUE)
+#' genes <- readRDS(tmpfile)
+#' unlink(tmpfile)
+#'
+#' # plot SNP association results with gene locations
+#' plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
 #' }
 #'
 #' @seealso [plot_scan1()], [plot_coef()], [plot_coefCC()]
@@ -108,10 +116,20 @@
 #' @export
 #'
 plot_snpasso <-
-    function(scan1output, snpinfo, show_all_snps=TRUE, add=FALSE,
+    function(scan1output, snpinfo, genes=NULL, show_all_snps=TRUE, add=FALSE,
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, minlod=0, ...)
 {
+    if(!is.null(genes)) {
+        if(length(unique(snpinfo$chr)) > 1) {
+            warning("genes ignored if there are multiple chromosomes")
+        } else {
+            return( plot_snpasso_and_genes(scan1output, snpinfo, show_all_snps=show_all_snps,
+                                           drop_hilit=drop_hilit, col_hilit=col_hilit,
+                                           col=col, minlod=minlod, genes=genes, ...) )
+        }
+    }
+
     scan1output[scan1output < minlod] <- NA
 
     if(nrow(scan1output) == nrow(snpinfo) && all(rownames(scan1output) == snpinfo$snp)) {

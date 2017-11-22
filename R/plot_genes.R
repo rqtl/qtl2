@@ -6,7 +6,7 @@
 #' @md
 #'
 #' @param genes Data frame containing `start` and `stop` in
-#' bp, `strand` (as `"-"`, `"+"`, or `NA`), and
+#' Mbp, `strand` (as `"-"`, `"+"`, or `NA`), and
 #' `Name`.
 #' @param minrow Minimum number of rows of genes in the plot
 #' @param padding Proportion to pad with white space around the genes

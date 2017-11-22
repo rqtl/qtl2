@@ -10,7 +10,7 @@ plot_genes(genes, minrow = 4, padding = 0.2, colors = c("black", "red3",
 }
 \arguments{
 \item{genes}{Data frame containing \code{start} and \code{stop} in
-bp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
+Mbp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 \code{Name}.}
 
 \item{minrow}{Minimum number of rows of genes in the plot}
