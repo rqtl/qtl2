@@ -103,6 +103,8 @@
 #' }
 #'
 #' @seealso [plot_scan1()], [plot_coef()], [plot_coefCC()]
+#'
+#' @importFrom stats setNames
 #' @export
 #'
 plot_snpasso <-
