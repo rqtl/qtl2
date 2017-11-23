@@ -32,6 +32,9 @@
 #' two-panel plot is produced, with SNP associations above and
 #' gene locations below.
 #'
+#' @param lodcolumn LOD score column to plot (a numeric index, or a
+#' character string for a column name). Only one value allowed.
+#'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
 #' @param add If TRUE, add to current plot (must have same map and
@@ -116,10 +119,24 @@
 #' @export
 #'
 plot_snpasso <-
-    function(scan1output, snpinfo, genes=NULL, show_all_snps=TRUE, add=FALSE,
+    function(scan1output, snpinfo, genes=NULL, lodcolumn=1, show_all_snps=TRUE, add=FALSE,
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, minlod=0, ...)
 {
+    # pull out lod scores
+    if(length(lodcolumn) > 1) { # If length > 1, take first value
+        warning("lodcolumn should have length 1; only first element used.")
+        lodcolumn <- lodcolumn[1]
+    }
+    if(is.character(lodcolumn)) { # turn column name into integer
+        tmp <- match(lodcolumn, colnames(scan1output))
+        if(is.na(tmp)) stop('lodcolumn "', lodcolumn, '" not found')
+        lodcolumn <- tmp
+    }
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1output))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1output), ")")
+    scan1oputput <- scan1output[,lodcolumn,drop=FALSE]
+
     if(!is.null(genes)) {
         if(length(unique(snpinfo$chr)) > 1) {
             warning("genes ignored if there are multiple chromosomes")
@@ -129,8 +146,6 @@ plot_snpasso <-
                                            col=col, gap=gap, minlod=minlod, genes=genes, ...) )
         }
     }
-
-    scan1output[scan1output < minlod] <- NA
 
     if(nrow(scan1output) == nrow(snpinfo) && all(rownames(scan1output) == snpinfo$snp)) {
         show_all_snps <- FALSE
@@ -173,6 +188,9 @@ plot_snpasso <-
 
     # maximum LOD
     maxlod <- max(unclass(scan1output)[,1], na.rm=TRUE)
+
+    # set values < minlod to NA so they're not plotted
+    scan1output[scan1output < minlod] <- NA
 
     # internal function to give defaults to hidden graphics parameters
     plot_snpasso_internal <-

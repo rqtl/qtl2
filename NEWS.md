@@ -1,4 +1,4 @@
-## qtl2plot 0.5-18 (2017-11-22)
+## qtl2plot 0.5-18 (2017-11-23)
 
 ### New features
 
@@ -14,6 +14,9 @@
 - `plot_snpasso()` also takes a `genes` argument. If provided, a
   two-panel plot is displayed with SNP association results above and
   gene locations below.
+
+- `plot_snpasso()` also takes a `lodcolumn` argument for selecting the
+  column of LOD scores to plot.
 
 - New (hidden) graphics paramater for `plot_scan1()`, `altcol`, for
   having colors alternate between chromosomes, for the case of a

@@ -4,9 +4,10 @@
 \alias{plot_snpasso}
 \title{Plot SNP associations}
 \usage{
-plot_snpasso(scan1output, snpinfo, genes = NULL, show_all_snps = TRUE,
-  add = FALSE, drop_hilit = NA, col_hilit = "violetred",
-  col = "darkslateblue", gap = 25, minlod = 0, ...)
+plot_snpasso(scan1output, snpinfo, genes = NULL, lodcolumn = 1,
+  show_all_snps = TRUE, add = FALSE, drop_hilit = NA,
+  col_hilit = "violetred", col = "darkslateblue", gap = 25, minlod = 0,
+  ...)
 }
 \arguments{
 \item{scan1output}{Output of \code{\link[qtl2scan:scan1]{qtl2scan::scan1()}} using
@@ -38,6 +39,9 @@ the region, with columns \code{start} and \code{stop} in Mbp, \code{strand}
 (as \code{"-"}, \code{"+"}, or \code{NA}), and \code{Name}. If included, a
 two-panel plot is produced, with SNP associations above and
 gene locations below.}
+
+\item{lodcolumn}{LOD score column to plot (a numeric index, or a
+character string for a column name). Only one value allowed.}
 
 \item{show_all_snps}{If TRUE, expand to show all SNPs.}
 
