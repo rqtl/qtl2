@@ -104,13 +104,12 @@ plot_scan1 <-
 
     # pull out lod scores
     if(length(lodcolumn) > 1) { # If length > 1, take first value
-        warning("lodcolumn should have length 1; one first element used.")
+        warning("lodcolumn should have length 1; only first element used.")
         lodcolumn <- lodcolumn[1]
     }
     if(is.character(lodcolumn)) { # turn column name into integer
         tmp <- match(lodcolumn, colnames(x))
-        if(is.na(tmp))
-            stop('lodcolumn "', lodcolumn, '" not found')
+        if(is.na(tmp)) stop('lodcolumn "', lodcolumn, '" not found')
         lodcolumn <- tmp
     }
     if(lodcolumn < 1 || lodcolumn > ncol(x))
