@@ -27,6 +27,11 @@
 #' * `on_map` - Indicate whether SNP coincides with a marker
 #'     in the `genoprobs`
 #'
+#' @param lodcolumn Selected LOD score column to (a numeric index, or a
+#' character string for a column name). Only one value allowed.
+#'
+#' @param chr Selected chromosome; only one value allowed.
+#'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
 #' @param drop Show all SNPs with LOD score within this amount of the
@@ -79,8 +84,38 @@
 #' @export
 #' @seealso [index_snps()], [genoprob_to_snpprob()], [scan1snps()], `plot_snpasso()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
 top_snps <-
-    function(scan1_output, snpinfo, drop=1.5, show_all_snps=TRUE)
+    function(scan1_output, snpinfo, lodcolumn=1, chr=NULL, drop=1.5, show_all_snps=TRUE)
 {
+    # pull out lod scores
+    if(length(lodcolumn) > 1) { # If length > 1, take first value
+        warning("lodcolumn should have length 1; only first element used.")
+        lodcolumn <- lodcolumn[1]
+    }
+    if(is.character(lodcolumn)) { # turn column name into integer
+        tmp <- match(lodcolumn, colnames(scan1output))
+        if(is.na(tmp)) stop('lodcolumn "', lodcolumn, '" not found')
+        lodcolumn <- tmp
+    }
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1output))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1output), ")")
+    scan1output <- scan1output[,lodcolumn,drop=FALSE]
+
+    # reduce to one chromosome
+    if(is.null(chr)) {
+        uchr <- unique(snpinfo$chr)
+        if(length(uchr) > 1) {
+            warning("Considering only chr ", uchr[1])
+        }
+        chr <- uchr[1]
+    }
+    if(length(chr) > 1) {
+        chr <- chr[1]
+        warning("Considering only chr ", chr)
+    }
+    snpinfo <- snpinfo[snpinfo$chr == chr,,drop=FALSE]
+    scan1output <- scan1output[rownames(scan1output) %in% snpinfo$snp,,drop=FALSE]
+
+    # check index business
     uindex <- unique(snpinfo$index)
     if(length(uindex) != nrow(scan1_output))
         stop("Something is wrong with snpinfo$index.\n",
@@ -93,21 +128,6 @@ top_snps <-
              "      snpinfo$index[u] should == u for values in snpinfo$index")
 
     map <- snpinfo_to_map(snpinfo)
-
-    chr <- names(map)
-    if(length(chr) > 1) {
-        warning("Considering only chromosome ", chr)
-        chr <- chr[1]
-    }
-    map <- map[chr]
-    snpinfo <- snpinfo[snpinfo$chr==chr,,drop=FALSE]
-
-    # deal with possibly > 1 chr
-    lod <- unclass(subset(scan1_output, map, chr))
-    if(ncol(lod) > 1) {
-        warning("Considering only the first LOD score column")
-        lod <- lod[,1,drop=FALSE]
-    }
 
     keep <- which(!is.na(lod) & lod >= max(lod, na.rm=TRUE) - drop)
 

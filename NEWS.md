@@ -6,6 +6,9 @@
   founder genotypes; can be used to scan the full genome or a defined
   region.
 
+- Added arguments `lodcolumn` and `chr` to `top_snps()` so that it can
+  deal with multiple LOD score columns and/or multiple chromosomes.
+
 
 ## qtl2scan 0.5-24 (2017-11-06)
 

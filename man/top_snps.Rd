@@ -4,7 +4,8 @@
 \alias{top_snps}
 \title{Create table of top snp associations}
 \usage{
-top_snps(scan1_output, snpinfo, drop = 1.5, show_all_snps = TRUE)
+top_snps(scan1_output, snpinfo, lodcolumn = 1, chr = NULL, drop = 1.5,
+  show_all_snps = TRUE)
 }
 \arguments{
 \item{scan1_output}{Output of \code{\link[=scan1]{scan1()}}.
@@ -31,6 +32,11 @@ intervals the SNPs reside.
 \item \code{on_map} - Indicate whether SNP coincides with a marker
 in the \code{genoprobs}
 }}
+
+\item{lodcolumn}{Selected LOD score column to (a numeric index, or a
+character string for a column name). Only one value allowed.}
+
+\item{chr}{Selected chromosome; only one value allowed.}
 
 \item{drop}{Show all SNPs with LOD score within this amount of the
 maximum SNP association.}
