@@ -135,7 +135,7 @@ plot_snpasso <-
     }
     if(lodcolumn < 1 || lodcolumn > ncol(scan1output))
         stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1output), ")")
-    scan1oputput <- scan1output[,lodcolumn,drop=FALSE]
+    scan1output <- scan1output[,lodcolumn,drop=FALSE]
 
     if(!is.null(genes)) {
         if(length(unique(snpinfo$chr)) > 1) {
