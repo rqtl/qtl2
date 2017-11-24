@@ -92,13 +92,13 @@ top_snps <-
         lodcolumn <- lodcolumn[1]
     }
     if(is.character(lodcolumn)) { # turn column name into integer
-        tmp <- match(lodcolumn, colnames(scan1output))
+        tmp <- match(lodcolumn, colnames(scan1_output))
         if(is.na(tmp)) stop('lodcolumn "', lodcolumn, '" not found')
         lodcolumn <- tmp
     }
-    if(lodcolumn < 1 || lodcolumn > ncol(scan1output))
-        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1output), ")")
-    scan1output <- scan1output[,lodcolumn,drop=FALSE]
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1_output))
+        stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1_output), ")")
+    scan1_output <- scan1_output[,lodcolumn,drop=FALSE]
 
     # reduce to one chromosome
     if(is.null(chr)) {
@@ -113,7 +113,7 @@ top_snps <-
         warning("Considering only chr ", chr)
     }
     snpinfo <- snpinfo[snpinfo$chr == chr,,drop=FALSE]
-    scan1output <- scan1output[rownames(scan1output) %in% snpinfo$snp,,drop=FALSE]
+    scan1_output <- scan1_output[rownames(scan1_output) %in% snpinfo$snp,,drop=FALSE]
 
     # check index business
     uindex <- unique(snpinfo$index)
@@ -121,7 +121,7 @@ top_snps <-
         stop("Something is wrong with snpinfo$index.\n",
              "      length(unique(snpinfo$index)) [",
              length(unique(snpinfo$index)), "] != nrow(scan1_output) [",
-             length(lod), "].")
+             length(scan1_output), "].")
 
     if(any(snpinfo$index[uindex] != uindex))
         stop("Something is wrong with snpinfo$index.\n",
@@ -129,7 +129,7 @@ top_snps <-
 
     map <- snpinfo_to_map(snpinfo)
 
-    keep <- which(!is.na(lod) & lod >= max(lod, na.rm=TRUE) - drop)
+    keep <- which(!is.na(scan1_output[,1]) & scan1_output[,1] >= max(scan1_output[ ,1], na.rm=TRUE) - drop)
 
     # reverse the snp index
     revindex <- rev_snp_index(snpinfo)
@@ -137,9 +137,9 @@ top_snps <-
    if(show_all_snps) { # expand to all related SNPs
         snpinfo <- snpinfo[revindex %in% keep,,drop=FALSE]
         revindex <- revindex[revindex %in% keep]
-        snpinfo$lod <- lod[revindex]
+        snpinfo$lod <- scan1_output[revindex]
     } else { # just keep the SNPs that were used
-        snpinfo$lod <- lod[revindex]
+        snpinfo$lod <- scan1_output[revindex]
         snpinfo <- snpinfo[snpinfo$snp %in% rownames(scan1_output)[keep],]
     }
 
