@@ -28,6 +28,7 @@
 #' prsub <- pr[1:5,2]
 #' # keep just chromosome 2
 #' prsub2 <- pr[,2]
+
 subset.calc_genoprob <-
     function(x, ind=NULL, chr=NULL, ...)
 {

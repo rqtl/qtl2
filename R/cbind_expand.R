@@ -4,39 +4,65 @@
 # but: - looks at rownames and makes sure they line up
 #      - if rows are in one matrix but not the other,
 #        creates row of NAs where missing
+#
+# align_rows=TRUE gives the version that qtl2geno had
+# align_rows=FALSE gives the version that qtl2scan had
+
 cbind_expand <-
-    function(...)
+    function(..., align_rows=FALSE)
 {
     input <- list(...)
-    if(length(input)<2)
-        stop("Must have >= 2 input matrices")
 
-    # check IDs
-    id <- lapply(input, rownames)
-    if(any(vapply(id, is.null, TRUE)))
-        stop("All input matrices must have rownames (containing individual IDs)")
-    if(any(vapply(id, function(a) length(unique(a)) != length(a), TRUE)))
-        stop("Some input matrices have duplicate rownames")
-    uid <- unique(unlist(id))
+    if(length(input)<2) return(input[[1]])
 
-    for(i in seq(along=input)) {
-        not_in <- !(uid %in% id[[i]])
-        if(!any(not_in)) next
-        missing <- uid[not_in]
+    if(align_rows) {
+        # check IDs
+        id <- lapply(input, rownames)
+        if(any(vapply(id, is.null, TRUE)))
+            stop("All input matrices must have rownames (containing individual IDs)")
+        if(any(vapply(id, function(a) length(unique(a)) != length(a), TRUE)))
+            stop("Some input matrices have duplicate rownames")
+        uid <- unique(unlist(id))
 
-        # create new rows
-        new_rows <- matrix(NA, ncol=ncol(input[[i]]), nrow=length(missing))
-        dimnames(new_rows) <- list(missing, colnames(input[[i]]))
+        for(i in seq(along=input)) {
+            not_in <- !(uid %in% id[[i]])
+            if(!any(not_in)) next
+            missing <- uid[not_in]
 
-        input[[i]] <- rbind(input[[i]], new_rows)
+            # create new rows
+            new_rows <- matrix(NA, ncol=ncol(input[[i]]), nrow=length(missing))
+            dimnames(new_rows) <- list(missing, colnames(input[[i]]))
+
+            input[[i]] <- rbind(input[[i]], new_rows)
+        }
+
+        for(i in seq(along=input)) {
+            if(i==1)
+                input[[1]] <- input[[1]][uid,,drop=FALSE]
+            else
+                input[[1]] <- cbind(input[[1]], input[[i]][uid,,drop=FALSE])
+        }
+
+        return(input[[1]])
+    }
+    else {
+
+        if(!all(vapply(input, is.matrix, TRUE)))
+            stop("Not all inputs are matrices")
+
+        nrow <- vapply(input, nrow, 1)
+        max_nrow <- max(nrow)
+
+        for(i in seq_along(input)) {
+            rownames(input[[i]]) <- NULL # strip off the rownames
+            if(nrow[i] < max_nrow) { # need to pad
+                new_rows <- matrix(NA, ncol=ncol(input[[i]]), nrow=max_nrow - nrow[i])
+                colnames(new_rows) <- colnames(input[[i]])
+                input[[i]] <- rbind(input[[i]], new_rows)
+            }
+        }
+
+        do.call("cbind", input)
     }
 
-    for(i in seq(along=input)) {
-        if(i==1)
-            input[[1]] <- input[[1]][uid,,drop=FALSE]
-        else
-            input[[1]] <- cbind(input[[1]], input[[i]][uid,,drop=FALSE])
-    }
-
-    input[[1]]
 }

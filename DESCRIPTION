@@ -31,4 +31,4 @@ BugReports: https://github.com/rqtl/qtl2/issues
 LazyData: true
 Encoding: UTF-8
 License: GPL-3
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppEigen
