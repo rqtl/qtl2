@@ -41,21 +41,3 @@ align_scan1_map <-
 
     list(scan1_output=scan1_output, map=map)
 }
-
-# grab marker names as a vector
-map2markernames <-
-    function(map)
-{
-    nam <- unlist(lapply(map, names))
-    names(nam) <- NULL
-    nam
-}
-
-# grab chromosome IDs as a vector
-map2chr <-
-    function(map)
-{
-    chr <- rep(names(map), vapply(map, length, 0))
-    names(chr) <- map2markernames(map)
-    chr
-}
