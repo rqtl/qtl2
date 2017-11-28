@@ -211,7 +211,7 @@ cbind.scan1perm <-
         if(!all(vapply(dots, is.matrix, TRUE)))
             stop("Inputs cannot be a mixture of X-chr-specific permutations and not")
 
-        result <- do.call("cbind_expand", lapply(dots, unclass))
+        result <- do.call("cbind_expand_noalign", lapply(dots, unclass))
         class(result) <- class(dots[[1]])
         return(result)
     }
@@ -249,8 +249,8 @@ cbind.scan1perm <-
         else is_x_chr <- NULL # if some missing, just skip it
 
         # rbind
-        A <- do.call("cbind_expand", lapply(dots, function(a) a$A))
-        X <- do.call("cbind_expand", lapply(dots, function(a) a$X))
+        A <- do.call("cbind_expand_noalign", lapply(dots, function(a) a$A))
+        X <- do.call("cbind_expand_noalign", lapply(dots, function(a) a$X))
 
         # add attributes
         result <- list(A=A, X=X)
