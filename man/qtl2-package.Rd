@@ -4,7 +4,7 @@
 \name{qtl2-package}
 \alias{qtl2}
 \alias{qtl2-package}
-\title{qtl2: Analysis of QTL experiments}
+\title{qtl2: Quantitative Trait Locus Mapping in Experimental Crosses}
 \description{
 R/qtl2 provides a set of tools to perform quantitative
 trait locus (QTL) analysis in experimental crosses. It is a
