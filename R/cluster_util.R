@@ -1,5 +1,4 @@
 # code related to clusters
-# (repeating this code in both qtl2geno and qtl2scan)
 
 # test if input is a prepared cluster (vs. just a number)
 is_cluster <-
