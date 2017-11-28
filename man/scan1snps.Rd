@@ -122,5 +122,5 @@ out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=9
 
 }
 \seealso{
-\code{\link[=scan1]{scan1()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=index_snps]{index_snps()}}, \code{\link[=create_variate_query_func]{create_variate_query_func()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
+\code{\link[=scan1]{scan1()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=index_snps]{index_snps()}}, \code{\link[=create_variant_query_func]{create_variant_query_func()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
 }

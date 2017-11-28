@@ -74,7 +74,7 @@
 #' * Use [genoprob_to_snpprob()] to convert `genoprobs` to SNP probabilities.
 #' * Use [scan1()] to do a single-QTL scan at the SNPs.
 #'
-#' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [create_variate_query_func()], [plot_snpasso()]
+#' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [create_variant_query_func()], [plot_snpasso()]
 #'
 #' @examples
 #' \dontrun{
