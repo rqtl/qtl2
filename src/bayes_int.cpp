@@ -3,7 +3,7 @@
 #include "bayes_int.h"
 #include <Rcpp.h>
 #include <algorithm>
-#include "util.h"
+#include "hmm_util.h"
 using namespace Rcpp;
 
 
