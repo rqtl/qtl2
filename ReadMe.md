@@ -1,34 +1,22 @@
 ### [R/qtl2](http://kbroman.org/qtl2)
 
-[R/qtl2geno](https://github.com/rqtl/qtl2geno):
-[![Build Status](https://travis-ci.org/rqtl/qtl2geno.png?branch=master)](https://travis-ci.org/rqtl/qtl2geno) <br/>
-[R/qtl2scan](https://github.com/rqtl/qtl2scan):
-[![Build Status](https://travis-ci.org/rqtl/qtl2scan.png?branch=master)](https://travis-ci.org/rqtl/qtl2scan) <br/>
-[R/qtl2plot](https://github.com/rqtl/qtl2plot):
-[![Build Status](https://travis-ci.org/rqtl/qtl2plot.png?branch=master)](https://travis-ci.org/rqtl/qtl2plot) <br/>
-[R/qtl2convert](https://github.com/rqtl/qtl2convert):
-[![Build Status](https://travis-ci.org/rqtl/qtl2convert.png?branch=master)](https://travis-ci.org/rqtl/qtl2convert) <br/>
-[R/qtl2db](https://github.com/rqtl/qtl2db):
-[![Build Status](https://travis-ci.org/rqtl/qtl2db.png?branch=master)](https://travis-ci.org/rqtl/qtl2db)
-
+[![Build Status](https://travis-ci.org/rqtl/qtl2.png?branch=master)](https://travis-ci.org/rqtl/qtl2)
 
 [Karl Broman](http://kbroman.org)
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
-high-dimensional data and complex cross designs. It is split into
-multiple packages:
+high-dimensional data and complex cross designs.
 
-- [qtl2geno](https://github.com/rqtl/qtl2geno), for calculating genotype
-  probabilities, imputations, and genetic maps
-- [qtl2scan](https://github.com/rqtl/qtl2scan), for QTL genome scans and
-  related calculations
-- [qtl2plot](https://github.com/rqtl/qtl2plot), for data visualization
-- [qtl2convert](https://github.com/rqtl/qtl2convert),
-  for converting data among the R/qtl2,
-  [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-  and [R/qtl](https://rqtl.org) formats
-- [qtl2db](https://github.com/rqtl/qtl2db), for connecting to genome databases
+It was previously split into the multiple packages qtl2geno, qtl2scan,
+qtl2plot, and qtl2db, but that proved awkward and confusing and so the
+packages have been combined. But also see the related package,
+[qtl2convert](https://github.com/rqtl/qtl2convert), for converting
+data among the R/qtl2,
+[DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
+and [R/qtl](https://rqtl.org) formats.
+[qtl2convert](https://github.com/rqtl/qtl2convert) will remain a
+separate package.
 
 ---
 
@@ -39,17 +27,6 @@ it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
 Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org).
 
     install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
-
-The [qtl2](https://github.com/rqtl/qtl2) package is
-inspired by the
-[tidyverse package](https://cran.r-project.org/package=tidyverse);
-it is basically empty, but when you install it, the
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot),
-[qtl2convert](https://github.com/rqtl/qtl2convert) and
-[qtl2db](https://github.com/rqtl/qtl2db) packages, plus a
-bunch of dependencies, will be installed.
 
 Alternatively, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++

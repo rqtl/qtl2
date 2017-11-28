@@ -5,12 +5,6 @@ cache: packages
 r_packages:
  - devtools
 
-r_github_packages:
- - rqtl/qtl2geno
- - rqtl/qtl2scan
- - rqtl/qtl2plot
- - rqtl/qtl2convert
-
 warnings_are_errors: true
 
 notifications:
@@ -18,7 +12,7 @@ notifications:
     on_success: change
     on_failure: always
 
-# only us travis on master branch
+# only use travis on master branch
 branches:
   only:
   - master
