@@ -58,7 +58,7 @@ After performing the backward equations, we draw from
    O, g_k = u)}{Pr(g[k+1] = v | O, g[k] = u)}.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 draws <- sim_geno(grav2, map_w_pmar, n_draws=4, error_prob=0.002)
 }

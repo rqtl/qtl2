@@ -4,13 +4,14 @@
 \name{qtl2-package}
 \alias{qtl2}
 \alias{qtl2-package}
-\title{qtl2: Easily Install and Load R/qtl2}
+\title{qtl2: Analysis of QTL experiments}
 \description{
-R/qtl2 is a set of packages that are used together to
-perform QTL analysis. It is a reimplementation of the R/qtl
-package to better handle high-dimensional data and complex cross
-designs. This package is designed to make it easy to install and
-load multiple R/qtl2 packages in a single step.
+R/qtl2 provides a set of tools to perform quantitative
+trait locus (QTL) analysis in experimental crosses. It is a
+reimplementation of the R/qtl package to better handle
+high-dimensional data and complex cross designs. This package is
+designed to make it easy to install and load multiple R/qtl2
+packages in a single step.
 }
 \section{Vignettes}{
 

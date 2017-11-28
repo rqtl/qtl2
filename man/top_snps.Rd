@@ -49,7 +49,6 @@ Create a table of the top snp associations
 \examples{
 \dontrun{
 # load example DO data from web
-library(qtl2geno)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")
 DOex <- read_cross2(file)
@@ -92,5 +91,5 @@ top_snps(out_snps, snpinfo, 0.5)
 }
 }
 \seealso{
-\code{\link[=index_snps]{index_snps()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=scan1snps]{scan1snps()}}, \code{plot_snpasso()} in \href{https://github.com/rqtl/qtl2plot}{R/qtl2plot}
+\code{\link[=index_snps]{index_snps()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=scan1snps]{scan1snps()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
 }

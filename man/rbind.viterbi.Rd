@@ -18,7 +18,7 @@ Join multiple imputed genotype objects, as produced by
 \code{\link[=viterbi]{viterbi()}} for different individuals.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map <- insert_pseudomarkers(grav2$gmap, step=1)
 gA <- viterbi(grav2[1:5,], map, error_prob=0.002)
 gB <- viterbi(grav2[6:12,], map, error_prob=0.002)

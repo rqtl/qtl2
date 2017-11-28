@@ -58,7 +58,7 @@ don't convert to allele probabilities but just use the original
 genotype probabilities.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, map, error_prob=0.002)
 K <- calc_kinship(probs)

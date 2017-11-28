@@ -12,10 +12,10 @@ plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = 25,
   gap = 25, ...)
 }
 \arguments{
-\item{x}{Output of \code{\link[qtl2scan:scan1]{qtl2scan::scan1()}}.}
+\item{x}{Output of \code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{lodcolumn}{LOD score column to plot (a numeric index, or a
 character string for a column name). Only one value allowed.}
@@ -48,11 +48,8 @@ cluttering the function definition.
 }
 
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -67,7 +64,6 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
 # perform genome scan
-library(qtl2scan)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # plot the results for selected chromosomes

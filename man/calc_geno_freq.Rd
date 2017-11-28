@@ -31,7 +31,7 @@ a matrix of genotype frequencies.
 Calculate genotype frequencies, by individual or by marker
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 p <- calc_genoprob(iron, err=0.002)
 
 # genotype frequencies by marker

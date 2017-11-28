@@ -19,7 +19,7 @@ The input \code{cross} with the specified markers removed.
 Drop a vector of markers from a cross2 object.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 markers2drop <- c("BH.342C/347L-Col", "GH.94L", "EG.357C/359L-Col", "CD.245L", "ANL2")
 grav2_rev <- drop_markers(grav2, markers2drop)
 }

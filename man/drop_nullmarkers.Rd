@@ -24,7 +24,7 @@ if founder genotypes are present (e.g., for Diversity Outbreds),
 the founder genotypes are missing or are all the same.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 # make a couple of markers missing
 grav2$geno[[2]][,c(3,25)] <- 0
 grav2_rev <- drop_nullmarkers(grav2)

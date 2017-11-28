@@ -11,7 +11,7 @@ scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
@@ -89,11 +89,8 @@ polygenic effect estimated under the null hypothesis of no (major)
 QTL, and then taken as fixed as known in the genome scan.
 }
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

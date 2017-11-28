@@ -13,7 +13,7 @@ find_peaks(scan1_output, map, threshold = 3, peakdrop = Inf, drop = NULL,
 \code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{threshold}{Minimum LOD score for a peak (can be a vector with
 separate thresholds for each lod score column in
@@ -95,11 +95,8 @@ achieving the maximum LOD score, we take the average of these
 positions as the location of the peak.
 }
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

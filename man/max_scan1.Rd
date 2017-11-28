@@ -15,7 +15,7 @@ max_scan1(scan1_output, map, lodcolumn = 1, chr = NULL, na.rm = TRUE, ...)
 \code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{lodcolumn}{An integer or character string indicating the LOD
 score column, either as a numeric index or column name.}
@@ -34,11 +34,8 @@ Return data frame with the positions having maximum LOD score for a
 particular LOD score column
 }
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

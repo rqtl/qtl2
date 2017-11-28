@@ -26,8 +26,7 @@ Calculate the eigen decomposition of a kinship matrix, or of a list of such matr
 The result contains an attribute \code{"eigen_decomp"}.
 }
 \examples{
-library(qtl2geno)
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 map <- insert_pseudomarkers(iron$gmap, step=1)
 probs <- calc_genoprob(iron, map, error_prob=0.002)
 K <- calc_kinship(probs)

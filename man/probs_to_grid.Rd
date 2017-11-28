@@ -30,7 +30,7 @@ the probabilities on this grid. Use \code{\link[=calc_grid]{calc_grid()}} to
 find the grid positions.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, map_w_pmar, error_prob=0.002)
 sapply(probs, dim)

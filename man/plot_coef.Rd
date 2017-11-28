@@ -18,10 +18,10 @@ plot_coefCC(x, map, columns = 1:8, scan1_output = NULL, add = FALSE,
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from
-\code{\link[qtl2scan:scan1coef]{qtl2scan::scan1coef()}}.}
+\code{\link[=scan1coef]{scan1coef()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{columns}{Vector of columns to plot}
 
@@ -70,11 +70,8 @@ number of columns in the legend.
 }
 
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -88,7 +85,6 @@ covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 
 # calculate coefficients for chromosome 7
-library(qtl2scan)
 coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 
 # plot QTL effects (note the need to subset the map object, for chromosome 7)

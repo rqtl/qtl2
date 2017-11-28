@@ -10,7 +10,7 @@ scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL, Xcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
 
@@ -52,7 +52,7 @@ phenotype
 \item \code{hsq} - Included if \code{kinship} provided: A matrix of
 estimated heritabilities under the null hypothesis of no
 QTL. Columns are the phenotypes. If the \code{"loco"} method was
-used with \code{\link[qtl2geno:calc_kinship]{qtl2geno::calc_kinship()}} to calculate a list
+used with \code{\link[=calc_kinship]{calc_kinship()}} to calculate a list
 of kinship matrices, one per chromosome, the rows of \code{hsq}
 will be the heritabilities for the different chromosomes (well,
 leaving out each one). If \code{Xcovar} was not NULL, there will at
@@ -106,11 +106,8 @@ in the results is a vector of heritabilities (one value for each phenotype). If
 \code{hsq} is a matrix, chromosomes x phenotypes.
 }
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

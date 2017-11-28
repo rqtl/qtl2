@@ -27,7 +27,7 @@ them.
 Estimate the locations of crossovers in each individual on each chromosome.
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 map <- insert_pseudomarkers(iron$gmap, step=1)
 pr <- calc_genoprob(iron, map, error_prob=0.002, map_function="c-f")
 g <- maxmarg(pr)

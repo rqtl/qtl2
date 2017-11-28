@@ -39,7 +39,7 @@ Count the number of matching genotypes between all pairs of
 individuals, to look for unusually closely related individuals.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 cg <- compare_geno(grav2)
 summary(cg)
 }

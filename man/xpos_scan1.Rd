@@ -8,7 +8,7 @@ xpos_scan1(map, chr = NULL, gap = 25, thechr, thepos)
 }
 \arguments{
 \item{map}{A list of vectors of marker positions, as produced by
-[qtl2geno::insert_pseudomarkers()].}
+[insert_pseudomarkers()].}
 
 \item{chr}{Selected chromosomes that were plotted (if used in the
 call to [plot_scan1()].}
@@ -24,7 +24,7 @@ call to [plot_scan1()].}
 A vector of x-axis locations.
 }
 \description{
-For a plot of [qtl2scan::scan1()] results, get the x-axis
+For a plot of [scan1()] results, get the x-axis
 location that corresponds to a particular genomic location
 (chromosome ID and position).
 }
@@ -34,11 +34,8 @@ or should have length 1 (in which case they are expanded to the
 length of the other vector).
 }
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -53,7 +50,6 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
 # perform genome scan
-library(qtl2scan)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # plot the results for selected chromosomes

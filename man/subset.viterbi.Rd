@@ -29,7 +29,7 @@ Pull out a specified set of individuals and/or chromosomes from
 the results of \code{\link[=viterbi]{viterbi()}}
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 \dontshow{grav2 <- grav2[1:8,c(1,2)]}
 g <- viterbi(grav2)
 # keep just individuals 1:5, chromosome 2

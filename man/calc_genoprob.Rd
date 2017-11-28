@@ -73,7 +73,7 @@ where
    s = sum_v exp(a[k][v] + b[k][v])}
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 gmap_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, gmap_w_pmar, error_prob=0.002)
 }

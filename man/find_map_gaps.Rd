@@ -21,7 +21,7 @@ index of marker to right, and the length of the gap.
 Find gaps between markers in a genetic map
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 find_map_gaps(iron$gmap, 40)
 
 }

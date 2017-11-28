@@ -33,7 +33,7 @@ Number (or proportion) of missing (or non-missing) genotypes by individual or ma
 }}
 
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 nmis_ind <- n_missing(iron)
 pmis_mar <- n_typed(iron, "mar", "proportion")
 plot(nmis_ind, xlab="Individual", ylab="No. missing genotypes")

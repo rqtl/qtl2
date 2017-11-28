@@ -34,7 +34,7 @@ the individuals in the pair.
 From results of \code{\link[=compare_geno]{compare_geno()}}, show pairs of individuals with similar genotypes.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 cg <- compare_geno(grav2)
 summary(cg)
 }

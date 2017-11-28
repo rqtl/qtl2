@@ -8,7 +8,7 @@ genoprob_to_snpprob(genoprobs, snpinfo)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as
-calculated by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
+calculated by \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{snpinfo}{Data frame with SNP information with the following
 columns (the last three are generally derived with
@@ -62,7 +62,6 @@ strain distribution pattern.
 \examples{
 \dontrun{
 # load example data and calculate genotype probabilities
-library(qtl2geno)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")
 recla <- read_cross2(file)
@@ -93,5 +92,5 @@ snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 
 }
 \seealso{
-\code{\link[=index_snps]{index_snps()}}, \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}, \code{\link[=scan1snps]{scan1snps()}}
+\code{\link[=index_snps]{index_snps()}}, \code{\link[=calc_genoprob]{calc_genoprob()}}, \code{\link[=scan1snps]{scan1snps()}}
 }

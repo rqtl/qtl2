@@ -53,7 +53,7 @@ The map is estimated assuming no crossover interference,
 but a map function (by default, Haldane's) is used to derive the genetic distances.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 gmap <- est_map(grav2, error_prob=0.002)
 }
 \keyword{utilities}

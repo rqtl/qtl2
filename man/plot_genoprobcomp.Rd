@@ -8,8 +8,8 @@ plot_genoprobcomp(probs1, probs2, map, ind = 1, chr = NULL, geno = NULL,
   threshold = 0, n_colors = 256, swap_axes = FALSE, ...)
 }
 \arguments{
-\item{probs1}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
-or allele dosages (as produced by \code{\link[qtl2geno:genoprob_to_alleleprob]{qtl2geno::genoprob_to_alleleprob()}}).}
+\item{probs1}{Genotype probabilities (as produced by \code{\link[=calc_genoprob]{calc_genoprob()}})
+or allele dosages (as produced by \code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}).}
 
 \item{probs2}{A second set of genotype probabilities, just like \code{probs1}.}
 
@@ -42,8 +42,7 @@ them, for colors that are white, some amount of blue or red, or
 where both are large something like blackish purple.
 }
 \examples{
-library(qtl2geno)
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 iron <- iron[1,"2"]   # subset to first individual on chr 2
 map <- insert_pseudomarkers(iron$gmap, step=1)
 

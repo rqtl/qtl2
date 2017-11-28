@@ -33,7 +33,7 @@ be expanded to the length of the other).
 If \code{interval} is provided, then \code{chr} should have length 1.
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # find markers by their genetic map positions
 find_marker(iron$gmap, c(8, 11), c(37.7, 56.9))

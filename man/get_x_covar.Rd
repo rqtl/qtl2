@@ -32,7 +32,7 @@ indicating sex and a covariate that is 1 for females from the
 reverse direction and 0 otherwise.
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 xcovar <- get_x_covar(iron)
 }
 \keyword{utilities}

@@ -10,8 +10,8 @@ plot_onegeno(geno, map, ind = 1, chr = NULL, col = NULL,
 }
 \arguments{
 \item{geno}{Imputed phase-known genotypes, as a list of matrices
-(as produced by \code{\link[qtl2geno:maxmarg]{qtl2geno::maxmarg()}}) or a list of
-three-dimensional arrays (as produced by \code{\link[qtl2geno:guess_phase]{qtl2geno::guess_phase()}}).}
+(as produced by \code{\link[=maxmarg]{maxmarg()}}) or a list of
+three-dimensional arrays (as produced by \code{\link[=guess_phase]{guess_phase()}}).}
 
 \item{map}{Marker map (a list of vectors of marker positions).}
 
@@ -47,8 +47,7 @@ cluttering the function definition.
 
 \examples{
 # load data and calculate genotype probabilities
-library(qtl2geno)
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 iron <- iron["146", ] # subset to individual 146
 map <- insert_pseudomarkers(iron$gmap, step=1)
 pr <- calc_genoprob(iron, map, error_prob=0.002)

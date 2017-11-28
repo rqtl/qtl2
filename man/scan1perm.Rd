@@ -11,7 +11,7 @@ scan1perm(genoprobs, pheno, kinship = NULL, addcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
 
@@ -98,11 +98,8 @@ indicates the maximum number of phenotypes to run together; default
 is 1000.
 }
 \examples{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 \dontshow{iron <- iron[,c(10,18,"X")]}
 
 # insert pseudomarkers into map

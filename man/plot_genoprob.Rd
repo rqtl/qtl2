@@ -12,8 +12,8 @@ plot_genoprob(probs, map, ind = 1, chr = NULL, geno = NULL,
 \method{plot}{calc_genoprob}(x, ...)
 }
 \arguments{
-\item{probs}{Genotype probabilities (as produced by \code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}})
-or allele dosages (as produced by qtl2geno::genoprob_to_alleleprob()]).}
+\item{probs}{Genotype probabilities (as produced by \code{\link[=calc_genoprob]{calc_genoprob()}})
+or allele dosages (as produced by \code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}).}
 
 \item{map}{Marker map (a list of vectors of marker positions).}
 
@@ -37,8 +37,8 @@ on the x-axis and the chromosome position is on the y-axis.}
 \item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
 
 \item{x}{Genotype probabilities (as produced by
-[qtl2geno::calc_genoprob()]) or allele dosages (as produced by
-qtl2geno::genoprob_to_alleleprob()]). (For the S3 type plot
+[calc_genoprob()]) or allele dosages (as produced by
+[genoprob_to_alleleprob()]). (For the S3 type plot
 function, this has to be called `x`.)}
 }
 \description{
@@ -58,8 +58,7 @@ cluttering the function definition.
 
 \examples{
 # load data and calculate genotype probabilities
-library(qtl2geno)
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 iron <- iron[,"2"] # subset to chr 2
 map <- insert_pseudomarkers(iron$gmap, step=1)
 pr <- calc_genoprob(iron, map, error_prob=0.002)

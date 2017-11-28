@@ -11,7 +11,7 @@ maxlod(scan1_output, map = NULL, chr = NULL)
 \code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}}.}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{chr}{Option vector of chromosomes to consider.}
 }
@@ -24,11 +24,8 @@ Find overall maximum LOD score in genome scan results, across all positions and 
 }
 \examples{
 \dontrun{
-# load qtl2geno package for data and genoprob calculation
-library(qtl2geno)
-
 # read data
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

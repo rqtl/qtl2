@@ -40,7 +40,7 @@ LOD = \eqn{log_{10} [ Pr(O_k | g_k = O_k) / Pr(O_k | g_k \ne O_K) ]}{
  log10[ Pr(O[k] | g[k] = O[k]) / Pr(O[k] | g[k] != O[k]) ]}
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 probs <- calc_genoprob(iron, error_prob=0.002, map_function="c-f")
 errorlod <- calc_errorlod(iron, probs)
 

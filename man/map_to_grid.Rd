@@ -26,7 +26,7 @@ This is generally for the case of a map created with
 along each chromosome.
 }
 \examples{
-grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 sapply(map_w_pmar, length)
 grid <- calc_grid(grav2$gmap, step=1)

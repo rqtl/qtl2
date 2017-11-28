@@ -8,9 +8,9 @@ index_snps(map, snpinfo, tol = 0.00000001)
 }
 \arguments{
 \item{map}{Physical map of markers and pseudomarkers; generally
-created from \code{\link[qtl2geno:insert_pseudomarkers]{qtl2geno::insert_pseudomarkers()}} and
+created from \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}} and
 used for a set of genotype probabilities (calculated with
-\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}) that are to be used to
+\code{\link[=calc_genoprob]{calc_genoprob()}}) that are to be used to
 interpolate SNP genotype probabilities (with
 \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}).}
 
@@ -56,7 +56,6 @@ choose a single index SNP for each partition.
 \examples{
 \dontrun{
 # load example data and calculate genotype probabilities
-library(qtl2geno)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")
 recla <- read_cross2(file)

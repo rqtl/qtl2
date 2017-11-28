@@ -40,7 +40,7 @@ random choices. For example, to the right of a homozygous
 region, either orientation is equally reasonable.
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 gmap <- insert_pseudomarkers(iron$gmap, step=1)
 probs <- calc_genoprob(iron, gmap, error_prob=0.002)
 imp_geno <- maxmarg(probs)

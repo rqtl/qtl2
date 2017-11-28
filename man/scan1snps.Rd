@@ -12,7 +12,7 @@ scan1snps(genoprobs, map, pheno, kinship = NULL, addcovar = NULL,
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
-\code{\link[qtl2geno:calc_genoprob]{qtl2geno::calc_genoprob()}}.}
+\code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{map}{Physical map for the positions in the \code{genoprobs}
 object: A list of numeric vectors; each vector gives marker
@@ -43,7 +43,7 @@ squares) or binary model (logistic regression) for the phenotype.
 If \code{model="binary"}, the phenotypes must have values in \eqn{[0, 1]}.}
 
 \item{query_func}{Function for querying SNP information; see
-\href{https://github.com/rqtl/qtl2db}{R/qtl2db}. Takes arguments
+\code{\link[=create_variant_query_func]{create_variant_query_func()}}). Takes arguments
 \code{chr}, \code{start}, \code{end}, (with \code{start} and \code{end} in the units in
 \code{map}, generally Mbp), and returns a data frame containing
 the columns \code{snp}, \code{chr}, \code{pos}, and \code{sdp}. (See \code{snpinfo} below.)}
@@ -109,14 +109,12 @@ The analysis proceeds as follows:
 \examples{
 \dontrun{
 # load example data and calculate genotype probabilities
-library(qtl2geno)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")
 DOex <- read_cross2(file)
 probs <- calc_genoprob(DOex, error_prob=0.002)
 
-library(qtl2db)
-snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
 queryf <- create_variant_query_func(snpdb_file)
 
 out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97, end=98)
@@ -124,5 +122,5 @@ out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=9
 
 }
 \seealso{
-\code{\link[=scan1]{scan1()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=index_snps]{index_snps()}}, \href{https://github.com/rqtl/qtl2db}{R/qtl2db}, \code{plot_snpasso()} in \href{https://github.com/rqtl/qtl2plot}{R/qtl2plot}
+\code{\link[=scan1]{scan1()}}, \code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=index_snps]{index_snps()}}, \code{\link[=create_variate_query_func]{create_variate_query_func()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
 }

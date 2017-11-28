@@ -10,13 +10,13 @@ plot_snpasso(scan1output, snpinfo, genes = NULL, lodcolumn = 1,
   ...)
 }
 \arguments{
-\item{scan1output}{Output of \code{\link[qtl2scan:scan1]{qtl2scan::scan1()}} using
+\item{scan1output}{Output of \code{\link[=scan1]{scan1()}} using
 SNP probabilities derived by
-\code{\link[qtl2scan:genoprob_to_snpprob]{qtl2scan::genoprob_to_snpprob()}}.}
+\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}.}
 
 \item{snpinfo}{Data frame with SNP information with the following
 columns (the last three are generally derived from with
-\code{\link[qtl2scan:index_snps]{qtl2scan::index_snps()}}):
+\code{\link[=index_snps]{index_snps()}}):
 \itemize{
 \item \code{chr} - Character string or factor with chromosome
 \item \code{pos} - Position (in same units as in the \code{"map"}
@@ -78,7 +78,6 @@ and \code{ylim} for y-axis limits.
 \examples{
 \donttest{
 # load example DO data from web
-library(qtl2geno)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")
 DOex <- read_cross2(file)
@@ -99,7 +98,6 @@ snpinfo <- readRDS(tmpfile)
 unlink(tmpfile)
 
 # SNP association scan
-library(qtl2scan)
 out_snps <- scan1snps(apr, DOex$pmap, DOex$pheno, snpinfo=snpinfo, keep_all_snps=TRUE)
 
 # plot results

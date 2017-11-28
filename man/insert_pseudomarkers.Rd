@@ -58,7 +58,7 @@ input \code{pseudomarker_map} is taken to be the set of
 pseudomarker positions.
 }
 \examples{
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 gmap_w_pmar <- insert_pseudomarkers(iron$gmap, step=1)
 }
 \seealso{

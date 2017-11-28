@@ -17,13 +17,12 @@ we use \code{\link[base:paste]{base::paste()}} with \code{collapse="|"}.
 Use the rows of a matrix to define a set of strata for a stratified permutation test
 }
 \examples{
-library(qtl2geno)
-iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
 Xcovar <- get_x_covar(iron)
 perm_strata <- mat2strata(Xcovar)
 
 }
 \seealso{
-\code{\link[qtl2geno:get_x_covar]{qtl2geno::get_x_covar()}}, \code{\link[=scan1perm]{scan1perm()}}
+\code{\link[=get_x_covar]{get_x_covar()}}, \code{\link[=scan1perm]{scan1perm()}}
 }
