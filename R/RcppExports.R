@@ -249,8 +249,8 @@ addlog <- function(a, b) {
     .Call(`_qtl2_addlog`, a, b)
 }
 
-subtrlog <- function(a, b) {
-    .Call(`_qtl2_subtrlog`, a, b)
+subtractlog <- function(a, b) {
+    .Call(`_qtl2_subtractlog`, a, b)
 }
 
 .viterbi <- function(crosstype, genotypes, founder_geno, is_X_chr, is_female, cross_info, rec_frac, marker_index, error_prob) {

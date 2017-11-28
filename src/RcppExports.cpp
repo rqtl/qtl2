@@ -922,15 +922,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// subtrlog
-double subtrlog(const double a, const double b);
-RcppExport SEXP _qtl2_subtrlog(SEXP aSEXP, SEXP bSEXP) {
+// subtractlog
+double subtractlog(const double a, const double b);
+RcppExport SEXP _qtl2_subtractlog(SEXP aSEXP, SEXP bSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const double >::type a(aSEXP);
     Rcpp::traits::input_parameter< const double >::type b(bSEXP);
-    rcpp_result_gen = Rcpp::wrap(subtrlog(a, b));
+    rcpp_result_gen = Rcpp::wrap(subtractlog(a, b));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2418,7 +2418,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_sim_geno", (DL_FUNC) &_qtl2_sim_geno, 10},
     {"_qtl2_sim_geno2", (DL_FUNC) &_qtl2_sim_geno2, 10},
     {"_qtl2_addlog", (DL_FUNC) &_qtl2_addlog, 2},
-    {"_qtl2_subtrlog", (DL_FUNC) &_qtl2_subtrlog, 2},
+    {"_qtl2_subtractlog", (DL_FUNC) &_qtl2_subtractlog, 2},
     {"_qtl2_viterbi", (DL_FUNC) &_qtl2_viterbi, 9},
     {"_qtl2_viterbi2", (DL_FUNC) &_qtl2_viterbi2, 9},
     {"_qtl2_interp_genoprob_onechr", (DL_FUNC) &_qtl2_interp_genoprob_onechr, 3},

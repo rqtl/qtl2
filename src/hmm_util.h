@@ -5,7 +5,7 @@
 // Calculate addlog(a,b) = log[exp(a) + exp(b)]
 double addlog(const double a, const double b);
 
-// Calculate  subtrlog(a,b) = log[exp(a) - exp(b)]
-double subtrlog(const double a, const double b);
+// Calculate  subtractlog(a,b) = log[exp(a) - exp(b)]
+double subtractlog(const double a, const double b);
 
 #endif // HMM_UTIL_H
