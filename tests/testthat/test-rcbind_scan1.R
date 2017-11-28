@@ -1,10 +1,13 @@
 context("cbind and rbind for scan1 objects")
 
-test_that("cbind.scan1() works for scan1() results", {
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+map <- insert_pseudomarkers(grav2$gmap, step=1)
+probs <- calc_genoprob(grav2, map, error_prob=0.002)
+k <- calc_kinship(probs)
+kloco <- calc_kinship(probs, "loco")
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
-    probs <- calc_genoprob(grav2, map, error_prob=0.002)
+
+test_that("cbind.scan1() works for scan1() results", {
 
     out1 <- scan1(probs, grav2$pheno[,1,drop=FALSE])
     out2 <- scan1(probs, grav2$pheno[,2,drop=FALSE])
@@ -15,12 +18,6 @@ test_that("cbind.scan1() works for scan1() results", {
 })
 
 test_that("cbind.scan1() works for scan1/LMM results", {
-
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
-    probs <- calc_genoprob(grav2, map, error_prob=0.002)
-    k <- calc_kinship(probs)
-    kloco <- calc_kinship(probs, "loco")
 
     out1 <- scan1(probs, grav2$pheno[,1,drop=FALSE], k)
     out2 <- scan1(probs, grav2$pheno[,2,drop=FALSE], k)
@@ -35,10 +32,6 @@ test_that("cbind.scan1() works for scan1/LMM results", {
 })
 
 test_that("rbind.scan1() works for scan1() results", {
-
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
-    probs <- calc_genoprob(grav2, map, error_prob=0.002)
 
     phe <- grav2$pheno[,1,drop=FALSE]
     out1 <- scan1(probs[,1], phe)
@@ -57,10 +50,6 @@ test_that("rbind.scan1() works for scan1() results", {
 
 test_that("rbind.scan1() works for scan1() results with multiple columns", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
-    probs <- calc_genoprob(grav2, map, error_prob=0.002)
-
     phe <- grav2$pheno[,15:18,drop=FALSE]
     out1 <- scan1(probs[,1], phe)
     out2 <- scan1(probs[,2:3], phe)
@@ -77,12 +66,6 @@ test_that("rbind.scan1() works for scan1() results with multiple columns", {
 
 
 test_that("rbind.scan1() works for scan1() results", {
-
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
-    probs <- calc_genoprob(grav2, map, error_prob=0.002)
-    k <- calc_kinship(probs)
-    kloco <- calc_kinship(probs, "loco")
 
     phe <- grav2$pheno[,1,drop=FALSE]
     out1 <- scan1(probs[,1], phe, k)
@@ -114,12 +97,6 @@ test_that("rbind.scan1() works for scan1() results", {
 
 
 test_that("rbind.scan1() works for scan1() results with multiple columns", {
-
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
-    probs <- calc_genoprob(grav2, map, error_prob=0.002)
-    k <- calc_kinship(probs)
-    kloco <- calc_kinship(probs, "loco")
 
     phe <- grav2$pheno[,15:18,drop=FALSE]
     out1 <- scan1(probs[,1], phe, k)
