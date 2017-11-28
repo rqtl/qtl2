@@ -40,7 +40,7 @@ following R packages:
 - [data.table](https://github.com/Rdatatable/data.table/wiki)
 - [RSQLite](https://rstats-db.github.io/RSQLite/)
 - [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html)
-- [R/qtl2scan](https://github.com/rqtl/qtl2scan)
+- [R/qtl2](https://github.com/rqtl/qtl2)
 
 The larger database files created by these scripts are available for
 direct download from [figshare](https://figshare.com):
