@@ -2,7 +2,7 @@ context("reduce gaps in a map")
 
 test_that("reduce_map_gaps works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- iron$gmap
 
     expect_equal(reduce_map_gaps(map, 1000), map)

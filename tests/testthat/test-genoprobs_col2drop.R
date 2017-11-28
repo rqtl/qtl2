@@ -6,7 +6,6 @@ test_that("genoprobs_cols2drop works", {
     library(qtl)
     data(fake.f2)
     fake.f2 <- fake.f2[c(18,19,"X"),] # subset chromosomes
-    library(qtl2geno)
     fake.f2 <- convert2cross2(fake.f2)
 
     # calculate genoprobs

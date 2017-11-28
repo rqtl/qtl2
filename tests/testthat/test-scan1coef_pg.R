@@ -54,8 +54,7 @@ test_that("scan1coef_pg for grav", {
 
     set.seed(9308594)
 
-    library(qtl2geno)
-    grav <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     map <- insert_pseudomarkers(grav$gmap, step=1)
     pr <- calc_genoprob(grav, map)
     K <- calc_kinship(pr)
@@ -157,8 +156,7 @@ test_that("scan1coef_pg for grav", {
 
 
 test_that("scan1coef deals with mismatching individuals", {
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")[["3"]]

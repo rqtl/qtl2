@@ -4,7 +4,7 @@ context("sim_geno")
 
 test_that("sim_geno riself", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
     RNGkind("Mersenne-Twister")
     set.seed(20150918)
@@ -62,7 +62,7 @@ test_that("sim_geno riself", {
 
 test_that("sim_geno f2", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     RNGkind("Mersenne-Twister")
     set.seed(20150918)
@@ -123,7 +123,7 @@ test_that("sim_geno works when multi-core", {
 test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
 
     RNGkind("Mersenne-Twister")
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     map <- insert_pseudomarkers(grav2$gmap, step=1)
     set.seed(20150918)
     dr <- sim_geno(grav2, map, n_draws=2, err=0.002, lowmem=FALSE)
@@ -137,7 +137,7 @@ test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
 test_that("sim_geno f2 gives same result for lowmem=TRUE and =FALSE", {
 
     RNGkind("Mersenne-Twister")
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     # order individuals to be sure that the get run in the same order
     p <- paste(iron$is_female, apply(iron$cross_info, 1, paste, collapse=":"), sep=":")

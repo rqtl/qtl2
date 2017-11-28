@@ -2,7 +2,7 @@ context("maxmarg")
 
 test_that("maxmarg works for F2 data", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,8] # only chr 8
 
     map <- insert_pseudomarkers(iron$gmap, step=2.5)

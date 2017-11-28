@@ -3,8 +3,7 @@ context("LMM genome scan by scan1 with kinship matrix")
 
 test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
@@ -61,8 +60,7 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
 test_that("scan1 with intercross with X covariates for null", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
@@ -123,8 +121,7 @@ test_that("scan1 with intercross with X covariates for null", {
 
 test_that("scan1 with kinship with intercross with an additive covariate", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
@@ -227,8 +224,7 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
 
 test_that("scan1 with kinship with intercross with an interactive covariate", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
@@ -338,8 +334,7 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
 
 test_that("scan1 with kinship works with LOCO, additive covariates", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
@@ -410,8 +405,7 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
 
 test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
@@ -486,8 +480,7 @@ test_that("scan1 with kinship works with LOCO, interactive covariates", {
 test_that("scan1 with kinship works with multicore", {
     if(isnt_karl()) skip("this test only run locally")
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
@@ -512,8 +505,7 @@ test_that("scan1 with kinship works with multicore", {
 
 
 test_that("scan1 with kinship LOD results invariant to change in scale to pheno and covar", {
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
@@ -537,8 +529,7 @@ test_that("scan1 with kinship LOD results invariant to change in scale to pheno 
 })
 
 test_that("scan1 deals with mismatching individuals", {
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")

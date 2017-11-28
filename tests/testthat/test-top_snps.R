@@ -4,7 +4,6 @@ test_that("top_snps() works", {
     if(isnt_karl()) skip("this test only run locally")
 
     # load example DO data from web
-    library(qtl2geno)
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DOex/DOex.zip")
     DOex <- read_cross2(file)

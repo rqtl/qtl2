@@ -2,7 +2,7 @@ context("input/output")
 
 test_that("can read grav2 data", {
 
-    zip_file <- system.file("extdata", "grav2.zip", package="qtl2geno")
+    zip_file <- system.file("extdata", "grav2.zip", package="qtl2")
     grav2 <- read_cross2(zip_file)
 
     # check that it contains the same stuff
@@ -28,7 +28,7 @@ test_that("can read grav2 data", {
 
 test_that("can read iron data", {
 
-    zip_file <- system.file("extdata", "iron.zip", package="qtl2geno")
+    zip_file <- system.file("extdata", "iron.zip", package="qtl2")
     iron <- read_cross2(zip_file)
 
     # check that it contains the same stuff
@@ -57,7 +57,7 @@ test_that("can read iron data", {
 test_that("read_pheno works", {
 
     # iron data
-    ironfile <- system.file("extdata", "iron.zip", package="qtl2geno")
+    ironfile <- system.file("extdata", "iron.zip", package="qtl2")
     dir <- tempdir()
 
     # read full data
@@ -126,7 +126,7 @@ test_that("read_pheno works", {
 test_that("Create zip file works", {
 
     # unzip iron data to a temporary directory
-    ironfile <- system.file("extdata", "iron.zip", package="qtl2geno")
+    ironfile <- system.file("extdata", "iron.zip", package="qtl2")
     dir <- tempdir()
     unzipped_files <- utils::unzip(ironfile, exdir=dir)
     on.exit(unlink(unzipped_files)) # clean up

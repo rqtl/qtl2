@@ -3,8 +3,7 @@ context("chromosome lengths")
 
 test_that("chr_lengths works", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     # regular case
     expected <- c("1"=83.1, "2"=34.9, "3"=29.5, "4"=42.7, "5"=44.8,

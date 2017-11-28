@@ -2,7 +2,7 @@ context("find_marker and find_markerpos")
 
 test_that("find_marker works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     # find markers by their genetic map positions
     expect_equal(find_marker(iron$gmap, c(8, 11), c(37.7, 56.9)), c("D8Mit294", "D11Mit101"))
@@ -30,7 +30,7 @@ test_that("find_marker works", {
 
 test_that("find_markerpos works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     expected <- data.frame(chr=c("8", "11"),
                            gmap=c(39.1, 56.9),

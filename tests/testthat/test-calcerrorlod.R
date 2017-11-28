@@ -3,7 +3,7 @@ context("calc_errorlod")
 test_that("calc_errorlod works for an intercross", {
 
     # this is not much more than a regression test, really
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     pr <- calc_genoprob(iron, err=0.002, map_function="c-f")
     err <- calc_errorlod(iron, pr)
@@ -65,7 +65,7 @@ test_that("calc_errorlod works for an intercross", {
 test_that("calc_errorlod works for RIL", {
 
     # this is not much more than a regression test, really
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
     pr <- calc_genoprob(grav2, err=0.002, map_function="c-f")
     err <- calc_errorlod(grav2, pr)

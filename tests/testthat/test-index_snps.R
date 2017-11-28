@@ -3,7 +3,6 @@ context("index snps")
 test_that("index_snps works", {
 
     # load example data and calculate genotype probabilities
-    library(qtl2geno)
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DO_Recla/recla.zip")
     recla <- read_cross2(file)

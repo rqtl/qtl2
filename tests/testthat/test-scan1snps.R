@@ -5,14 +5,12 @@ test_that("scan1snps works", {
     if(isnt_karl()) skip("this test only run locally")
 
     # load example data and calculate genotype probabilities
-    library(qtl2geno)
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DOex/DOex.zip")
     DOex <- read_cross2(file)
     probs <- calc_genoprob(DOex[1:20,"2"], error_prob=0.002)
 
-    library(qtl2db)
-    snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+    snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
     queryf <- create_variant_query_func(snpdb_file)
 
     expected <- structure(list(lod = structure(c(0.0974129525672618, 0.910244151499162,

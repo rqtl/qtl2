@@ -2,8 +2,7 @@ context("subset kinship matrices")
 
 test_that("subset.kinship works", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[c("2","3","4","5","6","7"), 2:6]
     pr <- calc_genoprob(iron)
 

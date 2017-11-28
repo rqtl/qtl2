@@ -9,7 +9,7 @@ test_that("reduce_markers works", {
     expect_equal(reduce_markers(map, wts, 3),
                  list(c1=c(marker=5), c2=c(marker2=7)))
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
     RNGkind("Mersenne-Twister")
     set.seed(20151205)

@@ -2,7 +2,7 @@ context("est_map gives same results w/ lowmem=T or F")
 
 test_that("est_map2 works with intercross", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,c(2,3,19,"X")]
 
     map_lomem <- est_map(iron, lowmem=TRUE)
@@ -13,7 +13,7 @@ test_that("est_map2 works with intercross", {
 
 test_that("est_map2 works with RIL by selfing", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     grav2 <- grav2[,4:5]
 
     map_lomem <- est_map(grav2, lowmem=TRUE)

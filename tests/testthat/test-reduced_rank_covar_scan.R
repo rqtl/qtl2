@@ -2,8 +2,7 @@ context("reduced rank covariates")
 
 test_that("scan1 etc work with reduced-rank covariates", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,c(1,12,"X")]
 
     Xcovar <- get_x_covar(iron)
@@ -39,7 +38,7 @@ test_that("scan1 etc work with reduced-rank covariates", {
         for(chr in names(pr)) {
             co <- scan1coef(pr[,chr], phe[,phecol,drop=FALSE], addcovar=X)
             Xcol2keep <- colnames(X)[colnames(X) %in% colnames(co)]
-            expected <- scan1coef(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE], 
+            expected <- scan1coef(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE],
                                   addcovar=X[,Xcol2keep])
             expect_equal(co, expected)
         }
@@ -50,7 +49,7 @@ test_that("scan1 etc work with reduced-rank covariates", {
         for(chr in names(pr)) {
             co <- scan1coef(pr[,chr], phe[,phecol,drop=FALSE], k, addcovar=X)
             Xcol2keep <- colnames(X)[colnames(X) %in% colnames(co)]
-            expected <- scan1coef(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE], 
+            expected <- scan1coef(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE],
                                   k, addcovar=X[,Xcol2keep])
             expect_equal(co, expected)
         }
@@ -62,7 +61,7 @@ test_that("scan1 etc work with reduced-rank covariates", {
         for(chr in names(pr)) {
             co <- scan1blup(pr[,chr], phe[,phecol,drop=FALSE], addcovar=X)
             Xcol2keep <- colnames(X)[colnames(X) %in% colnames(co)]
-            expected <- scan1blup(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE], 
+            expected <- scan1blup(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE],
                                   addcovar=X[,Xcol2keep])
             expect_equal(co, expected)
         }
@@ -73,7 +72,7 @@ test_that("scan1 etc work with reduced-rank covariates", {
         for(chr in names(pr)) {
             co <- scan1blup(pr[,chr], phe[,phecol,drop=FALSE], k, addcovar=X)
             Xcol2keep <- colnames(X)[colnames(X) %in% colnames(co)]
-            expected <- scan1blup(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE], 
+            expected <- scan1blup(pr[,chr], phe[!is.na(phe[,phecol]),phecol,drop=FALSE],
                                   k, addcovar=X[,Xcol2keep])
             expect_equal(co, expected)
         }

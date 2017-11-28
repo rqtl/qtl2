@@ -2,7 +2,7 @@ context("Calculation of kinship matrix")
 
 test_that("calc_kinship works for RIL", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     map <- insert_pseudomarkers(grav2$gmap, step=1)
     probs <- calc_genoprob(grav2, map, error_prob=0.002)
     grid <- calc_grid(grav2$gmap, step=1)
@@ -34,7 +34,7 @@ test_that("calc_kinship works for RIL", {
 
 test_that("calc_kinship works for F2", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     grid <- calc_grid(iron$gmap, step=1)
@@ -163,7 +163,7 @@ test_that("calc_kinship works for F2", {
 
 test_that("calc_kinship chr & loco work for F2", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     grid <- calc_grid(iron$gmap, step=1)
@@ -209,7 +209,7 @@ test_that("calc_kinship chr & loco work for F2", {
 
 test_that("calc_kinship chr & loco work for F2, when including X", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     grid <- calc_grid(iron$gmap, step=1)
@@ -245,7 +245,7 @@ test_that("calc_kinship chr & loco work for F2, when including X", {
 test_that("calc_kinship chr & loco work when multi-core", {
     if(isnt_karl()) skip("this test only run locally")
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     grid <- calc_grid(iron$gmap, step=1)
@@ -265,7 +265,7 @@ test_that("calc_kinship chr & loco work when multi-core", {
 
 
     ## RIL
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     map <- insert_pseudomarkers(grav2$gmap, step=1)
     probs <- calc_genoprob(grav2, map, error_prob=0.002)
     grid <- calc_grid(grav2$gmap, step=1)

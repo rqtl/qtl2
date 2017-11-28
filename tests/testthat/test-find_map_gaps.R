@@ -2,7 +2,7 @@ context("find gaps in a map")
 
 test_that("find_map_gaps works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     expect_equal(find_map_gaps(iron$gmap, 40),
                  data.frame(chr=c("1", "4", "5"),
                             left_marker=c("D1Mit80", "D4Mit2", "D5Mit11"),

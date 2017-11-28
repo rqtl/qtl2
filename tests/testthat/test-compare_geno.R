@@ -2,7 +2,7 @@ context("compare_geno")
 
 test_that("compare_geno works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[1:5, c(18:19,"X")]
 
     cg <- compare_geno(iron)
@@ -75,7 +75,7 @@ test_that("compare_geno works when multi-core", {
 
     if(isnt_karl()) skip("this test only run locally")
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[1:5, c(18:19,"X")]
 
     cg <- compare_geno(iron)

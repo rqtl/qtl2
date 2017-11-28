@@ -2,7 +2,7 @@ context("read_cross2 handling of file inconsistencies")
 
 test_that("read_cross2 deals with missing marker info", {
 
-    ironfile <- system.file("extdata", "iron.zip", package="qtl2geno")
+    ironfile <- system.file("extdata", "iron.zip", package="qtl2")
     iron <- read_cross2(ironfile)
 
     # unzip iron data to a temporary directory

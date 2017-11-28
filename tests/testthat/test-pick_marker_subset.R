@@ -2,8 +2,7 @@ context("pick subset of markers")
 
 test_that("pick_marker_subset matches qtl::pickMarkerSubset", {
 
-    library(qtl2geno)
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     map <- grav2$gmap
 
     wts <- lapply(vapply(map, length, 1),

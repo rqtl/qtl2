@@ -2,7 +2,7 @@ context("n_missing and n_typed")
 
 test_that("n_missing and n_typed work for iron", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     expect_equal(n_missing(iron[1:4,]), c("1"=0,  "2"=36, "3"=0,  "4"=0))
     expect_equal(n_typed(iron[1:4,]),   c("1"=66, "2"=30, "3"=66, "4"=66))
@@ -18,7 +18,7 @@ test_that("n_missing and n_typed work for iron", {
 
 test_that("n_missing and n_typed work for grav2", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
     expect_equal(n_missing(grav2[125:128,]), c("125"=2,  "126"=3, "127"=4,  "128"=1))
     expect_equal(n_typed(grav2[125:128,]),   c("125"=232,  "126"=231, "127"=230,  "128"=233))

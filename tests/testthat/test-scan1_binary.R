@@ -15,7 +15,6 @@ test_that("scan1 with binary phenotype gives same result as R/qtl", {
     for(i in seq_along(map)) names(map[[i]]) <- mapn[[i]]
 
     # convert for R/qtl2
-    library(qtl2geno)
     hyper2 <- convert2cross2(hyper)
     pr <- calc_genoprob(hyper2, map, error_prob=0.002)
     out2 <- scan1(pr, hyper2$pheno[,"bp_binary",drop=FALSE], model="binary")
@@ -63,7 +62,6 @@ test_that("scan1 with binary phenotype in intercross gives same results as R/qtl
     for(i in seq_along(map)) names(map[[i]]) <- mapn[[i]]
 
     # convert for R/qtl2
-    library(qtl2geno)
     listeria2 <- convert2cross2(listeria)
     pr <- calc_genoprob(listeria2, map, error_prob=0.002)
     out2 <- scan1(pr, listeria2$pheno[,"binary",drop=FALSE], model="binary")
@@ -114,7 +112,6 @@ test_that("scan1 with multiple binary phenotype gives same results as R/qtl", {
     for(i in seq_along(map)) names(map[[i]]) <- mapn[[i]]
 
     # convert for R/qtl2
-    library(qtl2geno)
     listeria2 <- convert2cross2(listeria)
     pr <- calc_genoprob(listeria2, map, error_prob=0.002)
     out2 <- scan1(pr, listeria2$pheno[,2:4], model="binary")

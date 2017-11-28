@@ -177,7 +177,7 @@ test_that("scan1coef for backcross, with contrasts", {
     covar <- cbind(sex=sample(0:1, nind(hyper), replace=TRUE))
     rownames(prob) <- names(phe) <- names(weights) <- rownames(covar) <- paste(1:nind(hyper))
 
-    # probs for qtl2scan code
+    # probs for qtl2 code
     prob2 <- convert_probs2qtl2(hyper)
 
     # use contrasts
@@ -292,8 +292,7 @@ test_that("scan1coef for intercross", {
 
     set.seed(9308594)
 
-    library(qtl2scan)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     prob2 <- calc_genoprob(iron[,7], map, error_prob=0.002) # just look at chr 7
     phe <- iron$pheno[,1] # liver phenotype
@@ -303,7 +302,7 @@ test_that("scan1coef for intercross", {
     weights <- runif(n_ind(iron), 0, 5)
     names(weights) <- names(phe)
 
-    # different organization of probs for qtl2scan and lm() code
+    # different organization of probs for qtl2 and lm() code
     prob <- aperm(prob2[[1]], c(1,3,2)) # rearrange as expected for lm()
 
     # no covariates
@@ -412,8 +411,7 @@ test_that("scan1coef for intercross, with contrasts", {
 
     set.seed(9308594)
 
-    library(qtl2scan)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     prob2 <- calc_genoprob(iron[,7], map, error_prob=0.002) # just look at chr 7
     phe <- iron$pheno[,1] # liver phenotype
@@ -423,7 +421,7 @@ test_that("scan1coef for intercross, with contrasts", {
     weights <- runif(n_ind(iron), 0, 5)
     names(weights) <- names(phe)
 
-    # different organization of probs for qtl2scan and lm() code
+    # different organization of probs for qtl2 and lm() code
     prob <- aperm(prob2[[1]], c(1,3,2)) # rearrange as expected for lm()
 
     # use contrasts
@@ -541,8 +539,7 @@ test_that("scan1coef for intercross, with contrasts", {
 
 
 test_that("scan1coef deals with mismatching individuals", {
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     probs <- probs[,"3"]

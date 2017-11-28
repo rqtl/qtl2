@@ -5,11 +5,8 @@ test_that("summary_scan1perm works", {
     seed <- 9896433
     RNGkind("Mersenne-Twister")
 
-    # load qtl2geno package for data and genoprob calculation
-    library(qtl2geno)
-
     # read data
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,c(18,19,"X")]
 
     # insert pseudomarkers into map

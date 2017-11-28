@@ -2,10 +2,10 @@ context("is_phase_known")
 
 test_that("is_phase_known works for grav2 and iron", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     expect_true(is_phase_known(grav2))
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     expect_false(is_phase_known(iron))
 
 })

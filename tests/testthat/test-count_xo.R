@@ -2,7 +2,7 @@ context("count_xo and locate_xo")
 
 test_that("count_xo and locate_xo work for intercross", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[1:5, c(7,8,"X")]
     pr <- calc_genoprob(iron, error_prob=0.002, map_function="c-f")
     v <- maxmarg(pr)

@@ -3,7 +3,7 @@ context("create_gene_query_func")
 test_that("create_gene_query_func works", {
 
     # use file name
-    dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2db")
+    dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2")
     qf <- create_gene_query_func(dbfile)
 
     expected <- structure(list(chr = c("2", "2", "2"),

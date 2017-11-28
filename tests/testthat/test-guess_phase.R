@@ -2,7 +2,7 @@ context("guess_phase")
 
 test_that("guess_phase works with phase-known data", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     grav2 <- grav2[1:5,1:2]
     gmap <- insert_pseudomarkers(grav2$gmap, step=5, stepwidth="max")
     pr <- calc_genoprob(grav2, gmap, error_prob=0.002)
@@ -13,7 +13,7 @@ test_that("guess_phase works with phase-known data", {
 
 test_that("guess_phase works with f2 data", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[c(1:5,146:148,211:212), c(19,"X")]
     gmap <- insert_pseudomarkers(iron$gmap, step=5, stepwidth="max")
     pr <- calc_genoprob(iron, gmap, error_prob=0.002)

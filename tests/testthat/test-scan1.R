@@ -471,7 +471,6 @@ test_that("multi-core scan1 works", {
     rownames(y) <- paste(1:n_ind)
 
     # inputs for R/qtl2
-    library(qtl2geno)
     hyper2 <- convert2cross2(hyper)
     map <- insert_pseudomarkers(hyper2, step=2.5)
     pr <- calc_genoprob(hyper2, map)
@@ -550,7 +549,6 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
     rownames(y) <- paste(1:n_ind)
 
     # inputs for R/qtl2
-    library(qtl2geno)
     hyper2 <- convert2cross2(hyper)
     map <- insert_pseudomarkers(hyper2$gmap, step=2.5)
     pr <- calc_genoprob(hyper2, map)
@@ -605,8 +603,7 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
 })
 
 test_that("scan1 deals with mismatching individuals", {
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs, "loco")
@@ -627,8 +624,7 @@ test_that("scan1 deals with mismatching individuals", {
 
 test_that("scan1 can handle decomposed kinship matrix", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     pr <- calc_genoprob(iron)
     k <- calc_kinship(pr)

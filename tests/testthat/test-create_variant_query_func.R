@@ -3,7 +3,7 @@ context("create_variant_query_func")
 test_that("create_variant_query_func works", {
 
     # use file name
-    dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+    dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
     qf <- create_variant_query_func(dbfile)
 
     expected <- structure(list(snp_id = c("rs213863525", "rs235573572", "rs253240367"),

@@ -3,8 +3,7 @@ context("estimate heritability with LMM by est_herit")
 
 test_that("est_herit works with intercross", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
@@ -29,8 +28,7 @@ test_that("est_herit works with intercross", {
 
 test_that("est_herit with intercross with an additive covariate", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
@@ -60,8 +58,7 @@ test_that("est_herit with intercross with an additive covariate", {
 
 test_that("est_herit handles dependent covariate columns", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)

@@ -2,7 +2,7 @@ context("Calculate genotype frequencies")
 
 test_that("calc_geno_freq works for an intercross", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     pr <- calc_genoprob(iron, err=0.002)
 
     # omit_x works?

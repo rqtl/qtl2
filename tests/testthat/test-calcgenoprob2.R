@@ -221,7 +221,7 @@ test_that("haploids calc_genoprob", {
 
 test_that("backcross autosome with markers at same location", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     grav2 <- grav2[1:4,1]
 
     # put some markers at same location

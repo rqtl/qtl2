@@ -6,7 +6,7 @@ test_that("chromosome scan by Haley-Knott works", {
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
-    hyper2 <- qtl2geno::convert2cross2(hyper)
+    hyper2 <- convert2cross2(hyper)
 
     # scan by R/qtl
     hyper <- calc.genoprob(hyper, step=1)
@@ -15,7 +15,7 @@ test_that("chromosome scan by Haley-Knott works", {
 
     # inputs for R/qtl2
     map <- insert_pseudomarkers(hyper2$gmap, step=1)
-    pr <- qtl2geno::calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
+    pr <- calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
     y <- hyper2$pheno[,1]
     n <- length(y)
 
@@ -80,7 +80,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes works", {
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
-    hyper2 <- qtl2geno::convert2cross2(hyper)
+    hyper2 <- convert2cross2(hyper)
     n_phe <- 200
     hyper$pheno <- cbind(permute_nvector(n_phe, hyper$pheno[,1]),
                          hyper$pheno[,2,drop=FALSE]) # sex column left at the end
@@ -93,7 +93,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes works", {
 
     # inputs for R/qtl2
     map <- insert_pseudomarkers(hyper2$gmap, step=1)
-    pr <- qtl2geno::calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
+    pr <- calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
     y <- as.matrix(hyper$pheno[,1:n_phe])
     n <- nrow(y)
 
@@ -157,7 +157,7 @@ test_that("chromosome scan by Haley-Knott works with additive covariates", {
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
-    hyper2 <- qtl2geno::convert2cross2(hyper)
+    hyper2 <- convert2cross2(hyper)
 
     # scan by R/qtl
     hyper <- calc.genoprob(hyper, step=1)
@@ -168,7 +168,7 @@ test_that("chromosome scan by Haley-Knott works with additive covariates", {
 
     # inputs for R/qtl2
     map <- insert_pseudomarkers(hyper2$gmap, step=1)
-    pr <- qtl2geno::calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
+    pr <- calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
     y <- hyper2$pheno[,1]
     n <- length(y)
 
@@ -213,7 +213,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an additi
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
-    hyper2 <- qtl2geno::convert2cross2(hyper)
+    hyper2 <- convert2cross2(hyper)
     n_phe <- 200
     hyper$pheno <- cbind(permute_nvector(n_phe, hyper$pheno[,1]),
                          hyper$pheno[,2,drop=FALSE]) # sex column left at the end
@@ -228,7 +228,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an additi
 
     # inputs for R/qtl2
     map <- insert_pseudomarkers(hyper2$gmap, step=1)
-    pr <- qtl2geno::calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
+    pr <- calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
     y <- as.matrix(hyper$pheno[,1:n_phe])
     n <- nrow(y)
 
@@ -274,7 +274,7 @@ test_that("chromosome scan by Haley-Knott works with interactive covariates", {
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
-    hyper2 <- qtl2geno::convert2cross2(hyper)
+    hyper2 <- convert2cross2(hyper)
 
     # scan by R/qtl
     hyper <- calc.genoprob(hyper, step=1)
@@ -285,7 +285,7 @@ test_that("chromosome scan by Haley-Knott works with interactive covariates", {
 
     # inputs for R/qtl2
     map <- insert_pseudomarkers(hyper2$gmap, step=1)
-    pr <- qtl2geno::calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
+    pr <- calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
     y <- hyper2$pheno[,1]
     n <- length(y)
 
@@ -336,7 +336,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an intera
     # data for chr 6
     data(hyper)
     hyper <- hyper[6,]
-    hyper2 <- qtl2geno::convert2cross2(hyper)
+    hyper2 <- convert2cross2(hyper)
     n_phe <- 200
     hyper$pheno <- cbind(permute_nvector(n_phe, hyper$pheno[,1]),
                          hyper$pheno[,2,drop=FALSE]) # sex column left at the end
@@ -351,7 +351,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an intera
 
     # inputs for R/qtl2
     map <- insert_pseudomarkers(hyper2$gmap, step=1)
-    pr <- qtl2geno::calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
+    pr <- calc_genoprob(hyper2, map)[[1]][,2,,drop=FALSE]
     y <- as.matrix(hyper$pheno[,1:n_phe])
     n <- nrow(y)
 

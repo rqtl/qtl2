@@ -2,7 +2,7 @@ context("get X covariates")
 
 test_that("get_x_covar for riself", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
     expect_equal(get_x_covar(grav2), NULL)
 
@@ -10,7 +10,7 @@ test_that("get_x_covar for riself", {
 
 test_that("get_x_covar for intercross", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     n <- n_ind(iron)
 
     expected <- matrix(0.0, ncol=2, nrow=n)

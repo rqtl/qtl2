@@ -46,7 +46,7 @@ test_that("minimal version works in simple case", {
 
 test_that("insert_pseudomarkers gives distinct pseudomarker names with iron data", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     pmap <- insert_pseudomarkers(iron$gmap, step=1)
     grid <- calc_grid(iron$gmap, step=1)
 

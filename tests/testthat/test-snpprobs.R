@@ -472,7 +472,6 @@ test_that(".Xgenoprob_to_snpprob works with 8 alleles", {
 test_that("the genoprob_to_snpprob R function works", {
 
     # load example data and calculate genotype probabilities
-    library(qtl2geno)
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DO_Recla/recla.zip")
     recla <- read_cross2(file)

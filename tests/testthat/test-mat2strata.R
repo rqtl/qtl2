@@ -2,8 +2,7 @@ context("matrix to strata")
 
 test_that("mat2strata works", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     Xcovar <- get_x_covar(iron)[c(1:3, 146:148, 215:217),]
 
     expect_equal(mat2strata(Xcovar),

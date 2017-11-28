@@ -2,8 +2,8 @@ context("kinship utilities")
 
 test_that("is_kinship and is_kinship_decomposed work", {
 
-    library(qtl2geno)
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    library(qtl2)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[1:100,c(11,12,16,"X")]
     pr <- calc_genoprob(iron)
 

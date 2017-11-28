@@ -2,7 +2,7 @@ context("subset cross2, calc_genoprob, sim_geno, viterbi")
 
 test_that("subset.cross2 works (riself)", {
 
-    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
     # possible problems in indexes
     expect_error(grav2[,c(18:19,"X")])
@@ -44,7 +44,7 @@ test_that("subset.cross2 works (riself)", {
 
 test_that("subset.cross2 works (F2)", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     chr <- rep(FALSE, 20)
     chr[c(4, 20)] <- TRUE
     ironsub <- iron[,chr]
@@ -102,7 +102,7 @@ test_that("subset.cross2 works (F2)", {
 
 test_that("subset.calc_genoprob works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     ironsub <- iron[,c(4,"X")]
 
     map <- insert_pseudomarkers(iron$gmap, step=5)
@@ -134,7 +134,7 @@ test_that("subset.calc_genoprob works", {
 
 test_that("subset.sim_geno works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     ironsub <- iron[,c(4,"X")]
 
     map <- insert_pseudomarkers(iron$gmap, step=5)
@@ -166,7 +166,7 @@ test_that("subset.sim_geno works", {
 
 test_that("subset.calc_genoprob works with reduction to grid and/or allele prob", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     ironsub <- iron[,c(5,8,"X")]
 
     map <- insert_pseudomarkers(ironsub$gmap, step=2.5)
@@ -194,7 +194,7 @@ test_that("subset.calc_genoprob works with reduction to grid and/or allele prob"
 
 test_that("subset.viterbi works", {
 
-    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     ironsub <- iron[,c(4,"X")]
 
     map <- insert_pseudomarkers(iron$gmap, step=5)
