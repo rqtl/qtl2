@@ -4,8 +4,8 @@
 #'
 #' @md
 #'
-#' @param probs1 Genotype probabilities (as produced by [qtl2geno::calc_genoprob()])
-#' or allele dosages (as produced by [qtl2geno::genoprob_to_alleleprob()]).
+#' @param probs1 Genotype probabilities (as produced by [calc_genoprob()])
+#' or allele dosages (as produced by [genoprob_to_alleleprob()]).
 #' @param probs2 A second set of genotype probabilities, just like `probs1`.
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
@@ -34,10 +34,10 @@
 #' the proportions of SNPs where the individual matches each possible
 #' genotypes.
 #'
-#' @seealso `plot_genoprobcomp()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
+#' @seealso [plot_genoprobcomp()]
 #'
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' iron <- iron[1,"2"]   # subset to first individual on chr 2
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
 #'

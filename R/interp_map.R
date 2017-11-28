@@ -12,8 +12,7 @@
 #'
 #' @examples
 #' # load example data
-#' library(qtl2geno)
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # positions to interpolate from cM to Mbp
 #' tointerp <- list("7" = c(pos7.1= 5, pos7.2=15, pos7.3=25),

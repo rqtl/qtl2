@@ -8,7 +8,7 @@
 #' @md
 #'
 #' @param genoprobs Genotype probabilities as calculated by
-#' [qtl2geno::calc_genoprob()].
+#' [calc_genoprob()].
 #' @param map Physical map for the positions in the `genoprobs`
 #' object: A list of numeric vectors; each vector gives marker
 #' positions for a single chromosome.
@@ -29,7 +29,7 @@
 #' squares) or binary model (logistic regression) for the phenotype.
 #' If `model="binary"`, the phenotypes must have values in \eqn{[0, 1]}.
 #' @param query_func Function for querying SNP information; see
-#' [R/qtl2db](https://github.com/rqtl/qtl2db). Takes arguments
+#' [create_variant_query_func()]). Takes arguments
 #' `chr`, `start`, `end`, (with `start` and `end` in the units in
 #' `map`, generally Mbp), and returns a data frame containing
 #' the columns `snp`, `chr`, `pos`, and `sdp`. (See `snpinfo` below.)
@@ -74,19 +74,17 @@
 #' * Use [genoprob_to_snpprob()] to convert `genoprobs` to SNP probabilities.
 #' * Use [scan1()] to do a single-QTL scan at the SNPs.
 #'
-#' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [R/qtl2db](https://github.com/rqtl/qtl2db), `plot_snpasso()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
+#' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [create_variate_query_func()], [plot_snpasso()]
 #'
 #' @examples
 #' \dontrun{
 #' # load example data and calculate genotype probabilities
-#' library(qtl2geno)
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
 #' DOex <- read_cross2(file)
 #' probs <- calc_genoprob(DOex, error_prob=0.002)
 #'
-#' library(qtl2db)
-#' snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+#' snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
 #' queryf <- create_variant_query_func(snpdb_file)
 #'
 #' out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97, end=98)

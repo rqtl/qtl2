@@ -10,13 +10,12 @@
 #' we use [base::paste()] with `collapse="|"`.
 #'
 #' @examples
-#' library(qtl2geno)
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' Xcovar <- get_x_covar(iron)
 #' perm_strata <- mat2strata(Xcovar)
 #'
-#' @seealso [qtl2geno::get_x_covar()], [scan1perm()]
+#' @seealso [get_x_covar()], [scan1perm()]
 #' @export
 mat2strata <-
     function(mat)

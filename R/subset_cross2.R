@@ -48,7 +48,7 @@
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' # keep individuals 1-20 and chromosomes 3 and 4
 #' grav2sub <- grav2[1:20, c(3,4)]
 #' # keep just chromosome 1

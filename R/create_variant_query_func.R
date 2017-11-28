@@ -29,7 +29,7 @@
 #'
 #' @examples
 #' # create query function by connecting to file
-#' dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2db")
+#' dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
 #' query_variants <- create_variant_query_func(dbfile)
 #' # query_variants will connect and disconnect each time
 #' variants <- query_variants("2", 97.0, 98.0)

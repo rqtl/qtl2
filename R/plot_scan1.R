@@ -4,10 +4,10 @@
 #'
 #' @md
 #'
-#' @param x Output of [qtl2scan::scan1()].
+#' @param x Output of [scan1()].
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' [qtl2geno::insert_pseudomarkers()].
+#' [insert_pseudomarkers()].
 #'
 #' @param lodcolumn LOD score column to plot (a numeric index, or a
 #' character string for a column name). Only one value allowed.
@@ -35,16 +35,12 @@
 #'
 #' @export
 #' @importFrom graphics plot rect lines par axis title abline box
-#' @importFrom qtl2scan subset_scan1
 #'
 #' @return None.
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -59,7 +55,6 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' library(qtl2scan)
 #' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # plot the results for selected chromosomes
@@ -89,7 +84,7 @@ plot_scan1 <-
         chri <- match(chr, names(map))
         if(any(is.na(chri)))
             stop("Chromosomes ", paste(chr[is.na(chri)], collapse=", "), " not found")
-        x <- qtl2scan::subset_scan1(x, map, chr)
+        x <- subset_scan1(x, map, chr)
         map <- map[chri]
     }
 

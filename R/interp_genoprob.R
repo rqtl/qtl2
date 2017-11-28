@@ -30,7 +30,7 @@
 #' get them onto a common set of positions.
 #'
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' \dontshow{iron <- iron[1:20,c("1", "X")]}
 #' probs <- calc_genoprob(iron, iron$gmap, error_prob=0.002)
 #'

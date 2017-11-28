@@ -5,8 +5,8 @@
 #' @md
 #'
 #' @param geno Imputed phase-known genotypes, as a list of matrices
-#'     (as produced by [qtl2geno::maxmarg()]) or a list of
-#'     three-dimensional arrays (as produced by [qtl2geno::guess_phase()]).
+#'     (as produced by [maxmarg()]) or a list of
+#'     three-dimensional arrays (as produced by [guess_phase()]).
 #' @param map Marker map (a list of vectors of marker positions).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosomes to plot; a vector of character strings.
@@ -27,8 +27,7 @@
 #'
 #' @examples
 #' # load data and calculate genotype probabilities
-#' library(qtl2geno)
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' iron <- iron["146", ] # subset to individual 146
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
 #' pr <- calc_genoprob(iron, map, error_prob=0.002)
@@ -234,11 +233,11 @@ plot_onegeno <-
         max_geno <- max(unlist(geno), na.rm=TRUE)
         if(is.null(col)) {
             if(max_geno <= 8) {
-                col <- qtl2plot::CCcolors
+                col <- qtl2::CCcolors
             }
             else {
                 warning("With ", max_geno, " genotypes, you need to provide the vector of colors; recycling some")
-                col <- rep(qtl2plot::CCcolors, max_geno)
+                col <- rep(qtl2::CCcolors, max_geno)
             }
         }
         else if(max_geno > length(col)) {

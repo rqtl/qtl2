@@ -6,7 +6,7 @@
 #' @md
 #'
 #' @param genoprobs Genotype probabilities as calculated by
-#' [qtl2geno::calc_genoprob()].
+#' [calc_genoprob()].
 #' @param pheno A matrix of phenotypes, individuals x phenotypes.
 #' @param kinship Optional kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
@@ -36,7 +36,7 @@
 #' * `hsq` - Included if `kinship` provided: A matrix of
 #'    estimated heritabilities under the null hypothesis of no
 #'    QTL. Columns are the phenotypes. If the `"loco"` method was
-#'    used with [qtl2geno::calc_kinship()] to calculate a list
+#'    used with [calc_kinship()] to calculate a list
 #'    of kinship matrices, one per chromosome, the rows of `hsq`
 #'    will be the heritabilities for the different chromosomes (well,
 #'    leaving out each one). If `Xcovar` was not NULL, there will at
@@ -93,11 +93,8 @@
 #' organism association mapping. Genetics 178:1709--1723.
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)

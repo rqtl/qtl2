@@ -12,7 +12,7 @@
 #' Input map with any gaps greater than `min_gap` reduced to `min_gap`.
 #'
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' rev_map <- reduce_map_gaps(iron$gmap, 30)
 #'
 #' @seealso [find_map_gaps()]

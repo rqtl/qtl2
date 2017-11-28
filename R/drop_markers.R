@@ -15,7 +15,7 @@
 #' @seealso [pull_markers()], [drop_nullmarkers()]
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' markers2drop <- c("BH.342C/347L-Col", "GH.94L", "EG.357C/359L-Col", "CD.245L", "ANL2")
 #' grav2_rev <- drop_markers(grav2, markers2drop)
 drop_markers <-
@@ -92,7 +92,7 @@ drop_markers <-
 #' @seealso [drop_markers()], [pull_markers()]
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' # make a couple of markers missing
 #' grav2$geno[[2]][,c(3,25)] <- 0
 #' grav2_rev <- drop_nullmarkers(grav2)
@@ -153,7 +153,7 @@ drop_nullmarkers <-
 #' @seealso [drop_markers()], [drop_nullmarkers()]
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' markers2drop <- c("BH.342C/347L-Col", "GH.94L", "EG.357C/359L-Col", "CD.245L", "ANL2")
 #' grav2_rev <- pull_markers(grav2, markers2drop)
 pull_markers <-

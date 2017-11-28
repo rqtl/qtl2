@@ -10,7 +10,7 @@
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' [qtl2geno::insert_pseudomarkers()].
+#' [insert_pseudomarkers()].
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
@@ -22,11 +22,8 @@
 #' @return A data.frame with three columns: chr, pos, and lod score.
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -128,7 +125,7 @@ max.scan1 <-
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' [qtl2geno::insert_pseudomarkers()].
+#' [insert_pseudomarkers()].
 #' @param chr Option vector of chromosomes to consider.
 #'
 #' @export
@@ -137,11 +134,8 @@ max.scan1 <-
 #'
 #' @examples
 #' \dontrun{
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)

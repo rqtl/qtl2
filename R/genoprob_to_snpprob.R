@@ -7,7 +7,7 @@
 #' @md
 #'
 #' @param genoprobs Genotype probabilities as
-#' calculated by [qtl2geno::calc_genoprob()].
+#' calculated by [calc_genoprob()].
 #'
 #' @param snpinfo Data frame with SNP information with the following
 #'     columns (the last three are generally derived with
@@ -52,7 +52,6 @@
 #' @examples
 #' \dontrun{
 #' # load example data and calculate genotype probabilities
-#' library(qtl2geno)
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DO_Recla/recla.zip")
 #' recla <- read_cross2(file)
@@ -81,7 +80,7 @@
 #' snpaprobs <- genoprob_to_snpprob(aprobs, snpinfo)
 #' }
 #'
-#' @seealso [index_snps()], [qtl2geno::calc_genoprob()], [scan1snps()]
+#' @seealso [index_snps()], [calc_genoprob()], [scan1snps()]
 #' @export
 genoprob_to_snpprob <-
     function(genoprobs, snpinfo)

@@ -36,7 +36,7 @@
 #' yaml_file <- "http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 #' grav2 <- read_cross2(yaml_file)
 #' }
-#' zip_file <- system.file("extdata", "grav2.zip", package="qtl2geno")
+#' zip_file <- system.file("extdata", "grav2.zip", package="qtl2")
 #' grav2 <- read_cross2(zip_file)
 read_cross2 <-
 function(file, quiet=TRUE)

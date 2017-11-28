@@ -40,7 +40,7 @@
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' gmap <- est_map(grav2, error_prob=0.002)
 
 est_map <-

@@ -35,11 +35,8 @@
 #' @export
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #'
 #' # grap genetic map
 #' gmap <- grav2$gmap

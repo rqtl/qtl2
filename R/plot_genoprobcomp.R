@@ -4,8 +4,8 @@
 #'
 #' @md
 #'
-#' @param probs1 Genotype probabilities (as produced by [qtl2geno::calc_genoprob()])
-#' or allele dosages (as produced by [qtl2geno::genoprob_to_alleleprob()]).
+#' @param probs1 Genotype probabilities (as produced by [calc_genoprob()])
+#' or allele dosages (as produced by [genoprob_to_alleleprob()]).
 #' @param probs2 A second set of genotype probabilities, just like `probs1`.
 #' @param map Marker map (a list of vectors of marker positions).
 #' @param ind Individual to plot, either a numeric index or an ID.
@@ -28,8 +28,7 @@
 #' @seealso [plot_genoprob()]
 #'
 #' @examples
-#' library(qtl2geno)
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' iron <- iron[1,"2"]   # subset to first individual on chr 2
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
 #'

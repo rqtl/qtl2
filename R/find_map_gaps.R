@@ -16,7 +16,7 @@
 #' @seealso [reduce_map_gaps()]
 #'
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' find_map_gaps(iron$gmap, 40)
 #'
 #' @export

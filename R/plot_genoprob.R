@@ -4,8 +4,8 @@
 #'
 #' @md
 #'
-#' @param probs Genotype probabilities (as produced by [qtl2geno::calc_genoprob()])
-#' or allele dosages (as produced by qtl2geno::genoprob_to_alleleprob()]).
+#' @param probs Genotype probabilities (as produced by [calc_genoprob()])
+#' or allele dosages (as produced by [genoprob_to_alleleprob()]).
 #' @param map Marker map (a list of vectors of marker positions).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosome to plot; a single character string.
@@ -33,8 +33,7 @@
 #'
 #' @examples
 #' # load data and calculate genotype probabilities
-#' library(qtl2geno)
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' iron <- iron[,"2"] # subset to chr 2
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
 #' pr <- calc_genoprob(iron, map, error_prob=0.002)
@@ -239,7 +238,7 @@ plot_genoprob_internal <-
 #' @export
 #' @rdname plot_genoprob
 #' @param x Genotype probabilities (as produced by
-#' [qtl2geno::calc_genoprob()]) or allele dosages (as produced by
-#' qtl2geno::genoprob_to_alleleprob()]). (For the S3 type plot
+#' [calc_genoprob()]) or allele dosages (as produced by
+#' [genoprob_to_alleleprob()]). (For the S3 type plot
 #' function, this has to be called `x`.)
 plot.calc_genoprob <- function(x, ...) plot_genoprob(x, ...)

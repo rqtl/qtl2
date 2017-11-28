@@ -5,7 +5,7 @@
 #' @md
 #'
 #' @param peaks Data frame such as that produced by
-#'     [qtl2scan::find_peaks()]) containing columns
+#'     [find_peaks()]) containing columns
 #'     `chr`, `pos`, `lodindex`, and `lodcolumn`.
 #'     May also contain columns `ci_lo` and `ci_hi`, in
 #'     which case intervals will be plotted.
@@ -17,7 +17,7 @@
 #' @param gap Gap between chromosomes.
 #' @param ... Additional graphics parameters
 #'
-#' @seealso [qtl2scan::find_peaks()]
+#' @seealso [find_peaks()]
 #'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For
@@ -32,11 +32,8 @@
 #' @return None.
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -51,7 +48,6 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' library(qtl2scan)
 #' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
 #' # find peaks above lod=3.5 (and calculate 1.5-LOD support intervals)

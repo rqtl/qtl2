@@ -15,7 +15,7 @@
 #' @describeIn n_missing Count missing genotypes
 #' @export
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' nmis_ind <- n_missing(iron)
 #' pmis_mar <- n_typed(iron, "mar", "proportion")
 #' plot(nmis_ind, xlab="Individual", ylab="No. missing genotypes")

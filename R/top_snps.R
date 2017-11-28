@@ -40,7 +40,6 @@
 #' @examples
 #' \dontrun{
 #' # load example DO data from web
-#' library(qtl2geno)
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
 #' DOex <- read_cross2(file)
@@ -82,7 +81,7 @@
 #' top_snps(out_snps, snpinfo, 0.5)
 #' }
 #' @export
-#' @seealso [index_snps()], [genoprob_to_snpprob()], [scan1snps()], `plot_snpasso()` in [R/qtl2plot](https://github.com/rqtl/qtl2plot)
+#' @seealso [index_snps()], [genoprob_to_snpprob()], [scan1snps()], [plot_snpasso()]
 top_snps <-
     function(scan1_output, snpinfo, lodcolumn=1, chr=NULL, drop=1.5, show_all_snps=TRUE)
 {

@@ -8,9 +8,9 @@
 #' @md
 #'
 #' @param map Physical map of markers and pseudomarkers; generally
-#'     created from [qtl2geno::insert_pseudomarkers()] and
+#'     created from [insert_pseudomarkers()] and
 #'     used for a set of genotype probabilities (calculated with
-#'     [qtl2geno::calc_genoprob()]) that are to be used to
+#'     [calc_genoprob()]) that are to be used to
 #'     interpolate SNP genotype probabilities (with
 #'     [genoprob_to_snpprob()]).
 #' @param snpinfo Data frame with SNP information with the following columns:
@@ -44,7 +44,6 @@
 #' @examples
 #' \dontrun{
 #' # load example data and calculate genotype probabilities
-#' library(qtl2geno)
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DO_Recla/recla.zip")
 #' recla <- read_cross2(file)

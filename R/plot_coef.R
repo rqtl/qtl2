@@ -5,10 +5,10 @@
 #' @md
 #'
 #' @param x Estimated QTL effects ("coefficients") as obtained from
-#' [qtl2scan::scan1coef()].
+#' [scan1coef()].
 #'
 #' @param map A list of vectors of marker positions, as produced by
-#' [qtl2geno::insert_pseudomarkers()].
+#' [insert_pseudomarkers()].
 #'
 #' @param columns Vector of columns to plot
 #'
@@ -57,11 +57,8 @@
 #' number of columns in the legend.
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -75,7 +72,6 @@
 #' names(covar) <- rownames(iron$covar)
 #'
 #' # calculate coefficients for chromosome 7
-#' library(qtl2scan)
 #' coef <- scan1coef(probs[,7], pheno, addcovar=covar)
 #'
 #' # plot QTL effects (note the need to subset the map object, for chromosome 7)
@@ -161,7 +157,7 @@ plot_coefCC <-
     function(x, map, columns=1:8, scan1_output=NULL, add=FALSE, gap=25,
              top_panel_prop=0.65, legend=NULL, ...)
 {
-    plot_coef(x, map, columns=columns, col=qtl2plot::CCcolors[columns],
+    plot_coef(x, map, columns=columns, col=qtl2::CCcolors[columns],
               scan1_output=scan1_output, add=add, gap=gap,
               top_panel_prop=top_panel_prop, legend=legend, ...)
 }

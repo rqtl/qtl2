@@ -18,7 +18,7 @@
 #'
 #' @export
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # find markers
 #' find_markerpos(iron, c("D8Mit294", "D11Mit101"))

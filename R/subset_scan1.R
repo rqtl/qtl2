@@ -9,7 +9,7 @@
 #' @param x An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' [qtl2geno::insert_pseudomarkers()].
+#' [insert_pseudomarkers()].
 #' @param chr Vector of chromosomes.
 #' @param lodcolumn Vector of integers or character strings indicating the LOD
 #' score columns, either as a numeric indexes or column names.
@@ -20,11 +20,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)

@@ -42,7 +42,7 @@
 #'
 #' @examples
 #' # load data and calculate genotype probabilities
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' pr <- calc_genoprob(iron, error_prob=0.002)
 #'
 #' # full set of imputed genotypes

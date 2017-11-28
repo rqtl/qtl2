@@ -31,7 +31,7 @@
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' cg <- compare_geno(grav2)
 #' summary(cg)
 
@@ -116,7 +116,7 @@ compare_geno <-
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' cg <- compare_geno(grav2)
 #' summary(cg)
 
@@ -229,7 +229,7 @@ print.summary.compare_geno <-
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2geno"))
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' cg <- compare_geno(grav2)
 #' max(cg)
 

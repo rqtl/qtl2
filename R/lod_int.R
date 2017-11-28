@@ -10,7 +10,7 @@
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' [qtl2geno::insert_pseudomarkers()].
+#' [insert_pseudomarkers()].
 #' @param chr Chromosome ID to consider (must be a single value).
 #' @param lodcolumn LOD score column to consider (must be a single value).
 #' @param threshold Minimum LOD score for a peak.
@@ -46,11 +46,8 @@
 #' @seealso [bayes_int()], [find_peaks()], [scan1()]
 #'
 #' @examples
-#' # load qtl2geno package for data and genoprob calculation
-#' library(qtl2geno)
-#'
 #' # read data
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' \dontshow{iron <- iron[,7]}
 #'
 #' # insert pseudomarkers into map

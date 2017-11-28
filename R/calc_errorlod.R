@@ -38,7 +38,7 @@
 #' @seealso [calc_genoprob()]
 #'
 #' @examples
-#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2geno"))
+#' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' probs <- calc_genoprob(iron, error_prob=0.002, map_function="c-f")
 #' errorlod <- calc_errorlod(iron, probs)
 #'

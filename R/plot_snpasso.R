@@ -4,13 +4,13 @@
 #'
 #' @md
 #'
-#' @param scan1output Output of [qtl2scan::scan1()] using
+#' @param scan1output Output of [scan1()] using
 #' SNP probabilities derived by
-#' [qtl2scan::genoprob_to_snpprob()].
+#' [genoprob_to_snpprob()].
 #'
 #' @param snpinfo Data frame with SNP information with the following
 #'     columns (the last three are generally derived from with
-#'     [qtl2scan::index_snps()]):
+#'     [index_snps()]):
 #' * `chr` - Character string or factor with chromosome
 #' * `pos` - Position (in same units as in the `"map"`
 #'     attribute in `genoprobs`.
@@ -65,7 +65,6 @@
 #' @examples
 #' \donttest{
 #' # load example DO data from web
-#' library(qtl2geno)
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
 #' DOex <- read_cross2(file)
@@ -86,7 +85,6 @@
 #' unlink(tmpfile)
 #'
 #' # SNP association scan
-#' library(qtl2scan)
 #' out_snps <- scan1snps(apr, DOex$pmap, DOex$pheno, snpinfo=snpinfo, keep_all_snps=TRUE)
 #'
 #' # plot results

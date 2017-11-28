@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' # create query function by connecting to file
-#' dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2db")
+#' dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2")
 #' query_genes <- create_gene_query_func(dbfile, filter="(source=='MGI')")
 #' # query_genes will connect and disconnect each time
 #' genes <- query_genes("2", 97.0, 98.0)
