@@ -1,11 +1,6 @@
 #' @keywords internal
-#'
-# Suppress R CMD check note
-#' @importFrom qtl2geno read_cross2
-#' @importFrom qtl2scan scan1
-#' @importFrom qtl2plot plot_scan1
-#' @importFrom qtl2convert probs_doqtl_to_qtl2
-#' @importFrom qtl2db create_gene_query_func
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib qtl2, .registration=TRUE
 #'
 #' @md
 #'
