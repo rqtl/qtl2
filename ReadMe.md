@@ -6,15 +6,17 @@
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
-high-dimensional data and complex cross designs. (It was previously
-split into multiple packages but that proved awkward and confusing and
-so the packages have been combined.)
+high-dimensional data and complex cross designs.
 
-Also see the related package,
-[qtl2convert](https://github.com/rqtl/qtl2convert),
-for converting data among the R/qtl2,
+It was previously split into the multiple packages qtl2geno, qtl2scan,
+qtl2plot, and qtl2db, but that proved awkward and confusing and so the
+packages have been combined. But also see the related package,
+[qtl2convert](https://github.com/rqtl/qtl2convert), for converting
+data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
 and [R/qtl](https://rqtl.org) formats.
+[qtl2convert](https://github.com/rqtl/qtl2convert) will remain a
+separate package.
 
 ---
 

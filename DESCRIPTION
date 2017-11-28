@@ -21,7 +21,8 @@ Imports:
     stats,
     utils,
     graphics,
-    grDevices
+    grDevices,
+    RSQLite
 Suggests:
     testthat,
     devtools,
