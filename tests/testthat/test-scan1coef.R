@@ -67,7 +67,7 @@ test_that("scan1coef for backcross", {
     covar <- cbind(sex=sample(0:1, nind(hyper), replace=TRUE))
     rownames(prob) <- names(phe) <- names(weights) <- rownames(covar) <- paste(1:nind(hyper))
 
-    # probs for qtl2scan code
+    # probs for qtl2 code
     prob2 <- convert_probs2qtl2(hyper)
 
     # no covariates
