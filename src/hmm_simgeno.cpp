@@ -87,7 +87,7 @@ IntegerVector sim_geno(const String& crosstype,
                 probs[g] = exp(probs[g] - sumprobs);
 
             // make draw, returns a value from 1, 2, ..., n_poss_gen
-            int curgeno = sample_int(probs);
+            int curgeno = random_int(probs);
             draws[draw*n_pos + ind*mat_size] = poss_gen[curgeno];
 
             // move along chromosome
@@ -105,7 +105,7 @@ IntegerVector sim_geno(const String& crosstype,
                 }
 
                 // make draw
-                curgeno = sample_int(probs);
+                curgeno = random_int(probs);
 
                 draws[pos + draw*n_pos + ind*mat_size] = poss_gen[curgeno];
 

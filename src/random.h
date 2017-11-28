@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-// random number generation
-#ifndef RANDOM_H
-#define RANDOM_H
-=======
 // random number generation (e.g., permutations)
 #ifndef RANDOM_H
 #define RANDOM_H
@@ -10,18 +5,16 @@
 #include <vector>
 #include <map>
 #include <Rcpp.h>
->>>>>>> qtl2scan/master
 
-#include <Rcpp.h>
-
-<<<<<<< HEAD
-// sample random integer from 0, 1, 2, ..., n-1 with probability p[0], p[1], ...
-int sample_int(Rcpp::NumericVector probs);
+// random integer from {low, low+1, ..., high}
+int random_int(const int low, const int high);
 
 // sample random integer from 0, 1, 2, ..., n-1, with equal probabilities
-int sample_int(int n);
+int random_int(int n);
 
-=======
+// sample random integer from 0, 1, 2, ..., n-1 with probability p[0], p[1], ...
+int random_int(Rcpp::NumericVector probs);
+
 // vector of random integers from {low, low+1, ..., high}
 Rcpp::IntegerVector random_int(const int n, const int low, const int high);
 
@@ -56,5 +49,4 @@ Rcpp::IntegerMatrix permute_ivector_stratified(const int n_perm,
                                                const Rcpp::IntegerVector& strata,
                                                int n_strata);
 
->>>>>>> qtl2scan/master
 #endif // RANDOM_H

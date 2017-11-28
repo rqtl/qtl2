@@ -49,7 +49,7 @@ IntegerMatrix maxmarg(const NumericVector& prob_array, const double minprob, con
             else if(n_states==1)
                 result(ind, pos) = states[0];
             else // multiple states with maximum probability; return random choice
-                result(ind, pos) = states[sample_int(n_states)];
+                result(ind, pos) = states[random_int(n_states)];
 
         } // loop over positions
     } // loop over individuals

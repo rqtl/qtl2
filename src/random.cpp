@@ -1,10 +1,6 @@
-// random number generation
+// random number generation (e.g., permutations)
 
 #include "random.h"
-<<<<<<< HEAD
-#include <Rcpp.h>
-using namespace Rcpp;
-=======
 #include <vector>
 #include <map>
 #include <Rcpp.h>
@@ -146,41 +142,33 @@ NumericMatrix permute_nvector(const int n_perm, const NumericVector x)
         NumericVector permx = permute_nvector(x);
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
     }
->>>>>>> qtl2scan/master
 
+    return result;
+}
 
-// sample random integer from 0, 1, 2, ..., n-1 with probability p[0], p[1], ...
-int sample_int(NumericVector probs)
+// get a set of permutations of a vector, as columns of a matrix
+// [[Rcpp::export]]
+IntegerMatrix permute_ivector(const int n_perm, const IntegerVector x)
 {
-<<<<<<< HEAD
-    int n=probs.size();
-    int result;
-=======
     const int length = x.size();
->>>>>>> qtl2scan/master
 
-    double u = R::runif(0.0, 1.0);
+    IntegerMatrix result(length,n_perm);
 
-<<<<<<< HEAD
-    for(result=0; result < n; result++) {
-        if(u <= probs[result]) return result;
-        u -= probs[result];
-=======
     for(int i=0; i<n_perm; i++) {
         IntegerVector permx = permute_ivector(x);
         std::copy(permx.begin(), permx.end(), result.begin()+i*length);
->>>>>>> qtl2scan/master
     }
 
-    return NA_INTEGER;
+    return result;
 }
 
-// sample random integer from 0, 1, 2, ..., n-1 with equal probabilities
-int sample_int(int n)
+// permute x within strata
+//     strata is integer vector {0, 1, 2, ..., n_strata-1}
+//     n_strata is the number of strata; if == -1, it is calculated
+// [[Rcpp::export]]
+NumericMatrix permute_nvector_stratified(const int n_perm, const NumericVector& x,
+                                         const IntegerVector& strata, int n_strata = -1)
 {
-<<<<<<< HEAD
-    return (int)(unif_rand()*n);
-=======
     const int n = x.size();
     NumericMatrix result(n,n_perm);
 
@@ -250,5 +238,26 @@ IntegerMatrix permute_ivector_stratified(const int n_perm, const IntegerVector& 
     }
 
     return result;
->>>>>>> qtl2scan/master
+}
+
+// sample random integer from 0, 1, 2, ..., n-1 with probability p[0], p[1], ...
+int random_int(NumericVector probs)
+{
+    int n=probs.size();
+    int result;
+
+    double u = R::runif(0.0, 1.0);
+
+    for(result=0; result < n; result++) {
+        if(u <= probs[result]) return result;
+        u -= probs[result];
+    }
+
+    return NA_INTEGER;
+}
+
+// sample random integer from 0, 1, 2, ..., n-1 with equal probabilities
+int random_int(int n)
+{
+    return (int)(unif_rand()*n);
 }

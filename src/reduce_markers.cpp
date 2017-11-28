@@ -64,7 +64,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
             total_weights[i] = themax + weights[i];
             if(n_max_to_choose == 1) prev_marker[i] = max_to_choose[0];
             else // pick random
-                prev_marker[i] = max_to_choose[sample_int(n_max_to_choose)];
+                prev_marker[i] = max_to_choose[random_int(n_max_to_choose)];
         }
     }
 
@@ -88,7 +88,7 @@ IntegerVector reduce_markers(const NumericVector& pos,
     // right-most marker at global maximum
     if(n_max_to_choose == 1) path[0] = max_to_choose[0];
     else // pick random
-        path[0] = max_to_choose[sample_int(n_max_to_choose)];
+        path[0] = max_to_choose[random_int(n_max_to_choose)];
 
     n_path=1;
 
