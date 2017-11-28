@@ -23,9 +23,6 @@ test_that("top_snps() works", {
     snpinfo <- readRDS(tmpfile)
     unlink(tmpfile)
 
-    # calculate strain distribution patterns
-    snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
-
     # identify equivalent SNPs
     snpinfo <- index_snps(DOex$pmap, snpinfo)
 
@@ -93,8 +90,8 @@ test_that("top_snps() works", {
     result <- top_snps(out_snps, snpinfo, show_all_snps=FALSE)
     expect_equal(result, expected[c(1,13),])
 
-    # top SNPs within 1.0 LOD
-    result <- top_snps(out_snps, snpinfo, 0.5)
+    # top SNPs within 0.5 LOD
+    result <- top_snps(out_snps, snpinfo, drop=0.5)
     expect_equal(result, expected[1:12,])
 
 })
