@@ -7,6 +7,7 @@
 #' @examples
 #' qtl2version()
 #'
+#' @importFrom utils packageVersion
 #' @export
 qtl2version <-
     function()
