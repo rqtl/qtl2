@@ -4,6 +4,9 @@
 
 - The output of `fit1()` now includes fitted values.
 
+- Added function `pull_genoprobpos()` for pulling out a specific
+  position (by name or position) from a set of genotype probabilities.
+
 ### Bug fixes
 
 - Fixed a bug in `plot.scan1()`, which failed to pass `lodcolumn` to
