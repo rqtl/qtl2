@@ -1,4 +1,8 @@
-## qtl2 0.7-2 (2017-12-03
+## qtl2 0.7-3 (2017-12-04)
+
+### New features
+
+- The output of `fit1()` now includes fitted values.
 
 ### Bug fixes
 

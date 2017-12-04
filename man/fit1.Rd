@@ -65,6 +65,7 @@ A list containing
 \item \code{SE} - Vector of estimated standard errors (included if \code{se=TRUE}).
 \item \code{lod} - The overall lod score.
 \item \code{ind_lod} - Vector of individual contributions to the LOD score.
+\item \code{fitted}  - Fitted values.
 }
 }
 \description{
