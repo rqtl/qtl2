@@ -233,7 +233,7 @@ plot.scan1 <-
 {
     # if map looks like snpinfo, assume this is a snp asso result and use plot_snpasso()
     if(is.data.frame(map) && "index" %in% names(map)) {
-        plot_snpasso(x, snpinfo=map, add=add, gap=gap, ...)
+        plot_snpasso(x, snpinfo=map, lodcolumn=lodcolumn, add=add, gap=gap, ...)
     }
     else { # mostly, use plot_scan1()
         plot_scan1(x, map=map, lodcolumn=lodcolumn, chr=chr, add=add, gap=gap, ...)
