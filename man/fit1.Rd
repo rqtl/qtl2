@@ -65,6 +65,7 @@ A list containing
 \item \code{SE} - Vector of estimated standard errors (included if \code{se=TRUE}).
 \item \code{lod} - The overall lod score.
 \item \code{ind_lod} - Vector of individual contributions to the LOD score.
+\item \code{fitted}  - Fitted values.
 }
 }
 \description{
@@ -119,4 +120,7 @@ crosses using flanking markers.  Heredity 69:315--324.
 Kang HM, Zaitlen NA, Wade CM, Kirby A, Heckerman D, Daly MJ, Eskin
 E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
+}
+\seealso{
+\code{\link[=pull_genoprobpos]{pull_genoprobpos()}}
 }

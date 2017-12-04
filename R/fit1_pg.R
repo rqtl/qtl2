@@ -133,11 +133,16 @@ fit1_pg <-
     # names of coefficients
     coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)
 
+    # fitted values
+    fitted <- pheno - fitA$resid
+
     if(se) # results include standard errors
         return(list(lod=lod, ind_lod=ind_lod,
                     coef=stats::setNames(fitA$coef, coef_names),
-                    SE=stats::setNames(fitA$SE, coef_names)))
+                    SE=stats::setNames(fitA$SE, coef_names),
+                    fitted=fitted))
     else
         return(list(lod=lod, ind_lod=ind_lod,
-                    coef=stats::setNames(fitA$coef, coef_names)))
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    fitted=fitted))
 }

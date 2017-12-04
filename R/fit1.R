@@ -45,6 +45,7 @@
 #' * `SE` - Vector of estimated standard errors (included if `se=TRUE`).
 #' * `lod` - The overall lod score.
 #' * `ind_lod` - Vector of individual contributions to the LOD score.
+#' * `fitted`  - Fitted values.
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
@@ -91,6 +92,8 @@
 #'
 #' # fit QTL model just at that position, with polygenic effect
 #' out_fit1_pg <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
+#'
+#' @seealso [pull_genoprobpos()]
 #'
 #' @importFrom stats setNames
 #' @export
@@ -216,6 +219,8 @@ fit1 <-
         # individual contributions to the lod score
         ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
         names(ind_lod) <- names(pheno)
+
+        fitted <- pheno - fitA$resid
     }
     else { # binary phenotype
         # null fit
@@ -246,6 +251,8 @@ fit1 <-
         p0 <- fit0$fitted_probs
         ind_lod0 <- weights * (pheno*log10(p0) + (1-pheno)*log10(1-p0))
         ind_lod <- ind_lodA - ind_lod0
+
+        fitted <- stats::setNames(pA, names(pheno))
     }
 
     # names of coefficients
@@ -254,8 +261,10 @@ fit1 <-
     if(se) # results include standard errors
         return(list(lod=lod, ind_lod=ind_lod,
                     coef=stats::setNames(fitA$coef, coef_names),
-                    SE=stats::setNames(fitA$SE, coef_names)))
+                    SE=stats::setNames(fitA$SE, coef_names),
+                    fitted=fitted))
     else
         return(list(lod=lod, ind_lod=ind_lod,
-                    coef=stats::setNames(fitA$coef, coef_names)))
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    fitted=fitted))
 }
