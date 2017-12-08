@@ -26,6 +26,10 @@
 #'     the selection uses positions in Mbp, and the output data frame
 #'     should have `start` and `stop` columns in Mbp.
 #'
+#' Also note that a SQLite database of MGI mouse genes
+#' is available at figshare:
+#' [doi:10.6084/m9.figshare.5286019.v5](https://doi.org/10.6084/m9.figshare.5286019.v5)
+#'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery
 #'

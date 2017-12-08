@@ -41,6 +41,10 @@ Note that this function assumes that the database has
 \code{start} and \code{stop} fields that are in basepairs, but
 the selection uses positions in Mbp, and the output data frame
 should have \code{start} and \code{stop} columns in Mbp.
+
+Also note that a SQLite database of MGI mouse genes
+is available at figshare:
+\href{https://doi.org/10.6084/m9.figshare.5286019.v5}{doi:10.6084/m9.figshare.5286019.v5}
 }
 \examples{
 # create query function by connecting to file
