@@ -45,6 +45,8 @@
 #' @param expand2markers If TRUE (and if `drop` or `prob` is
 #' provided, so that QTL intervals are calculated), QTL intervals are
 #' expanded so that their endpoints are at genetic markers.
+#' @param sort_by Indicates whether to sort the rows by lod column,
+#' genomic position, or LOD score.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -109,8 +111,10 @@
 find_peaks <-
     function(scan1_output, map, threshold=3, peakdrop=Inf, drop=NULL, prob=NULL,
              thresholdX=NULL, peakdropX=NULL, dropX=NULL, probX=NULL,
-             expand2markers=TRUE, cores=1)
+             expand2markers=TRUE, sort_by=c("column", "pos", "lod"), cores=1)
 {
+    sort_by <- match.arg(sort_by)
+
     # align scan1_output and map
     tmp <- align_scan1_map(scan1_output, map)
     scan1_output <- tmp$scan1
@@ -126,11 +130,11 @@ find_peaks <-
     if(!is.null(drop)) # also include lod support intervals
         return(find_peaks_and_lodint(scan1_output, map, threshold, peakdrop, drop,
                                      thresholdX, peakdropX, dropX,
-                                     expand2markers, cores))
+                                     expand2markers, sort_by, cores))
     if(!is.null(prob)) # also include Bayes credible intervals
         return(find_peaks_and_bayesint(scan1_output, map, threshold, peakdrop, prob,
                                        thresholdX, peakdropX, probX,
-                                       expand2markers, cores))
+                                       expand2markers, sort_by, cores))
 
     if(!is.null(dropX))
         warning("dropX ignored if drop is not provided")
@@ -218,5 +222,18 @@ find_peaks <-
 
     rownames(result) <- NULL
     result$chr <- factor(result$chr, names(map))
+
+    if(nrow(result) > 1) {
+        if(sort_by == "pos") {
+
+            result <- result[order(result$chr, result$pos, result$lodindex), ]
+
+        } else if(sort_by == "lod") {
+
+            result <- result[order(result$lod, decreasing=TRUE),]
+
+        }
+    }
+
     result
 }

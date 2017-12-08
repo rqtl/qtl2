@@ -8,7 +8,9 @@
   position (by name or position) from a set of genotype probabilities.
 
 - The `chr` column in the result of `find_peaks()` is now a factor.
-  This makes it possible to sort by chromosome.
+  This makes it possible to sort by chromosome. Also added an argument
+  `sort_by` for choosing how to sort the rows in the result (by
+  column, genomic position, or LOD score).
 
 ### Bug fixes
 

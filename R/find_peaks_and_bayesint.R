@@ -5,8 +5,10 @@
 find_peaks_and_bayesint <-
     function(scan1_output, map, threshold=3, peakdrop=Inf, prob=0.95,
              thresholdX=NULL, peakdropX=NULL, probX=NULL,
-             expand2markers=TRUE, cores=1)
+             expand2markers=TRUE, sort_by=c("column", "pos", "lod"), cores=1)
 {
+    sort_by <- match.arg(sort_by)
+
     lodnames <- colnames(scan1_output)
     n_lod <- length(lodnames)
 
@@ -109,5 +111,18 @@ find_peaks_and_bayesint <-
 
     rownames(result) <- NULL
     result$chr <- factor(result$chr, names(map))
+
+    if(nrow(result) > 1) {
+        if(sort_by == "pos") {
+
+            result <- result[order(result$chr, result$pos, result$lodindex), ]
+
+        } else if(sort_by == "lod") {
+
+            result <- result[order(result$lod, decreasing=TRUE),]
+
+        }
+    }
+
     result
 }

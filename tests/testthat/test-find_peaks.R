@@ -33,6 +33,10 @@ test_that("find_peaks works", {
 
     expect_equal(find_peaks(out, map, 2, 1), expected_2_1)
 
+    # test sort
+    expect_equal(find_peaks(out, map, 2, 1, sort_by="pos"), expected_2_1[c(1,2,3,4,5,13,6,14,15,7,8,9,10,11,12),])
+    expect_equal(find_peaks(out, map, 2, 1, sort_by="lod"), expected_2_1[c(14,10,13,2,5,9,4,6,8,12,3,11,7,1,15),])
+
     expected_4_Inf <- expected_2_1[c(2, 5, 9, 10, 13, 14),]
     rownames(expected_4_Inf) <- NULL
     expect_equal(find_peaks(out, map, 4, Inf), expected_4_Inf)
@@ -73,10 +77,15 @@ test_that("find_peaks works", {
                        ci_lo=c(48.1,  1.1, 16.4,  6.6,  0.0, 43.7),
                        ci_hi=c(73.2, 53.6, 49.2, 40.4, 32.7, 61.2)))
 
-    expect_equal(find_peaks(out, map, 3, 1, 0.9),
-                 cbind(expected_3_1,
-                       ci_lo=c(48.1,  1.1, 37.2, 17.3, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
-                       ci_hi=c(73.2, 28.4, 53.6, 69.9, 40.4, 49.2, 40.4, 38.3, 17.3, 61.2)))
+    expected_3_1_lodint <- cbind(expected_3_1,
+                                 ci_lo=c(48.1,  1.1, 37.2, 17.3, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
+                                 ci_hi=c(73.2, 28.4, 53.6, 69.9, 40.4, 49.2, 40.4, 38.3, 17.3, 61.2))
+
+    expect_equal(find_peaks(out, map, 3, 1, 0.9), expected_3_1_lodint)
+
+    # sorting
+    expect_equal(find_peaks(out, map, 3, 1, 0.9, sort_by="pos"), expected_3_1_lodint[c(1,2,3,9,4,10,5,6,7,8),])
+    expect_equal(find_peaks(out, map, 3, 1, 0.9, sort_by="lod"), expected_3_1_lodint[c(10,7,9,1,3,6,2,4,5,8),])
 
     # expand2markers=FALSE
     expect_equal(find_peaks(out, map, 3, 1, 0.9, expand2markers=FALSE),
@@ -95,10 +104,15 @@ test_that("find_peaks works", {
                        ci_lo=c(48.1,  1.1, 16.4,  6.6,  0.0, 43.7),
                        ci_hi=c(73.2, 53.6, 49.2, 40.4, 32.7, 61.2)))
 
-    expect_equal(find_peaks(out, map, 3, 1, prob=0.8),
-                 cbind(expected_3_1,
-                       ci_lo=c(48.1, 13.1, 37.2, 32.7, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
-                       ci_hi=c(73.2, 28.4, 53.6, 69.9, 40.4, 49.2, 40.4, 38.3, 17.3, 61.2)))
+    expected_3_1_bayesint <- cbind(expected_3_1,
+                                   ci_lo=c(48.1, 13.1, 37.2, 32.7, 17.5, 16.4,  6.6,  3.3,  0.0, 53.6),
+                                   ci_hi=c(73.2, 28.4, 53.6, 69.9, 40.4, 49.2, 40.4, 38.3, 17.3, 61.2))
+
+    expect_equal(find_peaks(out, map, 3, 1, prob=0.8), expected_3_1_bayesint)
+
+    # sorting
+    expect_equal(find_peaks(out, map, 3, 1, prob=0.8, sort_by="pos"), expected_3_1_bayesint[c(1,2,3,9,4,10,5,6,7,8),])
+    expect_equal(find_peaks(out, map, 3, 1, prob=0.8, sort_by="lod"), expected_3_1_bayesint[c(10,7,9,1,3,6,2,4,5,8),])
 
     # expand2markers=FALSE
     expect_equal(find_peaks(out, map, 3, 1, 0.8, expand2markers=FALSE),
