@@ -6,7 +6,8 @@
 \usage{
 find_peaks(scan1_output, map, threshold = 3, peakdrop = Inf, drop = NULL,
   prob = NULL, thresholdX = NULL, peakdropX = NULL, dropX = NULL,
-  probX = NULL, expand2markers = TRUE, cores = 1)
+  probX = NULL, expand2markers = TRUE, sort_by = c("column", "pos",
+  "lod"), cores = 1)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
@@ -59,6 +60,9 @@ vector with separate values for each lod score column in
 \item{expand2markers}{If TRUE (and if \code{drop} or \code{prob} is
 provided, so that QTL intervals are calculated), QTL intervals are
 expanded so that their endpoints are at genetic markers.}
+
+\item{sort_by}{Indicates whether to sort the rows by lod column,
+genomic position, or LOD score.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
