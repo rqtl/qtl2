@@ -217,5 +217,6 @@ find_peaks <-
     for(p in peaks) result <- rbind(result, p)
 
     rownames(result) <- NULL
+    result$chr <- factor(result$chr, names(map))
     result
 }

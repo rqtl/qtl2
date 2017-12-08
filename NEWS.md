@@ -1,4 +1,4 @@
-## qtl2 0.7-3 (2017-12-04)
+## qtl2 0.7-4 (2017-12-07)
 
 ### New features
 
@@ -6,6 +6,9 @@
 
 - Added function `pull_genoprobpos()` for pulling out a specific
   position (by name or position) from a set of genotype probabilities.
+
+- The `chr` column in the result of `find_peaks()` is now a factor.
+  This makes it possible to sort by chromosome.
 
 ### Bug fixes
 
