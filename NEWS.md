@@ -1,4 +1,4 @@
-## qtl2 0.7-4 (2017-12-07)
+## qtl2 0.7-5 (2017-12-09)
 
 ### New features
 
@@ -11,6 +11,10 @@
   This makes it possible to sort by chromosome. Also added an argument
   `sort_by` for choosing how to sort the rows in the result (by
   column, genomic position, or LOD score).
+
+- In `max_scan1()`, if `map` is *not* provided, rather than stopping
+  with an error, we just issue a warning and return the genome-wide
+  maximum LOD score.
 
 ### Bug fixes
 

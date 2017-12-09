@@ -17,9 +17,12 @@
 #' @param na.rm Ignored (take to be TRUE)
 #' @param ... Ignored
 #'
+#' @importFrom stats setNames
 #' @export
 #'
-#' @return A data.frame with three columns: chr, pos, and lod score.
+#' @return If `map` is NULL, the genome-wide maximum LOD score for the selected column is returned.
+#'
+#' If `map` is provided, the return value is a data.frame with three columns: chr, pos, and lod score.
 #'
 #' @examples
 #' # read data
@@ -51,25 +54,40 @@
 max_scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
+    if(length(lodcolumn) > 1) {
+        lodcolumn <- lodcolumn[1]
+        warning("lodcolumn should have length 1; using the first value")
+    }
+    if(is.character(lodcolumn)) {
+        lodcolumn_num <- match(lodcolumn, colnames(scan1_output))
+        if(is.na(lodcolumn_num)) stop('LOD column "', lodcolumn, '" not found.')
+        lodcolumn <- lodcolumn_num
+    }
+    if(lodcolumn < 1 || lodcolumn > ncol(scan1_output)) {
+        stop("column [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(lod), ")")
+    }
+
+    if(missing(map) || is.null(map)) {
+        warning("map not provided; returning the genome-wide max () LOD but not its position")
+        return( setNames( max(scan1_output[,lodcolumn], na.rm=TRUE), colnames(scan1_output)[lodcolumn]) )
+    }
+
     # align scan1_output and map
     tmp <- align_scan1_map(scan1_output, map)
     scan1_output <- tmp$scan1
     map <- tmp$map
 
-    if(nrow(scan1_output) != length(unlist(map)))
+    if(nrow(scan1_output) != length(unlist(map))) {
         stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
              length(unlist(map)), "]")
-
-    thechr <- map2chr(map)
-    thepos <- map2pos(map)
+    }
 
     # to handle output of either scan1() or scan1coef()
     # for coef(), look at the sign
     lod <- unclass(scan1_output)
     sign <- (lod >= 0)*2-1 # sign +1
 
-    if("scan1coef" %in% class(scan1_output))
-        lod <- abs(lod)
+    if("scan1coef" %in% class(scan1_output)) lod <- abs(lod)
 
     coln <- colnames(lod)
     mnames <- rownames(lod)
@@ -84,10 +102,11 @@ max_scan1 <-
             stop('column "', lodcolumn, '" not found')
         lodcolumn <- tmp
     }
-    if(lodcolumn < 1 || lodcolumn > ncol(lod))
-        stop("column [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(lod), ")")
     lod <- lod[,lodcolumn]
     sign <- sign[,lodcolumn]
+
+    thechr <- map2chr(map)
+    thepos <- map2pos(map)
 
     # subset chromosomes
     if(!is.null(chr)) {

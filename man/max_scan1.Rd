@@ -27,7 +27,9 @@ score column, either as a numeric index or column name.}
 \item{...}{Ignored}
 }
 \value{
-A data.frame with three columns: chr, pos, and lod score.
+If \code{map} is NULL, the genome-wide maximum LOD score for the selected column is returned.
+
+If \code{map} is provided, the return value is a data.frame with three columns: chr, pos, and lod score.
 }
 \description{
 Return data frame with the positions having maximum LOD score for a

@@ -51,6 +51,10 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     class(out_shuffled) <- c("scan1", "matrix")
     expect_equal( max(out_shuffled, map), max(out, map))
 
+    expect_warning( expect_equal(max_scan1(out), c(liver= 6.35264382891418)) )
+    expect_warning( expect_equal(max_scan1(out, lodcolumn=2), c(spleen=12.5986057120873)) )
+    expect_warning( expect_equal(max_scan1(out, lodcolumn="spleen"), c(spleen=12.5986057120873)) )
+
 })
 
 test_that("maxlod works for intercross with two phenotypes", {
