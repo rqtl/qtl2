@@ -16,3 +16,9 @@ notifications:
 branches:
   only:
   - master
+
+# avoid timeout (see <https://github.com/travis-ci/travis-ci/issues/3849#issuecomment-255096774>)
+script:
+  - |
+    R CMD build .
+    travis_wait 20 R CMD check packageName*tar.gz
