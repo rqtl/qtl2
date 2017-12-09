@@ -21,4 +21,4 @@ branches:
 script:
   - |
     R CMD build .
-    travis_wait 20 R CMD check packageName*tar.gz
+    travis_wait 20 R CMD check --as-cran qtl2_*.tar.gz
