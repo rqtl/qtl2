@@ -67,4 +67,12 @@ test_that("find_markerpos works", {
     iron_nomap$gmap <- NULL
     expect_error(find_markerpos(iron_nomap, "D11Mit101"))
 
+    # input as a map
+    expected2 <- expected[-2,-2,drop=FALSE]
+    colnames(expected2)[2] <- "pos"
+    expect_equal(find_markerpos(iron$pmap, c("D8Mit294", "D11Mit101")), expected2)
+    expected3 <- expected[-2,-3,drop=FALSE]
+    colnames(expected3)[2] <- "pos"
+    expect_equal(find_markerpos(iron$gmap, c("D8Mit294", "D11Mit101")), expected3)
+
 })

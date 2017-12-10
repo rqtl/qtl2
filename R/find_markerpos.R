@@ -7,14 +7,16 @@
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' Can also be a map (as a list of vectors of marker positions).
 #' @param markers A vector of marker names.
 #' @param na.rm If TRUE, don't include not-found markers in the
 #' results (but issue a warning if some markers weren't found). If
 #' FALSE, include those markers with `NA` for chr and position.
 #'
 #' @return A data frame with chromosome and genetic and physical
-#' positions (in columns `"gmap"` and `"pmap"`), with
-#' markers as row names.
+#' positions (in columns `"gmap"` and `"pmap"`), with markers as
+#' row names. If the input `cross` is not a cross2 object but
+#' rather a map, the output contains `chr` and `pos`.
 #'
 #' @export
 #' @examples
@@ -25,8 +27,14 @@
 find_markerpos <-
     function(cross, markers, na.rm=TRUE)
 {
-    if(!is.cross2(cross))
-        stop('Input cross must have class "cross2"')
+    output_generic <- FALSE
+    if(!is.cross2(cross)) { # assume input is a map
+        output_generic <- TRUE
+
+        # make the map look like a cross2 object
+        cross <- list(geno=cross, pmap=cross)
+        cross$geno <- lapply(cross$geno, function(a) t(as.matrix(a)))
+    }
 
     if(!any(c("gmap", "pmap") %in% names(cross)))
         stop('cross contains neither "gmap" nor "pmap"')
@@ -65,6 +73,8 @@ find_markerpos <-
         result <- result[,-3,drop=FALSE]
     if(!("gmap" %in% names(cross)))
         result <- result[,-2,drop=FALSE]
+
+    if(output_generic) colnames(result)[2] <- "pos"
 
     result
 }

@@ -1,4 +1,4 @@
-## qtl2 0.7-5 (2017-12-09)
+## qtl2 0.7-6 (2017-12-10)
 
 ### New features
 
@@ -15,6 +15,9 @@
 - In `max_scan1()`, if `map` is *not* provided, rather than stopping
   with an error, we just issue a warning and return the genome-wide
   maximum LOD score.
+
+- Revised `find_markerpos()` so it can take a map (as a list of
+  vectors of marker positions) in place of a `"cross2"` object.
 
 ### Bug fixes
 

@@ -8,7 +8,8 @@ find_markerpos(cross, markers, na.rm = TRUE)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+Can also be a map (as a list of vectors of marker positions).}
 
 \item{markers}{A vector of marker names.}
 
@@ -18,8 +19,9 @@ FALSE, include those markers with \code{NA} for chr and position.}
 }
 \value{
 A data frame with chromosome and genetic and physical
-positions (in columns \code{"gmap"} and \code{"pmap"}), with
-markers as row names.
+positions (in columns \code{"gmap"} and \code{"pmap"}), with markers as
+row names. If the input \code{cross} is not a cross2 object but
+rather a map, the output contains \code{chr} and \code{pos}.
 }
 \description{
 Find positions of markers within a cross object
