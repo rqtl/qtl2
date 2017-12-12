@@ -70,7 +70,7 @@ index_snps <-
 {
     if(is.null(map)) stop("map is NULL")
     if(is.null(snpinfo)) stop("snpinfo is NULL")
-    if(!is.number(tol) || tol < 0) stop("tol should be a single non-negative number")
+    if(!is_nonneg_number(tol)) stop("tol should be a single non-negative number")
 
     if(nrow(snpinfo)==0) {
         # no rows; return data frame with no rows

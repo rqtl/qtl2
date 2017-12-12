@@ -88,6 +88,8 @@ plot_scan1 <-
         map <- map[chri]
     }
 
+    if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
+
     # align scan1 output and map
     tmp <- align_scan1_map(x, map)
     x <- tmp$scan1
@@ -232,6 +234,8 @@ plot_scan1 <-
 plot.scan1 <-
     function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25, ...)
 {
+    if(is.null(map)) stop("map is NULL")
+
     # if map looks like snpinfo, assume this is a snp asso result and use plot_snpasso()
     if(is.data.frame(map) && "index" %in% names(map)) {
         plot_snpasso(x, snpinfo=map, lodcolumn=lodcolumn, add=add, gap=gap, ...)

@@ -142,16 +142,16 @@ scan1 <-
 
     # deal with the dot args
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
+    if(!is_pos_number(tol)) stop("tol should be a single positive number")
     bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
     stopifnot(bintol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
     max_batch <- grab_dots(dotargs, "max_batch", NULL)
-    if(!is.null(max_batch) && (!is.number(max_batch) || max_batch <= 0)) stop("max_batch should be a single positive integer")
+    if(!is.null(max_batch) && !is_pos_number(max_batch)) stop("max_batch should be a single positive integer")
     maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
-    if(!is.number(maxit) || maxit < 0) stop("maxit should be a single non-negative integer")
+    if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch", "maxit"))
 
     # check that the objects have rownames

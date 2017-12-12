@@ -22,7 +22,7 @@ reduce_map_gaps <-
     function(map, min_gap=50)
 {
     if(is.null(map)) stop("map is NULL")
-    if(!is.number(min_gap) || min_gap < 0) stop("min_gap should be a single non-negative number")
+    if(!is_nonneg_number(min_gap)) stop("min_gap should be a single non-negative number")
 
     for(i in seq_along(map)) {
 

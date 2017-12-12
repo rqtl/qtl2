@@ -77,12 +77,9 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
         if(length(pseudomarker_map) != length(map))
             stop("length(pseudomarker_map) != length(map)")
     }
-    if(!is.number(step) || step<0)
-        stop("step should be a single non-negative number")
-    if(!is.number(off_end) || off_end<0)
-        stop("off_end should be a single non-negative number")
-    if(!is.number(tol) || tol<0)
-        stop("tol should be a single non-negative number")
+    if(!is_nonneg_number(step)) stop("step should be a single non-negative number")
+    if(!is_nonneg_number(off_end)) stop("off_end should be a single non-negative number")
+    if(!is_nonneg_number(tol)) stop("tol should be a single non-negative number")
 
     chr <- names(map)
 

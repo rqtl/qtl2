@@ -79,7 +79,7 @@ invert_sdp <-
     function(sdp, n_strains)
 {
     if(!is.numeric(sdp)) stop("sdp should be a vector of integers")
-    if(!is.number(n_strains) || n_strains <= 0) stop("n_strains should be a single positive integer")
+    if(!is_pos_number(n_strains)) stop("n_strains should be a single positive integer")
 
     geno <- .invert_sdp(sdp, n_strains)
     rownames(geno) <- names(sdp)

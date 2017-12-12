@@ -111,8 +111,8 @@ fit1 <-
                        intcovar, contrasts, se, hsq, reml, tol))
     }
 
-    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
-    if(!is.number(maxit) || maxit < 0) stop("maxit should be a single non-negative number")
+    if(!is_pos_number(tol)) stop("tol should be a single positive number")
+    if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative number")
     bintol <- sqrt(tol)
 
     # check that the objects have rownames

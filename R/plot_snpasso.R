@@ -121,6 +121,9 @@ plot_snpasso <-
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, minlod=0, ...)
 {
+    if(is.null(scan1output)) stop("scan1output is NULL")
+    if(is.null(snpinfo)) stop("snpinfo is NULL")
+
     # pull out lod scores
     if(length(lodcolumn)==0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) { # If length > 1, take first value

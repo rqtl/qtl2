@@ -70,7 +70,7 @@ find_ibd_segments <-
     if(is.null(geno)) stop("geno is NULL")
     if(is.null(map)) stop("map is NULL")
 
-    if(!is.number(min_lod)) stop("min_lod should be a single number")
+    if(!is_number(min_lod)) stop("min_lod should be a single number")
 
     n_str <- vapply(geno, nrow, 1)
     if(length(unique(n_str)) != 1)
@@ -86,7 +86,7 @@ find_ibd_segments <-
     if(!all(nmar == nmar_map))
         stop("geno and map have different numbers of markers")
 
-    if(!is.number(error_prob) || error_prob <= 0 || error_prob >= 1)
+    if(!is_pos_number(error_prob) || error_prob >= 1)
         stop("error_prob should be a single number in (0,1)")
 
     # get strain pairs

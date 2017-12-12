@@ -43,7 +43,7 @@ reduce_markers <-
         stop("Different numbers of markers and weights on chr",
              paste(names(map)[nmar != nwts], collapse=" "))
 
-    if(!is.number(min_distance) || min_distance <= 0) stop("min_distance should be a single positive number")
+    if(!is_pos_number(min_distance)) stop("min_distance should be a single positive number")
 
     for(i in seq(along=map)) {
         if(length(map[[i]]) < 2) next

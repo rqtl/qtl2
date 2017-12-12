@@ -4,7 +4,7 @@
 \alias{bayes_int}
 \title{Calculate Bayes credible intervals}
 \usage{
-bayes_int(scan1_output, map, chr, lodcolumn = 1, threshold = 0,
+bayes_int(scan1_output, map, chr = NULL, lodcolumn = 1, threshold = 0,
   peakdrop = Inf, prob = 0.95, expand2markers = TRUE)
 }
 \arguments{

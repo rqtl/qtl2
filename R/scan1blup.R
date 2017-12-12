@@ -105,7 +105,7 @@ scan1blup <-
                             contrasts, se, reml, tol, cores, quiet))
     }
 
-    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
+    if(!is_pos_number(tol)) stop("tol should be a single positive number")
 
     # check that the objects have rownames
     check4names(pheno, addcovar, NULL, NULL, nullcovar)

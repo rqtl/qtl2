@@ -68,7 +68,7 @@ viterbi <-
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
 
-    if(!is.number(error_prob) || error_prob < 0) stop("error_prob should be a single non-negative number")
+    if(!is_nonneg_number(error_prob)) stop("error_prob should be a single non-negative number")
 
     if(!lowmem)
         return(viterbi2(cross=cross, map=map, error_prob=error_prob,

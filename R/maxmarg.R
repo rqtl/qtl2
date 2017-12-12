@@ -59,8 +59,8 @@ maxmarg <-
 {
     if(is.null(probs)) stop("probs is NULL")
 
-    if(!is.number(minprob) || minprob < 0) stop("minprob should be a single non-negative number")
-    if(!is.number(tol) || tol < 0) stop("tol should be a single non-negative number")
+    if(!is_nonneg_number(minprob)) stop("minprob should be a single non-negative number")
+    if(!is_nonneg_number(tol)) stop("tol should be a single non-negative number")
 
     if(!is.null(chr) || !is.null(pos)) {
         if(is.null(chr) || is.null(pos) || is.null(map))

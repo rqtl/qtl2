@@ -60,8 +60,8 @@ function(cross, map=NULL, n_draws=1, error_prob=1e-4,
         stop("error_prob must be > 0")
     map_function <- match.arg(map_function)
 
-    if(!is.number(n_draws) || n_draws < 1) stop("n_draws should be a single positive integer")
-    if(!is.number(error_prob) || error_prob < 0) stop("error_prob should be a single non-negative number")
+    if(!is_pos_number(n_draws)) stop("n_draws should be a single positive integer")
+    if(!is_nonneg_number(error_prob)) stop("error_prob should be a single non-negative number")
 
     if(!lowmem)
         return(sim_geno2(cross=cross, map=map, n_draws=n_draws,

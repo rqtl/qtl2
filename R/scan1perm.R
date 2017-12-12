@@ -143,12 +143,12 @@ scan1perm <-
     # grab tol from dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
+    if(!is_pos_number(tol)) stop("tol should be a single positive number")
 
     # normal or binary model?
     model <- match.arg(model)
 
-    if(!is.number(n_perm) || n_perm <= 0) stop("n_perm should be a single positive integer")
+    if(!is_pos_number(n_perm)) stop("n_perm should be a single positive integer")
 
     # check that the objects have rownames
     check4names(pheno, addcovar, Xcovar, intcovar)

@@ -4,7 +4,7 @@
 \alias{find_marker}
 \title{Find markers by chromosome position}
 \usage{
-find_marker(map, chr, pos, interval = NULL)
+find_marker(map, chr, pos = NULL, interval = NULL)
 }
 \arguments{
 \item{map}{A map object: a list (corresponding to chromosomes) of vectors of marker positions.}

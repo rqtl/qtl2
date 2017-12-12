@@ -4,7 +4,7 @@
 \alias{lod_int}
 \title{Calculate LOD support intervals}
 \usage{
-lod_int(scan1_output, map, chr, lodcolumn = 1, threshold = 0,
+lod_int(scan1_output, map, chr = NULL, lodcolumn = 1, threshold = 0,
   peakdrop = Inf, drop = 1.5, expand2markers = TRUE)
 }
 \arguments{

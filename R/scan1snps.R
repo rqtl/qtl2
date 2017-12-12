@@ -162,7 +162,7 @@ scan1snps <-
     }
 
     # split into batches
-    if(!is.number(batch_length) || batch_length <= 0) stop("batch_length should be a single positive integer")
+    if(!is_pos_number(batch_length)) stop("batch_length should be a single positive integer")
     chr <- names(map)
     chr_start <- vapply(map, min, 0)
     chr_end <- vapply(map, max, 0)
