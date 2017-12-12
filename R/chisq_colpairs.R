@@ -22,8 +22,9 @@
 chisq_colpairs <-
     function(x)
 {
-    if(!is.matrix(x))
-        x <- as.matrix(x)
+    if(!is.matrix(x) && is.data.frame(x)) x <- as.matrix(x)
+    if(!is.matrix(x)) stop("x should be a matrix")
+
     if(ncol(x) < 2)
         stop("ncol(x) should be >= 2")
 

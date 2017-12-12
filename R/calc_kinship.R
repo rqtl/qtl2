@@ -64,6 +64,7 @@ calc_kinship <-
              omit_x=FALSE, use_allele_probs=TRUE,
              quiet=TRUE, cores=1)
 {
+    if(is.null(probs)) stop("probs is NULL")
     if("cross2" %in% class(probs))
         stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
 

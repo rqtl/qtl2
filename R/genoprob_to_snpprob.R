@@ -85,6 +85,9 @@
 genoprob_to_snpprob <-
     function(genoprobs, snpinfo)
 {
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(is.null(snpinfo)) stop("snpinfo is NULL")
+
     if(nrow(snpinfo)==0) {
         result <- genoprobs[,names(genoprobs)[1]]
         if(length(attr(result, "alleles")) == ncol(result[[1]])) {

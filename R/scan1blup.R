@@ -97,12 +97,15 @@ scan1blup <-
              contrasts=NULL, se=FALSE, reml=TRUE,
              tol=1e-12, cores=1, quiet=TRUE)
 {
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(is.null(pheno)) stop("pheno is NULL")
+
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1blup_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
                             contrasts, se, reml, tol, cores, quiet))
     }
 
-    stopifnot(tol > 0)
+    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
 
     # check that the objects have rownames
     check4names(pheno, addcovar, NULL, NULL, nullcovar)

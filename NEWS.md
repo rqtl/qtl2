@@ -1,4 +1,4 @@
-## qtl2 0.7-6 (2017-12-10)
+## qtl2 0.7-6 (2017-12-12)
 
 ### New features
 
@@ -18,6 +18,10 @@
 
 - Revised `find_markerpos()` so it can take a map (as a list of
   vectors of marker positions) in place of a `"cross2"` object.
+
+### Minor changes
+
+- Added many more checks of the inputs to various functions.
 
 ### Bug fixes
 

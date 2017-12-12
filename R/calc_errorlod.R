@@ -48,6 +48,8 @@
 calc_errorlod <-
 function(cross, probs, quiet=TRUE, cores=1)
 {
+    if(is.null(probs)) stop("probs is NULL")
+
     # check inputs
     if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')

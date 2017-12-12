@@ -73,7 +73,7 @@ function(cross, map=NULL, error_prob=1e-4,
     # check inputs
     if(!is.cross2(cross))
         stop('Input cross must have class "cross2"')
-    if(!is.numeric(error_prob) || length(error_prob) != 1 || error_prob < 0)
+    if(!is.number(error_prob) || error_prob < 0)
         stop("error_prob should be a single non-negative number")
     map_function <- match.arg(map_function)
 

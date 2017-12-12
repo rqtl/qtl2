@@ -100,6 +100,10 @@ scan1snps <-
 {
     model <- match.arg(model)
 
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(is.null(map)) stop("map is NULL")
+    if(is.null(pheno)) stop("pheno is NULL")
+
     # reduce to common chromosomes
     pchr <- names(genoprobs)
     mchr <- names(map)
@@ -128,6 +132,7 @@ scan1snps <-
                 warning("start and end should have length 1; using the first values")
                 start <- start[1]
                 end <- end[1]
+                if(start >= end) stop("Need start < end")
             }
 
             snpinfo <- query_func(chr, start, end)
@@ -157,7 +162,7 @@ scan1snps <-
     }
 
     # split into batches
-    if(batch_length <= 0) stop("batch_length should be > 0")
+    if(!is.number(batch_length) || batch_length <= 0) stop("batch_length should be a single positive integer")
     chr <- names(map)
     chr_start <- vapply(map, min, 0)
     chr_end <- vapply(map, max, 0)

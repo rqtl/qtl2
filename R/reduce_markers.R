@@ -29,6 +29,7 @@
 reduce_markers <-
     function(map, weights=NULL, min_distance=1)
 {
+    if(is.null(map)) stop("map is NULL")
     if("cross2" %in% class(map))
         stop('Input map is a "cross2" object but should be a genetic map')
 
@@ -42,7 +43,7 @@ reduce_markers <-
         stop("Different numbers of markers and weights on chr",
              paste(names(map)[nmar != nwts], collapse=" "))
 
-    stopifnot(min_distance > 0)
+    if(!is.number(min_distance) || min_distance <= 0) stop("min_distance should be a single positive number")
 
     for(i in seq(along=map)) {
         if(length(map[[i]]) < 2) next

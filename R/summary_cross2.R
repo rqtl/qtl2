@@ -59,6 +59,8 @@ function(cross2)
 ind_ids <-
 function(cross2)
 {
+    if(!is.cross2(cross2))
+        stop('Input cross must have class "cross2"')
     unique( c(ind_ids_geno(cross2), ind_ids_pheno(cross2), ind_ids_covar(cross2)) )
 }
 

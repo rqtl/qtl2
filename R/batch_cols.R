@@ -24,6 +24,9 @@
 batch_cols <-
     function(mat, max_batch=NULL)
 {
+    if(is.null(mat)) stop("mat is NULL")
+    if(!is.matrix(mat)) mat <- as.matrix(mat)
+
     if(is.null(max_batch) || max_batch<=0)
         max_batch <- ncol(mat)
 

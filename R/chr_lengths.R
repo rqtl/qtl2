@@ -19,6 +19,7 @@
 chr_lengths <-
     function(map, collapse_to_AX=FALSE)
 {
+    if(is.null(map)) stop("map is NULL")
 
     result <- vapply(map, function(a) diff(range(a, na.rm=TRUE)), 1)
     attr(result, "is_x_chr") <- attr(map, "is_x_chr")

@@ -103,12 +103,16 @@ fit1 <-
              contrasts=NULL, model=c("normal", "binary"),
              se=TRUE, hsq=NULL, reml=TRUE, tol=1e-12, maxit=100)
 {
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(is.null(pheno)) stop("pheno is NULL")
+
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
                        intcovar, contrasts, se, hsq, reml, tol))
     }
 
-    stopifnot(tol > 0)
+    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
+    if(!is.number(maxit) || maxit < 0) stop("maxit should be a single non-negative number")
     bintol <- sqrt(tol)
 
     # check that the objects have rownames

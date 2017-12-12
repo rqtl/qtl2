@@ -85,7 +85,11 @@
 top_snps <-
     function(scan1_output, snpinfo, lodcolumn=1, chr=NULL, drop=1.5, show_all_snps=TRUE)
 {
+    if(is.null(scan1_output)) stop("scan1_output is NULL")
+    if(is.null(snpinfo)) stop("snpinfo is NULL")
+
     # pull out lod scores
+    if(length(lodcolumn)==0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) { # If length > 1, take first value
         warning("lodcolumn should have length 1; only first element used.")
         lodcolumn <- lodcolumn[1]

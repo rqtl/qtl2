@@ -28,6 +28,9 @@
 locate_xo <-
     function(geno, map, quiet=TRUE, cores=1)
 {
+    if(is.null(geno)) stop("geno is NULL")
+    if(is.null(map)) stop("map is NULL")
+
     crosstype <- attr(geno, "crosstype")
     if(is.null(crosstype))
         stop("Input geno needs to include a crosstype attribute.")

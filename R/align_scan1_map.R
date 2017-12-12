@@ -2,6 +2,9 @@
 align_scan1_map <-
     function(scan1_output, map)
 {
+    if(is.null(scan1_output)) stop("scan1_output is NULL")
+    if(is.null(map)) stop("map is NULL")
+
     if(!is.list(map)) stop("map should be a list")
 
     scan1_names <- rownames(scan1_output)

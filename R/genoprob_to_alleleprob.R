@@ -29,6 +29,8 @@
 genoprob_to_alleleprob <-
     function(probs, quiet=TRUE, cores=1)
 {
+    if(is.null(probs)) stop("probs is NULL")
+
     # already converted?
     ap <- attr(probs, "alleleprobs")
     if(!is.null(ap) && ap) return(probs)

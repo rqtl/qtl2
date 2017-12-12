@@ -27,6 +27,7 @@ calc_sdp <-
     # tolerate data frames, but convert to matrix
     if(!is.matrix(geno) && is.data.frame(geno))
         geno <- as.matrix(geno)
+    if(!is.matrix(geno)) stop("geno should be a matrix")
 
     n_str <- ncol(geno)
 
@@ -77,6 +78,9 @@ calc_sdp <-
 invert_sdp <-
     function(sdp, n_strains)
 {
+    if(!is.numeric(sdp)) stop("sdp should be a vector of integers")
+    if(!is.number(n_strains) || n_strains <= 0) stop("n_strains should be a single positive integer")
+
     geno <- .invert_sdp(sdp, n_strains)
     rownames(geno) <- names(sdp)
     geno <- geno*2+1 # convert 0/1 to 1/3

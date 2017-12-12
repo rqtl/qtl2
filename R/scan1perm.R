@@ -137,15 +137,18 @@ scan1perm <-
              n_perm=1, perm_Xsp=FALSE, perm_strata=NULL, chr_lengths=NULL,
              cores=1, ...)
 {
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(is.null(pheno)) stop("pheno is NULL")
+
     # grab tol from dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    stopifnot(tol > 0)
+    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
 
     # normal or binary model?
     model <- match.arg(model)
 
-    if(n_perm <= 0) stop("n_perm should be > 0")
+    if(!is.number(n_perm) || n_perm <= 0) stop("n_perm should be a single positive integer")
 
     # check that the objects have rownames
     check4names(pheno, addcovar, Xcovar, intcovar)

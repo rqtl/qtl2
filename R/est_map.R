@@ -53,9 +53,9 @@ function(cross, error_prob=1e-4,
         stop('Input cross must have class "cross2"')
 
     map_function <- match.arg(map_function)
-    if(error_prob < 0) stop("error_prob must be >= 0")
-    if(maxit < 0) stop("maxit must be >= 0")
-    if(tol <= 0) stop("tol must be > 0")
+    if(!is.number(error_prob) || error_prob < 0 || error_prob > 1) stop("error_prob must be a single number in [0,1]")
+    if(!is.number(maxit) || maxit < 0) stop("maxit must be a single non-negative number")
+    if(!is.number(tol) || tol <= 0) stop("tol must be a single positive number")
 
     # deal with missing information
     ind <- rownames(cross$geno[[1]])

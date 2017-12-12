@@ -54,6 +54,9 @@ compare_genoprob <-
              minprob=0.95, minmarkers=10, minwidth=0,
              annotate=FALSE)
 {
+    if(is.null(probs1)) stop("probs1 is NULL")
+    if(is.null(probs2)) stop("probs2 is NULL")
+
     # check inputs
     if(is.null(chr)) chr <- names(probs1)[1]
     if(length(chr) > 1) {

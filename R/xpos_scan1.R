@@ -67,6 +67,7 @@ xpos_scan1 <-
 function(map, chr=NULL, gap=25, thechr, thepos)
 {
     if(is.null(map)) stop("map is NULL")
+    if(!is.number(gap) || gap < 0) stop("gap should be a single non-negative number")
 
     # subset chromosomes
     if(!is.null(chr)) map <- map[chr]

@@ -68,7 +68,7 @@
 #' # 1.5-LOD support interval for QTL on chr 7, first phenotype
 #' lod_int(out, map, chr=7, lodcolum=1)
 lod_int <-
-    function(scan1_output, map, chr, lodcolumn=1, threshold=0,
+    function(scan1_output, map, chr=NULL, lodcolumn=1, threshold=0,
              peakdrop=Inf, drop=1.5, expand2markers=TRUE)
 {
     # align scan1_output and map
@@ -80,7 +80,7 @@ lod_int <-
         stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
              length(unlist(map)), "]")
 
-    if(missing(chr) || is.null(chr)) { # just use the first chr
+    if(is.null(chr)) { # just use the first chr
         chr <- names(map)[1]
     }
 
@@ -88,18 +88,22 @@ lod_int <-
         warning("chr should have length 1; using the first value")
         chr <- as.character(chr[1])
     }
+    if(length(lodcolumn) == 0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) {
         warning("lodcolumn should have length 1; using the first value")
         lodcolumn <- lodcolumn[1]
     }
+    if(length(threshold) == 0) stop("threshold has length 0")
     if(length(threshold) > 1) {
         warning("threshold should have length 1; using the first value")
         threshold <- threshold[1]
     }
+    if(length(peakdrop) == 0) stop("peakdrop has length 0")
     if(length(peakdrop) > 1) {
         warning("peakdrop should have length 1; using the first value")
         peakdrop <- peakdrop[1]
     }
+    if(length(drop) == 0) stop("drop has length 0")
     if(length(drop) > 1) {
         warning("drop should have length 1; using the first value")
         drop <- drop[1]
@@ -108,6 +112,11 @@ lod_int <-
     if(drop > peakdrop)
         stop("Must have drop <= peakdrop")
 
+    if(is.character(lodcolumn)) {
+        if(!(lodcolumn %in% colnames(scan1_output)))
+            stop('lodcolumn "', lodcolumn, '" not found')
+        lodcolumn <- match(lodcolumn, colnames(scan1_output))
+    }
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output))
         stop("lodcolumn should be between 1 and ", ncol(scan1_output))
 

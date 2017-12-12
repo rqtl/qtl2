@@ -54,6 +54,9 @@
 max_scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
+    if(is.null(scan1_output)) stop("scan1_output is NULL")
+
+    if(length(lodcolumn) == 0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) {
         lodcolumn <- lodcolumn[1]
         warning("lodcolumn should have length 1; using the first value")
@@ -180,6 +183,8 @@ max.scan1 <-
 maxlod <-
     function(scan1_output, map=NULL, chr=NULL)
 {
+    if(is.null(scan1_output)) stop("scan1_output is NULL")
+
     if(is.null(map) || is.null(chr)) {
         if(!is.null(map) || !is.null(chr))
             stop("Provide both map and chr, or neither.")

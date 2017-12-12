@@ -21,6 +21,8 @@ mat2strata <-
     function(mat)
 {
     if(is.null(mat)) return(NULL)
+    if(!is.matrix(mat) && is.data.frame(mat)) mat <- as.matrix(mat)
+    if(!is.matrix(mat)) stop("mat should be a matrix")
 
     result <- apply(mat, 1, paste, collapse="|")
     names(result) <- rownames(mat)

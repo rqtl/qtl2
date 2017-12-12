@@ -39,6 +39,8 @@ calc_geno_freq <-
 {
     by <- match.arg(by)
 
+    if(is.null(probs)) stop("probs is NULL")
+
     if("cross2" %in% class(probs))
         stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
 

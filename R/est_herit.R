@@ -62,6 +62,8 @@
 est_herit <-
     function(pheno, kinship, addcovar=NULL, reml=TRUE, cores=1, ...)
 {
+    if(is.null(pheno)) stop("pheno is NULL")
+
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
     stopifnot(tol > 0)

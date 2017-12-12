@@ -32,6 +32,9 @@
 map_to_grid <-
     function(map, grid)
 {
+    if(is.null(map)) stop("map is NULL")
+    if(is.null(grid)) stop("grid is NULL")
+
     if(length(map) != length(grid))
         stop("length(grid) [", length(grid), "] != length(map) [", length(map), "]")
 

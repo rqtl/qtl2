@@ -124,26 +124,34 @@ scan1 <-
              intcovar=NULL, weights=NULL, reml=TRUE,
              model=c("normal", "binary"), cores=1, ...)
 {
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(is.null(pheno)) stop("pheno is NULL")
+
     # grab dot args
     dotargs <- list(...)
     if("n_perm" %in% names(dotargs))
         stop("You included n_perm as an argument; you probably want to run scan1perm not scan1.")
 
+    model <- match.arg(model)
+
     if(!is.null(kinship)) { # fit linear mixed model
+        if(model=="binary") warning("Can't fit binary model with kinship matrix; using normal model")
         return(scan1_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
                         reml, cores, ...))
     }
 
     # deal with the dot args
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    stopifnot(tol > 0)
+    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
     bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
     stopifnot(bintol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
     max_batch <- grab_dots(dotargs, "max_batch", NULL)
+    if(!is.null(max_batch) && (!is.number(max_batch) || max_batch <= 0)) stop("max_batch should be a single positive integer")
     maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
+    if(!is.number(maxit) || maxit < 0) stop("maxit should be a single non-negative integer")
     check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch", "maxit"))
 
     # check that the objects have rownames
@@ -162,7 +170,6 @@ scan1 <-
         intcovar <- as.matrix(intcovar)
 
     # for binary model
-    model <- match.arg(model)
     if(model=="binary") {
         if(!is.null(kinship))
             stop("Can't yet account for kinship with model = \"binary\"")

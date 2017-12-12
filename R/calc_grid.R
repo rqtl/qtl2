@@ -52,9 +52,11 @@ function(map, step=0, off_end=0, tol=0.01)
         if(is.null(map))
             stop("Input is a cross2 object, but no genetic map found.")
     }
-    if(!is.numeric(step) || length(step)!=1 || step<0)
+    if(!is.number(step) || step<0)
         stop("step should be a single non-negative number")
-    if(!is.numeric(tol) || length(tol)!=1 || tol<0)
+    if(!is.number(off_end) || off_end<0)
+        stop("off_end should be a single non-negative number")
+    if(!is.number(tol) || tol<0)
         stop("tol should be a single non-negative number")
 
     grid <- map
@@ -79,6 +81,13 @@ function(map, step=0, off_end=0, tol=0.01)
 calc_grid_onechr <-
 function(map, step=0, off_end=0, tol=0.01, pmar_stem="loc")
 {
+    if(!is.number(step) || step < 0)
+        stop("step should be a single non-negative number")
+    if(!is.number(off_end) || off_end < 0)
+        stop("off_end should be a single non-negative number")
+    if(!is.number(tol) || tol < 0)
+        stop("tol should be a single non-negative number")
+
     if(step==0) {
         grid <- rep(TRUE, length(map))
         names(grid) <- names(map)

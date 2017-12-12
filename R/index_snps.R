@@ -68,6 +68,10 @@
 index_snps <-
     function(map, snpinfo, tol=1e-8)
 {
+    if(is.null(map)) stop("map is NULL")
+    if(is.null(snpinfo)) stop("snpinfo is NULL")
+    if(!is.number(tol) || tol < 0) stop("tol should be a single non-negative number")
+
     if(nrow(snpinfo)==0) {
         # no rows; return data frame with no rows
         return( cbind(snpinfo, index=numeric(0), interval=numeric(0), on_map=logical(0)) )

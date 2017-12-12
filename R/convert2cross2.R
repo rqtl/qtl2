@@ -21,6 +21,7 @@
 convert2cross2 <-
 function(cross)
 {
+    if(is.null(cross)) stop("cross is NULL")
     crosstype <- class(cross)[1]
     check_crosstype(crosstype)
     result <- list(crosstype=crosstype)

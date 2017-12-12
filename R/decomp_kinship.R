@@ -40,6 +40,9 @@ decomp_kinship <-
         return(Rcpp_eigen_decomp(kinship))
     }
 
+    if(!is.list(kinship))
+        stop("kinship should be either a square matrix or a list of square matrices")
+
     cores <- setup_cluster(cores)
 
     result <- cluster_lapply(cores, kinship, Rcpp_eigen_decomp)

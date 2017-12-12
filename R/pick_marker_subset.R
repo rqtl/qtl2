@@ -46,6 +46,9 @@
 pick_marker_subset <-
     function(map, min_d=1, weights=NULL)
 {
+    if(is.null(map)) stop("map is NULL")
+    if(!is.number(min_d) || min_d < 0) stop("min_d should be a single non-negative number")
+
     # multiple chromosomes
     if(is.list(map)) {
         if(!is.null(weights)) {

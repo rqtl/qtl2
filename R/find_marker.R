@@ -36,12 +36,13 @@
 #' # find markers in an interval
 #' find_marker(iron$pmap, 16, interval=c(35, 80))
 find_marker <-
-    function(map, chr, pos, interval=NULL)
+    function(map, chr, pos=NULL, interval=NULL)
 {
+    if(is.null(map)) stop("map is NULL")
     chr <- as.character(chr) # treat as a character string
 
     if(!is.null(interval)) {
-        if(!missing(pos) && !is.null(pos))
+        if(!is.null(pos))
             stop("Only one of pos and interval should be given")
         if(length(chr) > 1)
             stop("If interval is provided, chr should have length 1")

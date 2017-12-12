@@ -24,6 +24,7 @@
 interp_map <-
     function(map, oldmap, newmap)
 {
+    if(is.null(map)) stop("map is NULL")
     if(is.null(oldmap)) stop("oldmap is NULL")
     if(is.null(newmap)) stop("newmap is NULL")
 

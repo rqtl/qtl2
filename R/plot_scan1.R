@@ -98,6 +98,7 @@ plot_scan1 <-
              length(unlist(map)), "]")
 
     # pull out lod scores
+    if(length(lodcolumn)==0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) { # If length > 1, take first value
         warning("lodcolumn should have length 1; only first element used.")
         lodcolumn <- lodcolumn[1]

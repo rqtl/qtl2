@@ -8,14 +8,16 @@ scan1_pg <-
     # deal with the dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    stopifnot(tol > 0)
+    if(!is.number(tol) || tol <= 0) stop("tol should be a single positive number")
+    bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
+    stopifnot(bintol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
     max_batch <- grab_dots(dotargs, "max_batch", NULL)
+    if(!is.null(max_batch) && (!is.number(max_batch) || max_batch <= 0)) stop("max_batch should be a single positive integer")
     check_boundary <- grab_dots(dotargs, "check_boundary", TRUE)
-    check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch",
-                                "check_boundary"))
+    check_extra_dots(dotargs, c("tol", "intcovar_method", "check_boundary", "quiet", "max_batch"))
 
     # check that the objects have rownames
     check4names(pheno, addcovar, Xcovar, intcovar)

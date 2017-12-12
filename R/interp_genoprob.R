@@ -44,6 +44,9 @@
 interp_genoprob <-
     function(probs, map, cores=1)
 {
+    if(is.null(probs)) stop("probs is NULL")
+    if(is.null(map)) stop("map is NULL")
+
     gchr <- names(probs)
     mchr <- names(map)
     if(!all(gchr %in% mchr) || !all(mchr %in% gchr)) {

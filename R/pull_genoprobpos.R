@@ -27,6 +27,8 @@
 pull_genoprobpos <-
     function(genoprobs, marker)
 {
+    if(is.null(genoprobs)) stop("genoprobs is NULL")
+    if(length(marker) == 0) stop("marker has length 0")
     if(length(marker) > 1) {
         marker <- marker[1]
         warning("marker should have length 1; using the first value")

@@ -57,6 +57,11 @@ maxmarg <-
     function(probs, map=NULL, minprob=0.95, chr=NULL, pos=NULL,
              return_char=FALSE, quiet=TRUE, cores=1, tol=1e-13)
 {
+    if(is.null(probs)) stop("probs is NULL")
+
+    if(!is.number(minprob) || minprob < 0) stop("minprob should be a single non-negative number")
+    if(!is.number(tol) || tol < 0) stop("tol should be a single non-negative number")
+
     if(!is.null(chr) || !is.null(pos)) {
         if(is.null(chr) || is.null(pos) || is.null(map))
             stop("Provide all of chr, pos, and map, or none of them")

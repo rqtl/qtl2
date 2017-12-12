@@ -43,9 +43,12 @@ guess_phase <-
     function(cross, geno, deterministic=FALSE, cores=1)
 {
     # if cross is phase-known, don't change geno
+    if(!is.cross2(cross))
+        stop('Input cross must have class "cross2"')
     if(is_phase_known(cross)) return(geno)
 
     geno <- unclass(geno) # treat geno as a plain list
+    if(!is.list(geno)) stop("geno should be a list of genotype matrices")
 
     # match chromosomes
     if(n_chr(cross) != length(geno) ||

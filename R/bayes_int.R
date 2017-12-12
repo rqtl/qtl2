@@ -67,7 +67,7 @@
 #' # 95% Bayes credible interval for QTL on chr 7, first phenotype
 #' bayes_int(out, map, chr=7, lodcolum=1)
 bayes_int <-
-    function(scan1_output, map, chr, lodcolumn=1, threshold=0,
+    function(scan1_output, map, chr=NULL, lodcolumn=1, threshold=0,
              peakdrop=Inf, prob=0.95, expand2markers=TRUE)
 {
     # align scan1_output and map
@@ -79,31 +79,35 @@ bayes_int <-
         stop("nrow(scan1_output) [", nrow(scan1_output), "] != number of positions in map [",
              length(unlist(map)), "]")
 
-    if(missing(chr) || is.null(chr)) { # just use the first chr
+    if(is.null(chr)) { # just use the first chr
         chr <- names(map)[1]
     }
 
     if(length(chr) > 1) {
         warning("chr should have length 1; using the first value")
-        chr <- chr[1]
+        chr <- as.character(chr[1])
     }
+    if(length(lodcolumn) == 0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) {
         warning("lodcolumn should have length 1; using the first value")
         lodcolumn <- lodcolumn[1]
     }
+    if(length(threshold) == 0) stop("threshold has length 0")
     if(length(threshold) > 1) {
         warning("threshold should have length 1; using the first value")
         threshold <- threshold[1]
     }
+    if(length(peakdrop) == 0) stop("peakdrop has length 0")
     if(length(peakdrop) > 1) {
         warning("peakdrop should have length 1; using the first value")
         peakdrop <- peakdrop[1]
     }
-    if(length(prob) > 1) {
-        warning("prob should have length 1; using the first value")
-        prob <- prob[1]
-    }
 
+    if(is.character(lodcolumn)) {
+        if(!(lodcolumn %in% colnames(scan1_output)))
+            stop('lodcolumn "', lodcolumn, '" not found')
+        lodcolumn <- match(lodcolumn, colnames(scan1_output))
+    }
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output))
         stop("lodcolumn should be between 1 and ", ncol(scan1_output))
 

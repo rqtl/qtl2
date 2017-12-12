@@ -67,6 +67,11 @@
 find_ibd_segments <-
     function(geno, map, min_lod=15, error_prob=0.001, cores=1)
 {
+    if(is.null(geno)) stop("geno is NULL")
+    if(is.null(map)) stop("map is NULL")
+
+    if(!is.number(min_lod)) stop("min_lod should be a single number")
+
     n_str <- vapply(geno, nrow, 1)
     if(length(unique(n_str)) != 1)
         stop("The geno matrices have different numbers of rows; they should be strains x markers")
@@ -81,8 +86,8 @@ find_ibd_segments <-
     if(!all(nmar == nmar_map))
         stop("geno and map have different numbers of markers")
 
-    if(error_prob <= 0 || error_prob >= 1)
-        stop("error_prob should be in (0,1)")
+    if(!is.number(error_prob) || error_prob <= 0 || error_prob >= 1)
+        stop("error_prob should be a single number in (0,1)")
 
     # get strain pairs
     str1 <- matrix(rep(1:n_str, n_str), ncol=n_str)
