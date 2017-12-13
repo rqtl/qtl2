@@ -59,7 +59,11 @@ plot_peaks <-
     function(peaks, map, chr=NULL, tick_height = 0.3,
              gap=25, ...)
 {
+    if(is.null(peaks)) stop("peaks is NULL")
     if(is.null(map)) stop("map is NULL")
+
+    if(!is_nonneg_number(gap)) stop("gap should be a non-negative number")
+    if(!is_nonneg_number(tick_height)) stop("tick_height should be a non-negative number")
 
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 

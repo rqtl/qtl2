@@ -124,6 +124,9 @@ plot_snpasso <-
     if(is.null(scan1output)) stop("scan1output is NULL")
     if(is.null(snpinfo)) stop("snpinfo is NULL")
 
+    if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
+    if(!is_nonneg_number(minlod)) stop("minlod should be a single non-negative number")
+
     # pull out lod scores
     if(length(lodcolumn)==0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) { # If length > 1, take first value

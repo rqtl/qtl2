@@ -51,6 +51,11 @@ plot_genoprobcomp <-
 {
     # check inputs
     if(is.null(map)) stop("map is NULL")
+    if(is.null(probs1)) stop("probs1 is NULL")
+    if(is.null(probs2)) stop("probs2 is NULL")
+    if(!is_nonneg_number(threshold)) stop("threshold should be a non-negative number")
+    if(!is_pos_number(n_colors)) stop("n_colors should be a positive integer")
+
     if(is.null(chr)) chr <- names(probs1)[1]
     if(length(chr) > 1) {
         warning("chr should have length 1; using the first value")

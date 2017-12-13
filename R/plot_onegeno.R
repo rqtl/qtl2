@@ -69,9 +69,9 @@ plot_onegeno <-
              border="black", shift=FALSE,
              chrwidth=0.5, ...)
 {
+    if(is.null(geno)) stop("geno is NULL")
     if(is.null(map)) stop("map is NULL")
-
-    stopifnot(chrwidth > 0 && chrwidth < 1)
+    if(!is_pos_number(chrwidth) || chrwidth >= 1) stop("chrwidth should be a number in (0, 1)")
 
     # ignore class of geno object
     geno <- unclass(geno)

@@ -90,6 +90,9 @@ plot_genoprob <-
 {
     # check inputs
     if(is.null(map)) stop("map is NULL")
+    if(is.null(probs)) stop("probs is NULL")
+    if(!is_nonneg_number(threshold)) stop("threshold should be a non-negative number")
+
     if(is.null(chr)) chr <- names(probs)[1]
     if(length(chr) > 1) {
         warning("chr should have length 1; using the first value")

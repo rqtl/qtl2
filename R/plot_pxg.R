@@ -74,6 +74,9 @@ plot_pxg <-
              force_labels=TRUE, alternate_labels=FALSE,
              omit_points=FALSE, ...)
 {
+    if(is.null(geno)) stop("geno is NULL")
+    if(is.null(pheno)) stop("pheno is NULL")
+
     if(length(jitter) > 1 && length(jitter) != length(geno)) {
         stop("length(jitter) > 1 but length(jitter) != length(geno)")
         if(any(!is.na(jitter) & (jitter < -0.5 | jitter > 0.5)))

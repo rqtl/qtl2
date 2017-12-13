@@ -48,12 +48,18 @@ plot_genes <-
              scale_pos=1, start_field="start", stop_field="stop",
              strand_field="strand", name_field="Name", ...)
 {
+    if(is.null(genes)) stop("genes is NULL")
+
     # make sure the columns are there
     fields <- c(start_field, stop_field, strand_field, name_field)
     fields_found <- fields %in% colnames(genes)
     if(!all(fields_found)) {
         stop("Columns not found: ", paste(fields[!fields_found], collapse=", "))
     }
+
+    if(!is_pos_number(minrow)) stop("minrow should be a positive integer")
+    if(!is_nonneg_number(padding)) stop("padding should be a non-negative number")
+    if(!is_pos_number(scale_pos)) stop("scale_pos should be a positive number")
 
     # grab just the start and stop
     start <- genes[,start_field]

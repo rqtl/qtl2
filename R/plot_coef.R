@@ -88,6 +88,9 @@ plot_coef <-
     x <- tmp$scan1
     map <- tmp$map
 
+    if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
+    if(!is_pos_number(top_panel_prop)) stop("top_panel_prop should be a single non-negative number")
+
     if(nrow(x) != length(unlist(map)))
         stop("nrow(x) [", nrow(x), "] != number of positions in map [",
              length(unlist(map)), "]")
