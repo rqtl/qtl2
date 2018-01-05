@@ -1,3 +1,8 @@
+## qtl2 0.8 (2018-01-05)
+
+- First formal release
+
+
 ## qtl2 0.7-6 (2017-12-12)
 
 ### New features
