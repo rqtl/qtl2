@@ -237,7 +237,7 @@ div.tocify {
 </div>
 
 
-<p><a href="https://github.com/kbroman/qtl2geno">R/qtl2geno</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
+<p><a href="http://kbroman.org/qtl2">R/qtl2</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
 <p>The new HMM code can potentially handle more general cases and uses C++ classes to simplify the extension to new cross types. I’ve also split out the forward and backward equations as separate functions, to reduce code duplication. And the basic calculations are separated by individual, which may allow for low-level parallel processing (i.e., <a href="https://en.wikipedia.org/wiki/Concurrency_(computer_science)">concurrency</a>). (I’m considered using <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a> for this.)</p>
 <p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="https://rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="https://rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
 <div id="genotype-probabilities" class="section level2">
@@ -252,63 +252,63 @@ n &lt;- 500
 bc &lt;- sim.cross(map, n.ind=n, type=&quot;bc&quot;, missing.prob=0.05)
 bc$pheno$sex &lt;- rep(0:1, each=n/2)</code></pre>
 <p>There’s a total of 1685 markers.</p>
-<p>We use <code>qtl2geno::convert2cross2()</code> to convert the data to the format for <a href="http://kbroman.org/qtl2">R/qtl2</a>. Also, with R/qtl2, I need to use <code>insert_pseudomarkers</code> to create a map with pseudomarkers inserted, prior to running <code>calc_genoprob</code>.</p>
-<pre class="r"><code>library(qtl2geno)
+<p>We use <code>qtl2::convert2cross2()</code> to convert the data to the format for <a href="http://kbroman.org/qtl2">R/qtl2</a>. Also, with R/qtl2, I need to use <code>insert_pseudomarkers</code> to create a map with pseudomarkers inserted, prior to running <code>calc_genoprob</code>.</p>
+<pre class="r"><code>library(qtl2)
 bc2 &lt;- convert2cross2(bc)
-bc2_pmarkmap &lt;- qtl2geno::insert_pseudomarkers(bc2$gmap, step=0.5)</code></pre>
-<p>We use the <a href="https://cran.r-project.org/package=microbenchmark">microbenchmark package</a> and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2geno::calc_genoprob2()</code> 25 times, with calculations at a 0.5 cM spacing. Even though the data were simulated without genotyping errors, I’m going to do the calculations assuming a 0.2% genotype error rate.</p>
+bc2_pmarkmap &lt;- qtl2::insert_pseudomarkers(bc2$gmap, step=0.5)</code></pre>
+<p>We use the <a href="https://cran.r-project.org/package=microbenchmark">microbenchmark package</a> and run each of <code>qtl::calc.genoprob()</code> and <code>qtl2::calc_genoprob2()</code> 25 times, with calculations at a 0.5 cM spacing. Even though the data were simulated without genotyping errors, I’m going to do the calculations assuming a 0.2% genotype error rate.</p>
 <pre class="r"><code>library(microbenchmark)
 probbc &lt;- microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
-                         qtl2 = qtl2geno::calc_genoprob(bc2, bc2_pmarkmap, error_prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(bc2, bc2_pmarkmap, error_prob=0.002),
                          times=25)
 print(probbc, unit=&quot;s&quot;)</code></pre>
 <pre><code>## Unit: seconds
 ##  expr       min        lq      mean    median        uq      max neval cld
-##   qtl 0.9819039 1.0538439 1.0949559 1.0584714 1.0729508 1.569427    25   b
-##  qtl2 0.8478606 0.8573741 0.8853534 0.8675998 0.8725439 1.181921    25  a</code></pre>
+##   qtl 1.1485780 1.1534480 1.1867754 1.1569168 1.1590954 1.721926    25   b
+##  qtl2 0.9386523 0.9415078 0.9612191 0.9451787 0.9483334 1.164079    25  a</code></pre>
 <p>Let’s do the same for an intercross, also including the X chromosome, and with crosses in both directions and with both sexes. Again, with R/qtl2, I need to use <code>insert_pseudomarkers</code> to create a map with pseudomarkers inserted, prior to running <code>calc_genoprob</code>.</p>
 <pre class="r"><code>f2 &lt;- sim.cross(map, n.ind=n, type=&quot;f2&quot;, missing.prob=0.05)
 f2$pheno$sex &lt;- rep(0:1, each=n/2)
 f2$pheno$pgm &lt;- rep(0:1, n/2)
 f2_2 &lt;- convert2cross2(f2)
-f2_2_pmarkmap &lt;- qtl2geno::insert_pseudomarkers(f2_2$gmap, step=0.5)</code></pre>
+f2_2_pmarkmap &lt;- qtl2::insert_pseudomarkers(f2_2$gmap, step=0.5)</code></pre>
 <p>Now for the benchmarks; we’ll do the calculations just 10 times.</p>
 <pre class="r"><code>probf2 &lt;- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
-                         qtl2 = qtl2geno::calc_genoprob(f2_2, f2_2_pmarkmap, error_prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(f2_2, f2_2_pmarkmap, error_prob=0.002),
                          times=10)
 print(probf2, unit=&quot;s&quot;)</code></pre>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 2.620980 2.624123 2.641036 2.635471 2.645137 2.693997    10   b
-##  qtl2 1.898211 1.904055 1.926904 1.918638 1.922677 2.042913    10  a</code></pre>
+##   qtl 2.630252 2.634652 2.772639 2.809436 2.881451 2.926254    10   b
+##  qtl2 1.907427 1.920029 1.999916 1.928127 2.099477 2.218559    10  a</code></pre>
 </div>
 <div id="genetic-map-estimation" class="section level2">
 <h2>Genetic map estimation</h2>
-<p>Now let’s consider the estimation of inter-marker distances in the genetic map, with the functions <code>qtl::est.map</code> and <code>qtl2geno::est_map</code>.</p>
+<p>Now let’s consider the estimation of inter-marker distances in the genetic map, with the functions <code>qtl::est.map</code> and <code>qtl2::est_map</code>.</p>
 <p>First the backcross; to speed things up, we’ll look at just chromosomes 1 and X.</p>
 <pre class="r"><code>bc &lt;- bc[c(1, &quot;X&quot;),]
 bc2 &lt;- convert2cross2(bc)</code></pre>
 <p>Now for the benchmarks. We’ll just do 5 replicates.</p>
 <pre class="r"><code>mapbc &lt;- microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
-                        qtl2 = qtl2geno::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
                         times=5)
 print(mapbc, unit=&quot;s&quot;)</code></pre>
 <pre><code>## Unit: seconds
-##  expr      min       lq    mean   median       uq      max neval cld
-##   qtl 1.510195 1.513630 1.58087 1.521191 1.574034 1.785300     5  a
-##  qtl2 1.813530 1.841623 1.89527 1.864839 1.884391 2.071965     5   b</code></pre>
+##  expr      min       lq     mean   median       uq      max neval cld
+##   qtl 1.492345 1.507568 1.557910 1.508575 1.511898 1.769164     5  a 
+##  qtl2 1.889971 1.900069 1.921923 1.916461 1.944371 1.958744     5   b</code></pre>
 <p>Now to the intercross. Again, we’ll look at just chromosomes 1 and X, and we’ll perform just 5 replicates.</p>
 <pre class="r"><code>f2 &lt;- f2[c(1, &quot;X&quot;),]
 f2_2 &lt;- convert2cross2(f2)
 mapf2 &lt;- microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
-                        qtl2 = qtl2geno::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
                         times=5)
 print(mapf2, unit=&quot;s&quot;)</code></pre>
 <pre><code>## Unit: seconds
 ##  expr      min       lq     mean   median       uq      max neval cld
-##   qtl 4.315408 4.317821 4.324079 4.319787 4.327848 4.339532     5   b
-##  qtl2 3.465250 3.498284 3.535842 3.505676 3.566233 3.643767     5  a</code></pre>
-<p>For the backcross, the new code takes 1.2 times longer; for the intercross, the new code takes 0.8 times longer.</p>
+##   qtl 4.199172 4.200006 4.201417 4.200639 4.202758 4.204511     5   b
+##  qtl2 3.434648 3.507602 3.576080 3.578263 3.671013 3.688875     5  a</code></pre>
+<p>For the backcross, the new code takes 1.3 times longer; for the intercross, the new code takes 0.9 times longer.</p>
 </div>
 <div id="why-the-differences-in-speed" class="section level2">
 <h2>Why the differences in speed?</h2>
@@ -327,67 +327,73 @@ print(mapf2, unit=&quot;s&quot;)</code></pre>
 <p>The following shows the R and package versions I was using.</p>
 <pre class="r"><code>devtools::session_info()</code></pre>
 <pre><code>## Session info --------------------------------------------------------------------------------------</code></pre>
-<pre><code>##  setting  value
-##  version  R version 3.4.2 (2017-09-28)
-##  system   x86_64, darwin15.6.0
-##  ui       X11
-##  language en_US.UTF-8
-##  collate  en_US.UTF-8
-##  tz       America/Chicago
-##  date     2017-11-20</code></pre>
+<pre><code>##  setting  value                       
+##  version  R version 3.4.3 (2017-11-30)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language en_US.UTF-8                 
+##  collate  en_US.UTF-8                 
+##  tz       America/Chicago             
+##  date     2018-01-05</code></pre>
 <pre><code>## Packages ------------------------------------------------------------------------------------------</code></pre>
-<pre><code>##  package        * version  date       source
+<pre><code>##  package        * version  date       source        
 ##  assertthat       0.2.0    2017-04-11 CRAN (R 3.4.0)
-##  backports        1.1.1    2017-09-25 CRAN (R 3.4.2)
-##  base           * 3.4.2    2017-10-04 local
-##  broman         * 0.66-2   2017-10-24 local
+##  backports        1.1.2    2017-12-13 CRAN (R 3.4.3)
+##  base           * 3.4.3    2017-12-07 local         
+##  bit              1.1-12   2014-04-09 CRAN (R 3.4.0)
+##  bit64            0.9-7    2017-05-08 CRAN (R 3.4.0)
+##  blob             1.1.0    2017-06-17 CRAN (R 3.4.0)
+##  broman         * 0.67-4   2017-12-09 local         
 ##  codetools        0.2-15   2016-10-05 CRAN (R 3.4.0)
 ##  colorspace       1.3-2    2016-12-14 CRAN (R 3.4.0)
-##  compiler         3.4.2    2017-10-04 local
+##  compiler         3.4.3    2017-12-07 local         
 ##  data.table       1.10.4-3 2017-10-27 CRAN (R 3.4.2)
-##  datasets       * 3.4.2    2017-10-04 local
+##  datasets       * 3.4.3    2017-12-07 local         
+##  DBI              0.7      2017-06-18 CRAN (R 3.4.0)
 ##  devtools         1.13.4   2017-11-09 CRAN (R 3.4.2)
-##  digest           0.6.12   2017-01-27 CRAN (R 3.4.0)
+##  digest           0.6.13   2017-12-14 CRAN (R 3.4.3)
 ##  evaluate         0.10.1   2017-06-24 CRAN (R 3.4.0)
 ##  ggplot2          2.2.1    2016-12-30 CRAN (R 3.4.0)
-##  graphics       * 3.4.2    2017-10-04 local
-##  grDevices      * 3.4.2    2017-10-04 local
-##  grid             3.4.2    2017-10-04 local
+##  graphics       * 3.4.3    2017-12-07 local         
+##  grDevices      * 3.4.3    2017-12-07 local         
+##  grid             3.4.3    2017-12-07 local         
 ##  gtable           0.2.0    2016-02-26 CRAN (R 3.4.0)
 ##  htmltools        0.3.6    2017-04-28 CRAN (R 3.4.0)
-##  knitr            1.17     2017-08-10 CRAN (R 3.4.1)
+##  knitr            1.18     2017-12-27 CRAN (R 3.4.3)
 ##  lattice          0.20-35  2017-03-25 CRAN (R 3.4.0)
 ##  lazyeval         0.2.1    2017-10-29 CRAN (R 3.4.2)
 ##  magrittr       * 1.5      2014-11-22 CRAN (R 3.4.0)
-##  MASS             7.3-47   2017-02-26 CRAN (R 3.4.0)
+##  MASS             7.3-48   2017-12-25 CRAN (R 3.4.3)
 ##  Matrix           1.2-12   2017-11-15 CRAN (R 3.4.2)
 ##  memoise          1.1.0    2017-04-21 CRAN (R 3.4.0)
-##  methods        * 3.4.2    2017-10-04 local
+##  methods        * 3.4.3    2017-12-07 local         
 ##  microbenchmark * 1.4-2.1  2015-11-25 CRAN (R 3.4.0)
 ##  multcomp         1.4-8    2017-11-08 CRAN (R 3.4.2)
 ##  munsell          0.4.3    2016-02-13 CRAN (R 3.4.0)
 ##  mvtnorm          1.0-6    2017-03-02 CRAN (R 3.4.0)
-##  parallel         3.4.2    2017-10-04 local
+##  parallel         3.4.3    2017-12-07 local         
+##  pillar           1.0.1    2017-11-27 CRAN (R 3.4.3)
 ##  plyr             1.8.4    2016-06-08 CRAN (R 3.4.0)
-##  qtl            * 1.42-2   2017-09-13 local
-##  qtl2geno       * 0.5-38   2017-11-20 local
-##  Rcpp             0.12.13  2017-09-28 CRAN (R 3.4.2)
-##  rlang            0.1.4    2017-11-05 CRAN (R 3.4.2)
+##  qtl            * 1.42-2   2017-09-13 local         
+##  qtl2           * 0.7-7    2018-01-05 local         
+##  Rcpp             0.12.14  2017-11-23 CRAN (R 3.4.3)
+##  rlang            0.1.6    2017-12-21 CRAN (R 3.4.3)
 ##  rmarkdown        1.8      2017-11-17 CRAN (R 3.4.2)
-##  rprojroot        1.2      2017-01-16 CRAN (R 3.4.0)
+##  rprojroot        1.3-2    2018-01-03 CRAN (R 3.4.3)
+##  RSQLite          2.0      2017-06-19 CRAN (R 3.4.0)
 ##  sandwich         2.4-0    2017-07-26 CRAN (R 3.4.1)
 ##  scales           0.5.0    2017-08-24 CRAN (R 3.4.1)
-##  splines          3.4.2    2017-10-04 local
-##  stats          * 3.4.2    2017-10-04 local
+##  splines          3.4.3    2017-12-07 local         
+##  stats          * 3.4.3    2017-12-07 local         
 ##  stringi          1.1.6    2017-11-17 CRAN (R 3.4.2)
 ##  stringr          1.2.0    2017-02-18 CRAN (R 3.4.0)
 ##  survival         2.41-3   2017-04-04 CRAN (R 3.4.0)
 ##  TH.data          1.0-8    2017-01-23 CRAN (R 3.4.0)
-##  tibble           1.3.4    2017-08-22 CRAN (R 3.4.1)
-##  tools            3.4.2    2017-10-04 local
-##  utils          * 3.4.2    2017-10-04 local
-##  withr            2.1.0    2017-11-01 CRAN (R 3.4.2)
-##  yaml             2.1.14   2016-11-12 CRAN (R 3.4.0)
+##  tibble           1.4.1    2017-12-25 CRAN (R 3.4.3)
+##  tools            3.4.3    2017-12-07 local         
+##  utils          * 3.4.3    2017-12-07 local         
+##  withr            2.1.1    2017-12-19 CRAN (R 3.4.3)
+##  yaml             2.1.16   2017-12-12 CRAN (R 3.4.3)
 ##  zoo              1.8-0    2017-04-12 CRAN (R 3.4.0)</code></pre>
 <hr />
 <p><a href="http://creativecommons.org/licenses/by/3.0/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAYAAABjyArgAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABTpJREFUaN7tWk1PG0cY9jlSLO5cOIYbbZUeU6T0B5AfkIh/UNRbJKqgiFSKVAlZrqLm0FCptyawxubDX3gNa2N71/Z6IeTKT+AnvNXzrt9ldlnwB84aE0Yasd6ZnR2efeZ5P2ZiRBSPxWJ0X0dfifCn+2Mnv017xV3KlbJUPChQySjRQbVMRt2gI7NK9WaNGq0GWW2TmrZFzU7TrbZFlm2S2WpwH/St1A1+VjdKPFaulOOx8Y5MNk1beylK7Wi0ub1BG5lPXD+lP9LHrf/uTFWAvgA3r+do/7BI5YpORu2QwWq06gxg22lR58Qm53OHjk+P6eSLW3HtfHa4DX0s2+Jn8CzGKFd1HhNjB0HWdjY9kAHwHQU55ge3WmYG1qwasxWgAdTVN6v09Oen9DD+8NJSwD20rf6+yn3bx23+KGB0pVFhNu8f7vtATme3KLWruSBnNkbG4pfLL2l2dvbSHHEPbWMBGLKgggtgmh2LWZlIJmh6erpv3UHfxJ8JfhYSAjZXPZCLnlxs5zKU3nNBHgWLk38l6dHsI28e8/PztLS0xBXXch990DdSgKGTkIULcJvMxIVnCz7wpqamaHFxkVZWVkjXda64xj20qX3xbKVmUMtxQQaTIReuJmdpt7Djl4obsHj93w8Uj8fd9y4s0NnZGQUL7qENfdA3CpA9gGHQoJeQBTA3CC7AA5Dn5+d0XVlfX/cBDbYAZHwwfDi8A4avUM5Tdn/PlYoQFg/6jwhz8aHVolhz3xxlbpEBjOULowTNxdJWwZ2bmwtlxFUFHwHPqEzGmNBkvONCKhQW76ZI294cSiagq8LcL6enPQFGESZ/bU32ADZYGups0KC5Kri9WNsPyNBkGD6WirpBesVlMWtx3tVikYlBARaDNggJ0FcMXyQAM3ttk6VBDBqWum3bNGwByCIXGBNjw4UTFhcPXBarHsUwMiEGLVggF/KBg9KBIoYvEoChjy2nxa6YTAqae9MieocKFw4rRLS41HXbVJkYFmB4CsESElX5Cp6JDGBEaPaJzb6ssFeVBngL0C18dVQV/GDb2tqa7x8RFmNsaDEivksykcu43oSiw3cKYBg3LGEJItQlBQDD/F2AqWlaaJv6vCxVjI2ID1JU7bpshXKBvQnosLhrd1IikE84PnW8CaksFGM1MzPDxgGA4xrLX9rE0wDg0hYmEwirmz4dLvjctWEAvs7IXcXeyI0cfF/kFWRCADE4yTBN7kev1RWAd8AnPjKPRgaw6qb1C3DkbtokAzxooCHaG2mg0a9EwPDBdcM1QFUlItgWlURMRKh8nZG7zpD1Y+SEMa6R6/C7RmnkVJDVZA8+OuaB96tBz1iSPeKmSYgM1yq4zK9y0wCy3A+2oYDRqpvWUNy0vH5zN20i0pUSaKhhctCfHWWgcdgNNJC6lEDjpgmfW51wrzbCQ+VB4vtxhcoTAbCa7Pnwz9+jT/YkEzw2kj14l6Qs1cT7sMmeiQAYdfnVspeufP7iuQ/kQZI+YH1ourJt0us3r7/F3eWLH0u//sJuVGeIhDva0EdNuD/+8TFLA/xsfMBvdPvef+O3V8scDABklcnDbBkB3FanSe/ev4vqHEJokBHsM1aAPZBtd9MTmjzwpmdSNj2tyMANghd2PQZwwwEWuVC37QFar2177Fzwtj3OR7TNyGWhV7ryVkiEWr//4TvS0hq7cPCTbe/giaMcPHH4nnrwJJXR6MlPT8ZxVOk2SUNvgKUCrLd/vKViuagcnepWHJ1qm9yGPuMAdmIZfF9HUInowT0QX+905f/GIzQzf2iprAAAAABJRU5ErkJggg==" alt="CC BY" /></a> <a href="http://kbroman.org">Karl Broman</a></p>

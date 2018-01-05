@@ -13,7 +13,7 @@ output:
 options(width=100)
 ```
 
-[R/qtl2geno](https://github.com/kbroman/qtl2geno) includes a reimplementation
+[R/qtl2](http://kbroman.org/qtl2) includes a reimplementation
 of the basic hidden Markov model code for the calculation of
 conditional genotype probabilities (given the available multipoint
 marker genotype data) and the estimation of genetic maps.
@@ -56,20 +56,20 @@ bc$pheno$sex <- rep(0:1, each=n/2)
 
 There's a total of `r totmar(bc)` markers.
 
-We use `qtl2geno::convert2cross2()` to convert the data to the format for
+We use `qtl2::convert2cross2()` to convert the data to the format for
 [R/qtl2](http://kbroman.org/qtl2). Also, with R/qtl2, I need to use
 `insert_pseudomarkers` to create a map with pseudomarkers inserted,
 prior to running `calc_genoprob`.
 
 ```{r convert2cross2}
-library(qtl2geno)
+library(qtl2)
 bc2 <- convert2cross2(bc)
-bc2_pmarkmap <- qtl2geno::insert_pseudomarkers(bc2$gmap, step=0.5)
+bc2_pmarkmap <- qtl2::insert_pseudomarkers(bc2$gmap, step=0.5)
 ```
 
 We use the
 [microbenchmark package](https://cran.r-project.org/package=microbenchmark)
-and run each of `qtl::calc.genoprob()` and `qtl2geno::calc_genoprob2()`
+and run each of `qtl::calc.genoprob()` and `qtl2::calc_genoprob2()`
 25 times, with calculations at a 0.5 cM spacing. Even though the data
 were simulated without genotyping errors, I'm going to do the
 calculations assuming a 0.2% genotype error rate.
@@ -77,7 +77,7 @@ calculations assuming a 0.2% genotype error rate.
 ```{r benchmark_calcgenoprob_bc}
 library(microbenchmark)
 probbc <- microbenchmark(qtl =  qtl::calc.genoprob(bc, step=0.5, error.prob=0.002),
-                         qtl2 = qtl2geno::calc_genoprob(bc2, bc2_pmarkmap, error_prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(bc2, bc2_pmarkmap, error_prob=0.002),
                          times=25)
 print(probbc, unit="s")
 ```
@@ -101,7 +101,7 @@ f2 <- sim.cross(map, n.ind=n, type="f2", missing.prob=0.05)
 f2$pheno$sex <- rep(0:1, each=n/2)
 f2$pheno$pgm <- rep(0:1, n/2)
 f2_2 <- convert2cross2(f2)
-f2_2_pmarkmap <- qtl2geno::insert_pseudomarkers(f2_2$gmap, step=0.5)
+f2_2_pmarkmap <- qtl2::insert_pseudomarkers(f2_2$gmap, step=0.5)
 ```
 
 Now for the benchmarks; we'll do the calculations just 10
@@ -109,7 +109,7 @@ times.
 
 ```{r benchmark_calcgenoprob_f2}
 probf2 <- microbenchmark(qtl =  qtl::calc.genoprob(f2, step=0.5, error.prob=0.002),
-                         qtl2 = qtl2geno::calc_genoprob(f2_2, f2_2_pmarkmap, error_prob=0.002),
+                         qtl2 = qtl2::calc_genoprob(f2_2, f2_2_pmarkmap, error_prob=0.002),
                          times=10)
 print(probf2, unit="s")
 ```
@@ -118,7 +118,7 @@ print(probf2, unit="s")
 ## Genetic map estimation
 
 Now let's consider the estimation of inter-marker distances in the
-genetic map, with the functions `qtl::est.map` and `qtl2geno::est_map`.
+genetic map, with the functions `qtl::est.map` and `qtl2::est_map`.
 
 First the backcross; to speed things up, we'll look at just
 chromosomes 1 and X.
@@ -132,7 +132,7 @@ Now for the benchmarks. We'll just do 5 replicates.
 
 ```{r benchmark_estmap_bc}
 mapbc <- microbenchmark(qtl =  qtl::est.map(bc, error.prob=0.002, tol=1e-6, maxit=10000),
-                        qtl2 = qtl2geno::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(bc2, error_prob=0.002, tol=1e-6, maxit=10000),
                         times=5)
 print(mapbc, unit="s")
 ```
@@ -144,7 +144,7 @@ chromosomes 1 and X, and we'll perform just 5 replicates.
 f2 <- f2[c(1, "X"),]
 f2_2 <- convert2cross2(f2)
 mapf2 <- microbenchmark(qtl =  qtl::est.map(f2, error.prob=0.002, tol=1e-6, maxit=10000),
-                        qtl2 = qtl2geno::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
+                        qtl2 = qtl2::est_map(f2_2, error_prob=0.002, tol=1e-6, maxit=10000),
                         times=5)
 print(mapf2, unit="s")
 ```
