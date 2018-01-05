@@ -1009,8 +1009,7 @@ with the _official_ colors.
 
 ```{r plot_DOex_effects}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
-legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
+plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95", legend="bottomleft")
 ```
 
 If you provide `plot_coefCC()` with the genome scan output, it will
@@ -1018,8 +1017,7 @@ display the LOD curve below the coefficient estimates.
 
 ```{r plot_DOex_effects_with_lod, fig.height=6}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_coefCC(coef_c2, DOex$gmap["2"], out, bgcolor="gray95")
-legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
+plot_coefCC(coef_c2, DOex$gmap["2"], scan1_output=out, bgcolor="gray95", legend="bottomleft")
 ```
 
 ### Connecting to SNP and gene databases
