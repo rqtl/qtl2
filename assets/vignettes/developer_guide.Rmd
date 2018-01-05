@@ -14,13 +14,6 @@ output:
 [R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-We expect that basic analyses with R/qtl2 will generally be performed
-in "batch" (for example, on a cluster) rather than interactively. And
-so the software is split into two parts:
-[qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
-calculations, and [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
-scans.
-
 In this document, we'll describe the technical details of interest to
 developers wishing to contribute to R/qtl2.
 
@@ -348,7 +341,7 @@ straightforward, with a loop over columns.
 
 For simple cross types, we can use the file formats for
 [R/qtl](https://rqtl.org), use `qtl::read.cross` to read in the
-data, and then use a conversion function (`qtl2geno::convert2cross2`) to convert
+data, and then use a conversion function (`qtl2::convert2cross2`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
@@ -373,13 +366,13 @@ the encodings for the sexes) and which chromosome is the X chromosome.
 
 A key advantage of the control file scheme is that it greatly
 simplifies the function for reading in the data. That function,
-`qtl2geno::read_cross2()`, has a _single_ argument: the name (with path) of the
+`read_cross2()`, has a _single_ argument: the name (with path) of the
 control file.
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
 [zip file](https://en.wikipedia.org/wiki/Zip_(file_format) containing
 all of the data files, and to read that zip file directly (with the same
-function, `qtl2geno::read_cross2()`). The function `qtl2geno::zip_datafiles()` can be used
+function, `read_cross2()`). The function `zip_datafiles()` can be used
 to create the zip file.
 
 I describe the details of the input files in a

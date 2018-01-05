@@ -238,7 +238,6 @@ div.tocify {
 
 
 <p><a href="http://kbroman.org/qtl2">R/qtl2</a> (aka qtl2) is a reimplementation of the QTL analysis software <a href="https://rqtl.org">R/qtl</a>, to better handle high-dimensional data and complex cross designs.</p>
-<p>We expect that basic analyses with R/qtl2 will generally be performed in “batch” (for example, on a cluster) rather than interactively. And so the software is split into two parts: <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a> for genotype probability calculations, and <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a> for QTL scans.</p>
 <p>In this document, we’ll describe the technical details of interest to developers wishing to contribute to R/qtl2.</p>
 <p>There are three basic aspects to the software:</p>
 <ul>
@@ -366,11 +365,11 @@ div.tocify {
 </div>
 <div id="input-data-file-formats" class="section level2">
 <h2>Input data file formats</h2>
-<p>For simple cross types, we can use the file formats for <a href="https://rqtl.org">R/qtl</a>, use <code>qtl::read.cross</code> to read in the data, and then use a conversion function (<code>qtl2geno::convert2cross2</code>) to convert the data into the new format.</p>
+<p>For simple cross types, we can use the file formats for <a href="https://rqtl.org">R/qtl</a>, use <code>qtl::read.cross</code> to read in the data, and then use a conversion function (<code>qtl2::convert2cross2</code>) to convert the data into the new format.</p>
 <p>For more complex crosses, we need to define a new format. I was persuaded by <a href="http://aaronwolen.com/">Aaron Wolen</a>’s idea of a <a href="https://github.com/kbroman/qtl/pull/20">“tidy” format</a> for <a href="https://rqtl.org">R/qtl</a>, with three separate CSV files, one for phenotypes, one for genotypes, and one for the genetic map.</p>
 <p>Another important idea is from <a href="http://thebird.nl/">Pjotr Prins</a>’s <a href="https://github.com/qtlHD/qtlHD/blob/master/doc/input/qtab.md">qtab format</a>: the inclusion of metadata, such as genotype encodings, with the primary data. This will simplify the handling of multiple files and will help to avoid mistakes.</p>
 <p>And so the basic idea for the new format is to have a separate file for each part of the primary data (genotypes, founder genotypes, genetic map, physical map, phenotypes, covariates, and phenotype covariates), and then a control file which specifies the names of all of those files, the genotype encodings and missing value codes, and things like the name of the sex column within the covariate data (and the encodings for the sexes) and which chromosome is the X chromosome.</p>
-<p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>qtl2geno::read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="https://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">https://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly (with the same function, <code>qtl2geno::read_cross2()</code>). The function <code>qtl2geno::zip_datafiles()</code> can be used to create the zip file.</p>
+<p>A key advantage of the control file scheme is that it greatly simplifies the function for reading in the data. That function, <code>read_cross2()</code>, has a <em>single</em> argument: the name (with path) of the control file. The large number of files is a bit cumbersome, so we’ve made it possible to use a [zip file](<a href="https://en.wikipedia.org/wiki/Zip_(file_format)" class="uri">https://en.wikipedia.org/wiki/Zip_(file_format)</a> containing all of the data files, and to read that zip file directly (with the same function, <code>read_cross2()</code>). The function <code>zip_datafiles()</code> can be used to create the zip file.</p>
 <p>I describe the details of the input files in a <a href="input_files.html">separate vignette</a>. Here I’ll give a brief sketch of the structure of the files.</p>
 <div id="control-file" class="section level3">
 <h3>Control file</h3>
