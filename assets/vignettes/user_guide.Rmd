@@ -19,37 +19,23 @@ options(width=127, digits=5)
 [R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-The software is split into multiple packages:
-[qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability
-calculations, [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
-scans, [qtl2plot](https://github.com/rqtl/qtl2plot) for data
-visualization, and [qtl2db](https://github.com/rqtl/qtl2db) for
-connections to SNP and gene databases.
-A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
-contains functions for converting data among the R/qtl2,
+The software was previously split into multiple packages
+(qtl2geno, qtl2scan, qtl2plot, and qtl2db), but as of version 0.7,
+these have been combined into a single package
+[qtl2](https://github.com/rqtl/qtl2). The multiple packages proved awkward and confusing.
+The [qtl2convert](https://github.com/rqtl/qtl2convert) package (for
+converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](https://rqtl.org) formats, for example to convert genotype
-probabilities produced by DOQTL to the format needed by qtl2scan.
+and [R/qtl](https://rqtl.org) formats) will remain a separate package.
 
 
 ## Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
+Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org).
 
     install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
-
-The [qtl2](https://github.com/rqtl/qtl2) package is
-inspired by the
-[tidyverse package](https://cran.r-project.org/package=tidyverse);
-it is basically empty, but when you install it, the
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot),
-[qtl2db](https://github.com/rqtl/qtl2db),
-and
-[qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
-bunch of dependencies, will be installed.
 
 Alternatively, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
@@ -66,16 +52,17 @@ You then need to install the
 package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [jsonlite](https://cran.r-project.org/package=jsonlite),
 [data.table](https://cran.r-project.org/package=data.table),
-and [RcppEigen](https://github.com/RcppCore/RcppEigen).
+[RcppEigen](https://github.com/RcppCore/RcppEigen),
+[RSQLite](https://github.com/rstats-db/RSQLite), and
+[qtl](https://rqtl.org).
 (Additional, secondary dependencies will also be installed.)
 
-    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
+    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))
 
 Finally, install R/qtl2 using `devtools::install_github()`.
 
     library(devtools)
     install_github("rqtl/qtl2")
-
 
 ## Data file format
 
@@ -122,22 +109,9 @@ simplifies the function for reading in the data. That function,
 control file. So you can read in data like this:
 
 ```{r read_cross2, eval=FALSE}
-library(qtl2geno)
+library(qtl2)
 grav2 <- read_cross2("~/my_data/grav2.yaml")
 ```
-
-_Note_: it can sometimes confusing which packages you need to load. If
-you install the (largely empty) [qtl2](https://github.com/rqtl/qtl2)
-package, you can type just
-
-```{r library_qtl2, eval=FALSE}
-library(qtl2)
-```
-
-and the three main packages,
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan), and
-[qtl2plot](https://github.com/rqtl/qtl2plot), will be loaded.
 
 The large number of files is a bit cumbersome, so we've made it
 possible to use a
@@ -182,26 +156,26 @@ or JSON control file in the appropriate format.
 The R/qtl2 web site includes
 [sample data files](http://kbroman.org/qtl2/pages/sampledata.html) in
 the new format. Zipped versions of these datasets are included with
-the [qtl2geno](https://github.com/rqtl/qtl2geno) package and can be
+the [qtl2](https://github.com/rqtl/qtl2) package and can be
 loaded into R using the `read_cross2()` function.
 
-In the [qtl2geno package source](https://github.com/rqtl/qtl2geno),
+In the [qtl2 package source](https://github.com/rqtl/qtl2),
 the sample zip files are located in
-[`qtl2geno/inst/extdata`](https://github.com/rqtl/qtl2geno/tree/master/inst/extdata).
+[`qtl2/inst/extdata`](https://github.com/rqtl/qtl2/tree/master/inst/extdata).
 In the installed version of the package, they are in
-`qtl2geno/extdata`, within whatever directory your R packages were
+`qtl2/extdata`, within whatever directory your R packages were
 installed. The R function `system.file()` can be used to construct the
 path to these files.
 
 For example, one of the sample data sets concerns a gravitropism
 phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from
 [Moore et al. (2013) Genetics 195:1077-1086](http://www.genetics.org/content/195/3/1077.abstract).
-The data are in `qtl2geno/extdata/grav2.zip`, which can be loaded as
+The data are in `qtl2/extdata/grav2.zip`, which can be loaded as
 follows:
 
 ```{r load_grav2, message=FALSE}
-library(qtl2geno)
-grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2geno") )
+library(qtl2)
+grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2") )
 ```
 
 Additional sample data sets, including data on Diversity Outbred (DO)
@@ -213,8 +187,7 @@ mice, are available at <https://github.com/rqtl/qtl2data>.
 The first basic task in QTL analysis is to calculate conditional
 genotype probabilities, given the observed marker data, at each
 putative QTL position. This is accomplished with the `calc_genoprob()`
-function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
-package. Unlike the corresponding function in
+function. Unlike the corresponding function in
 [R/qtl](https://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
 input cross object, but is returned as a list of three-dimensional
 arrays (one per chromosome). Each 3d array of probabilities is
@@ -233,15 +206,9 @@ from
 (an intercross) as an example. We first load the data:
 
 ```{r load_data}
-library(qtl2geno)
-iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2geno") )
+library(qtl2)
+iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2") )
 ```
-
-(_Note_: you can use `library(qtl2)` to load the
-three main packages,
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan), and
-[qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
 
 We then use `insert_pseudomarkers()` to insert pseudomarkers into the
 genetic map, which we grab from the `iron` object as `iron$gmap`:
@@ -284,8 +251,7 @@ If you wish to perform a genome scan by a linear mixed model,
 accounting for the relationships among individuals (in other words,
 including a random polygenic effect), you'll need to calculate a
 kinship matrix for the individuals. This is accomplished with the
-`calc_kinship()` function in
-[qtl2geno](https://github.com/rqtl/qtl2geno).
+`calc_kinship()` function.
 It takes the genotype probabilities as input.
 
 ```{r calc_kinship}
@@ -295,9 +261,9 @@ kinship <- calc_kinship(pr)
 By default, the genotype probabilities are converted to allele
 probabilities, and the kinship matrix is calculated as the proportion
 of shared alleles. To use genotype probabilities instead, use
-`use_allele_probs=FALSE`. Further, by default we omit the
-X chromosome and only use the autosomes. To include the X chromosome,
-use `omit_x=FALSE`.
+`use_allele_probs=FALSE`. Further, by default we calculate the kinship
+matrix using both the autosomes and the X chromosome.
+To omit the X chromosome, use `omit_x=TRUE`.
 
 In calculating the kinship matrix, one may wish to eliminate the effect of varying marker density across
 the genome, and only use the
@@ -339,8 +305,7 @@ spurious evidence of linkage. (See
 [Broman et al. (2006) Genetics 174:2151-2158](http://www.genetics.org/content/174/4/2151.long).)
 
 The particular X chromosome covariates depend on the cross, and can
-be obtained with the [qtl2geno](https://github.com/rqtl/qtl2geno)
-function `get_x_covar()`.
+be obtained with the function `get_x_covar()`.
 
 ```{r x_covar}
 Xcovar <- get_x_covar(iron)
@@ -351,8 +316,7 @@ Xcovar <- get_x_covar(iron)
 
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
-use the function `scan1()` in
-[qtl2scan](https://github.com/rqtl/qtl2scan).
+use the function `scan1()`.
 
 `scan1()` takes as input the genotype probabilities, a matrix of
 phenotypes, optional additive and interactive covariates, and
@@ -360,7 +324,6 @@ the special X chromosome covariates. Another option is to provide a
 vector of weights.
 
 ```{r scan1}
-library(qtl2scan)
 out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
 ```
 
@@ -374,8 +337,7 @@ out <- scan1(pr, iron$pheno, Xcovar=Xcovar, cores=4)
 The output of `scan1()` is a matrix of LOD scores, positions &times;
 phenotypes.
 
-The function `plot_scan1()` in the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to
+The function `plot_scan1()` can be used to
 plot the LOD curves. You can just write `plot()`, as there's an S3
 method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
 Use the argument `lodcolumn` to indicate which column to plot. Unlike the
@@ -385,7 +347,6 @@ time, and you need to provide the marker/pseudomarker map (created by
 `insert_pseudomarkers()`).
 
 ```{r plot_lod}
-library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
 plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
@@ -396,8 +357,7 @@ legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gra
 
 ## Finding LOD peaks
 
-The function `find_peaks()` in the
-[qtl2scan](https://github.com/rqtl/qtl2scan) package can be used to
+The function `find_peaks()` can be used to
 identify a set of LOD peaks that exceed some threshold. It can also
 provide LOD support or Bayes credible intervals, by using the
 arguments `drop` (the amount to drop in the LOD support intervals)
@@ -469,8 +429,7 @@ kinship matrices as obtained from `calc_kinship()` with
 out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ```
 
-To plot the results, we again use `plot_scan1()` from the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package, or just type `plot()`.
+To plot the results, we again use `plot_scan1()`, or just type `plot()`.
 
 Here is a plot of the LOD scores, by Haley-Knott regression and the linear
 mixed model using either the standard kinship matrix or the LOCO
@@ -773,8 +732,7 @@ c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 ```
 
 The result is a matrix, `r nrow(c2eff)` positions &times; `r ncol(c2eff)`
-genotypes. To plot the effects, use the function `plot_coef()` from
-the [qtl2plot](https://github.com/rqtl/qtl2plot). There is again an S3
+genotypes. To plot the effects, use the function `plot_coef()`. There is again an S3
 method function `plot.scan1coef()`, so one can just type `plot()`, but
 in either case you need to provide the map for the relevant chromosome.
 Use the argument `columns` to indicate which coefficient columns to plot.
@@ -900,10 +858,8 @@ for(i in seq(along=last_coef))
 
 
 Finally, to plot the raw phenotypes against the genotypes at a single
-putative QTL position, you can use the function `plot_pxg()` in
-[qtl2plot](https://github.com/rqtl/qtl2plot). This takes a vector of
-genotypes as produced by the `maxmarg()` function in
-[qtl2geno](https://github.com/rqtl/qtl2geno), which picks the most
+putative QTL position, you can use the function `plot_pxg()`. This takes a vector of
+genotypes as produced by the `maxmarg()` function, which picks the most
 likely genotype from a set of genotype
 probabilities, provided it is greater than some specified value (the
 argument `minprob`). Note that the "`marg`" in "`maxmarg`" stands for
@@ -1043,13 +999,12 @@ probabilities and the list of kinship matrices.
 coef_c2 <- scan1coef(apr[,"2"], DOex$pheno, k[["2"]], sex)
 ```
 
-For the DO, with 8 QTL alleles, we can use the function `plot_coefCC`
-in the [R/qtl2plot](https://github.com/rqtl/qtl2plot) package, which
+For the DO, with 8 QTL alleles, we can use the function `plot_coefCC`, which
 plots the 8 allele effects in the "official" Collaborative Cross (CC)
 colors. (Well, actually _slightly_ modified colors, because I think the
 official colors are kind of ugly.) The strong locus seems to be mostly
 due to the NZO allele. Note that `CCcolors` is a vector of colors
-included in the qtl2plot package; there's also a `CCorigcolors` object
+included in the qtl2 package; there's also a `CCorigcolors` object
 with the _official_ colors.
 
 ```{r plot_DOex_effects}
@@ -1080,10 +1035,10 @@ for the variants in the CC founders and for the MGI mouse gene
 annotations. But others might wish to use a different kind of
 database, or may wish to query an online database.
 
-The [qtl2db](https://github.com/rqtl/qtl2db) package provides a
-template for how R/qtl2 would connect to SNP and gene databases. It
-contains functions `create_variant_query_func()` and
-`create_gene_query_func()` that each each return a _function_ for
+We provide a
+template for how to use R/qtl2 to connect to SNP and gene databases,
+with the functions `create_variant_query_func()` and
+`create_gene_query_func()`. Each returns a _function_ for
 querying variant and gene databases, respectively. The query functions
 that are returned take just three arguments (`chr`, `start`, end `end`), and
 themselves return a data frame of variants on the one hand and genes on the
@@ -1112,13 +1067,11 @@ download.file("https://ndownloader.figshare.com/files/9746452", "mouse_genes_mgi
 Store them locally on your computer, wherever it's convenient. For
 example, I've placed them in `~/Data/CCdb/`.
 
-To create a function for querying the CC variants, you load the
-[qtl2db](https://github.com/rqtl/qtl2db) package and call
+To create a function for querying the CC variants, call
 `create_variant_query_func()` with the path to the
 `cc_variants.sqlite` file:
 
 ```{r create_variant_query_func}
-library(qtl2db)
 query_variants <- create_variant_query_func("~/Data/CCdb/cc_variants.sqlite")
 ```
 
@@ -1232,7 +1185,7 @@ and `snpinfo` is a data frame with SNP information. With the argument
 about _all_ of the variants in the region with an `index` column
 indicating the equivalence classes.
 
-The function `plot_snpasso()` in the qtl2plot package can be used to
+The function `plot_snpasso()` can be used to
 plot the results, with points at each of the SNPs. The default is to
 plot **all** SNPs. In this case, there are `r nrow(out_snps$snpinfo)`
 variants in the region, but only `r nrow(out_snps$lod)` distinct ones.
@@ -1253,8 +1206,7 @@ plot_snpasso(out_snps$lod, out_snps$snpinfo)
 ```
 
 We can use our `query_genes()` function to identify the genes in the
-region, and `plot_genes()` from the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package to plot the gene
+region, and `plot_genes()` to plot the gene
 locations below the SNP association results. We specific `xlim` for both
 panels to ensure that the axes are properly aligned.
 
