@@ -13,7 +13,7 @@ high-dimensional data and complex cross designs.
 
 ![Warning](assets/pics/warning_icon.png)
 
-In R/qtl2 version 0.7, we merged the multiple packages qtl2geno, qtl2scan,
+In R/qtl2 version 0.8, we merged the multiple packages qtl2geno, qtl2scan,
 qtl2plot, and qtl2db, into a single package
 [qtl2](https://github.com/rqtl/qtl2). The multiple packages proved awkward and confusing.
 The [qtl2convert](https://github.com/rqtl/qtl2convert) package (for
