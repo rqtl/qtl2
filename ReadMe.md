@@ -24,7 +24,7 @@ separate package.
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
-Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org).
+Make sure you have the latest version of [R (3.4.3)](https://cran.r-project.org).
 
     install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
