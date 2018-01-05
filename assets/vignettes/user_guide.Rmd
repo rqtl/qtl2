@@ -220,7 +220,7 @@ And next we use `calc_genoprob()` to calculate the QTL genotype
 probabilities.
 
 ```{r calc_genoprob}
-pr <- calc_genoprob(iron, map, err=0.002)
+pr <- calc_genoprob(iron, map, error_prob=0.002)
 ```
 
 To speed up the calculations with large datasets on a multi-core
@@ -230,7 +230,7 @@ of available cores will be detected via
 positive integer.
 
 ```{r calc_genoprob_multicore, eval=FALSE}
-pr <- calc_genoprob(iron, map, err=0.002, cores=4)
+pr <- calc_genoprob(iron, map, error_prob=0.002, cores=4)
 ```
 
 The genome scan functions (see below) use genotype probabilities as
@@ -267,7 +267,7 @@ To omit the X chromosome, use `omit_x=TRUE`.
 In calculating the kinship matrix, one may wish to eliminate the effect of varying marker density across
 the genome, and only use the
 probabilities along the grid of pseudomarkers (defined by the `step`
-argument to `insert_pseudomarkers()`. To do so, we need to first use
+argument to `insert_pseudomarkers()`). To do so, we need to first use
 `calc_grid()` to determine the grid of pseudomarkers, and then
 `probs_to_grid()` to omit probabilities for positions that are not on the
 grid.
@@ -529,7 +529,7 @@ additional arguments to control the permutations:
   that `perm_Xsp=TRUE`.
 
 As with `scan1()`, you may provide a kinship matrix (or vector of
-kinship matrices, for the "leave one chromosome out" (loco) approach),
+kinship matrices, for the "leave one chromosome out" (LOCO) approach),
 in order to fit linear mixed models to account for
 relationships among individuals (in other words, including a random
 polygenic effect). If `kinship` is unspecified, the function performs
@@ -648,7 +648,7 @@ print(operm2_summary)
 
 Permutations for a genome scan with a linear mixed model-based are
 performed by specifying the `kinship` argument. We can
-use the "leave one chromosome out" (loco) method by providing
+use the "leave one chromosome out" (LOCO) method by providing
 `kinship_loco`, the list of kinship matrices calculated above with
 `calc_kinship()`.
 
@@ -716,7 +716,7 @@ print(operm_bin_summary)
 
 ## Estimated QTL effects
 
-The `scan1()` function return only LOD scores. To
+The `scan1()` function returns only LOD scores. To
 obtain estimated QTL effects, use the function `scan1coef()`.
 This function takes a single phenotype and the
 genotype probabilities for a single chromosome and returns a matrix
@@ -820,7 +820,7 @@ c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ```
 
 Here is a plot of the BLUPs (as dashed curves) alongside the standard
-estimates. Note that the BLUPs are centered at 0, which the
+estimates. Note that the BLUPs are centered at 0, while the
 coefficient estimates are centered at the phenotype average.
 
 ```{r plot_scan1blup}
@@ -904,7 +904,8 @@ To illustrate this sort of SNP association analysis, we'll consider some
 Diversity Outbred mouse data. The Diversity Outcross (DO) mice are an
 advanced intercross population derived from the same eight founder strains
 as the Collaborative Cross (CC). See
-[Svenson et al. (2012)](https://www.ncbi.nlm.nih.gov/pubmed/22345611)
+[Svenson et al. (2012)](https://www.ncbi.nlm.nih.gov/pubmed/22345611),
+[Churchill et al. (2012)](https://www.ncbi.nlm.nih.gov/pubmed/22892839),
 and
 [Gatti et al. (2014)](https://www.ncbi.nlm.nih.gov/pubmed/25237114).
 
@@ -954,7 +955,7 @@ pr <- readRDS(tmpfile)
 unlink(tmpfile)
 ```
 
-We calculate kinship matrices (using the "loco" method, though with the
+We calculate kinship matrices (using the "LOCO" method, though with the
 caveat that here we are only considering genotypes on three chromosomes).
 
 ```{r DOex_calc_kinship}
@@ -1002,8 +1003,8 @@ For the DO, with 8 QTL alleles, we can use the function `plot_coefCC`, which
 plots the 8 allele effects in the "official" Collaborative Cross (CC)
 colors. (Well, actually _slightly_ modified colors, because I think the
 official colors are kind of ugly.) The strong locus seems to be mostly
-due to the NZO allele. Note that `CCcolors` is a vector of colors
-included in the qtl2 package; there's also a `CCorigcolors` object
+due to the NZO allele. Note that qtl2 package includes the vector of
+colors for the CC as the object `CCcolors`; there's also a `CCorigcolors` object
 with the _official_ colors.
 
 ```{r plot_DOex_effects}
@@ -1110,12 +1111,12 @@ Well, actually, we first need to find the location of the inferred
 QTL.  The peak LOD score on chromosome 2 occurs at
 `r round(max(out, DOex$gmap, chr="2")$pos, 1)` cM. But to find nearby SNPs, we really want
 to know the Mbp position. The calculations were only performed at the
-marker positions, and so we need to find the peak marker and then
-find it's physical location:
+marker positions, and so can use `max()`, giving both the `scan1()`
+output and the physical map, and then pull out the position from the
+results.
 
 ```{r DOex_find_peak_in_Mbp}
-marker <- rownames(max(out, DOex$gmap, chr="2"))
-peak_Mbp <- DOex$pmap[["2"]][marker]
+peak_Mbp <- max(out, DOex$pmap)$pos
 ```
 
 The marker is at `r round(peak_Mbp, 1)` Mbp. We'll focus on a 2
@@ -1199,20 +1200,21 @@ detects that a SNP association plot should be created.
 
 ```{r plot_snp_asso_again, eval=FALSE}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_snpasso(out_snps$lod, out_snps$snpinfo)
+plot(out_snps$lod, out_snps$snpinfo)
 ```
 
 We can use our `query_genes()` function to identify the genes in the
-region, and `plot_genes()` to plot the gene
-locations below the SNP association results. We specific `xlim` for both
-panels to ensure that the axes are properly aligned.
+region, and `plot_genes()` to plot their locations. But also
+`plot_snpasso()` can take the gene locations with the argument `genes`
+and then display them below the SNP association results.
+Here, we are also highlighting the top SNPs in the SNP association
+plot using the `drop_hilit` argument. SNPs with LOD score within
+`drop_hilit` of the maximum are shown in pink.
 
 ```{r plot_snp_asso_with_genes}
-par(mfrow=c(2,1), mar=c(4.1, 4.1, 0.6, 0.6))
-xlim <- peak_Mbp + c(-1, 1)
-plot(out_snps$lod, out_snps$snpinfo, xlim=xlim, drop_hilit=1.5)
 genes <- query_genes(2, peak_Mbp - 1, peak_Mbp + 1)
-plot_genes(genes, xlim=xlim)
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
 ```
 
 To get a table of the SNPs with the largest LOD scores, use the
@@ -1229,14 +1231,6 @@ The top SNPs all have NZO and CAST with a common allele, different
 from the other 6 founders. The next-best SNPs have NZO, CAST, and 129
 with a common allele, and then there's a group of SNPs where NZO has a
 unique allele.
-
-We can highlight these top SNPs in the SNP association plot using the
-`drop_hilit` argument.
-
-```{r plot_snp_asso_hilit}
-par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5)
-```
 
 The `scan1snps()` function can also be used to perform a genome-wide
 SNP association scan, by providing a variant query function but
