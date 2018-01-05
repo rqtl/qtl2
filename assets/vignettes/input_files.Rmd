@@ -19,7 +19,7 @@ input file format. This document describes the details.
 
 For simple cross types, we can continue to use the file formats for
 [R/qtl](https://rqtl.org), use `qtl::read.cross()` to read in the
-data, and then use a conversion function (`qtl2geno::convert2cross2()`) to convert
+data, and then use a conversion function (`qtl2::convert2cross2()`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
@@ -54,7 +54,7 @@ simplifies the function for reading in the data. That function,
 control file. So you can read in data like this:
 
 ```{r read_cross2, eval=FALSE}
-library(qtl2geno)
+library(qtl2)
 grav2 <- read_cross2("~/my_data/grav2.yaml")
 ```
 
@@ -646,7 +646,7 @@ Here are some example R/qtl2 data files for F~2~ intercrosses:
 - [`iron`](http://kbroman.org/qtl2/assets/sampledata/iron/)
   from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992).
   A [zip file for these data](http://kbroman.org/qtl2/assets/sampledata/iron/iron.zip) is distributed
-  with the [R/qtl2geno](https://github.com/rqtl/qtl2geno) package.
+  with the [qtl2](https://github.com/rqtl/qtl2) package.
 
 - [`B6BTBR`](https://github.com/rqtl/qtl2data/tree/master/B6BTBR) from
   [Tian et al. (2015) Genetics 201:1253-1262](https://doi.org/10.1534/genetics.115.179432)
@@ -711,7 +711,7 @@ The equivalent json is:
 ```
 
 We don't have example data files for RIL by sib-mating, but the
-[R/qtl2geno](https://github.com/rqtl/qtl2geno) package includes data
+[qtl2](https://github.com/rqtl/qtl2) package includes data
 for a set of arabidopsis RIL by selfing from
 [Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346),
 [`grav2`](http://kbroman.org/qtl2/assets/sampledata/grav2/). Here's a
