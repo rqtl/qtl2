@@ -178,13 +178,12 @@ mice from the Jackson Lab.
 Finally, you need to prepare a control file which includes details of
 the file names and the various encodings and variable names.
 
-We'll use `write_control_file()` from
-[R/qtl2geno](https://github.com/rqtl/qtl2geno) to make the control
+We'll use `write_control_file()` to make the control
 file. It's a bit complicated, because there's a lot of stuff to
 specify, and some of the pieces are sort of confusing.
 
 ```r
-library(qtl2geno)
+library(qtl2)
 chr <- c(1:19, "X")
 write_control_file("forqtl2.json",
                    crosstype="do",
@@ -252,7 +251,7 @@ e.g. `chr <- "1"`. You can then use exactly the same
 with the name of the file to be produced. For example:
 
 ```r
-library(qtl2geno)
+library(qtl2)
 chr <- "1"
 write_control_file("forqtl2_chr1.json",
                    crosstype="do",
