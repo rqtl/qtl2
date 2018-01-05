@@ -24,11 +24,11 @@ assets/sampledata/grav2/grav2.yaml: assets/sampledata/scripts/grav2cross2.R
 assets/sampledata/iron/iron.yaml: assets/sampledata/scripts/iron2cross2.R
 	cd $(<D);R CMD BATCH ${R_OPTS} iron2cross2.R
 
-EXTDATA = ../qtl2geno/inst/extdata/grav2.zip ../qtl2geno/inst/extdata/iron.zip
+EXTDATA = ../qtl2/inst/extdata/grav2.zip ../qtl2/inst/extdata/iron.zip
 extdata: ${EXTDATA}
 
-../qtl2geno/inst/extdata/grav2.zip: assets/sampledata/grav2/grav2.yaml
+../qtl2/inst/extdata/grav2.zip: assets/sampledata/grav2/grav2.yaml
 	cp $(<D)/$(@F) $@
 
-../qtl2geno/inst/extdata/iron.zip: assets/sampledata/iron/iron.yaml
+../qtl2/inst/extdata/iron.zip: assets/sampledata/iron/iron.yaml
 	cp $(<D)/$(@F) $@
