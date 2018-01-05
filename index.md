@@ -7,32 +7,19 @@ description: R/qtl2, a reimplementation of R/qtl to better handle high-dimension
 
 [R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
-high-dimensional data and complex cross designs. It is split into
-multiple packages:
-
-- [qtl2geno](https://github.com/rqtl/qtl2geno), for calculating genotype
-  probabilities, imputations, and genetic maps
-- [qtl2scan](https://github.com/rqtl/qtl2scan), for QTL genome scans and
-  related calculations
-- [qtl2plot](https://github.com/rqtl/qtl2plot), for data visualization
-- [qtl2convert](https://github.com/rqtl/qtl2convert),
-  for converting data among the R/qtl2,
-  [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-  and [R/qtl](https://rqtl.org) formats
-- [qtl2db](https://github.com/rqtl/qtl2db), for connecting to genome databases
+high-dimensional data and complex cross designs.
 
 ---
 
 ![Warning](assets/pics/warning_icon.png)
 
-In R/qtl2 version 0.5, we made major revisions to some of the
-central data structures, and a number of steps in QTL analyses have
-changed. See the revised
-[user guide](assets/vignettes/user_guide.html), or
-[this description of the changes in version 0.5](assets/vignettes/version05_new.html).
-A couple of functions for converting objects from the format for
-Rqtl2 version 0.4 and the new format are in
-[`convert_04_to_05.R`](assets/convert_04_to_05.R).
+In R/qtl2 version 0.7, we merged the multiple packages qtl2geno, qtl2scan,
+qtl2plot, and qtl2db, into a single package
+[qtl2](https://github.com/rqtl/qtl2). The multiple packages proved awkward and confusing.
+The [qtl2convert](https://github.com/rqtl/qtl2convert) package (for
+converting data among the R/qtl2,
+[DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
+and [R/qtl](https://rqtl.org) formats) will remain a separate package.
 
 ---
 
@@ -50,23 +37,11 @@ for the discussion/questions about the original R/qtl only.)
 
 ### Installation
 
-First, make sure you have the latest version of
-[R (3.4.2)](https://cran.r-project.org).
-
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
+Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org).
 
     install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
-
-The [qtl2](https://github.com/rqtl/qtl2) package is
-inspired by the
-[tidyverse package](https://cran.r-project.org/package=tidyverse);
-it is basically empty, but when you install it, the
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot), and
-[qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
-bunch of dependencies, will be installed.
 
 Alternatively, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
@@ -114,29 +89,12 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 
 ### License
 
-The [qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot), and
-[qtl2convert](https://github.com/rqtl/qtl2convert)
-packages are free
-software; you can redistribute them and/or modify them under the terms
-of the GNU General Public License, version 3, as published by the Free
-Software Foundation.
-
-These programs are distributed in the hope that they will be useful, but
-without any warranty; without even the implied warranty of
-merchantability or fitness for a particular purpose.  See the GNU
-General Public License for more details.
-
-A copy of the GNU General Public License, version 3, is available at
-<https://www.r-project.org/Licenses/GPL-3>
+[Licensed](LICENSE) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
 
 ---
 
 Sources on [github](https://github.com):
 
-- The [source for the qtl2geno](https://github.com/rqtl/qtl2geno)
-- The [source for the qtl2scan](https://github.com/rqtl/qtl2scan)
-- The [source for the qtl2plot](https://github.com/rqtl/qtl2plot)
+- The [source for the qtl2](https://github.com/rqtl/qtl2)
 - The [source for the qtl2convert](https://github.com/rqtl/qtl2convert)
 - The [source for the website](https://github.com/kbroman/qtl2/tree/gh-pages)
