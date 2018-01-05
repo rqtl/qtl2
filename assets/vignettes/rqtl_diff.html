@@ -243,27 +243,15 @@ div.tocify {
 <h2>New data file formats</h2>
 <p>The input file format has been completely changed. R/qtl2 allows just a single format, with data split across multiple CSV files, and with a control file (in <a href="http://www.yaml.org">YAML</a> or <a href="http://www.json.org">JSON</a> format).</p>
 <p>For more information about the new file format, see the <a href="http://kbroman.org/qtl2/assets/vignettes/input_files.html">related vignette</a>, as well as <a href="http://kbroman.org/qtl2/pages/sampledata.html">sample input data files</a> and the <a href="https://github.com/rqtl/qtl2data">qtl2data repository</a>.</p>
-<p>R/qtl cross objects can be converted to the new format with the <code>qtl2geno::convert2cross2()</code> function, and so one can continue to use the R/qtl function <code>read.cross()</code> to read in data and then convert them to the new format:</p>
+<p>R/qtl cross objects can be converted to the new format with the <code>qtl2::convert2cross2()</code> function, and so one can continue to use the R/qtl function <code>read.cross()</code> to read in data and then convert them to the new format:</p>
 <pre class="r"><code>library(qtl)
 mycross &lt;- read.cross(&quot;csv&quot;, file=&quot;mydata.csv&quot;)
-library(qtl2geno)
+library(qtl2)
 mycross &lt;- convert2cross2(mycross)</code></pre>
 </div>
 <div id="new-data-structures" class="section level2">
 <h2>New data structures</h2>
 <p>The data structures used by R/qtl2 are completely different than those used by R/qtl. The new data structures are no simpler than before, but they tend to be a bit “flatter” (that is, less deeply nested). Most everything is a “list”, and we’re using fewer “attributes” and instead including such things as components at the top level.</p>
-</div>
-<div id="split-into-multiple-packages" class="section level2">
-<h2>Split into multiple packages</h2>
-<p>R/qtl2 is not a single package as R/qtl is. Rather it’s split into multiple packages:</p>
-<ul>
-<li><a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>, for calculating genotype probabilities, imputations, and genetic maps</li>
-<li><a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>, for QTL genome scans and related calculations</li>
-<li><a href="https://github.com/rqtl/qtl2plot">qtl2plot</a>, for data visualization</li>
-<li><a href="https://github.com/rqtl/qtl2convert">qtl2convert</a>, for converting data among the R/qtl2, R/qtl, and <a href="https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html">DOQTL</a> formats</li>
-</ul>
-<p>We have in mind that, for high-dimensional data, the QTL genotype probability calculations with qtl2geno will be performed once and saved, and that the genome scans with qtl2scan will be performed in “batch” (e.g., on a cluster) and also saved, and that interactive analyses will mostly be in the data visualizations with qtl2plot.</p>
-<p>It can be confusing to remember which function is in which package. For this reason, we created an additional, largely empty package <a href="https://github.com/rqtl/qtl2">qtl2</a>. If you load qtl2 with <code>library(qtl2)</code>, the three main packages, <a href="https://github.com/rqtl/qtl2geno">qtl2geno</a>, <a href="https://github.com/rqtl/qtl2scan">qtl2scan</a>, and <a href="https://github.com/rqtl/qtl2plot">qtl2plot</a>, will all be loaded.</p>
 </div>
 <div id="new-functions-names" class="section level2">
 <h2>New functions names</h2>
@@ -298,13 +286,13 @@ out_f &lt;- scan1(probs, pheno[sex==&quot;female&quot;,], kinship)</code></pre>
 mycross[chr, ind]</code></pre>
 <p>But the order of those two arguments was not very well chosen. It’s better to think of individuals as rows and chromosomes as column, and so put the individuals first.</p>
 <p>And so in R/qtl2, we’ve switched the order of arguments: in bracket subsetting of cross objects, individuals now come first.</p>
-<pre><code>library(qtl2geno)
+<pre><code>library(qtl2)
 mycross[ind, chr]</code></pre>
 </div>
 <div id="in-scan-of-x-chr-need-to-provide-special-covariates" class="section level2">
 <h2>In scan of X chr, need to provide special covariates</h2>
 <p>In R/qtl, when you perform a single-QTL scan of the X chromosome, it identifies appropriate covariates to include, to avoid spurious linkage due to sex and cross-direction differences.</p>
-<p>In R/qtl2, you need to provide such covariates yourself via the <code>Xcovar</code> argument to <code>scan1()</code>, There is a function in qtl2geno, <code>get_x_covar</code>, for deriving these, but you’re a bit more on your own.</p>
+<p>In R/qtl2, you need to provide such covariates yourself via the <code>Xcovar</code> argument to <code>scan1()</code>, There is a function <code>get_x_covar()</code>, for deriving these, but you’re a bit more on your own.</p>
 <hr />
 <p><a href="http://creativecommons.org/licenses/by/3.0/"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAYAAABjyArgAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAdnJLH8AAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAABTpJREFUaN7tWk1PG0cY9jlSLO5cOIYbbZUeU6T0B5AfkIh/UNRbJKqgiFSKVAlZrqLm0FCptyawxubDX3gNa2N71/Z6IeTKT+AnvNXzrt9ldlnwB84aE0Yasd6ZnR2efeZ5P2ZiRBSPxWJ0X0dfifCn+2Mnv017xV3KlbJUPChQySjRQbVMRt2gI7NK9WaNGq0GWW2TmrZFzU7TrbZFlm2S2WpwH/St1A1+VjdKPFaulOOx8Y5MNk1beylK7Wi0ub1BG5lPXD+lP9LHrf/uTFWAvgA3r+do/7BI5YpORu2QwWq06gxg22lR58Qm53OHjk+P6eSLW3HtfHa4DX0s2+Jn8CzGKFd1HhNjB0HWdjY9kAHwHQU55ge3WmYG1qwasxWgAdTVN6v09Oen9DD+8NJSwD20rf6+yn3bx23+KGB0pVFhNu8f7vtATme3KLWruSBnNkbG4pfLL2l2dvbSHHEPbWMBGLKgggtgmh2LWZlIJmh6erpv3UHfxJ8JfhYSAjZXPZCLnlxs5zKU3nNBHgWLk38l6dHsI28e8/PztLS0xBXXch990DdSgKGTkIULcJvMxIVnCz7wpqamaHFxkVZWVkjXda64xj20qX3xbKVmUMtxQQaTIReuJmdpt7Djl4obsHj93w8Uj8fd9y4s0NnZGQUL7qENfdA3CpA9gGHQoJeQBTA3CC7AA5Dn5+d0XVlfX/cBDbYAZHwwfDi8A4avUM5Tdn/PlYoQFg/6jwhz8aHVolhz3xxlbpEBjOULowTNxdJWwZ2bmwtlxFUFHwHPqEzGmNBkvONCKhQW76ZI294cSiagq8LcL6enPQFGESZ/bU32ADZYGups0KC5Kri9WNsPyNBkGD6WirpBesVlMWtx3tVikYlBARaDNggJ0FcMXyQAM3ttk6VBDBqWum3bNGwByCIXGBNjw4UTFhcPXBarHsUwMiEGLVggF/KBg9KBIoYvEoChjy2nxa6YTAqae9MieocKFw4rRLS41HXbVJkYFmB4CsESElX5Cp6JDGBEaPaJzb6ssFeVBngL0C18dVQV/GDb2tqa7x8RFmNsaDEivksykcu43oSiw3cKYBg3LGEJItQlBQDD/F2AqWlaaJv6vCxVjI2ID1JU7bpshXKBvQnosLhrd1IikE84PnW8CaksFGM1MzPDxgGA4xrLX9rE0wDg0hYmEwirmz4dLvjctWEAvs7IXcXeyI0cfF/kFWRCADE4yTBN7kev1RWAd8AnPjKPRgaw6qb1C3DkbtokAzxooCHaG2mg0a9EwPDBdcM1QFUlItgWlURMRKh8nZG7zpD1Y+SEMa6R6/C7RmnkVJDVZA8+OuaB96tBz1iSPeKmSYgM1yq4zK9y0wCy3A+2oYDRqpvWUNy0vH5zN20i0pUSaKhhctCfHWWgcdgNNJC6lEDjpgmfW51wrzbCQ+VB4vtxhcoTAbCa7Pnwz9+jT/YkEzw2kj14l6Qs1cT7sMmeiQAYdfnVspeufP7iuQ/kQZI+YH1ourJt0us3r7/F3eWLH0u//sJuVGeIhDva0EdNuD/+8TFLA/xsfMBvdPvef+O3V8scDABklcnDbBkB3FanSe/ev4vqHEJokBHsM1aAPZBtd9MTmjzwpmdSNj2tyMANghd2PQZwwwEWuVC37QFar2177Fzwtj3OR7TNyGWhV7ryVkiEWr//4TvS0hq7cPCTbe/giaMcPHH4nnrwJJXR6MlPT8ZxVOk2SUNvgKUCrLd/vKViuagcnepWHJ1qm9yGPuMAdmIZfF9HUInowT0QX+905f/GIzQzf2iprAAAAABJRU5ErkJggg==" alt="CC BY" /></a> <a href="http://kbroman.org">Karl Broman</a></p>
 </div>

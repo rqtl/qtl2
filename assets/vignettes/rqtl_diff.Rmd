@@ -32,14 +32,14 @@ as well as
 and the [qtl2data repository](https://github.com/rqtl/qtl2data).
 
 R/qtl cross objects can be converted to the new format with the
-`qtl2geno::convert2cross2()` function, and so one can continue to use
+`qtl2::convert2cross2()` function, and so one can continue to use
 the R/qtl function `read.cross()` to read in data and then convert
 them to the new format:
 
 ```{r convert_data, eval=FALSE}
 library(qtl)
 mycross <- read.cross("csv", file="mydata.csv")
-library(qtl2geno)
+library(qtl2)
 mycross <- convert2cross2(mycross)
 ```
 
@@ -50,34 +50,6 @@ used by R/qtl. The new data structures are no simpler than before, but
 they tend to be a bit "flatter" (that is, less deeply nested).
 Most everything is a "list", and we're using fewer "attributes" and
 instead including such things as components at the top level.
-
-## Split into multiple packages
-
-R/qtl2 is not a single package as R/qtl is. Rather it's split into
-multiple packages:
-
-- [qtl2geno](https://github.com/rqtl/qtl2geno), for calculating
-  genotype probabilities, imputations, and genetic maps
-- [qtl2scan](https://github.com/rqtl/qtl2scan), for QTL genome scans and
-  related calculations
-- [qtl2plot](https://github.com/rqtl/qtl2plot), for data visualization
-- [qtl2convert](https://github.com/rqtl/qtl2convert), for converting
-  data among the R/qtl2, R/qtl, and
-  [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html) formats
-
-We have in mind that, for high-dimensional data, the QTL genotype
-probability calculations with qtl2geno will be performed once and
-saved, and that the genome scans with qtl2scan will be performed in
-"batch" (e.g., on a cluster) and also saved, and that interactive
-analyses will mostly be in the data visualizations with qtl2plot.
-
-It can be confusing to remember which function is in which package.
-For this reason, we created an additional, largely empty
-package [qtl2](https://github.com/rqtl/qtl2). If you load qtl2 with
-`library(qtl2)`, the three main packages,
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan), and
-[qtl2plot](https://github.com/rqtl/qtl2plot), will all be loaded.
 
 
 ## New functions names
@@ -141,7 +113,7 @@ And so in R/qtl2, we've switched the order of arguments:
 in bracket subsetting of cross objects, individuals now come first.
 
 ```
-library(qtl2geno)
+library(qtl2)
 mycross[ind, chr]
 ```
 
@@ -152,8 +124,8 @@ identifies appropriate covariates to include, to avoid spurious
 linkage due to sex  and cross-direction differences.
 
 In R/qtl2, you need to provide such covariates yourself via the
-`Xcovar` argument to `scan1()`, There is a function in qtl2geno,
-`get_x_covar`, for deriving these, but you're a bit more on your own.
+`Xcovar` argument to `scan1()`, There is a function
+`get_x_covar()`, for deriving these, but you're a bit more on your own.
 
 ---
 
