@@ -43,15 +43,14 @@ Make sure you have the latest version of [R (3.4.2)](https://cran.r-project.org)
 
     install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
-Alternatively, you can install R/qtl2 from its source on
+_Alternatively_, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
 code can be rather slow.)
 
 On _Windows_, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 On _Mac OS X_, you'll need the
-[command-line developer tools](https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/),
-as well as [gfortran](https://gcc.gnu.org/wiki/GFortranBinaries#MacOS).
+[command-line developer tools](https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/).
 
 You then need to install the
 [devtools](https://github.com/hadley/devtools) package, plus a set of
