@@ -4,13 +4,8 @@ all: vignettes data external_vignettes extdata
 # R_OPTS: --vanilla without --no-environ
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 
-VIGNETTES = assets/vignettes/linreg_benchmarks.html assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/version05_new.html assets/vignettes/input_files.html assets/vignettes/developer_guide.html assets/vignettes/user_guide.html
+VIGNETTES = assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/input_files.html assets/vignettes/developer_guide.html assets/vignettes/user_guide.html
 vignettes: ${VIGNETTES}
-
-assets/vignettes/linreg_benchmarks.html: assets/vignettes/linreg_benchmarks.Rmd
-	R $(R_OPTS) -e "devtools::install_github('kbroman/qtl2scan@0.3-8')" # install version that had lapack code
-	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
-	R $(R_OPTS) -e "devtools::install_github('rqtl/qtl2scan')" # re-install latest version
 
 assets/vignettes/%.html: assets/vignettes/%.Rmd ruby/add_navbar.rb ruby/vignette_head.html ruby/vignette_navbar.html
 	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"

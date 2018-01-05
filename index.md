@@ -82,7 +82,6 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 - [differences between R/qtl and R/qtl2](assets/vignettes/rqtl_diff.html)
 - [developer guide](assets/vignettes/developer_guide.html)
 - [HMM benchmarks](assets/vignettes/hmm_benchmarks.html)
-- [linear regression benchmarks](assets/vignettes/linreg_benchmarks.html)
 
 ---
 
