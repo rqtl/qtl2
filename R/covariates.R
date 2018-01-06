@@ -46,16 +46,39 @@ drop_depcols <-
 
     if(ncol(covar) <= 1) return(covar)
 
+    X <- covar[complete.cases(covar),,drop=FALSE]
+
     # deal with NAs by omitting those rows before
-    depcols <- sort(find_lin_indep_cols(covar[complete.cases(covar),,drop=FALSE], tol))
+    indep_cols <- sort(find_lin_indep_cols(X, tol))
 
     if(add_intercept) {
-        # FIX_ME: assuming here that intercept (first column) will always be included
-        depcols <- depcols[-1]
-    }
-    if(length(depcols)==0) return(NULL)
 
-    covar[, depcols, drop=FALSE]
+        target_ncol <- length(indep_cols)
+
+        while(!(1 %in% indep_cols)) {
+            # don't want to omit the first column (the intercept)
+            # need to work harder...
+            #  - drop one column at a time other the intercept
+            #  - when you find a column that doesn't reduce the target number of columns, drop it
+            #  - check again if the intercept is being retained; if not, repeat
+
+            for(i in 2:ncol(X)) {
+                indep_cols <- find_lin_indep_cols(X[,-i,drop=FALSE], tol)
+                if(length(indep_cols) == target_ncol) {
+                    X <- X[,-i,drop=FALSE]
+                    break
+                }
+            }
+
+            indep_cols <- sort(find_lin_indep_cols(X, tol))
+        }
+
+        # now drop the intercept
+        indep_cols <- indep_cols[-1]
+    }
+    if(length(indep_cols)==0) return(NULL)
+
+    covar[, indep_cols, drop=FALSE]
 }
 
 # drop columns from X covariates that are already in addcovar
