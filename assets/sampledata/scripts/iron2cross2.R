@@ -89,5 +89,5 @@ cat("# Data from Grant et al. (2006) Hepatology 44:174-185",
 cat(as.yaml(iron_info), file=yaml_file, append=TRUE)
 
 # create a version as a zip file
-library(qtl2geno)
+library(qtl2)
 zip_datafiles(yaml_file)

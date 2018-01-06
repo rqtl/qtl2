@@ -78,5 +78,5 @@ cat("# Data from Moore et al. (2013) Genetics 195:1077-1086 (2nd RIL replicate)"
 cat(as.yaml(grav2_info), file=yaml_file, append=TRUE)
 
 # create a version as a zip file
-library(qtl2geno)
+library(qtl2)
 zip_datafiles(yaml_file)
