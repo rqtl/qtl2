@@ -32,8 +32,7 @@ _Alternatively_, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
 code can be rather slow.)
 
-On _Windows_, you'll need
-[Rtools](https://cran.r-project.org/bin/windows/Rtools/).
+On _Windows_, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
 On _Mac OS X_, you'll need the
 [command-line developer tools](https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/).
