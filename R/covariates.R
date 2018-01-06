@@ -55,6 +55,7 @@ drop_depcols <-
 
         target_ncol <- length(indep_cols)
 
+        n_it <- 0
         while(!(1 %in% indep_cols)) {
             # don't want to omit the first column (the intercept)
             # need to work harder...
@@ -62,15 +63,21 @@ drop_depcols <-
             #  - when you find a column that doesn't reduce the target number of columns, drop it
             #  - check again if the intercept is being retained; if not, repeat
 
-            for(i in 2:ncol(X)) {
+            for(i in seq_len(ncol(X))[-1]) { # loop over all but the first column (the intercept)
                 indep_cols <- find_lin_indep_cols(X[,-i,drop=FALSE], tol)
-                if(length(indep_cols) == target_ncol) {
+                if(length(indep_cols) == target_ncol) { # this one definitely dependent; omit it
                     X <- X[,-i,drop=FALSE]
                     break
                 }
             }
 
+            # new set of linearly independent columns
             indep_cols <- sort(find_lin_indep_cols(X, tol))
+
+            n_it <- n_it+1 # count number of iterations and bail if it's large
+            if(n_it > ncol(covar)+5) { # something is seriously messed up
+                stop("Not above to find set of linearly independent columns")
+            }
         }
 
         # now drop the intercept
