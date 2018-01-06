@@ -115,3 +115,29 @@ test_that("drop_xcovar works with NAs", {
     expect_equal( drop_xcovar(cbind(Xcovar[,2], int), Xcovar[o,]), Xcovar[o,1,drop=FALSE])
 
 })
+
+test_that("Fixed issue 22 re drop_depcols ", {
+
+    # https://github.com/rqtl/qtl2/issues/22
+    # ...case where indicators for all categories included
+
+    # create example
+    n_per <- 20
+    n_group <- 4
+    n <- n_per*n_group
+    group <- rep(1:n_group, each=n_per)
+    covar <- cbind(sex=rep(0:1,n_per*n_group),
+                   diet=sample(100:200, n, replace=TRUE))
+    for(i in 1:n_group)
+        covar <- cbind(covar, (group==i)*1)
+    colnames(covar)[-(1:2)] <- paste0("group", 1:n_group)
+
+    # drop dependent columns
+    covar_indep <- drop_depcols(covar, TRUE)
+
+    # check that one of the groups got dropped
+    expect_true("sex" %in% colnames(covar_indep))
+    expect_true("diet" %in% colnames(covar_indep))
+    expect_true(ncol(covar_indep) == ncol(covar)-1)
+
+})
