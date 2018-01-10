@@ -1,3 +1,11 @@
+## qtl2 0.10 (2018-01-09)
+
+### Bug fixes
+
+- Fixed embarassing bug in `find_peaks()`. (Stopped with error if no
+  LOD scores were above the threshold.)
+
+
 ## qtl2 0.8 (2018-01-05)
 
 - First formal release

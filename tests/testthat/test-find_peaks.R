@@ -129,6 +129,20 @@ test_that("find_peaks works", {
     class(out_shuffled) <- c("scan1", "matrix")
     expect_equal( find_peaks(out_shuffled, map), find_peaks(out, map))
 
+    # test that find_peaks works if there are no peaks above threshold
+    blank_output <- structure(list(lodindex = numeric(0),
+                                   lodcolumn = character(0),
+                                   chr = structure(integer(0), .Label = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                                                                          "11", "12", "13", "14", "15", "16", "17", "18", "19", "X"),
+                                                   class = "factor"),
+                                   pos = numeric(0),
+                                   lod = numeric(0)),
+                              .Names = c("lodindex", "lodcolumn", "chr", "pos", "lod"),
+                              row.names = integer(0), class = "data.frame")
+
+    expect_equal( find_peaks(out, map, threshold=9999), blank_output)
+
+
 })
 
 test_that("lod_int works", {
