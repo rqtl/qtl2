@@ -142,6 +142,22 @@ test_that("find_peaks works", {
 
     expect_equal( find_peaks(out, map, threshold=9999), blank_output)
 
+    # test that find_peaks works if there are no peaks above threshold
+    # like above, but also requesting LOD or Bayes intervals
+    blank_output <- structure(list(lodindex = numeric(0),
+                                   lodcolumn = character(0),
+                                   chr = structure(integer(0), .Label = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+                                                                          "11", "12", "13", "14", "15", "16", "17", "18", "19", "X"),
+                                                   class = "factor"),
+                                   pos = numeric(0),
+                                   lod = numeric(0),
+                                   ci_lo = numeric(0),
+                                   ci_hi = numeric(0)),
+                              .Names = c("lodindex", "lodcolumn", "chr", "pos", "lod", "ci_lo", "ci_hi"),
+                              row.names = integer(0), class = "data.frame")
+
+    expect_equal( find_peaks(out, map, threshold=9999, drop=2), blank_output)
+    expect_equal( find_peaks(out, map, threshold=9999, prob=0.95), blank_output)
 
 })
 

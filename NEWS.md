@@ -1,3 +1,11 @@
+## qtl2 0.11-1 (2018-01-11)
+
+### Bug fixes
+
+- Further embarassment: the bug fix in version 0.10 didn't fully fix
+  the problem.
+
+
 ## qtl2 0.10 (2018-01-09)
 
 ### Bug fixes
