@@ -79,6 +79,7 @@
 #'
 #' # calculate genotype probabilities
 #' probs <- calc_genoprob(iron, map, error_prob=0.002)
+#' \dontshow{probs[["7"]] <- probs[["7"]][,,1:5] # reduce to very small number}
 #'
 #' # grab phenotypes and covariates; ensure that covariates have names attribute
 #' pheno <- iron$pheno[,1]

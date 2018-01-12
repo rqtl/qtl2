@@ -41,6 +41,7 @@
 #' @examples
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+#' \dontshow{iron <- iron[,c(10,18,"X")]}
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)

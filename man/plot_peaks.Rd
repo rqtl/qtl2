@@ -43,6 +43,7 @@ cluttering the function definition.
 \examples{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[,c(1,2,7,8,9,13,15,16,19)]}
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

@@ -30,6 +30,7 @@ and/or methods, to be used in parallel with
 \examples{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[,c("19","X")] # subset to chr 19 and X}
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)

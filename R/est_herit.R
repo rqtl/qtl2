@@ -40,6 +40,7 @@
 #' @examples
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+#' \dontshow{iron <- iron[,c("19","X")] # subset to two chromosomes}
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)

@@ -102,6 +102,7 @@ positions as the location of the peak.
 \examples{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[,c(1,2,7,8,9,13,15,16,19)]}
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -119,16 +120,16 @@ Xcovar <- get_x_covar(iron)
 out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 
 # find just the highest peak on each chromosome
-find_peaks(out, map, threshold=3, peakdrop=Inf)
+find_peaks(out, map, threshold=3)
 
 # possibly multiple peaks per chromosome
-find_peaks(out, map, threshold=3, peakdrop=2)
+find_peaks(out, map, threshold=3, peakdrop=1)
 
-# possibly multiple peaks, also getting LOD support intervals
-find_peaks(out, map, threshold=3, peakdrop=2, drop=1.5)
+# possibly multiple peaks, also getting 1-LOD support intervals
+find_peaks(out, map, threshold=3, peakdrop=1, drop=1)
 
-# possibly multiple peaks, also getting Bayes intervals
-find_peaks(out, map, threshold=3, peakdrop=2, prob=0.95)
+# possibly multiple peaks, also getting 90\% Bayes intervals
+find_peaks(out, map, threshold=3, peakdrop=1, prob=0.9)
 }
 \seealso{
 \code{\link[=scan1]{scan1()}}, \code{\link[=lod_int]{lod_int()}}, \code{\link[=bayes_int]{bayes_int()}}

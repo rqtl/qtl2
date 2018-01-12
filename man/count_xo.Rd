@@ -28,13 +28,13 @@ Estimate the numbers of crossovers in each individual on each chromosome.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[1:20,1:2] # subset to first 20 individuals and to chr 1 and 2}
 map <- insert_pseudomarkers(iron$gmap, step=1)
 pr <- calc_genoprob(iron, map, error_prob=0.002, map_function="c-f")
 g <- maxmarg(pr)
 n_xo <- count_xo(g)
 
 # imputations
-\dontshow{iron <- iron[1:20,1:2]}
 imp <- sim_geno(iron, map, error_prob=0.002, map_function="c-f", n_draws=32)
 n_xo_imp <- count_xo(imp)
 # sums across chromosomes
