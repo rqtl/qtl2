@@ -60,34 +60,22 @@ DOex <- DOex[,"2"]
 pr <- calc_genoprob(DOex, error_prob=0.002)
 apr <- genoprob_to_alleleprob(pr)
 
-# download snp info from web
-tmpfile <- tempfile()
-file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/c2_snpinfo.rds")
-download.file(file, tmpfile, quiet=TRUE)
-snpinfo <- readRDS(tmpfile)
-unlink(tmpfile)
+# query function for grabbing info about variants in region
+dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
+query_variants <- create_variant_query_func(dbfile)
 
-# calculate strain distribution patterns
-snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
-
-# identify groups of equivalent SNPs
-snpinfo <- index_snps(DOex$pmap, snpinfo)
-
-# convert to snp probabilities
-snppr <- genoprob_to_snpprob(apr, snpinfo)
-
-# perform SNP association analysis (here, ignoring residual kinship)
-out_snps <- scan1(snppr, DOex$pheno)
+# SNP association scan, keep information on all SNPs
+out_snps <- scan1snps(apr, DOex$pmap, DOex$pheno, query_func=query_variants,
+                      chr=2, start=97, end=98, keep_all_snps=TRUE)
 
 # table with top SNPs
-top_snps(out_snps, snpinfo)
+top_snps(out_snps$lod, out_snps$snpinfo)
 
 # top SNPs among the distinct subset at which calculations were performed
-top_snps(out_snps, snpinfo, show_all_snps=FALSE)
+top_snps(out_snps$lod, out_snps$snpinfo, show_all_snps=FALSE)
 
 # top SNPs within 0.5 LOD of max
-top_snps(out_snps, snpinfo, 0.5)
+top_snps(out_snps$lod, out_snps$snpinfo, drop=0.5)
 }
 }
 \seealso{

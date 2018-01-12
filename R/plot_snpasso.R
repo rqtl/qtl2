@@ -76,16 +76,13 @@
 #' pr <- calc_genoprob(DOex, error_prob=0.002)
 #' apr <- genoprob_to_alleleprob(pr)
 #'
-#' # download snp info from web
-#' tmpfile <- tempfile()
-#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
-#'                "qtl2data/master/DOex/c2_snpinfo.rds")
-#' download.file(file, tmpfile, quiet=TRUE)
-#' snpinfo <- readRDS(tmpfile)
-#' unlink(tmpfile)
+#' # query function for grabbing info about variants in region
+#' snp_dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
+#' query_variants <- create_variant_query_func(snp_dbfile)
 #'
 #' # SNP association scan
-#' out_snps <- scan1snps(apr, DOex$pmap, DOex$pheno, snpinfo=snpinfo, keep_all_snps=TRUE)
+#' out_snps <- scan1snps(apr, DOex$pmap, DOex$pheno, query_func=query_variants,
+#'                       chr=2, start=97, end=98, keep_all_snps=TRUE)
 #'
 #' # plot results
 #' plot_snpasso(out_snps$lod, out_snps$snpinfo)
@@ -94,18 +91,15 @@
 #' plot(out_snps$lod, out_snps$snpinfo)
 #'
 #' # plot just subset of distinct SNPs
-#' plot_snpasso(out_snps$lod, out_snps$snpinfo, show_all_snps=FALSE)
+#' plot(out_snps$lod, out_snps$snpinfo, show_all_snps=FALSE)
 #'
 #' # highlight the top snps (with LOD within 1.5 of max)
 #' plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5)
 #'
-#' # download gene info from web
-#' tmpfile <- tempfile()
-#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
-#'                "qtl2data/master/DOex/c2_genes.rds")
-#' download.file(file, tmpfile, quiet=TRUE)
-#' genes <- readRDS(tmpfile)
-#' unlink(tmpfile)
+#' # query function for finding genes in region
+#' gene_dbfile <- system.file("extdata", "mouse_genes_small.sqlite", package="qtl2")
+#' query_genes <- create_gene_query_func(gene_dbfile)
+#' genes <- query_genes(2, 97, 98)
 #'
 #' # plot SNP association results with gene locations
 #' plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
