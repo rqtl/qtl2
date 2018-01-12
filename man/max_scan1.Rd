@@ -15,7 +15,8 @@ max_scan1(scan1_output, map, lodcolumn = 1, chr = NULL, na.rm = TRUE, ...)
 \code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
-\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}. Can also be an indexed SNP info table,
+as from \code{\link[=index_snps]{index_snps()}} or \code{\link[=scan1snps]{scan1snps()}}.}
 
 \item{lodcolumn}{An integer or character string indicating the LOD
 score column, either as a numeric index or column name.}

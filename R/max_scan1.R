@@ -10,7 +10,8 @@
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' [insert_pseudomarkers()].
+#' [insert_pseudomarkers()]. Can also be an indexed SNP info table,
+#' as from [index_snps()] or [scan1snps()].
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' @param chr Option vector of chromosomes to consider.
@@ -55,6 +56,10 @@ max_scan1 <-
     function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
     if(is.null(scan1_output)) stop("scan1_output is NULL")
+
+    if(is.data.frame(map) && "index" %in% names(map)) { # looks like snpinfo table
+        map <- snpinfo_to_map(map)
+    }
 
     if(length(lodcolumn) == 0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) {
