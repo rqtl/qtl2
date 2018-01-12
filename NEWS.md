@@ -1,3 +1,16 @@
+## qtl2 0.11-2 (2018-01-12)
+
+### New features
+
+- `find_peaks()` and `max_scan1()` can now take snpinfo tables (as
+  produced by `index_snps()` and `scan1snps()`) in place of the map.
+
+### Bug fixes
+
+- Further embarassment: the bug fix in version 0.10 didn't fully fix
+  the problem.
+
+
 ## qtl2 0.10 (2018-01-09)
 
 ### Bug fixes

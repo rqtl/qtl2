@@ -109,7 +109,17 @@ find_peaks_and_lodint <-
         peaks <- cluster_lapply(cores, batch_index, by_batch_func)
     }
 
-    result <- NULL
+    # empty data frame to start
+    result <- data.frame(lodindex=numeric(0),
+                         lodcolumn=character(0),
+                         chr=character(0),
+                         pos=numeric(0),
+                         lod=numeric(0),
+                         ci_lo=numeric(0),
+                         ci_hi=numeric(0),
+                         row.names=character(0),
+                         stringsAsFactors=FALSE)
+
     for(p in peaks) result <- rbind(result, p)
 
     rownames(result) <- NULL

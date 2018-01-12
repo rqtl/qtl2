@@ -8,7 +8,8 @@
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
-#' [insert_pseudomarkers()].
+#' [insert_pseudomarkers()]. Can also be an indexed SNP info table,
+#' as from [index_snps()] or [scan1snps()].
 #' @param threshold Minimum LOD score for a peak (can be a vector with
 #' separate thresholds for each lod score column in
 #' `scan1_output`)
@@ -114,6 +115,11 @@ find_peaks <-
              expand2markers=TRUE, sort_by=c("column", "pos", "lod"), cores=1)
 {
     sort_by <- match.arg(sort_by)
+
+    # check if map input is a snpinfo table; if so convert to
+    if(is.data.frame(map) && "index" %in% names(map)) { # looks like snpinfo table
+        map <- snpinfo_to_map(map)
+    }
 
     # align scan1_output and map
     tmp <- align_scan1_map(scan1_output, map)
