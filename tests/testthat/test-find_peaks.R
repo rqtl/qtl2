@@ -262,3 +262,85 @@ test_that("lod_int and bayes_int give same results as R/qtl", {
 
 
 })
+
+test_that("find_peaks works with snpinfo table", {
+
+    if(isnt_karl()) skip("this test only run locally")
+
+    # load example data and calculate genotype probabilities
+    file <- paste0("https://raw.githubusercontent.com/rqtl/",
+                   "qtl2data/master/DOex/DOex.zip")
+    DOex <- read_cross2(file)
+    probs <- calc_genoprob(DOex[1:20,"2"], error_prob=0.002)
+
+    snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
+    queryf <- create_variant_query_func(snpdb_file)
+
+    out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97.2, end=97.3)
+
+    # test max_scan1()
+    expect_equal(max(out$lod, out$snpinfo),
+                 data.frame(chr="2",
+                            pos=out$snpinfo[2,"pos"],
+                            OF_immobile_pct=out$lod[2],
+                            row.names=out$snpinfo[2,"snp_id"],
+                            stringsAsFactors=FALSE))
+
+    # find_peaks (no peaks above threshold)
+    expect_equal(find_peaks(out$lod, out$snpinfo),
+                 data.frame(lodindex=numeric(0),
+                            lodcolumn=character(0),
+                            chr=factor(character(0), "2"),
+                            pos=numeric(0),
+                            lod=numeric(0),
+                            stringsAsFactors=FALSE))
+    expect_equal(find_peaks(out$lod, out$snpinfo, drop=1.5),
+                 data.frame(lodindex=numeric(0),
+                            lodcolumn=character(0),
+                            chr=factor(character(0), "2"),
+                            pos=numeric(0),
+                            lod=numeric(0),
+                            ci_lo=numeric(0),
+                            ci_hi=numeric(0),
+                            stringsAsFactors=FALSE))
+    expect_equal(find_peaks(out$lod, out$snpinfo, prob=0.95),
+                 data.frame(lodindex=numeric(0),
+                            lodcolumn=character(0),
+                            chr=factor(character(0), "2"),
+                            pos=numeric(0),
+                            lod=numeric(0),
+                            ci_lo=numeric(0),
+                            ci_hi=numeric(0),
+                            stringsAsFactors=FALSE))
+
+    # find peaks (one peak above threshold)
+    expect_equal(find_peaks(out$lod, out$snpinfo, threshold=0.5),
+                 data.frame(lodindex=1,
+                            lodcolumn="OF_immobile_pct",
+                            chr=factor("2", "2"),
+                            pos=out$snpinfo[2,"pos"],
+                            lod=out$lod[2],
+                            row.names=1L,
+                            stringsAsFactors=FALSE))
+    expect_equal(find_peaks(out$lod, out$snpinfo, threshold=0.5, drop=1.5),
+                 data.frame(lodindex=1,
+                            lodcolumn="OF_immobile_pct",
+                            chr=factor("2", "2"),
+                            pos=out$snpinfo[2,"pos"],
+                            lod=out$lod[2],
+                            ci_lo=min(out$snpinfo$pos),
+                            ci_hi=max(out$snpinfo$pos),
+                            row.names=1L,
+                            stringsAsFactors=FALSE))
+    expect_equal(find_peaks(out$lod, out$snpinfo, threshold=0.5, prob=0.95),
+                 data.frame(lodindex=1,
+                            lodcolumn="OF_immobile_pct",
+                            chr=factor("2", "2"),
+                            pos=out$snpinfo[2,"pos"],
+                            lod=out$lod[2],
+                            ci_lo=min(out$snpinfo$pos),
+                            ci_hi=max(out$snpinfo$pos),
+                            row.names=1L,
+                            stringsAsFactors=FALSE))
+
+})
