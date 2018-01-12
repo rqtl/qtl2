@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-#' \dontshow{grav2 <- grav2[,3] # subset to chr 3}
+#' \dontshow{grav2 <- grav2[,c(4,5)] # subset to chr 3}
 #' probs <- calc_genoprob(grav2, error_prob=0.002)
 #' e <- calc_entropy(probs)
 #' e <- do.call("cbind", e) # combine chromosomes into one big matrix
