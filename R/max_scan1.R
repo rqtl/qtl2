@@ -57,10 +57,6 @@ max_scan1 <-
 {
     if(is.null(scan1_output)) stop("scan1_output is NULL")
 
-    if(is.data.frame(map) && "index" %in% names(map)) { # looks like snpinfo table
-        map <- snpinfo_to_map(map)
-    }
-
     if(length(lodcolumn) == 0) stop("lodcolumn has length 0")
     if(length(lodcolumn) > 1) {
         lodcolumn <- lodcolumn[1]
@@ -78,6 +74,10 @@ max_scan1 <-
     if(missing(map) || is.null(map)) {
         warning("map not provided; returning the genome-wide max () LOD but not its position")
         return( setNames( max(scan1_output[,lodcolumn], na.rm=TRUE), colnames(scan1_output)[lodcolumn]) )
+    }
+
+    if(is.data.frame(map) && "index" %in% names(map)) { # looks like snpinfo table
+        map <- snpinfo_to_map(map)
     }
 
     # align scan1_output and map
