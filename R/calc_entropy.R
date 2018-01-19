@@ -29,10 +29,10 @@
 #' e <- do.call("cbind", e) # combine chromosomes into one big matrix
 #'
 #' # summarize by individual
-#' hist(rowMeans(e), breaks=25, main="Ave entropy by individual", xlab="Entropy")
+#' mean_ind <- rowMeans(e)
 #'
 #' # summarize by marker
-#' plot(colMeans(e), xlab="marker index", ylab="Average entropy")
+#' mean_marker <- colMeans(e)
 calc_entropy <-
     function(probs, quiet=TRUE, cores=1)
 {
