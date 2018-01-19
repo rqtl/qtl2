@@ -84,6 +84,7 @@ map <- insert_pseudomarkers(iron$gmap, step=1)
 
 # calculate genotype probabilities
 probs <- calc_genoprob(iron, map, error_prob=0.002)
+\dontshow{probs[["7"]] <- probs[["7"]][,,1:5] # reduce to very small number}
 
 # convert to allele probabilities
 aprobs <- genoprob_to_alleleprob(probs)
@@ -94,13 +95,13 @@ covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 
 # calculate BLUPs of coefficients for chromosome 7
-blup <- scan1blup(aprobs[,7], pheno, addcovar=covar)
+blup <- scan1blup(aprobs[,"7"], pheno, addcovar=covar)
 
 # leave-one-chromosome-out kinship matrix for chr 7
-kinship7 <- calc_kinship(probs, "loco")[[7]]
+kinship7 <- calc_kinship(probs, "loco")[["7"]]
 
 # calculate BLUPs of coefficients for chromosome 7, adjusting for residual polygenic effect
-blup_pg <- scan1blup(aprobs[,7], pheno, kinship7, addcovar=covar)
+blup_pg <- scan1blup(aprobs[,"7"], pheno, kinship7, addcovar=covar)
 
 }
 \references{

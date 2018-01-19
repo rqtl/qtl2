@@ -27,6 +27,7 @@ The result contains an attribute \code{"eigen_decomp"}.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[1:30,18:19] # subset to 30 individuals and two chromosomes}
 map <- insert_pseudomarkers(iron$gmap, step=1)
 probs <- calc_genoprob(iron, map, error_prob=0.002)
 K <- calc_kinship(probs)
