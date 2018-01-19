@@ -1,4 +1,4 @@
-## qtl2 0.11-3 (2018-01-19)
+## qtl2 0.12 (2018-01-19)
 
 ### New features
 
@@ -13,7 +13,7 @@
 ### Bug fixes
 
 - Further embarassment: the bug fix in version 0.10 didn't fully fix
-  the problem.
+  the problem with `find_peaks()`.
 
 
 ## qtl2 0.10 (2018-01-09)
