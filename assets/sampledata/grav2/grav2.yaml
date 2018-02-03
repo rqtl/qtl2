@@ -1,5 +1,5 @@
 # Data from Moore et al. (2013) Genetics 195:1077-1086 (2nd RIL replicate)
-# Available at QTL Archive as Moore1c, http://phenome.jax.org/db/q?rtn=projects/projdet&reqprojid=284
+# Available at QTL Archive as Moore1c, https://phenome.jax.org/projects/Moore1c
 crosstype: riself
 geno: grav2_geno.csv
 pheno: grav2_pheno.csv
