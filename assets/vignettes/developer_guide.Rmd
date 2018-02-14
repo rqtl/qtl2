@@ -82,10 +82,11 @@ character string with the cross type:
 - `"mwrisib"` for 2<sup>k</sup>-way RIL by sib-mating
 - `"preriself"` for partially-inbred 2<sup>k</sup>-way RIL by selfing
 - `"prerisib"` for partially-inbred 2<sup>k</sup>-way RIL by sib-mating
-- `"do"` for diversity outcross
+- `"do"` for diversity outbred
 - `"hs"` for 8-way heterogeneous stock
-
-Most of these have not yet been implemented.
+- `"riself4"`, `"riself8"`, and `"riself16"` for 4-, 8-, and 16-way
+  RIL by selfing
+- `"risib4"` and `"risib8"` for 4- and 8-way RIL by sib-mating
 
 
 ### Genotype data (`"geno"`)
