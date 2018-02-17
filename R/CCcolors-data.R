@@ -12,7 +12,7 @@
 #' `CCorigcolors` are the original eight colors for the Collaborative Cross founder strains.
 #' `CCcolors` are slightly modified.
 #'
-#' @source <http://compgen.unc.edu/wp/?page_id=577>
+#' @source <https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information>
 #'
 #' @keywords datasets
 #'

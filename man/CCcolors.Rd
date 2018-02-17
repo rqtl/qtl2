@@ -5,7 +5,7 @@
 \alias{CCorigcolors}
 \title{Collaborative Cross colors}
 \source{
-\url{http://compgen.unc.edu/wp/?page_id=577}
+\url{https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 }
 \description{
 A vector of 8 colors for use with the mouse
