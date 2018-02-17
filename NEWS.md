@@ -1,3 +1,11 @@
+## qtl2 0.13-1 (2018-02-16)
+
+### Bug fixes
+
+- In `plot_coef()` with `scan1_output` provided, `ylim_lod` was being
+  ignored.
+
+
 ## qtl2 0.12 (2018-01-19)
 
 ### New features

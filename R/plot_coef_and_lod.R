@@ -57,6 +57,6 @@ plot_coef_and_lod <-
     par(mar=bottom_mar)
     plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod, ylab=ylab_lod,
                add=FALSE, gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
-               vlines=vlines, vlines_col=vlines_col,
+               vlines=vlines, vlines_col=vlines_col, ylim=ylim_lod,
                vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, ...)
 }
