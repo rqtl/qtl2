@@ -11,7 +11,8 @@ plot_coef_and_lod <-
              ylab_lod="LOD score", ylim_lod=NULL, col_lod="slateblue",
              xaxt=NULL,
              vlines=NULL, vlines_col="white", vlines_lwd=1, vlines_lty=1,
-             legend_loc=NULL, legend_ncol=NULL, ...)
+             legend_loc=NULL, legend_ncol=NULL,
+             lodcolumn=1, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -55,7 +56,7 @@ plot_coef_and_lod <-
               ...)
 
     par(mar=bottom_mar)
-    plot_scan1(scan1_output, map, lodcolumn=1, col=col_lod, ylab=ylab_lod,
+    plot_scan1(scan1_output, map, lodcolumn=lodcolumn, col=col_lod, ylab=ylab_lod,
                add=FALSE, gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
                vlines=vlines, vlines_col=vlines_col, ylim=ylim_lod,
                vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, ...)

@@ -1,4 +1,9 @@
-## qtl2 0.13-1 (2018-02-16)
+## qtl2 0.13-2 (2018-02-19)
+
+### Minor changes
+
+- `plot_coef()` now uses a named `lodcolumn` argument, if provided, to
+  subset `scan1_output`, if that's provided.
 
 ### Bug fixes
 
