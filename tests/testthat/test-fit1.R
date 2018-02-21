@@ -256,3 +256,68 @@ test_that("fit1 by LMM works in intercross", {
         expect_equal(out_fit1_loco[[i]]$SE, attr(coef_loco[[chr[i]]], "SE")[index[i],])
 
 })
+
+
+test_that("fit1 handles contrasts properly in a backcross", {
+
+    library(qtl)
+    data(fake.bc)
+    fake.bc <- subset(fake.bc, chr=c(2,5))
+
+    fake_bc <- convert2cross2(fake.bc)
+
+    fake.bc <- calc.genoprob(fake.bc, error.prob=0.002, map.function="c-f")
+    pr <- calc_genoprob(fake_bc, error_prob=0.002, map_function="c-f")
+
+    # fit single-QTL model at two positions
+    qtl <- makeqtl(fake.bc, c(2,5), pos=c(44.8, 9.8), what="prob")
+    out.fq1 <- fitqtl(fake.bc, qtl=qtl, formula=y~Q1, get.ests=TRUE, method="hk")
+    co1 <- summary(out.fq1)$ests
+    out.fq2 <- fitqtl(fake.bc, qtl=qtl, formula=y~Q2, get.ests=TRUE, method="hk")
+    co2 <- summary(out.fq2)$ests
+
+    contrasts <- cbind(mu=c(1,1), a=c(-0.5,0.5))
+    out_fit1a <- fit1(pull_genoprobpos(pr, "D2M336"), fake_bc$pheno[,1],
+                      contrasts=contrasts)
+    expect_equivalent(co1[,"est"], out_fit1a$coef)
+    expect_equivalent(co1[,"SE"], out_fit1a$SE)
+
+    out_fit1b <- fit1(pull_genoprobpos(pr, "D5M394"), fake_bc$pheno[,1],
+                      contrasts=contrasts)
+    expect_equivalent(co2[,"est"], out_fit1b$coef)
+    expect_equivalent(co2[,"SE"], out_fit1b$SE)
+
+})
+
+test_that("fit1 handles contrasts properly in an intercross", {
+
+    library(qtl)
+    data(fake.f2)
+    fake.f2 <- subset(fake.f2, chr=c(1,13))
+
+    fake_f2 <- convert2cross2(fake.f2)
+
+    fake.f2 <- calc.genoprob(fake.f2, error.prob=0.002, map.function="c-f")
+    pr <- calc_genoprob(fake_f2, error_prob=0.002, map_function="c-f")
+
+    # fit single-QTL model at two positions
+    qtl <- makeqtl(fake.f2, c(1,13), pos=c(37.1, 24.0), what="prob")
+    out.fq1 <- fitqtl(fake.f2, qtl=qtl, formula=y~Q1, get.ests=TRUE, method="hk")
+    co1 <- summary(out.fq1)$ests
+    out.fq2 <- fitqtl(fake.f2, qtl=qtl, formula=y~Q2, get.ests=TRUE, method="hk")
+    co2 <- summary(out.fq2)$ests
+
+    # R/qtl1 and R/qtl2 give different answers for the intercept,
+    #    so we'll just look at the additive and dominance effects
+    contrasts <- cbind(mu=c(1,1,1), a=c(-1,0,1), d=c(0,1,0))
+    out_fit1a <- fit1(pull_genoprobpos(pr, "D1M437"), fake_f2$pheno[,1],
+                      contrasts=contrasts)
+    expect_equivalent(co1[-1,"est"], out_fit1a$coef[-1])
+    expect_equivalent(co1[-1,"SE"], out_fit1a$SE[-1])
+
+    out_fit1b <- fit1(pull_genoprobpos(pr, "D13M254"), fake_f2$pheno[,1],
+                      contrasts=contrasts)
+    expect_equivalent(co2[-1,"est"], out_fit1b$coef[-1])
+    expect_equivalent(co2[-1,"SE"], out_fit1b$SE[-1])
+
+})
