@@ -287,6 +287,15 @@ test_that("fit1 handles contrasts properly in a backcross", {
     expect_equivalent(co2[,"est"], out_fit1b$coef)
     expect_equivalent(co2[,"SE"], out_fit1b$SE)
 
+    # compare to scan1coef()
+    ests_c2 <- scan1coef(pr[,"2"], fake_bc$pheno[,1], contrasts=contrasts, se=TRUE)
+    expect_equal(ests_c2["D2M336",], out_fit1a$coef)
+    expect_equal(attr(ests_c2, "SE")["D2M336",], out_fit1a$SE)
+
+    ests_c5 <- scan1coef(pr[,"5"], fake_bc$pheno[,1], contrasts=contrasts, se=TRUE)
+    expect_equal(ests_c5["D5M394",], out_fit1b$coef)
+    expect_equal(attr(ests_c5, "SE")["D5M394",], out_fit1b$SE)
+
 })
 
 test_that("fit1 handles contrasts properly in an intercross", {
@@ -319,5 +328,14 @@ test_that("fit1 handles contrasts properly in an intercross", {
                       contrasts=contrasts)
     expect_equivalent(co2[-1,"est"], out_fit1b$coef[-1])
     expect_equivalent(co2[-1,"SE"], out_fit1b$SE[-1])
+
+    # compare to scan1coef()
+    ests_c1 <- scan1coef(pr[,"1"], fake_f2$pheno[,1], contrasts=contrasts, se=TRUE)
+    expect_equal(ests_c1["D1M437",], out_fit1a$coef)
+    expect_equal(attr(ests_c1, "SE")["D1M437",], out_fit1a$SE)
+
+    ests_c13 <- scan1coef(pr[,"13"], fake_f2$pheno[,1], contrasts=contrasts, se=TRUE)
+    expect_equal(ests_c13["D13M254",], out_fit1b$coef)
+    expect_equal(attr(ests_c13, "SE")["D13M254",], out_fit1b$SE)
 
 })
