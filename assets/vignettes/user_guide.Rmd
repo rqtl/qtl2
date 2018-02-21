@@ -751,7 +751,7 @@ provide a square matrix of _contrasts_, as follows:
 
 ```{r est_effects_liver_c2_contr}
 c2effB <- scan1coef(pr[,"2"], iron$pheno[,"liver"],
-                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(-0.5, 1, -0.5)))
+                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0)))
 ```
 
 The result will then contain the estimates of `mu`, `a`, and `d`.
