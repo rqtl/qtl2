@@ -28,7 +28,7 @@
 #' for individual identifiers. Ignored if `kinship` is provided.
 #' @param contrasts An optional matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
-#' `cbind(c(1,1,1), c(-1, 0, 1), c(-0.5, 1, -0.5))` to get
+#' `cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0))` to get
 #' mean, additive effect, and dominance effect. The default is the
 #' identity matrix.
 #' @param model Indicates whether to use a normal model (least
@@ -61,6 +61,15 @@
 #' If `kinship` is provided, a linear mixed model is used, with a
 #' polygenic effect estimated under the null hypothesis of no (major)
 #' QTL, and then taken as fixed as known in the genome scan.
+#'
+#' If `contrasts` is provided, the genotype probability matrix,
+#' \eqn{P}, is post-multiplied by the contrasts matrix, \eqn{A}, prior
+#' to fitting the model. So we use \eqn{P \cdot A}{P A} as the \eqn{X}
+#' matrix in the model. One might view the rows of
+#' \ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}
+#' as the set of contrasts, as the estimated effects are the estimated
+#' genotype effects pre-multiplied by
+#' \ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}.
 #'
 #' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line

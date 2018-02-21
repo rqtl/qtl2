@@ -1,9 +1,13 @@
-## qtl2 0.13-2 (2018-02-19)
+## qtl2 0.13-3 (2018-02-21)
 
 ### Minor changes
 
 - `plot_coef()` now uses a named `lodcolumn` argument, if provided, to
   subset `scan1_output`, if that's provided.
+
+- In the documentation for `scan1coef()`, `scan1blup()`, and `fit1()`,
+  revised the suggested contrasts for getting additive and dominance
+  effects in an intercross.
 
 ### Bug fixes
 
