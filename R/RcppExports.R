@@ -653,3 +653,7 @@ test_initvector <- function(crosstype, is_x_chr, is_female, cross_info) {
     .Call(`_qtl2_test_initvector`, crosstype, is_x_chr, is_female, cross_info)
 }
 
+.threshold_genoprob <- function(prob_array, threshold = 1e-6) {
+    .Call(`_qtl2_threshold_genoprob`, prob_array, threshold)
+}
+

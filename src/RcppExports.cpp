@@ -2354,6 +2354,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// threshold_genoprob
+NumericVector threshold_genoprob(const NumericVector& prob_array, const double threshold);
+RcppExport SEXP _qtl2_threshold_genoprob(SEXP prob_arraySEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(threshold_genoprob(prob_array, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_arrange_genes", (DL_FUNC) &_qtl2_arrange_genes, 2},
@@ -2519,6 +2531,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_test_emitmatrix", (DL_FUNC) &_qtl2_test_emitmatrix, 7},
     {"_qtl2_test_stepmatrix", (DL_FUNC) &_qtl2_test_stepmatrix, 5},
     {"_qtl2_test_initvector", (DL_FUNC) &_qtl2_test_initvector, 4},
+    {"_qtl2_threshold_genoprob", (DL_FUNC) &_qtl2_threshold_genoprob, 2},
     {NULL, NULL, 0}
 };
 
