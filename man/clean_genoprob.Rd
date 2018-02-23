@@ -53,9 +53,10 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 \dontshow{iron <- iron[,c("19", "X")] # subset to chr 19 and X}
 
 # calculate genotype probabilities
-probs <- calc_genoprob(iron, map, error_prob=0.002)
+probs <- calc_genoprob(iron, error_prob=0.002)
 
 # clean the genotype probabilities and paste over original values
+# (doesn't really do anything in this case, because there are no small but non-zero values)
 probs <- clean_genoprob(probs)
 
 }
