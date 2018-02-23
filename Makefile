@@ -1,4 +1,4 @@
-all: vignettes data external_vignettes extdata
+all: vignettes data external_vignettes extdata pages/rqtl2_functions.md
 .PHONY: vignettes data external_vignettes extdata
 
 # R_OPTS: --vanilla without --no-environ
@@ -27,3 +27,6 @@ extdata: ${EXTDATA}
 
 ../qtl2/inst/extdata/iron.zip: assets/sampledata/iron/iron.yaml
 	cp $(<D)/$(@F) $@
+
+pages/rqtl2_functions.md: ruby/annotate_functions.rb ../qtl2/NAMESPACE
+	$^
