@@ -1,4 +1,13 @@
-## qtl2 0.13-3 (2018-02-21)
+## qtl2 0.13-4 (2018-02-23)
+
+### New features
+
+- Added function `clean_genoprob()` which cleans genotype
+  probabilities by setting small values to 0 and, for genotype columns
+  where the maximum value is not large, setting all values to 0. This
+  is intended to help with the problem of unstable estimates of
+  genotype effects in `scan1coef()` and `fit1()` when there's a
+  genotype that is largely absent.
 
 ### Minor changes
 

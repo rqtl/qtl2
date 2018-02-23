@@ -398,6 +398,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// clean_genoprob
+NumericVector clean_genoprob(const NumericVector& prob_array, double value_threshold, double column_threshold);
+RcppExport SEXP _qtl2_clean_genoprob(SEXP prob_arraySEXP, SEXP value_thresholdSEXP, SEXP column_thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
+    Rcpp::traits::input_parameter< double >::type value_threshold(value_thresholdSEXP);
+    Rcpp::traits::input_parameter< double >::type column_threshold(column_thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(clean_genoprob(prob_array, value_threshold, column_threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // compare_geno
 IntegerMatrix compare_geno(const IntegerMatrix& geno);
 RcppExport SEXP _qtl2_compare_geno(SEXP genoSEXP) {
@@ -2354,18 +2367,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// threshold_genoprob
-NumericVector threshold_genoprob(const NumericVector& prob_array, const double threshold);
-RcppExport SEXP _qtl2_threshold_genoprob(SEXP prob_arraySEXP, SEXP thresholdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
-    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(threshold_genoprob(prob_array, threshold));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_arrange_genes", (DL_FUNC) &_qtl2_arrange_genes, 2},
@@ -2395,6 +2396,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_check_is_female_vector", (DL_FUNC) &_qtl2_check_is_female_vector, 3},
     {"_qtl2_check_handle_x_chr", (DL_FUNC) &_qtl2_check_handle_x_chr, 2},
     {"_qtl2_chisq_colpairs", (DL_FUNC) &_qtl2_chisq_colpairs, 1},
+    {"_qtl2_clean_genoprob", (DL_FUNC) &_qtl2_clean_genoprob, 3},
     {"_qtl2_compare_geno", (DL_FUNC) &_qtl2_compare_geno, 1},
     {"_qtl2_count_xo", (DL_FUNC) &_qtl2_count_xo, 3},
     {"_qtl2_count_xo_3d", (DL_FUNC) &_qtl2_count_xo_3d, 3},
@@ -2531,7 +2533,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_test_emitmatrix", (DL_FUNC) &_qtl2_test_emitmatrix, 7},
     {"_qtl2_test_stepmatrix", (DL_FUNC) &_qtl2_test_stepmatrix, 5},
     {"_qtl2_test_initvector", (DL_FUNC) &_qtl2_test_initvector, 4},
-    {"_qtl2_threshold_genoprob", (DL_FUNC) &_qtl2_threshold_genoprob, 2},
     {NULL, NULL, 0}
 };
 

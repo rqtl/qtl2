@@ -109,6 +109,10 @@ check_handle_x_chr <- function(crosstype, any_x_chr) {
     .Call(`_qtl2_chisq_colpairs`, input)
 }
 
+.clean_genoprob <- function(prob_array, value_threshold = 1e-6, column_threshold = 0.01) {
+    .Call(`_qtl2_clean_genoprob`, prob_array, value_threshold, column_threshold)
+}
+
 .compare_geno <- function(geno) {
     .Call(`_qtl2_compare_geno`, geno)
 }
@@ -651,9 +655,5 @@ test_stepmatrix <- function(crosstype, rec_frac, is_x_chr, is_female, cross_info
 
 test_initvector <- function(crosstype, is_x_chr, is_female, cross_info) {
     .Call(`_qtl2_test_initvector`, crosstype, is_x_chr, is_female, cross_info)
-}
-
-.threshold_genoprob <- function(prob_array, threshold = 1e-6) {
-    .Call(`_qtl2_threshold_genoprob`, prob_array, threshold)
 }
 
