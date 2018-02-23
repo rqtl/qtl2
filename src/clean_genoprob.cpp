@@ -29,7 +29,7 @@ NumericVector clean_genoprob(const NumericVector& prob_array, // array as n_ind 
     if(value_threshold > 1.0/(double)n_gen)
         value_threshold = 0.5/(double)n_gen;
 
-    for(int pos=0, offset=0; pos<n_pos; pos++) {
+    for(int pos=0; pos<n_pos; pos++) {
 
         // first look at each genotype column and find max; if < column_threshold, set all values to 0
         for(int gen=0; gen<n_gen; gen++) {
@@ -54,15 +54,15 @@ NumericVector clean_genoprob(const NumericVector& prob_array, // array as n_ind 
             for(int gen=0; gen<n_gen; gen++) {
                 // small values set to 0
                 int index = ind + gen*n_ind + pos*n_gen*n_ind;
-                if(result[index] < value_threshold) result[offset+gen] = 0.0;
+                if(result[index] < value_threshold) result[index] = 0.0;
 
                 // get sum so we can rescale to sum to 1
-                sum += result[offset+gen];
+                sum += result[index];
             }
 
             for(int gen=0; gen<n_gen; gen++) {
                 int index = ind + gen*n_ind + pos*n_gen*n_ind;
-                result[offset+gen] /= sum;
+                result[index] /= sum;
             }
 
         }
