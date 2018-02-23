@@ -33,4 +33,21 @@ test_that("clean_genoprob works", {
 
     expect_true( max(abs(apply(pr_clean[[1]], c(1,3), sum) - 1)) < 1e-12 )
 
+    # try this with a subset of individuals
+    # create another column that is largely missing, for a subset of individuals
+    set.seed(20180223)
+    ind <- sample(ind_ids(iron), 50)
+    pr[[1]][ind,1,15] <- runif(length(ind), 0, 1e-4)
+    # re-scale so values sum to 1
+    pr[[1]][,,15] <- pr[[1]][,,15] / rowSums(pr[[1]][,,15])
+
+
+    pr_clean <- clean_genoprob(pr, column_threshold=0.01, ind=ind)
+    other_ind <- ind_ids(iron)[!(ind_ids(iron) %in% ind)]
+    expect_equal(pr_clean[other_ind,], pr[other_ind,])
+    expect_true( max(abs(apply(pr_clean[[1]], c(1,3), sum) - 1)) < 1e-12 )
+    expect_true( all(pr_clean[[1]][ind,1,15] == 0) )
+
+    expect_equal( pr_clean[[1]][,,-c(15,20)], pr[[1]][,,-c(15,20)] )
+    expect_equal( pr_clean[[2]], pr[[2]] )
 })

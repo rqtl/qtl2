@@ -5,17 +5,24 @@
 \title{Clean genotype probabilities}
 \usage{
 clean_genoprob(probs, value_threshold = 0.000001, column_threshold = 0.01,
-  cores = 1)
+  ind = NULL, cores = 1)
 }
 \arguments{
 \item{probs}{Genotype probabilities as calculated by
 \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
-\item{value_threshold}{Probabilities below this value will be set to 0.}
+\item{value_threshold}{Probabilities below this value will be set
+to 0.}
 
 \item{column_threshold}{For genotype columns where the maximum
 value is below this threshold, all values will be set to 0.
-This must be less than \eqn{1/k} where \eqn{k} is the number of genotypes.}
+This must be less than \eqn{1/k} where \eqn{k} is the number of
+genotypes.}
+
+\item{ind}{Optional vector of individuals (logical, numeric, or
+character). If provided, only the genotype probabilities for
+these individuals will be cleaned, though the full set will be
+returned.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
@@ -23,7 +30,8 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-A cleaned version of the input genotype probabilities object, \code{probs}.
+A cleaned version of the input genotype probabilities
+object, \code{probs}.
 }
 \description{
 Clean up genotype probabilities by setting small values to 0 and
@@ -47,6 +55,12 @@ In addition, any genotype probabilties that are < \code{value_threshold}
 
 The probabilities are then re-scaled so that the probabilities for
 each individual at each position sum to 1.
+
+If \code{ind} is provided, the function is applied only to the
+designated subset of individuals. This may be useful when only a
+subset of individuals have been phenotyped, as you may want to zero
+out genotype columns where that subset of individuals has only
+negligible probability values.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
@@ -55,8 +69,10 @@ iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 # calculate genotype probabilities
 probs <- calc_genoprob(iron, error_prob=0.002)
 
-# clean the genotype probabilities and paste over original values
+# clean the genotype probabilities
 # (doesn't really do anything in this case, because there are no small but non-zero values)
-probs <- clean_genoprob(probs)
+probs_clean <- clean_genoprob(probs)
 
+# clean only the females' genotype probabilities
+probs_cleanf <- clean_genoprob(probs, ind=names(iron$is_female)[iron$is_female])
 }
