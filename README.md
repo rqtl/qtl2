@@ -72,4 +72,4 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 
 ### License
 
-[Licensed](LICENSE) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
+[Licensed](LICENSE.md) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
