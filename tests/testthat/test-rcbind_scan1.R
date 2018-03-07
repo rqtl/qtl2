@@ -22,12 +22,12 @@ test_that("cbind.scan1() works for scan1/LMM results", {
     out1 <- scan1(probs, grav2$pheno[,1,drop=FALSE], k)
     out2 <- scan1(probs, grav2$pheno[,2,drop=FALSE], k)
     out12 <- scan1(probs, grav2$pheno[,1:2], k)
-    expect_equal(cbind(out1, out2), out12)
+    expect_equal(cbind(out1, out2), out12, tolerance=2e-7)
 
     out1 <- scan1(probs, grav2$pheno[,1,drop=FALSE], kloco)
     out2 <- scan1(probs, grav2$pheno[,2,drop=FALSE], kloco)
     out12 <- scan1(probs, grav2$pheno[,1:2], kloco)
-    expect_equal(cbind(out1, out2), out12)
+    expect_equal(cbind(out1, out2), out12, tolerance=6e-7)
 
 })
 
