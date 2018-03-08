@@ -125,6 +125,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `locate_xo`
 - `max_compare_geno`
 - `summary_compare_geno`
+- `compare_maps`
 
 
 ### Data summaries
