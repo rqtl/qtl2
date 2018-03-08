@@ -34,5 +34,6 @@ URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2
 BugReports: https://github.com/rqtl/qtl2/issues
 LazyData: true
 Encoding: UTF-8
+ByteCompile: true
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 6.0.1
