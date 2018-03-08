@@ -1,4 +1,4 @@
-## qtl2 0.13-4 (2018-03-05)
+## qtl2 0.13-5 (2018-03-08)
 
 ### New features
 
@@ -8,6 +8,9 @@
   is intended to help with the problem of unstable estimates of
   genotype effects in `scan1coef()` and `fit1()` when there's a
   genotype that is largely absent.
+
+- Added function `compare_maps()` for comparing marker order between
+  two marker maps.
 
 ### Minor changes
 
