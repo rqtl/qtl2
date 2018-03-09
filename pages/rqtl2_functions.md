@@ -106,101 +106,136 @@ description: Annotated/categorized list of functions in R/qtl2
 
 ### QTL analysis
 
-- `est_herit`
-- `fit1`
-- `scan1`
-- `scan1blup`
-- `scan1coef`
-- `scan1perm`
-- `scan1snps`
-- `bayes_int`
-- `lod_int`
+- `est_herit` - estimate heritability with linear mixed model
+- `fit1` - fit a single-QTL model at a single position
+- `scan1` - genome scan with a single-QTL model
+- `scan1perm` - permutation test to establish statistical significance
+  in genome scan
+- `scan1coef` - calculate QTL effects in scan along one chromosome
+- `scan1blup` - like `scan1coef`, but calculating treating QTL
+  effects as random and calculating BLUPs
+- `scan1snps` - single-QTL scan over SNPs in a multi-parent population
 
 
 ### QTL summaries
 
-- `summary.scan1perm`
-- `max.scan1`
-- `find_peaks`
-- `max_scan1`
-- `maxlod`
-- `summary_scan1perm`
-- `top_snps`
+- `maxlod` - calculate genome-wide maximum LOD score in genome scan results
+- `max.scan1` - calculate maximum LOD score in genome scan and the
+  position at which it occurred
+- `max_scan1` - the same as `max.scan1`
+- `find_peaks` - find QTL peaks in genome scan results
+- `lod_int` - calculate LOD support intervals from genome scan results
+- `bayes_int` - calculate approximate Bayes intervals for QTL position
+  from genome scan results
+- `summary.scan1perm` - calculate significance thresholds from genome scan
+  permutation results
+- `summary_scan1perm` - same as `summary.scan1perm`
+- `top_snps` - find the top SNPs from a SNP association scan
 
 
 ### Data diagnostics
 
-- `check_cross2`
-- `calc_entropy`
-- `calc_errorlod`
-- `calc_geno_freq`
-- `chisq_colpairs`
-- `convert2cross2`
-- `compare_geno`
-- `compare_genoprob`
-- `count_xo`
-- `find_ibd_segments`
-- `find_map_gaps`
-- `reduce_map_gaps`
-- `locate_xo`
-- `max_compare_geno`
-- `summary_compare_geno`
-- `compare_maps`
+- `check_cross2` - check for inconsistencies or errors in a `"cross2"` object
+- `calc_entropy` - calculate entropy from genotype probabilities, for
+  each individual and position
+- `calc_errorlod` - calculate genotyping error LOD scores to help
+  identify potential genotyping errors and problem markers or individuals
+- `calc_geno_freq` - calculate genotype frequencies, by individual or
+  marker, from genotype probabilities
+- `chisq_colpairs` - Perform chi-square test for independence for all
+  pairs of columns of a matrix
+- `convert2cross2` - convert an R/qtl1 `"cross"` object to the R/qtl2
+  `"cross2"` format
+- `compare_geno` - compare genotypes for all pairs of individuals, to
+  look for possible sample duplicates
+- `compare_genoprob` - compare two sets of genotype probabilities for
+  one individual on a single chromosome
+- `summary.compare_geno` - summarize the results of `compare_geno`
+- `summary_compare_geno` - same as `summary.compare_geno`
+- `max.compare_geno` - from the results of `compare_geno`, show the
+  pair with most similar genotypes
+- `max_compare_geno` - same as `max.compare_geno`
+- `count_xo` - count the number of crossovers in each individual on
+  each chromosome, from matrices of inferred genotypes
+- `locate_xo` - locate the positions of crossovers in each individual
+  on each chromosome, from matrices of inferred genotypes.
+- `find_ibd_segments` - in genotypes of a set of inbred lines, find
+  genomic segments that are identity-by-descent (IBD)
+- `compare_maps` - compare two marker maps, to identify markers
+  present in one but not the other, or on different chromosomes or in
+  different orders between the maps.
+- `find_map_gaps` - find large gaps between markers in a genetic map
+- `reduce_map_gaps` - reduce the lengths of gaps in a genetic map
 
 
 ### Data summaries
 
-- `max.compare_geno`
-- `summary.compare_geno`
-- `summary.cross2`
-- `chr_lengths`
-- `chr_names`
-- `covar_names`
-- `find_marker`
-- `find_markerpos`
-- `ind_ids`
-- `ind_ids_covar`
-- `ind_ids_geno`
-- `ind_ids_gnp`
-- `ind_ids_pheno`
-- `marker_names`
-- `n_chr`
-- `n_covar`
-- `n_ind`
-- `n_ind_covar`
-- `n_ind_geno`
-- `n_ind_gnp`
-- `n_ind_pheno`
-- `n_mar`
-- `n_missing`
-- `n_pheno`
-- `n_phenocovar`
-- `n_typed`
-- `pheno_names`
-- `phenocovar_names`
-- `tot_mar`
+- `summary.cross2` - summarize a `"cross2"` object
+- `chr_names` - names of chromosomes in a `"cross2"` object
+- `marker_names` - names of markers in a `"cross2"` object
+- `pheno_names` - names of phenotypes in a `"cross2"` object
+- `phenocovar_names` - names of "phenotype covariates" (metadata about
+  phenotypes) in a `"cross2"` object
+- `covar_names` - names of covariates in a `"cross2"` object
+- `ind_ids` - return IDs for all individuals in a `"cross2"` object
+- `ind_ids_geno` - return IDs for all individuals in a `"cross2"`
+  object that have genotype data
+- `ind_ids_pheno` - return IDs for all individuals in a `"cross2"`
+  object that have phenotype data
+- `ind_ids_gnp` - return IDs for all individuals in a `"cross2"`
+  object that have both genotype and phenotype data
+- `ind_ids_covar` - return IDs for all individuals in a `"cross2"`
+  object that have covariate data
+- `n_chr` - number of chromosomes in a `"cross2"` object
+- `n_ind` - number of individuals in a `"cross2"` object
+- `n_ind_geno` - number of individuals in a `"cross2"` object that
+  have genotype data
+- `n_ind_pheno` - number of individuals in a `"cross2"` object that
+  have phenotype data
+- `n_ind_gnp` - number of individuals in a `"cross2"` object that
+  have both genotype and phenotype data
+- `n_ind_covar` - number of individuals in a `"cross2"` object that
+  have covariate data
+- `n_mar` - number of markers on each chromosome in a `"cross2"`
+  object
+- `tot_mar` - total number of markers in a `"cross2"` object
+- `n_pheno` - number of phenotypes in a `"cross2"` object
+- `n_covar`  - number of covariates in a `"cross2"` object
+- `n_phenocovar` - number of "phenotype covariates" (metadata on
+  phenotypes) in a `"cross2"` object
+- `chr_lengths` - calculate chromosome lengths for a map object
+- `find_marker` - find marker closest to a particular genomic position
+- `find_markerpos` - find the position of a marker
+- `n_missing` - number of missing genotypes, by individual or marker
+- `n_typed` - number of genotypes, by individual or marker
 
 
 ### QTL plots
 
-- `plot.scan1`
-- `plot.scan1coef`
-- `plot_coef`
-- `plot_coefCC`
-- `plot_genes`
-- `plot_peaks`
-- `plot_pxg`
-- `plot_scan1`
-- `plot_snpasso`
-- `xpos_scan1`
+- `plot.scan1` - plot genome scan results
+- `plot_scan1` - same as `plot.scan1`
+- `xpos_scan1` - determine the x-axis location of a particular genomic
+  position in a genome scan plot (for adding annotations)
+- `plot.scan1coef` - plot QTL effects along a chromosome
+- `plot_coef` - same as `plot.scan1coef`
+- `plot_coefCC` - like `plot_coef` but assuming there are 8 effects
+  and using the standard colors for the Collaborative Cross (`CCcolors`)
+- `plot_snpasso` - plot SNP association results
+- `plot_genes` - plot locations of a set of genes
+- `plot_peaks` - plot a summary of QTL positions for multiple
+  phenotypes, using the results of `find_peaks`
+- `plot_pxg` - plot phenotype versus QTL genotypes
 
 
 ### Diagnostic plots
 
-- `plot.calc_genoprob`
-- `plot_genoprob`
-- `plot_genoprobcomp`
-- `plot_onegeno`
+- `plot.calc_genoprob` - plot the genotype probabilities for one
+  individual on one chromosome, as a heat map
+- `plot_genoprob` - the same as `plot.calc_genoprob`
+- `plot_onegeno` - plot one individual's genome-wide genotypes
+- `plot_genoprobcomp` - plot a comparison of two sets of genotype
+  probabilities for one individual on one chromosome, as a bivariate
+  heat map
 
 
 ### SNP/gene databases
