@@ -142,5 +142,5 @@ E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
 }
 \seealso{
-\code{\link[=scan1perm]{scan1perm()}}
+\code{\link[=scan1perm]{scan1perm()}}, \code{\link[=scan1coef]{scan1coef()}}, \code{\link[=cbind.scan1]{cbind.scan1()}}, \code{\link[=rbind.scan1]{rbind.scan1()}}
 }
