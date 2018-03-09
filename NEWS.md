@@ -21,6 +21,10 @@
   revised the suggested contrasts for getting additive and dominance
   effects in an intercross.
 
+- Removed the function `pick_marker_subset()` because it's identical
+  to another function, `reduce_markers()`. (Seriously, I implemented
+  the same thing twice.)
+
 ### Bug fixes
 
 - In `plot_coef()` with `scan1_output` provided, `ylim_lod` was being
