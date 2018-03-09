@@ -10,6 +10,8 @@
 #'
 #' @return A single imputed genotype object.
 #'
+#' @seealso [rbind.viterbi()], [viterbi()]
+#'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' map <- insert_pseudomarkers(grav2$gmap, step=1)

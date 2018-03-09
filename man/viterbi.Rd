@@ -70,5 +70,5 @@ map_w_pmar <- insert_pseudomarkers(grav2$gmap, step=1)
 g <- viterbi(grav2, map_w_pmar, error_prob=0.002)
 }
 \seealso{
-\code{\link[=sim_geno]{sim_geno()}}, \code{\link[=maxmarg]{maxmarg()}}
+\code{\link[=sim_geno]{sim_geno()}}, \code{\link[=maxmarg]{maxmarg()}}, \code{\link[=cbind.viterbi]{cbind.viterbi()}}, \code{\link[=rbind.viterbi]{rbind.viterbi()}}
 }

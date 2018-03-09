@@ -25,3 +25,6 @@ gB <- viterbi(grav2[6:12,], map, error_prob=0.002)
 g <- rbind(gA, gB)
 
 }
+\seealso{
+\code{\link[=cbind.viterbi]{cbind.viterbi()}}, \code{\link[=viterbi]{viterbi()}}
+}

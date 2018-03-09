@@ -40,6 +40,8 @@
 #'  \eqn{Pr(g_1 = v | O)}{Pr(g[1] = v | O)} and then \eqn{Pr(g_{k+1} = v |
 #'    O, g_k = u)}{Pr(g[k+1] = v | O, g[k] = u)}.
 #'
+#' @seealso [cbind.sim_geno()], [rbind.sim_geno()]
+#'
 #' @export
 #' @keywords utilities
 #'
