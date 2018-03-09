@@ -1515,19 +1515,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// pick_marker_subset
-IntegerVector pick_marker_subset(const NumericVector& pos, const double min_d, const NumericVector& weights);
-RcppExport SEXP _qtl2_pick_marker_subset(SEXP posSEXP, SEXP min_dSEXP, SEXP weightsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
-    Rcpp::traits::input_parameter< const double >::type min_d(min_dSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(pick_marker_subset(pos, min_d, weights));
-    return rcpp_result_gen;
-END_RCPP
-}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP _qtl2_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
@@ -1605,15 +1592,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // reduce_markers
-IntegerVector reduce_markers(const NumericVector& pos, const NumericVector& weights, const double min_dist);
-RcppExport SEXP _qtl2_reduce_markers(SEXP posSEXP, SEXP weightsSEXP, SEXP min_distSEXP) {
+IntegerVector reduce_markers(const NumericVector& pos, const double min_dist, const NumericVector& weights);
+RcppExport SEXP _qtl2_reduce_markers(SEXP posSEXP, SEXP min_distSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const double >::type min_dist(min_distSEXP);
-    rcpp_result_gen = Rcpp::wrap(reduce_markers(pos, weights, min_dist));
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    rcpp_result_gen = Rcpp::wrap(reduce_markers(pos, min_dist, weights));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2476,7 +2463,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_matrix_x_vector", (DL_FUNC) &_qtl2_matrix_x_vector, 2},
     {"_qtl2_matrix_x_3darray", (DL_FUNC) &_qtl2_matrix_x_3darray, 2},
     {"_qtl2_maxmarg", (DL_FUNC) &_qtl2_maxmarg, 3},
-    {"_qtl2_pick_marker_subset", (DL_FUNC) &_qtl2_pick_marker_subset, 3},
     {"_qtl2_random_int", (DL_FUNC) &_qtl2_random_int, 3},
     {"_qtl2_get_permutation", (DL_FUNC) &_qtl2_get_permutation, 1},
     {"_qtl2_permute_nvector", (DL_FUNC) &_qtl2_permute_nvector, 2},

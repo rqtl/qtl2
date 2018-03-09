@@ -429,10 +429,6 @@ matrix_x_3darray <- function(X, A) {
     .Call(`_qtl2_maxmarg`, prob_array, minprob, tol)
 }
 
-.pick_marker_subset <- function(pos, min_d, weights) {
-    .Call(`_qtl2_pick_marker_subset`, pos, min_d, weights)
-}
-
 random_int <- function(n, low, high) {
     .Call(`_qtl2_random_int`, n, low, high)
 }
@@ -457,8 +453,8 @@ permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
     .Call(`_qtl2_permute_ivector_stratified`, n_perm, x, strata, n_strata)
 }
 
-.reduce_markers <- function(pos, weights, min_dist) {
-    .Call(`_qtl2_reduce_markers`, pos, weights, min_dist)
+.reduce_markers <- function(pos, min_dist, weights) {
+    .Call(`_qtl2_reduce_markers`, pos, min_dist, weights)
 }
 
 scan_binary_onechr <- function(genoprobs, pheno, addcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {

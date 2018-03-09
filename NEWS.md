@@ -12,6 +12,11 @@
 - Added function `compare_maps()` for comparing marker order between
   two marker maps.
 
+- Revised the order of arguments in `reduce_markers()` to match
+  `pick_marker_subset()`, because I like the latter better. Removed
+  the function `pick_marker_subset()` because it's identical to
+  `reduce_markers()`. (Seriously, I implemented the same thing twice.)
+
 ### Minor changes
 
 - `plot_coef()` now uses a named `lodcolumn` argument, if provided, to
@@ -21,9 +26,6 @@
   revised the suggested contrasts for getting additive and dominance
   effects in an intercross.
 
-- Removed the function `pick_marker_subset()` because it's identical
-  to another function, `reduce_markers()`. (Seriously, I implemented
-  the same thing twice.)
 
 ### Bug fixes
 

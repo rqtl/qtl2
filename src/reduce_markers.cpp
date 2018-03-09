@@ -14,26 +14,27 @@ using namespace Rcpp;
 // in {1, 2, ..., length(pos)}
 
 // [[Rcpp::export(".reduce_markers")]]
-IntegerVector reduce_markers(const NumericVector& pos,
-                             const NumericVector& weights,
-                             const double min_dist)
+IntegerVector reduce_markers(const NumericVector& pos,      // positions of markers
+                             const double min_dist,         // minimum position between markers
+                             const NumericVector& weights)  // weights on the markers
 {
-    const int n = pos.size();
+    const int n_pos = pos.size();
 
-    if(weights.size() != n)
+    if(weights.size() != n_pos)
         throw std::range_error("length(pos) != length(weights)");
 
-    NumericVector total_weights(n);
-    IntegerVector prev_marker(n);
-    IntegerVector max_to_choose(n);
-    IntegerVector path(n);
+    NumericVector total_weights(n_pos);
+    IntegerVector prev_marker(n_pos);
+    IntegerVector max_to_choose(n_pos);
+    IntegerVector path(n_pos);
     int n_path=0;
-    int n_max_to_choose, themax;
+    int n_max_to_choose;
+    double themax;
 
     prev_marker[0] = -1;
     total_weights[0] = weights[0];
 
-    for(int i=1; i<n; i++) {
+    for(int i=1; i<n_pos; i++) {
         if(pos[i] < pos[0] + min_dist) {
             // no markers to left of i that are > min_dist away
             total_weights[i] = weights[i];
@@ -46,6 +47,8 @@ IntegerVector reduce_markers(const NumericVector& pos,
             max_to_choose[0] = 0;
             themax = total_weights[0];
             for(int j=1; j<i; j++) {
+
+                Rcpp::checkUserInterrupt();  // check for ^C from user
 
                 if(pos[i] < pos[j] + min_dist) break;
 
@@ -73,7 +76,9 @@ IntegerVector reduce_markers(const NumericVector& pos,
     n_max_to_choose = 1;
     max_to_choose[0] = 0;
 
-    for(int i=1; i<n; i++) {
+    for(int i=1; i<n_pos; i++) {
+        Rcpp::checkUserInterrupt();  // check for ^C from user
+
         if(total_weights[i] > themax) {
             themax = total_weights[i];
             n_max_to_choose = 1;
