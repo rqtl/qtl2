@@ -2,7 +2,7 @@
 
 #' Insert pseudomarkers into a marker map
 #'
-#' Insert pseudomarkers into a map of genetic markers, for a single chromosome.
+#' Insert pseudomarkers into a map of genetic markers
 #'
 #' @md
 #'

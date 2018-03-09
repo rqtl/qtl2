@@ -7,9 +7,9 @@
 #'
 #' @param map A list with each component being a vector with the
 #' marker positions for a chromosome.
+#' @param min_distance Minimum distance between markers.
 #' @param weights A (optional) list of weights on the markers; same
 #' size as `map`.
-#' @param min_distance Minimum distance between markers.
 #'
 #' @return A list like the input `map`, but with the selected
 #' subset of markers.
@@ -23,15 +23,27 @@
 #' confidently ordered linkage maps. Genet Epidemiol 16:337--343
 #'
 #' @examples
-#' library(qtl)
+#' # read data
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+#'
+#' # grap genetic map
+#' gmap <- grav2$gmap
+#'
+#' # subset to markers that are >= 1 cM apart
+#' gmap_sub <- reduce_markers(gmap, 1)
 #'
 #' @export
 reduce_markers <-
-    function(map, weights=NULL, min_distance=1)
+    function(map, min_distance=1, weights=NULL)
 {
     if(is.null(map)) stop("map is NULL")
     if("cross2" %in% class(map))
         stop('Input map is a "cross2" object but should be a genetic map')
+
+    if(!is.list(map) && !is.list(weights)) { # single chromosome
+        if(!is.null(weights)) weights <- list("1"=weights)
+        return(reduce_markers(list("1"=map), min_distance, weights)[[1]])
+    }
 
     if(is.null(weights))
         weights <- lapply(map, function(a) rep(1, length(a)))
@@ -47,8 +59,7 @@ reduce_markers <-
 
     for(i in seq(along=map)) {
         if(length(map[[i]]) < 2) next
-        map[[i]] <- map[[i]][.reduce_markers(map[[i]], weights[[i]],
-                                             min_distance)]
+        map[[i]] <- map[[i]][.reduce_markers(map[[i]], min_distance, weights[[i]])]
     }
 
     map

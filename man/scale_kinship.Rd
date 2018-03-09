@@ -19,8 +19,8 @@ the matrices scaled to be like correlation matrices.
 Scale kinship matrix to be like a correlation matrix.
 }
 \details{
-We take \eqn{c_{ij} = k_{ij} / \sqrt{k_{ii} k_{jj}}}{
-c_ij = k_ij / sqrt(k_ii k_jj)}
+We take
+\ifelse{html}{\out{<em>c<sub>ij</sub> = k<sub>ij</sub> / &radic;(k<sub>ii</sub> k<sub>jj</sub>)</em>}}{\eqn{c_{ij} = k_{ij} / \sqrt{k_{ii} k_{jj}}}{c_ij = k_ij / sqrt(k_ii k_jj)}}
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))

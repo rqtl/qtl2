@@ -1,3 +1,38 @@
+## qtl2 0.13-6 (2018-03-09)
+
+### New features
+
+- Added function `clean_genoprob()` which cleans genotype
+  probabilities by setting small values to 0 and, for genotype columns
+  where the maximum value is not large, setting all values to 0. This
+  is intended to help with the problem of unstable estimates of
+  genotype effects in `scan1coef()` and `fit1()` when there's a
+  genotype that is largely absent.
+
+- Added function `compare_maps()` for comparing marker order between
+  two marker maps.
+
+- Revised the order of arguments in `reduce_markers()` to match
+  `pick_marker_subset()`, because I like the latter better. Removed
+  the function `pick_marker_subset()` because it's identical to
+  `reduce_markers()`. (Seriously, I implemented the same thing twice.)
+
+### Minor changes
+
+- `plot_coef()` now uses a named `lodcolumn` argument, if provided, to
+  subset `scan1_output`, if that's provided.
+
+- In the documentation for `scan1coef()`, `scan1blup()`, and `fit1()`,
+  revised the suggested contrasts for getting additive and dominance
+  effects in an intercross.
+
+
+### Bug fixes
+
+- In `plot_coef()` with `scan1_output` provided, `ylim_lod` was being
+  ignored.
+
+
 ## qtl2 0.12 (2018-01-19)
 
 ### New features

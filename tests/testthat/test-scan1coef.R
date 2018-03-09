@@ -425,7 +425,7 @@ test_that("scan1coef for intercross, with contrasts", {
     prob <- aperm(prob2[[1]], c(1,3,2)) # rearrange as expected for lm()
 
     # use contrasts
-    contrasts <- cbind(mu=c(1,1,1), a=c(-0.5, 0, 0.5), d=c(-0.5, 1, -0.5))
+    contrasts <- cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1,0))
 
     # change to contrasts for use with lm()
     dn <- dimnames(prob)

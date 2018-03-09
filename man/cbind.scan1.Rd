@@ -37,3 +37,6 @@ out2 <- scan1(probs, phe2) # phenotype 2
 out <- cbind(out1, out2)
 
 }
+\seealso{
+\code{\link[=rbind.scan1]{rbind.scan1()}}, \code{\link[=scan1]{scan1()}}
+}

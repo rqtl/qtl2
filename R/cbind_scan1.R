@@ -17,6 +17,8 @@
 #'
 #' If `hsq` present but has differing numbers of rows, we omit this information.
 #'
+#' @seealso [rbind.scan1()], [scan1()]
+#'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' map <- insert_pseudomarkers(grav2$gmap, step=1)

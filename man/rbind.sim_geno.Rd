@@ -25,3 +25,6 @@ drawsB <- sim_geno(grav2[6:12,], map, error_prob=0.002, n_draws=4)
 draws <- rbind(drawsA, drawsB)
 
 }
+\seealso{
+\code{\link[=cbind.sim_geno]{cbind.sim_geno()}}, \code{\link[=sim_geno]{sim_geno()}}
+}

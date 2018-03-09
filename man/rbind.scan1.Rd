@@ -36,3 +36,6 @@ out2 <- scan1(probs[,5], phe) # chr 5
 out <- rbind(out1, out2)
 
 }
+\seealso{
+\code{\link[=cbind.scan1]{cbind.scan1()}}, \code{\link[=scan1]{scan1()}}
+}

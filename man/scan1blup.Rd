@@ -31,7 +31,7 @@ estimate of residual heritability.}
 
 \item{contrasts}{An optional matrix of genotype contrasts, size
 genotypes x genotypes. For an intercross, you might use
-\code{cbind(c(1,0,0), c(-1, 0, 1), c(-0.5, 1, 0.5))} to get
+\code{cbind(mu=c(1,0,0), a=c(-1, 0, 1), d=c(0, 1, 0))} to get
 mean, additive effect, and dominance effect. The default is the
 identity matrix.}
 
@@ -74,6 +74,15 @@ If \code{kinship} is provided, the linear mixed model accounts for
 a residual polygenic effect, with a the polygenic variance
 estimated under the null hypothesis of no (major) QTL, and then
 taken as fixed as known in the scan to estimate QTL effects.
+
+If \code{contrasts} is provided, the genotype probability matrix,
+\eqn{P}, is post-multiplied by the contrasts matrix, \eqn{A}, prior
+to fitting the model. So we use \eqn{P \cdot A}{P A} as the \eqn{X}
+matrix in the model. One might view the rows of
+\ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}
+as the set of contrasts, as the estimated effects are the estimated
+genotype effects pre-multiplied by
+\ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}.
 }
 \examples{
 # read data

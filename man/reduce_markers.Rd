@@ -4,16 +4,16 @@
 \alias{reduce_markers}
 \title{Reduce markers to a subset of more-evenly-spaced ones}
 \usage{
-reduce_markers(map, weights = NULL, min_distance = 1)
+reduce_markers(map, min_distance = 1, weights = NULL)
 }
 \arguments{
 \item{map}{A list with each component being a vector with the
 marker positions for a chromosome.}
 
+\item{min_distance}{Minimum distance between markers.}
+
 \item{weights}{A (optional) list of weights on the markers; same
 size as \code{map}.}
-
-\item{min_distance}{Minimum distance between markers.}
 }
 \value{
 A list like the input \code{map}, but with the selected
@@ -30,7 +30,14 @@ maximal, subject to the constraint that no two adjacent markers may
 be separated by more than \code{min_distance}.
 }
 \examples{
-library(qtl)
+# read data
+grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+
+# grap genetic map
+gmap <- grav2$gmap
+
+# subset to markers that are >= 1 cM apart
+gmap_sub <- reduce_markers(gmap, 1)
 
 }
 \references{

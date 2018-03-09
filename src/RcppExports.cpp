@@ -398,6 +398,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// clean_genoprob
+NumericVector clean_genoprob(const NumericVector& prob_array, double value_threshold, double column_threshold);
+RcppExport SEXP _qtl2_clean_genoprob(SEXP prob_arraySEXP, SEXP value_thresholdSEXP, SEXP column_thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type prob_array(prob_arraySEXP);
+    Rcpp::traits::input_parameter< double >::type value_threshold(value_thresholdSEXP);
+    Rcpp::traits::input_parameter< double >::type column_threshold(column_thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(clean_genoprob(prob_array, value_threshold, column_threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // compare_geno
 IntegerMatrix compare_geno(const IntegerMatrix& geno);
 RcppExport SEXP _qtl2_compare_geno(SEXP genoSEXP) {
@@ -1502,19 +1515,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// pick_marker_subset
-IntegerVector pick_marker_subset(const NumericVector& pos, const double min_d, const NumericVector& weights);
-RcppExport SEXP _qtl2_pick_marker_subset(SEXP posSEXP, SEXP min_dSEXP, SEXP weightsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
-    Rcpp::traits::input_parameter< const double >::type min_d(min_dSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(pick_marker_subset(pos, min_d, weights));
-    return rcpp_result_gen;
-END_RCPP
-}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP _qtl2_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
@@ -1592,15 +1592,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // reduce_markers
-IntegerVector reduce_markers(const NumericVector& pos, const NumericVector& weights, const double min_dist);
-RcppExport SEXP _qtl2_reduce_markers(SEXP posSEXP, SEXP weightsSEXP, SEXP min_distSEXP) {
+IntegerVector reduce_markers(const NumericVector& pos, const double min_dist, const NumericVector& weights);
+RcppExport SEXP _qtl2_reduce_markers(SEXP posSEXP, SEXP min_distSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericVector& >::type pos(posSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
     Rcpp::traits::input_parameter< const double >::type min_dist(min_distSEXP);
-    rcpp_result_gen = Rcpp::wrap(reduce_markers(pos, weights, min_dist));
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    rcpp_result_gen = Rcpp::wrap(reduce_markers(pos, min_dist, weights));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2383,6 +2383,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_check_is_female_vector", (DL_FUNC) &_qtl2_check_is_female_vector, 3},
     {"_qtl2_check_handle_x_chr", (DL_FUNC) &_qtl2_check_handle_x_chr, 2},
     {"_qtl2_chisq_colpairs", (DL_FUNC) &_qtl2_chisq_colpairs, 1},
+    {"_qtl2_clean_genoprob", (DL_FUNC) &_qtl2_clean_genoprob, 3},
     {"_qtl2_compare_geno", (DL_FUNC) &_qtl2_compare_geno, 1},
     {"_qtl2_count_xo", (DL_FUNC) &_qtl2_count_xo, 3},
     {"_qtl2_count_xo_3d", (DL_FUNC) &_qtl2_count_xo_3d, 3},
@@ -2462,7 +2463,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_matrix_x_vector", (DL_FUNC) &_qtl2_matrix_x_vector, 2},
     {"_qtl2_matrix_x_3darray", (DL_FUNC) &_qtl2_matrix_x_3darray, 2},
     {"_qtl2_maxmarg", (DL_FUNC) &_qtl2_maxmarg, 3},
-    {"_qtl2_pick_marker_subset", (DL_FUNC) &_qtl2_pick_marker_subset, 3},
     {"_qtl2_random_int", (DL_FUNC) &_qtl2_random_int, 3},
     {"_qtl2_get_permutation", (DL_FUNC) &_qtl2_get_permutation, 1},
     {"_qtl2_permute_nvector", (DL_FUNC) &_qtl2_permute_nvector, 2},

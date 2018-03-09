@@ -10,8 +10,9 @@
 //
 // return value is integer vector of marker indices,
 // in {1, 2, ..., length(pos)}
-Rcpp::IntegerVector reduce_markers(const Rcpp::NumericVector& pos,
-                                   const Rcpp::NumericVector& weights,
-                                   const double min_dist);
+
+Rcpp::IntegerVector reduce_markers(const Rcpp::NumericVector& pos,      // positions of markers
+                                   const double min_dist,               // minimum position between markers
+                                   const Rcpp::NumericVector& weights); // weights on the markers
 
 #endif // REDUCE_MARKERS_H

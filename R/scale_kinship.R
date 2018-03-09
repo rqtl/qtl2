@@ -11,8 +11,8 @@
 #' @return A matrix or list of matrices, as with the input, but with
 #'     the matrices scaled to be like correlation matrices.
 #'
-#' @details We take \eqn{c_{ij} = k_{ij} / \sqrt{k_{ii} k_{jj}}}{
-#' c_ij = k_ij / sqrt(k_ii k_jj)}
+#' @details We take
+#' \ifelse{html}{\out{<em>c<sub>ij</sub> = k<sub>ij</sub> / &radic;(k<sub>ii</sub> k<sub>jj</sub>)</em>}}{\eqn{c_{ij} = k_{ij} / \sqrt{k_{ii} k_{jj}}}{c_ij = k_ij / sqrt(k_ii k_jj)}}
 #'
 #' @export
 #' @keywords utilities

@@ -25,3 +25,6 @@ probsB <- calc_genoprob(grav2[1:5,3:4], map, error_prob=0.002)
 probs <- cbind(probsA, probsB)
 
 }
+\seealso{
+\code{\link[=rbind.calc_genoprob]{rbind.calc_genoprob()}}
+}

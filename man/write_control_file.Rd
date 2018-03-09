@@ -106,7 +106,7 @@ within the control object.}
 (Invisibly) The data structure that was written.
 }
 \description{
-Write the control file (in \href{http://www.yaml.org}{YAML} needed
+Write the control file (in \href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON}) needed
 by \code{\link[=read_cross2]{read_cross2()}} for a set of QTL data.
 }
 \details{

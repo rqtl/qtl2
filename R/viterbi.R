@@ -47,7 +47,7 @@
 #' small). In most cases, the results of a single imputation with
 #' [sim_geno()] will be more realistic.
 #'
-#' @seealso [sim_geno()], [maxmarg()]
+#' @seealso [sim_geno()], [maxmarg()], [cbind.viterbi()], [rbind.viterbi()]
 #'
 #' @export
 #'

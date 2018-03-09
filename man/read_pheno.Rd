@@ -40,8 +40,8 @@ covariate matrix).
 }
 \description{
 Read phenotype data from a CSV file (and, optionally, phenotype
-covariate data from a separate zip file). The CSV files may be
-contained in zip files, separately or togther.
+covariate data from a separate CSV file). The CSV files may be
+contained in zip files, separately or together.
 }
 \examples{
 \dontrun{
