@@ -94,14 +94,14 @@ description: Annotated/categorized list of functions in R/qtl2
 
 ### Marker maps
 
-- `est_map`
-- `calc_grid`
-- `map_to_grid`
-- `insert_pseudomarkers`
-- `interp_map`
-- `pick_marker_subset`
-- `reduce_markers`
-- `top_snps`
+- `est_map` - re-estimate the inter-marker distances in a genetic map
+- `insert_pseudomarkers` - add pseudomarkers into a map of genetic markers
+- `calc_grid` - Calculate indicators of which pseudomarker positions
+  are along a fixed grid
+- `map_to_grid` - subset a map object to the locations on some grid
+- `interp_map` - Use interpolate to convert from one map to another
+- `reduce_markers` - Reduce marker map to the largest subset that are
+  some distance apart
 
 
 ### QTL analysis
@@ -125,6 +125,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `max_scan1`
 - `maxlod`
 - `summary_scan1perm`
+- `top_snps`
 
 
 ### Data diagnostics
