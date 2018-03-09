@@ -1,7 +1,7 @@
 # write_control_file
 #' Write a control file for QTL data
 #'
-#' Write the control file (in [YAML](http://www.yaml.org) needed
+#' Write the control file (in [YAML](http://www.yaml.org) or [JSON](http://www.json.org)) needed
 #' by [read_cross2()] for a set of QTL data.
 #'
 #' @md
