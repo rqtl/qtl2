@@ -240,28 +240,40 @@ description: Annotated/categorized list of functions in R/qtl2
 
 ### SNP/gene databases
 
-- `create_gene_query_func`
-- `create_variant_query_func`
-- `calc_sdp`
-- `invert_sdp`
-- `index_snps`
+- `create_variant_query_func` - create a function to connect to a SQLite
+  database of founder variant information and return a data frame with
+  variants for a selected region
+- `create_gene_query_func` - create a function to connect to a SQLite
+  database of gene annotations and return a data frame with genes in a
+  selected region
+- `calc_sdp` - convert founder SNP genotypes to a numeric code for the
+  strain distribution pattern
+- `invert_sdp` - the inverse of `calc_sdp`
+- `index_snps` - partition SNPs into groups that are contained within
+  common marker intervals and have the same strain distribution
+  pattern, and create an index to a set of distinct SNPs, one per
+  partition
 
 
 ### Utility functions
 
-- `batch_cols`
-- `get_common_ids`
-- `get_x_covar`
-- `mat2strata`
-- `qtl2version`
+- `batch_cols` - identify batches of columns of a matrix that have the
+  same pattern of missing values
+- `get_common_ids` - find IDs that are present in all of the input objects
+- `get_x_covar` - from a `"cross2"` object, get the matrix of
+  covariates to be used for the null hypothesis when performing QTL
+  analysis on the X chromosome
+- `mat2strata` - use the rows of a matrix to define a set of strata
+  for a stratified permutation test
+- `qtl2version` - print the installed version of [R/qtl2](http://kbroman.org/qtl2)
 
 
 ### Boring print functions
 
-- `print.cross2`
-- `print.summary.compare_geno`
-- `print.summary.cross2`
-- `print.summary.scan1perm`
+- `print.cross2` - print method for a `"cross2"` object
+- `print.summary.cross2` - print method for the output of `summary.cross2`
+- `print.summary.compare_geno` - print method for the output of `summary.compare_geno`
+- `print.summary.scan1perm` - print method for the output of `summary.scan1perm`
 
 
 ### Other functions
