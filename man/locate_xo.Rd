@@ -34,3 +34,6 @@ g <- maxmarg(pr)
 pos <- locate_xo(g, iron$gmap)
 
 }
+\seealso{
+\code{\link[=count_xo]{count_xo()}}
+}

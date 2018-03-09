@@ -34,6 +34,8 @@
 #' summary_xo <- cbind(mean=rowMeans(tot_xo_imp),
 #'                     sd=apply(tot_xo_imp, 1, sd))
 #'
+#' @seealso [locate_xo()]
+#'
 #' @importFrom stats setNames
 #' @export
 

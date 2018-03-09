@@ -23,6 +23,8 @@
 #' g <- maxmarg(pr)
 #' pos <- locate_xo(g, iron$gmap)
 #'
+#' @seealso [count_xo()]
+#'
 #' @export
 
 locate_xo <-
