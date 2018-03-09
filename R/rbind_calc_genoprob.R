@@ -11,6 +11,8 @@
 #'
 #' @return A single genotype probability object.
 #'
+#' @seealso [cbind.calc_genoprob()]
+#'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 #' map <- insert_pseudomarkers(grav2$gmap, step=1)
