@@ -39,7 +39,7 @@ inserted. Will also have an attribute \code{"is_x_chr"}, taken
 from the input \code{map}.
 }
 \description{
-Insert pseudomarkers into a map of genetic markers, for a single chromosome.
+Insert pseudomarkers into a map of genetic markers
 }
 \details{
 If \code{stepwidth="fixed"}, a grid of pseudomarkers is
