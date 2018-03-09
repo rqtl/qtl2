@@ -7,70 +7,89 @@ description: Annotated/categorized list of functions in R/qtl2
 ### Data import
 
 - `read_cross2` - read data for a cross from a set of files
-- `read_csv`
-- `read_csv_numer`
-- `read_pheno`
-- `write_control_file`
-- `zip_datafiles`
+- `read_csv` - read a csv file, using a particular set of options
+- `read_csv_numer` - like `read_csv` but assuming the contents are
+  strictly numeric
+- `read_pheno` - read phenotype data from a CSV file, plus
+  (optionally) phenotype covariate data from a separate CSV file
+- `write_control_file` - write the control file for a set of QTL data
+- `zip_datafiles` - zip a set of data files (in the format read by `read_cross2`)
 
 
 ### Data subsetting
 
-- `subset.calc_genoprob`
-- `"[".calc_genoprob` - subset genotype probabilties
-- `subset.cross2`
-- `"[".cross2` - subset a cross2 object
-- `subset.scan1`
-- `subset_scan1`
-- `subset.sim_geno`
-- `"[".sim_geno` - subset genotype imputations
-- `subset.viterbi`
-- `"[".viterbi` - subset inferred genotypes
-- `drop_markers`
-- `drop_nullmarkers`
-- `pull_markers`
+- `subset.cross2` - subset a cross2 object by individuals or chromosomes
+- `"[".cross2` - shorthand for `subset.cross2`, with the form
+  `mycross[ind, chr]`
+- `subset.calc_genoprob` subset genotype probabilties by indivduals
+  or chromosomes
+- `"[".calc_genoprob` - shorthand for `subset.calc_genoprob`,
+  with the form `probs[ind, chr]`
+- `subset.scan1` - subset genome scan results by chromosome or column
+- `subset_scan1` - the same as `subset.scan1`
+- `subset.sim_geno` - subset genotype imputations by individuals or chromosomes
+- `"[".sim_geno` - shorthand for `subset.sim_geno`, with the form
+  `simg[ind, chr]`
+- `subset.viterbi` - subset inferred genotypes
+- `"[".viterbi` - shorthand for `subset.viterbi`, with the form
+  `geno[ind, chr]`
+- `drop_markers` - drop a vector of markers from a `"cross2"` object
+- `drop_nullmarkers` - drop markers with no genotypes from a
+  `"cross2"` object
+- `pull_markers` - drop all except a vector of markers from `"cross2"` object
 
 
 ### Combining data
 
-- `cbind.calc_genoprob` - combine genotype probabilities for multiple chromosomes
-- `rbind.calc_genoprob`
+- `cbind.calc_genoprob` - combine genotype probabilities for multiple
+  sets of individuals
+- `rbind.calc_genoprob` - combine genotype probabilities for multiple
+  chromosomes but on the same set of individuals
 - `cbind.scan1` - combine genome scan results for multiple phenotypes/analyses
-- `rbind.scan1`
+- `rbind.scan1` - combine genome scan results for different chromosomes
 - `c.scan1perm` - combine genome scan permutation results for multiple replicates
 - `cbind.scan1perm` - combine genome scan permutation results for
    multiple phenotypes/analyses
-- `rbind.scan1perm`
+- `rbind.scan1perm` - combine genome scan permutation results for
+  multiple chromosomes
 - `cbind.sim_geno` - combine genotype imputations for multiple chromosomes
-- `rbind.sim_geno`
+- `rbind.sim_geno` - combine genotype imputations for different individuals
 - `cbind.viterbi` - combine inferred genotypes for multiple chromosomes
-- `rbind.viterbi`
+- `rbind.viterbi` - combine inferred genotypes for different individuals
 
 
 ### Genotype reconstruction
 
-- `calc_genoprob`
-- `clean_genoprob`
-- `genoprob_to_alleleprob`
-- `genoprob_to_snpprob`
-- `interp_genoprob`
-- `probs_to_grid`
-- `pull_genoprobpos`
+- `calc_genoprob` - calculate conditional genotype probabilities given
+  marker data
+- `clean_genoprob` - clean up genotype probabilities, setting small
+  values to 0
+- `genoprob_to_alleleprob` - convert genotype probabilities to allele dosages
+- `genoprob_to_snpprob` - convert genotype probabilities to SNP probabilities
+- `interp_genoprob` - linear interpolation of genotype probabilities,
+  for example to get two sets onto the same map for comparison purposes
+- `probs_to_grid` - subset genotype probabilities to a grid of
+  pseudomarkers
+- `pull_genoprobpos` - pull out the genotype probabilities for a
+  particular position
 
 
 ### Genotype imputation
 
-- `maxmarg`
-- `guess_phase`
-- `sim_geno`
-- `viterbi`
+- `maxmarg` - for each individual at each position, find genotype with
+  maximum marginal probability
+- `guess_phase` - turn imputed genotypes into phased genotypes along chromosomes
+- `sim_geno` - multiple imputations of underlying genotypes given
+  marker data
+- `viterbi` - find mostly likely sequence of true genotypes given
+  marker data
 
 
 ### Kinship matrix calculations
 
-- `calc_kinship`
-- `decomp_kinship`
-- `scale_kinship`
+- `calc_kinship` - calculate genetic similarity among individuals
+- `decomp_kinship` - calculate eigen decomposition of a kinship matrix
+- `scale_kinship` - scale kinship matrix to be like a correlation matrix
 
 
 ### Marker maps
