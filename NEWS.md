@@ -1,3 +1,11 @@
+## qtl2 0.15-1 (2018-03-09)
+
+### Minor changes
+
+- Fixed `pull_genoprobpos()` so it will work with
+  [qtl2feather](https://github.com/byandell/qtl2feather).
+
+
 ## qtl2 0.14 (2018-03-09)
 
 ### New features

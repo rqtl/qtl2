@@ -35,7 +35,7 @@ pull_genoprobpos <-
     }
 
     # pull out marker names
-    markers <- lapply(genoprobs, function(a) dimnames(a)[[3]])
+    markers <- dimnames(genoprobs)[[3]]
     # vector of chromosomes
     chr <- rep(names(genoprobs), lapply(markers, length))
     # vector of indexes
