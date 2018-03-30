@@ -54,6 +54,10 @@ test_that("est_herit with intercross with an additive covariate", {
     expect_equal(est_herit(iron$pheno[subind,,drop=FALSE], kinship, addcovar=X[subind]), expected)
     expect_equal(est_herit(iron$pheno, kinship[subind,subind], addcovar=X[subind]), expected)
 
+    # give error when covariates are not numeric
+    X_not_numer <-iron$covar[,"sex",drop=FALSE]
+    expect_error(est_herit(iron$pheno, kinship, X_not_numer))
+
 })
 
 test_that("est_herit handles dependent covariate columns", {

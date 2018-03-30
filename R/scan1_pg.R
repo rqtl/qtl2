@@ -23,16 +23,24 @@ scan1_pg <-
     check4names(pheno, addcovar, Xcovar, intcovar)
 
     # force things to be matrices
-    if(!is.matrix(pheno))
+    if(!is.matrix(pheno)) {
         pheno <- as.matrix(pheno)
+        if(!is.numeric(pheno)) stop("pheno is not numeric")
+    }
     if(is.null(colnames(pheno))) # force column names
         colnames(pheno) <- paste0("pheno", seq_len(ncol(pheno)))
-    if(!is.null(addcovar) && !is.matrix(addcovar))
-        addcovar <- as.matrix(addcovar)
-    if(!is.null(Xcovar) && !is.matrix(Xcovar))
-        Xcovar <- as.matrix(Xcovar)
-    if(!is.null(intcovar) && !is.matrix(intcovar))
-        intcovar <- as.matrix(intcovar)
+    if(!is.null(addcovar)) {
+        if(!is.matrix(addcovar)) addcovar <- as.matrix(addcovar)
+        if(!is.numeric(addcovar)) stop("addcovar is not numeric")
+    }
+    if(!is.null(Xcovar)) {
+        if(!is.matrix(Xcovar)) Xcovar <- as.matrix(Xcovar)
+        if(!is.numeric(Xcovar)) stop("Xcovar is not numeric")
+    }
+    if(!is.null(intcovar)) {
+        if(!is.matrix(intcovar)) intcovar <- as.matrix(intcovar)
+        if(!is.numeric(intcovar)) stop("intcovar is not numeric")
+    }
 
     # check that kinship matrices are square with same IDs
     kinshipIDs <- check_kinship(kinship, length(genoprobs))

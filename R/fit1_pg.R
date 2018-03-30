@@ -12,14 +12,22 @@ fit1_pg <-
     check4names(pheno, addcovar, NULL, intcovar, nullcovar)
 
     # force things to be matrices
-    if(!is.null(addcovar) && !is.matrix(addcovar))
-        addcovar <- as.matrix(addcovar)
-    if(!is.null(nullcovar) && !is.matrix(nullcovar))
-        nullcovar <- as.matrix(nullcovar)
-    if(!is.null(intcovar) && !is.matrix(intcovar))
-        intcovar <- as.matrix(intcovar)
-    if(!is.null(contrasts) && !is.matrix(contrasts))
-        contrasts <- as.matrix(contrasts)
+    if(!is.null(addcovar)) {
+        if(!is.matrix(addcovar)) addcovar <- as.matrix(addcovar)
+        if(!is.numeric(addcovar)) stop("addcovar is not numeric")
+    }
+    if(!is.null(nullcovar)) {
+        if(!is.matrix(nullcovar)) nullcovar <- as.matrix(nullcovar)
+        if(!is.numeric(nullcovar)) stop("nullcovar is not numeric")
+    }
+    if(!is.null(intcovar)) {
+        if(!is.matrix(intcovar)) intcovar <- as.matrix(intcovar)
+        if(!is.numeric(intcovar)) stop("intcovar is not numeric")
+    }
+    if(!is.null(contrasts)) {
+        if(!is.matrix(contrasts)) contrasts <- as.matrix(contrasts)
+        if(!is.numeric(contrasts)) stop("contrasts is not numeric")
+    }
 
     # make sure pheno is a vector
     if(is.matrix(pheno) || is.data.frame(pheno)) {
@@ -28,6 +36,7 @@ fit1_pg <-
         rn <- rownames(pheno)
         pheno <- pheno[,1]
         names(pheno) <- rn
+        if(!is.numeric(pheno)) stop("pheno is not numeric")
     }
 
     # genoprobs is a matrix?

@@ -77,8 +77,10 @@ est_herit <-
     # force things to be matrices
     if(!is.matrix(pheno))
         pheno <- as.matrix(pheno)
-    if(!is.null(addcovar) && !is.matrix(addcovar))
-        addcovar <- as.matrix(addcovar)
+    if(!is.null(addcovar)) {
+        if(!is.matrix(addcovar)) addcovar <- as.matrix(addcovar)
+        if(!is.numeric(addcovar)) stop("addcovar is not numeric")
+    }
 
     # check that kinship matrices are square with same IDs
     if(!is.matrix(kinship) || nrow(kinship) != ncol(kinship) || any(rownames(kinship) != colnames(kinship)))

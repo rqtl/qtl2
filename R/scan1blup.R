@@ -121,10 +121,18 @@ scan1blup <-
     check4names(pheno, addcovar, NULL, NULL, nullcovar)
 
     # force things to be matrices
-    if(!is.null(addcovar) && !is.matrix(addcovar))
-        addcovar <- as.matrix(addcovar)
-    if(!is.null(contrasts) && !is.matrix(contrasts))
-        contrasts <- as.matrix(contrasts)
+    if(!is.null(addcovar)) {
+        if(!is.matrix(addcovar)) addcovar <- as.matrix(addcovar)
+        if(!is.numeric(addcovar)) stop("addcovar is not numeric")
+    }
+    if(!is.null(nullcovar)) {
+        if(!is.matrix(nullcovar)) nullcovar <- as.matrix(nullcovar)
+        if(!is.numeric(nullcovar)) stop("nullcovar is not numeric")
+    }
+    if(!is.null(contrasts)) {
+        if(!is.matrix(contrasts)) contrasts <- as.matrix(contrasts)
+        if(!is.numeric(contrasts)) stop("contrasts is not numeric")
+    }
 
     # make sure pheno is a vector
     if(is.matrix(pheno) || is.data.frame(pheno)) {
@@ -133,6 +141,7 @@ scan1blup <-
         rn <- rownames(pheno)
         pheno <- pheno[,1]
         names(pheno) <- rn
+        if(!is.numeric(pheno)) stop("pheno is not numeric")
     }
 
     # genoprobs has more than one chromosome?
