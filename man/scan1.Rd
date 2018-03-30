@@ -12,20 +12,20 @@ scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL, Xcovar = NULL,
 \item{genoprobs}{Genotype probabilities as calculated by
 \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
-\item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
+\item{pheno}{A numeric matrix of phenotypes, individuals x phenotypes.}
 
 \item{kinship}{Optional kinship matrix, or a list of kinship matrices (one
 per chromosome), in order to use the LOCO (leave one chromosome
 out) method.}
 
-\item{addcovar}{An optional matrix of additive covariates.}
+\item{addcovar}{An optional numeric matrix of additive covariates.}
 
-\item{Xcovar}{An optional matrix with additional additive covariates used for
+\item{Xcovar}{An optional numeric matrix with additional additive covariates used for
 null hypothesis when scanning the X chromosome.}
 
-\item{intcovar}{An optional matrix of interactive covariates.}
+\item{intcovar}{An numeric optional matrix of interactive covariates.}
 
-\item{weights}{An optional vector of positive weights for the
+\item{weights}{An optional numeric vector of positive weights for the
 individuals. As with the other inputs, it must have \code{names}
 for individual identifiers. Ignored if \code{kinship} is provided.}
 

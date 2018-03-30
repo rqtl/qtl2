@@ -8,15 +8,15 @@
 #'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
-#' @param pheno A matrix of phenotypes, individuals x phenotypes.
+#' @param pheno A numeric matrix of phenotypes, individuals x phenotypes.
 #' @param kinship Optional kinship matrix, or a list of kinship matrices (one
 #' per chromosome), in order to use the LOCO (leave one chromosome
 #' out) method.
-#' @param addcovar An optional matrix of additive covariates.
-#' @param Xcovar An optional matrix with additional additive covariates used for
+#' @param addcovar An optional numeric matrix of additive covariates.
+#' @param Xcovar An optional numeric matrix with additional additive covariates used for
 #' null hypothesis when scanning the X chromosome.
-#' @param intcovar An optional matrix of interactive covariates.
-#' @param weights An optional vector of positive weights for the
+#' @param intcovar An optional numeric matrix of interactive covariates.
+#' @param weights An optional numeric vector of positive weights for the
 #' individuals. As with the other inputs, it must have `names`
 #' for individual identifiers. Ignored if `kinship` is provided.
 #' @param reml If `kinship` provided: if `reml=TRUE`, use

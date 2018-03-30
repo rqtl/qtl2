@@ -16,9 +16,9 @@ fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, nullcovar = NULL,
 
 \item{kinship}{Optional kinship matrix.}
 
-\item{addcovar}{An optional matrix of additive covariates.}
+\item{addcovar}{An optional numeric matrix of additive covariates.}
 
-\item{nullcovar}{An optional matrix of additional additive
+\item{nullcovar}{An optional numeric matrix of additional additive
 covariates that are used under the null hypothesis (of no QTL)
 but not under the alternative (with a QTL). This is needed for
 the X chromosome, where we might need sex as a additive
@@ -26,13 +26,13 @@ covariate under the null hypothesis, but we wouldn't want to
 include it under the alternative as it would be collinear with
 the QTL effects.}
 
-\item{intcovar}{An optional matrix of interactive covariates.}
+\item{intcovar}{An optional numeric matrix of interactive covariates.}
 
-\item{weights}{An optional vector of positive weights for the
+\item{weights}{An optional numeric vector of positive weights for the
 individuals. As with the other inputs, it must have \code{names}
 for individual identifiers. Ignored if \code{kinship} is provided.}
 
-\item{contrasts}{An optional matrix of genotype contrasts, size
+\item{contrasts}{An optional numeric matrix of genotype contrasts, size
 genotypes x genotypes. For an intercross, you might use
 \code{cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0))} to get
 mean, additive effect, and dominance effect. The default is the

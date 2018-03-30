@@ -18,9 +18,9 @@ scan1blup(genoprobs, pheno, kinship = NULL, addcovar = NULL,
 per chromosome), in order to use the LOCO (leave one chromosome
 out) method.}
 
-\item{addcovar}{An optional matrix of additive covariates.}
+\item{addcovar}{An optional numeric matrix of additive covariates.}
 
-\item{nullcovar}{An optional matrix of additional additive
+\item{nullcovar}{An optional numeric matrix of additional additive
 covariates that are used under the null hypothesis (of no QTL) but
 not under the alternative (with a QTL). This is needed for the X
 chromosome, where we might need sex as a additive covariate under
@@ -29,7 +29,7 @@ alternative as it would be collinear with the QTL effects. Only
 used if \code{kinship} is provided but \code{hsq} is not, to get
 estimate of residual heritability.}
 
-\item{contrasts}{An optional matrix of genotype contrasts, size
+\item{contrasts}{An optional numeric matrix of genotype contrasts, size
 genotypes x genotypes. For an intercross, you might use
 \code{cbind(mu=c(1,0,0), a=c(-1, 0, 1), d=c(0, 1, 0))} to get
 mean, additive effect, and dominance effect. The default is the

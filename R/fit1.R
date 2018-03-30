@@ -8,19 +8,19 @@
 #' @param genoprobs A matrix of genotype probabilities, individuals x genotypes
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix.
-#' @param addcovar An optional matrix of additive covariates.
-#' @param nullcovar An optional matrix of additional additive
+#' @param addcovar An optional numeric matrix of additive covariates.
+#' @param nullcovar An optional numeric matrix of additional additive
 #' covariates that are used under the null hypothesis (of no QTL)
 #' but not under the alternative (with a QTL). This is needed for
 #' the X chromosome, where we might need sex as a additive
 #' covariate under the null hypothesis, but we wouldn't want to
 #' include it under the alternative as it would be collinear with
 #' the QTL effects.
-#' @param intcovar An optional matrix of interactive covariates.
-#' @param weights An optional vector of positive weights for the
+#' @param intcovar An optional numeric matrix of interactive covariates.
+#' @param weights An optional numeric vector of positive weights for the
 #' individuals. As with the other inputs, it must have `names`
 #' for individual identifiers. Ignored if `kinship` is provided.
-#' @param contrasts An optional matrix of genotype contrasts, size
+#' @param contrasts An optional numeric matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
 #' `cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0))` to get
 #' mean, additive effect, and dominance effect. The default is the

@@ -7,11 +7,11 @@
 est_herit(pheno, kinship, addcovar = NULL, reml = TRUE, cores = 1, ...)
 }
 \arguments{
-\item{pheno}{A matrix of phenotypes, individuals x phenotypes.}
+\item{pheno}{A numeric matrix of phenotypes, individuals x phenotypes.}
 
 \item{kinship}{A kinship matrix.}
 
-\item{addcovar}{An optional matrix of additive covariates.}
+\item{addcovar}{An optional numeric matrix of additive covariates.}
 
 \item{reml}{If true, use REML; otherwise, use maximimum likelihood.}
 

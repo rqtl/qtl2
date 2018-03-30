@@ -5,9 +5,9 @@
 #'
 #' @md
 #'
-#' @param pheno A matrix of phenotypes, individuals x phenotypes.
+#' @param pheno A numeric matrix of phenotypes, individuals x phenotypes.
 #' @param kinship A kinship matrix.
-#' @param addcovar An optional matrix of additive covariates.
+#' @param addcovar An optional numeric matrix of additive covariates.
 #' @param reml If true, use REML; otherwise, use maximimum likelihood.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)
