@@ -1,9 +1,13 @@
-## qtl2 0.15-1 (2018-03-09)
+## qtl2 0.15-2 (2018-03-30)
 
 ### Minor changes
 
+- More informative error message in `est_herit()`, `scan1()`, etc.,
+  when covariates and other data are not numeric.
+
 - Fixed `pull_genoprobpos()` so it will work with
-  [qtl2feather](https://github.com/byandell/qtl2feather).
+  [qtl2feather](https://github.com/byandell/qtl2feather)
+  (and [qtl2fst](https://github.com/rqtl/qtl2fst)).
 
 
 ## qtl2 0.14 (2018-03-09)
