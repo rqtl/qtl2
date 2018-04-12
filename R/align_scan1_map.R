@@ -1,4 +1,8 @@
 # align scan1 output with a map
+#' @md
+#' @describeIn qtl2-internal Align `scan1()` output with a map
+#' @keywords internal
+#' @export
 align_scan1_map <-
     function(scan1_output, map)
 {
