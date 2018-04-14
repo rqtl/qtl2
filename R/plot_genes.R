@@ -125,6 +125,19 @@ plot_genes <-
 
     plot_genes_internal(...)
 
+    # drop genes that are not in plotting region
+    u <- par("usr")
+    omit <- (end < u[1] | start > u[2])
+    if(any(omit)) {
+        keep <- !omit
+        start <- start[keep]
+        end <- end[keep]
+        strand <- strand[keep]
+        name <- name[keep]
+    }
+    if(length(start) == 0) # no genes to plot
+        return(invisible(NULL))
+
     # missing names: use ?
     name[is.na(name)] <- "?"
 

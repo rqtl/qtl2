@@ -1,4 +1,4 @@
-## qtl2 0.15-2 (2018-03-30)
+## qtl2 0.15-4 (2018-04-14)
 
 ### Minor changes
 
@@ -8,6 +8,9 @@
 - Fixed `pull_genoprobpos()` so it will work with
   [qtl2feather](https://github.com/byandell/qtl2feather)
   (and [qtl2fst](https://github.com/rqtl/qtl2fst)).
+
+- In `plot_genes()`, if `xlim` is provided as an argument, subset the
+  genes to those that will actually appear in the plotting region.
 
 
 ## qtl2 0.14 (2018-03-09)
