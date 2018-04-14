@@ -39,7 +39,9 @@
 #'                     Name = c("Plcz1", "Gm30215", "Gm5724", "Slco1a5", "Abcc9",
 #'                              "4930407I02Rik", "Gm31777", "Bcat1"),
 #'                     stringsAsFactors=FALSE)
-#' plot_genes(genes, xlim=c(140, 146))
+#'
+#' # use scale_pos=1e-6 because data in bp but we want the plot in Mbp
+#' plot_genes(genes, xlim=c(140, 146), scale_pos=1e-6)
 
 # create an empty plot with test x- and y-axis limits
 plot_genes <-
