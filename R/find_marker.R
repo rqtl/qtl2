@@ -5,7 +5,10 @@
 #'
 #' @md
 #'
-#' @param map A map object: a list (corresponding to chromosomes) of vectors of marker positions.
+#' @param map A map object: a list (corresponding to chromosomes) of
+#'     vectors of marker positions. Can also be a snpinfo object (data
+#'     frame with columns `chr` and `pos`; marker names taken from
+#'     column `snp` or if that doesn't exist from the row names)
 #' @param chr A vector of chromosomes
 #' @param pos A vector of positions
 #' @param interval A pair of positions (provide either `pos` or `interval` but not both)
@@ -23,6 +26,7 @@
 #'
 #' If `interval` is provided, then `chr` should have length 1.
 #'
+#' @seealso [find_markerpos()], [find_index_snp()], [pull_genoprobpos()], [pull_genoprobint()]
 #' @export
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
@@ -39,6 +43,18 @@ find_marker <-
     function(map, chr, pos=NULL, interval=NULL)
 {
     if(is.null(map)) stop("map is NULL")
+    if(is.data.frame(map)) { # snp info table; convert to list
+        if(!all(c("chr", "pos") %in% colnames(map)))
+            stop('If map is a data frame, it should include columns "chr", and "pos".')
+        map_chr <- factor(map$chr, unique(map$chr))
+        map_pos <- split(map$pos, map_chr)
+        mar <- map$snp
+        if(is.null(mar)) mar <- rownames(map)
+        mar <- split(mar, map_chr)
+        for(i in seq_along(map_pos))
+            names(map_pos[[i]]) <- mar[[i]]
+        map <- map_pos
+    }
     chr <- as.character(chr) # treat as a character string
 
     if(!is.null(interval)) {

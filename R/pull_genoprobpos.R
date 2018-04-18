@@ -12,7 +12,7 @@
 #'
 #' @return A matrix of genotype probabilities for the specified position.
 #'
-#' @seealso [find_marker()], [fit1()]
+#' @seealso [find_marker()], [fit1()], [pull_genoprobint()]
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))

@@ -1,4 +1,11 @@
-## qtl2 0.15-2 (2018-03-30)
+## qtl2 0.15-5 (2018-04-18)
+
+### New features
+
+- Added `pull_genoprobint()` for pulling out the genotype
+  probabilities for a given genomic interval. Useful, for example, to
+  apply `scan1blup()` over a defined interval rather than an entire
+  chromosome.
 
 ### Minor changes
 
@@ -8,6 +15,16 @@
 - Fixed `pull_genoprobpos()` so it will work with
   [qtl2feather](https://github.com/byandell/qtl2feather)
   (and [qtl2fst](https://github.com/rqtl/qtl2fst)).
+
+- In `plot_genes()`, if `xlim` is provided as an argument, subset the
+  genes to those that will actually appear in the plotting region.
+
+- Revise `find_marker()` so that the input `map` can also be a "snp
+  info" table (with columns `"snp_id"`, `"chr"` and `"pos"`).
+
+- Added `find_index_snp()` for identifying the index SNP that
+  corresponds to a particular SNP in a snp info table that's been
+  indexed with `index_snps()`.
 
 
 ## qtl2 0.14 (2018-03-09)

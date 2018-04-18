@@ -77,5 +77,5 @@ snpinfo <- index_snps(recla$pmap, snpinfo)
 
 }
 \seealso{
-\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=scan1snps]{scan1snps()}}
+\code{\link[=genoprob_to_snpprob]{genoprob_to_snpprob()}}, \code{\link[=scan1snps]{scan1snps()}}, \code{\link[=find_index_snp]{find_index_snp()}}
 }

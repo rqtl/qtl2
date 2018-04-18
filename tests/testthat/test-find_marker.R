@@ -26,6 +26,15 @@ test_that("find_marker works", {
     # error if interval provided and length(chr) != 1
     expect_error(find_marker(iron$gmap, c(18, 19), interval=c(20, 30)))
 
+    # works if input map is a data frame
+    map <- data.frame(snp_id=unlist(lapply(iron$pmap, names)),
+                      chr=rep(names(iron$pmap), sapply(iron$pmap, length)),
+                      pos=unlist(iron$pmap))
+    expect_equal(find_marker(map, c(8,11), c(82, 112)), c("D8Mit294", "D11Mit101"))
+    expect_equal(find_marker(map, 7, c(44.2, 108.9)), c("D7Nds5", "D7Mit17"))
+    expect_equal(find_marker(map, 16, interval=c(35, 80)), c("D16Mit4", "D16Mit30", "D16Mit19"))
+    expect_error(find_marker(map, 17, 20, c(5,6)))
+
 })
 
 test_that("find_markerpos works", {

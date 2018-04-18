@@ -103,7 +103,7 @@
 #' # fit QTL model just at that position, with polygenic effect
 #' out_fit1_pg <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
 #'
-#' @seealso [pull_genoprobpos()]
+#' @seealso [pull_genoprobpos()], [find_marker()]
 #'
 #' @importFrom stats setNames
 #' @export

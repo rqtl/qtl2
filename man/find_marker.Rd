@@ -7,7 +7,10 @@
 find_marker(map, chr, pos = NULL, interval = NULL)
 }
 \arguments{
-\item{map}{A map object: a list (corresponding to chromosomes) of vectors of marker positions.}
+\item{map}{A map object: a list (corresponding to chromosomes) of
+vectors of marker positions. Can also be a snpinfo object (data
+frame with columns \code{chr} and \code{pos}; marker names taken from
+column \code{snp} or if that doesn't exist from the row names)}
 
 \item{chr}{A vector of chromosomes}
 
@@ -43,4 +46,7 @@ find_marker(iron$pmap, 7, c(44.2, 108.9))
 
 # find markers in an interval
 find_marker(iron$pmap, 16, interval=c(35, 80))
+}
+\seealso{
+\code{\link[=find_markerpos]{find_markerpos()}}, \code{\link[=find_index_snp]{find_index_snp()}}, \code{\link[=pull_genoprobpos]{pull_genoprobpos()}}, \code{\link[=pull_genoprobint]{pull_genoprobint()}}
 }

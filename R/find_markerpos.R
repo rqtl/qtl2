@@ -18,6 +18,7 @@
 #' row names. If the input `cross` is not a cross2 object but
 #' rather a map, the output contains `chr` and `pos`.
 #'
+#' @seealso [find_marker()]
 #' @export
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
