@@ -15,6 +15,9 @@
 - Revise `find_marker()` so that the input `map` can also be a "snp
   info" table (with columns `"snp_id"`, `"chr"` and `"pos"`).
 
+- Added `find_index_snp()` for identifying the index SNP that
+  corresponds to a particular SNP in a snp info table that's been
+  indexed with `index_snps()`.
 
 
 ## qtl2 0.14 (2018-03-09)

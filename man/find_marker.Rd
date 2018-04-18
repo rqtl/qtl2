@@ -48,5 +48,5 @@ find_marker(iron$pmap, 7, c(44.2, 108.9))
 find_marker(iron$pmap, 16, interval=c(35, 80))
 }
 \seealso{
-\code{\link[=find_markerpos]{find_markerpos()}}
+\code{\link[=find_markerpos]{find_markerpos()}}, \code{\link[=find_index_snp]{find_index_snp()}}
 }
