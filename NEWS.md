@@ -1,4 +1,4 @@
-## qtl2 0.15-2 (2018-03-30)
+## qtl2 0.15-5 (2018-04-18)
 
 ### Minor changes
 
@@ -9,8 +9,12 @@
   [qtl2feather](https://github.com/byandell/qtl2feather)
   (and [qtl2fst](https://github.com/rqtl/qtl2fst)).
 
+- In `plot_genes()`, if `xlim` is provided as an argument, subset the
+  genes to those that will actually appear in the plotting region.
+
 - Revise `find_marker()` so that the input `map` can also be a "snp
   info" table (with columns `"snp_id"`, `"chr"` and `"pos"`).
+
 
 
 ## qtl2 0.14 (2018-03-09)
