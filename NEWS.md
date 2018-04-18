@@ -1,5 +1,12 @@
 ## qtl2 0.15-5 (2018-04-18)
 
+### New features
+
+- Added `pull_genoprobint()` for pulling out the genotype
+  probabilities for a given genomic interval. Useful, for example, to
+  apply `scan1blup()` over a defined interval rather than an entire
+  chromosome.
+
 ### Minor changes
 
 - More informative error message in `est_herit()`, `scan1()`, etc.,
