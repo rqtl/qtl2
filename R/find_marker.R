@@ -26,6 +26,7 @@
 #'
 #' If `interval` is provided, then `chr` should have length 1.
 #'
+#' @seealso [find_markerpos()]
 #' @export
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
