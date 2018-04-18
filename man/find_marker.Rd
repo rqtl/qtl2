@@ -7,7 +7,10 @@
 find_marker(map, chr, pos = NULL, interval = NULL)
 }
 \arguments{
-\item{map}{A map object: a list (corresponding to chromosomes) of vectors of marker positions.}
+\item{map}{A map object: a list (corresponding to chromosomes) of
+vectors of marker positions. Can also be a snpinfo object (data
+frame with columns \code{chr} and \code{pos}; marker names taken from
+column \code{snp} or if that doesn't exist from the row names)}
 
 \item{chr}{A vector of chromosomes}
 
