@@ -132,5 +132,5 @@ E (2008) Efficient control of population structure in model
 organism association mapping. Genetics 178:1709--1723.
 }
 \seealso{
-\code{\link[=pull_genoprobpos]{pull_genoprobpos()}}
+\code{\link[=pull_genoprobpos]{pull_genoprobpos()}}, \code{\link[=find_marker]{find_marker()}}
 }

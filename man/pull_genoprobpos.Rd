@@ -31,5 +31,5 @@ pr_8_40 <- pull_genoprobpos(pr, pmar)
 
 }
 \seealso{
-\code{\link[=find_marker]{find_marker()}}, \code{\link[=fit1]{fit1()}}
+\code{\link[=find_marker]{find_marker()}}, \code{\link[=fit1]{fit1()}}, \code{\link[=pull_genoprobint]{pull_genoprobint()}}
 }

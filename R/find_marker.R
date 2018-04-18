@@ -26,7 +26,7 @@
 #'
 #' If `interval` is provided, then `chr` should have length 1.
 #'
-#' @seealso [find_markerpos()], [find_index_snp()]
+#' @seealso [find_markerpos()], [find_index_snp()], [pull_genoprobpos()], [pull_genoprobint()]
 #' @export
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
