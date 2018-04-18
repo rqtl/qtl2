@@ -9,6 +9,9 @@
   [qtl2feather](https://github.com/byandell/qtl2feather)
   (and [qtl2fst](https://github.com/rqtl/qtl2fst)).
 
+- Revise `find_marker()` so that the input `map` can also be a "snp
+  info" table (with columns `"snp_id"`, `"chr"` and `"pos"`).
+
 
 ## qtl2 0.14 (2018-03-09)
 
