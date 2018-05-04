@@ -61,7 +61,7 @@
 #'
 #' @export
 est_herit <-
-    function(pheno, kinship, addcovar=NULL, reml=TRUE, cores=1, ...)
+    function(pheno, kinship, addcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
 {
     if(is.null(pheno)) stop("pheno is NULL")
 
@@ -91,9 +91,12 @@ est_herit <-
     # see Almasy & Blangero (1998) https://doi.org/10.1086/301844
     kinship <- double_kinship(kinship)
 
+    # square-root of weights
+    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(kinshipIDs, addcovar, complete.cases=TRUE)
+    ind2keep <- get_common_ids(kinshipIDs, addcovar, weights, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(is.finite(pheno)) > 0])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -138,12 +141,18 @@ est_herit <-
         K <- kinship[these2keep, these2keep]
         ac <- addcovar; if(!is.null(ac)) { ac <- ac[these2keep,,drop=FALSE]; ac <- drop_depcols(ac, TRUE, tol) }
         ph <- pheno[these2keep,phecol,drop=FALSE]
+        wts <- weights; if(!is.null(wts)) { wts <- wts[these2keep] }
+
+        # multiply stuff by the weights
+        K <- weight_kinship(K, wts)
+        ac <- weight_matrix(ac, wts)
+        ph <- weight_matrix(ph, wts)
 
         # eigen decomposition of kinship matrix
         Ke <- decomp_kinship(K, cores=cores)
 
         # fit LMM for each phenotype, one at a time
-        nullresult <- calc_hsq_clean(Ke, ph, ac, NULL, FALSE, reml, cores,
+        nullresult <- calc_hsq_clean(Ke, ph, ac, NULL, FALSE, wts, reml, cores,
                                      check_boundary, tol)
         hsq[phecol] <- nullresult$hsq
         nullLL <- nullresult$loglik
