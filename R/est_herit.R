@@ -8,6 +8,9 @@
 #' @param pheno A numeric matrix of phenotypes, individuals x phenotypes.
 #' @param kinship A kinship matrix.
 #' @param addcovar An optional numeric matrix of additive covariates.
+#' @param weights An optional numeric vector of positive weights for the
+#' individuals. As with the other inputs, it must have `names`
+#' for individual identifiers.
 #' @param reml If true, use REML; otherwise, use maximimum likelihood.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)

@@ -4,7 +4,8 @@
 \alias{est_herit}
 \title{Estimate heritability with a linear mixed model}
 \usage{
-est_herit(pheno, kinship, addcovar = NULL, reml = TRUE, cores = 1, ...)
+est_herit(pheno, kinship, addcovar = NULL, weights = NULL, reml = TRUE,
+  cores = 1, ...)
 }
 \arguments{
 \item{pheno}{A numeric matrix of phenotypes, individuals x phenotypes.}
@@ -12,6 +13,10 @@ est_herit(pheno, kinship, addcovar = NULL, reml = TRUE, cores = 1, ...)
 \item{kinship}{A kinship matrix.}
 
 \item{addcovar}{An optional numeric matrix of additive covariates.}
+
+\item{weights}{An optional numeric vector of positive weights for the
+individuals. As with the other inputs, it must have \code{names}
+for individual identifiers.}
 
 \item{reml}{If true, use REML; otherwise, use maximimum likelihood.}
 

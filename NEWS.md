@@ -13,6 +13,8 @@
   line. The model is like $v[h^2 K + (1-h^2)D]$ where D is diagonal
   {1/w} for weights w.
 
+- Add `weights` argument to `est_herit()`.
+
 ### Minor changes
 
 - More informative error message in `est_herit()`, `scan1()`, etc.,
