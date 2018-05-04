@@ -17,7 +17,7 @@
 #' @param intcovar An numeric optional matrix of interactive covariates.
 #' @param weights An optional numeric vector of positive weights for the
 #' individuals. As with the other inputs, it must have `names`
-#' for individual identifiers. Ignored if `kinship` is provided.
+#' for individual identifiers.
 #' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param model Indicates whether to use a normal model (least
@@ -139,7 +139,7 @@ scan1 <-
     if(!is.null(kinship)) { # fit linear mixed model
         if(model=="binary") warning("Can't fit binary model with kinship matrix; using normal model")
         return(scan1_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
-                        reml, cores, ...))
+                        weights, reml, cores, ...))
     }
 
     # deal with the dot args

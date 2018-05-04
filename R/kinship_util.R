@@ -107,3 +107,40 @@ check_kinship_onechr <-
 
     kinship
 }
+
+# multiply kinship by weights (from and back)
+# assuming weights are really square-root weights
+weight_kinship <-
+    function(kinship, weights=NULL, tol=1e-8)
+{
+    # if null weights are all 1's, just skip it
+    if(is.null(weights) || max(abs(weights-1)) < tol) return(kinship)
+
+    if(is_kinship_list(kinship)) {
+        for(i in seq_along(kinship)) {
+            kinship[[i]] <- weight_kinship(kinship[[i]], weights)
+        }
+        return(kinship)
+    }
+
+    # if kinship was decomposed, expand it and then decompose it later
+    do_decomp <- FALSE
+    if(is_kinship_decomposed(kinship)) {
+        do_decomp <- TRUE
+        # expand out the decomposition
+        kinship <- t(kinship$vectors) %*% diag(kinship$values) %*% kinship$vectors
+    }
+
+    # line them up
+    ind2keep <- get_common_ids(rownames(kinship), names(weights))
+    weights <- weights[ind2keep]
+    kinship <- kinship[ind2keep, ind2keep, drop=FALSE]
+
+    # multiply kinship matrix by weights
+    kinship <- kinship * outer(weights, weights, "*")
+
+    # decompose kinship again
+    if(do_decomp) kinship <- decomp_kinship(kinship)
+
+    kinship
+}

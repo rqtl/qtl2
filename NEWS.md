@@ -1,4 +1,4 @@
-## qtl2 0.15-5 (2018-04-18)
+## qtl2 0.15-6 (2018-05-04)
 
 ### New features
 
@@ -6,6 +6,12 @@
   probabilities for a given genomic interval. Useful, for example, to
   apply `scan1blup()` over a defined interval rather than an entire
   chromosome.
+
+- `scan1()` now can use weights when `kinship` is provided, for
+  example for the case of the analysis of recombinant inbred line
+  (RIL) phenotype means with differing numbers of individuals per
+  line. The model is like $v[h^2 K + (1-h^2)D]$ where D is diagonal
+  {1/w} for weights w.
 
 ### Minor changes
 
