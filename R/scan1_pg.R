@@ -166,7 +166,7 @@ scan1_pg <-
 # Ke is eigendecomposition of 2*kinship
 calc_hsq_clean <-
     function(Ke, pheno, addcovar, Xcovar, is_x_chr, weights,
-             reml=TRUE, cores=1, check_boundary, tol)
+             reml=TRUE, cores=1, check_boundary, tol=1e-12)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
