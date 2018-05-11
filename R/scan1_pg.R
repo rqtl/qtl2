@@ -165,8 +165,8 @@ scan1_pg <-
 # fit LMM for each of a matrix of phenotypes
 # Ke is eigendecomposition of 2*kinship
 calc_hsq_clean <-
-    function(Ke, pheno, addcovar, Xcovar, is_x_chr, weights,
-             reml=TRUE, cores=1, check_boundary, tol=1e-12)
+    function(Ke, pheno, addcovar=NULL, Xcovar=NULL, is_x_chr=FALSE, weights=NULL,
+             reml=TRUE, cores=1, check_boundary=FALSE, tol=1e-12)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)

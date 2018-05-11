@@ -8,7 +8,7 @@ eff_via_lm <-
     kinship <- double_kinship(kinship) # need 2*kinship for LMM
     kinship <- decomp_kinship(kinship)
     eigenvec <- kinship$vectors
-    hsq <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
+    hsq <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE, NULL,
                           reml=TRUE, cores=1, check_boundary=TRUE, tol=1e-12)$hsq[1,1]
 
     wts <- 1/(hsq*kinship$values + (1-hsq))
