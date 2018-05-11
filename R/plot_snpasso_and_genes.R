@@ -12,7 +12,7 @@ plot_snpasso_and_genes <-
              scale_pos=1, start_field="start", stop_field="stop",
              strand_field="strand", name_field="Name",
              top_panel_prop=0.65, xlim=NULL, xaxt="s",
-             xlab=NULL, ...)
+             xlab=NULL, main="", sub="", ...)
 {
     # 2 x 1 panels; adjust margins
     old_mfrow <- par("mfrow")
@@ -36,12 +36,12 @@ plot_snpasso_and_genes <-
     plot_snpasso(scan1output, snpinfo, show_all_snps=show_all_snps,
                  drop_hilit=drop_hilit, col_hilit=col_hilit, col=col,
                  gap=gap, minlod=minlod, xlim=xlim, xaxt="n", xlab="",
-                 ...)
+                 main=main, ...)
 
     par(mar=bottom_mar)
     plot_genes(genes, minrow=minrow, padding=padding, colors=colors,
                scale_pos=scale_pos, start_field=start_field, stop_field=stop_field,
                strand_field=strand_field, name_field=name_field, xlim=xlim,
-               xaxt=xaxt, xlab=xlab, ...)
+               xaxt=xaxt, xlab=xlab, sub=sub, ...)
 
 }

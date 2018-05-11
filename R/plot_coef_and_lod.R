@@ -12,7 +12,7 @@ plot_coef_and_lod <-
              xaxt=NULL,
              vlines=NULL, vlines_col="white", vlines_lwd=1, vlines_lty=1,
              legend_loc=NULL, legend_ncol=NULL,
-             lodcolumn=1, ...)
+             lodcolumn=1, main="", sub="", ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -53,11 +53,11 @@ plot_coef_and_lod <-
               xaxt="n", vlines=vlines, vlines_col=vlines_col,
               vlines_lwd=vlines_lwd, vlines_lty=vlines_lty,
               legend=legend, legend_loc=legend_loc, legend_ncol=legend_ncol,
-              ...)
+              main=main, ...)
 
     par(mar=bottom_mar)
     plot_scan1(scan1_output, map, lodcolumn=lodcolumn, col=col_lod, ylab=ylab_lod,
                add=FALSE, gap=gap, bgcolor=bgcolor, altbgcolor=altbgcolor,
                vlines=vlines, vlines_col=vlines_col, ylim=ylim_lod,
-               vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, ...)
+               vlines_lwd=vlines_lwd, vlines_lty=vlines_lty, sub=sub, ...)
 }

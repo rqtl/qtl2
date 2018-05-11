@@ -126,7 +126,7 @@ plot_scan1 <-
                  mgp=NULL, las=1,
                  hlines=NULL, hlines_col="white", hlines_lwd=1, hlines_lty=1,
                  vlines=NULL, vlines_col="white", vlines_lwd=1, vlines_lty=1,
-                 ...)
+                 sub="", ...)
         {
             dots <- list(...)
             onechr <- (length(map)==1) # single chromosome
@@ -157,7 +157,7 @@ plot_scan1 <-
                 # make basic plot
                 plot(xpos, lod, xlab="", ylab="", xlim=xlim, ylim=ylim,
                      xaxs=xaxs, yaxs=yaxs, xaxt="n", yaxt="n", type="n",
-                     main=main)
+                     main=main, sub=sub)
 
                 # add background rectangles
                 u <- par("usr")
