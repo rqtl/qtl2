@@ -138,7 +138,7 @@ plot_pxg <-
                  xlim=NULL, ylim=NULL,
                  xaxs=NULL, yaxs=NULL, xlab=NULL, ylab=NULL,
                  mgp=c(2.6, 0.3, 0), mgp.x=mgp, mgp.y=mgp, las=NULL,
-                 pch=21, bg="lightblue", ...)
+                 pch=21, bg="lightblue", main="", sub="", ...)
         {
             if(swap_axes) {
                 if(is.null(ylim)) ylim <- c(0.5, length(ugeno)+0.5)
@@ -215,7 +215,7 @@ plot_pxg <-
             }
 
             plot(0, 0, type="n", xlim=xlim, ylim=ylim, xlab="", ylab="", xaxt="n",
-                 yaxt="n", xaxs=xaxs, yaxs=yaxs)
+                 yaxt="n", xaxs=xaxs, yaxs=yaxs, main=main, sub=sub)
             title(xlab=xlab, mgp=mgp.x)
             title(ylab=ylab, mgp=mgp.y)
 
