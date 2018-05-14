@@ -71,6 +71,19 @@ get_common_ids <-
                 }
             }
         }
+        else if(is.character(args[[i]])) { # character but not vector
+            if(is.null(names(args[[i]]))) {
+                these <- args[[i]]
+            } else {
+                these <- names(args[[i]])
+                if(complete.cases) {
+                    these <- these[!is.na(args[[i]])]
+                }
+            }
+        }
+        else if(!is.null(names(args[[i]]))) { # not a vector but has names
+            these <- names(args[[i]])
+        }
         else {
             stop("Not sure what to do with object of class ", class(args[[i]]))
         }
