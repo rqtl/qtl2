@@ -52,18 +52,16 @@ add_threshold <-
     }
 
     if(length(map) == 1) { # one chromosome
-        if(is_x_chr) thresholdA <- thresholdX
-        abline(h=threshold, ...)
-        return(invisible(NULL))
+        abline(h=ifelse(is_x_chr, thresholdX, thresholdA), ...)
     }
+    else {
+        start <- vapply(map, min, na.rm=TRUE, 0) - gap/2
+        end <- vapply(map, max, na.rm=TRUE, 0) + gap/2
 
-    start <- vapply(map, min, na.rm=TRUE, 0) - gap/2
-    end <- vapply(map, max, na.rm=TRUE, 0) + gap/2
-
-    for(chr in names(map)) {
-        h <- ifelse(is_x_chr[chr], thresholdX, thresholdA)
-        segments(xpos_scan1(map, gap=gap, thechr=chr, thepos=start[chr]), h,
-                 xpos_scan1(map, gap=gap, thechr=chr, thepos=end[chr]), h, ...)
+        for(chr in names(map)) {
+            h <- ifelse(is_x_chr[chr], thresholdX, thresholdA)
+            segments(xpos_scan1(map, gap=gap, thechr=chr, thepos=start[chr]), h,
+                     xpos_scan1(map, gap=gap, thechr=chr, thepos=end[chr]), h, ...)
+        }
     }
-
 }
