@@ -22,7 +22,7 @@
 #' out <- scan1(probs, iron$pheno[,1], Xcovar=Xcovar)
 #' \dontrun{operm <- scan1perm(probs, iron$pheno[,1], addcovar=Xcovar,
 #'                    n_perm=1000, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))}
-#' \dontshow{ooperm <- scan1perm(probs, iron$pheno[,1], addcovar=Xcovar,
+#' \dontshow{operm <- scan1perm(probs, iron$pheno[,1], addcovar=Xcovar,
 #'                    n_perm=10, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))}
 #'
 #' plot(out, map)
