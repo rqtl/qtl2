@@ -1,4 +1,4 @@
-## qtl2 0.15-6 (2018-05-04)
+## qtl2 0.15-10 (2018-05-20)
 
 ### New features
 
@@ -14,6 +14,9 @@
   {1/w} for weights w.
 
 - Add `weights` argument to `est_herit()`.
+
+- Added `add_threshold()` for adding significance thresholds to a
+  genome scan plot.
 
 ### Minor changes
 
