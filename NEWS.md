@@ -1,4 +1,4 @@
-## qtl2 0.15-5 (2018-04-18)
+## qtl2 0.15-9 (2018-05-20)
 
 ### New features
 
@@ -6,6 +6,9 @@
   probabilities for a given genomic interval. Useful, for example, to
   apply `scan1blup()` over a defined interval rather than an entire
   chromosome.
+
+- Added `add_threshold()` for adding significance thresholds to a
+  genome scan plot.
 
 ### Minor changes
 
