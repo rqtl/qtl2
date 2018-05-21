@@ -555,3 +555,45 @@ test_that("scan1 deals with mismatching individuals", {
                       Xcovar=Xc[ind,], reml=TRUE, tol=1e-12), expected)
 
 })
+
+
+test_that("scan1 with weights and kinship", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    chr <- c("7", "12", "X")
+    probs <- probs[,chr]
+    kinship <- kinship[chr]
+
+    set.seed(28915967)
+    weights <- stats::setNames(sample(1:10, n_ind(iron), replace=TRUE), ind_ids(iron))
+
+    out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X,
+                      Xcovar=Xc, weights=weights, reml=TRUE, tol=1e-12)
+
+    # results via regress library
+    # library(regress)
+    # hsq_reml <- matrix(nrow=3, ncol=2)
+    # dimnames(hsq_reml) <- list(c("7", "12", "X"), c("liver", "spleen"))
+    # for(i in 1:2) {
+    #     for(j in 1:3) {
+    #         k <- kinship[[j]]*2
+    #         if(j==3) co <- Xc else co <- X
+    #         out_regress <- regress(iron$pheno[,i] ~ co, ~ k + diag(1/weights), identity=FALSE, tol=1e-8)
+    #         sig <- out_regress$sigma
+    #         hsq_reml[j,i] <- sig[1]/sum(sig)
+    #    }
+    # }
+    hsq_reml <- structure(c(0.294000449087691, 0.386627569931694, 0.378245886332897,
+                            0.175506814400581, 0.168504256116417, 0.162320444038263),
+                          .Dim = c(3L, 2L), .Dimnames = list(c("7", "12", "X"), c("liver", "spleen")))
+    expect_equal(attr(out_reml, "hsq"), hsq_reml, tol=1e-5)
+
+
+})
