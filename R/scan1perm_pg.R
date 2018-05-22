@@ -1,7 +1,7 @@
 # scan1 permutations by LMM (with a kinship matrix)
 scan1perm_pg <-
     function(genoprobs, pheno, kinship, addcovar=NULL, Xcovar=NULL, intcovar=NULL,
-             reml=TRUE, n_perm=1, perm_strata=NULL, cores=1, ind2keep, ...)
+             weights=NULL, reml=TRUE, n_perm=1, perm_strata=NULL, cores=1, ind2keep, ...)
 {
     # deal with the dot args
     dotargs <- list(...)
@@ -36,7 +36,7 @@ scan1perm_pg <-
     is_x_chr <- attr(genoprobs, "is_x_chr")
     if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
 
-    ## decompose kinship matrices
+    ## decompose kinship matrices (multiplied by weights)
     # look for the unique groups of individuals omitted
     #   (we subset and then decompose the kinship matrix separately for each)
     index_batches <- index_batches_by_omits(phe_batches)
@@ -47,7 +47,11 @@ scan1perm_pg <-
         omit <- phe_batches[[uindex_batches[i]]]$omit
         if(length(omit) > 0) these2keep <- ind2keep[-omit]
 
-        decomp_kinship(subset_kinship(kinship, ind=these2keep), cores=1)
+        k <- subset_kinship(kinship, ind=these2keep)
+        wts <- weights[these2keep]
+        k <- weight_kinship(k, wts)
+
+        decomp_kinship(k, cores=1)
     }
     kinship_list <- cluster_lapply(cores, seq_along(uindex_batches), decomp_func)
 
@@ -61,10 +65,16 @@ scan1perm_pg <-
 
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
         Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
-        ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
+        wts <- weights; if(!is.null(wts)) wts <- wts[these2keep]
         ph <- pheno[these2keep, phecol, drop=FALSE]
 
         k <- kinship_list[[ index_batches[i] ]]
+
+        # multiply stuff by weights (kinship is already done)
+        ac <- weight_matrix(ac, wts)
+        Xc <- weight_matrix(Xc, wts)
+        ph <- weight_matrix(ph, wts)
+
         result <- calc_hsq_clean(k, ph, ac, Xc, is_x_chr, reml, cores=1, check_boundary, tol)
 
         # expand hsq and loglik to one row per chromosome
@@ -134,17 +144,26 @@ scan1perm_pg <-
         # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
         ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
+        wts <- weights; if(!is.null(wts)) wts <- wts[these2keep]
         ph <- pheno[these2keep, phecol, drop=FALSE]
 
         # grab decomposed kinship matrix for this chromosome
         Ke <- subset_kinship(kinship_list[[index_batches[phebatchnum]]], chr=chrnam)
+
+        # multiply stuff by weights
+        ac <- weight_matrix(ac, wts)
+        ic <- weight_matrix(ic, wts)
+        ph <- weight_matrix(ph, wts)
+
+        # weight the probabilities
+        pr <- weight_array(pr, wts)
 
         # hsq, null_loglik for this batch and chr
         hsq <- nullresult[[phebatchnum]]$hsq[chr,]
         null_loglik <- nullresult[[phebatchnum]]$loglik[chr,]
 
         # scan this chromosome and calculate maximum LOD for each phenotype
-        scan1perm_pg_onechr(pr, Ke, ph, ac, ic, hsq, null_loglik, reml,
+        scan1perm_pg_onechr(pr, Ke, ph, ac, ic, wts, hsq, null_loglik, reml,
                             intcovar_method, tol)
 
     }
@@ -190,7 +209,7 @@ index_batches_by_omits <-
 # genoprobs is an array for a single chromosome
 # Ke is the decomposed kinship matrix
 scan1perm_pg_onechr <-
-    function(genoprobs, Ke, pheno, addcovar, intcovar,
+    function(genoprobs, Ke, pheno, addcovar, intcovar, weights,
              hsq, null_loglik, reml, intcovar_method, tol)
 {
     Kevec <- Ke$vectors
@@ -198,21 +217,22 @@ scan1perm_pg_onechr <-
 
     maxlod <- rep(NA, ncol(pheno))
 
-    ac <- cbind(rep(1, nrow(pheno)), addcovar)
+    intercept <- weights; if(is_null_weights(weights)) intercept <- rep(1,nrow(pheno))
+    ac <- cbind(intercept, addcovar)
     ic <- intcovar
 
     for(phecol in seq_len(ncol(pheno))) {
         y <- pheno[,phecol,drop=FALSE]
 
-        weights <- 1/(hsq[phecol]*Keval + (1-hsq[phecol]))
-        weights <- sqrt(weights)
+        w <- 1/(hsq[phecol]*Keval + (1-hsq[phecol]))
+        w <- sqrt(w)
 
         if(is.null(ic))
-            loglik <- scan_pg_onechr(genoprobs, y, ac, Kevec, weights, tol)
+            loglik <- scan_pg_onechr(genoprobs, y, ac, Kevec, w, tol)
         else if(intcovar_method=="highmem")
-            loglik <- scan_pg_onechr_intcovar_highmem(genoprobs, y, ac, ic, Kevec, weights, tol)
+            loglik <- scan_pg_onechr_intcovar_highmem(genoprobs, y, ac, ic, Kevec, w, tol)
         else
-            loglik <- scan_pg_onechr_intcovar_lowmem(genoprobs, y, ac, ic, Kevec, weights, tol)
+            loglik <- scan_pg_onechr_intcovar_lowmem(genoprobs, y, ac, ic, Kevec, w, tol)
 
         maxlod[phecol] <- (max(loglik) - null_loglik[phecol])/log(10)
     }
