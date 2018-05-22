@@ -670,6 +670,8 @@ test_that("scan1 with weights and kinship", {
                                            "cX.loc47", "cX.loc50", "cX.loc52", "cX.loc54", "cX.loc57", "DXMit186"),
                                          c("liver", "spleen")), class = c("scan1", "matrix"))
 
-    expect_equivalent(out_reml, result)
+    for(at in c("hsq", "sample_size"))
+        attr(result, at) <- attr(out_reml, at)
+    expect_equal(out_reml, result, tol=1e-6)
 
 })
