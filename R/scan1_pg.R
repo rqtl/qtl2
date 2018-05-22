@@ -127,7 +127,7 @@ scan1_pg <-
         ac <- addcovar; if(!is.null(ac)) { ac <- ac[these2keep,,drop=FALSE]; ac <- drop_depcols(ac, TRUE, tol) }
         Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
         ic <- intcovar; if(!is.null(ic)) { ic <- ic[these2keep,,drop=FALSE]; ic <- drop_depcols(ic, TRUE, tol) }
-        wts <- weights; if(!is.null(wts)) { wts <- wts[these2keep] }
+        wts <- weights; if(!is.null(wts)) wts <- wts[these2keep]
         ph <- pheno[these2keep,phecol,drop=FALSE]
 
         # multiply stuff by the weights
