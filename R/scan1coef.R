@@ -25,7 +25,7 @@
 #' @param intcovar An optional numeric matrix of interactive covariates.
 #' @param weights An optional numeric vector of positive weights for the
 #' individuals. As with the other inputs, it must have `names`
-#' for individual identifiers. Ignored if `kinship` is provided.
+#' for individual identifiers.
 #' @param contrasts An optional numeric matrix of genotype contrasts, size
 #' genotypes x genotypes. For an intercross, you might use
 #' `cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0))` to get
@@ -117,7 +117,7 @@ scan1coef <-
 
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1coef_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                            intcovar, contrasts, se, hsq, reml, tol))
+                            intcovar, weights, contrasts, se, hsq, reml, tol))
     }
 
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
