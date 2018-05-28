@@ -1,10 +1,10 @@
-### [R/qtl2](http://kbroman.org/qtl2)
+### [R/qtl2](https://kbroman.org/qtl2)
 
 [![Build Status](https://travis-ci.org/rqtl/qtl2.svg?branch=master)](https://travis-ci.org/rqtl/qtl2)
 
-[Karl Broman](http://kbroman.org)
+[Karl Broman](https://kbroman.org)
 
-[R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
+[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
 
@@ -58,15 +58,15 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 
 ### Vignettes
 
-- [user guide](http://kbroman.org/qtl2/assets/vignettes/user_guide.html)
-- [input file formats](http://kbroman.org/qtl2/assets/vignettes/input_files.html)
+- [user guide](https://kbroman.org/qtl2/assets/vignettes/user_guide.html)
+- [input file formats](https://kbroman.org/qtl2/assets/vignettes/input_files.html)
   (see also the
-  [sample data files](http://kbroman.org/qtl2/pages/sampledata.html)
+  [sample data files](https://kbroman.org/qtl2/pages/sampledata.html)
   and the [qtl2data repository](https://github.com/rqtl/qtl2data))
-- [preparing DO mouse data for R/qtl2](http://kbroman.org/qtl2/pages/prep_do_data.html)
-- [differences between R/qtl and R/qtl2](http://kbroman.org/qtl2/assets/vignettes/rqtl_diff.html)
-- [developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
-- [HMM benchmarks](http://kbroman.org/qtl2/assets/vignettes/hmm_benchmarks.html)
+- [preparing DO mouse data for R/qtl2](https://kbroman.org/qtl2/pages/prep_do_data.html)
+- [differences between R/qtl and R/qtl2](https://kbroman.org/qtl2/assets/vignettes/rqtl_diff.html)
+- [developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html)
+- [HMM benchmarks](https://kbroman.org/qtl2/assets/vignettes/hmm_benchmarks.html)
 
 ---
 

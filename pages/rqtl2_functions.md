@@ -277,3 +277,6 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Other functions
+- `align_scan1_map`
+- `find_index_snp`
+- `pull_genoprobint`
