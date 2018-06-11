@@ -125,7 +125,7 @@ index_snps <-
     if(any(snps2drop)) {
         snpinfo <- snpinfo[!snps2drop,,drop=FALSE]
         interval <- interval[!snps2drop]
-        on_map <- interval[!snps2drop]
+        on_map <- on_map[!snps2drop]
     }
     if(nrow(snpinfo) == 0)
         stop("No SNPs within range")

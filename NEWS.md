@@ -1,4 +1,4 @@
-## qtl2 0.15-9 (2018-05-20)
+## qtl2 0.15-14 (2018-06-11)
 
 ### New features
 
@@ -28,6 +28,11 @@
 - Added `find_index_snp()` for identifying the index SNP that
   corresponds to a particular SNP in a snp info table that's been
   indexed with `index_snps()`.
+
+### Bug fixes
+
+- Fix a bug in `index_snps()`; messed up results when `start` and
+  `end` outside the range of the map.
 
 
 ## qtl2 0.14 (2018-03-09)
