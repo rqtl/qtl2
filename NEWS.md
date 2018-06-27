@@ -22,6 +22,11 @@
   multiparent populations, from inferred genotypes plus the founder
   strains' SNP alleles.
 
+- In `genoprob_to_snpprob()`, the `snpinfo` argument can now be a
+  cross object (for a multiparent population with founder genotypes),
+  in which case the SNP information for all SNPs with complete founder
+  genotype data is calculated and used.
+
 ### Minor changes
 
 - More informative error message in `est_herit()`, `scan1()`, etc.,

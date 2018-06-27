@@ -26,6 +26,10 @@
 #'     intervals the SNPs reside.
 #' * `on_map` - Indicate whether SNP coincides with a marker
 #'     in the `genoprobs`
+#' Alternatively, `snpinfo` can be a cross object for a multi-parent
+#' population with founder genotypes, in which case the SNP
+#' information for all markers with complete founder genotype data is
+#' calculated and then used.
 #'
 #' @return An object like the `genoprobs` input, but with imputed
 #' genotype probabilities at the selected SNPs indicated in
@@ -87,6 +91,9 @@ genoprob_to_snpprob <-
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(snpinfo)) stop("snpinfo is NULL")
+    if("cross2" %in% class(snpinfo)) { # genoprobs -> snpprobs for all markers in a cross
+        return(snpprob_from_cross(genoprobs, snpinfo))
+    }
 
     if(nrow(snpinfo)==0) {
         result <- genoprobs[,names(genoprobs)[1]]
