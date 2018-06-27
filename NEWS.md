@@ -1,4 +1,4 @@
-## qtl2 0.15-15 (2018-06-11)
+## qtl2 0.15-17 (2018-06-27)
 
 ### New features
 
@@ -17,6 +17,10 @@
 
 - Added `add_threshold()` for adding significance thresholds to a
   genome scan plot.
+
+- Added `predict_snpgeno()` for predicting SNP genotypes in a
+  multiparent populations, from inferred genotypes plus the founder
+  strains' SNP alleles.
 
 ### Minor changes
 
