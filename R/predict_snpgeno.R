@@ -68,7 +68,7 @@ function(cross, geno, cores=1)
    is_male <- !cross$is_female
 
    # set up cluster; use quiet=TRUE
-   cores <- qtl2:::setup_cluster(cores, TRUE)
+   cores <- setup_cluster(cores, TRUE)
 
    by_chr_func <- function(i) {
        # ensure the same markers
@@ -93,7 +93,7 @@ function(cross, geno, cores=1)
        result
    }
 
-   result <- qtl2:::cluster_lapply(cores, seq_along(geno), by_chr_func)
+   result <- cluster_lapply(cores, seq_along(geno), by_chr_func)
    names(result) <- names(geno)
    result
 
