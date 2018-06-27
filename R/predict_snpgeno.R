@@ -70,11 +70,11 @@ function(cross, geno, cores=1)
    # set up cluster; use quiet=TRUE
    cores <- setup_cluster(cores, TRUE)
 
-   by_chr_func <- function(i) {
+   by_chr_func <- function(chr) {
        # ensure the same markers
-       fg <- cross$founder_geno[[i]]
-       ph1 <- ph[[i]][,,1]
-       ph2 <- ph[[i]][,,2]
+       fg <- cross$founder_geno[[chr]]
+       ph1 <- ph[[chr]][,,1]
+       ph2 <- ph[[chr]][,,2]
        if(ncol(fg) != ncol(ph1) ||
           any(colnames(fg) != colnames(ph1))) {
            mar <- get_common_ids(colnames(fg), colnames(ph1))
@@ -84,10 +84,10 @@ function(cross, geno, cores=1)
        }
 
        result <- .predict_snpgeno(ph1, ph2, fg)
-       dimnames(result) <- dimnames(cross$geno[[i]])
+       dimnames(result) <- dimnames(cross$geno[[chr]])
 
-       if(is_x_chr[i] && any(is_male)) { # some males on X chr
-           result[is_male,] <- .predict_snpgeno(ph1[is_male,,drop=FALSE], ph2[is_male,,drop=FALSE], fg)
+       if(is_x_chr[chr] && any(is_male)) { # some males on X chr
+           result[is_male,] <- .predict_snpgeno(ph1[is_male,,drop=FALSE], ph1[is_male,,drop=FALSE], fg)
        }
 
        result
