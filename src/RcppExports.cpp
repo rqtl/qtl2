@@ -1515,6 +1515,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// predict_snpgeno
+IntegerMatrix predict_snpgeno(const IntegerMatrix& allele1, const IntegerMatrix& allele2, const IntegerMatrix& founder_geno);
+RcppExport SEXP _qtl2_predict_snpgeno(SEXP allele1SEXP, SEXP allele2SEXP, SEXP founder_genoSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type allele1(allele1SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type allele2(allele2SEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type founder_geno(founder_genoSEXP);
+    rcpp_result_gen = Rcpp::wrap(predict_snpgeno(allele1, allele2, founder_geno));
+    return rcpp_result_gen;
+END_RCPP
+}
 // random_int
 IntegerVector random_int(const int n, const int low, const int high);
 RcppExport SEXP _qtl2_random_int(SEXP nSEXP, SEXP lowSEXP, SEXP highSEXP) {
@@ -2463,6 +2476,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_matrix_x_vector", (DL_FUNC) &_qtl2_matrix_x_vector, 2},
     {"_qtl2_matrix_x_3darray", (DL_FUNC) &_qtl2_matrix_x_3darray, 2},
     {"_qtl2_maxmarg", (DL_FUNC) &_qtl2_maxmarg, 3},
+    {"_qtl2_predict_snpgeno", (DL_FUNC) &_qtl2_predict_snpgeno, 3},
     {"_qtl2_random_int", (DL_FUNC) &_qtl2_random_int, 3},
     {"_qtl2_get_permutation", (DL_FUNC) &_qtl2_get_permutation, 1},
     {"_qtl2_permute_nvector", (DL_FUNC) &_qtl2_permute_nvector, 2},

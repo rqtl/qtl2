@@ -429,6 +429,10 @@ matrix_x_3darray <- function(X, A) {
     .Call(`_qtl2_maxmarg`, prob_array, minprob, tol)
 }
 
+.predict_snpgeno <- function(allele1, allele2, founder_geno) {
+    .Call(`_qtl2_predict_snpgeno`, allele1, allele2, founder_geno)
+}
+
 random_int <- function(n, low, high) {
     .Call(`_qtl2_random_int`, n, low, high)
 }
