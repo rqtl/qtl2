@@ -1,4 +1,4 @@
-## qtl2 0.15-17 (2018-06-27)
+## qtl2 0.15-18 (2018-07-11)
 
 ### New features
 
@@ -7,11 +7,11 @@
   apply `scan1blup()` over a defined interval rather than an entire
   chromosome.
 
-- `scan1()`, `scan1perm()`, and `scan1coef()` now can use weights when
-  `kinship` is provided, for example for the case of the analysis of
-  recombinant inbred line (RIL) phenotype means with differing numbers
-  of individuals per line. The model is like $v[h^2 K + (1-h^2)D]$
-  where D is diagonal {1/w} for weights w.
+- `scan1()`, `scan1perm()`, `scan1coef()`, and `scan1snps()` now can
+  use weights when `kinship` is provided, for example for the case of
+  the analysis of recombinant inbred line (RIL) phenotype means with
+  differing numbers of individuals per line. The residual variance matrix
+  is like $v[h^2 K + (1-h^2)D]$ where D is diagonal {1/w} for weights w.
 
 - Add `weights` argument to `est_herit()`.
 

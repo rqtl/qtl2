@@ -22,7 +22,7 @@
 #' @param intcovar An optional numeric matrix of interactive covariates.
 #' @param weights An optional numeric vector of positive weights for the
 #' individuals. As with the other inputs, it must have `names`
-#' for individual identifiers. Ignored if `kinship` is provided.
+#' for individual identifiers.
 #' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param model Indicates whether to use a normal model (least
