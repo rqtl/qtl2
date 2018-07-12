@@ -72,7 +72,7 @@ max_scan1 <-
     }
 
     if(missing(map) || is.null(map)) {
-        warning("map not provided; returning the genome-wide max () LOD but not its position")
+        warning("map not provided; returning the genome-wide maximum LOD but not its position")
         return( setNames( max(scan1_output[,lodcolumn], na.rm=TRUE), colnames(scan1_output)[lodcolumn]) )
     }
 
