@@ -34,7 +34,7 @@ estimate of residual heritability.}
 
 \item{weights}{An optional numeric vector of positive weights for the
 individuals. As with the other inputs, it must have \code{names}
-for individual identifiers. Ignored if \code{kinship} is provided.}
+for individual identifiers.}
 
 \item{contrasts}{An optional numeric matrix of genotype contrasts, size
 genotypes x genotypes. For an intercross, you might use

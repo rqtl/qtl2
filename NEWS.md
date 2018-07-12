@@ -1,4 +1,4 @@
-## qtl2 0.15-14 (2018-06-11)
+## qtl2 0.15-18 (2018-07-12)
 
 ### New features
 
@@ -7,8 +7,26 @@
   apply `scan1blup()` over a defined interval rather than an entire
   chromosome.
 
+- `scan1()`, `scan1perm()`, `scan1coef()`, `fit1()`, and `scan1snps()`
+  can now use weights when `kinship` is provided, for example for the
+  case of the analysis of recombinant inbred line (RIL) phenotype
+  means with differing numbers of individuals per line. The residual
+  variance matrix is like $v[h^2 K + (1-h^2)D]$ where D is diagonal
+  {1/w} for weights w.
+
+- Add `weights` argument to `est_herit()`.
+
 - Added `add_threshold()` for adding significance thresholds to a
   genome scan plot.
+
+- Added `predict_snpgeno()` for predicting SNP genotypes in a
+  multiparent populations, from inferred genotypes plus the founder
+  strains' SNP alleles.
+
+- In `genoprob_to_snpprob()`, the `snpinfo` argument can now be a
+  cross object (for a multiparent population with founder genotypes),
+  in which case the SNP information for all SNPs with complete founder
+  genotype data is calculated and used.
 
 ### Minor changes
 
@@ -28,6 +46,9 @@
 - Added `find_index_snp()` for identifying the index SNP that
   corresponds to a particular SNP in a snp info table that's been
   indexed with `index_snps()`.
+
+- Add `overwrite` argument (default `FALSE`) to `zip_datafiles()`,
+  similar to that for `write_control_file()`.
 
 ### Bug fixes
 

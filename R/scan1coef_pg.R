@@ -3,7 +3,7 @@
 scan1coef_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
-             contrasts=NULL, se=FALSE,
+             weights=NULL, contrasts=NULL, se=FALSE,
              hsq=NULL, reml=TRUE, tol=1e-12)
 {
     stopifnot(tol > 0)
@@ -62,7 +62,7 @@ scan1coef_pg <-
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
+    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs, weights,
                                addcovar, nullcovar, intcovar, complete.cases=TRUE)
 
     if(length(ind2keep)<=2) {
@@ -87,6 +87,7 @@ scan1coef_pg <-
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
     if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
+    if(!is.null(weights)) weights <- weights[ind2keep]
 
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
@@ -94,34 +95,49 @@ scan1coef_pg <-
     # make sure columns in intcovar are also in addcovar
     addcovar <- force_intcovar(addcovar, intcovar, tol)
 
+    # square-root of weights (only if model="normal")
+    weights <- sqrt_weights(weights) # also check >0 (and if all 1's, turn to NULL)
+
+    # multiply stuff by weights
+    kinship <- weight_kinship(kinship, weights)
+    addcovar <- weight_matrix(addcovar, weights)
+    intcovar <- weight_matrix(intcovar, weights)
+    nullcovar <- weight_matrix(nullcovar, weights)
+    pheno <- weight_matrix(pheno, weights)
+
     # eigen decomposition of kinship matrix
     if(!did_decomp)
         kinship <- decomp_kinship(kinship[ind2keep, ind2keep])
 
     # estimate hsq if necessary
     if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
-                                     NULL, FALSE, reml, cores=1, check_boundary=TRUE, tol)
+        nullresult <- calc_hsq_clean(Ke=kinship, pheno=as.matrix(pheno),
+                                     addcovar=cbind(addcovar, nullcovar), Xcovar=NULL,
+                                     weights=weights, is_x_chr=FALSE, reml=reml,
+                                     cores=1, check_boundary=TRUE, tol=tol)
         hsq <- as.numeric(nullresult$hsq)
     }
 
     # eigen-vectors and weights
     eigenvec <- kinship$vectors
-    weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
+    wts <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
         genoprobs <- genoprobs_by_contrasts(genoprobs, contrasts)
 
+    # multiply genoprobs by weights
+    genoprobs <- weight_array(genoprobs[ind2keep,,,drop=FALSE], weights)
+
     if(se) { # also calculate SEs
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoefSE_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
+            result <- scancoefSE_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, wts, tol)
         }
         else {                  # intcovar
             result <- scancoefSE_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                              eigenvec, weights, tol)
+                                              eigenvec, wts, tol)
         }
 
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -130,11 +146,11 @@ scan1coef_pg <-
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            result <- scancoef_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, tol)
+            result <- scancoef_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, wts, tol)
         }
         else {                  # intcovar
             result <- scancoef_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                            eigenvec, weights, tol)
+                                            eigenvec, wts, tol)
         }
         SE <- NULL
     }

@@ -28,7 +28,7 @@ null hypothesis when scanning the X chromosome.}
 
 \item{weights}{An optional numeric vector of positive weights for the
 individuals. As with the other inputs, it must have \code{names}
-for individual identifiers. Ignored if \code{kinship} is provided.}
+for individual identifiers.}
 
 \item{reml}{If \code{kinship} provided: if \code{reml=TRUE}, use
 REML; otherwise maximum likelihood.}

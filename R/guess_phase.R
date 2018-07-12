@@ -22,7 +22,7 @@
 #' will be a list of three-dimensional arrays of imputed
 #' genotypes, individual x position x haplotype (1/2).
 #'
-#' @details We randonly assign the pair of alleles at the first locus
+#' @details We randomly assign the pair of alleles at the first locus
 #'     to two haplotypes, and then work left to right, assigning
 #'     alleles to haplotypes one locus at a time seeking the fewest
 #'     recombination events. The results are subject to arbitrary and

@@ -3,7 +3,7 @@
 # called by scan1() when kinship() is provided.
 scan1_pg <-
     function(genoprobs, pheno, kinship, addcovar=NULL, Xcovar=NULL,
-             intcovar=NULL, reml=TRUE, cores=1, ...)
+             intcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
 {
     # deal with the dot args
     dotargs <- list(...)
@@ -49,10 +49,13 @@ scan1_pg <-
     # see Almasy & Blangero (1998) https://doi.org/10.1086/301844
     kinship <- double_kinship(kinship)
 
+    # take square-root of weights
+    weights <- sqrt_weights(weights)
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
-                               kinshipIDs, complete.cases=TRUE)
+                               kinshipIDs, weights, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(is.finite(pheno)) > 0])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -124,19 +127,27 @@ scan1_pg <-
         ac <- addcovar; if(!is.null(ac)) { ac <- ac[these2keep,,drop=FALSE]; ac <- drop_depcols(ac, TRUE, tol) }
         Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
         ic <- intcovar; if(!is.null(ic)) { ic <- ic[these2keep,,drop=FALSE]; ic <- drop_depcols(ic, TRUE, tol) }
+        wts <- weights; if(!is.null(wts)) wts <- wts[these2keep]
         ph <- pheno[these2keep,phecol,drop=FALSE]
+
+        # multiply stuff by the weights
+        K <- weight_kinship(K, wts)
+        ac <- weight_matrix(ac, wts)
+        Xc <- weight_matrix(Xc, wts)
+        ph <- weight_matrix(ph, wts)
 
         # eigen decomposition of kinship matrix
         Ke <- decomp_kinship(K, cores=cores)
 
         # fit LMM for each phenotype, one at a time
-        nullresult <- calc_hsq_clean(Ke, ph, ac, Xc, is_x_chr, reml, cores,
-                                     check_boundary, tol)
+        nullresult <- calc_hsq_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
+                                     is_x_chr=is_x_chr, weights=wts, reml=reml,
+                                     cores=cores, check_boundary=check_boundary, tol=tol)
         hsq[, phecol] <- nullresult$hsq
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes
         lod <- scan1_pg_clean(genoprobs, these2keep, Ke, ph, ac, ic, is_x_chr,
-                              genoprob_Xcol2drop,
+                              wts, genoprob_Xcol2drop,
                               nullresult$hsq, nullresult$loglik, reml, cores,
                               intcovar_method, tol)
 
@@ -155,8 +166,8 @@ scan1_pg <-
 # fit LMM for each of a matrix of phenotypes
 # Ke is eigendecomposition of 2*kinship
 calc_hsq_clean <-
-    function(Ke, pheno, addcovar, Xcovar, is_x_chr, reml=TRUE, cores=1,
-             check_boundary, tol)
+    function(Ke, pheno, addcovar=NULL, Xcovar=NULL, is_x_chr=FALSE, weights=NULL,
+             reml=TRUE, cores=1, check_boundary=FALSE, tol=1e-12)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
@@ -177,7 +188,8 @@ calc_hsq_clean <-
         {
             # premultiply phenotypes and covariates by transposed eigenvectors
             y <- Ke[[chr]]$vectors %*% pheno
-            ac <- cbind(rep(1, n), addcovar)
+            intercept <- weights; if(is_null_weights(weights)) intercept <- rep(1,n)
+            ac <- cbind(intercept, addcovar)
             if(!is.null(Xcovar) && is_x_chr[chr]) # add Xcovar if necessary
                 ac <- drop_depcols(cbind(ac, Xcovar), FALSE, tol)
             logdetXpX = Rcpp_calc_logdetXpX(ac)
@@ -208,7 +220,7 @@ calc_hsq_clean <-
 # genoprobs is still a big complicated calc_genoprob object
 scan1_pg_clean <-
     function(genoprobs, ind2keep, Ke, pheno, addcovar, intcovar, is_x_chr,
-             genoprob_Xcol2drop,
+             weights, genoprob_Xcol2drop,
              hsq, null_loglik, reml, cores, intcovar_method, tol)
 {
     n <- nrow(pheno)
@@ -241,7 +253,8 @@ scan1_pg_clean <-
 
             # prep phenotype and covariates
             y <- pheno[,phecol,drop=FALSE]
-            ac <- cbind(rep(1, n), addcovar)
+            intercept <- weights; if(is_null_weights(weights)) intercept <- rep(1,n)
+            ac <- cbind(intercept, addcovar)
             ic <- intcovar
 
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
@@ -252,30 +265,32 @@ scan1_pg_clean <-
             }
             else
                 pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
+            # weight the probabilities
+            pr <- weight_array(pr, weights)
 
             # calculate weights for this chromosome
             if(loco) {
-                weights <- 1/(hsq[chr,phecol]*Keval + (1-hsq[chr,phecol]))
+                lmm_wts <- 1/(hsq[chr,phecol]*Keval + (1-hsq[chr,phecol]))
                 nullLL <- null_loglik[chr,phecol]
             }
             else {
                 if(no_x || !is_x_chr[chr]) {
-                    weights <- 1/(hsq[1,phecol]*Keval + (1-hsq[1,phecol]))
+                    lmm_wts <- 1/(hsq[1,phecol]*Keval + (1-hsq[1,phecol]))
                     nullLL <- null_loglik[1,phecol]
                 }
                 else {
-                    weights <- 1/(hsq[2,phecol]*Keval + (1-hsq[2,phecol]))
+                    lmm_wts <- 1/(hsq[2,phecol]*Keval + (1-hsq[2,phecol]))
                     nullLL <- null_loglik[2,phecol]
                 }
             }
-            weights <- sqrt(weights)
+            lmm_wts <- sqrt(lmm_wts)
 
             if(is.null(ic))
-                loglik <- scan_pg_onechr(pr, y, ac, Kevec, weights, tol)
+                loglik <- scan_pg_onechr(pr, y, ac, Kevec, lmm_wts, tol)
             else if(intcovar_method=="highmem")
-                loglik <- scan_pg_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, weights, tol)
+                loglik <- scan_pg_onechr_intcovar_highmem(pr, y, ac, ic, Kevec, lmm_wts, tol)
             else
-                loglik <- scan_pg_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, weights, tol)
+                loglik <- scan_pg_onechr_intcovar_lowmem(pr, y, ac, ic, Kevec, lmm_wts, tol)
             lod <- (loglik - nullLL)/log(10)
         }
 

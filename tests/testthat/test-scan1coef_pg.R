@@ -8,7 +8,7 @@ eff_via_lm <-
     kinship <- double_kinship(kinship) # need 2*kinship for LMM
     kinship <- decomp_kinship(kinship)
     eigenvec <- kinship$vectors
-    hsq <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE,
+    hsq <- calc_hsq_clean(kinship, as.matrix(pheno), addcovar, NULL, FALSE, NULL,
                           reml=TRUE, cores=1, check_boundary=TRUE, tol=1e-12)$hsq[1,1]
 
     wts <- 1/(hsq*kinship$values + (1-hsq))
@@ -173,5 +173,58 @@ test_that("scan1coef deals with mismatching individuals", {
     expect_equal(scan1coef(probs, phe[ind,,drop=FALSE], kinship, addcovar=X), expected)
     expect_equal(scan1coef(probs, phe, kinship[ind,ind], addcovar=X), expected)
     expect_equal(scan1coef(probs, phe, kinship, addcovar=X[ind]), expected)
+
+})
+
+test_that("scan1coef with weights works", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    kinship <- calc_kinship(probs, "loco")[["3"]]
+    probs <- probs[,"3"]
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+    phe <- iron$pheno[,2,drop=FALSE]
+
+    weights <- setNames(runif(n_ind(iron), 1, 10), ind_ids(iron))
+
+    # plain least squares match LMM when hsq==0?
+    coef_hk <- scan1coef(probs, phe, addcovar=X, se=TRUE)
+    coef_lmm0 <- scan1coef(probs, phe, kinship, X, se=TRUE, hsq=0)
+    expect_equal(coef_hk, coef_lmm0)
+
+    # plain least squares match LMM when hsq==0, with weights?
+    coef_hk <- scan1coef(probs, phe, addcovar=X, weights=weights, se=TRUE)
+    coef_lmm0 <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE, hsq=0)
+    expect_equal(coef_hk, coef_lmm0)
+
+    # same with contrasts, no weights
+    coef_hk <- scan1coef(probs, phe, addcovar=X, se=TRUE,
+                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0)))
+    coef_lmm0 <- scan1coef(probs, phe, kinship, X, se=TRUE, hsq=0,
+                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0)))
+    expect_equal(coef_hk, coef_lmm0)
+
+    # same with contrasts, weights
+    coef_hk <- scan1coef(probs, phe, addcovar=X, weights=weights, se=TRUE,
+                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0)))
+    coef_lmm0 <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE, hsq=0,
+                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(0, 1, 0)))
+    expect_equal(coef_hk, coef_lmm0)
+
+
+    # check LMM with hsq not 0
+    coef_lmm <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE)
+
+    ### compare to regress::regress()
+    # k <- 2*kinship
+    # v <- diag(1/weights)
+    # out0_regress <- regress::regress(phe ~ X, ~ k + v, identity=FALSE)
+    # p <- probs[[1]][,,6]
+    # hsq <- out0_regress$sigma[1]/sum(out0_regress$sigma)
+    # V <- hsq*k + (1-hsq)*v
+    # out1_regress <- regress::regress(phe ~ -1 + p + X, ~ V, identity=FALSE)
+    # co <- cbind(coef_lmm[6,], attr(coef_lmm, "SE")[6,])
 
 })

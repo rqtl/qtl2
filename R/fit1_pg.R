@@ -3,7 +3,7 @@
 fit1_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
-             contrasts=NULL, se=FALSE,
+             weights=NULL, contrasts=NULL, se=FALSE,
              hsq=NULL, reml=TRUE, tol=1e-12)
 {
     stopifnot(tol > 0)
@@ -61,7 +61,7 @@ fit1_pg <-
 
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
-    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs,
+    ind2keep <- get_common_ids(genoprobs, pheno, kinshipIDs, weights,
                                addcovar, nullcovar, intcovar, complete.cases=TRUE)
 
     if(length(ind2keep)<=2) {
@@ -86,6 +86,17 @@ fit1_pg <-
     if(!is.null(addcovar)) addcovar <- addcovar[ind2keep,,drop=FALSE]
     if(!is.null(nullcovar)) nullcovar <- nullcovar[ind2keep,,drop=FALSE]
     if(!is.null(intcovar)) intcovar <- intcovar[ind2keep,,drop=FALSE]
+    if(!is.null(weights)) weights <- weights[ind2keep]
+
+    # square-root of weights; multiply things by weights
+    weights <- sqrt_weights(weights)
+    kinship <- weight_kinship(kinship, weights)
+    pheno <- weight_matrix(pheno, weights)
+    addcovar <- weight_matrix(addcovar, weights)
+    intcovar <- weight_matrix(intcovar, weights)
+    nullcovar <- weight_matrix(nullcovar, weights)
+    genoprobs <- weight_matrix(genoprobs, weights)
+    intercept <- weights; if(is_null_weights(weights)) intercept <- rep(1,length(pheno))
 
     # make sure addcovar is full rank when we add an intercept
     addcovar <- drop_depcols(addcovar, TRUE, tol)
@@ -99,20 +110,22 @@ fit1_pg <-
 
     # estimate hsq if necessary
     if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
-                                     NULL, FALSE, reml, cores=1, check_boundary=TRUE, tol)
+        nullresult <- calc_hsq_clean(Ke=kinship, pheno=as.matrix(pheno),
+                                     addcovar=cbind(addcovar, nullcovar),
+                                     Xcovar=NULL, is_x_chr=FALSE, weights=weights, reml=reml,
+                                     cores=1, check_boundary=TRUE, tol=tol)
         hsq <- as.numeric(nullresult$hsq)
     }
 
     # eigen-vectors and weights
     eigenvec <- kinship$vectors
-    weights <- 1/sqrt(hsq*kinship$values + (1-hsq))
+    wts <- 1/sqrt(hsq*kinship$values + (1-hsq))
 
     # fit null model
-    fit0 <- fit1_pg_addcovar(cbind(rep(1, length(pheno)), addcovar, nullcovar),
+    fit0 <- fit1_pg_addcovar(cbind(intercept, addcovar, nullcovar),
                              pheno,
                              matrix(ncol=0, nrow=length(pheno)),
-                             eigenvec, weights, se, tol)
+                             eigenvec, wts, se, tol)
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
@@ -120,11 +133,11 @@ fit1_pg <-
 
     if(is.null(intcovar)) { # just addcovar
         if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-        fitA <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
+        fitA <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, wts, se, tol)
     }
     else {                  # intcovar
         fitA <- fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                 eigenvec, weights, se, tol)
+                                 eigenvec, wts, se, tol)
     }
 
     # lod score
