@@ -103,6 +103,85 @@ test_that("fit1 by H-K works in intercross", {
 })
 
 
+test_that("fit1 by H-K works in intercross, with weights", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    iron <- iron[,c(18:19,"X")]
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+
+    pheno <- iron$pheno[,1]
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+    Xcovar <- get_x_covar(iron)
+
+    w <- setNames(runif(n_ind(iron), 1, 10), ind_ids(iron))
+
+    # calculate LOD scores
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, weights=w)
+
+    # estimate coefficients; no covariates for X chromosome
+    coef <- lapply(seq_len(length(probs)), function(i) {
+        if(i==3) cov <- NULL
+        else cov <- covar
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, weights=w) })
+
+    # fit1, no missing data
+    npos <- sapply(probs, function(a) dim(a)[3])
+    pmar <- c(3, 4, 12)
+    out_fit1 <- lapply(seq(along=pmar),
+                       function(i) {
+        if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
+        else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, weights=w) })
+
+    pos <- cumsum(c(0, npos[-3])) + pmar
+    # check LOD vs scan1, plus ind'l contributions to LOD
+    for(i in 1:3) {
+        expect_equal(out_fit1[[i]]$lod, out[pos[i],1])
+        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
+    }
+
+    # check coefficients
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+
+    # repeat the whole thing with a couple of missing phenotypes
+    pheno[c(187, 244)] <- NA
+
+    # calculate LOD scores
+    out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar, weights=w)
+
+    # estimate coefficients; no covariates for X chromosome
+    coef <- lapply(seq_len(length(probs)), function(i) {
+        if(i==3) cov <- NULL
+        else cov <- covar
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, weights=w) })
+
+    # fit1, missing data
+    out_fit1 <- lapply(seq(along=pmar),
+                       function(i) {
+        if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
+        else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+
+    # check LOD vs scan1, plus ind'l contributions to LOD
+    for(i in 1:3) {
+        expect_equal(out_fit1[[i]]$lod, out[pos[i],1])
+        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
+    }
+
+    # check coefficients
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$coef, coef[[i]][pmar[i],])
+
+    # check SEs
+    for(i in 1:3)
+        expect_equal(out_fit1[[i]]$SE, attr(coef[[i]], "SE")[pmar[i],])
+
+})
+
+
 test_that("fit1 by H-K works in riself", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
@@ -256,6 +335,93 @@ test_that("fit1 by LMM works in intercross", {
         expect_equal(out_fit1_loco[[i]]$SE, attr(coef_loco[[chr[i]]], "SE")[index[i],])
 
 })
+
+
+test_that("fit1 by LMM works in intercross, with weights", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    kinship <- calc_kinship(probs)
+    kinship_loco <- calc_kinship(probs, "loco")
+    probs <- probs[,c(7,19,"X")]
+    kinship_loco <- kinship_loco[c(7,19,"X")]
+
+    set.seed(2661343)
+    w <- setNames(runif(n_ind(iron), 1, 1), ind_ids(iron))
+
+    pheno <- iron$pheno[,1]
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+    Xcovar <- get_x_covar(iron)
+
+    # calculate LOD scores
+    out <- scan1(probs, pheno, kinship, addcovar=covar, Xcovar=Xcovar, weights=w)
+    out_loco <- scan1(probs, pheno, kinship_loco, addcovar=covar, Xcovar=Xcovar, weights=w)
+
+    # estimate coefficients (with SEs)
+    coef <- lapply(seq_len(length(probs)), function(i) {
+        if(i==3) { cov <- NULL; nullcov <- Xcovar }
+        else { cov <- covar; nullcov <- NULL }
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship,
+                  addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+
+    coef_loco <- lapply(seq_len(length(probs)), function(i) {
+        if(i==3) { cov <- NULL; nullcov <- Xcovar }
+        else { cov <- covar; nullcov <- NULL }
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship_loco[i],
+                  addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+
+    names(coef) <- names(coef_loco) <- names(kinship_loco)
+
+    # positions to test fit1()
+    chr <- rep(c(7,19,"X"), each=4)
+    n_pos <- sapply(probs, function(a) dim(a)[3])
+    index <- c(1,6,7,58, 1,15,31,36,  1,20,27,30)
+    pos <- index + rep(cumsum(c(0,n_pos)), c(4,4,4,0))
+
+    # fit1, no missing data
+    out_fit1 <- lapply(seq(along=chr),
+                       function(i) {
+        if(chr[i]=="X") { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
+        else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
+        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship, addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+
+    out_fit1_loco <- lapply(seq(along=chr),
+                       function(i) {
+        if(chr[i]=="X") { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
+        else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
+        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship_loco[[chr[i]]], addcovar=cov, nullcovar=nullcov,
+             se=TRUE, weights=w) })
+
+    # check LOD vs scan1, plus ind'l contributions to LOD
+    for(i in seq(along=out_fit1)) {
+        expect_equal(out_fit1[[i]]$lod, out[pos[i],1], tol=1e-6)
+        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
+    }
+    # same with _loco version
+    for(i in seq(along=out_fit1)) {
+        expect_equal(out_fit1_loco[[i]]$lod, out_loco[pos[i],1], tol=1e-6)
+        expect_equal(sum(out_fit1_loco[[i]]$ind_lod), out_fit1_loco[[i]]$lod)
+    }
+
+    # check coefficients
+    for(i in seq(along=out_fit1))
+        expect_equal(out_fit1[[i]]$coef, coef[[chr[i]]][index[i],])
+    # same, _loco version
+    for(i in seq(along=out_fit1))
+        expect_equal(out_fit1_loco[[i]]$coef, coef_loco[[chr[i]]][index[i],])
+
+    # check SEs
+    for(i in seq(along=out_fit1))
+        expect_equal(out_fit1[[i]]$SE, attr(coef[[chr[i]]], "SE")[index[i],])
+    # same, _loco version
+    for(i in seq(along=out_fit1))
+        expect_equal(out_fit1_loco[[i]]$SE, attr(coef_loco[[chr[i]]], "SE")[index[i],])
+
+})
+
+
 
 
 test_that("fit1 handles contrasts properly in a backcross", {
