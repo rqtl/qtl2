@@ -94,6 +94,7 @@ fit1_pg <-
     pheno <- weight_matrix(pheno, weights)
     addcovar <- weight_matrix(addcovar, weights)
     intcovar <- weight_matrix(intcovar, weights)
+    nullcovar <- weight_matrix(nullcovar, weights)
     genoprobs <- weight_matrix(genoprobs, weights)
     intercept <- weights; if(is_null_weights(weights)) intercept <- rep(1,length(pheno))
 

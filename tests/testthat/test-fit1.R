@@ -396,36 +396,30 @@ test_that("fit1 by LMM works in intercross, with weights", {
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in seq(along=out_fit1)) {
-        if(chr[i]=="X") next # **FIX ME** X chr not working yet
         expect_equal(out_fit1[[i]]$lod, out[pos[i],1], tol=1e-6)
         expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
     }
     # same with _loco version
     for(i in seq(along=out_fit1)) {
-        if(chr[i]=="X") next # **FIX ME** X chr not working yet
         expect_equal(out_fit1_loco[[i]]$lod, out_loco[pos[i],1], tol=1e-6)
         expect_equal(sum(out_fit1_loco[[i]]$ind_lod), out_fit1_loco[[i]]$lod)
     }
 
     # check coefficients
     for(i in seq(along=out_fit1)) {
-        if(chr[i]=="X") next # **FIX ME** X chr not working yet
         expect_equal(out_fit1[[i]]$coef, coef[[chr[i]]][index[i],])
     }
     # same, _loco version
     for(i in seq(along=out_fit1)) {
-        if(chr[i]=="X") next # **FIX ME** X chr not working yet
         expect_equal(out_fit1_loco[[i]]$coef, coef_loco[[chr[i]]][index[i],])
     }
 
     # check SEs
     for(i in seq(along=out_fit1)) {
-        if(chr[i]=="X") next # **FIX ME** X chr not working yet
         expect_equal(out_fit1[[i]]$SE, attr(coef[[chr[i]]], "SE")[index[i],])
     }
     # same, _loco version
     for(i in seq(along=out_fit1)) {
-        if(chr[i]=="X") next # **FIX ME** X chr not working yet
         expect_equal(out_fit1_loco[[i]]$SE, attr(coef_loco[[chr[i]]], "SE")[index[i],])
     }
 
