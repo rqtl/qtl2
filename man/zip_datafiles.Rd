@@ -4,7 +4,8 @@
 \alias{zip_datafiles}
 \title{Zip a set of data files}
 \usage{
-zip_datafiles(control_file, zip_file = NULL, quiet = TRUE)
+zip_datafiles(control_file, zip_file = NULL, overwrite = FALSE,
+  quiet = TRUE)
 }
 \arguments{
 \item{control_file}{Character string with path to the control file
@@ -13,6 +14,9 @@ containing all of the control information.}
 
 \item{zip_file}{Name of zip file to use. If NULL, we use the
 stem of \code{control_file} but with a \code{.zip} extension.}
+
+\item{overwrite}{If \code{TRUE}, overwrite file if it exists. If \code{FALSE}
+(the default) and the file exists, stop with an error.}
 
 \item{quiet}{If \code{FALSE}, print progress messages.}
 }

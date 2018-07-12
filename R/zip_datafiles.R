@@ -10,6 +10,8 @@
 #' containing all of the control information.
 #' @param zip_file Name of zip file to use. If NULL, we use the
 #' stem of `control_file` but with a `.zip` extension.
+#' @param overwrite If `TRUE`, overwrite file if it exists. If `FALSE`
+#' (the default) and the file exists, stop with an error.
 #' @param quiet If `FALSE`, print progress messages.
 #'
 #' @return Character string with the file name of the zip file that
@@ -37,7 +39,7 @@
 #' zip_datafiles(control_file, "grav2.zip")
 #' }
 zip_datafiles <-
-function(control_file, zip_file=NULL, quiet=TRUE)
+function(control_file, zip_file=NULL, overwrite=FALSE, quiet=TRUE)
 {
     control_file <- path.expand(control_file)
     if(!(file.exists(control_file)))
@@ -82,6 +84,15 @@ function(control_file, zip_file=NULL, quiet=TRUE)
     if(any(grepl(patterns[1], files) | grepl(patterns[2], files))) {
         warning('zip strips ".." from file paths, so ', zip_file,
                 ' may not work with read_cross2().')
+    }
+
+    # check if file exists
+    if(file.exists(zip_file)) {
+        if(overwrite) { # first delete it
+            unlink(zip_file)
+        } else { # refuse to overwrite
+            stop("The zip file (", zip_file, ") already exists. Remove it first (or use overwrite=TRUE).")
+        }
     }
 
     # do the zipping

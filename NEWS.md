@@ -47,6 +47,9 @@
   corresponds to a particular SNP in a snp info table that's been
   indexed with `index_snps()`.
 
+- Add `overwrite` argument (default `FALSE`) to `zip_datafiles()`,
+  similar to that for `write_control_file()`.
+
 ### Bug fixes
 
 - Fix a bug in `index_snps()`; messed up results when `start` and
