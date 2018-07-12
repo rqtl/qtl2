@@ -111,8 +111,10 @@ scan1coef_pg <-
 
     # estimate hsq if necessary
     if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
-                                     weights, FALSE, reml, cores=1, check_boundary=TRUE, tol)
+        nullresult <- calc_hsq_clean(Ke=kinship, pheno=as.matrix(pheno),
+                                     addcovar=cbind(addcovar, nullcovar), Xcovar=NULL,
+                                     weights=weights, is_x_chr=FALSE, reml=reml,
+                                     cores=1, check_boundary=TRUE, tol=tol)
         hsq <- as.numeric(nullresult$hsq)
     }
 
