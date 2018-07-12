@@ -155,8 +155,9 @@ est_herit <-
         Ke <- decomp_kinship(K, cores=cores)
 
         # fit LMM for each phenotype, one at a time
-        nullresult <- calc_hsq_clean(Ke, ph, ac, NULL, FALSE, wts, reml, cores,
-                                     check_boundary, tol)
+        nullresult <- calc_hsq_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=NULL,
+                                     is_x_chr=FALSE, weights=wts, reml=reml, cores=cores,
+                                     check_boundary=check_boundary, tol=tol)
         hsq[phecol] <- nullresult$hsq
         nullLL <- nullresult$loglik
     }

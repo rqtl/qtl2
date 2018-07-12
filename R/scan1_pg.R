@@ -140,8 +140,9 @@ scan1_pg <-
         Ke <- decomp_kinship(K, cores=cores)
 
         # fit LMM for each phenotype, one at a time
-        nullresult <- calc_hsq_clean(Ke, ph, ac, Xc, is_x_chr, wts, reml, cores,
-                                     check_boundary, tol)
+        nullresult <- calc_hsq_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
+                                     is_x_chr=is_x_chr, weights=wts, reml=reml,
+                                     cores=cores, check_boundary=check_boundary, tol=tol)
         hsq[, phecol] <- nullresult$hsq
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes

@@ -109,8 +109,10 @@ fit1_pg <-
 
     # estimate hsq if necessary
     if(is.null(hsq)) {
-        nullresult <- calc_hsq_clean(kinship, as.matrix(pheno), cbind(addcovar, nullcovar),
-                                     NULL, FALSE, weights, reml, cores=1, check_boundary=TRUE, tol)
+        nullresult <- calc_hsq_clean(Ke=kinship, pheno=as.matrix(pheno),
+                                     addcovar=cbind(addcovar, nullcovar),
+                                     Xcovar=NULL, is_x_chr=FALSE, weights=weights, reml=reml,
+                                     cores=1, check_boundary=TRUE, tol=tol)
         hsq <- as.numeric(nullresult$hsq)
     }
 

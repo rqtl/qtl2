@@ -75,7 +75,9 @@ scan1perm_pg <-
         Xc <- weight_matrix(Xc, wts)
         ph <- weight_matrix(ph, wts)
 
-        result <- calc_hsq_clean(k, ph, ac, Xc, is_x_chr, reml, cores=1, check_boundary, tol)
+        result <- calc_hsq_clean(Ke=k, pheno=ph, addcovar=ac, Xcovar=Xc,
+                                 is_x_chr=is_x_chr, reml=reml, weights=wts,
+                                 cores=1, check_boundary=check_boundary, tol=tol)
 
         # expand hsq and loglik to one row per chromosome
         n_chr <- length(is_x_chr)
