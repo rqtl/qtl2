@@ -231,6 +231,7 @@ maxall_scan1 <-
     function(scan1_output, map=NULL, chr=NULL, na.rm=TRUE, ...)
 {
     if(is.null(map)) {
+        warning("map not provided; returning the genome-wide maximum LODs but not their positions")
         if(!is.null(chr)) warning("chr ignored if map is not provided.")
 
         return(apply(scan1_output, 2, max, na.rm=na.rm))
