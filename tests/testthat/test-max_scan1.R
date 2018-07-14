@@ -51,9 +51,9 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     class(out_shuffled) <- c("scan1", "matrix")
     expect_equal( max(out_shuffled, map), max(out, map))
 
-    expect_warning( expect_equal(max_scan1(out), c(liver= 6.35264382891418)) )
-    expect_warning( expect_equal(max_scan1(out, lodcolumn=2), c(spleen=12.5986057120873)) )
-    expect_warning( expect_equal(max_scan1(out, lodcolumn="spleen"), c(spleen=12.5986057120873)) )
+    expect_equal(max_scan1(out), c(liver= 6.35264382891418))
+    expect_equal(max_scan1(out, lodcolumn=2), c(spleen=12.5986057120873))
+    expect_equal(max_scan1(out, lodcolumn="spleen"), c(spleen=12.5986057120873))
 
     # warning if you give lodcolumn as a vector
     expect_warning( expect_equal(max(out, lodcolumn=1:2), c(liver= 6.35264382891418)) )
@@ -64,9 +64,12 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     rownames(expected) <- "c16.loc29"
     expect_warning( expect_equal( max(out, map, lodcolumn=1:2), expected) )
 
+    # warning if you give chr but not map
+    expect_warning( expect_equal( max(out, lodcolumn=2, chr=16), c(spleen=12.5986057120873)) )
+
     # results for all LOD score columns if lodcolumn=NULL
-    expect_warning( expect_equal( max(out, lodcolumn=NULL),
-                                  c(liver= 6.35264382891418, spleen=12.5986057120873) ))
+    expect_equal( max(out, lodcolumn=NULL),
+                 c(liver= 6.35264382891418, spleen=12.5986057120873) )
 
 
     expected <- data.frame(lodindex=1:ncol(out),

@@ -1,4 +1,4 @@
-## qtl2 0.15-18 (2018-07-12)
+## qtl2 0.15-19 (2018-07-14)
 
 ### New features
 
@@ -54,6 +54,8 @@
 
 - Add `overwrite` argument (default `FALSE`) to `zip_datafiles()`,
   similar to that for `write_control_file()`.
+
+- `max_scan1()` no longer gives a warning if `map` is not provided.
 
 ### Bug fixes
 
