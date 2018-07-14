@@ -55,6 +55,48 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     expect_warning( expect_equal(max_scan1(out, lodcolumn=2), c(spleen=12.5986057120873)) )
     expect_warning( expect_equal(max_scan1(out, lodcolumn="spleen"), c(spleen=12.5986057120873)) )
 
+    # warning if you give lodcolumn as a vector
+    expect_warning( expect_equal(max(out, lodcolumn=1:2), c(liver= 6.35264382891418)) )
+    expected <- data.frame(chr="16",
+                           pos=28.6,
+                           liver=max(out[,1]),
+                           stringsAsFactors=FALSE)
+    rownames(expected) <- "c16.loc29"
+    expect_warning( expect_equal( max(out, map, lodcolumn=1:2), expected) )
+
+    # results for all LOD score columns if lodcolumn=NULL
+    expect_warning( expect_equal( max(out, lodcolumn=NULL),
+                                  c(liver= 6.35264382891418, spleen=12.5986057120873) ))
+
+
+    expected <- data.frame(lodindex=1:ncol(out),
+                           lodcolumn=colnames(out),
+                           chr=c("16","9"),
+                           pos=c(28.6, 56.6),
+                           lod=apply(out, 2, max),
+                           stringsAsFactors=FALSE)
+    rownames(expected) <- NULL
+    expect_equal( max(out, map, lodcolumn=NULL), expected )
+
+    expected <- data.frame(lodindex=1:ncol(out),
+                           lodcolumn=colnames(out),
+                           chr=c("16","16"),
+                           pos=c(28.6, 30.6),
+                           lod=apply(subset(out, map, chr=16), 2, max),
+                           stringsAsFactors=FALSE)
+    rownames(expected) <- NULL
+    expect_equal( max(out, map, lodcolumn=NULL, chr=16), expected )
+
+    expected <- data.frame(lodindex=1:ncol(out),
+                           lodcolumn=colnames(out),
+                           chr=c("3","9"),
+                           pos=c(25.1, 56.6),
+                           lod=apply(subset(out, map, chr=c(3,9)), 2, max),
+                           stringsAsFactors=FALSE)
+    rownames(expected) <- NULL
+    expect_equal( max(out, map, lodcolumn=NULL, chr=c(3,9)), expected )
+    expect_equal( max(out, map, lodcolumn=NULL, chr=c(9,3)), expected )
+
 })
 
 test_that("maxlod works for intercross with two phenotypes", {
