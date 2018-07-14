@@ -1,4 +1,4 @@
-## qtl2 0.15-18 (2018-07-12)
+## qtl2 0.15-19 (2018-07-14)
 
 ### New features
 
@@ -28,6 +28,11 @@
   in which case the SNP information for all SNPs with complete founder
   genotype data is calculated and used.
 
+- `max_scan1()` with `lodcolumn=NULL` returns the maximum for all
+  lod score columns. If `map` is included, the return value is in the
+  form returned by `find_peaks()`, namely with `lodindex` and
+  `lodcolumn` arguments added at the beginning.
+
 ### Minor changes
 
 - More informative error message in `est_herit()`, `scan1()`, etc.,
@@ -49,6 +54,8 @@
 
 - Add `overwrite` argument (default `FALSE`) to `zip_datafiles()`,
   similar to that for `write_control_file()`.
+
+- `max_scan1()` no longer gives a warning if `map` is not provided.
 
 ### Bug fixes
 

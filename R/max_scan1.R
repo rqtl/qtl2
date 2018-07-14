@@ -14,6 +14,7 @@
 #' as from [index_snps()] or [scan1snps()].
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
+#' If `NULL`, return maximum for all columns.
 #' @param chr Option vector of chromosomes to consider.
 #' @param na.rm Ignored (take to be TRUE)
 #' @param ... Ignored
@@ -22,8 +23,11 @@
 #' @export
 #'
 #' @return If `map` is NULL, the genome-wide maximum LOD score for the selected column is returned.
+#' If also `lodcolumn` is NULL, you get a vector with the maximum LOD for each column.
 #'
 #' If `map` is provided, the return value is a data.frame with three columns: chr, pos, and lod score.
+#' But if `lodcolumn` is NULL, you get the maximum for each lod score column, in the format provided by
+#' [find_peaks()], so a data.frame with five columns: lodindex, lodcolumn, chr, pos, and lod.
 #'
 #' @examples
 #' # read data
@@ -53,11 +57,14 @@
 #' # maximum of first column on chr 2
 #' max(out, map, chr="2")
 max_scan1 <-
-    function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
+    function(scan1_output, map=NULL, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
 {
     if(is.null(scan1_output)) stop("scan1_output is NULL")
 
-    if(length(lodcolumn) == 0) stop("lodcolumn has length 0")
+    if(is.null(lodcolumn)) {
+        return(maxall_scan1(scan1_output, map=map, chr=chr, na.rm=na.rm, ...))
+    }
+
     if(length(lodcolumn) > 1) {
         lodcolumn <- lodcolumn[1]
         warning("lodcolumn should have length 1; using the first value")
@@ -71,8 +78,9 @@ max_scan1 <-
         stop("column [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(lod), ")")
     }
 
-    if(missing(map) || is.null(map)) {
-        warning("map not provided; returning the genome-wide maximum LOD but not its position")
+    if(is.null(map)) {
+        if(!is.null(chr)) warning("chr ignored if map is not provided")
+
         return( setNames( max(scan1_output[,lodcolumn], na.rm=TRUE), colnames(scan1_output)[lodcolumn]) )
     }
 
@@ -140,7 +148,7 @@ max_scan1 <-
 #' @export
 #' @rdname max_scan1
 max.scan1 <-
-    function(scan1_output, map, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
+    function(scan1_output, map=NULL, lodcolumn=1, chr=NULL, na.rm=TRUE, ...)
     max_scan1(scan1_output, map, lodcolumn, chr, na.rm, ...)
 
 #' Overall maximum LOD score
@@ -217,4 +225,26 @@ maxlod <-
         lod <- unclass(scan1_output)
         return(max(lod))
     }
+}
+
+# return maximum for all lod score columns
+maxall_scan1 <-
+    function(scan1_output, map=NULL, chr=NULL, na.rm=TRUE, ...)
+{
+    if(is.null(map)) {
+        if(!is.null(chr)) warning("chr ignored if map is not provided.")
+
+        return(apply(scan1_output, 2, max, na.rm=na.rm))
+    }
+
+    res <- lapply(1:ncol(scan1_output), function(lodcol) max_scan1(scan1_output, map=map, lodcolumn=lodcol,
+                                                                   chr=chr, na.rm=na.rm, ...))
+
+    data.frame(lodindex=1:ncol(scan1_output),
+               lodcolumn=colnames(scan1_output),
+               chr=sapply(res, function(a) a[[1]][1]),
+               pos=sapply(res, function(a) a[[2]][1]),
+               lod=sapply(res, function(a) a[[3]][1]),
+               stringsAsFactors=FALSE)
+
 }
