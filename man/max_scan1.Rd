@@ -5,9 +5,10 @@
 \alias{max.scan1}
 \title{Find position with maximum LOD score}
 \usage{
-max_scan1(scan1_output, map, lodcolumn = 1, chr = NULL, na.rm = TRUE, ...)
+max_scan1(scan1_output, map = NULL, lodcolumn = 1, chr = NULL,
+  na.rm = TRUE, ...)
 
-\method{max}{scan1}(scan1_output, map, lodcolumn = 1, chr = NULL,
+\method{max}{scan1}(scan1_output, map = NULL, lodcolumn = 1, chr = NULL,
   na.rm = TRUE, ...)
 }
 \arguments{
@@ -19,7 +20,8 @@ max_scan1(scan1_output, map, lodcolumn = 1, chr = NULL, na.rm = TRUE, ...)
 as from \code{\link[=index_snps]{index_snps()}} or \code{\link[=scan1snps]{scan1snps()}}.}
 
 \item{lodcolumn}{An integer or character string indicating the LOD
-score column, either as a numeric index or column name.}
+score column, either as a numeric index or column name.
+If \code{NULL}, return maximum for all columns.}
 
 \item{chr}{Option vector of chromosomes to consider.}
 
@@ -29,8 +31,11 @@ score column, either as a numeric index or column name.}
 }
 \value{
 If \code{map} is NULL, the genome-wide maximum LOD score for the selected column is returned.
+If also \code{lodcolumn} is NULL, you get a vector with the maximum LOD for each column.
 
 If \code{map} is provided, the return value is a data.frame with three columns: chr, pos, and lod score.
+But if \code{lodcolumn} is NULL, you get the maximum for each lod score column, in the format provided by
+\code{\link[=find_peaks]{find_peaks()}}, so a data.frame with five columns: lodindex, lodcolumn, chr, pos, and lod.
 }
 \description{
 Return data frame with the positions having maximum LOD score for a

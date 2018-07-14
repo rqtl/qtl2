@@ -28,6 +28,11 @@
   in which case the SNP information for all SNPs with complete founder
   genotype data is calculated and used.
 
+- `max_scan1()` with `lodcolumn=NULL` returns the maximum for all
+  lod score columns. If `map` is included, the return value is in the
+  form returned by `find_peaks()`, namely with `lodindex` and
+  `lodcolumn` arguments added at the beginning.
+
 ### Minor changes
 
 - More informative error message in `est_herit()`, `scan1()`, etc.,
