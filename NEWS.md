@@ -1,4 +1,4 @@
-## qtl2 0.15-19 (2018-07-14)
+## qtl2 0.15-20 (2018-07-15)
 
 ### New features
 
@@ -32,6 +32,9 @@
   lod score columns. If `map` is included, the return value is in the
   form returned by `find_peaks()`, namely with `lodindex` and
   `lodcolumn` arguments added at the beginning.
+
+- Added `replace_ids()` for replacing individual IDs in an object.
+  S3 method for `"cross2"` objects and output of `calc_genoprob()`.
 
 ### Minor changes
 
