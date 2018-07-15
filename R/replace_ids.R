@@ -57,12 +57,13 @@ replace_ids.cross2 <-
 {
     ids <- check_new_ids(ids, ind_ids(x))
     ids_names <- names(ids)
+    names(ids) <- NULL
 
     # rownames for each chr in geno
-    for(i in seq_along(geno)) {
-        m <- match(rownames(geno[[i]]), ids_names)
-        if(any(is.na(m))) geno[[i]] <- geno[[i]][!is.na(m),,drop=FALSE]
-        rownames(geno[[i]]) <- ids[m[!is.na(m)]]
+    for(i in seq_along(x$geno)) {
+        m <- match(rownames(x$geno[[i]]), ids_names)
+        if(any(is.na(m))) x$geno[[i]] <- x$geno[[i]][!is.na(m),,drop=FALSE]
+        rownames(x$geno[[i]]) <- ids[m[!is.na(m)]]
     }
 
     # rownames in pheno, covar, cross_info
@@ -95,11 +96,12 @@ replace_ids.calc_genoprob <-
 {
     ids <- check_new_ids(ids, rownames(x[[1]]))
     ids_names <- names(ids)
+    names(ids) <- NULL
 
     # replace the row names for each chromosome; possibly subsetting things
     for(i in seq_along(x)) {
         m <- match(rownames(x[[i]]), ids_names)
-        x[[i]] <- x[[i]][!is.na(m),,drop=FALSE]
+        x[[i]] <- x[[i]][!is.na(m),,,drop=FALSE]
         rownames(x[[i]]) <- ids[m[!is.na(m)]]
     }
 
