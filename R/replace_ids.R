@@ -107,3 +107,25 @@ replace_ids.calc_genoprob <-
 
     x
 }
+
+#' @describeIn replace_ids Replace IDs in output from [viterbi()]
+replace_ids.viterbi <-
+    function(x, ids)
+{
+    ids <- check_new_ids(ids, rownames(x[[1]]))
+    ids_names <- names(ids)
+    names(ids) <- NULL
+
+    # replace the row names for each chromosome; possibly subsetting things
+    for(i in seq_along(x)) {
+        m <- match(rownames(x[[i]]), ids_names)
+        x[[i]] <- x[[i]][!is.na(m),,drop=FALSE]
+        rownames(x[[i]]) <- ids[m[!is.na(m)]]
+    }
+
+    x
+
+}
+
+#' @describeIn replace_ids Replace IDs in output from [sim_geno()]
+replace_ids.sim_geno <- function(x, ids) replace_ids.calc_genoprob(x, ids)

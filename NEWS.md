@@ -34,7 +34,8 @@
   `lodcolumn` arguments added at the beginning.
 
 - Added `replace_ids()` for replacing individual IDs in an object.
-  S3 method for `"cross2"` objects and output of `calc_genoprob()`.
+  S3 method for `"cross2"` objects and output of `calc_genoprob()`,
+  `viterbi()`, `maxmarg()`, and `sim_geno()`.
 
 ### Minor changes
 

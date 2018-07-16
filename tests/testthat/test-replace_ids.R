@@ -83,3 +83,53 @@ test_that("replace_ids() works for calc_genoprob output", {
 
 
 })
+
+
+test_that("replace_ids() works for viterbi output", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    ids <- ind_ids(iron)
+    new_ids <- setNames(paste0("mouse", ids), ids)
+    change_back <- setNames(ids, paste0("mouse", ids))
+
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    v <- viterbi(iron, map)
+
+    # same ids, old and new (changed back)
+    expect_equal( replace_ids(replace_ids(v, new_ids), change_back), v)
+
+    # simple replacement, everything in order
+
+    # simple replacement, but shuffled
+
+    # simple replacement, with some extras plus shuffled
+
+    # missing some individuals
+
+
+})
+
+
+test_that("replace_ids() works for sim_geno output", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    ids <- ind_ids(iron)
+    new_ids <- setNames(paste0("mouse", ids), ids)
+    change_back <- setNames(ids, paste0("mouse", ids))
+
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    d <- sim_geno(iron, map, n_draws=8)
+
+    # same ids, old and new (changed back)
+    expect_equal( replace_ids(replace_ids(d, new_ids), change_back), d)
+
+    # simple replacement, everything in order
+
+    # simple replacement, but shuffled
+
+    # simple replacement, with some extras plus shuffled
+
+    # missing some individuals
+
+
+})
