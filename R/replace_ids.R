@@ -19,7 +19,7 @@
 #' # replace the numeric IDs with IDs like "mouse003"
 #' new_ids <- setNames( sprintf("mouse%03d", as.numeric(ids)), ids)
 #'
-#' iron <- replace_ids(iron)
+#' iron <- replace_ids(iron, new_ids)
 replace_ids <- function(x, ids) UseMethod("replace_ids")
 
 
