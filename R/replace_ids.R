@@ -10,6 +10,7 @@
 #'
 #' @return The input `x` object, but with individual IDs replaced.
 #'
+#' @importFrom stats setNames
 #' @export
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
@@ -38,7 +39,7 @@ check_new_ids <-
         stop("The old IDs are not unique")
 
     if(!all(new_ids_names %in% old_ids)) {
-        warning("Not all IDs found")
+        warning("The new IDs include some extras")
         new_ids <- new_ids[new_ids_names %in% old_ids]
         new_ids_names <- names(new_ids)
     }
