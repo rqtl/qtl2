@@ -44,18 +44,30 @@ test_that("replace_ids() works for a cross2 object", {
     ids <- ind_ids(iron)
     new_ids <- setNames(paste0("mouse", ids), ids)
     change_back <- setNames(ids, paste0("mouse", ids))
+    extra_ids <- sample(c(ids, 1001:1020))
+    extra_ids <- setNames(paste0("mouse", extra_ids), extra_ids)
 
-    # same ids, old and new (replace then replace back)
-    expect_equal( replace_ids(replace_ids(iron, new_ids), change_back), iron)
+    # same ids, old and new
+    expect_equal( replace_ids(iron, setNames(ids, ids)), iron)
 
     # simple replacement, everything in order
+    expect_equal( replace_ids(replace_ids(iron, new_ids), change_back), iron)
 
     # simple replacement, but shuffled
+    expect_equal( replace_ids(replace_ids(iron, sample(new_ids)), sample(change_back)), iron)
 
     # simple replacement, with some extras plus shuffled
+    expect_warning(
+        expect_equal( replace_ids(replace_ids(iron, extra_ids), sample(change_back)), iron)
+    )
 
     # missing some individuals
-
+    sub_ids <- sample(ids, length(ids)-10)
+    sub_ids_ordered <- sub_ids[order(as.numeric(sub_ids))]
+    expect_warning(
+        expect_equal( replace_ids(iron, setNames(sub_ids, sub_ids)),
+                      iron[sub_ids_ordered,])
+    )
 
 })
 
@@ -66,21 +78,33 @@ test_that("replace_ids() works for calc_genoprob output", {
     ids <- ind_ids(iron)
     new_ids <- setNames(paste0("mouse", ids), ids)
     change_back <- setNames(ids, paste0("mouse", ids))
+    extra_ids <- sample(c(ids, 1001:1020))
+    extra_ids <- setNames(paste0("mouse", extra_ids), extra_ids)
 
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     pr <- calc_genoprob(iron, map)
 
-    # same ids, old and new (changed back)
-    expect_equal( replace_ids(replace_ids(pr, new_ids), change_back), pr)
+    # same ids, old and new
+    expect_equal( replace_ids(pr, setNames(ids, ids)), pr)
 
     # simple replacement, everything in order
+    expect_equal( replace_ids(replace_ids(pr, new_ids), change_back), pr)
 
     # simple replacement, but shuffled
+    expect_equal( replace_ids(replace_ids(pr, sample(new_ids)), sample(change_back)), pr)
 
     # simple replacement, with some extras plus shuffled
+    expect_warning(
+        expect_equal( replace_ids(replace_ids(pr, extra_ids), sample(change_back)), pr)
+    )
 
     # missing some individuals
-
+    sub_ids <- sample(ids, length(ids)-10)
+    sub_ids_ordered <- sub_ids[order(as.numeric(sub_ids))]
+    expect_warning(
+        expect_equal( replace_ids(pr, setNames(sub_ids, sub_ids)),
+                      pr[sub_ids_ordered,])
+    )
 
 })
 
@@ -91,21 +115,33 @@ test_that("replace_ids() works for viterbi output", {
     ids <- ind_ids(iron)
     new_ids <- setNames(paste0("mouse", ids), ids)
     change_back <- setNames(ids, paste0("mouse", ids))
+    extra_ids <- sample(c(ids, 1001:1020))
+    extra_ids <- setNames(paste0("mouse", extra_ids), extra_ids)
 
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     v <- viterbi(iron, map)
 
-    # same ids, old and new (changed back)
-    expect_equal( replace_ids(replace_ids(v, new_ids), change_back), v)
+    # same ids, old and new
+    expect_equal( replace_ids(v, setNames(ids, ids)), v)
 
     # simple replacement, everything in order
+    expect_equal( replace_ids(replace_ids(v, new_ids), change_back), v)
 
     # simple replacement, but shuffled
+    expect_equal( replace_ids(replace_ids(v, sample(new_ids)), sample(change_back)), v)
 
     # simple replacement, with some extras plus shuffled
+    expect_warning(
+        expect_equal( replace_ids(replace_ids(v, extra_ids), sample(change_back)), v)
+    )
 
     # missing some individuals
-
+    sub_ids <- sample(ids, length(ids)-10)
+    sub_ids_ordered <- sub_ids[order(as.numeric(sub_ids))]
+    expect_warning(
+        expect_equal( replace_ids(v, setNames(sub_ids, sub_ids)),
+                      v[sub_ids_ordered,])
+    )
 
 })
 
@@ -116,20 +152,32 @@ test_that("replace_ids() works for sim_geno output", {
     ids <- ind_ids(iron)
     new_ids <- setNames(paste0("mouse", ids), ids)
     change_back <- setNames(ids, paste0("mouse", ids))
+    extra_ids <- sample(c(ids, 1001:1020))
+    extra_ids <- setNames(paste0("mouse", extra_ids), extra_ids)
 
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     d <- sim_geno(iron, map, n_draws=8)
 
     # same ids, old and new (changed back)
-    expect_equal( replace_ids(replace_ids(d, new_ids), change_back), d)
+    expect_equal( replace_ids(d, setNames(ids, ids)), d)
 
     # simple replacement, everything in order
+    expect_equal( replace_ids(replace_ids(d, new_ids), change_back), d)
 
     # simple replacement, but shuffled
+    expect_equal( replace_ids(replace_ids(d, sample(new_ids)), sample(change_back)), d)
 
     # simple replacement, with some extras plus shuffled
+    expect_warning(
+        expect_equal( replace_ids(replace_ids(d, extra_ids), sample(change_back)), d)
+    )
 
     # missing some individuals
-
+    sub_ids <- sample(ids, length(ids)-10)
+    sub_ids_ordered <- sub_ids[order(as.numeric(sub_ids))]
+    expect_warning(
+        expect_equal( replace_ids(d, setNames(sub_ids, sub_ids)),
+                      d[sub_ids_ordered,])
+    )
 
 })
