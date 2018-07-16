@@ -4,6 +4,8 @@
 \alias{replace_ids}
 \alias{replace_ids.cross2}
 \alias{replace_ids.calc_genoprob}
+\alias{replace_ids.viterbi}
+\alias{replace_ids.sim_geno}
 \title{Replace individual IDs}
 \usage{
 replace_ids(x, ids)
@@ -11,6 +13,10 @@ replace_ids(x, ids)
 \method{replace_ids}{cross2}(x, ids)
 
 \method{replace_ids}{calc_genoprob}(x, ids)
+
+\method{replace_ids}{viterbi}(x, ids)
+
+\method{replace_ids}{sim_geno}(x, ids)
 }
 \arguments{
 \item{x}{Object whose IDs will be replaced}
@@ -28,6 +34,10 @@ Replace the individual IDs in an object with new ones
 \item \code{cross2}: Replace IDs in a `"cross2"` object
 
 \item \code{calc_genoprob}: Replace IDs in output from [calc_genoprob()]
+
+\item \code{viterbi}: Replace IDs in output from [viterbi()]
+
+\item \code{sim_geno}: Replace IDs in output from [sim_geno()]
 }}
 
 \examples{
