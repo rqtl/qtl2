@@ -53,6 +53,7 @@ check_new_ids <-
 
 
 #' @describeIn replace_ids Replace IDs in a `"cross2"` object
+#' @export
 replace_ids.cross2 <-
     function(x, ids)
 {
@@ -92,6 +93,7 @@ replace_ids.cross2 <-
 
 
 #' @describeIn replace_ids Replace IDs in output from [calc_genoprob()]
+#' @export
 replace_ids.calc_genoprob <-
     function(x, ids)
 {
@@ -110,6 +112,7 @@ replace_ids.calc_genoprob <-
 }
 
 #' @describeIn replace_ids Replace IDs in output from [viterbi()]
+#' @export
 replace_ids.viterbi <-
     function(x, ids)
 {
@@ -129,4 +132,5 @@ replace_ids.viterbi <-
 }
 
 #' @describeIn replace_ids Replace IDs in output from [sim_geno()]
+#' @export
 replace_ids.sim_geno <- function(x, ids) replace_ids.calc_genoprob(x, ids)
