@@ -116,6 +116,20 @@ scan1snps <-
     map <- map[cchr]
 
     # check inputs
+    if(length(genoprobs) != length(map)) {
+        stop("length(genoprobs) != length(map)")
+    }
+    if(any(dim(genoprobs)[3,] != vapply(map, length, 1))) {
+        stop("genoprobs and map have different numbers of markers")
+    }
+    dn <- dimnames(genoprobs)[[3]]
+    different_names <- FALSE
+    for(i in seq_along(dn)) {
+        if(any(dn[[i]] != names(map[[i]]))) different_names <- TRUE
+    }
+    if(different_names) { # different marker names...give a warning (maybe should be an error)
+        warning("genoprobs and map have different marker names")
+    }
     if(!is.null(snpinfo) && !is.null(query_func)) {
         warning("If snpinfo is provided, chr, start, end, and query_func are all ignored")
     }
