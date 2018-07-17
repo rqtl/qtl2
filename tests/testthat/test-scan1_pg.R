@@ -571,6 +571,7 @@ test_that("scan1 with weights and kinship", {
     probs <- probs[,chr]
     kinship <- kinship[chr]
 
+    RNGkind("Mersenne-Twister") # make sure we're using the standard RNG
     set.seed(28915967)
     weights <- stats::setNames(sample(1:10, n_ind(iron), replace=TRUE), ind_ids(iron))
 
