@@ -66,6 +66,10 @@
 - Fix a bug in `index_snps()`; messed up results when `start` and
   `end` outside the range of the map.
 
+- Fix a bug in `scan1snps()` regarding use of `chr` argument: need to
+  force to be unique character strings, and avoid unnecessary warning
+  about `start` and `end`.
+
 
 ## qtl2 0.14 (2018-03-09)
 
