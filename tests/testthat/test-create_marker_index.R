@@ -69,6 +69,7 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
 
     set.seed(99735998)
     pseudomarker_map <- vector("list", length(map))
+    names(pseudomarker_map) <- names(map)
     for(i in seq(along=map)) {
         n.pmar <- 10
         pseudomarker_map[[i]] <- sort(runif(n.pmar, 0, max(map[[i]])))
