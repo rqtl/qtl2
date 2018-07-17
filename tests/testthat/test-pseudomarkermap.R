@@ -97,6 +97,7 @@ test_that("insert_pseudomarkers works with a custom pseudomarker map", {
 
     set.seed(99735998)
     pseudomarker_map <- vector("list", length(map))
+    names(pseudomarker_map) <- names(map)
     for(i in seq(along=map)) {
         n.pmar <- 10
         pseudomarker_map[[i]] <- sort(runif(n.pmar, 0, max(map[[i]])))
@@ -136,6 +137,7 @@ test_that("insert_pseudomarkers works with multi-core", {
 
     set.seed(99735998)
     pseudomarker_map <- vector("list", length(map))
+    names(pseudomarker_map) <- names(map)
     for(i in seq(along=map)) {
         n.pmar <- 10
         pseudomarker_map[[i]] <- sort(runif(n.pmar, 0, max(map[[i]])))
@@ -143,7 +145,6 @@ test_that("insert_pseudomarkers works with multi-core", {
     }
 
     combined_map <- insert_pseudomarkers(map, pseudomarker_map = pseudomarker_map, cores=8)
-
     expect_equal(sapply(map, length) + sapply(pseudomarker_map, length),
                  sapply(combined_map, length))
 
@@ -154,5 +155,37 @@ test_that("insert_pseudomarkers works with multi-core", {
     }
 
     expect_equal(names(map), names(combined_map))
+
+})
+
+
+test_that("insert_pseudomarkers works with partial pseudomarker_map", {
+
+    library(qtl)
+    data(hyper)
+
+    map <- pull.map(hyper)
+
+    # single chromosome
+    pmap <- list("2"=c(pmar1=10, pmar2=20))
+    result <- insert_pseudomarkers(map, pseudomarker_map=pmap)
+    expect_equal(result[-2], map[-2])
+    expect_equal(result[[2]], sort(c(map[[2]], pmap[["2"]])))
+
+    # a second chromosome
+    pmap <- c(pmap, list("X"=c(pmar3=5)))
+    result <- insert_pseudomarkers(map, pseudomarker_map=pmap)
+    expect_equal(result[-c(2,20)], map[-c(2,20)])
+    expect_equal(result[["2"]], sort(c(map[["2"]], pmap[["2"]])))
+    expect_equal(result[["X"]], sort(c(map[["X"]], pmap[["X"]])))
+
+    # warning if missing chr names but is the same length
+    pmap <- lapply(map, function(a) setNames(a+1, paste0(names(a), "plus1")))
+    names(pmap) <- NULL
+    expect_warning(insert_pseudomarkers(map, pseudomarker_map=pmap))
+
+    # error if names in common
+    pmap <- lapply(map, function(a) a+1)
+    expect_error(insert_pseudomarkers(map, pseudomarker_map=pmap))
 
 })

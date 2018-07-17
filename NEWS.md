@@ -1,4 +1,4 @@
-## qtl2 0.15-21 (2018-07-17)
+## qtl2 0.15-22 (2018-07-17)
 
 ### New features
 
@@ -62,6 +62,9 @@
 - `plot_snpasso()` now takes an argument `chr`.
 
 - `max_scan1()` no longer gives a warning if `map` is not provided.
+
+- `insert_pseudomarkers()` will now accept `pseudomarker_map` that
+   includes only a portion of the chromosomes.
 
 ### Bug fixes
 
