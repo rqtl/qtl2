@@ -5,7 +5,7 @@
 \title{Plot SNP associations}
 \usage{
 plot_snpasso(scan1output, snpinfo, genes = NULL, lodcolumn = 1,
-  show_all_snps = TRUE, add = FALSE, drop_hilit = NA,
+  show_all_snps = TRUE, chr = NULL, add = FALSE, drop_hilit = NA,
   col_hilit = "violetred", col = "darkslateblue", gap = 25, minlod = 0,
   ...)
 }
@@ -44,6 +44,8 @@ gene locations below.}
 character string for a column name). Only one value allowed.}
 
 \item{show_all_snps}{If TRUE, expand to show all SNPs.}
+
+\item{chr}{Vector of character strings with chromosome IDs to plot.}
 
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}

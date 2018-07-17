@@ -1,4 +1,4 @@
-## qtl2 0.15-20 (2018-07-16)
+## qtl2 0.15-21 (2018-07-17)
 
 ### New features
 
@@ -58,6 +58,8 @@
 
 - Add `overwrite` argument (default `FALSE`) to `zip_datafiles()`,
   similar to that for `write_control_file()`.
+
+- `plot_snpasso()` now takes an argument `chr`.
 
 - `max_scan1()` no longer gives a warning if `map` is not provided.
 
