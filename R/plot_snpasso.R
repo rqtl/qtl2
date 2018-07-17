@@ -37,6 +37,8 @@
 #'
 #' @param show_all_snps If TRUE, expand to show all SNPs.
 #'
+#' @param chr Vector of character strings with chromosome IDs to plot.
+#'
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
@@ -111,8 +113,8 @@
 #' @export
 #'
 plot_snpasso <-
-    function(scan1output, snpinfo, genes=NULL, lodcolumn=1, show_all_snps=TRUE, add=FALSE,
-             drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
+    function(scan1output, snpinfo, genes=NULL, lodcolumn=1, show_all_snps=TRUE, chr=NULL,
+             add=FALSE, drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
              gap=25, minlod=0, ...)
 {
     if(is.null(scan1output)) stop("scan1output is NULL")
@@ -135,6 +137,15 @@ plot_snpasso <-
     if(lodcolumn < 1 || lodcolumn > ncol(scan1output))
         stop("lodcolumn [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(scan1output), ")")
     scan1output <- scan1output[,lodcolumn,drop=FALSE]
+
+    if(!is.null(chr)) { # subset by chr
+        if(!any(chr %in% snpinfo$chr)) stop("None of the chr found in snpinfo")
+        if(!all(chr %in% snpinfo$chr)) {
+            warning("Some chr not found: ", paste(chr[!(chr %in% snpinfo$chr)], collapse=", "))
+        }
+        snpinfo <- snpinfo[snpinfo$chr %in% chr,,drop=FALSE]
+        scan1output <- scan1output[rownames(scan1output) %in% snpinfo$snp,,drop=FALSE]
+    }
 
     if(!is.null(genes)) {
         if(length(unique(snpinfo$chr)) > 1) {

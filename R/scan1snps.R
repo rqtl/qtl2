@@ -120,14 +120,17 @@ scan1snps <-
         warning("If snpinfo is provided, chr, start, end, and query_func are all ignored")
     }
 
+    if(!is.null(chr)) chr <- unique(as.character(chr)) # make sure chr is character strings
+
     if(!is.null(chr) || !is.null(start) || !is.null(end)) { # defined region
         if(!is.null(snpinfo)) warning("If snpinfo provided, chr, start, end, and query_func are all ignored")
         if(is.null(chr)) stop("If start and/or end provided, need to give chr as well")
         if(is.null(query_func)) stop("If chr, start, and/or end provided, need to give query_func too")
-        if(is.null(start)) start <- -1e15
-        if(is.null(end)) end <- 1e15
 
         if(length(chr) == 1) {
+            if(is.null(start)) start <- -1e15
+            if(is.null(end)) end <- 1e15
+
             if(length(start) > 1 || length(end) > 1) {
                 warning("start and end should have length 1; using the first values")
                 start <- start[1]
@@ -143,6 +146,7 @@ scan1snps <-
         if(!is.null(start) || !is.null(end)) {
             warning("If length(chr) > 1, start end end are ignored.")
         }
+
         if(!all(chr %in% names(map))) {
             stop("Not all chromosomes found: ", paste(chr[!(chr %in% names(map))], collapse=", "))
         }
