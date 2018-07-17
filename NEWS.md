@@ -75,6 +75,9 @@
   force to be unique character strings, and avoid unnecessary warning
   about `start` and `end`.
 
+- Fix a bug in `scan1snps()` where it didn't check that the `genoprobs`
+  and `map` conform.
+
 
 ## qtl2 0.14 (2018-03-09)
 

@@ -83,6 +83,12 @@ test_that("scan1snps works", {
     out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97.2, end=97.3)
     expect_equal(out, expected)
 
+    # if probs and map don't conform, should get an error
+    junk_map <- DOex$pmap
+    junk_map[[1]] <- junk_map[[1]][-1]
+    expect_error( scan1snps(probs, junk_map, DOex$pheno, query_func=queryf, chr=2,
+                            start=97.2, end=97.3) )
+
     # using a pre-defined table of snps
     snpinfo <- queryf(2, 97.2, 97.3)
     out2 <- scan1snps(probs, DOex$pmap, DOex$pheno, snpinfo=snpinfo)
