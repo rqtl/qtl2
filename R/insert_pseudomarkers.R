@@ -71,11 +71,39 @@ function(map, step=0, off_end=0, stepwidth=c("fixed", "max"),
     if(is.null(pseudomarker_map)) {
         pseudomarker_map <- vector("list", length(map))
     }
-    else {
+    else { # pseudomarker map provided
         if(!is.list(pseudomarker_map))
             stop("pseudomarker_map should be a list")
-        if(length(pseudomarker_map) != length(map))
-            stop("length(pseudomarker_map) != length(map)")
+
+        if(length(map) == length(pseudomarker_map) &&
+           is.null(names(pseudomarker_map))) { # pseudomarker map has no naems, but two are same length
+            warning("pseudomarker_map has no names; assuming the same as map")
+            names(pseudomarker_map) <- names(map) # assume they are the same
+        }
+
+        if(is.null(names(pseudomarker_map)))
+            stop("pseudomarker_map needs names")
+
+        pmar_names <- unlist(lapply(pseudomarker_map, names))
+        map_names <- unlist(lapply(map, names))
+        if(any(pmar_names %in% map_names))
+            stop("pseudomarker_map names can't appear among the map names")
+        if(length(pmar_names) != length(unique(pmar_names)))
+            stop("pseudomarker_map names must be unique")
+
+        if(!all(names(pseudomarker_map) %in% names(map))) {
+            extra_chr <- names(pseudomarker_map)[!(names(pseudomarker_map) %in% names(map))]
+            stop("Some chr in pseudomarker_map are not in map: ", paste(extra_chr, collapse=", "))
+        }
+
+
+        if(!all(names(map) %in% names(pseudomarker_map))) { # some chr in map but not pseudomarker_map
+            map[names(pseudomarker_map)] <-
+                insert_pseudomarkers(map[names(pseudomarker_map)],
+                                     pseudomarker_map=pseudomarker_map,
+                                     tol=tol, cores=cores)
+            return(map)
+        }
     }
     if(!is_nonneg_number(step)) stop("step should be a single non-negative number")
     if(!is_nonneg_number(off_end)) stop("off_end should be a single non-negative number")
