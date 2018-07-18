@@ -104,4 +104,27 @@ test_that("scan1snps works", {
     expect_equal(dim(out3$lod), c(74,1))
     expect_equal(dim(out3$snpinfo), c(13836,19))
 
+    # with weights, vs lm()
+    w <- setNames(runif(n_ind(DOex), 0, 10), ind_ids(DOex))
+    outw <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97.2, end=97.3,
+                      weights=w)
+
+    snpinfo <- queryf(2, 97.2, 97.3)
+    snpinfo <- index_snps(DOex$pmap, snpinfo)
+    snp_probs <- genoprob_to_snpprob(probs, snpinfo)
+
+    p <- pull_genoprobpos(snp_probs, "rs227317919")
+
+    y <- DOex$pheno[rownames(p),,drop=FALSE]
+    w <- w[rownames(p)]
+    out_lm <- lm(y ~ -1 + p, weights=w)
+    out_lm0 <- lm(y ~ 1, weights=w)
+
+    expect_equal(outw$lod[9], nrow(p)/2*log10(sum(w*out_lm0$resid^2)/sum(w*out_lm$resid^2)))
+
+    # binary trait
+
+
+    # binary trait with weights
+
 })
