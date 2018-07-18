@@ -120,11 +120,31 @@ test_that("scan1snps works", {
     out_lm <- lm(y ~ -1 + p, weights=w)
     out_lm0 <- lm(y ~ 1, weights=w)
 
-    expect_equal(outw$lod[9], nrow(p)/2*log10(sum(w*out_lm0$resid^2)/sum(w*out_lm$resid^2)))
+    expect_equal(outw$lod["rs227317919", 1], nrow(p)/2*log10(sum(w*out_lm0$resid^2)/sum(w*out_lm$resid^2)))
 
     # binary trait
+    binphe <- setNames((DOex$pheno > quantile(DOex$pheno, 0.8, na.rm=TRUE))*1, rownames(DOex$pheno))
+    biny <- binphe[rownames(p)]
 
+    expect_warning(  # warning about lack of convergence
+        outbin <- scan1snps(probs, DOex$pmap, binphe, query_func=queryf, chr=2, start=97.2, end=97.3,
+                            model="binary")
+    )
+
+    out_glm <- glm(biny ~ -1 + p, family=binomial(link=logit))
+    out_glm0 <- glm(biny ~ 1, family=binomial(link=logit))
+    expect_equal(outbin$lod["rs227317919", 1], (out_glm0$deviance - out_glm$deviance)/2/log(10))
 
     # binary trait with weights
+    w <- ceiling(w) # avoid warning from glm() about weights not being integers
+    expect_warning(  # warning about lack of convergence
+        outbinw <- scan1snps(probs, DOex$pmap, binphe, query_func=queryf, chr=2, start=97.2, end=97.3,
+                             model="binary", weights=w)
+    )
+
+    out_glm <- glm(biny ~ -1 + p, family=binomial(link=logit), weights=w)
+    out_glm0 <- glm(biny ~ 1, family=binomial(link=logit), weights=w)
+
+    expect_equal(outbinw$lod["rs227317919", 1], (out_glm0$deviance - out_glm$deviance)/2/log(10))
 
 })
