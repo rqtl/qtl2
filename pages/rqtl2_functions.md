@@ -280,3 +280,10 @@ description: Annotated/categorized list of functions in R/qtl2
 - `align_scan1_map`
 - `find_index_snp`
 - `pull_genoprobint`
+- `replace_ids.calc_genoprob`
+- `replace_ids.cross2`
+- `replace_ids.sim_geno`
+- `replace_ids.viterbi`
+- `add_threshold`
+- `predict_snpgeno`
+- `replace_ids`
