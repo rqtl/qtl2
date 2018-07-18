@@ -226,6 +226,29 @@ test_that("fit1 works for binary traits with weights", {
     expect_equal(out_fit1_1$lod, out[pos[1]])
     expect_equal(out_fit1_2$lod, out[npos[1] + pos[2]])
 
+    # compare to glm
+    out_glm_1 <- glm(phe ~ -1 + pr[[1]], family=binomial(link=logit), weights=weights,
+                     control=list(epsilon=1e-11))
+    out_glm_2 <- glm(phe ~ -1 + pr[[2]], family=binomial(link=logit), weights=weights,
+                     control=list(epsilon=1e-11))
+    out_glm_0 <- glm(phe ~ 1, family=binomial(link=logit), weights=weights)
+    sum_glm_1 <- summary(out_glm_1)
+    sum_glm_2 <- summary(out_glm_2)
+
+    # function to calc lod
+    lod_glm <- function(out_glm_alt, out_glm_null)
+        (out_glm_null$deviance - out_glm_alt$deviance)/(2*log(10))
+
+    # lod scores
+    expect_equivalent(out_fit1_1$lod, lod_glm(out_glm_1, out_glm_0))
+    expect_equivalent(out_fit1_2$lod, lod_glm(out_glm_2, out_glm_0))
+
+    # coefficients and SEs
+    expect_equivalent(out_fit1_1$coef, out_glm_1$coef)
+    expect_equivalent(out_fit1_2$coef, out_glm_2$coef)
+    expect_equivalent(out_fit1_1$SE, sum_glm_1$coef[,2])
+    expect_equivalent(out_fit1_2$SE, sum_glm_2$coef[,2])
+
     # add a covariate
     X <- setNames(rnorm(n_ind(iron)), names(phe))
 
@@ -245,6 +268,25 @@ test_that("fit1 works for binary traits with weights", {
     expect_equal(out_fit1_1$lod, out[pos[1]])
     expect_equal(out_fit1_2$lod, out[npos[1] + pos[2]])
 
+    # compare to glm
+    out_glm_1 <- glm(phe ~ -1 + pr[[1]] + X, family=binomial(link=logit), weights=weights,
+                     control=list(epsilon=1e-11))
+    out_glm_2 <- glm(phe ~ -1 + pr[[2]] + X, family=binomial(link=logit), weights=weights,
+                     control=list(epsilon=1e-11))
+    out_glm_0 <- glm(phe ~ X, family=binomial(link=logit), weights=weights)
+    sum_glm_1 <- summary(out_glm_1)
+    sum_glm_2 <- summary(out_glm_2)
+
+    # lod scores
+    expect_equivalent(out_fit1_1$lod, lod_glm(out_glm_1, out_glm_0))
+    expect_equivalent(out_fit1_2$lod, lod_glm(out_glm_2, out_glm_0))
+
+    # coefficients and SEs
+    expect_equivalent(out_fit1_1$coef, out_glm_1$coef)
+    expect_equivalent(out_fit1_2$coef, out_glm_2$coef)
+    expect_equivalent(out_fit1_1$SE, sum_glm_1$coef[,2])
+    expect_equivalent(out_fit1_2$SE, sum_glm_2$coef[,2])
+
     # interactive covariate, autosome only
     out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X)
 
@@ -256,5 +298,19 @@ test_that("fit1 works for binary traits with weights", {
     # lod
     out <- scan1(probs, phe, model="binary", weights=weights, addcovar=X, intcovar=X)
     expect_equal(out_fit1_1$lod, out[pos[1]])
+
+    # compare to glm
+    out_glm_1 <- glm(phe ~ -1 + pr[[1]] + X + I(pr[[1]][,2]*X) + I(pr[[1]][,3]*X),
+                     family=binomial(link=logit), weights=weights,
+                     control=list(epsilon=1e-11))
+    out_glm_0 <- glm(phe ~ X, family=binomial(link=logit), weights=weights)
+    sum_glm_1 <- summary(out_glm_1)
+
+    # lod scores
+    expect_equivalent(out_fit1_1$lod, lod_glm(out_glm_1, out_glm_0))
+
+    # coefficients and SEs
+    expect_equivalent(out_fit1_1$coef, out_glm_1$coef)
+    expect_equivalent(out_fit1_1$SE, sum_glm_1$coef[,2])
 
 })
