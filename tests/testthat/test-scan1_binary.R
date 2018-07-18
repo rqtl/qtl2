@@ -142,3 +142,67 @@ test_that("scan1 with multiple binary phenotype gives same results as R/qtl", {
     for(i in 1:3) expect_equal(out1_ic2[,i+2], as.numeric(out2_ic2[,i]))
 
 })
+
+
+test_that("scan1 with weights gives the same answer as glm()", {
+
+    library(qtl)
+    data(listeria)
+    set.seed(20180717)
+    listeria$pheno$sex <- sample(0:1, nind(listeria), replace=TRUE)
+    listeria <- listeria[c(1,3,"X"), ] # subset to 3 chromosomes
+    listeria <- convert2cross2(listeria)
+    Xcovar <- get_x_covar(listeria)
+
+    phe <- cbind(binary1=as.numeric(listeria$pheno[,1] == 264),
+                 binary2 = as.numeric(listeria$pheno[,1] > 116.5),
+                 binary3 = as.numeric(listeria$pheno[,1] > 91.1))
+    rownames(phe) <- rownames(listeria$pheno)
+
+    map <- insert_pseudomarkers(listeria$gmap, step=2.5)
+    pr <- calc_genoprob(listeria, map)
+
+    out <- scan1(pr, phe, model="binary", Xcovar=Xcovar)
+
+    nmar <- sapply(map, length) # no. markers/pseudomarkers per chromosome
+    csmar <- cumsum(c(0, nmar))
+    pos <- c(37, 7, 9)
+
+    # null loglik (X chr needs sex as covariate)
+    dev_glm0 <- apply(phe, 2, function(y)
+        glm(y ~ 1, family=binomial(link=logit))$deviance)
+    dev_glm0X <- apply(phe, 2, function(y)
+        glm(y ~ Xcovar, family=binomial(link=logit))$deviance)
+    dev_glm0 <- list(dev_glm0, dev_glm0, dev_glm0X)
+
+    for(i in 1:3) {
+        dev_glm <- apply(phe, 2, function(y)
+            glm(y ~ -1 + pr[[i]][,,pos[i]], family=binomial(link=logit))$deviance)
+
+        lod_glm <- (dev_glm0[[i]] - dev_glm)/(2*log(10))
+
+        expect_equal(out[csmar[i] + pos[i],], lod_glm)
+    }
+
+    # repeat with weights
+    weights <- setNames(sample(1:4, n_ind(listeria), replace=TRUE), rownames(phe))
+
+    out <- scan1(pr, phe, model="binary", Xcovar=Xcovar, weights=weights)
+
+    # null loglik (X chr needs sex as covariate)
+    dev_glm0 <- apply(phe, 2, function(y)
+        glm(y ~ 1, family=binomial(link=logit), weights=weights)$deviance)
+    dev_glm0X <- apply(phe, 2, function(y)
+        glm(y ~ Xcovar, family=binomial(link=logit), weights=weights)$deviance)
+    dev_glm0 <- list(dev_glm0, dev_glm0, dev_glm0X)
+
+    for(i in 1:3) {
+        dev_glm <- apply(phe, 2, function(y)
+            glm(y ~ -1 + pr[[i]][,,pos[i]], family=binomial(link=logit), weights=weights)$deviance)
+
+        lod_glm <- (dev_glm0[[i]] - dev_glm)/(2*log(10))
+
+        expect_equal(out[csmar[i] + pos[i],], lod_glm)
+    }
+
+})
