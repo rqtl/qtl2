@@ -873,7 +873,7 @@ The json equivalent is the following:
 ```
 
 For these crosses, we need cross information, in a file separate
-from any other covariates, the indicates the order
+from any other covariates, that indicates the order
 in which the founder lines were crossed when producing each line. This
 will have as many columns as there are founders (for example, 8
 columns for `"risib8"`) and each row should be a permutation of the

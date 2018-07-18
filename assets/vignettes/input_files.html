@@ -110,6 +110,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -577,7 +580,7 @@ founder_geno:
   B: 3</code></pre>
 <p>The json equivalent is the following:</p>
 <pre><code>&quot;genotypes&quot;: {&quot;A&quot;:1, &quot;B&quot;:3}</code></pre>
-<p>For these crosses, we need cross information, in a file separate from any other covariates, the indicates the order in which the founder lines were crossed when producing each line. This will have as many columns as there are founders (for example, 8 columns for <code>&quot;risib8&quot;</code>) and each row should be a permutation of the integers from 1 to the number of founders.</p>
+<p>For these crosses, we need cross information, in a file separate from any other covariates, that indicates the order in which the founder lines were crossed when producing each line. This will have as many columns as there are founders (for example, 8 columns for <code>&quot;risib8&quot;</code>) and each row should be a permutation of the integers from 1 to the number of founders.</p>
 <p>As with 2-way RIL by sib-mating (<code>&quot;risib&quot;</code>), no sex covariate is needed or will be used.</p>
 </div>
 <div id="way-magic-lines" class="section level3">
