@@ -314,3 +314,81 @@ test_that("fit1 works for binary traits with weights", {
     expect_equivalent(out_fit1_1$SE, sum_glm_1$coef[,2])
 
 })
+
+test_that("fit one for binary traits handles NA case", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    iron <- iron[,c("2", "X")]
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, err=0.002)
+
+    phe <- iron$pheno[,1]
+    phe <- setNames(as.numeric(phe > quantile(phe, 0.95)),
+                    ind_ids(iron))
+
+    suppressWarnings(out <- scan1(probs, phe, model="binary"))
+
+    mar <- c("D2Mit304", "DXMit186")
+    p1 <- pull_genoprobpos(probs, mar[1])
+    p2 <- pull_genoprobpos(probs, mar[2])
+
+    suppressWarnings(ll1a <- glm(phe ~ -1 + p1, family=binomial(link=logit))$deviance)
+    suppressWarnings(ll1b <- glm(phe ~ -1 + p2, family=binomial(link=logit))$deviance)
+    ll0 <- glm(phe ~ 1, family=binomial(link=logit))$deviance
+
+    expect_equal(out[mar[1],1], (ll0-ll1a)/2/log(10))
+    expect_equal(out[mar[2],1], (ll0-ll1b)/2/log(10), tol=1e-7)
+
+    # repeat with weights
+    set.seed(20180720)
+    w <- setNames( runif(length(phe), 1, 5), names(phe))
+    suppressWarnings(outw <- scan1(probs, phe, model="binary", weights=w))
+
+    suppressWarnings(ll1a_w <- glm(phe ~ -1 + p1, family=binomial(link=logit), weights=w)$deviance)
+    suppressWarnings(ll1b_w <- glm(phe ~ -1 + p2, family=binomial(link=logit), weights=w)$deviance)
+    suppressWarnings(ll0_w <- glm(phe ~ 1, family=binomial(link=logit), weights=w)$deviance)
+
+    expect_equal(outw[mar[1],1], (ll0_w-ll1a_w)/2/log(10))
+    expect_equal(outw[mar[2],1], (ll0_w-ll1b_w)/2/log(10), tol=1e-7)
+
+})
+
+test_that("fit one for binary traits handles NA case with DO data", {
+
+    if(isnt_karl()) skip("this test only run locally")
+
+    file <- paste0("https://raw.githubusercontent.com/rqtl/",
+                   "qtl2data/master/DOex/DOex.zip")
+    DOex <- read_cross2(file)
+    probs <- calc_genoprob(DOex, error_prob=0.002, cores=0)
+    apr <- genoprob_to_alleleprob(probs)
+
+    phe <- setNames((DOex$pheno[,1] > quantile(DOex$pheno[,1], 0.95, na.rm=TRUE))*1, rownames(DOex$pheno))
+
+    suppressWarnings(out <- scan1(apr, phe, model="binary"))
+
+    mar <- c("backupUNC020117657", "UNC020459944")
+    p1 <- pull_genoprobpos(apr, mar[1])
+    p2 <- pull_genoprobpos(apr, mar[2])
+
+    suppressWarnings(ll1a <- glm(phe ~ -1 + p1, family=binomial(link=logit))$deviance)
+    suppressWarnings(ll1b <- glm(phe ~ -1 + p2, family=binomial(link=logit))$deviance)
+    ll0 <- glm(phe ~ 1, family=binomial(link=logit))$deviance
+
+    expect_equal(out[mar[1],1], (ll0-ll1a)/2/log(10))
+    expect_equal(out[mar[2],1], (ll0-ll1b)/2/log(10))
+
+
+    # repeat with weights
+    set.seed(20180720)
+    w <- setNames( runif(length(phe), 1, 5), names(phe))
+    suppressWarnings(outw <- scan1(apr, phe, model="binary", weights=w))
+
+    suppressWarnings(ll1a_w <- glm(phe ~ -1 + p1, family=binomial(link=logit), weights=w)$deviance)
+    suppressWarnings(ll1b_w <- glm(phe ~ -1 + p2, family=binomial(link=logit), weights=w)$deviance)
+    suppressWarnings(ll0_w <- glm(phe ~ 1, family=binomial(link=logit), weights=w)$deviance)
+
+    expect_equal(outw[mar[1],1], (ll0_w-ll1a_w)/2/log(10))
+    expect_equal(outw[mar[2],1], (ll0_w-ll1b_w)/2/log(10))
+
+})
