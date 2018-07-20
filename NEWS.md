@@ -1,4 +1,4 @@
-## qtl2 0.15-22 (2018-07-18)
+## qtl2 0.15-23 (2018-07-20)
 
 ### New features
 
@@ -77,6 +77,9 @@
 
 - Fix a bug in `scan1snps()` where it didn't check that the `genoprobs`
   and `map` conform.
+
+- Revised underlying binary trait regression function to avoid some of
+  the tendency towards NAs.
 
 
 ## qtl2 0.14 (2018-03-09)
