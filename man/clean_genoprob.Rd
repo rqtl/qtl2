@@ -2,13 +2,17 @@
 % Please edit documentation in R/clean_genoprob.R
 \name{clean_genoprob}
 \alias{clean_genoprob}
+\alias{clean.calc_genoprob}
 \title{Clean genotype probabilities}
 \usage{
-clean_genoprob(probs, value_threshold = 0.000001, column_threshold = 0.01,
-  ind = NULL, cores = 1)
+clean_genoprob(object, value_threshold = 0.000001, column_threshold = 0.01,
+  ind = NULL, cores = 1, ...)
+
+\method{clean}{calc_genoprob}(object, value_threshold = 0.000001,
+  column_threshold = 0.01, ind = NULL, cores = 1, ...)
 }
 \arguments{
-\item{probs}{Genotype probabilities as calculated by
+\item{object}{Genotype probabilities as calculated by
 \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 
 \item{value_threshold}{Probabilities below this value will be set
@@ -28,10 +32,12 @@ returned.}
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
+
+\item{...}{Ignored at this point.}
 }
 \value{
 A cleaned version of the input genotype probabilities
-object, \code{probs}.
+object, \code{object}.
 }
 \description{
 Clean up genotype probabilities by setting small values to 0 and
@@ -71,8 +77,8 @@ probs <- calc_genoprob(iron, error_prob=0.002)
 
 # clean the genotype probabilities
 # (doesn't really do anything in this case, because there are no small but non-zero values)
-probs_clean <- clean_genoprob(probs)
+probs_clean <- clean(probs)
 
 # clean only the females' genotype probabilities
-probs_cleanf <- clean_genoprob(probs, ind=names(iron$is_female)[iron$is_female])
+probs_cleanf <- clean(probs, ind=names(iron$is_female)[iron$is_female])
 }
