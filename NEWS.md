@@ -1,4 +1,4 @@
-## qtl2 0.15-23 (2018-07-20)
+## qtl2 0.15-24 (2018-07-21)
 
 ### New features
 
@@ -36,6 +36,10 @@
 - Added `replace_ids()` for replacing individual IDs in an object.
   S3 method for `"cross2"` objects and output of `calc_genoprob()`,
   `viterbi()`, `maxmarg()`, and `sim_geno()`.
+
+- Added `clean_scan1()` plus generic function `clean()` that works
+  with both this and with `clean_genoprob()`. `clean_scan1()` replaces
+  negative values with `NA` and removes rows that have all `NAs`.
 
 ### Minor changes
 

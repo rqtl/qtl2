@@ -6,7 +6,7 @@
 #'
 #' @md
 #'
-#' @param probs Genotype probabilities as calculated by
+#' @param object Genotype probabilities as calculated by
 #'     [calc_genoprob()].
 #' @param value_threshold Probabilities below this value will be set
 #'     to 0.
@@ -22,9 +22,10 @@
 #'     (If `0`, use [parallel::detectCores()].)
 #'     Alternatively, this can be links to a set of cluster sockets, as
 #'     produced by [parallel::makeCluster()].
+#' @param ... Ignored at this point.
 #'
 #' @return A cleaned version of the input genotype probabilities
-#'     object, `probs`.
+#'     object, `object`.
 #'
 #' @details
 #' In cases where a particular genotype is largely absent,
@@ -59,36 +60,36 @@
 #'
 #' # clean the genotype probabilities
 #' # (doesn't really do anything in this case, because there are no small but non-zero values)
-#' probs_clean <- clean_genoprob(probs)
+#' probs_clean <- clean(probs)
 #'
 #' # clean only the females' genotype probabilities
-#' probs_cleanf <- clean_genoprob(probs, ind=names(iron$is_female)[iron$is_female])
+#' probs_cleanf <- clean(probs, ind=names(iron$is_female)[iron$is_female])
 
 #' @export
 clean_genoprob <-
-    function(probs, value_threshold=1e-6, column_threshold=0.01, ind=NULL, cores=1)
+    function(object, value_threshold=1e-6, column_threshold=0.01, ind=NULL, cores=1, ...)
 {
     if(!is.null(ind)) {
         # clean the selected subset of individuals
-        probs_sub <- clean_genoprob(subset(probs, ind=ind), value_threshold=value_threshold,
+        probs_sub <- clean_genoprob(subset(object, ind=ind), value_threshold=value_threshold,
                                     column_threshold=column_threshold, cores=cores)
 
         # paste the result into the main object
-        for(i in seq_along(probs))
-            probs[[i]][rownames(probs_sub[[i]]),,] <- probs_sub[[i]]
+        for(i in seq_along(object))
+            object[[i]][rownames(probs_sub[[i]]),,] <- probs_sub[[i]]
 
         # exit the function
-        return(probs)
+        return(object)
     }
 
-    attrib <- attributes(probs)
+    attrib <- attributes(object)
 
     cores <- setup_cluster(cores)
 
-    result <- cluster_lapply(cores, seq_along(probs),
+    result <- cluster_lapply(cores, seq_along(object),
                              function(i) {
-        this_result <- .clean_genoprob(probs[[i]], value_threshold, column_threshold)
-        dimnames(this_result) <- dimnames(probs[[i]])
+        this_result <- .clean_genoprob(object[[i]], value_threshold, column_threshold)
+        dimnames(this_result) <- dimnames(object[[i]])
         this_result })
 
     for(a in names(attrib)) {
@@ -97,3 +98,7 @@ clean_genoprob <-
 
     result
 }
+
+#' @rdname clean_genoprob
+#' @export
+clean.calc_genoprob <- clean_genoprob
