@@ -75,7 +75,7 @@
 #' number of iteractions for converence of the iterative algorithm
 #' used when `model=binary`. `bintol` is used as a tolerance for
 #' converence for the iterative algorithm used when `model=binary`.
-#' `nu_max` is the maximum value for the "linear predictor" in the
+#' `eta_max` is the maximum value for the "linear predictor" in the
 #' case `model="binary"` (a bit of a technicality to avoid fitted
 #' values exactly at 0 or 1).
 #'
@@ -158,11 +158,11 @@ scan1 <-
     if(model=="binary") {
         bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
         if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
-        nu_max <- grab_dots(dotargs, "nu_max", log(1-tol)-log(tol)) # for model="binary"
-        if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
+        eta_max <- grab_dots(dotargs, "eta_max", log(1-tol)-log(tol)) # for model="binary"
+        if(!is_pos_number(eta_max)) stop("eta_max should be a single positive number")
         maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
         if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
-        check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch", "maxit", "bintol", "nu_max"))
+        check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch", "maxit", "bintol", "eta_max"))
     }
     else {
         check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
@@ -289,11 +289,11 @@ scan1 <-
         }
         else { # binary traits
             # FIX_ME: calculating null LOD multiple times :(
-            nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol, nu_max)
+            nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol, eta_max)
 
             # scan1 function taking clean data (with no missing values)
             lod <- scan1_binary_clean(pr, ph, ac, ic, wts, add_intercept=TRUE,
-                                      maxit, bintol, tol, intcovar_method, nu_max)
+                                      maxit, bintol, tol, intcovar_method, eta_max)
 
             # calculate LOD score
             lod <- lod - nulllod

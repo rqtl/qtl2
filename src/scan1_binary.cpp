@@ -26,7 +26,7 @@ NumericMatrix scan_binary_onechr(const NumericVector& genoprobs,
                                  const int maxit=100,
                                  const double tol=1e-6,
                                  const double qr_tol=1e-12,
-                                 const double nu_max=30.0)
+                                 const double eta_max=30.0)
 {
     const int n_ind = pheno.rows();
     const int n_phe = pheno.cols();
@@ -58,7 +58,7 @@ NumericMatrix scan_binary_onechr(const NumericVector& genoprobs,
 
         for(int phe=0; phe<n_phe; phe++) {
             // calc rss and paste into ith column of result
-            result(phe,pos) = calc_ll_binreg(X, pheno(_,phe), maxit, tol, qr_tol, nu_max);
+            result(phe,pos) = calc_ll_binreg(X, pheno(_,phe), maxit, tol, qr_tol, eta_max);
         }
     }
 
@@ -83,7 +83,7 @@ NumericMatrix scan_binary_onechr_weighted(const NumericVector& genoprobs,
                                           const int maxit=100,
                                           const double tol=1e-6,
                                           const double qr_tol=1e-12,
-                                          const double nu_max=30.0)
+                                          const double eta_max=30.0)
 {
     const int n_ind = pheno.rows();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -117,7 +117,7 @@ NumericMatrix scan_binary_onechr_weighted(const NumericVector& genoprobs,
 
         for(int phe=0; phe<n_phe; phe++) {
             // calc rss and paste into ith column of result
-            result(phe,pos) = calc_ll_binreg_weighted(X, pheno(_,phe), weights, maxit, tol, qr_tol, nu_max);
+            result(phe,pos) = calc_ll_binreg_weighted(X, pheno(_,phe), weights, maxit, tol, qr_tol, eta_max);
         }
     }
 
@@ -231,7 +231,7 @@ NumericMatrix scan_binary_onechr_intcovar_lowmem(const NumericVector& genoprobs,
                                                  const int maxit=100,
                                                  const double tol=1e-6,
                                                  const double qr_tol=1e-12,
-                                                 const double nu_max=30.0)
+                                                 const double eta_max=30.0)
 {
     const int n_ind = pheno.rows();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -258,7 +258,7 @@ NumericMatrix scan_binary_onechr_intcovar_lowmem(const NumericVector& genoprobs,
 
         for(int phe=0; phe<n_phe; phe++) {
             // do regression
-            result(phe,pos) = calc_ll_binreg(X, pheno(_,phe), maxit, tol, qr_tol, nu_max);
+            result(phe,pos) = calc_ll_binreg(X, pheno(_,phe), maxit, tol, qr_tol, eta_max);
         }
     }
 
@@ -288,7 +288,7 @@ NumericMatrix scan_binary_onechr_intcovar_weighted_lowmem(const NumericVector& g
                                                           const int maxit=100,
                                                           const double tol=1e-6,
                                                           const double qr_tol=1e-12,
-                                                          const double nu_max=30.0)
+                                                          const double eta_max=30.0)
 {
     const int n_ind = pheno.rows();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -315,7 +315,7 @@ NumericMatrix scan_binary_onechr_intcovar_weighted_lowmem(const NumericVector& g
 
         for(int phe=0; phe<n_phe; phe++) {
             // do regression
-            result(phe,pos) = calc_ll_binreg_weighted(X, pheno(_,phe), weights, maxit, tol, qr_tol, nu_max);
+            result(phe,pos) = calc_ll_binreg_weighted(X, pheno(_,phe), weights, maxit, tol, qr_tol, eta_max);
         }
     }
 

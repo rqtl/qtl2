@@ -68,7 +68,7 @@
 #' `1e-12`. `maxit` is the maximum number of iteractions for
 #' converence of the iterative algorithm used when `model=binary`.
 #' `bintol` is used as a tolerance for converence for the iterative
-#' algorithm used when `model=binary`. `nu_max` is the maximum value
+#' algorithm used when `model=binary`. `eta_max` is the maximum value
 #' for the "linear predictor" in the case `model="binary"` (a bit of a
 #' technicality to avoid fitted values exactly at 0 or 1).
 #'
@@ -138,12 +138,12 @@ fit1 <-
     if(model=="binary") {
         bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
         if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
-        nu_max <- grab_dots(dotargs, "nu_max", log(1-tol)-log(tol)) # for model="binary"
-        if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
+        eta_max <- grab_dots(dotargs, "eta_max", log(1-tol)-log(tol)) # for model="binary"
+        if(!is_pos_number(eta_max)) stop("eta_max should be a single positive number")
         maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
         if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
 
-        check_extra_dots(dotargs, c("tol", "bintol", "nu_max", "maxit"))
+        check_extra_dots(dotargs, c("tol", "bintol", "eta_max", "maxit"))
     }
     else { # not binary trait
         check_extra_dots(dotargs, "tol")
@@ -272,21 +272,21 @@ fit1 <-
     else { # binary phenotype
         # null fit
         if(is.null(weights)) { # no weights
-            fit0 <- fit_binreg(X0, pheno, FALSE, maxit, bintol, tol, nu_max)
+            fit0 <- fit_binreg(X0, pheno, FALSE, maxit, bintol, tol, eta_max)
             weights <- numeric(0)
         }
         else {
-            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, maxit, bintol, tol, nu_max)
+            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, maxit, bintol, tol, eta_max)
         }
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
             fitA <- fit1_binary_addcovar(genoprobs, pheno, addcovar, weights, se=se,
-                                         maxit, bintol, tol, nu_max)
+                                         maxit, bintol, tol, eta_max)
         }
         else {                  # intcovar
             fitA <- fit1_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                         weights, se=se, maxit, bintol, tol, nu_max)
+                                         weights, se=se, maxit, bintol, tol, eta_max)
         }
 
         lod <- fitA$log10lik - fit0$log10lik

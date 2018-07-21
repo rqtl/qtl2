@@ -93,7 +93,7 @@ linearly dependent on others and should be omitted); default
 \code{1e-12}. \code{maxit} is the maximum number of iteractions for
 converence of the iterative algorithm used when \code{model=binary}.
 \code{bintol} is used as a tolerance for converence for the iterative
-algorithm used when \code{model=binary}. \code{nu_max} is the maximum value
+algorithm used when \code{model=binary}. \code{eta_max} is the maximum value
 for the "linear predictor" in the case \code{model="binary"} (a bit of a
 technicality to avoid fitted values exactly at 0 or 1).
 }

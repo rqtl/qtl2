@@ -9,76 +9,76 @@ arrange_genes <- function(start, end) {
     .Call(`_qtl2_R_bayes_int_plain`, lod, pos, prob)
 }
 
-calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6, nu_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg_eigenchol`, X, y, maxit, tol, nu_max)
+calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg_eigenchol`, X, y, maxit, tol, eta_max)
 }
 
-calc_ll_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg_eigenqr`, X, y, maxit, tol, qr_tol, nu_max)
+calc_ll_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg_eigenqr`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coef_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coef_binreg_eigenqr`, X, y, maxit, tol, qr_tol, nu_max)
+calc_coef_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coef_binreg_eigenqr`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coefSE_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coefSE_binreg_eigenqr`, X, y, maxit, tol, qr_tol, nu_max)
+calc_coefSE_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coefSE_binreg_eigenqr`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_eigenqr <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, maxit, tol, qr_tol, nu_max)
+fit_binreg_eigenqr <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, maxit, tol, qr_tol, eta_max)
 }
 
-calc_ll_binreg_weighted_eigenchol <- function(X, y, weights, maxit = 100L, tol = 1e-6, nu_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg_weighted_eigenchol`, X, y, weights, maxit, tol, nu_max)
+calc_ll_binreg_weighted_eigenchol <- function(X, y, weights, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg_weighted_eigenchol`, X, y, weights, maxit, tol, eta_max)
 }
 
-calc_ll_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, nu_max)
+calc_ll_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coef_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coef_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, nu_max)
+calc_coef_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coef_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coefSE_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coefSE_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, nu_max)
+calc_coefSE_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coefSE_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, maxit, tol, qr_tol, nu_max)
+fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
 }
 
-calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, nu_max)
+calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coef_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coef_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, nu_max)
+calc_coef_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coef_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coefSE_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, nu_max)
+calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coefSE_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, maxit, tol, qr_tol, nu_max)
+fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
 }
 
-calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg`, X, y, maxit, tol, qr_tol, nu_max)
+calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coef_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coef_binreg`, X, y, maxit, tol, qr_tol, nu_max)
+calc_coef_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coef_binreg`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_calc_coefSE_binreg`, X, y, maxit, tol, qr_tol, nu_max)
+calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coefSE_binreg`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_fit_binreg`, X, y, se, maxit, tol, qr_tol, nu_max)
+fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg`, X, y, se, maxit, tol, qr_tol, eta_max)
 }
 
 .calc_kinship <- function(prob_array) {
@@ -165,12 +165,12 @@ invert_founder_index <- function(cross_info) {
     .Call(`_qtl2_R_find_peaks_and_bayesint`, lod, pos, threshold, peakdrop, prob)
 }
 
-fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_fit1_binary_addcovar`, genoprobs, pheno, addcovar, weights, se, maxit, tol, qr_tol, nu_max)
+fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit1_binary_addcovar`, genoprobs, pheno, addcovar, weights, se, maxit, tol, qr_tol, eta_max)
 }
 
-fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, maxit, tol, qr_tol, nu_max)
+fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, maxit, tol, qr_tol, eta_max)
 }
 
 fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, tol = 1e-12) {
@@ -461,12 +461,12 @@ permute_ivector_stratified <- function(n_perm, x, strata, n_strata = -1L) {
     .Call(`_qtl2_reduce_markers`, pos, min_dist, weights)
 }
 
-scan_binary_onechr <- function(genoprobs, pheno, addcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scan_binary_onechr`, genoprobs, pheno, addcovar, maxit, tol, qr_tol, nu_max)
+scan_binary_onechr <- function(genoprobs, pheno, addcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scan_binary_onechr`, genoprobs, pheno, addcovar, maxit, tol, qr_tol, eta_max)
 }
 
-scan_binary_onechr_weighted <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scan_binary_onechr_weighted`, genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, nu_max)
+scan_binary_onechr_weighted <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scan_binary_onechr_weighted`, genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, eta_max)
 }
 
 scan_binary_onechr_intcovar_highmem <- function(genoprobs, pheno, addcovar, intcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12) {
@@ -477,12 +477,12 @@ scan_binary_onechr_intcovar_weighted_highmem <- function(genoprobs, pheno, addco
     .Call(`_qtl2_scan_binary_onechr_intcovar_weighted_highmem`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol)
 }
 
-scan_binary_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scan_binary_onechr_intcovar_lowmem`, genoprobs, pheno, addcovar, intcovar, maxit, tol, qr_tol, nu_max)
+scan_binary_onechr_intcovar_lowmem <- function(genoprobs, pheno, addcovar, intcovar, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scan_binary_onechr_intcovar_lowmem`, genoprobs, pheno, addcovar, intcovar, maxit, tol, qr_tol, eta_max)
 }
 
-scan_binary_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scan_binary_onechr_intcovar_weighted_lowmem`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, nu_max)
+scan_binary_onechr_intcovar_weighted_lowmem <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scan_binary_onechr_intcovar_weighted_lowmem`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, eta_max)
 }
 
 scan_hk_onechr_nocovar <- function(genoprobs, pheno, tol = 1e-12) {
@@ -529,20 +529,20 @@ scanblup <- function(genoprobs, pheno, addcovar, se, reml, tol = 1e-12) {
     .Call(`_qtl2_scanblup`, genoprobs, pheno, addcovar, se, reml, tol)
 }
 
-scancoef_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scancoef_binary_addcovar`, genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, nu_max)
+scancoef_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scancoef_binary_addcovar`, genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, eta_max)
 }
 
-scancoef_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scancoef_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, nu_max)
+scancoef_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scancoef_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, eta_max)
 }
 
-scancoefSE_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scancoefSE_binary_addcovar`, genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, nu_max)
+scancoefSE_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scancoefSE_binary_addcovar`, genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, eta_max)
 }
 
-scancoefSE_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, nu_max = 30.0) {
-    .Call(`_qtl2_scancoefSE_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, nu_max)
+scancoefSE_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_scancoefSE_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, eta_max)
 }
 
 scancoef_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, tol = 1e-12) {

@@ -20,7 +20,7 @@ Rcpp::NumericMatrix scancoef_binary_addcovar(const Rcpp::NumericVector& genoprob
                                              const int maxit,
                                              const double tol,
                                              const double qr_tol,
-                                             const double nu_max);
+                                             const double eta_max);
 
 // Scan a single chromosome to calculate coefficients, with interactive covariates
 //
@@ -40,7 +40,7 @@ Rcpp::NumericMatrix scancoef_binary_intcovar(const Rcpp::NumericVector& genoprob
                                              const int maxit,
                                              const double tol,
                                              const double qr_tol,
-                                             const double nu_max);
+                                             const double eta_max);
 
 // Scan a single chromosome to calculate coefficients, with additive covariates
 //
@@ -58,7 +58,7 @@ Rcpp::List scancoefSE_binary_addcovar(const Rcpp::NumericVector& genoprobs,
                                       const int maxit,
                                       const double tol,
                                       const double qr_tol,
-                                      const double nu_max);
+                                      const double eta_max);
 
 
 // Scan a single chromosome to calculate coefficients, with interactive covariates
@@ -79,6 +79,6 @@ Rcpp::List scancoefSE_binary_intcovar(const Rcpp::NumericVector& genoprobs,
                                       const int maxit,
                                       const double tol,
                                       const double qr_tol,
-                                      const double nu_max);
+                                      const double eta_max);
 
 #endif // SCAN1COEF_BINARY_H
