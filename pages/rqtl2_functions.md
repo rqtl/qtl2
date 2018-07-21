@@ -287,3 +287,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `add_threshold`
 - `predict_snpgeno`
 - `replace_ids`
+- `clean.calc_genoprob`
+- `clean.scan1`
+- `clean`
+- `clean_scan1`
