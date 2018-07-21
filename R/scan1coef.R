@@ -75,7 +75,7 @@
 #' `1e-12`. `maxit` is the maximum number of iteractions for
 #' converence of the iterative algorithm used when `model=binary`.
 #' `bintol` is used as a tolerance for converence for the iterative
-#' algorithm used when `model=binary`. `nu_max` is the maximum value
+#' algorithm used when `model=binary`. `eta_max` is the maximum value
 #' for the "linear predictor" in the case `model="binary"` (a bit of a
 #' technicality to avoid fitted values exactly at 0 or 1).
 #'
@@ -137,12 +137,12 @@ scan1coef <-
     if(model=="binary") {
         bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
         if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
-        nu_max <- grab_dots(dotargs, "nu_max", log(1-tol)-log(tol)) # for model="binary"
-        if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
+        eta_max <- grab_dots(dotargs, "eta_max", log(1-tol)-log(tol)) # for model="binary"
+        if(!is_pos_number(eta_max)) stop("eta_max should be a single positive number")
         maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
         if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
 
-        check_extra_dots(dotargs, c("tol", "bintol", "nu_max", "maxit"))
+        check_extra_dots(dotargs, c("tol", "bintol", "eta_max", "maxit"))
     }
     else { # not binary trait
         check_extra_dots(dotargs, "tol")
@@ -246,7 +246,7 @@ scan1coef <-
             if(model=="normal")
                 result <- scancoefSE_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
             else # binary trait
-                result <- scancoefSE_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol, nu_max)
+                result <- scancoefSE_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol, eta_max)
         }
         else {                  # intcovar
             if(model=="normal")
@@ -254,7 +254,7 @@ scan1coef <-
                                                  weights, tol)
             else
                 result <- scancoefSE_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                                 weights, maxit, bintol, tol, nu_max)
+                                                 weights, maxit, bintol, tol, eta_max)
         }
 
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -266,7 +266,7 @@ scan1coef <-
             if(model=="normal")
                 result <- scancoef_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
             else
-                result <- scancoef_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol, nu_max)
+                result <- scancoef_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol, eta_max)
         }
         else {                  # intcovar
             if(model=="normal")
@@ -274,7 +274,7 @@ scan1coef <-
                                                weights, tol)
             else
                 result <- scancoef_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                                   weights, maxit, bintol, tol, nu_max)
+                                                   weights, maxit, bintol, tol, eta_max)
         }
         SE <- NULL
     }

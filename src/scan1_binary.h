@@ -18,7 +18,7 @@ Rcpp::NumericMatrix scan_binary_onechr(const Rcpp::NumericVector& genoprobs,
                                        const int maxit,
                                        const double tol,
                                        const double qr_tol,
-                                       const double nu_max);
+                                       const double eta_max);
 
 // Scan a single chromosome with additive covariates and weights
 //
@@ -36,7 +36,7 @@ Rcpp::NumericMatrix scan_binary_onechr_weighted(const Rcpp::NumericVector& genop
                                                 const int maxit,
                                                 const double tol,
                                                 const double qr_tol,
-                                                const double nu_max);
+                                                const double eta_max);
 
 // Scan a single chromosome with interactive covariates
 // this version should be fast but requires more memory
@@ -56,7 +56,7 @@ Rcpp::NumericMatrix scan_binary_onechr_intcovar_highmem(const Rcpp::NumericVecto
                                                         const int maxit,
                                                         const double tol,
                                                         const double qr_tol,
-                                                        const double nu_max);
+                                                        const double eta_max);
 
 // Scan a single chromosome with interactive covariates
 // this version should be fast but requires more memory
@@ -78,7 +78,7 @@ Rcpp::NumericMatrix scan_binary_onechr_intcovar_weighted_highmem(const Rcpp::Num
                                                                  const int maxit,
                                                                  const double tol,
                                                                  const double qr_tol,
-                                                                 const double nu_max);
+                                                                 const double eta_max);
 
 // Scan a single chromosome with interactive covariates
 // this version uses less memory but will be slower
@@ -98,7 +98,7 @@ Rcpp::NumericMatrix scan_binary_onechr_intcovar_lowmem(const Rcpp::NumericVector
                                                        const int maxit,
                                                        const double tol,
                                                        const double qr_tol,
-                                                       const double nu_max);
+                                                       const double eta_max);
 
 // Scan a single chromosome with interactive covariates
 // this version uses less memory but will be slower
@@ -121,6 +121,6 @@ Rcpp::NumericMatrix scan_binary_onechr_intcovar_weighted_lowmem(const Rcpp::Nume
                                                                 const int maxit,
                                                                 const double tol,
                                                                 const double qr_tol,
-                                                                const double nu_max);
+                                                                const double eta_max);
 
 #endif // SCAN_BINARY_H

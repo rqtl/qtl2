@@ -19,7 +19,7 @@ using namespace Eigen;
 double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVector& y,
                                          const NumericVector &weights,
                                          const int maxit=100, const double tol=1e-6,
-                                         const double nu_max=30.0)
+                                         const double eta_max=30.0)
 {
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
@@ -30,13 +30,13 @@ double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVe
     #endif
 
     double curllik = 0.0;
-    NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
+    NumericVector pi(n_ind), wt(n_ind), eta(n_ind), z(n_ind);
 
     for(int ind=0; ind<n_ind; ind++) {
         pi[ind] = (y[ind]*weights[ind] + 0.5)/(weights[ind] + 1.0);
         wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind])*weights[ind]);
-        nu[ind] = log(pi[ind]) - log(1.0 - pi[ind]);
-        z[ind] = wt[ind]*(nu[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
+        eta[ind] = log(pi[ind]) - log(1.0 - pi[ind]);
+        z[ind] = wt[ind]*(eta[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
         curllik += (y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]))*weights[ind];
     }
 
@@ -49,20 +49,20 @@ double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVe
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // fitted values using weighted XX; will need to divide by previous weights
-        nu = calc_fitted_linreg_eigenchol(XX, z);
+        eta = calc_fitted_linreg_eigenchol(XX, z);
 
         llik = 0.0;
         for(int ind=0; ind<n_ind; ind++) {
-            nu[ind] /= wt[ind]; // need to divide by previous weights
+            eta[ind] /= wt[ind]; // need to divide by previous weights
 
-            // don't let nu get too large or too small
-            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
-            else if(nu[ind] > nu_max) nu[ind] = nu_max;
+            // don't let eta get too large or too small
+            if(eta[ind] < -eta_max) eta[ind] = -eta_max;
+            else if(eta[ind] > eta_max) eta[ind] = eta_max;
 
-            pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
+            pi[ind] = exp(eta[ind])/(1.0 + exp(eta[ind]));
 
             wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind])*weights[ind]);
-            z[ind] = wt[ind]*(nu[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
+            z[ind] = wt[ind]*(eta[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
             llik += (y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]))*weights[ind];
         }
 
@@ -90,7 +90,7 @@ double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVect
                                        const NumericVector& weights,
                                        const int maxit=100, const double tol=1e-6,
                                        const double qr_tol=1e-12,
-                                       const double nu_max=30.0)
+                                       const double eta_max=30.0)
 {
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
@@ -101,13 +101,13 @@ double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVect
     #endif
 
     double curllik = 0.0;
-    NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
+    NumericVector pi(n_ind), wt(n_ind), eta(n_ind), z(n_ind);
 
     for(int ind=0; ind<n_ind; ind++) {
         pi[ind] = (y[ind]*weights[ind] + 0.5)/(weights[ind] + 1.0);
         wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind])*weights[ind]);
-        nu[ind] = log(pi[ind]) - log(1.0 - pi[ind]);
-        z[ind] = wt[ind]*(nu[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
+        eta[ind] = log(pi[ind]) - log(1.0 - pi[ind]);
+        z[ind] = wt[ind]*(eta[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
         curllik += (y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]))*weights[ind];
     }
 
@@ -120,20 +120,20 @@ double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVect
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // fitted values using weighted XX; will need to divide by previous weights
-        nu = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
+        eta = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
 
         llik = 0.0;
         for(int ind=0; ind<n_ind; ind++) {
-            nu[ind] /= wt[ind]; // need to divide by previous weights
+            eta[ind] /= wt[ind]; // need to divide by previous weights
 
-            // don't let nu get too large or too small
-            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
-            else if(nu[ind] > nu_max) nu[ind] = nu_max;
+            // don't let eta get too large or too small
+            if(eta[ind] < -eta_max) eta[ind] = -eta_max;
+            else if(eta[ind] > eta_max) eta[ind] = eta_max;
 
-            pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
+            pi[ind] = exp(eta[ind])/(1.0 + exp(eta[ind]));
 
             wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind])*weights[ind]);
-            z[ind] = wt[ind]*(nu[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
+            z[ind] = wt[ind]*(eta[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
             llik += (y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]))*weights[ind];
         }
 
@@ -162,9 +162,9 @@ NumericVector calc_coef_binreg_weighted_eigenqr(const NumericMatrix& X,
                                                 const int maxit=100,
                                                 const double tol=1e-6,
                                                 const double qr_tol=1e-12,
-                                                const double nu_max=30.0)
+                                                const double eta_max=30.0)
 {
-    List fit = fit_binreg_weighted_eigenqr(X, y, weights, false, maxit, tol, qr_tol, nu_max);
+    List fit = fit_binreg_weighted_eigenqr(X, y, weights, false, maxit, tol, qr_tol, eta_max);
 
     NumericVector coef = fit[2];
     return(coef);
@@ -180,9 +180,9 @@ List calc_coefSE_binreg_weighted_eigenqr(const NumericMatrix& X,
                                          const int maxit=100,
                                          const double tol=1e-6,
                                          const double qr_tol=1e-12,
-                                         const double nu_max=30.0)
+                                         const double eta_max=30.0)
 {
-    List fit = fit_binreg_weighted_eigenqr(X, y, weights, true, maxit, tol, qr_tol, nu_max);
+    List fit = fit_binreg_weighted_eigenqr(X, y, weights, true, maxit, tol, qr_tol, eta_max);
 
     NumericVector coef = fit[2];
     NumericVector SE = fit[3];
@@ -202,7 +202,7 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
                                  const int maxit=100,
                                  const double tol=1e-6,
                                  const double qr_tol=1e-12,
-                                 const double nu_max=30.0)
+                                 const double eta_max=30.0)
 {
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
@@ -213,13 +213,13 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
     #endif
 
     double curllik = 0.0;
-    NumericVector pi(n_ind), wt(n_ind), nu(n_ind), z(n_ind);
+    NumericVector pi(n_ind), wt(n_ind), eta(n_ind), z(n_ind);
 
     for(int ind=0; ind<n_ind; ind++) {
         pi[ind] = (y[ind]*weights[ind] + 0.5)/(weights[ind] + 1.0);
         wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind])*weights[ind]);
-        nu[ind] = log(pi[ind]) - log(1.0 - pi[ind]);
-        z[ind] = wt[ind]*(nu[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
+        eta[ind] = log(pi[ind]) - log(1.0 - pi[ind]);
+        z[ind] = wt[ind]*(eta[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
         curllik += (y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]))*weights[ind];
     }
 
@@ -232,20 +232,20 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
         Rcpp::checkUserInterrupt();  // check for ^C from user
 
         // fitted values using weighted XX; will need to divide by previous weights
-        nu = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
+        eta = calc_fitted_linreg_eigenqr(XX, z, qr_tol);
 
         llik = 0.0;
         for(int ind=0; ind<n_ind; ind++) {
-            nu[ind] /= wt[ind]; // need to divide by previous weights
+            eta[ind] /= wt[ind]; // need to divide by previous weights
 
-            // don't let nu get too large or too small
-            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
-            else if(nu[ind] > nu_max) nu[ind] = nu_max;
+            // don't let eta get too large or too small
+            if(eta[ind] < -eta_max) eta[ind] = -eta_max;
+            else if(eta[ind] > eta_max) eta[ind] = eta_max;
 
-            pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
+            pi[ind] = exp(eta[ind])/(1.0 + exp(eta[ind]));
 
             wt[ind] = sqrt(pi[ind] * (1.0 - pi[ind])*weights[ind]);
-            z[ind] = wt[ind]*(nu[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
+            z[ind] = wt[ind]*(eta[ind] + (y[ind] - pi[ind])/(pi[ind]*(1.0-pi[ind])));
             llik += (y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]))*weights[ind];
         }
 

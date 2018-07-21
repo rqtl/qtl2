@@ -9,12 +9,12 @@
 //
 // maxit = maximum number of iterations
 // tol = tolerance for convergence
-// nu_max = maximum value for linear predictor
+// eta_max = maximum value for linear predictor
 double calc_ll_binreg_eigenchol(const Rcpp::NumericMatrix& X,
                                 const Rcpp::NumericVector& y,
                                 const int maxit,
                                 const double tol,
-                                const double nu_max);
+                                const double eta_max);
 
 // logistic regression by Qr decomposition with column pivoting
 // return just the log likelihood
@@ -22,14 +22,14 @@ double calc_ll_binreg_eigenchol(const Rcpp::NumericMatrix& X,
 // maxit = maximum number of iterations
 // tol = tolerance for convergence
 // qr_tol = tolerance for QR decomposition
-// nu_max = maximum value for linear predictor
+// eta_max = maximum value for linear predictor
 //
 double calc_ll_binreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const Rcpp::NumericVector& y,
                               const int maxit,
                               const double tol,
                               const double qr_tol,
-                              const double nu_max);
+                              const double eta_max);
 
 // logistic regression
 // return just the coefficients
@@ -38,7 +38,7 @@ Rcpp::NumericVector calc_coef_binreg_eigenqr(const Rcpp::NumericMatrix& X,
                                              const int maxit,      // max iterations
                                              const double tol,     // tolerance for convergence
                                              const double qr_tol,  // tolerance for QR decomp
-                                             const double nu_max); // max value for linear predictor
+                                             const double eta_max); // max value for linear predictor
 
 // logistic regression
 // return the coefficients and SEs
@@ -47,7 +47,7 @@ Rcpp::List calc_coefSE_binreg_eigenqr(const Rcpp::NumericMatrix& X,
                                       const int maxit,      // max iterations
                                       const double tol,     // tolerance for convergence
                                       const double qr_tol,  // tolerance for QR decomp
-                                      const double nu_max); // max value for linear predictor
+                                      const double eta_max); // max value for linear predictor
 
 // logistic regression
 // return (llik, individual contributions to llik, fitted probabilities, coef, SE
@@ -57,6 +57,6 @@ Rcpp::List fit_binreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const int maxit,      // max iterations
                               const double tol,     // tolerance for convergence
                               const double qr_tol,  // tolerance for QR decomp
-                              const double nu_max); // max value for linear predictor
+                              const double eta_max); // max value for linear predictor
 
 #endif // BINREG_EIGEN_H

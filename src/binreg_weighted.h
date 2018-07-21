@@ -13,7 +13,7 @@ double calc_ll_binreg_weighted(const Rcpp::NumericMatrix& X,
                                const int maxit,
                                const double tol,
                                const double qr_tol,
-                               const double nu_max);
+                               const double eta_max);
 
 // logistic regression
 // return just the coefficients
@@ -24,7 +24,7 @@ Rcpp::NumericVector calc_coef_binreg_weighted(const Rcpp::NumericMatrix& X,
                                               const int maxit,
                                               const double tol,
                                               const double qr_tol,
-                                              const double nu_max);
+                                              const double eta_max);
 
 // logistic regression
 // return the coefficients and SEs
@@ -35,7 +35,7 @@ Rcpp::List calc_coefSE_binreg_weighted(const Rcpp::NumericMatrix& X,
                                        const int maxit,
                                        const double tol,
                                        const double qr_tol,
-                                       const double nu_max);
+                                       const double eta_max);
 
 // logistic regression
 // return (llik, individual contributions to llik, fitted probabilities, coef, SE
@@ -47,6 +47,6 @@ Rcpp::List fit_binreg_weighted(const Rcpp::NumericMatrix& X,
                                const int maxit,
                                const double tol,
                                const double qr_tol,
-                               const double nu_max);
+                               const double eta_max);
 
 #endif // BINREG_WEIGHTED_H

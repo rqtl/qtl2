@@ -139,7 +139,7 @@ test_that("scan1snps works", {
     # binary trait with weights
     w <- ceiling(w) # avoid warning from glm() about weights not being integers
     outbinw <- scan1snps(probs, DOex$pmap, binphe, query_func=queryf, chr=2, start=97.2, end=97.3,
-                         model="binary", weights=w, nu_max=25, maxit=1000, tol=1e-5)
+                         model="binary", weights=w, eta_max=25, maxit=1000, tol=1e-5)
 
     out_glm <- glm(biny ~ -1 + p, family=binomial(link=logit), weights=w)
     out_glm0 <- glm(biny ~ 1, family=binomial(link=logit), weights=w)

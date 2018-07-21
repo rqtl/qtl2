@@ -27,7 +27,7 @@ NumericMatrix scancoef_binary_addcovar(const NumericVector& genoprobs,
                                        const int maxit=100,
                                        const double tol=1e-6,
                                        const double qr_tol=1e-12,
-                                       const double nu_max=30.0)
+                                       const double eta_max=30.0)
 {
     const int n_ind = pheno.size();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -64,9 +64,9 @@ NumericMatrix scancoef_binary_addcovar(const NumericVector& genoprobs,
 
         // do regression
         if(n_weights > 0)
-            result(_,pos) = calc_coef_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, nu_max);
+            result(_,pos) = calc_coef_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, eta_max);
         else
-            result(_,pos) = calc_coef_binreg(X, pheno, maxit, tol, qr_tol, nu_max);
+            result(_,pos) = calc_coef_binreg(X, pheno, maxit, tol, qr_tol, eta_max);
     }
 
     return result;
@@ -93,7 +93,7 @@ NumericMatrix scancoef_binary_intcovar(const NumericVector& genoprobs,
                                        const int maxit=100,
                                        const double tol=1e-6,
                                        const double qr_tol=1e-12,
-                                       const double nu_max=30.0)
+                                       const double eta_max=30.0)
 {
     const int n_ind = pheno.size();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -126,9 +126,9 @@ NumericMatrix scancoef_binary_intcovar(const NumericVector& genoprobs,
 
         // do regression
         if(n_weights > 0)
-            result(_,pos) = calc_coef_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, nu_max);
+            result(_,pos) = calc_coef_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, eta_max);
         else
-            result(_,pos) = calc_coef_binreg(X, pheno, maxit, tol, qr_tol, nu_max);
+            result(_,pos) = calc_coef_binreg(X, pheno, maxit, tol, qr_tol, eta_max);
     }
 
     return result;
@@ -153,7 +153,7 @@ List scancoefSE_binary_addcovar(const NumericVector& genoprobs,
                                 const int maxit=100,
                                 const double tol=1e-6,
                                 const double qr_tol=1e-12,
-                                const double nu_max=30.0)
+                                const double eta_max=30.0)
 {
     const int n_ind = pheno.size();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -192,9 +192,9 @@ List scancoefSE_binary_addcovar(const NumericVector& genoprobs,
         // do regression
         List tmp;
         if(n_weights > 0)
-            tmp = calc_coefSE_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, nu_max);
+            tmp = calc_coefSE_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, eta_max);
         else
-            tmp = calc_coefSE_binreg(X, pheno, maxit, tol, qr_tol, nu_max);
+            tmp = calc_coefSE_binreg(X, pheno, maxit, tol, qr_tol, eta_max);
         NumericVector tmpcoef = tmp[0];
         NumericVector tmpse = tmp[1];
         coef(_,pos) = tmpcoef;
@@ -226,7 +226,7 @@ List scancoefSE_binary_intcovar(const NumericVector& genoprobs,
                                 const int maxit=100,
                                 const double tol=1e-6,
                                 const double qr_tol=1e-12,
-                                const double nu_max=30.0)
+                                const double eta_max=30.0)
 {
     const int n_ind = pheno.size();
     if(Rf_isNull(genoprobs.attr("dim")))
@@ -261,9 +261,9 @@ List scancoefSE_binary_intcovar(const NumericVector& genoprobs,
         // do regression
         List tmp;
         if(n_weights > 0)
-            tmp = calc_coefSE_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, nu_max);
+            tmp = calc_coefSE_binreg_weighted(X, pheno, weights, maxit, tol, qr_tol, eta_max);
         else
-            tmp = calc_coefSE_binreg(X, pheno, maxit, tol, qr_tol, nu_max);
+            tmp = calc_coefSE_binreg(X, pheno, maxit, tol, qr_tol, eta_max);
         NumericVector tmpcoef = tmp[0];
         NumericVector tmpse = tmp[1];
         coef(_,pos) = tmpcoef;
