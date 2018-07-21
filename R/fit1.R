@@ -34,11 +34,7 @@
 #' `kinship` provided.
 #' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
-#' @param tol Tolerance value for
-#' linear regression by QR decomposition (in determining whether
-#' columns are linearly dependent on others and should be omitted)
-#' @param maxit Maximum number of iterations in logistic regression
-#'     fit (when `model="binary"`).
+#' @param ... Additional control parameters; see Details;
 #'
 #' @return A list containing
 #' * `coef` - Vector of estimated coefficients.
@@ -63,6 +59,18 @@
 #' as the set of contrasts, as the estimated effects are the estimated
 #' genotype effects pre-multiplied by
 #' \ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}.
+#'
+#' The `...` argument can contain several additional control
+#' parameters; suspended for simplicity (or confusion, depending on
+#' your point of view). `tol` is used as a tolerance value for linear
+#' regression by QR decomposition (in determining whether columns are
+#' linearly dependent on others and should be omitted); default
+#' `1e-12`. `maxit` is the maximum number of iteractions for
+#' converence of the iterative algorithm used when `model=binary`.
+#' `bintol` is used as a tolerance for converence for the iterative
+#' algorithm used when `model=binary`. `nu_max` is the maximum value
+#' for the "linear predictor" in the case `model="binary"` (a bit of a
+#' technicality to avoid fitted values exactly at 0 or 1).
 #'
 #' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line
@@ -111,19 +119,36 @@ fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
              contrasts=NULL, model=c("normal", "binary"),
-             se=TRUE, hsq=NULL, reml=TRUE, tol=1e-12, maxit=100)
+             se=TRUE, hsq=NULL, reml=TRUE, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
 
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                       intcovar, weights, contrasts, se, hsq, reml, tol))
+                       intcovar, weights, contrasts, se, hsq, reml, ...))
     }
 
+    model <- match.arg(model)
+
+    # deal with the dot args
+    dotargs <- list("...")
+    tol <- grab_dots(dotargs, "tol", 1e-12)
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
-    if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative number")
-    bintol <- sqrt(tol)
+    if(model=="binary") {
+        bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
+        if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
+        nu_max <- grab_dots(dotargs, "nu_max", 30) # for model="binary"
+        if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
+        maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
+        if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
+
+        check_extra_dots(dotargs, c("tol", "bintol", "nu_max", "maxit"))
+    }
+    else { # not binary trait
+        check_extra_dots(dotargs, "tol")
+    }
+
 
     # check that the objects have rownames
     check4names(pheno, addcovar, NULL, intcovar, nullcovar)
@@ -146,7 +171,6 @@ fit1 <-
         if(!is.numeric(contrasts)) stop("contrasts is not numeric")
     }
 
-    model <- match.arg(model)
     if(model=="binary") {
         if(!is.null(kinship))
             stop("Can't yet account for kinship with model = \"binary\"")
@@ -248,21 +272,21 @@ fit1 <-
     else { # binary phenotype
         # null fit
         if(is.null(weights)) { # no weights
-            fit0 <- fit_binreg(X0, pheno, FALSE, maxit, bintol, tol)
+            fit0 <- fit_binreg(X0, pheno, FALSE, maxit, bintol, tol, nu_max)
             weights <- numeric(0)
         }
         else {
-            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, maxit, bintol, tol)
+            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, maxit, bintol, tol, nu_max)
         }
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
             fitA <- fit1_binary_addcovar(genoprobs, pheno, addcovar, weights, se=se,
-                                         maxit, bintol, tol)
+                                         maxit, bintol, tol, nu_max)
         }
         else {                  # intcovar
             fitA <- fit1_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                         weights, se=se, maxit, bintol, tol)
+                                         weights, se=se, maxit, bintol, tol, nu_max)
         }
 
         lod <- fitA$log10lik - fit0$log10lik

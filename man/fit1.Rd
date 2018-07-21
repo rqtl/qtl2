@@ -6,8 +6,7 @@
 \usage{
 fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, nullcovar = NULL,
   intcovar = NULL, weights = NULL, contrasts = NULL, model = c("normal",
-  "binary"), se = TRUE, hsq = NULL, reml = TRUE, tol = 0.000000000001,
-  maxit = 100)
+  "binary"), se = TRUE, hsq = NULL, reml = TRUE, ...)
 }
 \arguments{
 \item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes}
@@ -51,12 +50,7 @@ If \code{model="binary"}, the phenotypes must have values in
 \item{reml}{If \code{kinship} provided: if \code{reml=TRUE}, use
 REML; otherwise maximum likelihood.}
 
-\item{tol}{Tolerance value for
-linear regression by QR decomposition (in determining whether
-columns are linearly dependent on others and should be omitted)}
-
-\item{maxit}{Maximum number of iterations in logistic regression
-fit (when \code{model="binary"}).}
+\item{...}{Additional control parameters; see Details;}
 }
 \value{
 A list containing
@@ -89,6 +83,18 @@ matrix in the model. One might view the rows of
 as the set of contrasts, as the estimated effects are the estimated
 genotype effects pre-multiplied by
 \ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}.
+
+The \code{...} argument can contain several additional control
+parameters; suspended for simplicity (or confusion, depending on
+your point of view). \code{tol} is used as a tolerance value for linear
+regression by QR decomposition (in determining whether columns are
+linearly dependent on others and should be omitted); default
+\code{1e-12}. \code{maxit} is the maximum number of iteractions for
+converence of the iterative algorithm used when \code{model=binary}.
+\code{bintol} is used as a tolerance for converence for the iterative
+algorithm used when \code{model=binary}. \code{nu_max} is the maximum value
+for the "linear predictor" in the case \code{model="binary"} (a bit of a
+technicality to avoid fitted values exactly at 0 or 1).
 }
 \examples{
 # read data

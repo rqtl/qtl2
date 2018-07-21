@@ -18,10 +18,9 @@ using namespace Eigen;
 // [[Rcpp::export]]
 double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVector& y,
                                          const NumericVector &weights,
-                                         const int maxit=100, const double tol=1e-6)
+                                         const int maxit=100, const double tol=1e-6,
+                                         const double nu_max=30.0)
 {
-    const double nu_tol = 100.0; // maximum allowed value on linear predictor
-
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
@@ -57,8 +56,8 @@ double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVe
             nu[ind] /= wt[ind]; // need to divide by previous weights
 
             // don't let nu get too large or too small
-            if(nu[ind] < -nu_tol) nu[ind] = -nu_tol;
-            else if(nu[ind] > nu_tol) nu[ind] = nu_tol;
+            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
+            else if(nu[ind] > nu_max) nu[ind] = nu_max;
 
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
 
@@ -90,10 +89,9 @@ double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVe
 double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVector& y,
                                        const NumericVector& weights,
                                        const int maxit=100, const double tol=1e-6,
-                                       const double qr_tol=1e-12)
+                                       const double qr_tol=1e-12,
+                                       const double nu_max=30.0)
 {
-    const double nu_tol = 100.0; // maximum allowed value on linear predictor
-
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
@@ -129,8 +127,8 @@ double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVect
             nu[ind] /= wt[ind]; // need to divide by previous weights
 
             // don't let nu get too large or too small
-            if(nu[ind] < -nu_tol) nu[ind] = -nu_tol;
-            else if(nu[ind] > nu_tol) nu[ind] = nu_tol;
+            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
+            else if(nu[ind] > nu_max) nu[ind] = nu_max;
 
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
 
@@ -163,9 +161,10 @@ NumericVector calc_coef_binreg_weighted_eigenqr(const NumericMatrix& X,
                                                 const NumericVector& weights,
                                                 const int maxit=100,
                                                 const double tol=1e-6,
-                                                const double qr_tol=1e-12)
+                                                const double qr_tol=1e-12,
+                                                const double nu_max=30.0)
 {
-    List fit = fit_binreg_weighted_eigenqr(X, y, weights, false, maxit, tol, qr_tol);
+    List fit = fit_binreg_weighted_eigenqr(X, y, weights, false, maxit, tol, qr_tol, nu_max);
 
     NumericVector coef = fit[2];
     return(coef);
@@ -180,9 +179,10 @@ List calc_coefSE_binreg_weighted_eigenqr(const NumericMatrix& X,
                                          const NumericVector & weights,
                                          const int maxit=100,
                                          const double tol=1e-6,
-                                         const double qr_tol=1e-12)
+                                         const double qr_tol=1e-12,
+                                         const double nu_max=30.0)
 {
-    List fit = fit_binreg_weighted_eigenqr(X, y, weights, true, maxit, tol, qr_tol);
+    List fit = fit_binreg_weighted_eigenqr(X, y, weights, true, maxit, tol, qr_tol, nu_max);
 
     NumericVector coef = fit[2];
     NumericVector SE = fit[3];
@@ -201,10 +201,9 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
                                  const bool se=true, // whether to include SEs
                                  const int maxit=100,
                                  const double tol=1e-6,
-                                 const double qr_tol=1e-12)
+                                 const double qr_tol=1e-12,
+                                 const double nu_max=30.0)
 {
-    const double nu_tol = 100.0; // maximum allowed value on linear predictor
-
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
@@ -240,8 +239,8 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
             nu[ind] /= wt[ind]; // need to divide by previous weights
 
             // don't let nu get too large or too small
-            if(nu[ind] < -nu_tol) nu[ind] = -nu_tol;
-            else if(nu[ind] > nu_tol) nu[ind] = nu_tol;
+            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
+            else if(nu[ind] > nu_max) nu[ind] = nu_max;
 
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
 

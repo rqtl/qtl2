@@ -9,8 +9,6 @@ scan1_pg <-
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
-    bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
-    stopifnot(bintol > 0)
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)

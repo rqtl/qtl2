@@ -14,12 +14,16 @@ using namespace Eigen;
 
 // logistic regression by "LLt" Cholesky decomposition
 // return just the log likelihood
+//
+// maxit = maximum number of iterations
+// tol = tolerance for convergence
+// nu_max = maximum value for linear predictor
+//
 // [[Rcpp::export]]
 double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
-                                const int maxit=100, const double tol=1e-6)
+                                const int maxit=100, const double tol=1e-6,
+                                const double nu_max=30.0)
 {
-    const double nu_tol = 100.0; // maximum allowed value on linear predictor
-
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
@@ -53,8 +57,8 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
             nu[ind] /= wt[ind]; // need to divide by previous weights
 
             // don't let nu get too large or too small
-            if(nu[ind] < -nu_tol) nu[ind] = -nu_tol;
-            else if(nu[ind] > nu_tol) nu[ind] = nu_tol;
+            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
+            else if(nu[ind] > nu_max) nu[ind] = nu_max;
 
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
 
@@ -81,13 +85,17 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
 
 // logistic regression by Qr decomposition with column pivoting
 // return just the log likelihood
+//
+// maxit = maximum number of iterations
+// tol = tolerance for convergence
+// qr_tol = tolerance for QR decomposition
+// nu_max = maximum value for linear predictor
+//
 // [[Rcpp::export]]
 double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
                               const int maxit=100, const double tol=1e-6,
-                              const double qr_tol=1e-12)
+                              const double qr_tol=1e-12, const double nu_max=30.0)
 {
-    const double nu_tol = 100.0; // maximum allowed value on linear predictor
-
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
@@ -121,8 +129,8 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
             nu[ind] /= wt[ind]; // need to divide by previous weights
 
             // don't let nu get too large or too small
-            if(nu[ind] < -nu_tol) nu[ind] = -nu_tol;
-            else if(nu[ind] > nu_tol) nu[ind] = nu_tol;
+            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
+            else if(nu[ind] > nu_max) nu[ind] = nu_max;
 
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
 
@@ -150,12 +158,13 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 // return just the coefficients
 // [[Rcpp::export]]
 NumericVector calc_coef_binreg_eigenqr(const NumericMatrix& X,
-                                             const NumericVector& y,
-                                             const int maxit=100,
-                                             const double tol=1e-6,
-                                             const double qr_tol=1e-12)
+                                       const NumericVector& y,
+                                       const int maxit=100,       // max iterations
+                                       const double tol=1e-6,     // tolerance for convergence
+                                       const double qr_tol=1e-12, // tolerance for QR decomp
+                                       const double nu_max=30.0)  // max value for linear predictor
 {
-    List fit = fit_binreg_eigenqr(X, y, false, maxit, tol, qr_tol);
+    List fit = fit_binreg_eigenqr(X, y, false, maxit, tol, qr_tol, nu_max);
 
     NumericVector coef = fit[2];
 
@@ -166,12 +175,13 @@ NumericVector calc_coef_binreg_eigenqr(const NumericMatrix& X,
 // return the coefficients and SEs
 // [[Rcpp::export]]
 List calc_coefSE_binreg_eigenqr(const NumericMatrix& X,
-                                      const NumericVector& y,
-                                      const int maxit=100,
-                                      const double tol=1e-6,
-                                      const double qr_tol=1e-12)
+                                const NumericVector& y,
+                                const int maxit=100,       // max iterations
+                                const double tol=1e-6,     // tolerance for convergence
+                                const double qr_tol=1e-12, // tolerance for QR decomp
+                                const double nu_max=30.0)  // max value for linear predictor
 {
-    List fit = fit_binreg_eigenqr(X, y, true, maxit, tol, qr_tol);
+    List fit = fit_binreg_eigenqr(X, y, true, maxit, tol, qr_tol, nu_max);
 
     NumericVector coef = fit[2];
     NumericVector SE = fit[3];
@@ -184,14 +194,13 @@ List calc_coefSE_binreg_eigenqr(const NumericMatrix& X,
 // return llik, fitted probabilities, coef, SE
 // [[Rcpp::export]]
 List fit_binreg_eigenqr(const NumericMatrix& X,
-                              const NumericVector& y,
-                              const bool se=true, // whether to include SEs
-                              const int maxit=100,
-                              const double tol=1e-6,
-                              const double qr_tol=1e-12)
+                        const NumericVector& y,
+                        const bool se=true,        // whether to include SEs
+                        const int maxit=100,       // max iterations
+                        const double tol=1e-6,     // tolerance for convergence
+                        const double qr_tol=1e-12, // tolerance for QR decomp
+                        const double nu_max=30.0)  // max value for linear predictor
 {
-    const double nu_tol = 100.0; // maximum allowed value on linear predictor
-
     const int n_ind = y.size();
     #ifndef RQTL2_NODEBUG
     if(n_ind != X.rows())
@@ -226,8 +235,8 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
             nu[ind] /= wt[ind]; // need to divide by previous weights
 
             // don't let nu get too large or too small
-            if(nu[ind] < -nu_tol) nu[ind] = -nu_tol;
-            else if(nu[ind] > nu_tol) nu[ind] = nu_tol;
+            if(nu[ind] < -nu_max) nu[ind] = -nu_max;
+            else if(nu[ind] > nu_max) nu[ind] = nu_max;
 
             pi[ind] = exp(nu[ind])/(1.0 + exp(nu[ind]));
 

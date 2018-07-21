@@ -6,7 +6,7 @@
 scan1_binary_clean <-
     function(genoprobs, pheno, addcovar, intcovar,
              weights, add_intercept=TRUE, maxit, tol, qr_tol,
-             intcovar_method)
+             intcovar_method, nu_max=30)
 {
     n <- nrow(pheno)
     if(add_intercept)
@@ -15,9 +15,9 @@ scan1_binary_clean <-
     if(is.null(intcovar)) { # no interactive covariates
 
         if(is.null(weights)) { # no weights
-            return( scan_binary_onechr(genoprobs, pheno, addcovar, maxit, tol, qr_tol) )
+            return( scan_binary_onechr(genoprobs, pheno, addcovar, maxit, tol, qr_tol, nu_max) )
         } else { # weights included
-            return( scan_binary_onechr_weighted(genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol) )
+            return( scan_binary_onechr_weighted(genoprobs, pheno, addcovar, weights, maxit, tol, qr_tol, nu_max) )
         }
 
     } else { # interactive covariates
@@ -30,9 +30,9 @@ scan1_binary_clean <-
                        scan_binary_onechr_intcovar_weighted_lowmem)
 
         if(is.null(weights)) { # no weights
-            return( scanf[[1]](genoprobs, pheno, addcovar, intcovar, maxit, tol, qr_tol) )
+            return( scanf[[1]](genoprobs, pheno, addcovar, intcovar, maxit, tol, qr_tol, nu_max) )
         } else { # weights included
-            return( scanf[[2]](genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol) )
+            return( scanf[[2]](genoprobs, pheno, addcovar, intcovar, weights, maxit, tol, qr_tol, nu_max) )
         }
 
     }
@@ -40,16 +40,17 @@ scan1_binary_clean <-
 
 # calculate null log likelihood, with nicely aligned data with no missing values
 null_binary_clean <-
-    function(pheno, addcovar, weights, add_intercept=TRUE, maxit, tol, qr_tol)
+    function(pheno, addcovar, weights, add_intercept=TRUE, maxit, tol, qr_tol, nu_max=30)
 {
     n <- nrow(pheno)
     if(add_intercept)
         addcovar <- cbind(rep(1,n), addcovar) # add intercept
 
     if(is.null(weights) || length(weights)==0) { # no weights
-        result <- apply(pheno, 2, function(phe) calc_ll_binreg(addcovar, phe, maxit, tol, qr_tol))
+        result <- apply(pheno, 2, function(phe) calc_ll_binreg(addcovar, phe, maxit, tol, qr_tol, nu_max))
     } else { # weights included
-        result <- apply(pheno, 2, function(phe) calc_ll_binreg_weighted(addcovar, phe, weights, maxit, tol, qr_tol))
+        result <- apply(pheno, 2, function(phe) calc_ll_binreg_weighted(addcovar, phe, weights, maxit, tol,
+                                                                        qr_tol, nu_max))
     }
 
     as.numeric(result)
