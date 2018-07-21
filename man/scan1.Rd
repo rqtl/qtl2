@@ -83,17 +83,22 @@ individual identifiers, to align individuals. The \code{genoprobs}
 object should have a component \code{"is_x_chr"} that indicates
 which of the chromosomes is the X chromosome, if any.
 
-The \code{...} argument can contain three additional control
+The \code{...} argument can contain several additional control
 parameters; suspended for simplicity (or confusion, depending on
-your point of view). \code{tol} is used as a tolerance value for
-linear regression by QR decomposition (in determining whether
-columns are linearly dependent on others and should be omitted);
-default \code{1e-12}. \code{intcovar_method} indicates whether to
-use a high-memory (but potentially faster) method or a low-memory
-(and possibly slower) method, with values \code{"highmem"} or
-\code{"lowmem"}; default \code{"lowmem"}. Finally, \code{max_batch}
-indicates the maximum number of phenotypes to run together; default
-is unlimited.
+your point of view). \code{tol} is used as a tolerance value for linear
+regression by QR decomposition (in determining whether columns are
+linearly dependent on others and should be omitted); default
+\code{1e-12}. \code{intcovar_method} indicates whether to use a high-memory
+(but potentially faster) method or a low-memory (and possibly
+slower) method, with values \code{"highmem"} or \code{"lowmem"}; default
+\code{"lowmem"}. \code{max_batch} indicates the maximum number of phenotypes
+to run together; default is unlimited. \code{maxit} is the maximum
+number of iteractions for converence of the iterative algorithm
+used when \code{model=binary}. \code{bintol} is used as a tolerance for
+converence for the iterative algorithm used when \code{model=binary}.
+\code{nu_max} is the maximum value for the "linear predictor" in the
+case \code{model="binary"} (a bit of a technicality to avoid fitted
+values exactly at 0 or 1).
 
 If \code{kinship} is absent, Haley-Knott regression is performed.
 If \code{kinship} is provided, a linear mixed model is used, with a

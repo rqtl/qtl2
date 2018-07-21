@@ -14,9 +14,9 @@ using namespace Eigen;
 // [[Rcpp::export]]
 double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y,
                       const int maxit=100, const double tol=1e-6,
-                      const double qr_tol=1e-12)
+                      const double qr_tol=1e-12, const double nu_max=30.0)
 {
-    return calc_ll_binreg_eigenqr(X, y, maxit, tol, qr_tol);
+    return calc_ll_binreg_eigenqr(X, y, maxit, tol, qr_tol, nu_max);
 }
 
 // logistic regression
@@ -24,9 +24,9 @@ double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y,
 // [[Rcpp::export]]
 NumericVector calc_coef_binreg(const NumericMatrix& X, const NumericVector& y,
                                const int maxit=100, const double tol=1e-6,
-                               const double qr_tol=1e-12)
+                               const double qr_tol=1e-12, const double nu_max=30.0)
 {
-    return calc_coef_binreg_eigenqr(X, y, maxit, tol, qr_tol);
+    return calc_coef_binreg_eigenqr(X, y, maxit, tol, qr_tol, nu_max);
 }
 
 // logistic regression
@@ -34,9 +34,9 @@ NumericVector calc_coef_binreg(const NumericMatrix& X, const NumericVector& y,
 // [[Rcpp::export]]
 List calc_coefSE_binreg(const NumericMatrix& X, const NumericVector& y,
                         const int maxit=100, const double tol=1e-6,
-                        const double qr_tol=1e-12)
+                        const double qr_tol=1e-12, const double nu_max=30.0)
 {
-    return calc_coefSE_binreg_eigenqr(X, y, maxit, tol, qr_tol);
+    return calc_coefSE_binreg_eigenqr(X, y, maxit, tol, qr_tol, nu_max);
 }
 
 // logistic regression
@@ -45,7 +45,7 @@ List calc_coefSE_binreg(const NumericMatrix& X, const NumericVector& y,
 List fit_binreg(const NumericMatrix& X, const NumericVector& y,
                 const bool se=true, // whether to include SEs
                 const int maxit=100, const double tol=1e-6,
-                const double qr_tol=1e-12)
+                const double qr_tol=1e-12, const double nu_max=30.0)
 {
-    return fit_binreg_eigenqr(X, y, se, maxit, tol, qr_tol);
+    return fit_binreg_eigenqr(X, y, se, maxit, tol, qr_tol, nu_max);
 }

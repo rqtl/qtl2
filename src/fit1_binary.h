@@ -20,7 +20,8 @@ Rcpp::List fit1_binary_addcovar(const Rcpp::NumericMatrix& genoprobs,
                                 const bool se,
                                 const int maxit,
                                 const double tol,
-                                const double qr_tol);
+                                const double qr_tol,
+                                const double nu_max);
 
 
 // Fit a single-QTL model at a single position, with interactive covariates
@@ -39,6 +40,7 @@ Rcpp::List fit1_binary_intcovar(const Rcpp::NumericMatrix& genoprobs,
                                 const bool se,
                                 const int maxit,
                                 const double tol,
-                                const double qr_tol);
+                                const double qr_tol,
+                                const double nu_max);
 
 #endif // FIT1_BINARY_H

@@ -336,7 +336,7 @@ test_that("fit one for binary traits handles NA case", {
     suppressWarnings(ll1b <- glm(phe ~ -1 + p2, family=binomial(link=logit))$deviance)
     ll0 <- glm(phe ~ 1, family=binomial(link=logit))$deviance
 
-    expect_equal(out[mar[1],1], (ll0-ll1a)/2/log(10))
+    expect_equal(out[mar[1],1], (ll0-ll1a)/2/log(10), tol=1e-7)
     expect_equal(out[mar[2],1], (ll0-ll1b)/2/log(10), tol=1e-7)
 
     # repeat with weights
@@ -348,7 +348,7 @@ test_that("fit one for binary traits handles NA case", {
     suppressWarnings(ll1b_w <- glm(phe ~ -1 + p2, family=binomial(link=logit), weights=w)$deviance)
     suppressWarnings(ll0_w <- glm(phe ~ 1, family=binomial(link=logit), weights=w)$deviance)
 
-    expect_equal(outw[mar[1],1], (ll0_w-ll1a_w)/2/log(10))
+    expect_equal(outw[mar[1],1], (ll0_w-ll1a_w)/2/log(10), tol=1e-7)
     expect_equal(outw[mar[2],1], (ll0_w-ll1b_w)/2/log(10), tol=1e-7)
 
 })

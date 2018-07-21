@@ -122,6 +122,7 @@ scan1coef <-
 
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
     bintol <- sqrt(tol)
+    nu_max <- 30
 
     # check that the objects have rownames
     check4names(pheno, addcovar, NULL, intcovar, nullcovar)
@@ -222,7 +223,7 @@ scan1coef <-
             if(model=="normal")
                 result <- scancoefSE_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
             else # binary trait
-                result <- scancoefSE_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol)
+                result <- scancoefSE_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol, nu_max)
         }
         else {                  # intcovar
             if(model=="normal")
@@ -230,7 +231,7 @@ scan1coef <-
                                                  weights, tol)
             else
                 result <- scancoefSE_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                                 weights, maxit, bintol, tol)
+                                                 weights, maxit, bintol, tol, nu_max)
         }
 
         SE <- t(result$SE) # transpose to positions x coefficients
@@ -242,7 +243,7 @@ scan1coef <-
             if(model=="normal")
                 result <- scancoef_hk_addcovar(genoprobs, pheno, addcovar, weights, tol)
             else
-                result <- scancoef_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol)
+                result <- scancoef_binary_addcovar(genoprobs, pheno, addcovar, weights, maxit, bintol, tol, nu_max)
         }
         else {                  # intcovar
             if(model=="normal")
@@ -250,7 +251,7 @@ scan1coef <-
                                                weights, tol)
             else
                 result <- scancoef_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                                   weights, maxit, bintol, tol)
+                                                   weights, maxit, bintol, tol, nu_max)
         }
         SE <- NULL
     }

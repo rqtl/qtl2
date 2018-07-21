@@ -66,6 +66,9 @@
 - `insert_pseudomarkers()` will now accept `pseudomarker_map` that
    includes only a portion of the chromosomes.
 
+- In `fit1()`, replaced `tol` and `maxit` and added `...` which takes
+  these plus a few additional hidden control parameters.
+
 ### Bug fixes
 
 - Fix a bug in `index_snps()`; messed up results when `start` and

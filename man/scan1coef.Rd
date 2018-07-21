@@ -7,7 +7,7 @@
 scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   nullcovar = NULL, intcovar = NULL, weights = NULL, contrasts = NULL,
   model = c("normal", "binary"), se = FALSE, hsq = NULL, reml = TRUE,
-  tol = 0.000000000001, maxit = 100)
+  tol = 1e-12, maxit = 100)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

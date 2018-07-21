@@ -61,17 +61,17 @@
 #' `perm_strata` that is a vector containing a single repeated
 #' value.
 #'
-#' The `...` argument can contain three additional control
+#' The `...` argument can contain several additional control
 #' parameters; suspended for simplicity (or confusion, depending on
-#' your point of view). `tol` is used as a tolerance value for
-#' linear regression by QR decomposition (in determining whether
-#' columns are linearly dependent on others and should be omitted);
-#' default `1e-12`. `intcovar_method` indicates whether to
-#' use a high-memory (but potentially faster) method or a low-memory
-#' (and possibly slower) method, with values `"highmem"` or
-#' `"lowmem"`; default `"lowmem"`.  Finally, `max_batch`
-#' indicates the maximum number of phenotypes to run together; default
-#' is 1000.
+#' your point of view). `tol` is used as a tolerance value for linear
+#' regression by QR decomposition (in determining whether columns are
+#' linearly dependent on others and should be omitted); default
+#' `1e-12`. `maxit` is the maximum number of iteractions for
+#' converence of the iterative algorithm used when `model=binary`.
+#' `bintol` is used as a tolerance for converence for the iterative
+#' algorithm used when `model=binary`. `nu_max` is the maximum value
+#' for the "linear predictor" in the case `model="binary"` (a bit of a
+#' technicality to avoid fitted values exactly at 0 or 1).
 #'
 #' @references Churchill GA, Doerge RW (1994) Empirical threshold
 #' values for quantitative trait mapping. Genetics 138:963--971.
@@ -402,16 +402,19 @@ scan1perm_covar <-
     # deal with the dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
-    stopifnot(tol > 0)
+    if(!is_pos_number(tol)) stop("tol should be a single positive number")
     intcovar_method <- grab_dots(dotargs, "intcovar_method", "lowmem",
                                  c("highmem", "lowmem"))
     quiet <- grab_dots(dotargs, "quiet", TRUE)
     if(model=="binary") {
         bintol <- grab_dots(dotargs, "bintol", sqrt(tol))
-        stopifnot(bintol > 0)
+        if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
+        nu_max <- grab_dots(dotargs, "nu_max", 30) # for model="binary"
+        if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
         maxit <- grab_dots(dotargs, "maxit", 100)
+        if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
         check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch",
-                                    "maxit", "bintol"))
+                                    "maxit", "bintol", "nu_max"))
     }
     else {
         check_extra_dots(dotargs, c("tol", "intcovar_method", "quiet", "max_batch"))
@@ -501,11 +504,11 @@ scan1perm_covar <-
         }
         else { # binary model
             # FIX_ME: calculating null LOD multiple times :(
-            nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol)
+            nulllod <- null_binary_clean(ph, ac0, wts, add_intercept=TRUE, maxit, bintol, tol, nu_max)
 
             # scan1 function taking clean data (with no missing values)
             lod <- scan1_binary_clean(pr, ph, ac, ic, wts, add_intercept=TRUE,
-                                      maxit, bintol, tol, intcovar_method)
+                                      maxit, bintol, tol, intcovar_method, nu_max)
 
             # calculate LOD score
             lod <- lod - nulllod

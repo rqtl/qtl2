@@ -4,9 +4,13 @@ fit1_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
              weights=NULL, contrasts=NULL, se=FALSE,
-             hsq=NULL, reml=TRUE, tol=1e-12)
+             hsq=NULL, reml=TRUE, ...)
 {
-    stopifnot(tol > 0)
+    # deal with the dot args
+    dotargs <- list("...")
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    if(!is_pos_number(tol)) stop("tol should be a single positive number")
+    check_extra_dots(dotargs, "tol")
 
     # check that the objects have rownames
     check4names(pheno, addcovar, NULL, intcovar, nullcovar)
