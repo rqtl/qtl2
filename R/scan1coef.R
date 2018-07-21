@@ -39,11 +39,7 @@
 #' `kinship` provided.
 #' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
-#' @param tol Tolerance value for
-#' linear regression by QR decomposition (in determining whether
-#' columns are linearly dependent on others and should be omitted)
-#' @param maxit Maximum number of iterations in logistic regression
-#'     fit (when `model="binary"`).
+#' @param ... Additional control parameters; see Details;
 #'
 #' @return A matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
@@ -70,6 +66,18 @@
 #' as the set of contrasts, as the estimated effects are the estimated
 #' genotype effects pre-multiplied by
 #' \ifelse{html}{\out{<em>A</em><sup>-1</sup>}}{\eqn{A^{-1}}}.
+#'
+#' The `...` argument can contain several additional control
+#' parameters; suspended for simplicity (or confusion, depending on
+#' your point of view). `tol` is used as a tolerance value for linear
+#' regression by QR decomposition (in determining whether columns are
+#' linearly dependent on others and should be omitted); default
+#' `1e-12`. `maxit` is the maximum number of iteractions for
+#' converence of the iterative algorithm used when `model=binary`.
+#' `bintol` is used as a tolerance for converence for the iterative
+#' algorithm used when `model=binary`. `nu_max` is the maximum value
+#' for the "linear predictor" in the case `model="binary"` (a bit of a
+#' technicality to avoid fitted values exactly at 0 or 1).
 #'
 #' @references Haley CS, Knott SA (1992) A simple
 #' regression method for mapping quantitative trait loci in line
@@ -110,19 +118,35 @@ scan1coef <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
              contrasts=NULL, model=c("normal", "binary"),
-             se=FALSE, hsq=NULL, reml=TRUE, tol=1e-12, maxit=100)
+             se=FALSE, hsq=NULL, reml=TRUE, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
 
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1coef_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                            intcovar, weights, contrasts, se, hsq, reml, tol))
+                            intcovar, weights, contrasts, se, hsq, reml, ...))
     }
 
+    model <- match.arg(model)
+
+    # deal with the dot args
+    dotargs <- list("...")
+    tol <- grab_dots(dotargs, "tol", 1e-12)
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
-    bintol <- sqrt(tol)
-    nu_max <- 30
+    if(model=="binary") {
+        bintol <- grab_dots(dotargs, "bintol", sqrt(tol)) # for model="binary"
+        if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
+        nu_max <- grab_dots(dotargs, "nu_max", log(1-tol)-log(tol)) # for model="binary"
+        if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
+        maxit <- grab_dots(dotargs, "maxit", 100) # for model="binary"
+        if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
+
+        check_extra_dots(dotargs, c("tol", "bintol", "nu_max", "maxit"))
+    }
+    else { # not binary trait
+        check_extra_dots(dotargs, "tol")
+    }
 
     # check that the objects have rownames
     check4names(pheno, addcovar, NULL, intcovar, nullcovar)
@@ -194,7 +218,6 @@ scan1coef <-
     addcovar <- force_intcovar(addcovar, intcovar, tol)
 
     # normal or binary model?
-    model <- match.arg(model)
     if(model=="binary") {
         if(!is.null(kinship))
             stop("Can't yet account for kinship with model = \"binary\"")
