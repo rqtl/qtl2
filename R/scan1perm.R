@@ -409,7 +409,7 @@ scan1perm_covar <-
     if(model=="binary") {
         bintol <- grab_dots(dotargs, "bintol", sqrt(tol))
         if(!is_pos_number(bintol)) stop("bintol should be a single positive number")
-        nu_max <- grab_dots(dotargs, "nu_max", 30) # for model="binary"
+        nu_max <- grab_dots(dotargs, "nu_max", log(1-tol)-log(tol)) # for model="binary"
         if(!is_pos_number(nu_max)) stop("nu_max should be a single positive number")
         maxit <- grab_dots(dotargs, "maxit", 100)
         if(!is_nonneg_number(maxit)) stop("maxit should be a single non-negative integer")
