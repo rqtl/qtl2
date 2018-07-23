@@ -63,7 +63,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `calc_genoprob` - calculate conditional genotype probabilities given
   marker data
 - `clean_genoprob` - clean up genotype probabilities, setting small
-  values to 0
+   values to 0
 - `genoprob_to_alleleprob` - convert genotype probabilities to allele dosages
 - `genoprob_to_snpprob` - convert genotype probabilities to SNP probabilities
 - `interp_genoprob` - linear interpolation of genotype probabilities,
@@ -72,6 +72,8 @@ description: Annotated/categorized list of functions in R/qtl2
   pseudomarkers
 - `pull_genoprobpos` - pull out the genotype probabilities for a
   particular position
+- `pull_genoprobint` - pull out the genotype probabilities for an
+  interval
 
 
 ### Genotype imputation
@@ -83,6 +85,8 @@ description: Annotated/categorized list of functions in R/qtl2
   marker data
 - `viterbi` - find mostly likely sequence of true genotypes given
   marker data
+- `predict_snpgeno` - predict SNP genotypes in a multiparent
+  population from inferred genotypes plus founder strains' SNP alleles.
 
 
 ### Kinship matrix calculations
@@ -216,6 +220,8 @@ description: Annotated/categorized list of functions in R/qtl2
 - `plot_scan1` - same as `plot.scan1`
 - `xpos_scan1` - determine the x-axis location of a particular genomic
   position in a genome scan plot (for adding annotations)
+- `add_threshold` - Add horizontal line at a significance threshold to
+  a genome scan plot.
 - `plot.scan1coef` - plot QTL effects along a chromosome
 - `plot_coef` - same as `plot.scan1coef`
 - `plot_coefCC` - like `plot_coef` but assuming there are 8 effects
@@ -253,6 +259,9 @@ description: Annotated/categorized list of functions in R/qtl2
   common marker intervals and have the same strain distribution
   pattern, and create an index to a set of distinct SNPs, one per
   partition
+- `find_index_snp` - For a particular SNP, find the corresponding
+  indexed SNP.
+
 
 
 ### Utility functions
@@ -265,7 +274,22 @@ description: Annotated/categorized list of functions in R/qtl2
   analysis on the X chromosome
 - `mat2strata` - use the rows of a matrix to define a set of strata
   for a stratified permutation test
+- `replace_ids` - Replace the individual IDs in an object
+- `replace_ids.calc_genoprob`  - Replace the individual IDs in a `"calc_genoprob"` object
+- `replace_ids.cross2` - Replace the individual IDs in a `"cross2"` object
+- `replace_ids.sim_geno` - Replace the individual IDs in a `"sim_geno"` object
+- `replace_ids.viterbi` - Replace the individual IDs in a `"viterbi"` object
+- `align_scan1_map` - aligns the markers/pseudomarkers in a `"scan1"`
+  object (output by `scan1()`) and a marker map.
+- `clean` - clean an object
+- `clean.scan1` - clean a `"scan"` object (replacing negative values
+  with `NA` and removing rows were all values are `NA`.
+- `clean_scan1` - the same as `clean.scan1`.
+- `clean.calc_genoprob` - clean a `"calc_genoprob"` object (setting
+  small values to 0)
+- `clean_genoprob` - same as `clean.calc_genoprob`
 - `qtl2version` - print the installed version of [R/qtl2](http://kbroman.org/qtl2)
+
 
 
 ### Boring print functions
@@ -277,17 +301,3 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Other functions
-- `align_scan1_map`
-- `find_index_snp`
-- `pull_genoprobint`
-- `replace_ids.calc_genoprob`
-- `replace_ids.cross2`
-- `replace_ids.sim_geno`
-- `replace_ids.viterbi`
-- `add_threshold`
-- `predict_snpgeno`
-- `replace_ids`
-- `clean.calc_genoprob`
-- `clean.scan1`
-- `clean`
-- `clean_scan1`
