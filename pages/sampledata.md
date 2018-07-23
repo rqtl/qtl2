@@ -4,8 +4,8 @@ title: Sample input data files
 description: Sample input data files for R/qtl2
 ---
 
-The internal data structure for [R/qtl2](http://kbroman.org/qtl2) is
-different from that of [R/qtl](https://rqtl.org), and the input
+The internal data structure for [R/qtl2](https://kbroman.org/qtl2) is
+different from that of [R/qtl](http://rqtl.org), and the input
 data file format has also changed. Details on the new internal data
 structure are in the
 [R/qtl2 developer guide](../assets/vignettes/developer_guide.html).  Details
@@ -13,7 +13,7 @@ on the new data file format are described in
 [a separate vignette](../assets/vignettes/input_files.html).
 
 For simple crosses (such as a backcross or intercross), one can
-continue to use the [old R/qtl formats](https://rqtl.org/sampledata/),
+continue to use the [old R/qtl formats](http://rqtl.org/sampledata/),
 load them with `qtl::read.cross()`, and then convert the data to the
 new format with `qtl2::convert2cross2()`.
 
@@ -38,7 +38,7 @@ Data from
 You can load these data into R as follows:
 
     library(qtl2)
-    grav2 <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml")
+    grav2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml")
 
 You can also [peruse the data at GitHub](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/grav2).
 
@@ -47,7 +47,7 @@ The data are also available as a zip file,
 can read this file directly:
 
     library(qtl2)
-    grav2 <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
+    grav2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
 
 ---
 
@@ -67,7 +67,7 @@ Data from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.g
 You can load these data into R as follows:
 
     library(qtl2)
-    iron <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/iron/iron.yaml")
+    iron <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/iron/iron.yaml")
 
 You can also [peruse the data at GitHub](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron).
 
@@ -76,4 +76,4 @@ The data are also available as a zip file,
 can read this file directly:
 
     library(qtl2)
-    iron <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/iron/iron.zip")
+    iron <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/iron/iron.zip")

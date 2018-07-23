@@ -5,7 +5,7 @@
 [Karl Broman](https://kbroman.org)
 
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
-the QTL analysis software [R/qtl](https://rqtl.org), to better handle
+the QTL analysis software [R/qtl](http://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
 
 It was previously split into the multiple packages qtl2geno, qtl2scan,
@@ -14,7 +14,7 @@ packages have been combined. But also see the related package,
 [qtl2convert](https://github.com/rqtl/qtl2convert), for converting
 data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](https://rqtl.org) formats.
+and [R/qtl](http://rqtl.org) formats.
 [qtl2convert](https://github.com/rqtl/qtl2convert) will remain a
 separate package.
 
@@ -23,10 +23,10 @@ separate package.
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
 Make sure you have the latest version of [R (3.4.4)](https://cran.r-project.org).
 
-    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 
 _Alternatively_, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
@@ -44,7 +44,7 @@ package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [data.table](https://cran.r-project.org/package=data.table),
 [RcppEigen](https://github.com/RcppCore/RcppEigen),
 [RSQLite](https://github.com/rstats-db/RSQLite), and
-[qtl](https://rqtl.org).
+[qtl](http://rqtl.org).
 (Additional, secondary dependencies will also be installed.)
 
     install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))

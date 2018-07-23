@@ -13,7 +13,7 @@ output:
 options(width=100)
 ```
 
-[R/qtl2](http://kbroman.org/qtl2) includes a reimplementation
+[R/qtl2](https://kbroman.org/qtl2) includes a reimplementation
 of the basic hidden Markov model code for the calculation of
 conditional genotype probabilities (given the available multipoint
 marker genotype data) and the estimation of genetic maps.
@@ -29,9 +29,9 @@ individual, which may allow for low-level parallel processing (i.e.,
 for this.)
 
 The new code for calculating conditional genotype probabilities is
-about the same as that in [R/qtl](https://rqtl.org).  The new code
+about the same as that in [R/qtl](http://rqtl.org).  The new code
 for estimating the genetic map, on the other hand, is considerably
-slower than that in [R/qtl](https://rqtl.org). The present document
+slower than that in [R/qtl](http://rqtl.org). The present document
 provides detailed benchmarks on this point.
 
 ## Genotype probabilities
@@ -57,7 +57,7 @@ bc$pheno$sex <- rep(0:1, each=n/2)
 There's a total of `r totmar(bc)` markers.
 
 We use `qtl2::convert2cross2()` to convert the data to the format for
-[R/qtl2](http://kbroman.org/qtl2). Also, with R/qtl2, I need to use
+[R/qtl2](https://kbroman.org/qtl2). Also, with R/qtl2, I need to use
 `insert_pseudomarkers` to create a map with pseudomarkers inserted,
 prior to running `calc_genoprob`.
 
@@ -157,7 +157,7 @@ longer; for the intercross, the new code takes
 ## Why the differences in speed?
 
 I made a number of changes to the HMM code between
-[R/qtl](https://rqtl.org) and [R/qtl2](http://kbroman.org/qtl2).
+[R/qtl](http://rqtl.org) and [R/qtl2](https://kbroman.org/qtl2).
 
 - Split out the forward/backward equations as separate functions (to
   avoid code duplication and to make the code potentially clearer).
@@ -196,5 +196,5 @@ devtools::session_info()
 
 ---
 
-[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
-[Karl Broman](http://kbroman.org)
+[![CC BY](https://i.creativecommons.org/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](https://kbroman.org)

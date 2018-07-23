@@ -9,23 +9,23 @@ output:
 <meta name="description" content="Input file format for R/qtl2">
 <meta name="author" content="Karl Broman">
 
-[R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
-[R/qtl](https://rqtl.org), to better handle high-dimensional data
+[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
+[R/qtl](http://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-The input data file formats for [R/qtl](https://rqtl.org) cannot
+The input data file formats for [R/qtl](http://rqtl.org) cannot
 handle complex crosses, and so for R/qtl2, we need to define a new
 input file format. This document describes the details.
 
 For simple cross types, we can continue to use the file formats for
-[R/qtl](https://rqtl.org), use `qtl::read.cross()` to read in the
+[R/qtl](http://rqtl.org), use `qtl::read.cross()` to read in the
 data, and then use a conversion function (`qtl2::convert2cross2()`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
 persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
 [&ldquo;tidy&rdquo; format](https://github.com/kbroman/qtl/pull/20)
-for [R/qtl](https://rqtl.org), with three separate CSV files, one
+for [R/qtl](http://rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
 Another important idea is from [Pjotr Prins](http://thebird.nl/)'s
@@ -84,7 +84,7 @@ grav2 <- read_cross2("~/my_data/grav2.zip")
 This can even be done with remote files.
 
 ```{r read_remote_zip, eval=FALSE}
-grav2 <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
+grav2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
 ```
 
 Of course, the other advantage of the zip file is that it is
@@ -98,7 +98,7 @@ or [JSON](http://www.json.org) format),
 contained in the same directory as the CSV files,
 specifies the file names and other control parameters (such as
 genotype and sex encodings). Sample data files are available at
-[the R/qtl2 website](http://kbroman.org/qtl2/pages/sampledata.html).
+[the R/qtl2 website](https://kbroman.org/qtl2/pages/sampledata.html).
 We'll discuss the CSV files first.
 
 
@@ -208,7 +208,7 @@ describe the details here and also provide a function
 and contructs the control file in the correct format.
 
 We'll start with an example: the control file for the
-[sample intercross data](http://kbroman.org/qtl2/pages/sampledata).
+[sample intercross data](https://kbroman.org/qtl2/pages/sampledata).
 
 ```
 # Data from Grant et al. (2006) Hepatology 44:174-185
@@ -643,9 +643,9 @@ The equivalent json is:
 
 Here are some example R/qtl2 data files for F~2~ intercrosses:
 
-- [`iron`](http://kbroman.org/qtl2/assets/sampledata/iron/)
+- [`iron`](https://kbroman.org/qtl2/assets/sampledata/iron/)
   from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992).
-  A [zip file for these data](http://kbroman.org/qtl2/assets/sampledata/iron/iron.zip) is distributed
+  A [zip file for these data](https://kbroman.org/qtl2/assets/sampledata/iron/iron.zip) is distributed
   with the [qtl2](https://github.com/rqtl/qtl2) package.
 
 - [`B6BTBR`](https://github.com/rqtl/qtl2data/tree/master/B6BTBR) from
@@ -714,8 +714,8 @@ We don't have example data files for RIL by sib-mating, but the
 [qtl2](https://github.com/rqtl/qtl2) package includes data
 for a set of arabidopsis RIL by selfing from
 [Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346),
-[`grav2`](http://kbroman.org/qtl2/assets/sampledata/grav2/). Here's a
-zip file: [`grav2.zip`](http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip).
+[`grav2`](https://kbroman.org/qtl2/assets/sampledata/grav2/). Here's a
+zip file: [`grav2.zip`](https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip).
 
 
 ### Doubled haploids (DH)
@@ -930,5 +930,5 @@ The json equivalent is:
 
 ---
 
-[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
-[Karl Broman](http://kbroman.org)
+[![CC BY](https://i.creativecommons.org/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](https://kbroman.org)

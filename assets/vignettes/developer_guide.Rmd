@@ -10,8 +10,8 @@ output:
 <meta name="description" content="Developer guide for R/qtl2, a reimplementation of the QTL analysis software R/qtl, to better handle high-dimensional data and complex cross designs.">
 <meta name="author" content="Karl Broman">
 
-[R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
-[R/qtl](https://rqtl.org), to better handle high-dimensional data
+[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
+[R/qtl](http://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
 In this document, we'll describe the technical details of interest to
@@ -42,7 +42,7 @@ We are also redefining the input data file formats.
 
 ## QTL data structure
 
-The basic data structure in [R/qtl](https://rqtl.org), the
+The basic data structure in [R/qtl](http://rqtl.org), the
 `"cross"` class, has been redesigned.
 
 A basic principle in the new design is to have the data as close as
@@ -157,7 +157,7 @@ attribute being the individual IDs.
 For many cross types, and particularly for the treatment of the X
 chromosome, we need individual-level information about the nature of the
 cross. For an intercross, this is like `pgm` (for paternal
-grandmother) in [R/qtl](https://rqtl.org). For the Collaborative
+grandmother) in [R/qtl](http://rqtl.org). For the Collaborative
 Cross, we need the order of the founders in the set of crosses that
 led to each line. For the AIL and the Diversity Outcross, we need to
 know the number of generations of outbreeding.
@@ -341,14 +341,14 @@ straightforward, with a loop over columns.
 ## Input data file formats
 
 For simple cross types, we can use the file formats for
-[R/qtl](https://rqtl.org), use `qtl::read.cross` to read in the
+[R/qtl](http://rqtl.org), use `qtl::read.cross` to read in the
 data, and then use a conversion function (`qtl2::convert2cross2`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
 persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
 [&ldquo;tidy&rdquo; format](https://github.com/kbroman/qtl/pull/20)
-for [R/qtl](https://rqtl.org), with three separate CSV files, one
+for [R/qtl](http://rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
 Another important idea is from [Pjotr Prins](http://thebird.nl/)'s
@@ -484,7 +484,7 @@ above). For more complex crosses, it will be a matrix with the rows
 being individuals, and with the first column being individual IDs.
 
 For more detail, see
-[the input file format vignette](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
+[the input file format vignette](https://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 
 
@@ -510,5 +510,5 @@ For more detail, see
 
 ---
 
-[![CC BY](http://i.creativecommons.org/l/by/3.0/88x31.png)](http://creativecommons.org/licenses/by/3.0/)
-[Karl Broman](http://kbroman.org)
+[![CC BY](https://i.creativecommons.org/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](https://kbroman.org)
