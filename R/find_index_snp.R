@@ -38,7 +38,7 @@
 #' find_index_snp(snpinfo, "m3")
 #' }
 #'
-#' @seealso [find_index_snp()], [find_marker()]
+#' @seealso [find_marker()]
 #' @export
 find_index_snp <-
     function(snpinfo, snp)

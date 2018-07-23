@@ -21,7 +21,7 @@ produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 A list of matrices with inferred SNP genotypes, coded 1/2/3.
 }
 \description{
-Predict SNP genotypes in a multiparent population from inferred genotypes plus founder strains SNP alleles.
+Predict SNP genotypes in a multiparent population from inferred genotypes plus founder strains' SNP alleles.
 }
 \examples{
 \dontrun{

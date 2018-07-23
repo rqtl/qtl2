@@ -1,6 +1,6 @@
 #' Predict SNP genotypes
 #'
-#' Predict SNP genotypes in a multiparent population from inferred genotypes plus founder strains SNP alleles.
+#' Predict SNP genotypes in a multiparent population from inferred genotypes plus founder strains' SNP alleles.
 #'
 #' @md
 #'

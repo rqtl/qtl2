@@ -1,3 +1,10 @@
+## qtl2 0.17-1 (2018-07-23)
+
+### Minor changes
+
+- Small corrections to documentation
+
+
 ## qtl2 0.16 (2018-07-23)
 
 ### New features

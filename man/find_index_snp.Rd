@@ -50,5 +50,5 @@ find_index_snp(snpinfo, "m3")
 
 }
 \seealso{
-\code{\link[=find_index_snp]{find_index_snp()}}, \code{\link[=find_marker]{find_marker()}}
+\code{\link[=find_marker]{find_marker()}}
 }
