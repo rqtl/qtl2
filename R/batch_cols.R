@@ -14,6 +14,7 @@
 #' that have missing values in this batch.
 #'
 #' @export
+#' @seealso [batch_vec()]
 #' @examples
 #' x <- rbind(c( 1,  2,  3, 13, 16),
 #'            c( 4,  5,  6, 14, 17),
@@ -90,21 +91,4 @@ batch_cols <-
     }
 
    result[-toreduce]
-}
-
-
-# split a vector into batches, each no longer than batch_size
-batch_vec <-
-    function(vec, batch_size)
-{
-    n <- length(vec)
-    n_batches <- ceiling(n/batch_size)
-    n_per_batch <- rep(floor(n/n_batches), n_batches)
-    d <- n - sum(n_per_batch)
-    if(d >= 1)
-        n_per_batch[seq_len(d)] <- n_per_batch[seq_len(d)]+1
-
-    result <- split(vec, rep(seq_len(n_batches), n_per_batch))
-    names(result) <- NULL
-    result
 }

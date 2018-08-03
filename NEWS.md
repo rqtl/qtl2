@@ -1,4 +1,10 @@
-## qtl2 0.17-1 (2018-07-23)
+## qtl2 0.17-1 (2018-08-03)
+
+### New features
+
+- Internal function `batch_vec()` now made user-accessible, and takes
+  an additional argument `n_cores`. This splits a vector into batches
+  for use in parallel calculations.
 
 ### Minor changes
 

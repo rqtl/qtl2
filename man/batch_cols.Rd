@@ -29,3 +29,6 @@ x <- rbind(c( 1,  2,  3, 13, 16),
            c(10, 11, 12, 15, 20))
 batch_cols(x)
 }
+\seealso{
+\code{\link[=batch_vec]{batch_vec()}}
+}
