@@ -4,8 +4,8 @@
 \alias{top_snps}
 \title{Create table of top snp associations}
 \usage{
-top_snps(scan1_output, snpinfo, lodcolumn = 1, chr = NULL, drop = 1.5,
-  show_all_snps = TRUE)
+top_snps(scan1_output, snpinfo, lodcolumn = 1, chr = NULL,
+  drop = 1.5, show_all_snps = TRUE)
 }
 \arguments{
 \item{scan1_output}{Output of \code{\link[=scan1]{scan1()}}.

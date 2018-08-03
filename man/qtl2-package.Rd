@@ -7,11 +7,11 @@
 \title{qtl2: Quantitative Trait Locus Mapping in Experimental Crosses}
 \description{
 R/qtl2 provides a set of tools to perform quantitative
-trait locus (QTL) analysis in experimental crosses. It is a
-reimplementation of the R/qtl package to better handle
-high-dimensional data and complex cross designs. This package is
-designed to make it easy to install and load multiple R/qtl2
-packages in a single step.
+    trait locus (QTL) analysis in experimental crosses. It is a
+    reimplementation of the R/qtl package to better handle
+    high-dimensional data and complex cross designs. This package is
+    designed to make it easy to install and load multiple R/qtl2
+    packages in a single step.
 }
 \section{Vignettes}{
 

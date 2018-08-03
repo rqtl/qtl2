@@ -5,9 +5,9 @@
 \title{Calculate QTL effects in scan along one chromosome}
 \usage{
 scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
-  nullcovar = NULL, intcovar = NULL, weights = NULL, contrasts = NULL,
-  model = c("normal", "binary"), se = FALSE, hsq = NULL, reml = TRUE,
-  ...)
+  nullcovar = NULL, intcovar = NULL, weights = NULL,
+  contrasts = NULL, model = c("normal", "binary"), se = FALSE,
+  hsq = NULL, reml = TRUE, ...)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

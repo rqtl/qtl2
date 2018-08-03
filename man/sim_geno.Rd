@@ -5,8 +5,8 @@
 \title{Simulate genotypes given observed marker data}
 \usage{
 sim_geno(cross, map = NULL, n_draws = 1, error_prob = 0.0001,
-  map_function = c("haldane", "kosambi", "c-f", "morgan"), lowmem = FALSE,
-  quiet = TRUE, cores = 1)
+  map_function = c("haldane", "kosambi", "c-f", "morgan"),
+  lowmem = FALSE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the

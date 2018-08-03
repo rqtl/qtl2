@@ -4,8 +4,8 @@
 \alias{add_threshold}
 \title{Add thresholds to genome scan plot}
 \usage{
-add_threshold(map, thresholdA, thresholdX = NULL, chr = NULL, gap = 25,
-  ...)
+add_threshold(map, thresholdA, thresholdX = NULL, chr = NULL,
+  gap = 25, ...)
 }
 \arguments{
 \item{map}{Marker map used in the genome scan plot}

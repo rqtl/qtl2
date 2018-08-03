@@ -5,8 +5,8 @@
 \alias{plot.scan1}
 \title{Plot a genome scan}
 \usage{
-plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = 25,
-  ...)
+plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE,
+  gap = 25, ...)
 
 \method{plot}{scan1}(x, map, lodcolumn = 1, chr = NULL, add = FALSE,
   gap = 25, ...)

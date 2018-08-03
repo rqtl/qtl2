@@ -4,9 +4,10 @@
 \alias{plot_genes}
 \title{Plot gene locations for a genomic interval}
 \usage{
-plot_genes(genes, minrow = 4, padding = 0.2, colors = c("black", "red3",
-  "green4", "blue3", "orange"), scale_pos = 1, start_field = "start",
-  stop_field = "stop", strand_field = "strand", name_field = "Name", ...)
+plot_genes(genes, minrow = 4, padding = 0.2, colors = c("black",
+  "red3", "green4", "blue3", "orange"), scale_pos = 1,
+  start_field = "start", stop_field = "stop",
+  strand_field = "strand", name_field = "Name", ...)
 }
 \arguments{
 \item{genes}{Data frame containing \code{start} and \code{stop} in

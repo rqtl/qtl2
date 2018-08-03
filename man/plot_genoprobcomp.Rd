@@ -4,8 +4,9 @@
 \alias{plot_genoprobcomp}
 \title{Plot comparison of two sets of genotype probabilities}
 \usage{
-plot_genoprobcomp(probs1, probs2, map, ind = 1, chr = NULL, geno = NULL,
-  threshold = 0, n_colors = 256, swap_axes = FALSE, ...)
+plot_genoprobcomp(probs1, probs2, map, ind = 1, chr = NULL,
+  geno = NULL, threshold = 0, n_colors = 256, swap_axes = FALSE,
+  ...)
 }
 \arguments{
 \item{probs1}{Genotype probabilities (as produced by \code{\link[=calc_genoprob]{calc_genoprob()}})

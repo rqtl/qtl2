@@ -4,9 +4,10 @@
 \alias{fit1}
 \title{Fit single-QTL model at a single position}
 \usage{
-fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL, nullcovar = NULL,
-  intcovar = NULL, weights = NULL, contrasts = NULL, model = c("normal",
-  "binary"), se = TRUE, hsq = NULL, reml = TRUE, ...)
+fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL,
+  nullcovar = NULL, intcovar = NULL, weights = NULL,
+  contrasts = NULL, model = c("normal", "binary"), se = TRUE,
+  hsq = NULL, reml = TRUE, ...)
 }
 \arguments{
 \item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes}

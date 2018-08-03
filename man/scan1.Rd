@@ -4,9 +4,9 @@
 \alias{scan1}
 \title{Genome scan with a single-QTL model}
 \usage{
-scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL, Xcovar = NULL,
-  intcovar = NULL, weights = NULL, reml = TRUE, model = c("normal",
-  "binary"), cores = 1, ...)
+scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL,
+  Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
+  model = c("normal", "binary"), cores = 1, ...)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

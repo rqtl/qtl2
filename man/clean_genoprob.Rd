@@ -5,8 +5,8 @@
 \alias{clean.calc_genoprob}
 \title{Clean genotype probabilities}
 \usage{
-clean_genoprob(object, value_threshold = 0.000001, column_threshold = 0.01,
-  ind = NULL, cores = 1, ...)
+clean_genoprob(object, value_threshold = 0.000001,
+  column_threshold = 0.01, ind = NULL, cores = 1, ...)
 
 \method{clean}{calc_genoprob}(object, value_threshold = 0.000001,
   column_threshold = 0.01, ind = NULL, cores = 1, ...)

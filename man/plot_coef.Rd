@@ -13,8 +13,8 @@ plot_coefCC(x, map, columns = 1:8, scan1_output = NULL, add = FALSE,
   gap = 25, top_panel_prop = 0.65, legend = NULL, ...)
 
 \method{plot}{scan1coef}(x, map, columns = 1, col = NULL,
-  scan1_output = NULL, add = FALSE, gap = 25, top_panel_prop = 0.65,
-  legend = NULL, ...)
+  scan1_output = NULL, add = FALSE, gap = 25,
+  top_panel_prop = 0.65, legend = NULL, ...)
 }
 \arguments{
 \item{x}{Estimated QTL effects ("coefficients") as obtained from

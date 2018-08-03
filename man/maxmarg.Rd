@@ -5,7 +5,8 @@
 \title{Find genotypes with maximum marginal probabilities}
 \usage{
 maxmarg(probs, map = NULL, minprob = 0.95, chr = NULL, pos = NULL,
-  return_char = FALSE, quiet = TRUE, cores = 1, tol = 0.0000000000001)
+  return_char = FALSE, quiet = TRUE, cores = 1,
+  tol = 0.0000000000001)
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from
