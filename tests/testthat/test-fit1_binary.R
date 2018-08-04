@@ -367,7 +367,7 @@ test_that("fit one for binary traits handles NA case with DO data", {
 
     suppressWarnings(out <- scan1(apr, phe, model="binary"))
 
-    mar <- c("backupUNC020117657", "UNC020459944")
+    mar <- c("backupUNC021331957", "UNC020459944")
     p1 <- pull_genoprobpos(apr, mar[1])
     p2 <- pull_genoprobpos(apr, mar[2])
 

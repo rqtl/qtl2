@@ -1,4 +1,4 @@
-## qtl2 0.17-1 (2018-08-03)
+## qtl2 0.17-3 (2018-08-04)
 
 ### New features
 
@@ -9,6 +9,9 @@
 ### Minor changes
 
 - Small corrections to documentation
+
+- Revise some tests due to change in Recla and DOex datasets at
+  <https://github.com/rqtl/qtl2data>
 
 
 ## qtl2 0.16 (2018-07-23)

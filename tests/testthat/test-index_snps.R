@@ -26,7 +26,7 @@ test_that("index_snps works", {
 
     expected <- cbind(snpinfo[c(1,2,5,6,3,4),],
                       index=c(1:3, 1:3),
-                      interval=c(91,91,132,112,236,236),
+                      interval=c(91,91,132,112,237,237),
                       on_map=c(FALSE, FALSE, TRUE, FALSE, FALSE, FALSE))
 
     expect_equal(snpinfo_windex, rbind(snpinfo19_windex, snpinfoX_windex))
@@ -45,7 +45,7 @@ test_that("index_snps works", {
 
     expected <- cbind(snpinfo[c(1,8,7,2,5,  9,6,10,3,4),],
                       index=c(1,1,3,3,5,  1,1,3,4,3),
-                      interval=c(91,91,91,91,132,  112,112,236,236,236),
+                      interval=c(91,91,91,91,132,  112,112,237,237,237),
                       on_map=c(FALSE,FALSE,FALSE,FALSE,TRUE,   FALSE,FALSE,FALSE,FALSE,FALSE))
 
     snpinfo_windex <- index_snps(recla$pmap, snpinfo)
