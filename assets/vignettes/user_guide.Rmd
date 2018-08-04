@@ -1098,7 +1098,7 @@ you'd then do the following:
 genes_2_97.5 <- query_genes(2, 97, 98)
 ```
 
-The way we've set this up is a bit complicated, but it allows greatest
+The way we have set this up is a bit complicated, but it allows greatest
 flexibility on the part of the user. And for our own work, we
 like to have a local SQLite database, for rapid queries of
 SNPs and genes.
