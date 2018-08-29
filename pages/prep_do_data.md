@@ -124,7 +124,11 @@ To use this script, you'll need to edit three lines near the top:
   be placed in the `Data` subdirectory and will have names like
   `forqtl2_geno1.csv`.
 
-An issue you may need to contend with is a possible
+One potential issue to contend with, in reading in the genotype files
+from GeneSeek, is that these files may have varying headers at the top
+that you may need to skip over.
+
+Another issue regards possible
 recoding of the sample identifiers. For example, you may have one batch
 where the samples are labeled like `DO-146` and another where they're
 labeled simply `146` and another where they're labeled `AA-DO-146`.
@@ -139,6 +143,7 @@ You'll need to have the
 [R/qtl2convert](https://github.com/rqtl/qtl2convert) package
 installed. And note that, since this script reads in the full data
 into memory, you'll need a computer with appreciable RAM.
+
 
 The result of the [`geneseek2qtl2.R`](../assets/geneseek2qtl2.R)
 script will be a series of CSV files containing the re-coded
