@@ -24,8 +24,8 @@ ostem <- "gm4qtl2"
 ##############################
 # define a couple of functions
 ##############################
-# simple version of data.table::fread()
-myfread <- function(filename) data.table::fread(filename, data.table=FALSE)
+# version of data.table::fread() where data.table=FALSE is the default
+myfread <- function(filename, data.table=FALSE, ...) data.table::fread(filename, data.table=data.table, ...)
 
 # cbind, replacing matching columns with second set and adding unique ones
 cbind_smother <-
