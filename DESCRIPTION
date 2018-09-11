@@ -8,8 +8,8 @@ Description: R/qtl2 provides a set of tools to perform quantitative
     high-dimensional data and complex cross designs. This package is
     designed to make it easy to install and load multiple R/qtl2
     packages in a single step.
-Author: Karl W Broman <kbroman@biostat.wisc.edu>
-Maintainer: Karl W Broman <kbroman@biostat.wisc.edu>
+Author: Karl W Broman <broman@wisc.edu>
+Maintainer: Karl W Broman <broman@wisc.edu>
 Depends:
     R (>= 3.1.0)
 Imports:
