@@ -1,6 +1,9 @@
-## qtl2 0.17-3 (2018-08-04)
+## qtl2 0.17-4 (2018-09-11)
 
 ### New features
+
+- `plot_lodpeaks()` for scatterplot of LOD score vs position for
+  inferred QTL from `find_peaks()` output.
 
 - Internal function `batch_vec()` now made user-accessible, and takes
   an additional argument `n_cores`. This splits a vector into batches

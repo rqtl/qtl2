@@ -17,7 +17,7 @@
 #' @param gap Gap between chromosomes.
 #' @param ... Additional graphics parameters
 #'
-#' @seealso [find_peaks()]
+#' @seealso [find_peaks()], [plot_lodpeaks()]
 #'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For

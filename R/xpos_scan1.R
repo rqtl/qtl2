@@ -79,6 +79,9 @@ function(map, chr=NULL, gap=25, thechr, thepos)
     # add chromosome names
     names(start) <- names(map)
 
+    # chromosome to character strings
+    thechr <- as.character(thechr)
+
     if(length(thechr)==1)
         thechr <- rep(thechr, length(thepos))
     if(length(thepos)==1)
