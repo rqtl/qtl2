@@ -10,7 +10,7 @@ est_map(cross, error_prob = 0.0001, map_function = c("haldane",
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{error_prob}{Assumed genotyping error probability}
 

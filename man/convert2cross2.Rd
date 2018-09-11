@@ -12,7 +12,7 @@ convert2cross2(cross)
 }
 \value{
 Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 }
 \description{
 Convert a cross object from the R/qtl format to the R/qtl2 format

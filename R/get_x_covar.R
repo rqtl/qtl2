@@ -7,7 +7,7 @@
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @return A matrix of size individuals x no. covariates.
 #'

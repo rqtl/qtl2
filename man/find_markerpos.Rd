@@ -8,7 +8,7 @@ find_markerpos(cross, markers, na.rm = TRUE)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 Can also be a map (as a list of vectors of marker positions).}
 
 \item{markers}{A vector of marker names.}

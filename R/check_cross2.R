@@ -58,7 +58,7 @@ function(cross2)
 #' @md
 #'
 #' @param cross2 An object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @return If everything is correct, returns `TRUE`; otherwise `FALSE`,
 #' with attributes that give the problems.

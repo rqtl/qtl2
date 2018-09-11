@@ -10,7 +10,7 @@ sim_geno(cross, map = NULL, n_draws = 1, error_prob = 0.0001,
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{map}{Genetic map of markers. May include pseudomarker
 locations (that is, locations that are not within the marker

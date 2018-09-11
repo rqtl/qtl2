@@ -8,7 +8,7 @@ drop_markers(cross, markers)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{markers}{A vector of marker names.}
 }

@@ -9,7 +9,7 @@
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param map Genetic map of markers. May include pseudomarker
 #' locations (that is, locations that are not within the marker
 #' genotype data). If NULL, the genetic map in `cross` is used.

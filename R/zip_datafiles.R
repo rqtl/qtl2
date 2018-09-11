@@ -20,8 +20,8 @@
 #' @details The input `control_file` is the control file (in
 #' [YAML](http://www.yaml.org) or [JSON](http://www.json.org/) format)
 #' to be read by [read_cross2()].  (See the
-#' [sample data files](http://kbroman.org/qtl2/pages/sampledata.html) and the
-#' [vignette describing the input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).)
+#' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the
+#' [vignette describing the input file format](https://kbroman.org/qtl2/assets/vignettes/input_files.html).)
 #'
 #' The [utils::zip()] function is used to do the zipping.
 #'
@@ -32,7 +32,7 @@
 #'
 #' @export
 #' @keywords IO
-#' @seealso [read_cross2()], sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' @seealso [read_cross2()], sample data files at \url{https://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
 #' \dontrun{
 #' control_file <- "~/grav2_data/grav2.yaml"

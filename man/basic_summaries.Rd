@@ -69,7 +69,7 @@ phenocovar_names(cross2)
 }
 \arguments{
 \item{cross2}{An object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 }
 \description{
 Basic summaries of a cross2 object.

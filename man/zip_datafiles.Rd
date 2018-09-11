@@ -31,8 +31,8 @@ Zip a set of data files (in format read by \code{\link[=read_cross2]{read_cross2
 The input \code{control_file} is the control file (in
 \href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format)
 to be read by \code{\link[=read_cross2]{read_cross2()}}.  (See the
-\href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
-\href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
+\href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
+\href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)
 
 The \code{\link[utils:zip]{utils::zip()}} function is used to do the zipping.
 
@@ -48,6 +48,6 @@ zip_datafiles(control_file, "grav2.zip")
 }
 }
 \seealso{
-\code{\link[=read_cross2]{read_cross2()}}, sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+\code{\link[=read_cross2]{read_cross2()}}, sample data files at \url{https://kbroman.org/qtl2/pages/sampledata.html}
 }
 \keyword{IO}

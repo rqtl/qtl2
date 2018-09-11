@@ -9,7 +9,7 @@
 - [`iron.zip`](iron.zip), data from
   [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 
-See the contents at <http://kbroman.org/qtl2/pages/sampledata.html>.
+See the contents at <https://kbroman.org/qtl2/pages/sampledata.html>.
 
 These can be read into R with `qtl2::read_cross2()`.
 

@@ -5,7 +5,7 @@
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param geno Imputed genotypes, as a list of matrices, as from [maxmarg()].
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)

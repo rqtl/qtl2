@@ -7,7 +7,7 @@
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param geno Imputed genotypes, as a list of matrices, as from [maxmarg()].
 #' @param deterministic If TRUE, preferentially put smaller allele first when there's uncertainty.
 #' If FALSE, the order of alleles is random in such cases.

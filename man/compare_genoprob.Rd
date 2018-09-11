@@ -14,7 +14,7 @@ or allele dosages (as produced by \code{\link[=genoprob_to_alleleprob]{genoprob_
 \item{probs2}{A second set of genotype probabilities, just like \code{probs1}.}
 
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{ind}{Individual to plot, either a numeric index or an ID.}
 

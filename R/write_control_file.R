@@ -70,16 +70,16 @@
 #' @details This function takes a set of parameters and creates the
 #' control file (in [YAML](http://www.yaml.org) format) needed
 #' for the new input data file format for
-#' [R/qtl2](http://kbroman.org/qtl2).  See the
-#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data
+#' [R/qtl2](https://kbroman.org/qtl2).  See the
+#' \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data
 #' files} and the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
+#' \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
 #' describing the input file format}.
 #'
 #' @export
 #' @keywords utilities
 #' @seealso [read_cross2()], sample data files at
-#' \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' \url{https://kbroman.org/qtl2/pages/sampledata.html}
 #' @examples
 #' \dontrun{
 #' # Control file for the sample dataset, grav2

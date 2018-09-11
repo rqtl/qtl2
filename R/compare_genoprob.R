@@ -8,7 +8,7 @@
 #' or allele dosages (as produced by [genoprob_to_alleleprob()]).
 #' @param probs2 A second set of genotype probabilities, just like `probs1`.
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ind Individual to plot, either a numeric index or an ID.
 #' @param chr Selected chromosome; a single character string.
 #' @param minprob Minimum probability for inferring genotypes (passed to [maxmarg()]).

@@ -9,7 +9,7 @@
 #' @md
 #'
 #' @param x An object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs.
 #' @param chr A vector of chromosomes: numeric indices, logical
@@ -42,7 +42,7 @@
 #'
 #' @section Warning:
 #' The order of the two arguments is reversed relative to the related
-#' function in [R/qtl](https://rqtl.org).
+#' function in [R/qtl](http://rqtl.org).
 #'
 #' @export
 #' @keywords utilities

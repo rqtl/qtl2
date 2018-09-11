@@ -13,7 +13,7 @@ n_typed(cross, by = c("individual", "marker"), summary = c("count",
 }
 \arguments{
 \item{cross}{An object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{by}{Whether to summarize by individual or marker}
 

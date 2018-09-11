@@ -13,27 +13,27 @@
 #' @param quiet If `FALSE`, print progress messages.
 #'
 #' @return Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @details
 #' A control file in [YAML](http://www.yaml.org) or
 #' [JSON](http://www.json.org/) format contains information
 #' about basic parameters as well as the names of the series of
 #' data files to be read. See the
-#' \href{http://kbroman.org/qtl2/pages/sampledata.html}{sample
+#' \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample
 #' data files} and the
-#' \href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
+#' \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
 #' describing the input file format}.
 #'
 #' @export
 #' @keywords IO
 #' @seealso [read_pheno()], [write_control_file()],
-#' sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+#' sample data files at \url{https://kbroman.org/qtl2/pages/sampledata.html}
 #' and \url{https://github.com/rqtl/qtl2data}
 #'
 #' @examples
 #' \dontrun{
-#' yaml_file <- "http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
+#' yaml_file <- "https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 #' grav2 <- read_cross2(yaml_file)
 #' }
 #' zip_file <- system.file("extdata", "grav2.zip", package="qtl2")

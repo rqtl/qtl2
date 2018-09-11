@@ -30,7 +30,7 @@ Suggests:
     vdiffr,
     qtl
 License: GPL-3
-URL: http://kbroman.org/qtl2, https://github.com/rqtl/qtl2
+URL: https://kbroman.org/qtl2, https://github.com/rqtl/qtl2
 BugReports: https://github.com/rqtl/qtl2/issues
 LazyData: true
 Encoding: UTF-8

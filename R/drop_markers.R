@@ -6,7 +6,7 @@
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param markers A vector of marker names.
 #'
 #' @return The input `cross` with the specified markers removed.
@@ -79,7 +79,7 @@ drop_markers <-
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param quiet If FALSE, print information about how many markers were dropped.
 #'
 #' @return The input `cross` with the uninformative markers removed.
@@ -144,7 +144,7 @@ drop_nullmarkers <-
 #' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param markers A vector of marker names.
 #'
 #' @return The input `cross` with only the specified markers.

@@ -6,7 +6,7 @@
 #' @md
 #'
 #' @param cross An object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param by Whether to summarize by individual or marker
 #' @param summary Whether to take count or proportion
 #'

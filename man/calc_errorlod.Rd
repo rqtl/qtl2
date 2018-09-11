@@ -8,7 +8,7 @@ calc_errorlod(cross, probs, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{probs}{Genotype probabilities as calculated from \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 

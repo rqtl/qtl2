@@ -114,10 +114,10 @@ by \code{\link[=read_cross2]{read_cross2()}} for a set of QTL data.
 This function takes a set of parameters and creates the
 control file (in \href{http://www.yaml.org}{YAML} format) needed
 for the new input data file format for
-\href{http://kbroman.org/qtl2}{R/qtl2}.  See the
-\href{http://kbroman.org/qtl2/pages/sampledata.html}{sample data
+\href{https://kbroman.org/qtl2}{R/qtl2}.  See the
+\href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data
 files} and the
-\href{http://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
+\href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
 describing the input file format}.
 }
 \examples{
@@ -153,6 +153,6 @@ write_control_file("~/my_data/iron.yaml",
 }
 \seealso{
 \code{\link[=read_cross2]{read_cross2()}}, sample data files at
-\url{http://kbroman.org/qtl2/pages/sampledata.html}
+\url{https://kbroman.org/qtl2/pages/sampledata.html}
 }
 \keyword{utilities}

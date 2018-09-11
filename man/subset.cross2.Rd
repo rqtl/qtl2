@@ -11,7 +11,7 @@
 }
 \arguments{
 \item{x}{An object of class \code{"cross2"}. For details, see the
-\href{http://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{ind}{A vector of individuals: numeric indices, logical
 values, or character string IDs.}
@@ -53,7 +53,7 @@ use negative subscripts like this.
 \section{Warning}{
 
 The order of the two arguments is reversed relative to the related
-function in \href{https://rqtl.org}{R/qtl}.
+function in \href{http://rqtl.org}{R/qtl}.
 }
 
 \examples{

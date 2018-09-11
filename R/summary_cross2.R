@@ -7,7 +7,7 @@
 #' @md
 #'
 #' @param cross2 An object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @name basic_summaries
 #' @keywords utilities
@@ -295,7 +295,7 @@ function(cross2)
 #' @md
 #'
 #' @param x An object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
 #'
 #' @return None.
@@ -318,7 +318,7 @@ function(x, ...)
 #' @md
 #'
 #' @param object An object of class `"cross2"`. For details, see the
-#' [R/qtl2 developer guide](http://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
 #'
 #' @return None.

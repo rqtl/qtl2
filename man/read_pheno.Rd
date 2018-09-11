@@ -57,7 +57,7 @@ phe_list <- read_pheno(file, phecovfile)
 }
 \seealso{
 \code{\link[=read_cross2]{read_cross2()}},
-sample data files at \url{http://kbroman.org/qtl2/pages/sampledata.html}
+sample data files at \url{https://kbroman.org/qtl2/pages/sampledata.html}
 and \url{https://github.com/rqtl/qtl2data}
 }
 \keyword{IO}
