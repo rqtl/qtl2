@@ -1,0 +1,24 @@
+citHeader("To cite R/qtl2 in publications use:")
+
+citEntry(entry="article",
+         title = "R/qtl2: software for mapping quantitative trait loci with high-dimensional data and multi-parent populations.",
+         author = personList(person(c("Karl", "W."), "Broman"),
+                             person(c("Daniel", "M."), "Gatti"),
+                             person("Petr", "Simecek"),
+                             person(c("Nicholas", "A."), "Furlotte"),
+                             person("Pjotr", "Prins"),
+                             person("Saunak", "Sen"),
+                             person(c("Brian", "S."), "Yandell"),
+                             person(c("Gary", "A."), "Churchill")),
+         journal = "bioRxiv",
+         doi = "10.1101/414748",
+         year = 2018,
+         url = "https://www.biorxiv.org/content/early/2018/09/12/414748",
+         eprint = "https://www.biorxiv.org/content/biorxiv/early/2018/09/12/414748.full.pdf",
+         key = "Broman2018",
+
+         textVersion =
+             paste("Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen S, Yandell BS, Churchill GA",
+                   "(2018) R/qtl2: software for mapping quantitative trait loci",
+                   "with high-dimensional data and multi-parent populations. bioRxiv doi:10.1101/414748")
+         )
