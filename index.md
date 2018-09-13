@@ -74,6 +74,18 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 
 ---
 
+### Citation
+
+To cite R/qtl2 in publications, use:
+
+> Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen &#346;,
+> Yandell BS, Churchill GA (2018)
+> R/qtl2: software for mapping quantitative trait loci with
+> high-dimensional data and multi-parent populations.
+> bioRxiv doi:[10.1101/414748](https://doi.org/10.1101/414748)
+
+---
+
 ### License
 
 [Licensed](LICENSE) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
