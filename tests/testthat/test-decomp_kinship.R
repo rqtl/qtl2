@@ -72,3 +72,23 @@ test_that("eigen decomposition gives error with non-square matrix", {
     expect_error(decomp_eigen(k))
 
 })
+
+test_that("eigen decomposition works with scan1", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+
+    K <- calc_kinship(probs)
+    Ke <- decomp_kinship(K)
+
+    out <- scan1(probs, iron$pheno, K)
+    expect_equal(scan1(probs, iron$pheno, Ke), out)
+
+    K_loco <- calc_kinship(probs, "loco")
+    Ke_loco <- decomp_kinship(K_loco)
+
+    out_loco <- scan1(probs, iron$pheno, K_loco)
+    expect_equal(scan1(probs, iron$pheno, Ke_loco), out_loco)
+
+})

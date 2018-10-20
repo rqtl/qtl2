@@ -1,4 +1,4 @@
-## qtl2 0.17-4 (2018-09-11)
+## qtl2 0.17-5 (2018-10-20)
 
 ### New features
 
@@ -15,6 +15,9 @@
 
 - Revise some tests due to change in Recla and DOex datasets at
   <https://github.com/rqtl/qtl2data>
+
+- Add tests of decomposed kinship matrix (from `decomp_kinship()`)
+  with `scan1()`.
 
 
 ## qtl2 0.16 (2018-07-23)
