@@ -1,4 +1,4 @@
-## qtl2 0.17-5 (2018-10-20)
+## qtl2 0.17-5 (2018-10-21)
 
 ### New features
 
@@ -18,6 +18,11 @@
 
 - Add tests of decomposed kinship matrix (from `decomp_kinship()`)
   with `scan1()`.
+
+### Bug fixes
+
+- Fixed bug in `subset_kinship()` that prevented `scan1()` from
+  working with a decomposed "loco" kinship matrices.
 
 
 ## qtl2 0.16 (2018-07-23)

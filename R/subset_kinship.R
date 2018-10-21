@@ -9,7 +9,7 @@ subset_kinship <-
         if(!is.null(ind)) {
             # maybe it's not really needing to be subset by individual
             if(is_kinship_list(kinship)) {
-                k_ind <- rownames(kinship$vectors[[1]])
+                k_ind <- rownames(kinship[[1]]$vectors)
             } else {
                 k_ind <- rownames(kinship$vectors)
             }
