@@ -1,13 +1,13 @@
-## qtl2 0.17-5 (2018-10-21)
+## qtl2 0.17-6 (2018-11-01)
 
 ### New features
 
-- `plot_lodpeaks()` for scatterplot of LOD score vs position for
+- Added `plot_lodpeaks()` for scatterplot of LOD score vs position for
   inferred QTL from `find_peaks()` output.
 
-- Internal function `batch_vec()` now made user-accessible, and takes
-  an additional argument `n_cores`. This splits a vector into batches
-  for use in parallel calculations.
+- The internal function `batch_vec()` now made user-accessible, and
+  takes an additional argument `n_cores`. This splits a vector into
+  batches for use in parallel calculations.
 
 ### Minor changes
 
@@ -23,6 +23,10 @@
 
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
   working with a decomposed "loco" kinship matrices.
+
+- Changed tolerance in `map2rf()` from `1e-12` to `1e-8`, to avoid
+  `NaN` values from `calc_genoprob()` for the X chromosome in 3-way
+  AILs.
 
 
 ## qtl2 0.16 (2018-07-23)

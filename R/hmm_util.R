@@ -15,7 +15,7 @@ function(geno)
 
 # convert map to rf
 map2rf <-
-    function(map, map_function=c("haldane", "kosambi", "c-f", "morgan"), tol=1e-12)
+    function(map, map_function=c("haldane", "kosambi", "c-f", "morgan"), tol=1e-8)
 {
     map_function <- match.arg(map_function)
 
