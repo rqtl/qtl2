@@ -2,7 +2,7 @@
 #
 # - creates one genotype CSV file for each chromosome
 #
-# - also creates 4 files containing the two channels of SNP intensities for markers on the X and Y chr
+# - also creates 2 files containing the two channels of SNP intensities for markers on the X and Y chr
 #   (these are useful for verifying the sex of the mice)
 
 # file containing allele codes for GigaMUGA data
