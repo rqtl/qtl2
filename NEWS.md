@@ -1,9 +1,17 @@
-## qtl2 0.17-6 (2018-11-01)
+## qtl2 0.17-7 (2018-11-05)
 
 ### New features
 
 - Added `plot_lodpeaks()` for scatterplot of LOD score vs position for
   inferred QTL from `find_peaks()` output.
+
+- Added new cross type `"genril"`, implemented to handle any number of
+  founders; include the number of founders in the cross type, for
+  example `"genril38"`. The cross information has length 1 + number of
+  founders, with first column being the number of generations and the
+  remaining columns being non-negative integers that indicate the
+  relative frequencies of the founders in the initial population
+  (these will be scaled to sum to 1).
 
 - The internal function `batch_vec()` now made user-accessible, and
   takes an additional argument `n_cores`. This splits a vector into
@@ -23,10 +31,6 @@
 
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
   working with a decomposed "loco" kinship matrices.
-
-- Changed tolerance in `map2rf()` from `1e-12` to `1e-8`, to avoid
-  `NaN` values from `calc_genoprob()` for the X chromosome in 3-way
-  AILs.
 
 
 ## qtl2 0.16 (2018-07-23)
