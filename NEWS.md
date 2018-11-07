@@ -32,10 +32,6 @@
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
   working with a decomposed "loco" kinship matrices.
 
-- Changed tolerance in `map2rf()` from `1e-12` to `1e-8`, to avoid
-  `NaN` values from `calc_genoprob()` for the X chromosome in 3-way
-  AILs.
-
 
 ## qtl2 0.16 (2018-07-23)
 

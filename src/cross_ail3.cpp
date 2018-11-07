@@ -160,14 +160,18 @@ const double AIL3::step(const int gen_left, const int gen_right, const double re
 
     const int n_gen = cross_info[0]; // number of generations
 
+    // don't let rf get too small on X chr
+    double rf = rec_frac;
+    if(is_x_chr && rf < 1e-8) rf = 1e-8;
+
     if(is_x_chr && !is_female) { // male X
-        const double z = sqrt((1.0-rec_frac)*(9.0-rec_frac));
-        const double pAA = (1.0-rec_frac)/3.0 * ( (1.0-rec_frac+z)/(2.0*z) * pow((1.0-rec_frac-z)/4.0, (double)(n_gen-2)) +
-                                                  (-1.0+rec_frac+z)/(2.0*z) * pow((1.0-rec_frac+z)/4.0, (double)(n_gen-2))) +
-            (2.0-rec_frac)/(2.0*3) * ( (1.0-rec_frac-z)/2.0 * (1.0-rec_frac+z)/(2.0*z) * pow((1.0-rec_frac-z)/4.0,(double)(n_gen-2)) +
-                                       (1.0-rec_frac+z)/2.0 * (-1.0+rec_frac+z)/(2.0*z) * pow((1.0-rec_frac+z)/4.0,(double)(n_gen-2))) +
-            ( (rec_frac*rec_frac + rec_frac*(z-5.0))/(9*(3.0+rec_frac+z)) * (1.0-rec_frac+z)/(2.0*z) * pow((1.0-rec_frac-z)/4.0,(double)(n_gen-2)) +
-              (rec_frac*rec_frac - rec_frac*(z+5.0))/(9*(3.0+rec_frac-z)) * (-1.0+rec_frac+z)/(2.0*z) * pow((1.0-rec_frac+z)/4.0,(double)(n_gen-2)) + 1.0/9.0);
+        const double z = sqrt((1.0-rf)*(9.0-rf));
+        const double pAA = (1.0-rf)/3.0 * ( (1.0-rf+z)/(2.0*z) * pow((1.0-rf-z)/4.0, (double)(n_gen-2)) +
+                                                  (-1.0+rf+z)/(2.0*z) * pow((1.0-rf+z)/4.0, (double)(n_gen-2))) +
+            (2.0-rf)/(2.0*3) * ( (1.0-rf-z)/2.0 * (1.0-rf+z)/(2.0*z) * pow((1.0-rf-z)/4.0,(double)(n_gen-2)) +
+                                       (1.0-rf+z)/2.0 * (-1.0+rf+z)/(2.0*z) * pow((1.0-rf+z)/4.0,(double)(n_gen-2))) +
+            ( (rf*rf + rf*(z-5.0))/(9*(3.0+rf+z)) * (1.0-rf+z)/(2.0*z) * pow((1.0-rf-z)/4.0,(double)(n_gen-2)) +
+              (rf*rf - rf*(z+5.0))/(9*(3.0+rf-z)) * (-1.0+rf+z)/(2.0*z) * pow((1.0-rf+z)/4.0,(double)(n_gen-2)) + 1.0/9.0);
         const double R = (1.0-3.0*pAA);
 
         if(gen_left == gen_right) return log1p(-R);
@@ -176,17 +180,17 @@ const double AIL3::step(const int gen_left, const int gen_right, const double re
     else { // autosome or female X
         double pAA;
         if(!is_x_chr) { // autosome
-            pAA = (1.0 - (-2.0 + 3.0*rec_frac)*pow(1.0 - rec_frac, (double)(n_gen-2)))/9.0;
+            pAA = (1.0 - (-2.0 + 3.0*rf)*pow(1.0 - rf, (double)(n_gen-2)))/9.0;
         }
         else { // female X
-            const double z = sqrt((1.0-rec_frac)*(9.0-rec_frac));
+            const double z = sqrt((1.0-rf)*(9.0-rf));
 
-            pAA = (1.0-rec_frac)/3.0 * ( (-1.0/z)*pow((1.0-rec_frac-z)/4.0,(double)(n_gen-2)) +
-                                         (1.0/z)*pow((1.0-rec_frac+z)/4.0,(double)(n_gen-2))) +
-                (2.0-rec_frac)/6.0 * ( (1.0-rec_frac-z)/2.0 * (-1.0/z)*pow((1.0-rec_frac-z)/4.0,(double)(n_gen-2)) +
-                                       (1.0-rec_frac+z)/2.0 *  (1.0/z)*pow((1.0-rec_frac+z)/4.0,(double)(n_gen-2))) +
-                ( (rec_frac*rec_frac + rec_frac*(z-5.0))/(9.0*(3.0+rec_frac+z)) * (-1.0/z)*pow((1.0-rec_frac-z)/4.0,(double)(n_gen-2)) +
-                  (rec_frac*rec_frac - rec_frac*(z+5.0))/(9.0*(3.0+rec_frac-z)) * (1.0/z)*pow((1.0-rec_frac+z)/4.0,(double)(n_gen-2))  + 1.0/9.0);
+            pAA = (1.0-rf)/3.0 * ( (-1.0/z)*pow((1.0-rf-z)/4.0,(double)(n_gen-2)) +
+                                         (1.0/z)*pow((1.0-rf+z)/4.0,(double)(n_gen-2))) +
+                (2.0-rf)/6.0 * ( (1.0-rf-z)/2.0 * (-1.0/z)*pow((1.0-rf-z)/4.0,(double)(n_gen-2)) +
+                                       (1.0-rf+z)/2.0 *  (1.0/z)*pow((1.0-rf+z)/4.0,(double)(n_gen-2))) +
+                ( (rf*rf + rf*(z-5.0))/(9.0*(3.0+rf+z)) * (-1.0/z)*pow((1.0-rf-z)/4.0,(double)(n_gen-2)) +
+                  (rf*rf - rf*(z+5.0))/(9.0*(3.0+rf-z)) * (1.0/z)*pow((1.0-rf+z)/4.0,(double)(n_gen-2))  + 1.0/9.0);
         }
         double R = (1.0 - 3.0*pAA);
 

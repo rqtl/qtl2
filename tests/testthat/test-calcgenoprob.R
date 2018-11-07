@@ -16,7 +16,7 @@ test_that("backcross autosome calc_genoprob matches R/qtl", {
     hyper2 <- convert2cross2(hyper)
     pr2 <- calc_genoprob(hyper2, error_prob=0.002)
 
-    expect_equivalent(pr, pr2, tol=2e-5)
+    expect_equivalent(pr, pr2)
 
 })
 
@@ -52,7 +52,7 @@ test_that("risib autosome calc_genoprob matches R/qtl", {
     map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
     pr2 <- calc_genoprob(hyper2, map, error_prob=0.002)
 
-    expect_equivalent(pr, pr2, tol=1e-5)
+    expect_equivalent(pr, pr2)
 
 })
 
@@ -70,7 +70,7 @@ test_that("riself autosome calc_genoprob matches R/qtl", {
     map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
     pr2 <- calc_genoprob(hyper2, map, error_prob=0.002)
 
-    expect_equivalent(pr, pr2, tol=1e-5)
+    expect_equivalent(pr, pr2)
 
 })
 
@@ -242,7 +242,7 @@ test_that("doubled haploids calc_genoprob matches R/qtl", {
     map <- insert_pseudomarkers(hyper2$gmap, step=1, stepwidth="max")
     pr2 <- calc_genoprob(hyper2, map, error_prob=0.02)[[1]]
 
-    expect_equivalent(pr, pr2, tol=1e-6)
+    expect_equivalent(pr, pr2)
 
 })
 
