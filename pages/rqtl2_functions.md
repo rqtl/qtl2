@@ -231,6 +231,8 @@ description: Annotated/categorized list of functions in R/qtl2
 - `plot_genes` - plot locations of a set of genes
 - `plot_peaks` - plot a summary of QTL positions for multiple
   phenotypes, using the results of `find_peaks`
+- `plot_lodpeaks` - scatterplot of LOD scores vs QTL peak locatiosn
+  (possibly with intervals) for multiple traits
 - `plot_pxg` - plot phenotype versus QTL genotypes
 
 
@@ -269,6 +271,8 @@ description: Annotated/categorized list of functions in R/qtl2
 
 - `batch_cols` - identify batches of columns of a matrix that have the
   same pattern of missing values
+- `batch_vec` - split a vector into batches, for help in balancing
+  parallel code
 - `get_common_ids` - find IDs that are present in all of the input objects
 - `get_x_covar` - from a `"cross2"` object, get the matrix of
   covariates to be used for the null hypothesis when performing QTL
@@ -302,4 +306,3 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Other functions
-- `batch_vec`
