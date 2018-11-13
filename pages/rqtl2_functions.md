@@ -42,9 +42,8 @@ description: Annotated/categorized list of functions in R/qtl2
 ### Combining data
 
 - `cbind.calc_genoprob` - combine genotype probabilities for multiple
-  sets of individuals
-- `rbind.calc_genoprob` - combine genotype probabilities for multiple
   chromosomes but on the same set of individuals
+- `rbind.calc_genoprob` - combine genotype probabilities for different individuals
 - `cbind.scan1` - combine genome scan results for multiple phenotypes/analyses
 - `rbind.scan1` - combine genome scan results for different chromosomes
 - `c.scan1perm` - combine genome scan permutation results for multiple replicates
@@ -53,8 +52,10 @@ description: Annotated/categorized list of functions in R/qtl2
 - `rbind.scan1perm` - combine genome scan permutation results for
   multiple chromosomes
 - `cbind.sim_geno` - combine genotype imputations for multiple chromosomes
+   but on the same set of individuals
 - `rbind.sim_geno` - combine genotype imputations for different individuals
 - `cbind.viterbi` - combine inferred genotypes for multiple chromosomes
+   but on the same set of individuals
 - `rbind.viterbi` - combine inferred genotypes for different individuals
 
 
