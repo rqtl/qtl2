@@ -1,7 +1,8 @@
 #' Join genotype probabilities for different chromosomes
 #'
 #' Join multiple genotype probability objects, as produced by
-#' [calc_genoprob()] for different individuals.
+#' [calc_genoprob()], for the same set of individuals but different
+#' chromosomes.
 #'
 #' @md
 #'

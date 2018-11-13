@@ -15,7 +15,7 @@ A single genotype probability object.
 }
 \description{
 Join multiple genotype imputation objects, as produced by
-\code{\link[=sim_geno]{sim_geno()}} for the same individuals but different
+\code{\link[=sim_geno]{sim_geno()}}, for the same individuals but different
 chromosomes.
 }
 \examples{

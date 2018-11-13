@@ -1,7 +1,7 @@
 #' Join genotype imputations for different chromosomes
 #'
 #' Join multiple genotype imputation objects, as produced by
-#' [sim_geno()] for the same individuals but different
+#' [sim_geno()], for the same individuals but different
 #' chromosomes.
 #'
 #' @md

@@ -15,7 +15,8 @@ A single genotype probability object.
 }
 \description{
 Join multiple genotype probability objects, as produced by
-\code{\link[=calc_genoprob]{calc_genoprob()}} for different individuals.
+\code{\link[=calc_genoprob]{calc_genoprob()}}, for the same set of individuals but different
+chromosomes.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))

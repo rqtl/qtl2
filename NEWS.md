@@ -1,4 +1,4 @@
-## qtl2 0.17-7 (2018-11-05)
+## qtl2 0.17-9 (2018-11-13)
 
 ### New features
 
@@ -31,6 +31,14 @@
 
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
   working with a decomposed "loco" kinship matrices.
+
+- Fixed descriptions in help files for `cbind.calc_genoprob()` and
+  `rbind.calc_genoprob()`, for column- and row-binding genotype
+  probabilities objects (as output by `calc_genoprob()`. `cbind()` is
+  for the same set of individuals but different chromosomes. `rbind()`
+  is for the same set of markers and genotypes but different
+  individuals. Made similar corrections for the related functions for
+  `sim_geno()` and `viterbi()` output.
 
 
 ## qtl2 0.16 (2018-07-23)
