@@ -49,6 +49,12 @@ can read this file directly:
     library(qtl2)
     grav2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
 
+The zip file is also distributed with R/qtl2; the local copy of the
+file can be read as follows:
+
+    library(qtl2)
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+
 ---
 
 ### F<sub>2</sub> intercross
@@ -77,3 +83,9 @@ can read this file directly:
 
     library(qtl2)
     iron <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/iron/iron.zip")
+
+The zip file is also distributed with R/qtl2; the local copy of the
+file can be read as follows:
+
+    library(qtl2)
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
