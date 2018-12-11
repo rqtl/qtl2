@@ -13,5 +13,5 @@ description: Vignettes and documentation for R/qtl2
 - [differences between R/qtl and R/qtl2](assets/vignettes/rqtl_diff.html)
 - [developer guide](assets/vignettes/developer_guide.html)
 - [HMM benchmarks](assets/vignettes/hmm_benchmarks.html)
-- [Tutorial on R/qtl2](Docs/Papers/Rqtl2/) by [Susan McClatchy](https://github.com/smcclatchy) and
+- [Tutorial on R/qtl2](https://smcclatchy.github.io/mapping/) by [Susan McClatchy](https://github.com/smcclatchy) and
   [Dan Gatti](https://github.com/dmgatti)
