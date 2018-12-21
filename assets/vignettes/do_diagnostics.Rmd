@@ -1,5 +1,5 @@
 ---
-title: "Genotype diagnostics in diversity outbred mice"
+title: "Genotype diagnostics for diversity outbred mice"
 output:
     html_document:
         toc: true
