@@ -21,6 +21,8 @@ the quality of both the genotypes and phenotypes. Diagnosing genotype
 data problems can be particularly tricky in multi-parent populations,
 such as Diversity Outbred (DO) mouse populations. In this document, we
 illustrate our basic strategies for genotype diagnostics in DO mice.
+Also see the related manuscript, [Broman et al.
+(2018)](https://www.biostat.wisc.edu/~kbroman/publications/mpp_diag.pdf).
 
 We will consider, as our example, a subset of the DO data from [Gatti
 et al. (2017)](https://doi.org/10.1101/098657).
