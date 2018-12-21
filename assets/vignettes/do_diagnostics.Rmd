@@ -64,8 +64,8 @@ set.seed(94238567) # set random number seed
 url <- paste0("https://raw.githubusercontent.com/rqtl/",
               "qtl2data/master/DO_Svenson291/svenson.zip")
 rds_file <- "diag_cache/svenson.rds"
-if(!file.exists(local_file)) {
-    svenson <- read_cross(url)
+if(!file.exists(rds_file)) {
+    svenson <- read_cross2(url)
     saveRDS(svenson, rds_file)
 } else {
     svenson <- readRDS(rds_file)
