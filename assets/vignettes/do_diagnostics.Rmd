@@ -899,9 +899,76 @@ snpg <- predict_snpgeno(svenson, m, cores=0)
 snpg <- do.call("cbind", snpg)
 ```
 
-Here is a function to plot the SNP intensities, colored by genotype.
+Here is a function to plot the SNP intensities, plus several helper functions.
 
 ```{r plot_intensities_function}
+# get data for one marker
+read_intensities <-
+    function(file="../RawData/intensities.fst", marker=NULL, snps=NULL)
+{
+    if(is.null(snps)) {
+        snps <- fst::read.fst(file, column="snp")[,1]
+    }
+
+    if(is.null(marker)) { # if marker is NULL, return the snp names
+        return(snps)
+    } else {
+        marker <- as.character(marker)
+    }
+
+    n <- match(marker, snps)
+    if(is.na(n)) stop("marker ", marker, " not found")
+
+    reorg_intensities( fst::read.fst(file, from=n, to=n+1) )
+}
+
+
+# reorganize SNP intensity data (for one marker)
+reorg_intensities <-
+    function(intensities, marker=NULL)
+{
+    if(!is.null(marker)) {
+        marker <- as.character(marker)
+        wh <- which(intensities[,1] == marker)
+        if(sum(wh==0)) stop("Marker ", marker, " not found")
+        intensities <- intensities[wh,]
+    }
+
+    result <- data.frame(X=as.numeric(intensities[1,-(1:2)]),
+                         Y=as.numeric(intensities[2,-(1:2)]))
+    rownames(result) <- colnames(intensities)[-(1:2)]
+
+    result
+}
+
+# combine intensities and genotypes
+grab_gni <-
+    function(marker=NULL, cross=svenson, intensities_file="../RawData/intensities.fst",
+             intensities_data=NULL, drop_bad_samples=TRUE)
+{
+    if(is.null(intensities_data)) {
+        # get intensities
+        int <- read_intensities(intensities_file, marker=marker)
+    } else {
+        int <- reorg_intensities(intensities_data, marker)
+    }
+    marker <- as.character(marker)
+
+
+    # get genotypes
+    chr <- qtl2::find_markerpos(cross, marker)$chr
+    g <- cross$geno[[chr]][,marker]
+    gg <- setNames(rep(0, nrow(int)), rownames(int))
+    gg[names(g)] <- g
+
+    if(drop_bad_samples) {
+        int <- int[names(g),,drop=FALSE]
+        gg <- gg[names(g)]
+    }
+
+    cbind(int, g=gg)
+}
+
 # load intensities and plot them, colored by genotype calls
 #
 # drop_bad_samples: if TRUE, don't plot points for samples that are not in the cross object
