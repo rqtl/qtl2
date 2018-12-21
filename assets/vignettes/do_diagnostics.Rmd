@@ -76,7 +76,7 @@ Let's omit markers without any genotype data and re-code the
 genotypes so that the first allele is that which is most common among
 the founders.
 
-```
+```{r drop_nulls_and_recode_geno}
 svenson <- drop_nullmarkers(svenson)
 
 for(chr in seq_along(svenson$founder_geno)) {
