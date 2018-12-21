@@ -5,6 +5,7 @@ output:
         toc: true
         toc_depth: 3
         toc_float: true
+        code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
