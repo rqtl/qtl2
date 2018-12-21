@@ -24,7 +24,7 @@ illustrate our basic strategies for genotype diagnostics in DO mice.
 We will consider, as our example, a subset of the DO data from [Gatti
 et al. (2017)](https://doi.org/10.1101/098657).
 
-The genotype data are for the a set of 291 mice from generations 8 and
+The genotype data are for a set of 291 mice from DO generations 8 and
 11, with genotypes from the
 [MegaMUGA array](http://genomics.neogen.com/en/mouse-universal-genotyping-array).
 The primary genotype data are in two `FinalReport.txt` files, in the form provided by
@@ -71,7 +71,7 @@ if(!file.exists(rds_file)) {
 }
 ```
 
-I'm going to omit markers without any genotype data and re-code the
+Let's omit markers without any genotype data and re-code the
 genotypes so that the first allele is that which is most common among
 the founders.
 
@@ -97,7 +97,7 @@ for(chr in seq_along(svenson$founder_geno)) {
 }
 ```
 
-We are left with `r add_commas(tot_mar(svenson))` markers
+There are `r add_commas(tot_mar(svenson))` markers
 genotyped on `r n_ind(svenson)` mice.
 
 
@@ -166,14 +166,6 @@ if(!file.exists(local_xfile)) download.file(dist_xfile, local_xfile)
 if(!file.exists(local_yfile)) download.file(dist_yfile, local_yfile)
 xint <- read_csv_numer(local_xfile, transpose=TRUE)
 yint <- read_csv_numer(local_yfile, transpose=TRUE)
-```
-
-We'll omit data for the `r sum(percent_missing >= 19.97)` samples we've
-just omitted.
-
-```{r omit_samples_from_intensities}
-xint <- xint[ind_ids(svenson),]
-yint <- yint[ind_ids(svenson),]
 ```
 
 In this project, the sex of the mice was encoded as the first character in the
@@ -446,10 +438,10 @@ The samples with >20% missing data (in orange) have somewhat reduced 1st percent
 elevated 90th percentile, except for one orange point (F326) that
 is close to the bulk of the samples. The samples with 5-9% missing data (in pink)
 are similar but less extreme. Many of the samples with 2-5% missing
-data show decreased 1st percentile, but many look fit in with the bulk
+data show decreased 1st percentile, but many fit in with the bulk
 of the samples.
 
-We're tempted to omit the `r sum(percent_missing > 5)` samples with >5%
+We're again tempted to omit the `r sum(percent_missing > 5)` samples with >5%
 missing data, but we'll continue to leave them in, for now.
 
 
@@ -611,9 +603,9 @@ with > 20% missing genotypes, as these samples show
 crossovers, well above the others.)
 
 There is a lot of variation in the number of crossovers, and some overlap between
-generation 8 (in red, with average `r round(totxo[svenson$covar$gen=="8" & percent_missing < 19.97])`
+generation 8 (in red, with average `r round(mean(totxo[svenson$covar$ngen=="8" & percent_missing < 19.97]))`
 crossovers) and generation 11 (in blue, with average
-`r round(totxo[svenson$covar$gen=="11" & percent_missing < 19.97])` crossovers).
+`r round(mean(totxo[svenson$covar$ngen=="11" & percent_missing < 19.97]))` crossovers).
 
 ```{r plot_nxo, fig.width=8.8, fig.height=4.8}
 iplot(seq_along(totxo)[percent_missing < 19.97],
@@ -628,8 +620,8 @@ We're looking for mice with an excessive number of
 crossovers. Mice with very few crossovers would also deserve follow
 up. And note that we need to take the DO generation of an individual
 into account. But none of the mice seem unusual, in terms of numbers
-of crossovers (except for the `r sum(percent_missing >= 19.97)` mice with >
-20% missing genotypes, which we omitted from this figure.
+of crossovers, except for the `r sum(percent_missing >= 19.97)` mice with >
+20% missing genotypes which we omitted from this figure.
 
 Here are the crossover counts for those `r sum(percent_missing >= 19.97)`
 mice:
@@ -715,7 +707,8 @@ gobs[gobs==0] <- NA
 
 The apparent error rates derived by comparing the observed and
 predicted SNP genotypes are basically the same as using a cutoff of 0
-on the error LOD score.
+on the error LOD score. The rates differ most for the samples missing
+a lot of genotypes.
 
 ```{r plot_error_rate_vs_elod0}
 par(pty="s")
@@ -725,7 +718,20 @@ par(mar=c(4.1,4.1,0.6, 0.6))
 grayplot(errors_ind_0, err_direct,
          xlab="Percent errors (error LOD > 0)",
          ylab="Percent errors (obs vs predicted)",
-         xlim=c(0, 1.6), ylim=c(0, 1.6))
+         xlim=c(0, 21.2), ylim=c(0, 21.2))
+abline(0,1,lty=2, col="gray60")
+```
+
+Here are just the samples with estimated error rates < 0.4% (that is,
+omitting `r sum(err_direct > 0.5)` samples with error rates > 0.5%).
+
+```{r plot_error_rate_vs_elod0_again}
+par(pty="s")
+par(mar=c(4.1,4.1,0.6, 0.6))
+grayplot(errors_ind_0, err_direct,
+         xlab="Percent errors (error LOD > 0)",
+         ylab="Percent errors (obs vs predicted)",
+         xlim=c(0, 0.4), ylim=c(0, 0.4))
 abline(0,1,lty=2, col="gray60")
 ```
 
