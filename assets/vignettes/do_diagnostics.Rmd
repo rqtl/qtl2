@@ -1,7 +1,5 @@
 ---
 title: "Genotype diagnostics in diversity outbred mice"
-author: "Karl W Broman"
-date: "`r Sys.Date()`"
 output:
     html_document:
         toc: true
