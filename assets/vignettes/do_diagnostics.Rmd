@@ -146,9 +146,27 @@ When converting the `FinalReport.txt` files to R/qtl2 format, we pulled
 out the average intensities for each SNP on the X and Y chromosomes.
 We load them into R as follows.
 
-```{r load_XYintensities}
-xint <- read_csv_numer("../Data/svenson_chrXint.csv", transpose=TRUE)
-yint <- read_csv_numer("../Data/svenson_chrYint.csv", transpose=TRUE)
+```{r load_XYintensities, eval=FALSE}
+url <- paste0("https://raw.githubusercontent.com/rqtl/",
+              "qtl2data/master/DO_Svenson291/)
+xint <- read_csv_numer(paste0(url, "svenson_chrXint.csv"), transpose=TRUE)
+yint <- read_csv_numer(paste0(url, "svenson_chrYint.csv"), transpose=TRUE)
+```
+
+```{r load_XYintensities_really, echo=FALSE}
+url <- paste0("https://raw.githubusercontent.com/rqtl/",
+              "qtl2data/master/DO_Svenson291/")
+local_dir <- "diag_cache/"
+xfile <- "svenson_chrXint.csv"
+yfile <- "svenson_chrYint.csv"
+dist_xfile <- paste0(url, xfile)
+local_xfile <- paste0(local_dir, xfile)
+dist_yfile <- paste0(url, yfile)
+local_yfile <- paste0(local_dir, yfile)
+if(!file.exists(local_xfile)) download.file(dist_xfile, local_xfile)
+if(!file.exists(local_yfile)) download.file(dist_yfile, local_yfile)
+xint <- read_csv_numer(local_xfile, transpose=TRUE)
+yint <- read_csv_numer(local_yfile, transpose=TRUE)
 ```
 
 We'll omit data for the `r sum(percent_missing >= 19.97)` samples we've
