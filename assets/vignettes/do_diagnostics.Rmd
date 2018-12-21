@@ -1201,3 +1201,8 @@ legend("topright", lwd=2, col=c("slateblue", "violetred"),
 
 Omitting poorly behaved markers can affect the genotype probabilities,
 but these effects appear to be rather isolated.
+
+---
+
+[![CC BY](https://i.creativecommons.org/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/3.0/)
+[Karl Broman](https://kbroman.org)
