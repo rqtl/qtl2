@@ -1,0 +1,1076 @@
+---
+title: "Genotype diagnostics in diversity outbred mice"
+author: "Karl W Broman"
+date: "`r Sys.Date()`"
+output:
+    html_document:
+        toc: true
+        toc_depth: 3
+        toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message=FALSE, warning=FALSE,
+                      fig.width=11, fig.height=6)
+options(scipen=10, width=110)
+```
+
+QTL analysis results are dependent upon the fidelity of the data, and
+so an important preliminary activity is the careful investigation of
+the quality of both the genotypes and phenotypes. Diagnosing genotype
+data problems can be particularly tricky in multi-parent populations,
+such as Diversity Outbred (DO) mouse populations. In this document, we
+illustrate our basic strategies for genotype diagnostics in DO mice.
+
+We will consider, as our example, a subset of the DO data from [Gatti
+et al. (2017)](https://doi.org/10.1101/098657).
+
+The genotype data are for the a set of 291 mice from generations 8 and
+11, with genotypes from the
+[MegaMUGA array](http://genomics.neogen.com/en/mouse-universal-genotyping-array).
+The primary genotype data are in two `FinalReport.txt` files, in the form provided by
+GeneSeek, available at <https://doi.org/10.6084/m9.figshare.7359542.v1>.
+The data have been converted to
+[R/qtl2](http://kbroman.org/qtl2) format following the document
+["Preparing Diversity Outbred (DO) mouse data for R/qtl2"](http://kbroman.org/qtl2/pages/prep_do_data.html).
+The processed data are available
+at <https://github.com/rqtl/qtl2data/tree/master/DO_Svenson291>.
+
+We first load the [R/qtl2](https://github.com/rqtl/qtl2)
+package and the data. We'll also load the
+[R/broman](https://github.com/kbroman/broman) package for some
+utilities and plotting functions, and
+[R/qtlcharts](https://kbroman.org/qtlcharts) for interactive
+graphs. The package [devtools](https://github.com/r-lib/devtools) is used for `session_info()` at the
+very end of the document.
+
+```{r load_data, eval=FALSE}
+library(broman)
+library(qtl2)
+library(qtlcharts)
+library(devtools)
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DO_Svenson291/svenson.zip")
+svenson <- read_cross2(file)
+```
+
+```{r load_data_really, echo=FALSE}
+library(broman)
+library(qtl2)
+library(qtlcharts)
+set.seed(94238567) # set random number seed
+
+url <- paste0("https://raw.githubusercontent.com/rqtl/",
+              "qtl2data/master/DO_Svenson291/svenson.zip")
+rds_file <- "diag_cache/svenson.rds"
+if(!file.exists(local_file)) {
+    svenson <- read_cross(url)
+    saveRDS(svenson, rds_file)
+} else {
+    svenson <- readRDS(rds_file)
+}
+```
+
+I'm going to omit markers without any genotype data and re-code the
+genotypes so that the first allele is that which is most common among
+the founders.
+
+```
+svenson <- drop_nullmarkers(svenson)
+
+for(chr in seq_along(svenson$founder_geno)) {
+    fg <- svenson$founder_geno[[chr]]
+    g <- svenson$geno[[chr]]
+    f1 <- colSums(fg==1)/colSums(fg != 0)
+
+    fg[fg==0] <- NA
+    g[g==0] <- NA
+
+    fg[,f1 < 0.5] <- 4 - fg[,f1 < 0.5]
+    g[,f1 < 0.5]  <- 4 - g[,f1 < 0.5]
+
+    fg[is.na(fg)] <- 0
+    g[is.na(g)] <- 0
+
+    svenson$founder_geno[[chr]] <- fg
+    svenson$geno[[chr]] <- g
+}
+```
+
+We are left with `r add_commas(tot_mar(svenson))` markers
+genotyped on `r n_ind(svenson)` mice.
+
+
+## Missing data per sample
+
+We find it best to first look at the proportion of missing genotypes per
+sample. Samples with appreciable missing data (low call rates) are
+likely bad, and they'll show up repeatedly as outliers in subsequent
+analyses. We can use the R/qtl2 function `n_missing()` to get the
+proportion of missing data by sample.
+
+```{r percent_missing}
+percent_missing <- n_missing(svenson, "ind", "prop")*100
+```
+
+Here's a plot of the percent missing genotypes, by mouse index. The
+plot is interactive in that if you hover over a point, you'll view the
+individual IDs and the percent missing genotypes for that individual.
+
+```{r iplot_percent_missing, fig.width=8.8, fig.height=4.8}
+labels <- paste0(names(percent_missing), " (", round(percent_missing), "%)")
+iplot(seq_along(percent_missing), percent_missing, indID=labels,
+      chartOpts=list(xlab="Mouse", ylab="Percent missing genotype data",
+                     ylim=c(0, 100)))
+```
+
+There are `r sum(percent_missing >= 19.97)` mice that are missing >20%
+genotypes. Another `r sum(percent_missing > 5 & percent_missing < 19.97)`
+mice are missing >5%.
+
+Some of these samples should probably be omitted, but we'll leave them
+in for now.
+
+
+## Sexes
+
+
+We next seek to verify the sexes of the mice.
+One can look at
+the proportion of heterozygous genotype calls on the X chromosome, but
+we find it most informative to look at the SNP array intensities for
+SNPs on the X and Y chromosomes.
+
+When converting the `FinalReport.txt` files to R/qtl2 format, we pulled
+out the average intensities for each SNP on the X and Y chromosomes.
+We load them into R as follows.
+
+```{r load_XYintensities}
+xint <- read_csv_numer("../Data/svenson_chrXint.csv", transpose=TRUE)
+yint <- read_csv_numer("../Data/svenson_chrYint.csv", transpose=TRUE)
+```
+
+We'll omit data for the `r sum(percent_missing >= 19.97)` samples we've
+just omitted.
+
+```{r omit_samples_from_intensities}
+xint <- xint[ind_ids(svenson),]
+yint <- yint[ind_ids(svenson),]
+```
+
+In this project, the sex of the mice was encoded as the first character in the
+individual identifiers, so we pull those out, as values `"M"` and
+`"F"` for males and females, respectively.
+
+```{r get_sex}
+sex <- substr(rownames(xint), 1, 1)
+```
+
+Some of the SNPs do not appear to be informative about mouse sex, and
+so we first perform t-tests at each SNP, to identify SNPs that show a
+large sex difference in intensity.
+
+```{r snps_sex_diff, eval=FALSE}
+x_pval <- apply(xint, 2, function(a) t.test(a ~ sex)$p.value)
+y_pval <- apply(yint, 2, function(a) t.test(a ~ sex)$p.value)
+```
+
+```{r snps_sex_diff_really, echo=FALSE}
+file <- "diag_cache/snps_sex_diff.RData"
+if(file.exists(file)) {
+    load(file)
+} else {
+<<snps_sex_diff>>
+    save(x_pval, y_pval, file=file)
+}
+```
+
+We then calculate the average intensities on the X and Y chromosomes,
+among SNPs that showed a P-value < 0.05 after a Bonferroni correction
+for multiple testing.
+
+```{r ave_XYint}
+xint_ave <- rowMeans(xint[, x_pval < 0.05/length(x_pval)], na.rm=TRUE)
+yint_ave <- rowMeans(yint[, y_pval < 0.05/length(y_pval)], na.rm=TRUE)
+```
+
+The following is an interactive scatterplot of the average SNP intensity
+on the Y chromosome versus the average SNP intensity on the X
+chromosome. Male mice are in purple, and female mice are in green.
+If you hover over a point, you'll see the individual ID and the percent
+missing genotypes for that individual.
+
+```{r plot_xyint, fig.width=8.8, fig.height=4.8}
+point_colors <- as.character( brocolors("web")[c("green", "purple")] )
+percent_missing <- n_missing(svenson, summary="proportion")*100
+labels <- paste0(names(xint_ave), " (", round(percent_missing), "%)")
+iplot(xint_ave, yint_ave, group=sex, indID=labels,
+      chartOpts=list(pointcolor=point_colors, pointsize=4,
+                     xlab="Average X chr intensity", ylab="Average Y chr intensity"))
+```
+
+There's a distinct cluster of male mice in the upper-left (low X
+chromosome intensity and high Y chromosome intensity), and a cluster
+of female mice in the lower-right (high X chromosome intensity and low
+Y chromsome intensity).
+
+There's one male mouse, `r names(xint_ave)[sex=="M" & xint_ave > 0.45]`,
+who appears within the female cluster in the lower right, and so is
+likely really female.
+
+There's one female mouse, `r names(xint_ave)[sex=="F" & xint_ave < 0.45]`,
+in the lower-left, with reduced X chromosome intensity. This may be an
+XO female.
+
+Also note that the male samples that are to the left and below the
+main cluster (reduced intensities on both the X and Y chromosomes)
+are samples with higher rates of missing data. There's also a female
+sample with higher-than-normal Y chromosome intensity; this sample
+also has a high rate of missing data.
+
+The proportion of heterozygous genotypes on the X chromosome is also
+informative, but less so. In the following scatterplot, we show the proportion of
+hets vs the average intensity for the X chromosome SNPs. (Note that in
+calculating the proportion of heterozygous genotypes for the
+individuals, we look at X chromosome genotypes equal to
+2 (which corresponds to the heterozygote) relative to not being 0
+(which is used to encode missing genotypes). And the genotypes are
+arranged with rows being individuals and columns being markers.)
+
+```{r plot_phet_Xchr, fig.width=8.8, fig.height=4.8}
+phetX <- rowSums(svenson$geno$X == 2)/rowSums(svenson$geno$X != 0)
+iplot(xint_ave, phetX, group=sex, indID=labels,
+      chartOpts=list(pointcolor=point_colors, pointsize=4,
+                     xlab="Average X chr intensity", ylab="Proportion het on X chr"))
+```
+
+The males all show low heterogyzosity on the X chromosome, except for
+the one sample (`r names(xint_ave)[sex=="M" & xint_ave > 0.45]`) that
+looks to be really female. There are several male samples with
+heterozygosity above 5%, but these are again the samples with high
+rates of missing genotypes.
+
+The females all show heterozygosity well above 0, except for the one
+mouse (`r names(xint_ave)[sex=="F" & xint_ave < 0.45]`) that looks to
+be XO.
+
+In summary, we conclude that sample M377 is really for a female mouse,
+and sample F386 is likely XO.
+
+
+## Sample duplicates
+
+We next look for possible sample duplicates by comparing the proportion of
+matching SNP genotypes among all pairs of individuals, using the
+`compare_geno()` function in
+[R/qtl2](https://github.com/rqtl/qtl2). We use `cores=0` to
+speed up the calculations using multiple CPU cores in parallel. The
+`summary()` function shows pairs that share more than 90% of genotypes.
+
+```{r compare_genotypes}
+cg <- compare_geno(svenson, cores=0)
+summary(cg)
+```
+
+There are two pairs that share almost identical genotypes: M283/M292, and
+M377/F409. Note that M377 was identified above, as a male mouse
+that looked to really be a female mouse.
+
+Here is a histogram of the proportion of matching genotypes.
+The tick marks below the histogram indicate individual pairs.
+
+```{r hist_prop_matching, dev="png", doi=600}
+par(mar=c(5.1,0.6,0.6, 0.6))
+hist(cg[upper.tri(cg)], breaks=seq(0, 1, length=201),
+     main="", yaxt="n", ylab="", xlab="Proportion matching genotypes")
+rug(cg[upper.tri(cg)])
+```
+
+The figure is made more complicated by the presence of the samples
+with high rates of missing data. If we omit the `r sum(percent_missing >= 50)`
+samples with > 50% missing genotypes, we get the following figure:
+
+```{r hist_prop_matching_omit3, dev="png", doi=600}
+cgsub <- cg[percent_missing < 50, percent_missing < 50]
+par(mar=c(5.1,0.6,0.6, 0.6))
+hist(cgsub[upper.tri(cgsub)], breaks=seq(0, 1, length=201),
+     main="", yaxt="n", ylab="", xlab="Proportion matching genotypes")
+rug(cgsub[upper.tri(cgsub)])
+```
+
+The majority of pairs share about 50% genotypes, but there
+is a group of pairs that are more closely related and share about 70%
+genotypes. The two pairs cited above are the only ones with >90%
+matching genotypes. There's one other pair with just under 90%
+matching genotypes, F326 and F336, but note that F326 is missing
+`r round(percent_missing["F326"])`% genotypes.
+
+In summary, we have two clear pairs of sample duplicates: M283/M292, and
+M377/F409, with the latter likely being F409 (since both samples
+look like a female mouse).
+
+So let's omit sample M377 plus one of M283/M292. (For the latter pair,
+we can't be sure which is correct; for later QTL analysis, we might
+want to omit both of them, but for our present purposes we can just
+omit one of the two at random. Flip of a coin...we'll omit M292.)
+
+```{r omit_sample_duplicates}
+svenson <- svenson[c("-M377", "-M292"),]
+```
+
+```{r save_svenson_v2, echo=FALSE}
+file <- "../Data/svenson_v2.rds"
+if(!file.exists(file)) {
+    saveRDS(svenson, file)
+}
+```
+
+We are left with `r n_ind(svenson)` individuals, though still including
+`r sum(n_missing(svenson, "ind", "prop") > 0.199)` that are missing > 20%
+genotypes.
+
+
+## Bad samples
+
+Our first step in studying these data was to look at the proportion of
+missing genotypes per sample. We found `r sum(percent_missing>=19.97)`
+samples with >20% missing data. The amount of missing genotypes is the
+key indicator of poor sample quality.
+
+Here are the top 19 samples, by the amount of missing data. In
+addition to the `r sum(percent_missing>=19.97)` that are missing > 20%
+genotypes, there are
+`r sum(percent_missing>5 & percent_missing<19.97)` that are missing
+around 9% of their genotypes, and
+`r sum(percent_missing>3 & percent_missing<8.9)` that are missing
+3-5%.
+
+```{r percent_missing_again}
+percent_missing <- n_missing(svenson, "ind", "prop")*100
+round(sort(percent_missing, decreasing=TRUE)[1:19], 1)
+```
+
+### Array intensities
+
+Another useful indicator is
+the distribution of intensities on the MegaMUGA arrays. For speed of
+access, we store the array intensities in an `.fst` file, with the R
+package [fst](http://www.fstpackage.org/), as a matrix of SNPs x
+samples, with the two alleles at a SNP being stored in adjacent rows.
+For now, we'll suppress the details of how we converted the
+`FinalReport.txt` files from GeneSeek in this format.
+
+We'll read in the full set of intensities and take the sum of the two
+allele intensities at each SNP.
+
+```{r read_intensities}
+int <- fst::read.fst("../RawData/intensities.fst")
+int <- int[seq(1, nrow(int), by=2),-(1:2)] + int[-seq(1, nrow(int), by=2),-(1:2)]
+int <- int[,ind_ids(svenson)]
+```
+
+In the following plot, we display the distributions of
+array intensities (after a $\log_{10}(x+1)$ transformation).
+
+In the
+top panel, the arrays are sorted by the proportion of missing genotype
+data for the sample, and the curves
+connect various quantiles of the intensities. Hover over the top
+panel, and the corresponding histogram is shown below.
+
+```{r iboxplot, fig.height=6.4, fig.width=8.8}
+n <- names(sort(percent_missing, decreasing=TRUE))
+iboxplot(log10(t(int[,n])+1), orderByMedian=FALSE, chartOpts=list(ylab="log10(SNP intensity + 1)"))
+```
+
+The first `r numbers[sum(percent_missing >= 19.97)]` arrays are the ones
+that are missing > 20% of the genotypes; they all (well, except for
+F326) show a reduced median and long right tail. The next three arrays
+are not so extreme, but still show greater variability in array
+intensity than the bulk of the arrays, and F326 looks a bit like
+these. There are then a set of samples showing a spike of low
+intensity values.
+
+For this particular set of arrays, a plot of the 1 %ile vs the 99 %ile
+is quite revealing. In the following, the orange points are those with >
+20% missing genotypes, the pink points are the samples with 5-20%
+missing genotypes, and the blue points are the samples with 2-5%
+missing genotypes.
+
+```{r intensity_quantiles, eval=FALSE}
+qu <- apply(int, 2, quantile, c(0.01, 0.99), na.rm=TRUE)
+group <- (percent_missing >= 19.97) + (percent_missing > 5) + (percent_missing > 2) + 1
+labels <- paste0(colnames(qu), " (", round(percent_missing), "%)")
+iplot(qu[1,], qu[2,], indID=labels, group=group,
+      chartOpts=list(xlab="1 %ile of array intensities",
+                     ylab="99 %ile of array intensities",
+                     pointcolor=c("#ccc", "slateblue", "Orchid", "#ff851b")))
+```
+
+```{r intensity_quantiles_really, echo=FALSE, fig.width=8.8, fig.height=4.8}
+file <- "diag_cache/array_qu.rds"
+if(file.exists(file)) {
+    qu <- readRDS(file)
+} else {
+    qu <- apply(int, 2, quantile, c(0.01, 0.99), na.rm=TRUE)
+    saveRDS(qu, file)
+}
+group <- (percent_missing >= 19.97) + (percent_missing > 5) + (percent_missing > 2) + 1
+labels <- paste0(colnames(qu), " (", round(percent_missing), "%)")
+iplot(qu[1,], qu[2,], indID=labels, group=group,
+      chartOpts=list(xlab="1 %ile of array intensities",
+                     ylab="99 %ile of array intensities",
+                     pointcolor=c("#ccc", "slateblue", "Orchid", "#ff851b")))
+```
+
+The samples with >20% missing data (in orange) have somewhat reduced 1st percentile and
+elevated 90th percentile, except for one orange point (F326) that
+is close to the bulk of the samples. The samples with 5-9% missing data (in pink)
+are similar but less extreme. Many of the samples with 2-5% missing
+data show decreased 1st percentile, but many look fit in with the bulk
+of the samples.
+
+We're tempted to omit the `r sum(percent_missing > 5)` samples with >5%
+missing data, but we'll continue to leave them in, for now.
+
+
+### Genotype frequencies
+
+It can be useful to look at the genotype frequencies for the raw
+SNP data. We'll focus on the autosomal
+markers.
+
+We first pull out the SNP genotypes. They've been coded according
+to the allele frequencies in the founder strains, with 1 and 3
+corresponding to the homozygotes for the major and minor alleles,
+respectively; let's call them AA and BB (that is, A is the major allele).
+We also pull out the founder genotypes and count the number of
+founders with the minor allele. In studying the genotype frequencies,
+we'll omit markers where any of the founders' genotypes are missing
+(coded as 0).
+
+```{r grab_snp_geno}
+g <- do.call("cbind", svenson$geno[1:19])
+fg <- do.call("cbind", svenson$founder_geno[1:19])
+g <- g[,colSums(fg==0)==0]
+fg <- fg[,colSums(fg==0)==0]
+fgn <- colSums(fg==3)
+```
+
+We now calculate the genotype frequencies, by individual and by
+marker. For the genotype frequencies by individual, we'll calculate
+separate frequencies for the four groups of markers, split according
+to their minor allele frequency in the founder strains.
+
+```{r calc_snp_geno_freq, eval=FALSE}
+gf_ind <- vector("list", 4)
+for(i in 1:4) {
+    gf_ind[[i]] <- t(apply(g[,fgn==i], 1, function(a) table(factor(a, 1:3))/sum(a != 0)))
+}
+```
+
+```{r calc_snp_geno_freq_really, echo=FALSE}
+file <- "diag_cache/snp_freq_ind.rds"
+if(file.exists(file)) {
+    gf_ind <- readRDS(file)
+} else {
+<<calc_snp_geno_freq>>
+    saveRDS(gf_ind, file)
+}
+```
+
+
+The following triangle plots show the genotype frequency
+distributions for the mice, among the four groups of markers with
+common minor allele frequency (MAF) in the founder strains. These
+plots make use of the fact that for a point within an equilateral
+triangle, the sum of the distances to the three sides is a constant.
+
+```{r triplot_ind, fig.height=11}
+par(mfrow=c(2,2), mar=c(0.6, 0.6, 2.6, 0.6))
+for(i in 1:4) {
+    triplot(c("AA", "AB", "BB"), main=paste0("MAF = ", i, "/8"))
+    tripoints(gf_ind[[i]], pch=21, bg="lightblue")
+    tripoints(c((1-i/8)^2, 2*i/8*(1-i/8), (i/8)^2), pch=21, bg="violetred")
+
+    if(i>=3) { # label mouse with lowest het
+      wh <- which(gf_ind[[i]][,2] == min(gf_ind[[i]][,2]))
+      tritext(gf_ind[[i]][wh,,drop=FALSE] + c(0.02, -0.02, 0),
+              names(wh), adj=c(0, 1))
+    }
+
+    # label other mice
+    if(i==1) {
+        lab <- rownames(gf_ind[[i]])[gf_ind[[i]][,2]>0.3]
+    }
+    else if(i==2) {
+        lab <- rownames(gf_ind[[i]])[gf_ind[[i]][,2]>0.48]
+    }
+    else if(i==3) {
+        lab <- rownames(gf_ind[[i]])[gf_ind[[i]][,2]>0.51]
+    }
+    else if(i==4) {
+        lab <- rownames(gf_ind[[i]])[gf_ind[[i]][,2]>0.6]
+    }
+
+    for(ind in lab) {
+        if(grepl("^F", ind) && i != 3) {
+            tritext(gf_ind[[i]][ind,,drop=FALSE] + c(-0.01, 0, +0.01), ind, adj=c(1,0.5))
+        } else {
+            tritext(gf_ind[[i]][ind,,drop=FALSE] + c(0.01, 0, -0.01), ind, adj=c(0,0.5))
+        }
+    }
+}
+```
+
+The majority of individuals are tightly clustered around the expected distribution
+(in pink). There are a few outliers with elevated heterozygosity, but
+these are all among the samples with highest rates of missing genotypes.
+Mouse `r names(wh)` has slightly reduced heterozygosity
+in markers with MAF=3/8 or 4/8, but not by a worrisome amount.
+
+
+### Crossover counts
+
+Counts of inferred crossovers can be a useful diagnostic for identifying
+problem samples, which may show an excessive number of apparent crossovers.
+
+We first reconstruct the haplotypes of the DO mice, at each position
+calculating the probability of each of the 36 possible genotypes,
+given the observed marker data.
+
+```{r calc_genoprob, eval=FALSE}
+pr <- calc_genoprob(svenson, error_prob=0.002, map_function="c-f", cores=0)
+```
+
+```{r calc_genoprob_really, echo=FALSE}
+file <- "diag_cache/calc_genoprob.rds"
+if(file.exists(file)) {
+    pr <- readRDS(file)
+} else {
+<<calc_genoprob>>
+    saveRDS(pr, file)
+}
+```
+
+There are a couple of different ways to get estimates of the numbers
+of crossovers. The simplest is to identify the most probable
+genotype at each position, and then count exchanges in such data.
+Here we use a cut-off of 0.5, leaving as missing any genotypes where
+the largest probability is <0.5.
+
+```{r maxmarg_countxo, eval=FALSE}
+m <- maxmarg(pr, minprob=0.5, cores=0)
+nxo <- count_xo(m, cores=0)
+```
+
+```{r maxmarg_countxo_really, echo=FALSE}
+file <- "diag_cache/maxmarg.RData"
+if(file.exists(file)) {
+    load(file)
+} else {
+<<maxmarg_countxo>>
+ph <- guess_phase(svenson, m)
+    save(m, nxo, ph, file=file)
+}
+```
+
+
+The function `count_xo()` returns counts of crossovers on each
+chromosome (as columns) in each mouse. To get
+estimates of the total numbers of crossovers, genome-wide, we take the
+sums of each row:
+
+```{r n_xo_maxmarg}
+totxo <- rowSums(nxo)
+```
+
+Here's a plot of the number of crossovers vs the mouse index, colored by
+generation. (We have omitted the `r sum(percent_missing >= 19.97)` samples
+with > 20% missing genotypes, as these samples show
+`r min(totxo[percent_missing >= 19.97])`&ndash;`r max(totxo[percent_missing >= 19.97])`
+crossovers, well above the others.)
+
+There is a lot of variation in the number of crossovers, and some overlap between
+generation 8 (in red, with average `r round(totxo[svenson$covar$gen=="8" & percent_missing < 19.97])`
+crossovers) and generation 11 (in blue, with average
+`r round(totxo[svenson$covar$gen=="11" & percent_missing < 19.97])` crossovers).
+
+```{r plot_nxo, fig.width=8.8, fig.height=4.8}
+iplot(seq_along(totxo)[percent_missing < 19.97],
+      totxo[percent_missing < 19.97],
+      group=(svenson$covar$ngen=="11")[percent_missing < 19.97]+1,
+      chartOpts=list(xlab="Mouse", ylab="Number of crossovers",
+                     margin=list(left=80,top=40,right=40,bottom=40,inner=5),
+                     axispos=list(xtitle=25,ytitle=50,xlabel=5,ylabel=5)))
+```
+
+We're looking for mice with an excessive number of
+crossovers. Mice with very few crossovers would also deserve follow
+up. And note that we need to take the DO generation of an individual
+into account. But none of the mice seem unusual, in terms of numbers
+of crossovers (except for the `r sum(percent_missing >= 19.97)` mice with >
+20% missing genotypes, which we omitted from this figure.
+
+Here are the crossover counts for those `r sum(percent_missing >= 19.97)`
+mice:
+
+```{r totxo_when_pmis_big}
+tmp <- cbind(percent_missing=round(percent_missing), total_xo=totxo)[percent_missing >= 19.97,]
+tmp[order(tmp[,1]),]
+```
+
+
+
+### Genotyping error LOD scores
+
+[Lincoln and Lander
+(1992)](https://doi.org/10.1016/S0888-7543(05)80158-2) proposed the
+calculation of genotyping error LOD scores, to identify potential
+genotyping errors. For each SNP in each mouse, we calculate a LOD
+score statistic that measures the evidence that the particular
+genotype is in error, by comparing the observed genotype to the
+multipoint genotype probabilities, making use of the founder strains'
+genotypes at the SNP. These are calculated using the function
+`calc_errorlod()`.
+
+```{r calc_errorlod, eval=FALSE}
+e <- calc_errorlod(svenson, pr, cores=0)
+```
+
+```{r calc_errorlod_really, echo=FALSE}
+file <- "diag_cache/errorlod.rds"
+if(file.exists(file)) {
+    e <- readRDS(file)
+} else {
+<<calc_errorlod>>
+    saveRDS(e, file)
+}
+```
+
+The output is a list of matrices (the components being chromosomes).
+We can combine these into a single large matrix (mice &times; SNPs),
+and then get estimated genotyping error rates for each mouse, taking
+error LOD > 2 as a cutoff.
+
+```{r plot_error_rate_ind, fig.width=8.8, fig.height=4.8}
+e <- do.call("cbind", e)
+errors_ind <- rowSums(e>2)/n_typed(svenson)*100
+lab <- paste0(names(errors_ind), " (", myround(percent_missing,1), "%)")
+iplot(seq_along(errors_ind), errors_ind, indID=lab,
+      chartOpts=list(xlab="Mouse", ylab="Percent genotyping errors", ylim=c(0, 4.1),
+                     axispos=list(xtitle=25, ytitle=50, xlabel=5, ylabel=5)))
+```
+
+There are `r sum(errors_ind > 1)` mice with estimated genotyping error
+rates > 1%, and these are exactly the mice with > 20% missing
+genotypes.
+There are `r sum(errors_ind < 1 & errors_ind > 0.5)` mice with error
+rates in the 0.5-1% range, and these are the mice with around 9%
+missing genotypes.
+
+The mean error rate of mice with <5% missing genotype data is
+`r round(mean(errors_ind[percent_missing < 5])*100)` in 10,000.
+
+
+
+### Apparent genotyping errors
+
+A more direct approach to look for genotyping errors is to get
+inferred SNP genotypes and compare them to the observed ones.
+We use the result of `maxmarg()`, calculated above, and then
+`predict_snpgeno()`. The output is again a list of matrices, one per
+chromosome, but we'll combine them into a single matrix.
+
+```{r predict_snpgeno}
+snpg <- predict_snpgeno(svenson, m, cores=0)
+snpg <- do.call("cbind", snpg)
+```
+
+We'll similarly grab the raw SNP genotypes.
+
+```{r grab_raw_snps}
+gobs <- do.call("cbind", svenson$geno)
+gobs[gobs==0] <- NA
+```
+
+The apparent error rates derived by comparing the observed and
+predicted SNP genotypes are basically the same as using a cutoff of 0
+on the error LOD score.
+
+```{r plot_error_rate_vs_elod0}
+par(pty="s")
+err_direct <- rowMeans(snpg != gobs, na.rm=TRUE)*100
+errors_ind_0 <- rowSums(e > 0)/n_typed(svenson)*100
+par(mar=c(4.1,4.1,0.6, 0.6))
+grayplot(errors_ind_0, err_direct,
+         xlab="Percent errors (error LOD > 0)",
+         ylab="Percent errors (obs vs predicted)",
+         xlim=c(0, 1.6), ylim=c(0, 1.6))
+abline(0,1,lty=2, col="gray60")
+```
+
+Using a cutoff of 0 on the genotyping error LOD score, the average
+error rate in mice with <5% missing genotypes is
+`r round(mean(errors_ind_0[percent_missing < 5])*100)` per 10,000.
+
+## Bad markers
+
+Let's now turn to studying the markers, to find bad ones that we may
+wish to omit.
+
+We will first omit the mice with >20% missing genotype
+data (which were also seen to have elevated numbers of apparent
+crossovers and genotyping error rates).
+
+```{r drop_high_missing}
+n <- n_ind(svenson)
+svenson <- svenson[percent_missing < 19.97,]
+stopifnot( n_ind(svenson) == n-9 )
+
+# update other stuff
+e <- e[ind_ids(svenson),]
+g <- g[ind_ids(svenson),]
+```
+
+### Missing data
+
+It can also be useful to look at the proportion of missing genotypes
+by marker. Markers with a lot of missing data were likely difficult to
+call, and so the genotypes that _were_ called may contain a lot of
+errors.
+
+```{r prop_missing_marker}
+pmis_mar <- n_missing(svenson, "marker", "proportion")*100
+```
+
+Here's a histogram of the proportion of missing genotypes by marker.
+The tick marks below the histogram indicate individual values.
+
+```{r hist_prop_missing_marker, dev="png", doi=600}
+par(mar=c(5.1,0.6,0.6, 0.6))
+hist(pmis_mar, breaks=seq(0, 100, length=201),
+     main="", yaxt="n", ylab="", xlab="Percent missing genotypes")
+rug(pmis_mar)
+```
+
+The vast majority of markers have very little missing data:
+there are `r add_commas(sum(pmis_mar == 0))` markers
+(`r round(mean(pmis_mar==0)*100)`%) that are missing _no_ data,
+and `r add_commas(sum(pmis_mar < 2))` markers
+(`r round(mean(pmis_mar<2)*100)`%) that are missing <2%.
+
+But some markers are missing a lot of data, including
+`r sum(pmis_mar > 50)` that are missing more than 50% of genotypes.
+`r sum(pmis_mar > 30)` markers are missing more than 30% of
+genotypes, while `r sum(pmis_mar > 15)` markers are missing more than
+15% of genotypes. Recall that there are a total of `r add_commas(tot_mar(svenson))`,
+markers, so `r sum(pmis_mar > 15)` markers is just
+`r round(sum(pmis_mar > 15)/length(pmis_mar)*100, 1)`% of the total.
+
+For the markers with lots of missing genotypes, it's not _necessarily_
+the case that the remaining genotypes are full of errors, but in
+studying the allele intensities at these SNPs, it does appear that for
+the bulk of such markers, the genotypes are not being called
+appropriately.
+
+
+### Genotype frequencies
+
+The genotype frequencies by marker can be informative, just as
+genotype frequencies by individual were.
+
+```{r calc_snp_freq_marker, eval=FALSE}
+gf_mar <- t(apply(g, 2, function(a) table(factor(a, 1:3))/sum(a != 0)))
+gn_mar <- t(apply(g, 2, function(a) table(factor(a, 1:3))))
+```
+
+```{r calc_snp_freq_marker_really, echo=FALSE}
+file <- "diag_cache/snp_freq_marker.RData"
+if(file.exists(file)) {
+    load(file)
+} else {
+<<calc_snp_freq_marker>>
+    save(gf_mar, gn_mar, file=file)
+}
+```
+
+
+Here are scatter plots of the genotype frequencies by marker, split according to
+the minor allele frequency in the 8 founders. A pink dot is placed at
+the expected frequencies.
+
+```{r triplot_bymar, fig.height=11}
+par(mfrow=c(2,2), mar=c(0.6, 0.6, 2.6, 0.6))
+for(i in 1:4) {
+    triplot(c("AA", "AB", "BB"), main=paste0("MAF = ", i, "/8"))
+    z <- gf_mar[fgn==i,]
+    z <- z[rowSums(is.na(z)) < 3,]
+    tripoints(z, pch=21, bg="gray80", cex=0.6)
+    tripoints(c((1-i/8)^2, 2*i/8*(1-i/8), (i/8)^2), pch=21, bg="violetred")
+}
+```
+
+The bulk of the markers seem well behaved, but there are a number of
+markers with unusual genotype frequencies. There are
+`r sum(gf_mar[,1]==0)` markers that show no homozygotes for the major allele.
+(These sit on the left edge.) There are `r sum(gf_mar[,1]==1)` markers
+that are monomorphic (100% AA genotypes; lower-right vertex). And there are
+`r sum(gf_mar[,1]<1  & gf_mar[,2]==0)` markers with some of each
+homozygote but no heterozygotes (bottom edge).
+
+```{r calc_maf, echo=FALSE}
+pB <- gf_mar[,3] + gf_mar[,2]*0.5
+fg_mis <- colSums(fg==0)
+```
+
+Further, there are a bunch of markers where the minor allele appears
+to be private to one founder strain (upper-left panel) but show a high
+frequency of minor alleles in the DO offspring. For example, there are
+`r sum(fgn==1 & fg_mis==0 & pB > 0.5)` markers where the minor
+allele is private to one founder line but has >50% allele frequency in
+the DO offspring, and `r sum(fgn==1 & fg_mis==0 & pB > 0.3)`
+such private SNPs have >30% minor allele frequency in the DO
+offspring. But it turns out that all but two of these are private
+to WSB and reside on chromosome 2. This is due to meiotic drive of the
+WSB allele at the R2D2 locus; see
+[Didion et al. (2016)](https://doi.org/10.1093/molbev/msw036).
+
+The other two are also interesting: JAX00463240 on chr 18
+(private to CAST) and UNC9169851 on chr 5 (private to NZO) both have >30%
+minor allele frequency in the DO offspring. Both seem to be in regions
+where one of the founder alleles is unusually frequent.
+
+### Genotyping errors
+
+Let's look at the apparent genotyping errors by marker (again starting
+with a cutoff of error LOD score > 2), plotted against the amount of
+missing data.
+
+```{r plot_errors_vs_missing}
+errors_mar <- colSums(e>2)/n_typed(svenson, "marker")*100
+grayplot(pmis_mar, errors_mar,
+         xlab="Proportion missing", ylab="Proportion genotyping errors")
+```
+
+Most of the markers show no evidence for genotyping errors. Only
+`r add_commas(sum(errors_mar > 0))`
+(`r myround(sum(errors_mar>0)/tot_mar(svenson)*100,1)`% of markers)
+show at least one apparent error, but
+`r sum(errors_mar > 5)` show >5% errors. Markers with higher rates of
+missing genotypes tend to show higher errors rates, though this is
+difficult to detect in the above figure.
+
+
+
+### Array intensities
+
+Scatterplots of SNP allele intensities are quite revealing about the cause,
+particularly when we look at the scatterplots colored by both the
+observed SNP genotypes and by the predicted SNP genotypes, given the
+multipoint SNP information. Here are a few examples.
+
+Let us first use the inferred 36-state genotypes to get predicted SNP
+genotypes, which we then combine into a single wide matrix.
+
+```{r predict_snp_geno}
+snpg <- predict_snpgeno(svenson, m, cores=0)
+snpg <- do.call("cbind", snpg)
+```
+
+The scatterplots below show examples of the allele intensities for
+four SNP markers. Each point is a mouse sample, and the x and y axes
+are for the array intensities of the two alleles at the SNP. In the
+left panels, the points are colored by the observed SNP genotypes,
+with yellow and blue corresponding to the two homozygotes and green to
+the heterozygotes; gray points indicate missing genotypes. In the
+right panels, the points are colored by the predicted SNP genotypes;
+gray points indicate samples for which the SNP genotype could not be predicted.
+
+```{r snp_intensities_examples, fig.height=15}
+snpg[is.na(snpg)] <- 0
+
+markers <- c("JAX00279019",
+             "UNC12329705",
+             "backupUNC140137407",
+             "UNC20478577")
+
+par(mfrow=c(4,2), mar=c(3.1,3.1,2.1,1.1))
+for(i in seq_along(markers)) {
+    mar <- markers[i]
+
+    plot_intensities(mar, mgp.x=c(1.4,0.3,0), mgp.y=c(1.8,0.3,0))
+    title(main=mar, line=1.05, cex.main=0.9)
+    title(main="(observed genotypes)", cex.main=0.8, line=0.25)
+
+    u <- par("usr")
+    mtext(side=3, adj=0, LETTERS[i*2-1])
+
+    plot_intensities(mar, geno=snpg[,mar],
+                     mgp.x=c(1.4,0.3,0), mgp.y=c(1.8,0.3,0))
+    title(main=mar, line=1.05, cex.main=0.9)
+    title(main="(predicted genotypes)", cex.main=0.8, line=0.25)
+
+    mtext(side=3, adj=0, LETTERS[i*2])
+}
+```
+
+The top panels (A and B) are for a well-behaved SNP, `r markers[1]`.
+There are three clear genotype clusters, and the observed and
+predicted genotypes match.
+
+In panels C and D (`r markers[2]`), the genotype
+calling algorithm went awry. There are three distinct clusters of
+samples, but the homozygotes for the major allele appear to have been
+called heterozygotes.
+
+In panels E and F (`r markers[3]`), there appears to be an extra
+cluster of samples with distinct genotype, but the genotype calling
+algorithm classified them as homozygotes and they instead (based on
+surrounding markers) appear to be heterozygotes.
+
+Panels G and H (`r markers[4]`) corresponds to a case where the
+genotype clusters are overlapping and the genotyping calling algorithm
+had difficulty distinguishing them.
+
+## Effect of data cleaning
+
+What's perhaps most important in data cleaning is to identify badly
+behaved or mislabeled samples. We have identified a relatively small
+number of markers that are showing appreciable genotyping errors, and
+the worst of these should probably be omitted. Omitting poorly behaved
+markers will have a small effect on later analysis results, as the HMM
+to do genotype reconstructions smooths over such markers reasonably
+well.
+
+But it's worth omitting the bad markers and checking for differences
+in the genotype probabilities.
+
+
+Let's omit the `r sum(errors_mar > 5)` markers with error rates >5%.
+
+```{r omit_error_prone_markers}
+gmap <- svenson$gmap
+pmap <- svenson$pmap
+svenson <- drop_markers(svenson, names(errors_mar)[errors_mar > 5])
+```
+
+We'll now re-calculate the genotype probabilities.
+
+```{r calc_genoprob_clean, eval=FALSE}
+prcl <- calc_genoprob(svenson, gmap, error_prob=0.002, map_function="c-f", cores=0)
+```
+
+```{r calc_genoprob_clean_really, echo=FALSE}
+file <- "diag_cache/calc_genoprob_clean.rds"
+if(file.exists(file)) {
+    prcl <- readRDS(file)
+} else {
+<<calc_genoprob_clean>>
+    saveRDS(prcl, file)
+}
+```
+
+As a measure of change, we'll use the sum of the absolute differences
+between the probabilities, with and without the bad markers, at each
+mouse and marker.
+
+```{r pr_diff, eval=FALSE}
+# make sure individual IDs are the same (omitting the 9 mice with >20% missing genotypes)
+prcl <- prcl[ind_ids(svenson),]
+pr <- pr[ind_ids(svenson),]
+
+prdiff <- vector("list", length(pr))
+for(i in seq_along(prdiff)) prdiff[[i]] <- apply(abs(pr[[i]] - prcl[[i]]), c(1,3), sum)
+names(prdiff) <- names(pr)
+```
+
+```{r pr_diff_really, echo=FALSE}
+file <- "diag_cache/prdiff.rds"
+if(file.exists(file)) {
+    prdiff <- readRDS(file)
+} else {
+<<pr_diff>>
+    saveRDS(prdiff, file)
+}
+
+# make sure individual IDs are the same (omitting the 9 mice with >20% missing genotypes)
+prcl <- prcl[ind_ids(svenson),]
+pr <- pr[ind_ids(svenson),]
+prdiff <- lapply(prdiff, function(a) a[ind_ids(svenson),])
+```
+
+These differences take values between 0 and 2, with a value of 2
+meaning that completely different set of genotypes have positive
+probability. Most chromosomes show some differences, but only at a
+relatively sparse set of positions. Here are the number of markers
+&times; individuals with differences > 1.5.
+
+```{r sum_diff_gt_1}
+sapply(prdiff, function(d) sum(d > 1.5))
+```
+
+And there are only a few individuals, on a given chromosome, showing
+very many differences. Here are the number of individuals, by chromosome, with at least
+give markers having absolute difference > 1.5.
+
+```{r num_ind_with_10_diff_gt_1}
+sapply(prdiff, function(d) sum(rowSums(d>1.5) > 5))
+```
+
+As an example of one of the changes, here is a bivariate heatmap of
+the genotype probabilities for one chromosome in one individual. The
+probabilities before cleaning are in blue, and the probabilities after
+cleaning are in red, and then the two color scales are combined.
+Probabilities that are high both before and after cleaning will be
+dark puple. Probabilities that are high before cleaning but low after
+cleaning will be blue, and probabilities that are low before cleaning
+and high after cleaning will be red.
+
+```{r plot_genoprobcomp_M305_c9}
+plot_genoprobcomp(pr, prcl, pmap, ind="M305", chr="9", threshold=0.25)
+```
+
+So here, for individual M305 on chromosome 9, there is one region
+at around 95 Mbp where, before data cleaning, the genotyped switched
+from DE to BE and back, but after data cleaning it looks to be
+constant DE.
+
+The following figure shows the BE and DE probabilities for M305 on chr
+9 in more detail.
+
+```{r plot_specific_probs_m305_c9}
+par(mfrow=c(2,1), mar=c(3.1, 3.1, 2.6, 0.6))
+grayplot(pmap[[9]], pr[[9]]["M305","BE",], type="l",
+         ylim=c(0,1), col="slateblue",
+         xlab="Chr 9 position (Mbp)", ylab="Genotype probability",
+         main="mouse M305\n(before cleaning)",
+         mgp.x=c(1.4,0.3,0), mgp.y=c(1.9,0.3,0), lwd=2)
+lines(pmap[[9]], pr[[9]]["M305","DE",], col="violetred", lwd=2)
+legend("topright", lwd=2, col=c("slateblue", "violetred"),
+       c("BE", "DE"), bg="gray92")
+
+grayplot(pmap[[9]], prcl[[9]]["M305","BE",], type="l",
+         ylim=c(0,1), col="slateblue",
+         xlab="Chr 9 position (Mbp)", ylab="Genotype probability",
+         main="mouse M305\n(after cleaning)",
+         mgp.x=c(1.4,0.3,0), mgp.y=c(1.9,0.3,0), lwd=2)
+lines(pmap[[9]], prcl[[9]]["M305","DE",], col="violetred", lwd=2)
+legend("topright", lwd=2, col=c("slateblue", "violetred"),
+       c("BE", "DE"), bg="gray92")
+```
+
+
+Omitting poorly behaved markers can affect the genotype probabilities,
+but these effects appear to be rather isolated.
+
+
+## Session info
+
+Here are the versions of R and packages that I'm using in this
+analysis.
+
+```{r session_info}
+devtools::session_info()
+```
