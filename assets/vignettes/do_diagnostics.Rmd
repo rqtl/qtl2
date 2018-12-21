@@ -897,6 +897,49 @@ snpg <- predict_snpgeno(svenson, m, cores=0)
 snpg <- do.call("cbind", snpg)
 ```
 
+Here is a function to plot the SNP intensities, colored by genotype.
+
+```{r plot_intensities_function}
+# load intensities and plot them, colored by genotype calls
+#
+# drop_bad_samples: if TRUE, don't plot points for samples that are not in the cross object
+#                   (e.g., were omitted previously as being bad DNAs)
+#
+plot_intensities <-
+    function(marker, cross=svenson, intensities_file="diag_cache/intensities.fst",
+             intensities_data=NULL, drop_bad_samples=TRUE, geno=NULL, ...)
+{
+    if(is.character(marker) || is.factor(marker)) {
+        marker <- as.character(marker)
+        gni <- grab_gni(marker, cross=cross, intensities_file=intensities_file,
+                        intensities_data=intensities_data, drop_bad_samples=drop_bad_samples)
+    } else {
+        gni <- marker
+    }
+
+    if(!is.null(geno)) {
+        if(is.logical(geno)) geno <- geno + 1 # FALSE/TRUE -> 1/2
+        gni[names(geno),"g"] <- geno
+    }
+
+    internal_plot <-
+        function(pch=21, bg=broman::brocolors("f2"),
+                 xlab="allele 1", ylab="allele 2",
+                 xlim=c(0, max(gni$X, na.rm=TRUE)),
+                 ylim=c(0, max(gni$Y, na.rm=TRUE)),
+                 ...)
+        {
+            grayplot(gni$X, gni$Y, pch=pch, bg=bg[match(gni$g, c(1:3,0))],
+                     xlab=xlab, ylab=ylab,
+                     xlim=xlim, ylim=ylim, ...)
+        }
+
+    internal_plot(...)
+
+    invisible(gni)
+}
+```
+
 The scatterplots below show examples of the allele intensities for
 four SNP markers. Each point is a mouse sample, and the x and y axes
 are for the array intensities of the two alleles at the SNP. In the
