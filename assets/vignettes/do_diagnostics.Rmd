@@ -604,8 +604,8 @@ with > 20% missing genotypes, as these samples show
 crossovers, well above the others.)
 
 There is a lot of variation in the number of crossovers, and some overlap between
-generation 8 (in red, with average `r round(mean(totxo[svenson$covar$ngen=="8" & percent_missing < 19.97]))`
-crossovers) and generation 11 (in blue, with average
+generation 8 (in red, with an average of `r round(mean(totxo[svenson$covar$ngen=="8" & percent_missing < 19.97]))`
+crossovers) and generation 11 (in blue, with an average of
 `r round(mean(totxo[svenson$covar$ngen=="11" & percent_missing < 19.97]))` crossovers).
 
 ```{r plot_nxo, fig.width=8.8, fig.height=4.8}
@@ -894,7 +894,7 @@ difficult to detect in the above figure.
 Scatterplots of SNP allele intensities are quite revealing about the cause,
 particularly when we look at the scatterplots colored by both the
 observed SNP genotypes and by the predicted SNP genotypes, given the
-multipoint SNP information. Here are a few examples.
+multipoint SNP information.
 
 Let us first use the inferred 36-state genotypes to get predicted SNP
 genotypes, which we then combine into a single wide matrix.
@@ -1065,7 +1065,7 @@ cluster of samples with distinct genotype, but the genotype calling
 algorithm classified them as homozygotes and they instead (based on
 surrounding markers) appear to be heterozygotes.
 
-Panels G and H (`r markers[4]`) corresponds to a case where the
+Panels G and H (`r markers[4]`) are for a case where the
 genotype clusters are overlapping and the genotyping calling algorithm
 had difficulty distinguishing them.
 
@@ -1137,7 +1137,7 @@ prdiff <- lapply(prdiff, function(a) a[ind_ids(svenson),])
 ```
 
 These differences take values between 0 and 2, with a value of 2
-meaning that completely different set of genotypes have positive
+meaning that a completely different set of genotypes have positive
 probability. Most chromosomes show some differences, but only at a
 relatively sparse set of positions. Here are the number of markers
 &times; individuals with differences > 1.5.
@@ -1148,7 +1148,7 @@ sapply(prdiff, function(d) sum(d > 1.5))
 
 And there are only a few individuals, on a given chromosome, showing
 very many differences. Here are the number of individuals, by chromosome, with at least
-give markers having absolute difference > 1.5.
+five markers having absolute difference > 1.5.
 
 ```{r num_ind_with_10_diff_gt_1}
 sapply(prdiff, function(d) sum(rowSums(d>1.5) > 5))
@@ -1167,8 +1167,10 @@ and high after cleaning will be red.
 plot_genoprobcomp(pr, prcl, pmap, ind="M305", chr="9", threshold=0.25)
 ```
 
-So here, for individual M305 on chromosome 9, there is one region
-at around 95 Mbp where, before data cleaning, the genotyped switched
+So here, for individual M305 on chromosome 9, there is a region at
+around 72 Mbp where, before data cleaning, the genotype looked to be
+AD but after cleaning it looked to be DD. There is a second region
+at around 95 Mbp where before data cleaning the genotyped switched
 from DE to BE and back, but after data cleaning it looks to be
 constant DE.
 
