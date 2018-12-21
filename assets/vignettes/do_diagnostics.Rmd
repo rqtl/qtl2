@@ -338,7 +338,7 @@ svenson <- svenson[c("-M377", "-M292"),]
 ```
 
 ```{r save_svenson_v2, echo=FALSE}
-file <- "../Data/svenson_v2.rds"
+file <- "diag_cache/svenson_v2.rds"
 if(!file.exists(file)) {
     saveRDS(svenson, file)
 }
@@ -383,7 +383,7 @@ We'll read in the full set of intensities and take the sum of the two
 allele intensities at each SNP.
 
 ```{r read_intensities}
-int <- fst::read.fst("../RawData/intensities.fst")
+int <- fst::read.fst("diag_cache/intensities.fst")
 int <- int[seq(1, nrow(int), by=2),-(1:2)] + int[-seq(1, nrow(int), by=2),-(1:2)]
 int <- int[,ind_ids(svenson)]
 ```
