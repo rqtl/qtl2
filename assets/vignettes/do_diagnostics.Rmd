@@ -377,8 +377,9 @@ the distribution of intensities on the MegaMUGA arrays. For speed of
 access, we store the array intensities in an `.fst` file, with the R
 package [fst](http://www.fstpackage.org/), as a matrix of SNPs x
 samples, with the two alleles at a SNP being stored in adjacent rows.
-For now, we'll suppress the details of how we converted the
-`FinalReport.txt` files from GeneSeek in this format.
+See the R script [`geneseek2fst.R`](https://kbroman.org/qtl2/assets/geneseek2fst.R)
+for the details of how we converted the
+`FinalReport.txt` files from GeneSeek into this format.
 
 We'll read in the full set of intensities and take the sum of the two
 allele intensities at each SNP.
