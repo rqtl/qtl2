@@ -9,6 +9,22 @@ arrange_genes <- function(start, end) {
     .Call(`_qtl2_R_bayes_int_plain`, lod, pos, prob)
 }
 
+calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg`, X, y, maxit, tol, qr_tol, eta_max)
+}
+
+calc_coef_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coef_binreg`, X, y, maxit, tol, qr_tol, eta_max)
+}
+
+calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coefSE_binreg`, X, y, maxit, tol, qr_tol, eta_max)
+}
+
+fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg`, X, y, se, maxit, tol, qr_tol, eta_max)
+}
+
 calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
     .Call(`_qtl2_calc_ll_binreg_eigenchol`, X, y, maxit, tol, eta_max)
 }
@@ -29,6 +45,22 @@ fit_binreg_eigenqr <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol
     .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, maxit, tol, qr_tol, eta_max)
 }
 
+calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_ll_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
+}
+
+calc_coef_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coef_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
+}
+
+calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_calc_coefSE_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
+}
+
+fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
+}
+
 calc_ll_binreg_weighted_eigenchol <- function(X, y, weights, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
     .Call(`_qtl2_calc_ll_binreg_weighted_eigenchol`, X, y, weights, maxit, tol, eta_max)
 }
@@ -47,38 +79,6 @@ calc_coefSE_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol
 
 fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
     .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
-}
-
-calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
-}
-
-calc_coef_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_calc_coef_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
-}
-
-calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_calc_coefSE_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
-}
-
-fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
-}
-
-calc_ll_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_calc_ll_binreg`, X, y, maxit, tol, qr_tol, eta_max)
-}
-
-calc_coef_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_calc_coef_binreg`, X, y, maxit, tol, qr_tol, eta_max)
-}
-
-calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_calc_coefSE_binreg`, X, y, maxit, tol, qr_tol, eta_max)
-}
-
-fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg`, X, y, se, maxit, tol, qr_tol, eta_max)
 }
 
 .calc_kinship <- function(prob_array) {
@@ -277,6 +277,30 @@ find_intervals <- function(pos, map, tol = 1e-8) {
     .Call(`_qtl2_find_intervals`, pos, map, tol)
 }
 
+calc_rss_linreg <- function(X, Y, tol = 1e-12) {
+    .Call(`_qtl2_calc_rss_linreg`, X, Y, tol)
+}
+
+calc_coef_linreg <- function(X, y, tol = 1e-12) {
+    .Call(`_qtl2_calc_coef_linreg`, X, y, tol)
+}
+
+calc_coefSE_linreg <- function(X, y, tol = 1e-12) {
+    .Call(`_qtl2_calc_coefSE_linreg`, X, y, tol)
+}
+
+calc_resid_linreg <- function(X, Y, tol = 1e-12) {
+    .Call(`_qtl2_calc_resid_linreg`, X, Y, tol)
+}
+
+calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
+    .Call(`_qtl2_calc_resid_linreg_3d`, X, P, tol)
+}
+
+fit_linreg <- function(X, y, se = TRUE, tol = 1e-12) {
+    .Call(`_qtl2_fit_linreg`, X, y, se, tol)
+}
+
 fit_linreg_eigenchol <- function(X, y, se) {
     .Call(`_qtl2_fit_linreg_eigenchol`, X, y, se)
 }
@@ -331,30 +355,6 @@ calc_resid_eigenchol <- function(X, Y) {
 
 calc_resid_eigenqr <- function(X, Y, tol = 1e-12) {
     .Call(`_qtl2_calc_resid_eigenqr`, X, Y, tol)
-}
-
-calc_rss_linreg <- function(X, Y, tol = 1e-12) {
-    .Call(`_qtl2_calc_rss_linreg`, X, Y, tol)
-}
-
-calc_coef_linreg <- function(X, y, tol = 1e-12) {
-    .Call(`_qtl2_calc_coef_linreg`, X, y, tol)
-}
-
-calc_coefSE_linreg <- function(X, y, tol = 1e-12) {
-    .Call(`_qtl2_calc_coefSE_linreg`, X, y, tol)
-}
-
-calc_resid_linreg <- function(X, Y, tol = 1e-12) {
-    .Call(`_qtl2_calc_resid_linreg`, X, Y, tol)
-}
-
-calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
-    .Call(`_qtl2_calc_resid_linreg_3d`, X, P, tol)
-}
-
-fit_linreg <- function(X, y, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit_linreg`, X, y, se, tol)
 }
 
 Rcpp_eigen_decomp <- function(A) {
