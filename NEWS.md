@@ -1,4 +1,4 @@
-## qtl2 0.17-9 (2018-11-13)
+## qtl2 0.17-10 (2019-01-12)
 
 ### New features
 
@@ -17,9 +17,14 @@
   takes an additional argument `n_cores`. This splits a vector into
   batches for use in parallel calculations.
 
+- The internal function `cbind_expand()` now made user-accessible.
+  It's for combining matrices using row names to align the rows and
+  expanding with missing values if there are rows in some matrices but
+  not others.
+
 ### Minor changes
 
-- Small corrections to documentation
+- Small corrections to documentation.
 
 - Revise some tests due to change in Recla and DOex datasets at
   <https://github.com/rqtl/qtl2data>
