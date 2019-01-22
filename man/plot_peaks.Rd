@@ -4,7 +4,8 @@
 \alias{plot_peaks}
 \title{Plot QTL peak locations}
 \usage{
-plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = 25, ...)
+plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = 25,
+  lod_labels = FALSE, ...)
 }
 \arguments{
 \item{peaks}{Data frame such as that produced by
@@ -22,6 +23,13 @@ strings.}
 \item{tick_height}{Height of tick marks at the peaks (a number between 0 and 1).}
 
 \item{gap}{Gap between chromosomes.}
+
+\item{lod_labels}{If TRUE, plot LOD scores near the intervals. Uses
+three hidden graphics parameters, \code{label_gap} (distance between
+CI and LOD text label), \code{label_left} (vector that indicates
+whether the labels should go on the left side; TRUE=on left,
+FALSE=on right, NA=put into larger gap on that chromosome), and
+\code{label_cex} that controls the size of these labels}
 
 \item{...}{Additional graphics parameters}
 }
@@ -64,6 +72,13 @@ out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 peaks <- find_peaks(out, map, threshold=3.5, drop=1.5)
 
 plot_peaks(peaks, map)
+
+# show LOD scores
+plot_peaks(peaks, map, lod_labels=TRUE)
+
+# show LOD scores, controlling whether they go on the left or right
+plot_peaks(peaks, map, lod_labels=TRUE,
+           label_left=c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE))
 }
 \seealso{
 \code{\link[=find_peaks]{find_peaks()}}, \code{\link[=plot_lodpeaks]{plot_lodpeaks()}}

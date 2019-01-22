@@ -1,4 +1,4 @@
-## qtl2 0.17-10 (2019-01-12)
+## qtl2 0.17-11 (2019-01-22)
 
 ### New features
 
@@ -21,6 +21,9 @@
   It's for combining matrices using row names to align the rows and
   expanding with missing values if there are rows in some matrices but
   not others.
+
+- In `plot_peaks()`, added `lod_labels` argument. If TRUE, include LOD
+  scores as text labels in the figure.
 
 ### Minor changes
 
