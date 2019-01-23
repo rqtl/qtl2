@@ -1,4 +1,4 @@
-## qtl2 0.17-11 (2019-01-22)
+## qtl2 0.17-12 (2019-01-23)
 
 ### New features
 
@@ -34,6 +34,9 @@
 
 - Add tests of decomposed kinship matrix (from `decomp_kinship()`)
   with `scan1()`.
+
+- `rbind_scan1()` and `cbind_scan1()` no longer give error if inputs
+  don't all have matching attributes.
 
 ### Bug fixes
 

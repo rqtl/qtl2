@@ -54,12 +54,19 @@ rbind.scan1 <-
 
     # rbind attributes
     to_rbind <- c("hsq", "SE")
-    for(i in 2:length(args)) {
-        for(obj in to_rbind) {
+    for(obj in to_rbind) {
+        drop_arg <- FALSE
+        for(i in 2:length(args)) {
             if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next # not present
-            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
-                stop(obj, " not present in all inputs")
-            args_attr[[1]][[obj]] <- rbind(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]])) {
+                drop_arg <- TRUE
+            } else {
+                args_attr[[1]][[obj]] <- rbind(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+            }
+        }
+        if(drop_arg) {
+            warning(obj, " not present in all inputs")
+            arg_attr[[1]][[obj]] <- NULL
         }
     }
 
