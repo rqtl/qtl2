@@ -14,7 +14,7 @@
 #' @param chr Selected chromosomes to plot; a vector of character
 #'     strings.
 #' @param tick_height Height of tick marks at the peaks (a number between 0 and 1).
-#' @param gap Gap between chromosomes. The default is 1% of the total genome length.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #' @param lod_labels If TRUE, plot LOD scores near the intervals. Uses
 #'     three hidden graphics parameters, `label_gap` (distance between
 #'     CI and LOD text label), `label_left` (vector that indicates

@@ -10,7 +10,7 @@
 #' `"X"` component is taken to be `thresholdX`.)
 #' @param thresholdX X chromosome threshold (if missing, assumed to be the same as `thresholdA`)
 #' @param chr Chromosomes that were included in the plot
-#' @param gap Gap between chromosomes in the plot. Default is 1% of the total genome length.
+#' @param gap Gap between chromosomes in the plot. Default is 1\% of the total genome length.
 #' @param ... Additional arguments passed to [graphics::segments()]
 #'
 #' @examples

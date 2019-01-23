@@ -22,7 +22,7 @@
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
-#' @param gap Gap between chromosomes.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #'
 #' @param top_panel_prop If `scan1_output` provided, this gives the
 #' proportion of the plot that is devoted to the top panel.

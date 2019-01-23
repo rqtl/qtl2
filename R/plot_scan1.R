@@ -18,7 +18,7 @@
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
-#' @param gap Gap between chromosomes. The default is 1% of the total genome length.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #'
 #' @param ... Additional graphics parameters.
 #'

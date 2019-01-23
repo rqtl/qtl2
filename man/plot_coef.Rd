@@ -36,7 +36,7 @@ score column; if multiple, only the first is used.}
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
 
-\item{gap}{Gap between chromosomes.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{top_panel_prop}{If \code{scan1_output} provided, this gives the
 proportion of the plot that is devoted to the top panel.}

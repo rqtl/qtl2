@@ -22,7 +22,7 @@ strings.}
 
 \item{tick_height}{Height of tick marks at the peaks (a number between 0 and 1).}
 
-\item{gap}{Gap between chromosomes. The default is 1% of the total genome length.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{lod_labels}{If TRUE, plot LOD scores near the intervals. Uses
 three hidden graphics parameters, \code{label_gap} (distance between

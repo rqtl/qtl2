@@ -48,7 +48,7 @@
 #'
 #' @param col Color of other points
 #'
-#' @param gap Gap between chromosomes. The default is 1% of the total genome length.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #'
 #' @param minlod Minimum LOD to display. (Mostly for GWAS, in which
 #'     case using `minlod=1` will greatly increase the plotting speed,

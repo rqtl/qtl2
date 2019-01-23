@@ -13,7 +13,7 @@
 #'     and end positions).
 #' @param chr Selected chromosomes to plot; a vector of character
 #'     strings.
-#' @param gap Gap between chromosomes. The default is 1% of the total genome length.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #' @param intervals If TRUE and `peaks` contains QTL intervals, plot the intervals.
 #' @param ... Additional graphics parameters
 #'
