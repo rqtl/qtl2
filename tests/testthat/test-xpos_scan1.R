@@ -11,14 +11,29 @@ test_that("xpos_scan1 works", {
     # two chromosomes
     map <- list("1"=c(10, 20, 50),
                 "2"=c(5,  25, 85))
-    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=c(20, 25)),
+    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=c(20, 25), gap=25),
                  c(22.5, 97.5))
-    expect_equal(xpos_scan1(map, thechr="1", thepos=c(15, 40)),
+    expect_equal(xpos_scan1(map, thechr="1", thepos=c(15, 40), gap=25),
                  c(17.5, 42.5))
-    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=10),
+    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=10, gap=25),
                  c(12.5, 82.5))
 
 
+    # two chromosomes, automatic gap
+    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=c(20, 25)),
+                 xpos_scan1(map, thechr=c("1", "2"), thepos=c(20, 25), gap=1.2))
+    expect_equal(xpos_scan1(map, thechr="1", thepos=c(15, 40)),
+                 xpos_scan1(map, thechr="1", thepos=c(15, 40), gap=1.2))
+    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=10),
+                 xpos_scan1(map, thechr=c("1", "2"), thepos=10, gap=1.2))
+    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=c(20, 25)),
+                 c(10.6, 61.8))
+    expect_equal(xpos_scan1(map, thechr="1", thepos=c(15, 40)),
+                 c(5.6, 30.6))
+    expect_equal(xpos_scan1(map, thechr=c("1", "2"), thepos=10),
+                 c(0.6, 46.8))
+
+    # invalid inputs
     expect_error(xpos_scan1(map, thechr=c("1", "2", "2"), thepos=c(5, 10)))
     expect_error(xpos_scan1(map, thechr=c("1", "2"), thepos=c(5, 10, 15)))
     expect_error(xpos_scan1(map, thechr=c("1", "2", "3"), thepos=c(5, 10, 15)))

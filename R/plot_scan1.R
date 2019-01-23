@@ -18,7 +18,7 @@
 #' @param add If TRUE, add to current plot (must have same map and
 #' chromosomes).
 #'
-#' @param gap Gap between chromosomes.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #'
 #' @param ... Additional graphics parameters.
 #'
@@ -73,7 +73,7 @@
 #' plot(out, map, lodcolumn="liver", ylim=ylim)
 #' plot(out, map, lodcolumn="spleen", col="violetred", add=TRUE)
 plot_scan1 <-
-    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25, ...)
+    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -88,6 +88,7 @@ plot_scan1 <-
         map <- map[chri]
     }
 
+    if(is.null(gap)) gap <- sum(chr_lengths(map))/100
     if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
 
     # align scan1 output and map
@@ -117,7 +118,7 @@ plot_scan1 <-
     # internal function; trick to be able to pull things out of "..."
     #    but still have some defaults for them
     plot_scan1_internal <-
-        function(map, lod, add=FALSE, gap,
+        function(map, lod, add=FALSE, gap=NULL,
                  bgcolor="gray90", altbgcolor="gray85",
                  lwd=2, col="darkslateblue", altcol=NULL,
                  xlab=NULL, ylab="LOD score",
@@ -232,7 +233,7 @@ plot_scan1 <-
 #' @export
 #' @rdname plot_scan1
 plot.scan1 <-
-    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=25, ...)
+    function(x, map, lodcolumn=1, chr=NULL, add=FALSE, gap=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -248,8 +249,10 @@ plot.scan1 <-
 
 # convert map to x-axis positions for plot_scan1
 map_to_xpos <-
-    function(map, gap)
+    function(map, gap=NULL)
 {
+    if(is.null(gap)) sum(chr_lengths(map))/100
+
     if(length(map)==1) return(map[[1]])
 
     chr_range <- vapply(map, range, c(0,1), na.rm=TRUE)
@@ -266,8 +269,10 @@ map_to_xpos <-
 # first row: left edges
 # second row: right edges
 map_to_boundaries <-
-    function(map, gap)
+    function(map, gap=NULL)
 {
+    if(is.null(gap)) gap <- sum(chr_lengths(map))/100
+
     if(length(map)==1)
         return(cbind(range(map[[1]], na.rm=TRUE)))
 

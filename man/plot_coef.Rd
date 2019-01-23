@@ -7,13 +7,14 @@
 \title{Plot QTL effects along chromosome}
 \usage{
 plot_coef(x, map, columns = NULL, col = NULL, scan1_output = NULL,
-  add = FALSE, gap = 25, top_panel_prop = 0.65, legend = NULL, ...)
+  add = FALSE, gap = NULL, top_panel_prop = 0.65, legend = NULL,
+  ...)
 
 plot_coefCC(x, map, columns = 1:8, scan1_output = NULL, add = FALSE,
-  gap = 25, top_panel_prop = 0.65, legend = NULL, ...)
+  gap = NULL, top_panel_prop = 0.65, legend = NULL, ...)
 
 \method{plot}{scan1coef}(x, map, columns = 1, col = NULL,
-  scan1_output = NULL, add = FALSE, gap = 25,
+  scan1_output = NULL, add = FALSE, gap = NULL,
   top_panel_prop = 0.65, legend = NULL, ...)
 }
 \arguments{
@@ -35,7 +36,7 @@ score column; if multiple, only the first is used.}
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
 
-\item{gap}{Gap between chromosomes.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{top_panel_prop}{If \code{scan1_output} provided, this gives the
 proportion of the plot that is devoted to the top panel.}

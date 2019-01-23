@@ -38,6 +38,9 @@
 - `rbind_scan1()` and `cbind_scan1()` no longer give error if inputs
   don't all have matching attributes.
 
+- Change default gap between chromosomes in `plot_scan1()` (and
+  related) to be 1% of the total genome length.
+
 ### Bug fixes
 
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
