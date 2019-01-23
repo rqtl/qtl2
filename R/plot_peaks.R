@@ -14,7 +14,7 @@
 #' @param chr Selected chromosomes to plot; a vector of character
 #'     strings.
 #' @param tick_height Height of tick marks at the peaks (a number between 0 and 1).
-#' @param gap Gap between chromosomes.
+#' @param gap Gap between chromosomes. The default is 1% of the total genome length.
 #' @param lod_labels If TRUE, plot LOD scores near the intervals. Uses
 #'     three hidden graphics parameters, `label_gap` (distance between
 #'     CI and LOD text label), `label_left` (vector that indicates
@@ -70,10 +70,11 @@
 #'            label_left=c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE))
 plot_peaks <-
     function(peaks, map, chr=NULL, tick_height = 0.3,
-             gap=25, lod_labels=FALSE, ...)
+             gap=NULL, lod_labels=FALSE, ...)
 {
     if(is.null(peaks)) stop("peaks is NULL")
     if(is.null(map)) stop("map is NULL")
+    if(is.null(gap)) gap <- sum(chr_lengths(map))/100
 
     if(!is_nonneg_number(gap)) stop("gap should be a non-negative number")
     if(!is_nonneg_number(tick_height)) stop("tick_height should be a non-negative number")
@@ -217,7 +218,7 @@ plot_peaks <-
 
 # Add LOD scores as text labels
 add_lod_labels <-
-    function(peaks, map, gap=25,
+    function(peaks, map, gap,
              label_left=NULL, label_gap=NULL,
              label_cex=NULL, label_col=NULL)
     {

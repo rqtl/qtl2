@@ -6,7 +6,7 @@
 plot_snpasso_and_genes <-
     function(scan1output, snpinfo, show_all_snps=TRUE,
              drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
-             gap=25, minlod=0,
+             gap=NULL, minlod=0,
              genes, minrow=4, padding=0.2,
              colors=c("black", "red3", "green4", "blue3", "orange"),
              scale_pos=1, start_field="start", stop_field="stop",

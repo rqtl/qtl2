@@ -4,7 +4,7 @@
 \alias{plot_peaks}
 \title{Plot QTL peak locations}
 \usage{
-plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = 25,
+plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = NULL,
   lod_labels = FALSE, ...)
 }
 \arguments{
@@ -22,7 +22,7 @@ strings.}
 
 \item{tick_height}{Height of tick marks at the peaks (a number between 0 and 1).}
 
-\item{gap}{Gap between chromosomes.}
+\item{gap}{Gap between chromosomes. The default is 1% of the total genome length.}
 
 \item{lod_labels}{If TRUE, plot LOD scores near the intervals. Uses
 three hidden graphics parameters, \code{label_gap} (distance between

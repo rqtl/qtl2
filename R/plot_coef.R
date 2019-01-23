@@ -78,7 +78,7 @@
 #' plot(coef, map[7], columns=1:3, col=c("slateblue", "violetred", "green3"))
 plot_coef <-
     function(x, map, columns=NULL, col=NULL, scan1_output=NULL,
-             add=FALSE, gap=25, top_panel_prop=0.65,
+             add=FALSE, gap=NULL, top_panel_prop=0.65,
              legend=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
@@ -88,7 +88,6 @@ plot_coef <-
     x <- tmp$scan1
     map <- tmp$map
 
-    if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
     if(!is_pos_number(top_panel_prop)) stop("top_panel_prop should be a single non-negative number")
 
     if(nrow(x) != length(unlist(map)))
@@ -157,7 +156,7 @@ plot_coef <-
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, map, columns=1:8, scan1_output=NULL, add=FALSE, gap=25,
+    function(x, map, columns=1:8, scan1_output=NULL, add=FALSE, gap=NULL,
              top_panel_prop=0.65, legend=NULL, ...)
 {
     plot_coef(x, map, columns=columns, col=qtl2::CCcolors[columns],
@@ -168,7 +167,7 @@ plot_coefCC <-
 #' @export
 #' @rdname plot_coef
 plot.scan1coef <-
-    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=25,
+    function(x, map, columns=1, col=NULL, scan1_output=NULL, add=FALSE, gap=NULL,
              top_panel_prop=0.65, legend=NULL, ...)
 {
     plot_coef(x, map, columns=columns, col=col, scan1_output=scan1_output,
