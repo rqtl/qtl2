@@ -1,4 +1,4 @@
-## qtl2 0.17-12 (2019-01-23)
+## qtl2 0.17-13 (2019-01-23)
 
 ### New features
 
@@ -24,6 +24,10 @@
 
 - In `plot_peaks()`, added `lod_labels` argument. If TRUE, include LOD
   scores as text labels in the figure.
+
+- Added function `calc_het()` for calculating estimated
+  heterozygosities, by individual or by marker, from genotype
+  probabilities derived by `calc_genoprob()`.
 
 ### Minor changes
 
