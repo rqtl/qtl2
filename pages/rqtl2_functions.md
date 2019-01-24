@@ -306,3 +306,5 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Other functions
+- `calc_het`
+- `cbind_expand`
