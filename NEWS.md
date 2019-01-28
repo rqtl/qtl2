@@ -48,7 +48,7 @@
 ### Bug fixes
 
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
-  working with a decomposed "loco" kinship matrices.
+  working with decomposed "loco" kinship matrices.
 
 - Fixed descriptions in help files for `cbind.calc_genoprob()` and
   `rbind.calc_genoprob()`, for column- and row-binding genotype
