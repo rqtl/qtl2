@@ -22,3 +22,10 @@ script:
   - |
     R CMD build .
     travis_wait 20 R CMD check --as-cran qtl2_*.tar.gz
+
+# print install log
+after_failure:
+ - cat qtl2.Rcheck/00install.out
+
+after_success:
+ - cat qtl2.Rcheck/00install.out
