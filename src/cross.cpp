@@ -34,11 +34,12 @@
 #include "cross_ail3.h"
 #include "cross_ail3pk.h"
 #include "cross_genril.h"
+#include "cross_genail.h"
 #include <string>
 
 QTLCross* QTLCross::Create(const String& crosstype)
 {
-    // first, if crosstype has length > 6 and first 6 characters are "genril",
+    // first, if crosstype has length > 6 and first 6 characters are "genril" or "genail",
     // then turn remaining characters into an integer specifying the number of founders
     std::string crosstype_str = crosstype;
     if(crosstype_str.length() > 6 && crosstype_str.substr(0,6).compare("genril")==0) {
@@ -47,6 +48,14 @@ QTLCross* QTLCross::Create(const String& crosstype)
         std::string::size_type sz;
         int n_founders = std::stoi(str_n_founders, &sz);
         return new GENRIL(n_founders);
+    }
+
+    if(crosstype_str.length() > 6 && crosstype_str.substr(0,6).compare("genail")==0) {
+        int n_char = crosstype_str.length();
+        std::string str_n_founders = crosstype_str.substr(6, n_char-6);
+        std::string::size_type sz;
+        int n_founders = std::stoi(str_n_founders, &sz);
+        return new GENAIL(n_founders);
     }
 
     if(crosstype=="bc")      return new BC();
