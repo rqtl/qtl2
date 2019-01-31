@@ -53,7 +53,7 @@ const double GENAIL::init(const int true_gen,
         return log((double)cross_info[true_gen-n_auto_geno]) - log((double)denom);
     }
     else { // autosome or female X
-        IntegerVector alleles = mpp_decode_geno(true_gen, this->n_founders, false);
+        const IntegerVector alleles = mpp_decode_geno(true_gen, this->n_founders, false);
 
         if(mpp_is_het(true_gen, this->n_founders, false)) {
             return log(2.0) + log((double)cross_info[alleles[0]]) +
@@ -65,7 +65,7 @@ const double GENAIL::init(const int true_gen,
     }
 }
 
-// TODO haven't done emit yet
+// this basically follows the DO case
 const double GENAIL::emit(const int obs_gen, const int true_gen, const double error_prob,
                        const IntegerVector& founder_geno, const bool is_x_chr,
                        const bool is_female, const IntegerVector& cross_info)
@@ -77,12 +77,88 @@ const double GENAIL::emit(const int obs_gen, const int true_gen, const double er
 
     if(obs_gen==0) return 0.0; // missing
 
-    int f = founder_geno[true_gen-1]; // founder allele
-    if(f!=1 && f!=3) return 0.0;      // founder missing -> no information
+    const int n_auto_geno = this->n_gen(false);
 
-    if(f == obs_gen) return log(1.0 - error_prob);
+    if(!is_x_chr || is_female) { // autosome or female X
+        const IntegerVector true_alleles = mpp_decode_geno(true_gen, this->n_founders, false);
+        const int f1 = founder_geno[true_alleles[0]-1];
+        const int f2 = founder_geno[true_alleles[1]-1];
 
-    return log(error_prob); // genotyping error
+        // treat founder hets as missing
+        if(f1==2) f1 = 0;
+        if(f2==2) f2 = 0;
+
+        // neither founder alleles observed
+        if(f1==0 && f2==0) return 0.0;
+
+        // one founder allele observed
+        if(f1 == 0 || f2 == 0) {
+
+            switch(std::max(f1, f2)) {
+            case H: return 0.0; // het compatible with either founder allele
+            case A:
+                switch(obs_gen) {
+                case A: case notB: return log(1.0-error_prob);
+                case B: case notA: return log(error_prob);
+                case H: return 0.0;
+                }
+            case B:
+                switch(obs_gen) {
+                case B: case notA: return log(1.0-error_prob);
+                case A: case notB: return log(error_prob);
+                case H: return 0.0;
+                }
+            }
+            return 0.0;
+        }
+
+        switch((f1+f2)/2) { // values 1, 2, 3
+        case A:
+            switch(obs_gen) {
+            case A: return log(1.0-error_prob);
+            case H: return log(error_prob/2.0);
+            case B: return log(error_prob/2.0);
+            case notA: return log(error_prob);
+            case notB: return log(1.0-error_prob/2.0);
+            }
+        case H:
+            switch(obs_gen) {
+            case A: return log(error_prob/2.0);
+            case H: return log(1.0-error_prob);
+            case B: return log(error_prob/2.0);
+            case notA: return log(1.0-error_prob/2.0);
+            case notB: return log(1.0-error_prob/2.0);
+            }
+        case B:
+            switch(obs_gen) {
+            case B: return log(1.0-error_prob);
+            case H: return log(error_prob/2.0);
+            case A: return log(error_prob/2.0);
+            case notB: return log(error_prob);
+            case notA: return log(1.0-error_prob/2.0);
+            }
+        }
+        return 0.0;
+    }
+    else { // male X
+        const int founder_allele = founder_geno[(true_gen - n_auto_geno) - 1];
+
+        switch(founder_allele) {
+        case A:
+            switch(obs_gen) {
+            case A: case notB: return log(1.0-error_prob);
+            case B: case notA: return log(error_prob);
+            }
+        case B:
+            switch(obs_gen) {
+            case B: case notA: return log(1.0-error_prob);
+            case A: case notB: return log(error_prob);
+            }
+        }
+        return(0.0);
+    }
+
+    return NA_REAL; // shouldn't get here
 }
 
 
@@ -151,8 +227,6 @@ const int GENAIL::nalleles()
 {
     return this->n_founders;
 }
-
-////////////////// TODO haven't done the stuff below
 
 // check that cross_info conforms to expectation
 const bool GENAIL::check_crossinfo(const IntegerMatrix& cross_info, const bool any_x_chr)
@@ -246,21 +320,15 @@ const bool GENAIL::need_founder_geno()
     return true;
 }
 
+
 // geno_names from allele names
 const std::vector<std::string> GENAIL::geno_names(const std::vector<std::string> alleles,
                                                 const bool is_x_chr)
 {
-    if(alleles.size() < this->n_founders)
-        throw std::range_error("alleles must have length 6");
+    if(alleles.size() != this->n_founders)
+        throw std::range_error("alleles must have length n_founders");
 
-    const int n_alleles = this->n_founders;
-
-    std::vector<std::string> result(n_alleles);
-
-    for(int i=0; i<n_alleles; i++)
-        result[i] = alleles[i] + alleles[i];
-
-    return result;
+    return mpp_geno_names(alleles, is_x_chr);
 }
 
 
@@ -274,8 +342,31 @@ const int GENAIL::nrec(const int gen_left, const int gen_right,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(gen_left == gen_right) return 0;
-    else return 1;
+    n_auto_geno = this->ngen(false); // number of autosomal genotypes
+
+    if(is_x_chr && gen_left > n_auto_geno && gen_right > n_auto_geno) { // male X chr
+        if(gen_left == gen_right) return(0);
+        else return(1);
+    }
+
+    Rcpp::IntegerVector a_left = mpp_decode_geno(gen_left, this->n_founders, false);
+    Rcpp::IntegerVector a_right = mpp_decode_geno(gen_right, this->n_founders, false);
+
+    if(a_left[0] == a_right[0]) {
+        if(a_left[1] == a_right[1]) return(0);
+        else return(1);
+    }
+    else if(a_left[0] == a_right[1]) {
+        if(a_left[1] == a_right[0]) return(0);
+        else return(1);
+    }
+    else if(a_left[1] == a_right[0]) {
+        return(1);
+    }
+    else if(a_left[1] == a_right[1]) {
+        return(1);
+    }
+    else return(2);
 }
 
 
