@@ -13,7 +13,7 @@
 #'     and end positions).
 #' @param chr Selected chromosomes to plot; a vector of character
 #'     strings.
-#' @param gap Gap between chromosomes.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #' @param intervals If TRUE and `peaks` contains QTL intervals, plot the intervals.
 #' @param ... Additional graphics parameters
 #'
@@ -57,12 +57,10 @@
 #' plot_lodpeaks(peaks, map)
 
 plot_lodpeaks <-
-    function(peaks, map, chr=NULL, gap=25, intervals=FALSE, ...)
+    function(peaks, map, chr=NULL, gap=NULL, intervals=FALSE, ...)
 {
     if(is.null(peaks)) stop("peaks is NULL")
     if(is.null(map)) stop("map is NULL")
-
-    if(!is_nonneg_number(gap)) stop("gap should be a non-negative number")
 
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 

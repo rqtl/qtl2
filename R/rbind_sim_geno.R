@@ -1,6 +1,8 @@
 #' Join genotype imputations for different individuals
 #'
-#' Join multiple genotype imputation objects, as produced by [sim_geno()] for different individuals.
+#' Join multiple genotype imputation objects, as produced by
+#' [sim_geno()], for the same set of markers but for different
+#' individuals.
 #'
 #' @md
 #'

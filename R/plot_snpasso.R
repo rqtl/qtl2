@@ -48,7 +48,7 @@
 #'
 #' @param col Color of other points
 #'
-#' @param gap Gap between chromosomes.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
 #'
 #' @param minlod Minimum LOD to display. (Mostly for GWAS, in which
 #'     case using `minlod=1` will greatly increase the plotting speed,
@@ -115,12 +115,10 @@
 plot_snpasso <-
     function(scan1output, snpinfo, genes=NULL, lodcolumn=1, show_all_snps=TRUE, chr=NULL,
              add=FALSE, drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
-             gap=25, minlod=0, ...)
+             gap=NULL, minlod=0, ...)
 {
     if(is.null(scan1output)) stop("scan1output is NULL")
     if(is.null(snpinfo)) stop("snpinfo is NULL")
-
-    if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
     if(!is_nonneg_number(minlod)) stop("minlod should be a single non-negative number")
 
     # pull out lod scores

@@ -1,7 +1,7 @@
 #' Join viterbi results for different chromosomes
 #'
-#' Join multiple viterbi objects, as produced by
-#' [viterbi()] for different individuals.
+#' Join multiple viterbi objects, as produced by [viterbi()], for the
+#' same set of individuals but different chromosomes.
 #'
 #' @md
 #'

@@ -64,10 +64,10 @@
 #' # plot points
 #' points(xpos, peaks$lod, pch=21, bg=ptcolor)
 xpos_scan1 <-
-function(map, chr=NULL, gap=25, thechr, thepos)
+function(map, chr=NULL, gap=NULL, thechr, thepos)
 {
     if(is.null(map)) stop("map is NULL")
-    if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
+    if(is.null(gap)) gap <- sum(chr_lengths(map))/100
 
     # subset chromosomes
     if(!is.null(chr)) map <- map[chr]

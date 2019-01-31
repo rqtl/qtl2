@@ -5,7 +5,7 @@
 # internal function that is called by plot_coef
 plot_coef_and_lod <-
     function(x, map, columns=NULL, col=NULL, scan1_output,
-             gap=25, top_panel_prop=0.65, legend=NULL,
+             gap=NULL, top_panel_prop=0.65, legend=NULL,
              ylim=NULL, bgcolor="gray90", altbgcolor="gray85",
              ylab="QTL effects",
              ylab_lod="LOD score", ylim_lod=NULL, col_lod="slateblue",

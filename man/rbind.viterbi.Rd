@@ -14,8 +14,8 @@
 A single viterbi object.
 }
 \description{
-Join multiple imputed genotype objects, as produced by
-\code{\link[=viterbi]{viterbi()}} for different individuals.
+Join multiple imputed genotype objects, as produced by \code{\link[=viterbi]{viterbi()}},
+for the same set of markers but for different individuals.
 }
 \examples{
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))

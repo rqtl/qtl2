@@ -31,6 +31,71 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calc_ll_binreg
+double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_calc_ll_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_ll_binreg(X, y, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_coef_binreg
+NumericVector calc_coef_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_calc_coef_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_coef_binreg(X, y, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_coefSE_binreg
+List calc_coefSE_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_calc_coefSE_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_coefSE_binreg(X, y, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit_binreg
+List fit_binreg(const NumericMatrix& X, const NumericVector& y, const bool se, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_fit_binreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_binreg(X, y, se, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calc_ll_binreg_eigenchol
 double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double eta_max);
 RcppExport SEXP _qtl2_calc_ll_binreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP eta_maxSEXP) {
@@ -108,6 +173,75 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
     Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
     rcpp_result_gen = Rcpp::wrap(fit_binreg_eigenqr(X, y, se, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_ll_binreg_weighted
+double calc_ll_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_calc_ll_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_ll_binreg_weighted(X, y, weights, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_coef_binreg_weighted
+NumericVector calc_coef_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_calc_coef_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_coef_binreg_weighted(X, y, weights, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_coefSE_binreg_weighted
+List calc_coefSE_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_calc_coefSE_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_coefSE_binreg_weighted(X, y, weights, maxit, tol, qr_tol, eta_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit_binreg_weighted
+List fit_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const bool se, const int maxit, const double tol, const double qr_tol, const double eta_max);
+RcppExport SEXP _qtl2_fit_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_binreg_weighted(X, y, weights, se, maxit, tol, qr_tol, eta_max));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -193,140 +327,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
     Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
     rcpp_result_gen = Rcpp::wrap(fit_binreg_weighted_eigenqr(X, y, weights, se, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_ll_binreg_weighted
-double calc_ll_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_calc_ll_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_ll_binreg_weighted(X, y, weights, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_coef_binreg_weighted
-NumericVector calc_coef_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_calc_coef_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_coef_binreg_weighted(X, y, weights, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_coefSE_binreg_weighted
-List calc_coefSE_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_calc_coefSE_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_coefSE_binreg_weighted(X, y, weights, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// fit_binreg_weighted
-List fit_binreg_weighted(const NumericMatrix& X, const NumericVector& y, const NumericVector& weights, const bool se, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_fit_binreg_weighted(SEXP XSEXP, SEXP ySEXP, SEXP weightsSEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(fit_binreg_weighted(X, y, weights, se, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_ll_binreg
-double calc_ll_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_calc_ll_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_ll_binreg(X, y, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_coef_binreg
-NumericVector calc_coef_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_calc_coef_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_coef_binreg(X, y, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_coefSE_binreg
-List calc_coefSE_binreg(const NumericMatrix& X, const NumericVector& y, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_calc_coefSE_binreg(SEXP XSEXP, SEXP ySEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_coefSE_binreg(X, y, maxit, tol, qr_tol, eta_max));
-    return rcpp_result_gen;
-END_RCPP
-}
-// fit_binreg
-List fit_binreg(const NumericMatrix& X, const NumericVector& y, const bool se, const int maxit, const double tol, const double qr_tol, const double eta_max);
-RcppExport SEXP _qtl2_fit_binreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP maxitSEXP, SEXP tolSEXP, SEXP qr_tolSEXP, SEXP eta_maxSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
-    Rcpp::traits::input_parameter< const int >::type maxit(maxitSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type qr_tol(qr_tolSEXP);
-    Rcpp::traits::input_parameter< const double >::type eta_max(eta_maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(fit_binreg(X, y, se, maxit, tol, qr_tol, eta_max));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1044,6 +1044,85 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calc_rss_linreg
+NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
+RcppExport SEXP _qtl2_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_rss_linreg(X, Y, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_coef_linreg
+NumericVector calc_coef_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP _qtl2_calc_coef_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_coef_linreg(X, y, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_coefSE_linreg
+List calc_coefSE_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
+RcppExport SEXP _qtl2_calc_coefSE_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_coefSE_linreg(X, y, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_resid_linreg
+NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
+RcppExport SEXP _qtl2_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_resid_linreg(X, Y, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calc_resid_linreg_3d
+NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P, const double tol);
+RcppExport SEXP _qtl2_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_resid_linreg_3d(X, P, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fit_linreg
+List fit_linreg(const NumericMatrix& X, const NumericVector& y, const bool se, const double tol);
+RcppExport SEXP _qtl2_fit_linreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_linreg(X, y, se, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fit_linreg_eigenchol
 List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se);
 RcppExport SEXP _qtl2_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP) {
@@ -1218,85 +1297,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     rcpp_result_gen = Rcpp::wrap(calc_resid_eigenqr(X, Y, tol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_rss_linreg
-NumericVector calc_rss_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
-RcppExport SEXP _qtl2_calc_rss_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_rss_linreg(X, Y, tol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_coef_linreg
-NumericVector calc_coef_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP _qtl2_calc_coef_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_coef_linreg(X, y, tol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_coefSE_linreg
-List calc_coefSE_linreg(const NumericMatrix& X, const NumericVector& y, const double tol);
-RcppExport SEXP _qtl2_calc_coefSE_linreg(SEXP XSEXP, SEXP ySEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_coefSE_linreg(X, y, tol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_resid_linreg
-NumericMatrix calc_resid_linreg(const NumericMatrix& X, const NumericMatrix& Y, const double tol);
-RcppExport SEXP _qtl2_calc_resid_linreg(SEXP XSEXP, SEXP YSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_resid_linreg(X, Y, tol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calc_resid_linreg_3d
-NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& P, const double tol);
-RcppExport SEXP _qtl2_calc_resid_linreg_3d(SEXP XSEXP, SEXP PSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type P(PSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_resid_linreg_3d(X, P, tol));
-    return rcpp_result_gen;
-END_RCPP
-}
-// fit_linreg
-List fit_linreg(const NumericMatrix& X, const NumericVector& y, const bool se, const double tol);
-RcppExport SEXP _qtl2_fit_linreg(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP tolSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
-    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(fit_linreg(X, y, se, tol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2399,24 +2399,24 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_arrange_genes", (DL_FUNC) &_qtl2_arrange_genes, 2},
     {"_qtl2_R_bayes_int_plain", (DL_FUNC) &_qtl2_R_bayes_int_plain, 3},
+    {"_qtl2_calc_ll_binreg", (DL_FUNC) &_qtl2_calc_ll_binreg, 6},
+    {"_qtl2_calc_coef_binreg", (DL_FUNC) &_qtl2_calc_coef_binreg, 6},
+    {"_qtl2_calc_coefSE_binreg", (DL_FUNC) &_qtl2_calc_coefSE_binreg, 6},
+    {"_qtl2_fit_binreg", (DL_FUNC) &_qtl2_fit_binreg, 7},
     {"_qtl2_calc_ll_binreg_eigenchol", (DL_FUNC) &_qtl2_calc_ll_binreg_eigenchol, 5},
     {"_qtl2_calc_ll_binreg_eigenqr", (DL_FUNC) &_qtl2_calc_ll_binreg_eigenqr, 6},
     {"_qtl2_calc_coef_binreg_eigenqr", (DL_FUNC) &_qtl2_calc_coef_binreg_eigenqr, 6},
     {"_qtl2_calc_coefSE_binreg_eigenqr", (DL_FUNC) &_qtl2_calc_coefSE_binreg_eigenqr, 6},
     {"_qtl2_fit_binreg_eigenqr", (DL_FUNC) &_qtl2_fit_binreg_eigenqr, 7},
+    {"_qtl2_calc_ll_binreg_weighted", (DL_FUNC) &_qtl2_calc_ll_binreg_weighted, 7},
+    {"_qtl2_calc_coef_binreg_weighted", (DL_FUNC) &_qtl2_calc_coef_binreg_weighted, 7},
+    {"_qtl2_calc_coefSE_binreg_weighted", (DL_FUNC) &_qtl2_calc_coefSE_binreg_weighted, 7},
+    {"_qtl2_fit_binreg_weighted", (DL_FUNC) &_qtl2_fit_binreg_weighted, 8},
     {"_qtl2_calc_ll_binreg_weighted_eigenchol", (DL_FUNC) &_qtl2_calc_ll_binreg_weighted_eigenchol, 6},
     {"_qtl2_calc_ll_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2_calc_ll_binreg_weighted_eigenqr, 7},
     {"_qtl2_calc_coef_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2_calc_coef_binreg_weighted_eigenqr, 7},
     {"_qtl2_calc_coefSE_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2_calc_coefSE_binreg_weighted_eigenqr, 7},
     {"_qtl2_fit_binreg_weighted_eigenqr", (DL_FUNC) &_qtl2_fit_binreg_weighted_eigenqr, 8},
-    {"_qtl2_calc_ll_binreg_weighted", (DL_FUNC) &_qtl2_calc_ll_binreg_weighted, 7},
-    {"_qtl2_calc_coef_binreg_weighted", (DL_FUNC) &_qtl2_calc_coef_binreg_weighted, 7},
-    {"_qtl2_calc_coefSE_binreg_weighted", (DL_FUNC) &_qtl2_calc_coefSE_binreg_weighted, 7},
-    {"_qtl2_fit_binreg_weighted", (DL_FUNC) &_qtl2_fit_binreg_weighted, 8},
-    {"_qtl2_calc_ll_binreg", (DL_FUNC) &_qtl2_calc_ll_binreg, 6},
-    {"_qtl2_calc_coef_binreg", (DL_FUNC) &_qtl2_calc_coef_binreg, 6},
-    {"_qtl2_calc_coefSE_binreg", (DL_FUNC) &_qtl2_calc_coefSE_binreg, 6},
-    {"_qtl2_fit_binreg", (DL_FUNC) &_qtl2_fit_binreg, 7},
     {"_qtl2_calc_kinship", (DL_FUNC) &_qtl2_calc_kinship, 1},
     {"_qtl2_crosstype_supported", (DL_FUNC) &_qtl2_crosstype_supported, 1},
     {"_qtl2_count_invalid_genotypes", (DL_FUNC) &_qtl2_count_invalid_genotypes, 5},
@@ -2466,6 +2466,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_interp_genoprob_onechr", (DL_FUNC) &_qtl2_interp_genoprob_onechr, 3},
     {"_qtl2_interpolate_map", (DL_FUNC) &_qtl2_interpolate_map, 3},
     {"_qtl2_find_intervals", (DL_FUNC) &_qtl2_find_intervals, 3},
+    {"_qtl2_calc_rss_linreg", (DL_FUNC) &_qtl2_calc_rss_linreg, 3},
+    {"_qtl2_calc_coef_linreg", (DL_FUNC) &_qtl2_calc_coef_linreg, 3},
+    {"_qtl2_calc_coefSE_linreg", (DL_FUNC) &_qtl2_calc_coefSE_linreg, 3},
+    {"_qtl2_calc_resid_linreg", (DL_FUNC) &_qtl2_calc_resid_linreg, 3},
+    {"_qtl2_calc_resid_linreg_3d", (DL_FUNC) &_qtl2_calc_resid_linreg_3d, 3},
+    {"_qtl2_fit_linreg", (DL_FUNC) &_qtl2_fit_linreg, 4},
     {"_qtl2_fit_linreg_eigenchol", (DL_FUNC) &_qtl2_fit_linreg_eigenchol, 3},
     {"_qtl2_calc_coef_linreg_eigenchol", (DL_FUNC) &_qtl2_calc_coef_linreg_eigenchol, 2},
     {"_qtl2_calc_coefSE_linreg_eigenchol", (DL_FUNC) &_qtl2_calc_coefSE_linreg_eigenchol, 2},
@@ -2480,12 +2486,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_calc_mvrss_eigenqr", (DL_FUNC) &_qtl2_calc_mvrss_eigenqr, 3},
     {"_qtl2_calc_resid_eigenchol", (DL_FUNC) &_qtl2_calc_resid_eigenchol, 2},
     {"_qtl2_calc_resid_eigenqr", (DL_FUNC) &_qtl2_calc_resid_eigenqr, 3},
-    {"_qtl2_calc_rss_linreg", (DL_FUNC) &_qtl2_calc_rss_linreg, 3},
-    {"_qtl2_calc_coef_linreg", (DL_FUNC) &_qtl2_calc_coef_linreg, 3},
-    {"_qtl2_calc_coefSE_linreg", (DL_FUNC) &_qtl2_calc_coefSE_linreg, 3},
-    {"_qtl2_calc_resid_linreg", (DL_FUNC) &_qtl2_calc_resid_linreg, 3},
-    {"_qtl2_calc_resid_linreg_3d", (DL_FUNC) &_qtl2_calc_resid_linreg_3d, 3},
-    {"_qtl2_fit_linreg", (DL_FUNC) &_qtl2_fit_linreg, 4},
     {"_qtl2_Rcpp_eigen_decomp", (DL_FUNC) &_qtl2_Rcpp_eigen_decomp, 1},
     {"_qtl2_Rcpp_eigen_rotation", (DL_FUNC) &_qtl2_Rcpp_eigen_rotation, 3},
     {"_qtl2_Rcpp_calc_logdetXpX", (DL_FUNC) &_qtl2_Rcpp_calc_logdetXpX, 1},

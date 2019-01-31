@@ -1,4 +1,4 @@
-## qtl2 0.17-7 (2018-11-05)
+## qtl2 0.17-13 (2019-01-23)
 
 ### New features
 
@@ -17,9 +17,21 @@
   takes an additional argument `n_cores`. This splits a vector into
   batches for use in parallel calculations.
 
+- The internal function `cbind_expand()` now made user-accessible.
+  It's for combining matrices using row names to align the rows and
+  expanding with missing values if there are rows in some matrices but
+  not others.
+
+- In `plot_peaks()`, added `lod_labels` argument. If TRUE, include LOD
+  scores as text labels in the figure.
+
+- Added function `calc_het()` for calculating estimated
+  heterozygosities, by individual or by marker, from genotype
+  probabilities derived by `calc_genoprob()`.
+
 ### Minor changes
 
-- Small corrections to documentation
+- Small corrections to documentation.
 
 - Revise some tests due to change in Recla and DOex datasets at
   <https://github.com/rqtl/qtl2data>
@@ -27,10 +39,24 @@
 - Add tests of decomposed kinship matrix (from `decomp_kinship()`)
   with `scan1()`.
 
+- `rbind_scan1()` and `cbind_scan1()` no longer give error if inputs
+  don't all have matching attributes.
+
+- Change default gap between chromosomes in `plot_scan1()` (and
+  related) to be 1% of the total genome length.
+
 ### Bug fixes
 
 - Fixed bug in `subset_kinship()` that prevented `scan1()` from
-  working with a decomposed "loco" kinship matrices.
+  working with decomposed "loco" kinship matrices.
+
+- Fixed descriptions in help files for `cbind.calc_genoprob()` and
+  `rbind.calc_genoprob()`, for column- and row-binding genotype
+  probabilities objects (as output by `calc_genoprob()`. `cbind()` is
+  for the same set of individuals but different chromosomes. `rbind()`
+  is for the same set of markers and genotypes but different
+  individuals. Made similar corrections for the related functions for
+  `sim_geno()` and `viterbi()` output.
 
 
 ## qtl2 0.16 (2018-07-23)

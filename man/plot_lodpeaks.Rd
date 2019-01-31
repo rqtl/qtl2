@@ -4,7 +4,7 @@
 \alias{plot_lodpeaks}
 \title{Plot LOD scores vs QTL peak locations}
 \usage{
-plot_lodpeaks(peaks, map, chr = NULL, gap = 25, intervals = FALSE,
+plot_lodpeaks(peaks, map, chr = NULL, gap = NULL, intervals = FALSE,
   ...)
 }
 \arguments{
@@ -20,7 +20,7 @@ and end positions).}
 \item{chr}{Selected chromosomes to plot; a vector of character
 strings.}
 
-\item{gap}{Gap between chromosomes.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{intervals}{If TRUE and \code{peaks} contains QTL intervals, plot the intervals.}
 

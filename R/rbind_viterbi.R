@@ -1,7 +1,7 @@
 #' Join Viterbi results for different individuals
 #'
-#' Join multiple imputed genotype objects, as produced by
-#' [viterbi()] for different individuals.
+#' Join multiple imputed genotype objects, as produced by [viterbi()],
+#' for the same set of markers but for different individuals.
 #'
 #' @md
 #'

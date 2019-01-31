@@ -14,7 +14,13 @@
 #' @param chr Selected chromosomes to plot; a vector of character
 #'     strings.
 #' @param tick_height Height of tick marks at the peaks (a number between 0 and 1).
-#' @param gap Gap between chromosomes.
+#' @param gap Gap between chromosomes. The default is 1\% of the total genome length.
+#' @param lod_labels If TRUE, plot LOD scores near the intervals. Uses
+#'     three hidden graphics parameters, `label_gap` (distance between
+#'     CI and LOD text label), `label_left` (vector that indicates
+#'     whether the labels should go on the left side; TRUE=on left,
+#'     FALSE=on right, NA=put into larger gap on that chromosome), and
+#'     `label_cex` that controls the size of these labels
 #' @param ... Additional graphics parameters
 #'
 #' @seealso [find_peaks()], [plot_lodpeaks()]
@@ -55,13 +61,20 @@
 #' peaks <- find_peaks(out, map, threshold=3.5, drop=1.5)
 #'
 #' plot_peaks(peaks, map)
-
+#'
+#' # show LOD scores
+#' plot_peaks(peaks, map, lod_labels=TRUE)
+#'
+#' # show LOD scores, controlling whether they go on the left or right
+#' plot_peaks(peaks, map, lod_labels=TRUE,
+#'            label_left=c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE))
 plot_peaks <-
     function(peaks, map, chr=NULL, tick_height = 0.3,
-             gap=25, ...)
+             gap=NULL, lod_labels=FALSE, ...)
 {
     if(is.null(peaks)) stop("peaks is NULL")
     if(is.null(map)) stop("map is NULL")
+    if(is.null(gap)) gap <- sum(chr_lengths(map))/100
 
     if(!is_nonneg_number(gap)) stop("gap should be a non-negative number")
     if(!is_nonneg_number(tick_height)) stop("tick_height should be a non-negative number")
@@ -88,7 +101,8 @@ plot_peaks <-
                  mgp=NULL, las=1, lend=1, ljoin=1,
                  hlines=NULL, hlines_col="white", hlines_lwd=1, hlines_lty=1,
                  vlines=NULL, vlines_col="white", vlines_lwd=1, vlines_lty=1,
-                 sub="", ...)
+                 sub="", lod_labels=FALSE, label_left=NULL, label_gap=NULL,
+                 label_cex=NULL, label_col=NULL, ...)
         {
             dots <- list(...)
             onechr <- (length(map)==1) # single chromosome
@@ -187,9 +201,106 @@ plot_peaks <-
                          lend=lend, ljoin=ljoin)
             }
 
-        }
+            # add lod labels
+            if(lod_labels) {
+                add_lod_labels(peaks, map, gap=gap,
+                               label_left=label_left, label_gap=label_gap,
+                               label_cex=label_cex, label_col=label_col)
+            }
+
+        } # end of internal function
 
     plot_peaks_internal(peaks=peaks, map=map, tick_height=tick_height,
-                        gap=gap, ...)
+                        gap=gap, lod_labels=lod_labels, ...)
 
 }
+
+
+# Add LOD scores as text labels
+add_lod_labels <-
+    function(peaks, map, gap,
+             label_left=NULL, label_gap=NULL,
+             label_cex=NULL, label_col=NULL)
+    {
+        # end points of CIs
+        if("ci_lo" %in% names(peaks) && "ci_hi" %in% names(peaks)) {
+            ci_lo <- peaks$ci_lo
+            ci_hi <- peaks$ci_hi
+        } else {
+            ci_lo <- ci_hi <- peaks$pos
+        }
+
+        # x and y positions
+        x_lo <- xpos_scan1(map, names(map), gap, peaks$chr, ci_lo)
+        x_hi <- xpos_scan1(map, names(map), gap, peaks$chr, ci_hi)
+
+        unique_lodindex <- sort(unique(peaks$lodindex))
+        y <- match(peaks$lodindex, unique_lodindex)
+
+        # determine whether they go on the left or right
+        chr_start <- vapply(map, min, na.rm=TRUE, 0.0)[peaks$chr]
+        chr_end <- vapply(map, max, na.rm=TRUE, 0.0)[peaks$chr]
+        left_gap <- ci_lo - chr_start
+        right_gap <- chr_end - ci_hi
+
+        if(is.null(label_left)) {
+            label_left <- rep(NA, nrow(peaks))
+        } else if(length(label_left) != nrow(peaks)) {
+            if(length(label_left) < nrow(peaks)) {
+                label_left <- rep(label_left, nrow(peaks))
+            }
+            label_left <- label_left[seq_len(nrow(peaks))]
+        }
+        if(any(is.na(label_left))) {
+            wh <- which(is.na(label_left))
+            label_left[wh] <- TRUE
+            label_left[wh][right_gap[wh] > left_gap[wh]] <- FALSE
+        }
+
+        # expand label_gap to vector
+        if(is.null(label_gap)) {
+            label_gap <- gap/2
+        }
+        if(length(label_gap) != nrow(peaks)) {
+            if(length(label_gap) < nrow(peaks)) {
+                label_gap <- rep(label_gap, nrow(peaks))
+            }
+            label_gap <- label_gap[seq_len(nrow(peaks))]
+        }
+        # expand label_cex to vector
+        if(is.null(label_cex)) {
+            label_cex <- par("cex")
+        }
+        if(length(label_cex) != nrow(peaks)) {
+            if(length(label_cex) < nrow(peaks)) {
+                label_cex <- rep(label_cex, nrow(peaks))
+            }
+            label_cex <- label_cex[seq_len(nrow(peaks))]
+        }
+        # expand label_col to vector
+        if(is.null(label_col)) {
+            label_col <- par("fg")
+        }
+        if(length(label_col) != nrow(peaks)) {
+            if(length(label_col) < nrow(peaks)) {
+                label_col <- rep(label_col, nrow(peaks))
+            }
+            label_col <- label_col[seq_len(nrow(peaks))]
+        }
+
+        # position for text
+        label_gap[label_left] <- -label_gap[label_left]
+        x <- peaks$ci_hi
+        label_adj <- rep(0, nrow(peaks))
+        if(any(label_left)) {
+            x[label_left] <- peaks$ci_lo[label_left]
+            label_adj[label_left] <- 1
+        }
+        x <- xpos_scan1(map, names(map), gap, peaks$chr, x) + label_gap
+
+        # add the text
+        for(i in seq_len(nrow(peaks))) {
+            text(x[i], y[i], myround(peaks$lod[i], 1),
+                 label_adj[i], cex=label_cex[i], col=label_col[i])
+        }
+    }

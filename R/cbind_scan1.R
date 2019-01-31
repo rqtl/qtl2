@@ -53,27 +53,45 @@ cbind.scan1 <-
     }
 
     # combine sample_size
-    for(i in 2:length(args)) {
-        for(obj in c("sample_size")) {
+    for(obj in c("sample_size")) {
+        for(i in 2:length(args)) {
+            drop_arg <- FALSE
             if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next
-            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
-                stop("attribute ", obj, " not present in all objects")
-
-            args_attr[[1]][[obj]] <- c(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]])) {
+                drop_arg <- TRUE
+            } else {
+                args_attr[[1]][[obj]] <- c(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+            }
         }
+        if(drop_arg) {
+            warning('attribute "', obj, '" not present in all objects')
+            args_attr[[1]][[obj]] <- NULL
+        }
+
     }
 
     # attributes to combine by cbind()
-    for(i in 2:length(args)) {
-        for(obj in c("hsq", "SE")) {
+    drop_arg <- c(hsq=FALSE, SE=FALSE)
+    diff_rn_arg <- c(hsq=FALSE, SE=FALSE)
+    for(obj in c("hsq", "SE")) {
+        drop_arg <- FALSE
+        drop_rn_arg <- FALSE
+        for(i in 2:length(args)) {
             if(is.null(args_attr[[1]][[obj]]) && is.null(args_attr[[i]][[obj]])) next
-            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]]))
-                stop("attribute ", obj, " not present in all objects")
-
-            if(!is_same(rownames(args_attr[[1]][[obj]]), rownames(args_attr[[i]][[obj]])))
-                stop("attribute ", obj, " have differences in rownames")
-
-            args_attr[[1]][[obj]] <- cbind(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+            if(is.null(args_attr[[1]][[obj]]) || is.null(args_attr[[i]][[obj]])) {
+                drop_arg <- TRUE
+            } else if(!is_same(rownames(args_attr[[1]][[obj]]), rownames(args_attr[[i]][[obj]]))) {
+                diff_rn_arg <- TRUE
+            } else {
+                args_attr[[1]][[obj]] <- cbind(args_attr[[1]][[obj]], args_attr[[i]][[obj]])
+            }
+        }
+        if(drop_arg) {
+            warning('attribute "', obj, '" not present in all objects')
+            args_attr[[1]][[obj]] <- NULL
+        } else if(drop_rn_arg) {
+            warning('attribute "', obj, '" does not have the same row names in all objects')
+            args_attr[[1]][[obj]] <- NULL
         }
     }
 

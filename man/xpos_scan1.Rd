@@ -4,7 +4,7 @@
 \alias{xpos_scan1}
 \title{Get x-axis position for genomic location}
 \usage{
-xpos_scan1(map, chr = NULL, gap = 25, thechr, thepos)
+xpos_scan1(map, chr = NULL, gap = NULL, thechr, thepos)
 }
 \arguments{
 \item{map}{A list of vectors of marker positions, as produced by
