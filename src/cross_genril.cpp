@@ -63,8 +63,8 @@ const double GENRIL::emit(const int obs_gen, const int true_gen, const double er
 
 
 const double GENRIL::step(const int gen_left, const int gen_right, const double rec_frac,
-                            const bool is_x_chr, const bool is_female,
-                            const IntegerVector& cross_info)
+                          const bool is_x_chr, const bool is_female,
+                          const IntegerVector& cross_info)
 {
     #ifndef RQTL2_NODEBUG
     if(!check_geno(gen_left, false, is_x_chr, is_female, cross_info) ||
@@ -72,22 +72,8 @@ const double GENRIL::step(const int gen_left, const int gen_right, const double 
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(gen_left > this->n_founders || gen_right > this->n_founders ||
-       gen_left <= 0 || gen_right <= 0) {
-        return(NA_REAL);
-    }
+    return step_genchr(gen_left, gen_right, rec_frac, is_xchr, cross_info, this->n_founders);
 
-    const int k = cross_info[0]; // number of generations
-    // sum of relative frequencies
-    int denom=0.0;
-    for(int i=0; i<this->n_founders; i++) denom += cross_info[i+1];
-
-    if(gen_left == gen_right)
-        return log((double)cross_info[gen_left] + pow(1.0-rec_frac, (double)k) * (denom - cross_info[gen_left])) -
-            log((double)denom);
-    else
-        return log((double)cross_info[gen_right]) - log((double)denom) +
-            log(1.0 - pow(1.0 - rec_frac, (double)k));
 }
 
 const IntegerVector GENRIL::possible_gen(const bool is_x_chr, const bool is_female,
@@ -263,4 +249,34 @@ const NumericVector GENRIL::est_map2(const IntegerMatrix& genotypes,
     NumericVector result(n_rf);
     for(int i=0; i<n_rf; i++) result[i] = NA_REAL;
     return result ;
+}
+
+const double
+
+// step for general chromosome, used for both general RIL and general AIL
+// TODO: at present, returns the same thing whether autosome or X chromosome
+// TODO:    - could use X-chr-specific results
+const double step_genchr(const int gen_left, const int gen_right, const double rec_frac,
+                         const bool is_xchr, const IntegerVector& cross_info, const int n_founders)
+{
+    #ifndef RQTL2_NODEBUG
+    if(gen_left < 1 || gen_left > n_founders ||
+       gen_right < 1 || gen_right > n_founders) {
+        throw std::range_error("genotype value not allowed");
+    }
+    #endif
+
+    const int k = cross_info[0]; // number of generations
+
+    // sum of relative frequencies
+    int denom=0.0;
+    for(int i=0; i<this->n_founders; i++) denom += cross_info[i+1];
+
+    if(gen_left == gen_right)
+        return log((double)cross_info[gen_left] + pow(1.0-rec_frac, (double)k) * (denom - cross_info[gen_left])) -
+            log((double)denom);
+    else
+        return log((double)cross_info[gen_right]) - log((double)denom) +
+            log(1.0 - pow(1.0 - rec_frac, (double)k));
+
 }

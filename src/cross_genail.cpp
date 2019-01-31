@@ -5,6 +5,8 @@
 #include <Rcpp.h>
 #include "cross.h"
 #include "cross_util.h"
+#include "cross_genril.h" // defines step_genchr()
+#include "hmm_util.cpp" // defines addlog()
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
@@ -157,12 +159,9 @@ const double GENAIL::emit(const int obs_gen, const int true_gen, const double er
         }
         return(0.0);
     }
-
-    return NA_REAL; // shouldn't get here
 }
 
 
-// TODO haven't done step yet
 const double GENAIL::step(const int gen_left, const int gen_right, const double rec_frac,
                             const bool is_x_chr, const bool is_female,
                             const IntegerVector& cross_info)
@@ -173,22 +172,61 @@ const double GENAIL::step(const int gen_left, const int gen_right, const double 
         throw std::range_error("genotype value not allowed");
     #endif
 
-    if(gen_left > this->n_founders || gen_right > this->n_founders ||
-       gen_left <= 0 || gen_right <= 0) {
-        return(NA_REAL);
+    if(is_x_chr && !is_female) { // male X chr
+
+        const int n_auto_geno = this->ngen(false);
+
+        if(gen_left < n_auto_geno || gen_right < n_auto_geno) {
+            throw std::range_error("genotype value not allowed");
+        }
+
+        return step_genchr(gen_left - n_auto_geno, gen_right - n_auto_geno, rec_frac,
+                           is_x_chr, cross_info, this->n_founders);
+    }
+    else { // autosome or female X
+
+        const IntegerVector leftg = mpp_decode_geno(gen_left, this->n_founders, false);
+        const IntegerVector rightg = mpp_decode_geno(gen_right, this->n_founders, false);
+
+        const int left1 = leftg[0];
+        const int left2 = leftg[1];
+        const int right1 = rightg[0];
+        const int right2 = rightg[1];
+
+        if(left1 == left2) { // AA ->
+            if(right1 == right2) { // AA -> AA (or AA -> BB)
+                return 2.0*step_genchr(left1, right1, rec_frac, is_x_chr,
+                                       cross_info, this->n_founders);
+            }
+            else { // AA -> AB (or AA -> BC)
+                return step_genchr(left1, right1, rec_frac, is_x_chr,
+                                   cross_info, this->n_founders) +
+                    step_genchr(left1, right2, rec_frac, is_x_chr,
+                                cross_info, this->n_founders);
+            }
+        }
+        else { // AB ->
+            if(right1 == right2) { // AB -> AA (or AB -> CC)
+                return step_genchr(left1, right1, rec_frac, is_x_chr,
+                                   cross_info, this->n_founders) +
+                    step_genchr(left2, right1, rec_frac, is_x_chr,
+                                cross_info, this->n_founders);
+            }
+            else { // AB -> CD (or AB -> AB or AB -> AC)
+                // 1-1, 2-2 or 1-2, 2-1
+                return addlog(step_genchr(left1, right1, rec_frac, is_x_chr,
+                                          cross_info, this->n_founders),
+                              step_genchr(left2, right2, rec_frac, is_x_chr,
+                                          cross_info, this->n_founders)) +
+                    addlog(step_genchr(left1, right2, rec_frac, is_x_chr,
+                                       cross_info, this->n_founders),
+                           step_genchr(left1, right2, rec_frac, is_x_chr,
+                                       cross_info, this->n_founders));
+            }
+        }
     }
 
-    const int k = cross_info[0]; // number of generations
-    // sum of relative frequencies
-    int denom=0.0;
-    for(int i=0; i<this->n_founders; i++) denom += cross_info[i+1];
-
-    if(gen_left == gen_right)
-        return log((double)cross_info[gen_left] + pow(1.0-rec_frac, (double)k) * (denom - cross_info[gen_left])) -
-            log((double)denom);
-    else
-        return log((double)cross_info[gen_right]) - log((double)denom) +
-            log(1.0 - pow(1.0 - rec_frac, (double)k));
+    return NA_REAL; // shouldn't get here
 }
 
 const IntegerVector GENAIL::possible_gen(const bool is_x_chr, const bool is_female,

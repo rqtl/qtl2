@@ -68,4 +68,8 @@ class GENRIL : public QTLCross
 
 };
 
+// step for general chromosome, used for both general RIL and general AIL
+const double step_genchr(const int gen_left, const int gen_right, const double rec_frac,
+                         const bool is_xchr, const IntegerVector& cross_info, const int n_founders);
+
 #endif // CROSS_GENRIL_H
