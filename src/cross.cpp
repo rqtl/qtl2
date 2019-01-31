@@ -45,16 +45,14 @@ QTLCross* QTLCross::Create(const String& crosstype)
     if(crosstype_str.length() > 6 && crosstype_str.substr(0,6).compare("genril")==0) {
         int n_char = crosstype_str.length();
         std::string str_n_founders = crosstype_str.substr(6, n_char-6);
-        std::string::size_type sz;
-        int n_founders = std::stoi(str_n_founders, &sz);
+        int n_founders = std::atoi(str_n_founders.c_str());
         return new GENRIL(n_founders);
     }
 
     if(crosstype_str.length() > 6 && crosstype_str.substr(0,6).compare("genail")==0) {
         int n_char = crosstype_str.length();
         std::string str_n_founders = crosstype_str.substr(6, n_char-6);
-        std::string::size_type sz;
-        int n_founders = std::stoi(str_n_founders, &sz);
+        int n_founders = std::atoi(str_n_founders.c_str());
         return new GENAIL(n_founders);
     }
 
