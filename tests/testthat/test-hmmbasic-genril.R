@@ -54,7 +54,6 @@ test_that("genril step works", {
                 }
             }
 
-            cat(rf, ngen, "\n")
             expect_equal(result, log(expected))
         }
     }
