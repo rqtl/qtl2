@@ -25,7 +25,7 @@ script:
 
 # print install log
 after_failure:
- - cat /home/travis/build/kbroman/qtl2/qtl2.Rcheck/00install.out
+ - cat qtl2.Rcheck/00install.out
 
 after_success:
- - cat /home/travis/build/kbroman/qtl2/qtl2.Rcheck/00install.out
+ - cat qtl2.Rcheck/00install.out
