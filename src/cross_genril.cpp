@@ -72,7 +72,7 @@ const double GENRIL::step(const int gen_left, const int gen_right, const double 
         throw std::range_error("genotype value not allowed");
     #endif
 
-    return step_genchr(gen_left, gen_right, rec_frac, is_xchr, cross_info, this->n_founders);
+    return step_genchr(gen_left, gen_right, rec_frac, is_x_chr, cross_info, this->n_founders);
 
 }
 
@@ -251,13 +251,11 @@ const NumericVector GENRIL::est_map2(const IntegerMatrix& genotypes,
     return result ;
 }
 
-const double
-
 // step for general chromosome, used for both general RIL and general AIL
 // TODO: at present, returns the same thing whether autosome or X chromosome
 // TODO:    - could use X-chr-specific results
 const double step_genchr(const int gen_left, const int gen_right, const double rec_frac,
-                         const bool is_xchr, const IntegerVector& cross_info, const int n_founders)
+                         const bool is_x_chr, const IntegerVector& cross_info, const int n_founders)
 {
     #ifndef RQTL2_NODEBUG
     if(gen_left < 1 || gen_left > n_founders ||
@@ -270,7 +268,7 @@ const double step_genchr(const int gen_left, const int gen_right, const double r
 
     // sum of relative frequencies
     int denom=0.0;
-    for(int i=0; i<this->n_founders; i++) denom += cross_info[i+1];
+    for(int i=0; i<n_founders; i++) denom += cross_info[i+1];
 
     if(gen_left == gen_right)
         return log((double)cross_info[gen_left] + pow(1.0-rec_frac, (double)k) * (denom - cross_info[gen_left])) -

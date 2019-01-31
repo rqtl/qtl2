@@ -6,7 +6,7 @@
 #include "cross.h"
 #include "cross_util.h"
 #include "cross_genril.h" // defines step_genchr()
-#include "hmm_util.cpp" // defines addlog()
+#include "hmm_util.h" // defines addlog()
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
 enum gen {A=1, H=2, B=3, notA=5, notB=4};
@@ -28,7 +28,7 @@ const bool GENAIL::check_geno(const int gen, const bool is_observed_value,
         if(gen>= n_auto_geno + 1 && gen <= n_auto_geno + this->n_founders) return true;
     }
     else {
-        if(gen>= 1 && gen <= n_auto_geno) return true
+        if(gen>= 1 && gen <= n_auto_geno) return true;
     }
 
     return false; // otherwise a problem
@@ -79,12 +79,12 @@ const double GENAIL::emit(const int obs_gen, const int true_gen, const double er
 
     if(obs_gen==0) return 0.0; // missing
 
-    const int n_auto_geno = this->n_gen(false);
+    const int n_auto_geno = this->ngen(false);
 
     if(!is_x_chr || is_female) { // autosome or female X
         const IntegerVector true_alleles = mpp_decode_geno(true_gen, this->n_founders, false);
-        const int f1 = founder_geno[true_alleles[0]-1];
-        const int f2 = founder_geno[true_alleles[1]-1];
+        int f1 = founder_geno[true_alleles[0]-1];
+        int f2 = founder_geno[true_alleles[1]-1];
 
         // treat founder hets as missing
         if(f1==2) f1 = 0;
@@ -380,7 +380,7 @@ const int GENAIL::nrec(const int gen_left, const int gen_right,
         throw std::range_error("genotype value not allowed");
     #endif
 
-    n_auto_geno = this->ngen(false); // number of autosomal genotypes
+    const int n_auto_geno = this->ngen(false); // number of autosomal genotypes
 
     if(is_x_chr && gen_left > n_auto_geno && gen_right > n_auto_geno) { // male X chr
         if(gen_left == gen_right) return(0);
