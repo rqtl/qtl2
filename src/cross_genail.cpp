@@ -335,7 +335,6 @@ const bool GENAIL::check_founder_geno_size(const IntegerMatrix& founder_geno, co
 // check that founder genotype data has correct values
 const bool GENAIL::check_founder_geno_values(const IntegerMatrix& founder_geno)
 {
-    const int n_f = this->n_founders;
     const int fg_mar = founder_geno.cols();
     const int fg_f   = founder_geno.rows();
 
