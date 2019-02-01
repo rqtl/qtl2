@@ -54,7 +54,12 @@ test_that("genril step works", {
                 }
             }
 
+            # rows sum to 1?
+            expect_equal(rowSums(exp(result)), rep(1, nf))
+
+            # match what I expected?
             expect_equal(result, log(expected))
+
         }
     }
 
