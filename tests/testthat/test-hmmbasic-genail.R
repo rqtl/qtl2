@@ -51,31 +51,40 @@ test_that("genail init work", {
 
 # FIX_ME: test emit
 
-# FIX_ME: test step
-#test_that("genail step works", {
-#
-#    nf <- 38
-#    alpha_int <- sample(1:10, nf, replace=TRUE)
-#    alpha <- alpha_int/sum(alpha_int)
-#
-#    for(rf in c(0.01, 0.1, 0.45)) {
-#        for(ngen in c(3, 5)) {
-#            expected <- matrix(rep(alpha*(1-(1-rf)^ngen),nf), ncol=nf, byrow=TRUE)
-#            diag(expected) <- alpha + (1-alpha)*(1-rf)^ngen
-#
-#            result <- matrix(ncol=nf, nrow=nf)
-#            for(i in 1:nf) {
-#                for(j in 1:nf) {
-#                    result[i,j] <- test_step(paste0("genail",nf), i, j, rf, FALSE, FALSE, c(ngen, alpha_int))
-#                }
-#            }
-#
-#            cat(rf, ngen, "\n")
-#            expect_equal(result, log(expected))
-#        }
-#    }
-#
-#})
+test_that("genail step works", {
+
+    nf <- 7
+    ng <- nf + choose(nf,2)
+    alpha_int <- sample(1:10, nf, replace=TRUE)
+    alpha <- alpha_int/sum(alpha_int)
+
+    g <- t(sapply(1:ng, mpp_decode_geno, nf, FALSE)) # genotypes
+
+    for(rf in c(0.01, 0.1, 0.45)) {
+        for(ngen in c(3, 5)) {
+
+            # male X chr
+            R <- alpha*(1-(1-rf)^ngen)
+            expected <- matrix(rep(alpha*(1-(1-rf)^ngen),nf), ncol=nf, byrow=TRUE)
+            diag(expected) <- alpha + (1-alpha)*(1-rf)^ngen
+
+            result <- matrix(ncol=nf, nrow=nf)
+            for(i in 1:nf) {
+                for(j in 1:nf) {
+                    result[i,j] <- test_step(paste0("genail", nf), i+ng, j+ng, rf, TRUE, FALSE, c(ngen, alpha_int))
+                }
+            }
+
+            # rows sum to 1?
+            expect_equal(rowSums(exp(result)), rep(1, nf))
+
+            # matches what I expected?
+            expect_equal(result, log(expected))
+
+        }
+    }
+
+})
 
 
 test_that("genail geno_names work", {
