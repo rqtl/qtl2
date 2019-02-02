@@ -33,19 +33,26 @@ test_that("genail init work", {
     alpha <- sample(1:10, 38, replace=TRUE)
     init<- alpha/sum(alpha)
 
+    calcFX <- calcA <- expected <- matrix(nrow=38, ncol=38)
+    calcMX <- rep(NA, 38)
+
     for(i in 1:38) {
         for(j in i:38) {
             g <- mpp_encode_alleles(i, j, 38, FALSE)
-            expect_equal(test_init("genail38", g, FALSE, FALSE, c(8, alpha)),
-                         ifelse(i==j, 2*log(init[i]), log(2) + log(init[i]) + log(init[j])))
 
-            expect_equal(test_init("genail38", g, TRUE, TRUE, c(8, alpha)),
-                         ifelse(i==j, 2*log(init[i]), log(2) + log(init[i]) + log(init[j])))
+            calcA[i,j] <- test_init("genail38", g, FALSE, FALSE, c(8, alpha))
+            expected[i,j] <- ifelse(i==j, 2*log(init[i]), log(2) + log(init[i]) + log(init[j]))
+
+            calcFX[i,j] <- test_init("genail38", g, TRUE, TRUE, c(8, alpha))
 
         }
 
-        expect_equal(test_init("genail38", i+741, TRUE, FALSE, c(8, alpha)), log(init[i]))
+        calcMX[i] <- test_init("genail38", i+741, TRUE, FALSE, c(8, alpha))
     }
+
+    expect_equal(calcMX, log(init))
+    expect_equal(calcA, expected)
+    expect_equal(calcFX, expected)
 
 })
 
