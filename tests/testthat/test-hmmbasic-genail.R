@@ -74,13 +74,22 @@ test_that("genail step works", {
                     result[i,j] <- test_step(paste0("genail", nf), i+ng, j+ng, rf, TRUE, FALSE, c(ngen, alpha_int))
                 }
             }
-
             # rows sum to 1?
             expect_equal(rowSums(exp(result)), rep(1, nf))
 
             # matches what I expected?
             expect_equal(result, log(expected))
 
+
+            # autosome
+            result <- matrix(ncol=ng, nrow=ng)
+            for(i in 1:ng) {
+                for(j in 1:ng) {
+                    result[i,j] <- test_step(paste0("genail", nf), i, j, rf, FALSE, FALSE, c(ngen, alpha_int))
+                }
+            }
+            # rows sum to 1?
+            expect_equal(rowSums(exp(result)), rep(1, ng))
         }
     }
 

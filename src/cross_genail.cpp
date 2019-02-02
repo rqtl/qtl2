@@ -202,7 +202,7 @@ const double GENAIL::step(const int gen_left, const int gen_right, const double 
                 return step_genchr(left1, right1, rec_frac, is_x_chr,
                                    cross_info, this->n_founders) +
                     step_genchr(left1, right2, rec_frac, is_x_chr,
-                                cross_info, this->n_founders);
+                                cross_info, this->n_founders) + log(2.0);
             }
         }
         else { // AB ->
@@ -215,13 +215,13 @@ const double GENAIL::step(const int gen_left, const int gen_right, const double 
             else { // AB -> CD (or AB -> AB or AB -> AC)
                 // 1-1, 2-2 or 1-2, 2-1
                 return addlog(step_genchr(left1, right1, rec_frac, is_x_chr,
-                                          cross_info, this->n_founders),
+                                          cross_info, this->n_founders) +
                               step_genchr(left2, right2, rec_frac, is_x_chr,
-                                          cross_info, this->n_founders)) +
-                    addlog(step_genchr(left1, right2, rec_frac, is_x_chr,
-                                       cross_info, this->n_founders),
-                           step_genchr(left1, right2, rec_frac, is_x_chr,
-                                       cross_info, this->n_founders));
+                                          cross_info, this->n_founders),
+                              step_genchr(left1, right2, rec_frac, is_x_chr,
+                                          cross_info, this->n_founders) +
+                              step_genchr(left2, right1, rec_frac, is_x_chr,
+                                          cross_info, this->n_founders));
             }
         }
     }
