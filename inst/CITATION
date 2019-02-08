@@ -7,10 +7,10 @@ citEntry(entry="article",
                              person("Petr", "Simecek"),
                              person(c("Nicholas", "A."), "Furlotte"),
                              person("Pjotr", "Prins"),
-                             person("Saunak", "Sen"),
+                             person("Śaunak", "Sen"),
                              person(c("Brian", "S."), "Yandell"),
                              person(c("Gary", "A."), "Churchill")),
-         journal = "Genetics"
+         journal = "Genetics",
          doi = "10.1534/genetics.118.301595",
          year = 2018,
          volume=211,
@@ -20,7 +20,8 @@ citEntry(entry="article",
          key = "Broman2018",
 
          textVersion =
-             paste("Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen S, Yandell BS, Churchill GA",
+             paste("Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen Ś, Yandell BS, Churchill GA",
                    "(2018) R/qtl2: software for mapping quantitative trait loci",
-                   "with high-dimensional data and multi-parent populations. Genetics 211:495-502")
+                   "with high-dimensional data and multi-parent populations. Genetics 211:495-502",
+                   "doi:10.1534/genetics.118.301595")
          )
