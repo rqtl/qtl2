@@ -78,7 +78,8 @@ To cite R/qtl2 in publications, use:
 > Yandell BS, Churchill GA (2018)
 > R/qtl2: software for mapping quantitative trait loci with
 > high-dimensional data and multi-parent populations.
-> bioRxiv doi:[10.1101/414748](https://doi.org/10.1101/414748)
+> [Genetics](http://genetics.org) 211:495-502
+> [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
 
 ---
 
