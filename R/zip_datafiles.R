@@ -47,8 +47,10 @@ function(control_file, zip_file=NULL, overwrite=FALSE, quiet=TRUE)
 
     dir <- dirname(control_file)
 
+    move_zip_file <- TRUE
     if(is.null(zip_file)) {
         zip_file <- sub("\\.[a-z]+$", ".zip", basename(control_file))
+        move_zip_file <- FALSE
     }
 
     # read control file
@@ -97,7 +99,13 @@ function(control_file, zip_file=NULL, overwrite=FALSE, quiet=TRUE)
     }
 
     # do the zipping
-    utils::zip(zip_file, files, flags=zip_flags)
+    utils::zip(basename(zip_file), files, flags=zip_flags)
+
+    # if not being zipped into the data file directory, move it
+    if(move_zip_file) {
+        setwd(cwd)
+        file.rename(file.path(dir, basename(zip_file)), zip_file)
+    }
 
     invisible(zip_file)
 }
