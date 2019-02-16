@@ -105,6 +105,8 @@ function(control_file, zip_file=NULL, overwrite=FALSE, quiet=TRUE)
     if(move_zip_file) {
         setwd(cwd)
         file.rename(file.path(dir, basename(zip_file)), zip_file)
+    } else {
+        zip_file <- file.path(dir, zip_file)
     }
 
     invisible(zip_file)
