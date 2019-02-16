@@ -111,7 +111,7 @@ test_that("scan1 with intercross with X covariates for null", {
     out_reml <- unclass(out_reml)
     out_ml <- unclass(out_ml)
     dimnames(out_reml) <- dimnames(out_ml) <- NULL
-    expect_equal(out_reml[index,1], lod_reml1)
+    expect_equal(out_reml[index,1], lod_reml1, tolerance=1e-6)
     expect_equal(out_reml[index,2], lod_reml2, tolerance=1e-6)
     expect_equal(out_ml[index,1], lod_ml1)
     expect_equal(out_ml[index,2], lod_ml2)
