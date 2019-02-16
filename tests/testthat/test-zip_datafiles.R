@@ -31,4 +31,8 @@ test_that("zip_datafiles() works", {
     grav2c <- read_cross2(zip_file)
     expect_equal(grav2a, grav2c)
 
+    # clean up
+    unlink(other_dir, recursive=TRUE)
+    unlink(tmpdir, recursive=TRUE)
+
 })
