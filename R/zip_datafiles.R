@@ -47,8 +47,9 @@ function(control_file, zip_file=NULL, overwrite=FALSE, quiet=TRUE)
 
     dir <- dirname(control_file)
 
-    if(is.null(zip_file))
-        zip_file <- sub("\\.[a-z]+$", ".zip", control_file)
+    if(is.null(zip_file)) {
+        zip_file <- sub("\\.[a-z]+$", ".zip", basename(control_file))
+    }
 
     # read control file
     control <-  read_control_file(control_file)
