@@ -1,3 +1,11 @@
+## qtl2 0.19-1 (2019-02-16)
+
+### Bug fixes
+
+- Fix bug in `zip_datafiles()` when the files are in a subdirectory.
+  (See [Issue #102](https://github.com/rqtl/qtl2/issues/102).)
+
+
 ## qtl2 0.18 (2019-02-08)
 
 ### New features
