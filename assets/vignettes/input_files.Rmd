@@ -900,6 +900,11 @@ treated as missing).
 No cross info is needed, because the population was derived using a
 full diallel followed by random mating.
 
+Here is an example of R/qtl2 data files for this population:
+
+- [`ArabMAGIC`](https://github.com/rqtl/qtl2data/tree/master/ArabMAGIC)
+  from [Gnan et al. (2014) Genetics 198:1751-1758](http://www.genetics.org/content/198/4/1751)
+
 
 ### 6-way doubled haploids
 
