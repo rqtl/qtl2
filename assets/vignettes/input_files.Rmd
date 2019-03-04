@@ -887,7 +887,7 @@ needed or will be used.
 
 The `"magic19"` cross type is specific for the 19-way Arabidopsis
 MAGIC lines of
-[Kover et al (2009) PLOS Genet 5:e1000551](https://doi.org/10.1371/journal.pgen.1000551).
+[Kover et al (2009) PLoS Genet 5:e1000551](https://doi.org/10.1371/journal.pgen.1000551).
 These were derived from a full diallel (in both directions) among 19
 strains followed by 3 generations of random mating (to F~4~) and then
 selfing for 6 generations.
