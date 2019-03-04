@@ -73,22 +73,24 @@ const double RISELF8::step(const int gen_left, const int gen_right, const double
     // equations are from Teuscher and Broman Genetics 175:1267-1274, 2007
     //     doi:10.1534/genetics.106.064063
     //     see equation 1 in right column on page 1269
+    //     (need to multiply by 8 to get conditional probabilities)
     //
     // They also appear in Broman Genetics 169:1133-1146, 2005
     //     doi:10.1534/genetics.104.035212
     //     see table 2 on page 1136
+    //     (again, multiply by 8 to get conditional probabilities)
     if(gen_left == gen_right)
-        return 2.0*log(1.0-rec_frac) - log(8.0) - log(1.0 + 2.0 * rec_frac);
+        return 2.0*log(1.0-rec_frac) - log(1.0 + 2.0 * rec_frac);
 
     // first get inverted index of cross info
     IntegerVector founder_index = invert_founder_index(cross_info);
 
     // were the two founders crossed to each other directly?
     if(founder_index[gen_left-1] / 2 == founder_index[gen_right-1] / 2) // next to each other
-        return log(rec_frac) + log(1.0 - rec_frac) - log(8.0) - log(1.0 + 2.0 * rec_frac);
+        return log(rec_frac) + log(1.0 - rec_frac) - log(1.0 + 2.0 * rec_frac);
 
     // off the block-diagonal
-    return log(rec_frac) - log(16.0) - log(1.0 + 2.0 * rec_frac);
+    return log(rec_frac) - log(2.0) - log(1.0 + 2.0 * rec_frac);
 }
 
 const IntegerVector RISELF8::possible_gen(const bool is_x_chr, const bool is_female,

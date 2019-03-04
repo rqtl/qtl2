@@ -83,6 +83,7 @@ const double RISIB4::step(const int gen_left, const int gen_right, const double 
         // equations are from Broman (2005) Genetics 169:1133-1146
         //    doi:10.1534/genetics.104.035212
         //    see top equation in right column on page 1137
+        //    (need to multiply by 4 to get conditional probabilities)
         if(gen_left == gen_right)
             return -log(1.0 + 6.0 * rec_frac);
 
@@ -92,6 +93,7 @@ const double RISIB4::step(const int gen_left, const int gen_right, const double 
         // equations are from Broman (2005) Genetics 169:1133-1146
         //    doi:10.1534/genetics.104.035212
         //    see right column on page 1136
+        //    (need to multiply by 3 to get conditional probabilities)
         if(gen_left == gen_right)
             return - log(1.0 + 4.0 * rec_frac);
 

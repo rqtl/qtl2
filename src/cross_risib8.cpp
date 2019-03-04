@@ -88,6 +88,8 @@ const double RISIB8::step(const int gen_left, const int gen_right, const double 
         // equations are from Broman (2005) Genetics 169:1133-1146
         //    doi:10.1534/genetics.104.035212
         //    see bottom equation in right column on page 1137
+        //    (need to multiply by 8 to get conditional probabilities,
+        //     and note that there was an error in the i != j case)
         if(gen_left == gen_right)
             return log(1.0 - rec_frac) - log(1.0 + 6.0 * rec_frac);
 
@@ -97,6 +99,8 @@ const double RISIB8::step(const int gen_left, const int gen_right, const double 
         // equations are from Broman (2005) Genetics 169:1133-1146
         //    doi:10.1534/genetics.104.035212
         //    see table 4 page 1137
+        //    (need to multiply by the marginal probability, 1/6 or 1/3,
+        //     to get these conditional probabilities)
         if(gen_left == gen_right) {
             if(gen_left == cross_info[2])
                 return - log(1.0 + 4.0 * rec_frac);

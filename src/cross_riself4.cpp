@@ -70,10 +70,14 @@ const double RISELF4::step(const int gen_left, const int gen_right, const double
         throw std::range_error("genotype value not allowed");
     #endif
 
+    // equations are from Broman (2005) Genetics 169:1133-1146
+    //    doi:10.1534/genetics.104.035212
+    //    see equation in right column on page 1135
+    //    (need to multiply by 4 to get conditional probabilities)
     if(gen_left != gen_right)
-        return log(rec_frac) - log(4.0) - log(1.0 + 2.0*rec_frac);
+        return log(rec_frac) - log(1.0 + 2.0*rec_frac);
     else
-        return log(1.0 - rec_frac) - log(4.0) - log(1.0 + 2.0*rec_frac);
+        return log(1.0 - rec_frac) - log(1.0 + 2.0*rec_frac);
 }
 
 const IntegerVector RISELF4::possible_gen(const bool is_x_chr, const bool is_female,
