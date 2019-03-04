@@ -1,6 +1,8 @@
-## qtl2 0.19-2 (2019-02-16)
+## qtl2 0.19-3 (2019-03-04)
 
 ### Bug fixes
+
+- Fix bug in step probabilities for 4-, 8-, and 16-way RIL by selfing.
 
 - Fix bug in `zip_datafiles()` when the files are in a subdirectory.
   (See [Issue #102](https://github.com/rqtl/qtl2/issues/102).)

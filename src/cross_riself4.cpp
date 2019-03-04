@@ -71,9 +71,9 @@ const double RISELF4::step(const int gen_left, const int gen_right, const double
     #endif
 
     if(gen_left != gen_right)
-        return log(rec_frac) - log(4.0) - log(1.0 + 2.0*rec_frac);
+        return log(rec_frac) - log(1.0 + 2.0*rec_frac);
     else
-        return log(1.0 - rec_frac) - log(4.0) - log(1.0 + 2.0*rec_frac);
+        return log(1.0 - rec_frac) - log(1.0 + 2.0*rec_frac);
 }
 
 const IntegerVector RISELF4::possible_gen(const bool is_x_chr, const bool is_female,
