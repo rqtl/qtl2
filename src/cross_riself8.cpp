@@ -73,10 +73,12 @@ const double RISELF8::step(const int gen_left, const int gen_right, const double
     // equations are from Teuscher and Broman Genetics 175:1267-1274, 2007
     //     doi:10.1534/genetics.106.064063
     //     see equation 1 in right column on page 1269
+    //     (need to multiply by 8 to get conditional probabilities)
     //
     // They also appear in Broman Genetics 169:1133-1146, 2005
     //     doi:10.1534/genetics.104.035212
     //     see table 2 on page 1136
+    //     (again, multiply by 8 to get conditional probabilities)
     if(gen_left == gen_right)
         return 2.0*log(1.0-rec_frac) - log(1.0 + 2.0 * rec_frac);
 
