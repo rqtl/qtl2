@@ -116,6 +116,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -123,14 +126,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -585,9 +648,13 @@ founder_geno:
 </div>
 <div id="way-magic-lines" class="section level3">
 <h3>19-way MAGIC lines</h3>
-<p>The <code>&quot;magic19&quot;</code> cross type is specific for the 19-way Arabidopsis MAGIC lines of <a href="https://doi.org/10.1371/journal.pgen.1000551">Kover et al (2009) PLOS Genet 5:e1000551</a>. These were derived from a full diallel (in both directions) among 19 strains followed by 3 generations of random mating (to F<sub>4</sub>) and then selfing for 6 generations.</p>
+<p>The <code>&quot;magic19&quot;</code> cross type is specific for the 19-way Arabidopsis MAGIC lines of <a href="https://doi.org/10.1371/journal.pgen.1000551">Kover et al (2009) PLoS Genet 5:e1000551</a>. These were derived from a full diallel (in both directions) among 19 strains followed by 3 generations of random mating (to F<sub>4</sub>) and then selfing for 6 generations.</p>
 <p>As with <code>&quot;hs&quot;</code>, <code>&quot;do&quot;</code>, and the multi-parent RIL, we need both individual genotypes and genotypes on the 19 founder lines, and these must be SNPs and will be coded as <code>1</code> and <code>3</code> (with any heterozygotes treated as missing).</p>
 <p>No cross info is needed, because the population was derived using a full diallel followed by random mating.</p>
+<p>Here is an example of R/qtl2 data files for this population:</p>
+<ul>
+<li><a href="https://github.com/rqtl/qtl2data/tree/master/ArabMAGIC"><code>ArabMAGIC</code></a> from <a href="http://www.genetics.org/content/198/4/1751">Gnan et al. (2014) Genetics 198:1751-1758</a></li>
+</ul>
 </div>
 <div id="way-doubled-haploids" class="section level3">
 <h3>6-way doubled haploids</h3>
