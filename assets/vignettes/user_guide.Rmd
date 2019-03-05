@@ -1051,9 +1051,9 @@ the SQLite databases that we have prepared and made available on
 
 - [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v2](https://doi.org/10.6084/m9.figshare.5280229.v2),
   variants in the Collaborative Cross founders (3 GB)
-- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v4](https://doi.org/10.6084/m9.figshare.5280238.v4)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v5](https://doi.org/10.6084/m9.figshare.5280238.v5)
   full set of mouse gene annotations (677 MB)
-- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v5](https://doi.org/10.6084/m9.figshare.5286019.v5)
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v6](https://doi.org/10.6084/m9.figshare.5286019.v6)
   just the MGI mouse gene annotations (11 MB)
 
 For example, to download `cc_variants.sqlite` and
