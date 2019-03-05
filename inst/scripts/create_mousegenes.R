@@ -1,16 +1,18 @@
 # create sqlite database with mouse genes, from MGI
 #
-# source (dated 2017-11-03):
+# source (dated 2019-02-25):
+#      http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/
+#          MGI.201902.gff3.gz
+#
 #      http://www.informatics.jax.org/downloads/mgigff/
-#          MGI.20171103.gff3.gz
 #          MGI_GFF_Spec.docx (annotations, e.g. column names)
 
 library(RSQLite)
 
 ### download files
-site <- "http://www.informatics.jax.org/downloads/mgigff"
-file <- "MGI.20171103.gff3.gz"
-date_source <- as.character(as.Date("20171103", format="%Y%m%d"))
+site <- "http://www.informatics.jax.org/downloads/mgigff3/archive/monthly"
+file <- "MGI.201902.gff3.gz"
+date_source <- as.character(as.Date("201902", format="%Y%m%d"))
 genome_build <- "GRCm38/mm10"
 url <- paste0(site, "/", file)
 if(!file.exists(file))
@@ -30,7 +32,7 @@ if(!file.exists(file)) { # need to unzip
 fields <- c("chr", "source", "type", "start", "stop", "score", "strand",
             "phase", "attributes")
 # within attributes field:
-attrib <- c("ID", "Name", "Parent", "Dbxref", "mgiName", "bioType", "Alias")
+attrib <- c("ID", "Name", "Parent", "Dbxref", "gene_id", "mgi_type", "description")
 
 # read data
 tab <- read.table(file, sep="\t", header=FALSE, comment.char="#",
@@ -55,10 +57,6 @@ tab9_spl <- strsplit(tab[,9], ";")
 tab9_list <- lapply(tab9_spl, function(a) {
     spl <- strsplit(a, "=", fixed=TRUE)
     setNames(sapply(spl, "[", 2), sapply(spl, "[", 1)) })
-
-# check the names of that thing
-nam <- unique(unlist(lapply(tab9_list, names)))
-stopifnot(length(nam) == length(attrib), all(sort(nam) == sort(attrib)))
 
 # turn into a list with all of the attributes (with NAs as needed)
 tab9_df <- lapply(attrib, function(lab) sapply(tab9_list, "[", lab))

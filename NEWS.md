@@ -1,5 +1,10 @@
 ## qtl2 0.19-3 (2019-03-05)
 
+### Minor changes
+
+- Updated `extdata/mouse_genes_small.sqlite` using updated MGI
+  annotations. Some of the field names have changed.
+
 ### Bug fixes
 
 - Fix bug in step probabilities for 4-, 8-, and 16-way RIL by selfing.
