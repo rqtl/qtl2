@@ -1,6 +1,6 @@
 ## Scripts for creating databases of CC variants and mouse genes
 
-This directory contains four R scripts, for creating
+This directory contains five R scripts, for creating
 [SQLite](https://www.sqlite.org) databases for use with the
 Collaborative Cross (CC) and Diversity Outbred (DO) mouse populations:
 
