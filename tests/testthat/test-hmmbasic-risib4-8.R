@@ -72,6 +72,19 @@ test_that("risib4 step works for autosome", {
         expect_equal(result, log(expected))
     }
 
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("risib4", c(0.01, 0.1, 0.45), FALSE, FALSE, 1:4),
+                  function(a) rowSums(exp(a)), rep(1,4))
+    expect_equal(obs, matrix(1, ncol=3, nrow=4))
+
+    obs <- vapply(test_stepmatrix("risib4", c(0.01, 0.1, 0.45), FALSE, FALSE, c(3,1,2,4)),
+                  function(a) rowSums(exp(a)), rep(1,4))
+    expect_equal(obs, matrix(1, ncol=3, nrow=4))
+
+    obs <- vapply(test_stepmatrix("risib4", c(0.01, 0.1, 0.45), TRUE, FALSE, c(3,1,2,4)),
+                  function(a) rowSums(exp(a)), rep(1,3))
+    expect_equal(obs, matrix(1, ncol=3, nrow=3))
+
 })
 
 
@@ -90,6 +103,19 @@ test_that("risib8 step works for autosome", {
 
         expect_equal(result, log(expected))
     }
+
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("risib8", c(0.01, 0.1, 0.45), FALSE, FALSE, 1:8),
+                  function(a) rowSums(exp(a)), rep(1,8))
+    expect_equal(obs, matrix(1, ncol=3, nrow=8))
+
+    obs <- vapply(test_stepmatrix("risib8", c(0.01, 0.1, 0.45), FALSE, FALSE, c(3,1,5:8,2,4)),
+                  function(a) rowSums(exp(a)), rep(1,8))
+    expect_equal(obs, matrix(1, ncol=3, nrow=8))
+
+    obs <- vapply(test_stepmatrix("risib8", c(0.01, 0.1, 0.45), TRUE, FALSE, c(3,1,5:8,2,4)),
+                  function(a) rowSums(exp(a)), rep(1,5))
+    expect_equal(obs, matrix(1, ncol=3, nrow=5))
 
 })
 

@@ -48,6 +48,16 @@ test_that("riself4 step works", {
         expect_equal(result, log(expected))
     }
 
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("riself4", c(0.01, 0.1, 0.45), FALSE, FALSE, 1:4),
+                  function(a) rowSums(exp(a)), rep(1,4))
+    expect_equal(obs, matrix(1, ncol=3, nrow=4))
+
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("riself4", c(0.01, 0.1, 0.45), FALSE, FALSE, c(3,1,2,4)),
+                  function(a) rowSums(exp(a)), rep(1,4))
+    expect_equal(obs, matrix(1, ncol=3, nrow=4))
+
 })
 
 
@@ -95,6 +105,16 @@ test_that("riself8 step works", {
 
         expect_equal(result, log(expected))
     }
+
+
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("riself8", c(0.01, 0.1, 0.45), FALSE, FALSE, 1:8),
+                  function(a) rowSums(exp(a)), rep(1,8))
+    expect_equal(obs, matrix(1, ncol=3, nrow=8))
+
+    obs <- vapply(test_stepmatrix("riself8", c(0.01, 0.1, 0.45), FALSE, FALSE, forder),
+                  function(a) rowSums(exp(a)), rep(1,8))
+    expect_equal(obs, matrix(1, ncol=3, nrow=8))
 
 })
 
@@ -148,6 +168,17 @@ test_that("riself16 step works", {
 
         expect_equal(result, log(expected))
     }
+
+
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("riself16", c(0.01, 0.1, 0.45), FALSE, FALSE, 1:16),
+                  function(a) rowSums(exp(a)), rep(1,16))
+    expect_equal(obs, matrix(1, ncol=3, nrow=16))
+
+    # test_stepmatrix: output has rows that sum to 1
+    obs <- vapply(test_stepmatrix("riself16", c(0.01, 0.1, 0.45), FALSE, FALSE, forder),
+                  function(a) rowSums(exp(a)), rep(1,16))
+    expect_equal(obs, matrix(1, ncol=3, nrow=16))
 
 })
 
