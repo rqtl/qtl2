@@ -8,6 +8,7 @@ Description: R/qtl2 provides a set of tools to perform quantitative
     high-dimensional data and complex cross designs. This package is
     designed to make it easy to install and load multiple R/qtl2
     packages in a single step.
+    Broman et al. (2018) <doi:10.1534/genetics.118.301595>.
 Author: Karl W Broman <broman@wisc.edu>
 Maintainer: Karl W Broman <broman@wisc.edu>
 Depends:
