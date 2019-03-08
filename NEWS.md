@@ -1,4 +1,4 @@
-## qtl2 0.19-3 (2019-03-05)
+## qtl2 0.19-5 (2019-03-08)
 
 ### Minor changes
 
@@ -6,6 +6,11 @@
   annotations. Some of the field names have changed.
 
 ### Bug fixes
+
+- Fix bug in `scan1snps()` re `keep_all_snps=FALSE`. It wasn't
+  subsetting to the indexed SNPs properly. Added an internal function
+  `reduce_to_indexed_snps()`.
+  (See [Issue #89](https://github.com/rqtl/qtl2/issues/89).)
 
 - Fix bug in step probabilities for 4-, 8-, and 16-way RIL by selfing.
 

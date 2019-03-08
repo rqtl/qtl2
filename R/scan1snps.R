@@ -278,8 +278,7 @@ scan1snps_snpinfo <-
                  weights=weights, reml=reml, model=model, ...)
 
     if(!keep_all_snps) {
-        snpinfo <- snpinfo[unique(snpinfo$index),,drop=FALSE]
-        snpinfo$index <- seq_len(nrow(snpinfo))
+        snpinfo <- reduce_to_indexed_snps(snpinfo)
     }
 
     # return list with lod scores + indexed snpinfo
