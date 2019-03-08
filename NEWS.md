@@ -8,8 +8,8 @@
 ### Bug fixes
 
 - Fix bug in `scan1snps()` re `keep_all_snps=FALSE`. It wasn't
-  subsetting to the indexed SNPs properly. Added an internal function
-  `reduce_to_indexed_snps()`.
+  subsetting to the index SNPs properly. Added an internal function
+  `reduce_to_index_snps()`.
   (See [Issue #89](https://github.com/rqtl/qtl2/issues/89).)
 
 - Fix bug in step probabilities for 4-, 8-, and 16-way RIL by selfing.

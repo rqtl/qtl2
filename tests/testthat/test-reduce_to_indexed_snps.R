@@ -1,4 +1,4 @@
-context("reduce to indexed snps")
+context("reduce to index snps")
 
 test_that("reduce_to_index_snps works", {
 
@@ -20,9 +20,9 @@ test_that("reduce_to_index_snps works", {
                      interval=c(91,91,132,112,237,237),
                      on_map=c(FALSE, FALSE, TRUE, FALSE, FALSE, FALSE))
 
-    expect_equal(reduce_to_indexed_snps(snpinfo), snpinfo)
-    expect_equal(reduce_to_indexed_snps(snpinfo[snpinfo$chr==19,]), snpinfo[snpinfo$chr==19,])
-    expect_equal(reduce_to_indexed_snps(snpinfo[snpinfo$chr=="X",]), snpinfo[snpinfo$chr=="X",])
+    expect_equal(reduce_to_index_snps(snpinfo), snpinfo)
+    expect_equal(reduce_to_index_snps(snpinfo[snpinfo$chr==19,]), snpinfo[snpinfo$chr==19,])
+    expect_equal(reduce_to_index_snps(snpinfo[snpinfo$chr=="X",]), snpinfo[snpinfo$chr=="X",])
 
     # repeat with some redundant snps
     snpinfo_extra <- data.frame(chr=c("19", "19", "X", "X"),
@@ -41,8 +41,8 @@ test_that("reduce_to_index_snps works", {
     expected <- snpinfo_extra[c(1,3,5,6,8,9),]
     expected$index <- c(1,2,3,1,2,3)
 
-    expect_equal(reduce_to_indexed_snps(snpinfo_extra), expected)
-    expect_equal(reduce_to_indexed_snps(snpinfo_extra[snpinfo_extra$chr==19,]), expected[expected$chr==19,])
-    expect_equal(reduce_to_indexed_snps(snpinfo_extra[snpinfo_extra$chr=="X",]), expected[expected$chr=="X",])
+    expect_equal(reduce_to_index_snps(snpinfo_extra), expected)
+    expect_equal(reduce_to_index_snps(snpinfo_extra[snpinfo_extra$chr==19,]), expected[expected$chr==19,])
+    expect_equal(reduce_to_index_snps(snpinfo_extra[snpinfo_extra$chr=="X",]), expected[expected$chr=="X",])
 
 })

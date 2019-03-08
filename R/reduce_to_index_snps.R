@@ -1,5 +1,5 @@
 # reduce snpinfo to the indexed snps
-reduce_to_indexed_snps <- function(snpinfo)
+reduce_to_index_snps <- function(snpinfo)
 {
     if(length(unique(snpinfo$chr)) > 1) { # more than one chromosome
         # rows for each chromosome
@@ -8,7 +8,7 @@ reduce_to_indexed_snps <- function(snpinfo)
         # apply this function to one chromosome at a time
         result <- vector("list", length(rows_spl))
         for(chr in seq_along(rows_spl)) {
-            result[[chr]] <- reduce_to_indexed_snps(snpinfo[rows_spl[[chr]],,drop=FALSE])
+            result[[chr]] <- reduce_to_index_snps(snpinfo[rows_spl[[chr]],,drop=FALSE])
         }
 
         # re-combine by rows
