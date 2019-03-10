@@ -4,8 +4,6 @@
 #' [sim_geno()], for the same individuals but different
 #' chromosomes.
 #'
-#' @md
-#'
 #' @param ... Genotype imputation objects as produced by
 #' [sim_geno()]. Must have the same set of individuals.
 #'

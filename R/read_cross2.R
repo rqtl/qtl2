@@ -3,8 +3,6 @@
 #'
 #' Read QTL data from a set of files
 #'
-#' @md
-#'
 #' @param file Character string with path to the
 #' [YAML](http://www.yaml.org) or [JSON](http://www.json.org/) file containing all of the control
 #' information. This could instead be a zip file containing all of the

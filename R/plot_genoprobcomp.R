@@ -2,8 +2,6 @@
 #'
 #' Plot a comparison of two sets of genotype probabilities for one individual on one chromosome, as a heat map.
 #'
-#' @md
-#'
 #' @param probs1 Genotype probabilities (as produced by [calc_genoprob()])
 #' or allele dosages (as produced by [genoprob_to_alleleprob()]).
 #' @param probs2 A second set of genotype probabilities, just like `probs1`.

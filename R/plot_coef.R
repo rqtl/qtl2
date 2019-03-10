@@ -2,8 +2,6 @@
 #'
 #' Plot estimated QTL effects along a chromosomes.
 #'
-#' @md
-#'
 #' @param x Estimated QTL effects ("coefficients") as obtained from
 #' [scan1coef()].
 #'

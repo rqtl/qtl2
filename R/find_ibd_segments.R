@@ -3,8 +3,6 @@
 #' Find IBD segments (regions with a lot of shared SNP genotypes) for
 #' a set of strains
 #'
-#' @md
-#'
 #' @param geno List of matrices of founder genotypes. The matrices
 #'     correspond to the genotypes on chromosomes and are arrayed as
 #'     founders x markers.

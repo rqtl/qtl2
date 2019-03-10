@@ -5,8 +5,6 @@
 #' Construct vectors of logical indicators that indicate which
 #' positions correspond to locations along a grid
 #'
-#' @md
-#'
 #' @param map A list of numeric vectors; each vector gives marker
 #' positions for a single chromosome.
 #' @param step Distance between pseudomarkers and markers; if

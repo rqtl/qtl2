@@ -3,8 +3,6 @@
 #' Plot gene locations for a genomic interval, as rectangles with gene
 #' symbol (and arrow indicating strand/direction) below.
 #'
-#' @md
-#'
 #' @param genes Data frame containing `start` and `stop` in
 #' Mbp, `strand` (as `"-"`, `"+"`, or `NA`), and
 #' `Name`.

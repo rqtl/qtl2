@@ -3,8 +3,6 @@
 #'
 #' Drop a vector of markers from a cross2 object.
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param markers A vector of marker names.
@@ -76,8 +74,6 @@ drop_markers <-
 #'
 #' Drop markers with no genotype data (or no informative genotypes)
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param quiet If FALSE, print information about how many markers were dropped.
@@ -140,8 +136,6 @@ drop_nullmarkers <-
 #' Drop all but a specified set of markers
 #'
 #' Drop all markers from a cross2 object expect those in a specified vector.
-#'
-#' @md
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).

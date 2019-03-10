@@ -3,8 +3,6 @@
 #'
 #' Find markers closest to specified set of positions, or within a specified interval.
 #'
-#' @md
-#'
 #' @param map A map object: a list (corresponding to chromosomes) of
 #'     vectors of marker positions. Can also be a snpinfo object (data
 #'     frame with columns `chr` and `pos`; marker names taken from

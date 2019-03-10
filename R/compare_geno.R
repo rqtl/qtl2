@@ -4,8 +4,6 @@
 #' Count the number of matching genotypes between all pairs of
 #' individuals, to look for unusually closely related individuals.
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param omit_x If TRUE, only use autosomal genotypes
@@ -100,8 +98,6 @@ compare_geno <-
 #'
 #' From results of [compare_geno()], show pairs of individuals with similar genotypes.
 #'
-#' @md
-#'
 #' @param object A square matrix with genotype comparisons for pairs
 #'     of individuals, as output by [compare_geno()].
 #' @param threshold Minimum proportion matches for a pair of individuals to be shown.
@@ -195,8 +191,6 @@ summary.compare_geno <- summary_compare_geno
 
 #' @rdname summary_compare_geno
 #'
-#' @md
-#'
 #' @param x Results of [summary.compare_geno()]
 #' @param digits Number of digits to print
 #' @export
@@ -215,8 +209,6 @@ print.summary.compare_geno <-
 #' Find pair with most similar genotypes
 #'
 #' From results of [compare_geno()], show the pair with most similar genotypes.
-#'
-#' @md
 #'
 #' @param object A square matrix with genotype comparisons for pairs
 #'     of individuals, as output by [compare_geno()].

@@ -3,8 +3,6 @@
 #' Pull out the genotype probabilities for a particular position (by
 #' name)
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
 #' @param marker A single character string with the name of the

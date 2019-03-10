@@ -2,8 +2,6 @@
 #'
 #' Calculate genotype frequencies, by individual or by marker
 #'
-#' @md
-#'
 #' @param probs List of arrays of genotype probabilities, as
 #'     calculated by [calc_genoprob()].
 #' @param by Whether to summarize by individual or marker

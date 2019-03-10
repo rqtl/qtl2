@@ -3,8 +3,6 @@
 #' This is like [base::cbind()] but using row names to align the rows and expanding
 #' with missing values if there are rows in some matrices but not others.
 #'
-#' @md
-#'
 #' @param ... A set of matrices or data frames
 #'
 #' @return The matrices combined by columns, using row names to align the rows, and expanding with missing values if there are rows in some matrices but not others.

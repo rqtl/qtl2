@@ -2,8 +2,6 @@
 #'
 #' Replace the individual IDs in an object with new ones
 #'
-#' @md
-#'
 #' @param x Object whose IDs will be replaced
 #'
 #' @param ids Vector of character strings with the new individual IDs, with the names being the original IDs.

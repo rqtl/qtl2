@@ -2,8 +2,6 @@
 #'
 #' Find gaps between markers in a genetic map
 #'
-#' @md
-#'
 #' @param map Genetic map as a list of vectors (each vector is a
 #' chromosome and contains the marker positions).
 #' @param min_gap Minimum gap length to return.

@@ -5,8 +5,6 @@
 #' Pull out a specified set of individuals and/or chromosomes from
 #' the results of [viterbi()]
 #'
-#' @md
-#'
 #' @param x Imputed genotypes as output from [viterbi()].
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs

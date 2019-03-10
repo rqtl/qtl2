@@ -5,8 +5,6 @@
 #' model (the latter to account for a residual polygenic effect), with
 #' possible allowance for covariates.
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)

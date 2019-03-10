@@ -2,8 +2,6 @@
 #'
 #' Estimate the locations of crossovers in each individual on each chromosome.
 #'
-#' @md
-#'
 #' @param geno List of matrices of genotypes (output of [maxmarg()] or [viterbi()]).
 #' @param map List of vectors with the map positions of the markers.
 #' @param quiet If FALSE, print progress messages.

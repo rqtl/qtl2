@@ -2,8 +2,6 @@
 #'
 #' Estimate the numbers of crossovers in each individual on each chromosome.
 #'
-#' @md
-#'
 #' @param geno List of matrices of genotypes (output of [maxmarg()] or [viterbi()])
 #' or a list of 3d-arrays of genotypes (output of [sim_geno()]).
 #' @param quiet If FALSE, print progress messages.

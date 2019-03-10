@@ -2,8 +2,6 @@
 #'
 #' Scale kinship matrix to be like a correlation matrix.
 #'
-#' @md
-#'
 #' @param kinship A kinship matrix, or a list of such in the case of
 #'     the "leave one chromosome out" method, as calculated by
 #'     [calc_kinship()].

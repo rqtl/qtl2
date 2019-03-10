@@ -4,8 +4,6 @@
 #' Calculate genetic similarity among individuals (kinship matrix)
 #' from conditional genotype probabilities.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities, as calculated from
 #' [calc_genoprob()].
 #' @param type Indicates whether to calculate the overall kinship

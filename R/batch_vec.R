@@ -4,8 +4,6 @@
 #' creating at least `n_cores` batches, for use in parallel
 #' calculations.
 #'
-#' @md
-#'
 #' @param vec A vector to be split into batches
 #' @param batch_size Maximum size for each batch
 #' @param n_cores Number of compute cores, to be used as a minimum number of batches.

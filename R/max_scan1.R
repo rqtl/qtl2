@@ -5,8 +5,6 @@
 #' Return data frame with the positions having maximum LOD score for a
 #' particular LOD score column
 #'
-#' @md
-#'
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
@@ -154,8 +152,6 @@ max.scan1 <-
 #' Overall maximum LOD score
 #'
 #' Find overall maximum LOD score in genome scan results, across all positions and columns.
-#'
-#' @md
 #'
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].

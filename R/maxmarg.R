@@ -3,8 +3,6 @@
 #'
 #' For each individual at each position, find the genotype with the maximum marginal probability.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities, as calculated from
 #' [calc_genoprob()].
 #' @param map Map of pseudomarkers in `probs`. Used only if `chr` and `pos` are provided.

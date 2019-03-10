@@ -4,8 +4,6 @@
 #' for a genotype column where the maximum value is rather small, set
 #' all values in that column to 0.
 #'
-#' @md
-#'
 #' @param object Genotype probabilities as calculated by
 #'     [calc_genoprob()].
 #' @param value_threshold Probabilities below this value will be set

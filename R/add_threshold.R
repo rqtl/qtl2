@@ -2,8 +2,6 @@
 #'
 #' Draw line segments at significance thresholds for a genome scan plot
 #'
-#' @md
-#'
 #' @param map Marker map used in the genome scan plot
 #' @param thresholdA Autosomal threshold. Numeric or a list. (If a
 #' list, the `"A"` component is taken to be `thresholdA` and the

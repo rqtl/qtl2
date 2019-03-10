@@ -3,8 +3,6 @@
 #' Join multiple [scan1()] results for different phenotypes;
 #' must have the same map.
 #'
-#' @md
-#'
 #' @param ... Genome scan objects as produced by [scan1()].
 #' Must have the same map.
 #'

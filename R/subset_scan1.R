@@ -4,8 +4,6 @@
 #'
 #' Subset the output of [scan1()] by chromosome or column
 #'
-#' @md
-#'
 #' @param x An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by

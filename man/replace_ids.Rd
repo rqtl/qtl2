@@ -31,13 +31,13 @@ Replace the individual IDs in an object with new ones
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{cross2}: Replace IDs in a `"cross2"` object
+\item \code{cross2}: Replace IDs in a \code{"cross2"} object
 
-\item \code{calc_genoprob}: Replace IDs in output from [calc_genoprob()]
+\item \code{calc_genoprob}: Replace IDs in output from \code{\link[=calc_genoprob]{calc_genoprob()}}
 
-\item \code{viterbi}: Replace IDs in output from [viterbi()]
+\item \code{viterbi}: Replace IDs in output from \code{\link[=viterbi]{viterbi()}}
 
-\item \code{sim_geno}: Replace IDs in output from [sim_geno()]
+\item \code{sim_geno}: Replace IDs in output from \code{\link[=sim_geno]{sim_geno()}}
 }}
 
 \examples{

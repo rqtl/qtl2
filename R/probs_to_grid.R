@@ -4,8 +4,6 @@
 #' Subset genotype probability array (from [calc_genoprob()]
 #' to a grid of pseudomarkers along each chromosome.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities as output from
 #' [calc_genoprob()] with `stepwidth="fixed"`.
 #'

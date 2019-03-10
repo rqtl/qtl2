@@ -2,8 +2,6 @@
 #'
 #' Use the rows of a matrix to define a set of strata for a stratified permutation test
 #'
-#' @md
-#'
 #' @param mat A covariate matrix, as individuals x covariates
 #'
 #' @return A vector of character strings: for each row of `mat`,

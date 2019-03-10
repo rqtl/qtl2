@@ -2,8 +2,6 @@
 #'
 #' Use interpolate to convert from one map to another
 #'
-#' @md
-#'
 #' @param map The map to be interpolated; a list of vectors.
 #' @param oldmap Map with positions in the original scale, as in `map`.
 #' @param newmap Map with positions in the new scale.

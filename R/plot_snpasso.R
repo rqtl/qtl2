@@ -2,8 +2,6 @@
 #'
 #' Plot SNP associations, with possible expansion from distinct snps to all snps.
 #'
-#' @md
-#'
 #' @param scan1output Output of [scan1()] using
 #' SNP probabilities derived by
 #' [genoprob_to_snpprob()].

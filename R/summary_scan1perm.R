@@ -2,8 +2,6 @@
 #'
 #' Summarize permutation test results from [scan1perm()], as significance thresholds.
 #'
-#' @md
-#'
 #' @param object Output of [scan1perm()]
 #' @param alpha Vector of significance levels
 #'
@@ -136,8 +134,6 @@ summary.scan1perm <-
 #' Print summary of scan1perm permutations
 #'
 #' Print summary of scan1perm permutations
-#'
-#' @md
 #'
 #' @param x Object of class `"summary.scan1perm"`, as produced by [summary_scan1perm()].
 #' @param digits Number of digits in printing significance thresholds; passed to [base::print()].

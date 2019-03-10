@@ -3,8 +3,6 @@
 #' Calculate the strain distribution patterns (SDPs) from the strain
 #' genotypes at a set of SNPs.
 #'
-#' @md
-#'
 #' @param geno Matrix of SNP genotypes, markers x strains, coded as 1
 #' (AA) and 3 (BB). Markers with values other than 1 or 3 are omitted,
 #' and monomorphic markers, are omitted.
@@ -58,8 +56,6 @@ calc_sdp <-
 #' Calculate SNP genotype matrix from strain distribution patterns
 #'
 #' Calculate the matrix of SNP genotypes from a vector of strain distribution patterns (SDPs).
-#'
-#' @md
 #'
 #' @param sdp Vector of strain distribution patterns (integers between
 #' 1 and \eqn{2^n-2} where \eqn{n} is the number of strains.

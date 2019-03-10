@@ -2,8 +2,6 @@
 #'
 #' Plot one individual's genome-wide genotypes
 #'
-#' @md
-#'
 #' @param geno Imputed phase-known genotypes, as a list of matrices
 #'     (as produced by [maxmarg()]) or a list of
 #'     three-dimensional arrays (as produced by [guess_phase()]).

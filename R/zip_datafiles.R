@@ -3,8 +3,6 @@
 #'
 #' Zip a set of data files (in format read by [read_cross2()]).
 #'
-#' @md
-#'
 #' @param control_file Character string with path to the control file
 #' ([YAML](http://www.yaml.org) or [JSON](http://www.json.org/))
 #' containing all of the control information.

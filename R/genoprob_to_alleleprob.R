@@ -4,8 +4,6 @@
 #' Reduce genotype probabilities (as calculated by
 #' [calc_genoprob()]) to allele probabilities.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities, as calculated from
 #' [calc_genoprob()].
 #' @param quiet IF `FALSE`, print progress messages.

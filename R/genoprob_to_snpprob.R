@@ -4,8 +4,6 @@
 #' set of SNPs to convert founder-based genotype probabilities to SNP
 #' genotype probabilities.
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as
 #' calculated by [calc_genoprob()].
 #'

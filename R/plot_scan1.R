@@ -2,8 +2,6 @@
 #'
 #' Plot LOD curves for a genome scan
 #'
-#' @md
-#'
 #' @param x Output of [scan1()].
 #'
 #' @param map A list of vectors of marker positions, as produced by

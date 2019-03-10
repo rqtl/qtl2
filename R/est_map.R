@@ -4,8 +4,6 @@
 #' Uses a hidden Markov model to re-estimate the genetic map for an
 #' experimental cross, with possible allowance for genotyping errors.
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param error_prob Assumed genotyping error probability

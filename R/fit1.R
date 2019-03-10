@@ -3,8 +3,6 @@
 #' Fit a single-QTL model at a single putative QTL position and get detailed results
 #' about estimated coefficients and individuals contributions to the LOD score.
 #'
-#' @md
-#'
 #' @param genoprobs A matrix of genotype probabilities, individuals x genotypes
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix.

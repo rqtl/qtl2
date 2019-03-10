@@ -5,8 +5,6 @@
 #' Pull out a specified set of individuals and/or chromosomes from
 #' the results of [calc_genoprob()].
 #'
-#' @md
-#'
 #' @param x Genotype probabilities as output from [calc_genoprob()].
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs

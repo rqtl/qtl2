@@ -2,8 +2,6 @@
 #'
 #' Plot the genotype probabilities for one individual on one chromosome, as a heat map.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities (as produced by [calc_genoprob()])
 #' or allele dosages (as produced by [genoprob_to_alleleprob()]).
 #' @param map Marker map (a list of vectors of marker positions).

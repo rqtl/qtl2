@@ -5,8 +5,6 @@
 #' chromosome, with the ability to identify intervals for multiple LOD
 #' peaks.
 #'
-#' @md
-#'
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by

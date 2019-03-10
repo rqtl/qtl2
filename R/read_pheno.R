@@ -4,8 +4,6 @@
 #' covariate data from a separate CSV file). The CSV files may be
 #' contained in zip files, separately or together.
 #'
-#' @md
-#'
 #' @param file Character string with path to the phenotype data file
 #' (or a zip file containing both the phenotype and phenotype
 #' covariate files).

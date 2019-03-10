@@ -3,8 +3,6 @@
 #' Genome scan with a single-QTL model by Haley-Knott regression or a
 #' linear mixed model, with possible allowance for covariates.
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
 #' @param pheno A numeric matrix of phenotypes, individuals x phenotypes.

@@ -5,8 +5,6 @@
 #' have the same strain distribution pattern, and then create an index
 #' to a set of distinct SNPs, one per partition.
 #'
-#' @md
-#'
 #' @param map Physical map of markers and pseudomarkers; generally
 #'     created from [insert_pseudomarkers()] and
 #'     used for a set of genotype probabilities (calculated with

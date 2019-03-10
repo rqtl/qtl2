@@ -2,8 +2,6 @@
 #'
 #' Create a table of the top snp associations
 #'
-#' @md
-#'
 #' @param scan1_output Output of [scan1()].
 #' Should contain a component `"snpinfo"`, as when
 #' [scan1()] is run with SNP probabilities

@@ -37,9 +37,9 @@ on the x-axis and the chromosome position is on the y-axis.}
 \item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
 
 \item{x}{Genotype probabilities (as produced by
-[calc_genoprob()]) or allele dosages (as produced by
-[genoprob_to_alleleprob()]). (For the S3 type plot
-function, this has to be called `x`.)}
+\code{\link[=calc_genoprob]{calc_genoprob()}}) or allele dosages (as produced by
+\code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}). (For the S3 type plot
+function, this has to be called \code{x}.)}
 }
 \description{
 Plot the genotype probabilities for one individual on one chromosome, as a heat map.

@@ -4,8 +4,6 @@
 #' particular set of options, including the ability to transpose the
 #' result.
 #'
-#' @md
-#'
 #' @param filename Name of input file
 #' @param sep Field separator
 #' @param na.strings Missing value codes

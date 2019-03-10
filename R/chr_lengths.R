@@ -2,8 +2,6 @@
 #'
 #' Calculate chromosome lengths for a map object
 #'
-#' @md
-#'
 #' @param map A list of vectors, each specifying locations of the markers.
 #' @param collapse_to_AX If TRUE, collapse to the total lengths of the
 #' autosomes and X chromosome.

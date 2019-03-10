@@ -5,8 +5,6 @@
 #' result. This version assumes that the contents other than the first
 #' column and the header row are strictly numeric.
 #'
-#' @md
-#'
 #' @param filename Name of input file
 #' @param sep Field separator
 #' @param na.strings Missing value codes

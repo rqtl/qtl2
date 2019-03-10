@@ -4,8 +4,6 @@
 #' Write the control file (in [YAML](http://www.yaml.org) or [JSON](http://www.json.org)) needed
 #' by [read_cross2()] for a set of QTL data.
 #'
-#' @md
-#'
 #' @param output_file File name (with path) of the
 #' [YAML](http://www.yaml.org) or [JSON](http://www.json.org) file to be created, as a character
 #' string. If extension is `.json`, JSON format is used; otherwise, YAML is used.

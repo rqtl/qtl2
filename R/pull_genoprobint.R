@@ -2,8 +2,6 @@
 #'
 #' Pull out the genotype probabilities for a given genomic interval
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
 #' @param map The marker map for the genotype probabilities

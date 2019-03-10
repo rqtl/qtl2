@@ -4,8 +4,6 @@
 #' single-QTL model treating the QTL effects as random, with possible
 #' allowance for covariates and for a residual polygenic effect.
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)

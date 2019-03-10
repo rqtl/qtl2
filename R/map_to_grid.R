@@ -3,8 +3,6 @@
 #'
 #' Subset a map object to the locations on some grid.
 #'
-#' @md
-#'
 #' @param map A list of vectors of marker positions.
 #' @param grid A list of logical vectors (aligned with
 #' `map`), with TRUE indicating the position is on the grid.

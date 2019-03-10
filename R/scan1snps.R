@@ -5,8 +5,6 @@
 #' SNPs genotyped in the founders, by Haley-Knott regression or a
 #' liear mixed model, with possible allowance for covariates.
 #'
-#' @md
-#'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
 #' @param map Physical map for the positions in the `genoprobs`

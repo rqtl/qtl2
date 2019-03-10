@@ -4,8 +4,6 @@
 #' of the genotype probability distribution, as a quantitative summary
 #' of the amount of missing information.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities, as calculated from
 #' [calc_genoprob()].
 #' @param quiet IF `FALSE`, print progress messages.

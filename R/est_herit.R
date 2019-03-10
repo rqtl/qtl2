@@ -3,8 +3,6 @@
 #' Estimate the heritability of a set of traits via a linear mixed
 #' model, with possible allowance for covariates.
 #'
-#' @md
-#'
 #' @param pheno A numeric matrix of phenotypes, individuals x phenotypes.
 #' @param kinship A kinship matrix.
 #' @param addcovar An optional numeric matrix of additive covariates.

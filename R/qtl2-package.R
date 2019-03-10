@@ -2,8 +2,6 @@
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib qtl2, .registration=TRUE
 #'
-#' @md
-#'
 #' @section Vignettes:
 #' * [user guide](https://kbroman.org/qtl2/assets/vignettes/user_guide.html)
 #' * [input file formats](https://kbroman.org/qtl2/assets/vignettes/input_files.html)

@@ -3,8 +3,6 @@
 #' Join multiple [scan1()] results for different
 #' chromosomes; must have the same set of lod score column.
 #'
-#' @md
-#'
 #' @param ... Genome scan objects as produced by [scan1()].
 #' Must have the same lod score columns.
 #'

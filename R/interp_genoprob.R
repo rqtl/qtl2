@@ -3,8 +3,6 @@
 #'
 #' Linear interpolation of genotype probabilities, mostly to get two sets onto the same map for comparison purposes.
 #'
-#' @md
-#'
 #' @param probs Genotype probabilities, as calculated from
 #' [calc_genoprob()].
 #' @param map List of vectors of map positions.

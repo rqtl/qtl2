@@ -4,8 +4,6 @@
 #' information and return a data frame with gene information for a
 #' selected region.
 #'
-#' @md
-#'
 #' @param dbfile Name of database file
 #' @param db Optional database connection (provide one of `file` and `db`).
 #' @param table_name Name of table in the database

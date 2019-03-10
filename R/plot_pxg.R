@@ -2,8 +2,6 @@
 #'
 #' Plot phenotype vs genotype for a single putative QTL and a single phenotype.
 #'
-#' @md
-#'
 #' @param geno Vector of genotypes, as produced by
 #' [maxmarg()] with specific `chr` and
 #' `pos`.

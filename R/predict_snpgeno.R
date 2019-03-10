@@ -2,8 +2,6 @@
 #'
 #' Predict SNP genotypes in a multiparent population from inferred genotypes plus founder strains' SNP alleles.
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param geno Imputed genotypes, as a list of matrices, as from [maxmarg()].

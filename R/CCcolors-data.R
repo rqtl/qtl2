@@ -1,8 +1,6 @@
 #' @name CCcolors
 #' @aliases CCcolors
 #'
-#' @md
-#'
 #' @title Collaborative Cross colors
 #'
 #' @description A vector of 8 colors for use with the mouse

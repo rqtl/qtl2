@@ -4,8 +4,6 @@
 #'
 #' Insert pseudomarkers into a map of genetic markers
 #'
-#' @md
-#'
 #' @param map A list of numeric vectors; each vector gives marker
 #' positions for a single chromosome.
 #' @param step Distance between pseudomarkers and markers; if

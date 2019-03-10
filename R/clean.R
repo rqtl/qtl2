@@ -2,8 +2,6 @@
 #'
 #' Clean an object by removing messy values
 #'
-#' @md
-#'
 #' @param object Object to be cleaned
 #' @param ... Other arguments
 #' @return Input object with messy values cleaned up

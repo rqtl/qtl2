@@ -3,8 +3,6 @@
 #' Clean scan1 output by replacing negative values with NA and remove
 #' rows where all values are NA.
 #'
-#' @md
-#'
 #' @param object Output of [scan1()].
 #' @param ... Ignored at present
 #'

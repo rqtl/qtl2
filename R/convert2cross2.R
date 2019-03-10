@@ -3,8 +3,6 @@
 #'
 #' Convert a cross object from the R/qtl format to the R/qtl2 format
 #'
-#' @md
-#'
 #' @param cross An object of class `"cross"`; see
 #' [qtl::read.cross()] for details.
 #'

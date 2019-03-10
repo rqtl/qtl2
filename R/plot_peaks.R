@@ -2,8 +2,6 @@
 #'
 #' Plot QTL peak locations (possibly with intervals) for multiple traits.
 #'
-#' @md
-#'
 #' @param peaks Data frame such as that produced by
 #'     [find_peaks()]) containing columns
 #'     `chr`, `pos`, `lodindex`, and `lodcolumn`.

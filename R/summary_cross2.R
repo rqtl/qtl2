@@ -4,8 +4,6 @@
 #'
 #' Basic summaries of a cross2 object.
 #'
-#' @md
-#'
 #' @param cross2 An object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
@@ -292,8 +290,6 @@ function(cross2)
 #'
 #' Print a summary of a cross2 object
 #'
-#' @md
-#'
 #' @param x An object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
@@ -314,8 +310,6 @@ function(x, ...)
 #' Summary of cross2 object
 #'
 #' Summarize a cross2 object
-#'
-#' @md
 #'
 #' @param object An object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).

@@ -3,8 +3,6 @@
 #' Join multiple viterbi objects, as produced by [viterbi()], for the
 #' same set of individuals but different chromosomes.
 #'
-#' @md
-#'
 #' @param ... Imputed genotype objects as produced by
 #' [viterbi()]. Must have the same set of individuals.
 #'

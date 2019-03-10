@@ -5,6 +5,8 @@
 - Updated `extdata/mouse_genes_small.sqlite` using updated MGI
   annotations. Some of the field names have changed.
 
+- Use Markdown for function documentation, throughout
+
 ### Bug fixes
 
 - Fix bug in `scan1snps()` re `keep_all_snps=FALSE`. It wasn't

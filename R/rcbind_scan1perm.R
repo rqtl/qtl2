@@ -2,8 +2,6 @@
 #'
 #' Row-bind multiple scan1perm objects with the same set of columns
 #'
-#' @md
-#'
 #' @param ... A set of permutation results from
 #' [scan1perm()] (objects of class `"scan1perm"`.
 #' They must have the same set of columns. If any include
@@ -147,8 +145,6 @@ c.scan1perm <- rbind.scan1perm
 #' Combine columns from multiple scan1 permutation results
 #'
 #' Column-bind multiple scan1perm objects with the same numbers of rows.
-#'
-#' @md
 #'
 #' @param ... A set of permutation results from
 #' [scan1perm()] (objects of class `"scan1perm"`. If

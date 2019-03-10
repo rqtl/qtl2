@@ -3,8 +3,6 @@
 #' For a set objects with IDs as row names (or, for a vector, just
 #' names), find the IDs that are present in all of the objects.
 #'
-#' @md
-#'
 #' @param ... A set of objects: vectors, lists, matrices, data frames,
 #' and/or arrays. If one is a character vector with no names
 #' attribute, it's taken to be a set of IDs, itself.

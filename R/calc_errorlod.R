@@ -6,8 +6,6 @@
 #' scores, to help identify potential genotyping errors (and problem
 #' markers and/or individuals).
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
 #' @param probs Genotype probabilities as calculated from [calc_genoprob()].

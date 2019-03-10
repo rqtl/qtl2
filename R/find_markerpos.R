@@ -3,8 +3,6 @@
 #'
 #' Find positions of markers within a cross object
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' Can also be a map (as a list of vectors of marker positions).

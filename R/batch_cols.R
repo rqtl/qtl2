@@ -3,8 +3,6 @@
 #' Identify batches of columns of a matrix that have the same pattern
 #' of missing values.
 #'
-#' @md
-#'
 #' @param mat A numeric matrix
 #' @param max_batch Maximum batch size
 #'

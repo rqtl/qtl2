@@ -2,8 +2,6 @@
 #'
 #' Calculate the eigen decomposition of a kinship matrix, or of a list of such matrices.
 #'
-#' @md
-#'
 #' @param kinship A square matrix, or a list of square matrices.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)

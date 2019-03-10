@@ -4,8 +4,6 @@
 #' Get the matrix of covariates to be used for the null hypothesis when
 #' performing QTL analysis with the X chromosome.
 #'
-#' @md
-#'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'

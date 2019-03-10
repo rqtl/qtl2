@@ -1,5 +1,4 @@
 # align scan1 output with a map
-#' @md
 #' @describeIn qtl2-internal Align `scan1()` output with a map
 #' @keywords internal
 #' @export

@@ -3,8 +3,6 @@
 #'
 #' Find peaks in a set of LOD curves (output from [scan1()]
 #'
-#' @md
-#'
 #' @param scan1_output An object of class `"scan1"` as returned by
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by

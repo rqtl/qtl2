@@ -8,13 +8,13 @@ xpos_scan1(map, chr = NULL, gap = NULL, thechr, thepos)
 }
 \arguments{
 \item{map}{A list of vectors of marker positions, as produced by
-[insert_pseudomarkers()].}
+\code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{chr}{Selected chromosomes that were plotted (if used in the
-call to [plot_scan1()].}
+call to \code{\link[=plot_scan1]{plot_scan1()}}.}
 
 \item{gap}{The gap between chromosomes used in the call to
-[plot_scan1()].}
+\code{\link[=plot_scan1]{plot_scan1()}}.}
 
 \item{thechr}{Vector of chromosome IDs}
 
@@ -24,12 +24,12 @@ call to [plot_scan1()].}
 A vector of x-axis locations.
 }
 \description{
-For a plot of [scan1()] results, get the x-axis
+For a plot of \code{\link[=scan1]{scan1()}} results, get the x-axis
 location that corresponds to a particular genomic location
 (chromosome ID and position).
 }
 \details{
-`thechr` and `thepos` should be the same length,
+\code{thechr} and \code{thepos} should be the same length,
 or should have length 1 (in which case they are expanded to the
 length of the other vector).
 }

@@ -2,8 +2,6 @@
 #'
 #' For a particular SNP, find the name of the corresponding indexed SNP.
 #'
-#' @md
-#'
 #' @param snpinfo Data frame with SNP information with the following columns:
 #' * `chr` - Character string or factor with chromosome
 #' * `index` - Numeric index of equivalent, indexed SNP, as produced by [index_snps()].

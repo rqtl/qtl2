@@ -2,8 +2,6 @@
 #'
 #' Perform a chi-square test for independence for all pairs of columns of a matrix.
 #'
-#' @md
-#'
 #' @param x A matrix of positive integers. `NA`s and values <= 0 are treated as missing.
 #'
 #' @return A matrix of size p x p, where p is the number of columns in

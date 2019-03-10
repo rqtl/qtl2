@@ -3,8 +3,6 @@
 #' Find the largest subset of markers such that no two adjacent
 #' markers are separated by less than some distance.
 #'
-#' @md
-#'
 #' @param map A list with each component being a vector with the
 #' marker positions for a chromosome.
 #' @param min_distance Minimum distance between markers.

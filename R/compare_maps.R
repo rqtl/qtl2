@@ -3,8 +3,6 @@
 #' Compare two marker maps, identifying markers that are only in one
 #' of the two maps, or that are in different orders on the two maps.
 #'
-#' @md
-#'
 #' @param map1 A list of numeric vectors; each vector gives marker
 #' positions for a single chromosome.
 #' @param map2 A second map, in the same format as `map1`.
