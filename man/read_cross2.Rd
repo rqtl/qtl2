@@ -27,10 +27,8 @@ A control file in \href{http://www.yaml.org}{YAML} or
 \href{http://www.json.org/}{JSON} format contains information
 about basic parameters as well as the names of the series of
 data files to be read. See the
-\href{https://kbroman.org/qtl2/pages/sampledata.html}{sample
-data files} and the
-\href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
-describing the input file format}.
+\href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
+\href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
 }
 \examples{
 \dontrun{

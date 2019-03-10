@@ -18,16 +18,14 @@
 #' [JSON](http://www.json.org/) format contains information
 #' about basic parameters as well as the names of the series of
 #' data files to be read. See the
-#' \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample
-#' data files} and the
-#' \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
-#' describing the input file format}.
+#' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the
+#' [vignette describing the input file format](https://kbroman.org/qtl2/assets/vignettes/input_files.html).
 #'
 #' @export
 #' @keywords IO
 #' @seealso [read_pheno()], [write_control_file()],
-#' sample data files at \url{https://kbroman.org/qtl2/pages/sampledata.html}
-#' and \url{https://github.com/rqtl/qtl2data}
+#' sample data files at <https://kbroman.org/qtl2/pages/sampledata.html>
+#' and <https://github.com/rqtl/qtl2data>
 #'
 #' @examples
 #' \dontrun{

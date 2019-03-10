@@ -7,7 +7,7 @@
 #' markers and/or individuals).
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
-#' \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param probs Genotype probabilities as calculated from [calc_genoprob()].
 #' @param quiet If `FALSE`, print progress messages.
 #' @param cores Number of CPU cores to use, for parallel calculations.

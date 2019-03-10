@@ -30,7 +30,7 @@
 #'
 #' @export
 #' @keywords IO
-#' @seealso [read_cross2()], sample data files at \url{https://kbroman.org/qtl2/pages/sampledata.html}
+#' @seealso [read_cross2()], sample data files at <https://kbroman.org/qtl2/pages/sampledata.html>
 #' @examples
 #' \dontrun{
 #' control_file <- "~/grav2_data/grav2.yaml"

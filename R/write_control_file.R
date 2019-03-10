@@ -69,15 +69,13 @@
 #' control file (in [YAML](http://www.yaml.org) format) needed
 #' for the new input data file format for
 #' [R/qtl2](https://kbroman.org/qtl2).  See the
-#' \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data
-#' files} and the
-#' \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
-#' describing the input file format}.
+#' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the
+#' [vignette describing the input file format](https://kbroman.org/qtl2/assets/vignettes/input_files.html).
 #'
 #' @export
 #' @keywords utilities
 #' @seealso [read_cross2()], sample data files at
-#' \url{https://kbroman.org/qtl2/pages/sampledata.html}
+#' <https://kbroman.org/qtl2/pages/sampledata.html>
 #' @examples
 #' \dontrun{
 #' # Control file for the sample dataset, grav2

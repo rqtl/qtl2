@@ -115,10 +115,8 @@ This function takes a set of parameters and creates the
 control file (in \href{http://www.yaml.org}{YAML} format) needed
 for the new input data file format for
 \href{https://kbroman.org/qtl2}{R/qtl2}.  See the
-\href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data
-files} and the
-\href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette
-describing the input file format}.
+\href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
+\href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
 }
 \examples{
 \dontrun{
