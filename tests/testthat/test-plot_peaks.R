@@ -19,4 +19,8 @@ test_that("plot_peaks works", {
 
     vdiffr::expect_doppelganger("plot_peaks", test_plot_peaks)
 
+    peaks <- find_peaks(out, map, threshold=3.5)
+    test_plot_peaks_noci <- function() plot_peaks(peaks, map)
+    vdiffr::expect_doppelganger("plot_peaks_noci", test_plot_peaks_noci)
+
 })

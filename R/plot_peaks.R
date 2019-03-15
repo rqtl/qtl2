@@ -288,10 +288,10 @@ add_lod_labels <-
 
         # position for text
         label_gap[label_left] <- -label_gap[label_left]
-        x <- peaks$ci_hi
+        x <- ci_hi
         label_adj <- rep(0, nrow(peaks))
         if(any(label_left)) {
-            x[label_left] <- peaks$ci_lo[label_left]
+            x[label_left] <- ci_lo[label_left]
             label_adj[label_left] <- 1
         }
         x <- xpos_scan1(map, names(map), gap, peaks$chr, x) + label_gap

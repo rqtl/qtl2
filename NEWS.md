@@ -1,4 +1,4 @@
-## qtl2 0.19-5 (2019-03-08)
+## qtl2 0.19-6 (2019-03-15)
 
 ### Minor changes
 
@@ -9,15 +9,19 @@
 
 ### Bug fixes
 
-- Fix bug in `scan1snps()` re `keep_all_snps=FALSE`. It wasn't
+- Fixed bug in `scan1snps()` re `keep_all_snps=FALSE`. It wasn't
   subsetting to the index SNPs properly. Added an internal function
   `reduce_to_index_snps()`.
   (See [Issue #89](https://github.com/rqtl/qtl2/issues/89).)
 
-- Fix bug in step probabilities for 4-, 8-, and 16-way RIL by selfing.
+- Fixed bug in step probabilities for 4-, 8-, and 16-way RIL by selfing.
 
-- Fix bug in `zip_datafiles()` when the files are in a subdirectory.
+- Fixed bug in `zip_datafiles()` when the files are in a subdirectory.
   (See [Issue #102](https://github.com/rqtl/qtl2/issues/102).)
+
+- Fixed bug in `plot_peaks()` for the case that the input `peaks`
+  object does not contain QTL intervals.
+  (See [Issue #107](https://github.com/rqtl/qtl2/issues/107).)
 
 
 ## qtl2 0.18 (2019-02-08)
