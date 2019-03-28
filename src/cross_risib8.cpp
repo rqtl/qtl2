@@ -186,7 +186,7 @@ const bool RISIB8::check_crossinfo(const IntegerMatrix& cross_info, const bool a
     }
     if(n_invalid > 0) {
         result = false;
-        r_message("cross_info has invalid values; each row should be permutation of {1, 2, ..., 4}");
+        r_message("cross_info has invalid values; each row should be permutation of {1, 2, ..., 8}");
     }
 
     return result;

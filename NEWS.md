@@ -1,4 +1,4 @@
-## qtl2 0.19-6 (2019-03-15)
+## qtl2 0.19-8 (2019-03-27)
 
 ### Minor changes
 
@@ -22,6 +22,9 @@
 - Fixed bug in `plot_peaks()` for the case that the input `peaks`
   object does not contain QTL intervals.
   (See [Issue #107](https://github.com/rqtl/qtl2/issues/107).)
+
+- Fixed inappropriate warning message for check of `cross_info` with
+  cross type `risib8`.
 
 
 ## qtl2 0.18 (2019-02-08)
