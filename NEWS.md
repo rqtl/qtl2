@@ -2,10 +2,11 @@
 
 ### Major changes
 
-- `scan1coef()` now, by default, gives coefficient estimates for the
-  QTL effects that sum to 0, with an additional column of the means.
-  This makes it more like DOQTL (and `scan1blup()`). The previous
-  behavior can be obtained with the argument `zerosum=FALSE`.
+- `scan1coef()` and `fit1()` now, by default, gives coefficient
+  estimates for the QTL effects that sum to 0, with an additional
+  coefficient being the intercept. This makes it more like DOQTL (and
+  `scan1blup()`). The previous behavior can be obtained with the
+  argument `zerosum=FALSE`.
 
 ### Minor changes
 

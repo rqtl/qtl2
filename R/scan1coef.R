@@ -287,17 +287,17 @@ scan1coef <-
                              scan1coef_names(genoprobs, addcovar, intcovar))
     if(se) dimnames(SE) <- dimnames(result)
 
-    if(zerosum && is.null(contrasts)) { # force QTL effects to sum to 0
+    # center the QTL effects at zero and add an intercept
+    if(zerosum && is.null(contrasts)) {
         ng <- dim(genoprobs)[2]
         whcol <- seq_len(ng)
         mu <- rowMeans(result[,whcol,drop=FALSE], na.rm=TRUE)
-        result <- cbind(result, mean=mu)
+        result <- cbind(result, intercept=mu)
         result[,whcol] <- result[,whcol] - mu
 
         if(se) {
-            SE <- cbind(SE, mean=sqrt(rowMeans(SE[,whcol,drop=FALSE]^2)))
+            SE <- cbind(SE, intercept=sqrt(rowMeans(SE[,whcol,drop=FALSE]^2, na.rm=TRUE)))
         }
-
     }
 
     attr(result, "sample_size") <- length(ind2keep)

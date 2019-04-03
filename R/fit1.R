@@ -27,6 +27,9 @@
 #'     squares) or binary model (logistic regression) for the phenotype.
 #'     If `model="binary"`, the phenotypes must have values in
 #'     \eqn{[0, 1]}.
+#' @param zerosum If TRUE, force the genotype or allele coefficients
+#'     sum to 0 by subtracting their mean and add another column with
+#'     the mean. Ignored if `contrasts` is provided.
 #' @param se If TRUE, calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
 #' `kinship` provided.
@@ -117,14 +120,14 @@ fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
              contrasts=NULL, model=c("normal", "binary"),
-             se=TRUE, hsq=NULL, reml=TRUE, ...)
+             zerosum=TRUE, se=TRUE, hsq=NULL, reml=TRUE, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
 
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                       intcovar, weights, contrasts, se, hsq, reml, ...))
+                       intcovar, weights, contrasts, zerosum, se, hsq, reml, ...))
     }
 
     model <- match.arg(model)
@@ -302,6 +305,21 @@ fit1 <-
 
     # names of coefficients
     coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)
+
+    # center the QTL effects at zero and add an intercept
+    if(zerosum && is.null(contrasts)) {
+        ng <- dim(genoprobs)[2]
+        whval <- seq_len(ng)
+        mu <- mean(fitA$coef[whval], na.rm=TRUE)
+        fitA$coef <- c(fitA$coef, mu)
+        fitA$coef[whval] <- fitA$coef[whval] - mu
+
+        coef_names <- c(coef_names, "intercept")
+
+        if(se) {
+            fitA$SE <- c(fitA$SE, sqrt(mean(fitA$SE[whval]^2, na.rm=TRUE)))
+        }
+    }
 
     if(se) # results include standard errors
         return(list(lod=lod, ind_lod=ind_lod,

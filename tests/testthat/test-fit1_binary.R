@@ -20,7 +20,7 @@ test_that("fit1 for binary traits works in intercross", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, model="binary") })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, model="binary", zerosum=FALSE) })
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
@@ -29,7 +29,7 @@ test_that("fit1 for binary traits works in intercross", {
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, model="binary") })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, model="binary", zerosum=FALSE) })
 
     pos <- cumsum(c(0, npos[-3])) + pmar
     # check LOD vs scan1, plus ind'l contributions to LOD
@@ -52,14 +52,14 @@ test_that("fit1 for binary traits works in intercross", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, model="binary") })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, model="binary", zerosum=FALSE) })
 
     # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar),
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, model="binary") })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, model="binary", zerosum=FALSE) })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:3) {
@@ -126,12 +126,12 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno, model="binary")
 
     # estimate coefficients
-    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, model="binary"))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, model="binary", zerosum=FALSE))
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
     pmar <- c(1, 172)
-    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, model="binary"))
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, model="binary", zerosum=FALSE))
 
     pos <- c(0,npos[1]) + pmar
     # check LOD vs scan1, plus ind'l contributions to LOD
@@ -151,10 +151,10 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno, model="binary")
 
     # estimate coefficients
-    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE, model="binary"))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE, model="binary", zerosum=FALSE))
 
     # fit1, missing data
-    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE, model="binary"))
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE, model="binary", zerosum=FALSE))
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:2) {
@@ -210,14 +210,14 @@ test_that("fit1 works for binary traits with weights", {
     pr <- list(probs[[1]][,,pos[1]],
                probs[[2]][,,pos[2]])
 
-    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights)
-    out_fit1_2 <- fit1(pr[[2]], phe, model="binary", se=TRUE, weights=weights)
+    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
+    out_fit1_2 <- fit1(pr[[2]], phe, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
 
     # coefficients and SEs
-    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights)
+    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equal(out_fit1_1$coef, co2[pos[1],])
     expect_equal(out_fit1_1$SE, attr(co2, "SE")[pos[1],])
-    coX <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights)
+    coX <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equal(out_fit1_2$coef, coX[pos[2],])
     expect_equal(out_fit1_2$SE, attr(coX, "SE")[pos[2],])
 
@@ -252,14 +252,14 @@ test_that("fit1 works for binary traits with weights", {
     # add a covariate
     X <- setNames(rnorm(n_ind(iron)), names(phe))
 
-    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
-    out_fit1_2 <- fit1(pr[[2]], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X, zerosum=FALSE)
+    out_fit1_2 <- fit1(pr[[2]], phe, model="binary", se=TRUE, weights=weights, addcovar=X, zerosum=FALSE)
 
     # coefficients and SEs
-    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, addcovar=X, zerosum=FALSE)
     expect_equal(out_fit1_1$coef, co2[pos[1],])
     expect_equal(out_fit1_1$SE, attr(co2, "SE")[pos[1],])
-    coX <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights, addcovar=X)
+    coX <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights, addcovar=X, zerosum=FALSE)
     expect_equal(out_fit1_2$coef, coX[pos[2],])
     expect_equal(out_fit1_2$SE, attr(coX, "SE")[pos[2],])
 
@@ -288,10 +288,10 @@ test_that("fit1 works for binary traits with weights", {
     expect_equivalent(out_fit1_2$SE, sum_glm_2$coef[,2])
 
     # interactive covariate, autosome only
-    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X)
+    out_fit1_1 <- fit1(pr[[1]], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X, zerosum=FALSE)
 
     # coefficients and SEs
-    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X)
+    co2 <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, weights=weights, addcovar=X, intcovar=X, zerosum=FALSE)
     expect_equal(out_fit1_1$coef, co2[pos[1],])
     expect_equal(out_fit1_1$SE, attr(co2, "SE")[pos[1],])
 

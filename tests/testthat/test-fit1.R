@@ -19,7 +19,7 @@ test_that("fit1 by H-K works in intercross", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov) })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, zerosum=FALSE) })
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
@@ -28,7 +28,7 @@ test_that("fit1 by H-K works in intercross", {
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov) })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, zerosum=FALSE) })
 
     pos <- cumsum(c(0, npos[-3])) + pmar
     # check LOD vs scan1, plus ind'l contributions to LOD
@@ -51,14 +51,14 @@ test_that("fit1 by H-K works in intercross", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE) })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, zerosum=FALSE) })
 
     # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar),
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE) })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, zerosum=FALSE) })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:3) {
@@ -124,7 +124,7 @@ test_that("fit1 by H-K works in intercross, with weights", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, weights=w) })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, weights=w, zerosum=FALSE) })
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
@@ -133,7 +133,7 @@ test_that("fit1 by H-K works in intercross, with weights", {
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, weights=w) })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, weights=w, zerosum=FALSE) })
 
     pos <- cumsum(c(0, npos[-3])) + pmar
     # check LOD vs scan1, plus ind'l contributions to LOD
@@ -156,14 +156,14 @@ test_that("fit1 by H-K works in intercross, with weights", {
     coef <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) cov <- NULL
         else cov <- covar
-        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, weights=w) })
+        scan1coef(subset(probs, chr=names(probs)[i]), pheno, addcovar=cov, se=TRUE, weights=w, zerosum=FALSE) })
 
     # fit1, missing data
     out_fit1 <- lapply(seq(along=pmar),
                        function(i) {
         if(i==3) { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+        fit1(probs[[i]][,,pmar[i]], pheno, addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w, zerosum=FALSE) })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:3) {
@@ -195,12 +195,12 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno)
 
     # estimate coefficients
-    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, zerosum=FALSE))
 
     # fit1, no missing data
     npos <- sapply(probs, function(a) dim(a)[3])
     pmar <- c(1, 172)
-    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno))
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, zerosum=FALSE))
 
     pos <- c(0,npos[1]) + pmar
     # check LOD vs scan1, plus ind'l contributions to LOD
@@ -220,10 +220,10 @@ test_that("fit1 by H-K works in riself", {
     out <- scan1(probs, pheno)
 
     # estimate coefficients
-    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE))
+    coef <- lapply(seq_len(length(probs)), function(i) scan1coef(subset(probs, chr=names(probs)[i]), pheno, se=TRUE, zerosum=FALSE))
 
     # fit1, missing data
-    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE))
+    out_fit1 <- lapply(seq(along=pmar), function(i) fit1(probs[[i]][,,pmar[i]], pheno, se=TRUE, zerosum=FALSE))
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in 1:2) {
@@ -280,13 +280,13 @@ test_that("fit1 by LMM works in intercross", {
         if(i==3) { cov <- NULL; nullcov <- Xcovar }
         else { cov <- covar; nullcov <- NULL }
         scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship,
-                  addcovar=cov, nullcovar=nullcov, se=TRUE) })
+                  addcovar=cov, nullcovar=nullcov, se=TRUE, zerosum=FALSE) })
 
     coef_loco <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) { cov <- NULL; nullcov <- Xcovar }
         else { cov <- covar; nullcov <- NULL }
         scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship_loco[i],
-                  addcovar=cov, nullcovar=nullcov, se=TRUE) })
+                  addcovar=cov, nullcovar=nullcov, se=TRUE, zerosum=FALSE) })
 
     names(coef) <- names(coef_loco) <- names(kinship_loco)
 
@@ -301,13 +301,13 @@ test_that("fit1 by LMM works in intercross", {
                        function(i) {
         if(chr[i]=="X") { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship, addcovar=cov, nullcovar=nullcov, se=TRUE) })
+        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship, addcovar=cov, nullcovar=nullcov, se=TRUE, zerosum=FALSE) })
 
     out_fit1_loco <- lapply(seq(along=chr),
                        function(i) {
         if(chr[i]=="X") { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship_loco[[chr[i]]], addcovar=cov, nullcovar=nullcov, se=TRUE) })
+        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship_loco[[chr[i]]], addcovar=cov, nullcovar=nullcov, se=TRUE, zerosum=FALSE) })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in seq(along=out_fit1)) {
@@ -364,13 +364,13 @@ test_that("fit1 by LMM works in intercross, with weights", {
         if(i==3) { cov <- NULL; nullcov <- Xcovar }
         else { cov <- covar; nullcov <- NULL }
         scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship,
-                  addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+                  addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w, zerosum=FALSE) })
 
     coef_loco <- lapply(seq_len(length(probs)), function(i) {
         if(i==3) { cov <- NULL; nullcov <- Xcovar }
         else { cov <- covar; nullcov <- NULL }
         scan1coef(subset(probs, chr=names(probs)[i]), pheno, kinship_loco[i],
-                  addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+                  addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w, zerosum=FALSE) })
 
     names(coef) <- names(coef_loco) <- names(kinship_loco)
 
@@ -385,14 +385,14 @@ test_that("fit1 by LMM works in intercross, with weights", {
                        function(i) {
         if(chr[i]=="X") { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
-        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship, addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w) })
+        fit1(probs[[chr[i]]][,,index[i]], pheno, kinship, addcovar=cov, nullcovar=nullcov, se=TRUE, weights=w, zerosum=FALSE) })
 
     out_fit1_loco <- lapply(seq(along=chr),
                        function(i) {
         if(chr[i]=="X") { nullcov <- Xcovar; cov <- NULL } # need Xcovar under null on X chr but no other covariates
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
         fit1(probs[[chr[i]]][,,index[i]], pheno, kinship_loco[[chr[i]]], addcovar=cov, nullcovar=nullcov,
-             se=TRUE, weights=w) })
+             se=TRUE, weights=w, zerosum=FALSE) })
 
     # check LOD vs scan1, plus ind'l contributions to LOD
     for(i in seq(along=out_fit1)) {

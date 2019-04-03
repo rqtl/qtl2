@@ -3,7 +3,7 @@
 fit1_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
-             weights=NULL, contrasts=NULL, se=FALSE,
+             weights=NULL, contrasts=NULL, zerosum=TRUE, se=FALSE,
              hsq=NULL, reml=TRUE, ...)
 {
     # deal with the dot args
@@ -161,6 +161,22 @@ fit1_pg <-
 
     # fitted values
     fitted <- pheno - fitA$resid
+
+    # center the QTL effects at zero and add an intercept
+    if(zerosum && is.null(contrasts)) {
+        ng <- dim(genoprobs)[2]
+        whval <- seq_len(ng)
+        mu <- mean(fitA$coef[whval], na.rm=TRUE)
+        fitA$coef <- c(fitA$coef, mu)
+        fitA$coef[whval] <- fitA$coef[whval] - mu
+
+        coef_names <- c(coef_names, "intercept")
+
+        if(se) {
+            fitA$SE <- c(fitA$SE, sqrt(mean(fitA$SE[whval]^2, na.rm=TRUE)))
+        }
+    }
+
 
     if(se) # results include standard errors
         return(list(lod=lod, ind_lod=ind_lod,
