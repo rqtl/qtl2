@@ -60,95 +60,95 @@ test_that("scan1coef_pg for grav", {
     K <- calc_kinship(pr)
     phe <- grav$pheno[,"T330",drop=FALSE]
 
-    est <- scan1coef(pr[,1], phe, K, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-decomp kinship
     Ke <- decomp_kinship(K)
-    est <- scan1coef(pr[,1], phe, Ke)
+    est <- scan1coef(pr[,1], phe, Ke, zerosum=FALSE)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, Ke, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # kinship is a list of length 1
     Klist <- list("1"=K)
-    est <- scan1coef(pr[,1], phe, Klist)
+    est <- scan1coef(pr[,1], phe, Klist, zerosum=FALSE)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, Klist, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Klist, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # include covariate
     covar <- cbind(chr3=pr[[3]][,2,"CC.266L"])
-    est <- scan1coef(pr[,1], phe, K, covar, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, covar, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K, covar)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
-    est <- scan1coef(pr[,1], phe, Ke, covar)
+    est <- scan1coef(pr[,1], phe, Ke, covar, zerosum=FALSE)
     expect_equivalent(est, est_lm)
-    est <- scan1coef(pr[,1], phe, Ke, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # interactive covariate
-    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
-    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, zerosum=FALSE)
     expect_equivalent(est, est_lm)
-    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two covariates
     covar <- cbind(covar, chr4=pr[[4]][,2,"CD.329C-Col"])
-    est <- scan1coef(pr[,1], phe, K, covar, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, covar, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K, covar)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
-    est <- scan1coef(pr[,1], phe, Ke, covar)
+    est <- scan1coef(pr[,1], phe, Ke, covar, zerosum=FALSE)
     expect_equivalent(est, est_lm)
-    est <- scan1coef(pr[,1], phe, Ke, covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two interactive covariates
-    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=FALSE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[[1]], phe, K, covar, covar)
     expect_equivalent(est, est_lm)
 
-    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, K, covar, intcovar=covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
-    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, zerosum=FALSE)
     expect_equivalent(est, est_lm)
-    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, se=TRUE)
+    est <- scan1coef(pr[,1], phe, Ke, covar, intcovar=covar, se=TRUE, zerosum=FALSE)
     expect_equivalent(est, est_lm)
     expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
@@ -190,13 +190,13 @@ test_that("scan1coef with weights works", {
     weights <- setNames(runif(n_ind(iron), 1, 10), ind_ids(iron))
 
     # plain least squares match LMM when hsq==0?
-    coef_hk <- scan1coef(probs, phe, addcovar=X, se=TRUE)
-    coef_lmm0 <- scan1coef(probs, phe, kinship, X, se=TRUE, hsq=0)
+    coef_hk <- scan1coef(probs, phe, addcovar=X, se=TRUE, zerosum=FALSE)
+    coef_lmm0 <- scan1coef(probs, phe, kinship, X, se=TRUE, hsq=0, zerosum=FALSE)
     expect_equal(coef_hk, coef_lmm0)
 
     # plain least squares match LMM when hsq==0, with weights?
-    coef_hk <- scan1coef(probs, phe, addcovar=X, weights=weights, se=TRUE)
-    coef_lmm0 <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE, hsq=0)
+    coef_hk <- scan1coef(probs, phe, addcovar=X, weights=weights, se=TRUE, zerosum=FALSE)
+    coef_lmm0 <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE, hsq=0, zerosum=FALSE)
     expect_equal(coef_hk, coef_lmm0)
 
     # same with contrasts, no weights
@@ -215,7 +215,7 @@ test_that("scan1coef with weights works", {
 
 
     # check LMM with hsq not 0
-    coef_lmm <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE)
+    coef_lmm <- scan1coef(probs, phe, kinship, X, weights=weights, se=TRUE, zerosum=FALSE)
 
     ### compare to regress::regress()
     # k <- 2*kinship

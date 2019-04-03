@@ -14,8 +14,8 @@ test_that("scan1coef for binary traits works with intercross", {
                     ind_ids(iron))
 
     # no covariates, autosome
-    co <- scan1coef(probs[,"2"], phe, model="binary")
-    coSE <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -27,8 +27,8 @@ test_that("scan1coef for binary traits works with intercross", {
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # no covariates, X chromosome
-    co <- scan1coef(probs[,"X"], phe, model="binary")
-    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"X"], phe, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -42,8 +42,8 @@ test_that("scan1coef for binary traits works with intercross", {
     sex <- setNames(as.numeric(iron$is_female), names(iron$is_female))
 
     # add covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary")
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a + sex, family=binomial(link=logit),
@@ -57,8 +57,8 @@ test_that("scan1coef for binary traits works with intercross", {
     covar <- setNames(rnorm(n_ind(iron)), names(sex))
 
     # add covariate, X chromosome
-    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary")
-    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a + covar, family=binomial(link=logit),
@@ -70,8 +70,8 @@ test_that("scan1coef for binary traits works with intercross", {
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # int covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary")
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) {
@@ -102,8 +102,8 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
     phe[c(41,153)] <- NA
 
     # no covariates, autosome
-    co <- scan1coef(probs[,"2"], phe, model="binary")
-    coSE <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -115,8 +115,8 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # no covariates, X chromosome
-    co <- scan1coef(probs[,"X"], phe, model="binary")
-    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"X"], phe, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -130,8 +130,8 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
     sex <- setNames(as.numeric(iron$is_female), names(iron$is_female))
 
     # add covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary")
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a + sex, family=binomial(link=logit),
@@ -145,8 +145,8 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
     covar <- setNames(rnorm(n_ind(iron)), names(sex))
 
     # add covariate, X chromosome
-    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary")
-    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a + covar, family=binomial(link=logit),
@@ -158,8 +158,8 @@ test_that("scan1coef for binary traits works some missing phenotypes", {
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # int covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary")
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) {
@@ -189,8 +189,8 @@ test_that("scan1coef for binary traits works with weights", {
     weights <- setNames(sample(1:10, n_ind(iron), replace=TRUE), names(phe))
 
     # no covariates, autosome
-    co <- scan1coef(probs[,"2"], phe, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"2"], phe, model="binary", , weights=weights, se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, model="binary", , weights=weights, se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -202,8 +202,8 @@ test_that("scan1coef for binary traits works with weights", {
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # no covariates, X chromosome
-    co <- scan1coef(probs[,"X"], phe, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"X"], phe, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -217,8 +217,8 @@ test_that("scan1coef for binary traits works with weights", {
     sex <- setNames(as.numeric(iron$is_female), names(iron$is_female))
 
     # add covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a + sex, family=binomial(link=logit),
@@ -232,8 +232,8 @@ test_that("scan1coef for binary traits works with weights", {
     covar <- setNames(rnorm(n_ind(iron)), names(sex))
 
     # add covariate, X chromosome
-    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a + covar, family=binomial(link=logit),
@@ -245,8 +245,8 @@ test_that("scan1coef for binary traits works with weights", {
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # int covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) {
@@ -277,8 +277,8 @@ test_that("scan1coef for binary traits works with weights and missing phenotypes
     weights <- setNames(sample(1:10, n_ind(iron), replace=TRUE), names(phe))
 
     # no covariates, autosome
-    co <- scan1coef(probs[,"2"], phe, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"2"], phe, model="binary", , weights=weights, se=TRUE)
+    co <- scan1coef(probs[,"2"], phe, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, model="binary", , weights=weights, se=TRUE, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -290,8 +290,8 @@ test_that("scan1coef for binary traits works with weights and missing phenotypes
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # no covariates, X chromosome
-    co <- scan1coef(probs[,"X"], phe, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"X"], phe, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a, family=binomial(link=logit),
@@ -305,8 +305,8 @@ test_that("scan1coef for binary traits works with weights and missing phenotypes
     sex <- setNames(as.numeric(iron$is_female), names(iron$is_female))
 
     # add covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) glm(phe ~ -1 + a + sex, family=binomial(link=logit),
@@ -320,8 +320,8 @@ test_that("scan1coef for binary traits works with weights and missing phenotypes
     covar <- setNames(rnorm(n_ind(iron)), names(sex))
 
     # add covariate, X chromosome
-    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"X"], phe, addcovar=covar, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[2]], 3, function(a) glm(phe ~ -1 + a + covar, family=binomial(link=logit),
@@ -333,8 +333,8 @@ test_that("scan1coef for binary traits works with weights and missing phenotypes
     expect_equal(attr(coSE, "SE"), glm_se, tol=1e-6)
 
     # int covariate, autosome
-    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", weights=weights)
-    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, weights=weights)
+    co <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", weights=weights, zerosum=FALSE)
+    coSE <- scan1coef(probs[,"2"], phe, addcovar=sex, intcovar=sex, model="binary", se=TRUE, weights=weights, zerosum=FALSE)
     expect_equivalent(co, coSE)
 
     out_glm <- apply(probs[[1]], 3, function(a) {

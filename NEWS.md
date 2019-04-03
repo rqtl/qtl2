@@ -1,4 +1,11 @@
-## qtl2 0.19-8 (2019-03-27)
+## qtl2 0.19-9 (2019-04-03)
+
+### Major changes
+
+- `scan1coef()` now, by default, gives coefficient estimates for the
+  QTL effects that sum to 0, with an additional column of the means.
+  This makes it more like DOQTL (and `scan1blup()`). The previous
+  behavior can be obtained with the argument `zerosum=FALSE`.
 
 ### Minor changes
 

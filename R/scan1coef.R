@@ -32,6 +32,9 @@
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
 #'     If `model="binary"`, the phenotypes must have values in \eqn{[0, 1]}.
+#' @param zerosum If TRUE, force the genotype or allele coefficients
+#'     sum to 0 by subtracting their mean and add another column with
+#'     the mean. Ignored if `contrasts` is provided.
 #' @param se If TRUE, also calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
 #' `kinship` provided.
@@ -115,7 +118,7 @@
 scan1coef <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
-             contrasts=NULL, model=c("normal", "binary"),
+             contrasts=NULL, model=c("normal", "binary"), zerosum=TRUE,
              se=FALSE, hsq=NULL, reml=TRUE, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
@@ -123,7 +126,7 @@ scan1coef <-
 
     if(!is.null(kinship)) { # use LMM; see scan1_pg.R
         return(scan1coef_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                            intcovar, weights, contrasts, se, hsq, reml, ...))
+                            intcovar, weights, contrasts, zerosum, se, hsq, reml, ...))
     }
 
     model <- match.arg(model)
@@ -283,6 +286,19 @@ scan1coef <-
     dimnames(result) <- list(dimnames(genoprobs)[[3]],
                              scan1coef_names(genoprobs, addcovar, intcovar))
     if(se) dimnames(SE) <- dimnames(result)
+
+    if(zerosum && is.null(contrasts)) { # force QTL effects to sum to 0
+        ng <- dim(genoprobs)[2]
+        whcol <- seq_len(ng)
+        mu <- rowMeans(result[,whcol,drop=FALSE], na.rm=TRUE)
+        result <- cbind(result, mean=mu)
+        result[,whcol] <- result[,whcol] - mu
+
+        if(se) {
+            SE <- cbind(SE, mean=sqrt(rowMeans(SE[,whcol,drop=FALSE]^2)))
+        }
+
+    }
 
     attr(result, "sample_size") <- length(ind2keep)
     attr(result, "SE") <- SE # include only if not NULL

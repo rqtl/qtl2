@@ -3,7 +3,7 @@
 scan1coef_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
-             weights=NULL, contrasts=NULL, se=FALSE,
+             weights=NULL, contrasts=NULL, zerosum=TRUE, se=FALSE,
              hsq=NULL, reml=TRUE, ...)
 {
     # deal with the dot args
@@ -165,6 +165,19 @@ scan1coef_pg <-
     dimnames(result) <- list(dimnames(genoprobs)[[3]],
                              scan1coef_names(genoprobs, addcovar, intcovar))
     if(se) dimnames(SE) <- dimnames(result)
+
+    if(zerosum && is.null(contrasts)) { # force QTL effects to sum to 0
+        ng <- dim(genoprobs)[2]
+        whcol <- seq_len(ng)
+        mu <- rowMeans(result[,whcol,drop=FALSE], na.rm=TRUE)
+        result <- cbind(result, mean=mu)
+        result[,whcol] <- result[,whcol] - mu
+
+        if(se) {
+            SE <- cbind(SE, mean=sqrt(rowMeans(SE[,whcol,drop=FALSE]^2)))
+        }
+
+    }
 
     # add some attributes with details on analysis
     attr(result, "sample_size") <- length(ind2keep)

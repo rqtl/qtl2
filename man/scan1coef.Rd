@@ -6,8 +6,8 @@
 \usage{
 scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   nullcovar = NULL, intcovar = NULL, weights = NULL,
-  contrasts = NULL, model = c("normal", "binary"), se = FALSE,
-  hsq = NULL, reml = TRUE, ...)
+  contrasts = NULL, model = c("normal", "binary"), zerosum = TRUE,
+  se = FALSE, hsq = NULL, reml = TRUE, ...)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -45,6 +45,10 @@ identity matrix.}
 \item{model}{Indicates whether to use a normal model (least
 squares) or binary model (logistic regression) for the phenotype.
 If \code{model="binary"}, the phenotypes must have values in \eqn{[0, 1]}.}
+
+\item{zerosum}{If TRUE, force the genotype or allele coefficients
+sum to 0 by subtracting their mean and add another column with
+the mean. Ignored if \code{contrasts} is provided.}
 
 \item{se}{If TRUE, also calculate the standard errors.}
 
