@@ -87,6 +87,7 @@ To cite R/qtl2 in publications, use:
 > high-dimensional data and multi-parent populations.
 > [Genetics](http://genetics.org) 211:495-502
 > [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
+> [![pdf](https://kbroman.org/pages/icons16/pdf-icon.png)](http://www.genetics.org/content/genetics/211/2/495.full.pdf)
 
 ---
 
