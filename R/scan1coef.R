@@ -327,7 +327,7 @@ genoprobs_by_contrasts <-
     dim(genoprobs) <- dg[c(1,3,2)]
 
     genoprobs <- aperm(genoprobs, c(1,3,2))
-    dn[[2]] <- colnames(contrasts)
+    if(!is.null(colnames(contrasts))) dn[[2]] <- colnames(contrasts)
     dimnames(genoprobs) <- dn
 
     genoprobs
