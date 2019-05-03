@@ -48,15 +48,15 @@ test_that("eigen + rotation works", {
 
 test_that("fitLMM works", {
 
-    expected_reml <- structure(list(loglik = -218.467712411475, hsq = 0.0743352779641662,
-                                    sigmasq = 0.819543294059229,
-                                    beta = c(0.826587328164329, 1.84713422450015)),
-                               .Names = c("loglik", "hsq", "sigmasq", "beta"))
+    expected_reml <- list(loglik = -217.595158548486,
+                          hsq = 0.0367120313458048,
+                          sigmasq = 0.79659576062727,
+                          beta = c(0.886161208390094, 1.74687862579568))
 
-    expected_ml <- structure(list(loglik = -217.87551923171, hsq = 0, sigmasq = 0.780625465836864,
-                                  beta = c(0.824833750089415, 1.84392110362325)),
-                             .Names = c("loglik", "hsq", "sigmasq", "beta"))
-
+    expected_ml <- list(loglik = -217.180784548857,
+                        hsq = 0,
+                        sigmasq = 0.769853921083333,
+                        beta = c(0.887111992802203, 1.74121566369042))
 
     e <- Rcpp_eigen_rotation(k, y, X)
     expect_equal(Rcpp_fitLMM(e$Kva, e$y, e$X), expected_reml)

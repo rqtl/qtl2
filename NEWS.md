@@ -16,6 +16,8 @@
 - In `check_cross2()`, added a test for alleles being a vector of
   character strings.
 
+- Fix some tests for R 3.6, due to change in random number generation.
+
 - Use Markdown for function documentation, throughout
 
 ### Bug fixes
