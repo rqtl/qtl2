@@ -37,6 +37,9 @@
 - Fixed inappropriate warning message for check of `cross_info` with
   cross type `risib8`.
 
+- Fixed bugs in `guess_phase()` and `locate_xo()` where we needed an
+  `any()` around a comparison of two vectors.
+
 
 ## qtl2 0.18 (2019-02-08)
 

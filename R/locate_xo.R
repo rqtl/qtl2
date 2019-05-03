@@ -40,7 +40,7 @@ locate_xo <-
     names(is_x_chr) <- names(geno)
 
     if(length(geno) != length(map) ||
-       names(geno) != names(map)) { # force matching chromosomes
+       any(names(geno) != names(map))) { # force matching chromosomes
         chr <- find_common_ids(names(geno), names(map))
         if(length(chr)==0)
             stop("geno and map have no chromosomes in common")

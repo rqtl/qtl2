@@ -50,7 +50,7 @@ guess_phase <-
 
     # match chromosomes
     if(n_chr(cross) != length(geno) ||
-       names(cross$geno) != names(geno)) {
+       any(names(cross$geno) != names(geno))) {
         chr_cross <- chr_names(cross)
         chr_geno <- names(geno)
         if(!any(chr_cross %in% chr_geno))
