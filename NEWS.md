@@ -1,4 +1,4 @@
-## qtl2 0.19-9 (2019-04-03)
+## qtl2 0.19-10 (2019-05-03)
 
 ### Major changes
 
@@ -12,6 +12,9 @@
 
 - Updated `extdata/mouse_genes_small.sqlite` using updated MGI
   annotations. Some of the field names have changed.
+
+- In `check_cross2()`, added a test for alleles being a vector of
+  character strings.
 
 - Use Markdown for function documentation, throughout
 

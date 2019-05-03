@@ -411,6 +411,12 @@ function(cross2)
     # check alleles
     alleles <- cross2$alleles
     if(!is.null(alleles)) {
+        if(!is.character(alleles)) {
+            result <- FALSE
+            warning("alleles should be a vector of character strings but is a ",
+                    class(alleles))
+        }
+
         n_alleles <- length(alleles)
         expected_n <- nalleles(crosstype)
         if(n_alleles != expected_n) {
