@@ -192,7 +192,7 @@ const bool GENRIL::need_founder_geno()
 const std::vector<std::string> GENRIL::geno_names(const std::vector<std::string> alleles,
                                                 const bool is_x_chr)
 {
-    if(alleles.size() < this->n_founders)
+    if(alleles.size() < (unsigned)(this->n_founders))
         throw std::range_error("alleles must have length n_founders");
 
     const int n_alleles = this->n_founders;

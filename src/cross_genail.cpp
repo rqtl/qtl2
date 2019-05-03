@@ -362,7 +362,7 @@ const bool GENAIL::need_founder_geno()
 const std::vector<std::string> GENAIL::geno_names(const std::vector<std::string> alleles,
                                                 const bool is_x_chr)
 {
-    if(alleles.size() != this->n_founders)
+    if(alleles.size() != (unsigned)(this->n_founders))
         throw std::range_error("alleles must have length n_founders");
 
     return mpp_geno_names(alleles, is_x_chr);
