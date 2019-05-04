@@ -1,6 +1,6 @@
 Package: qtl2
 Version: 0.19-10
-Date: 2019-05-03
+Date: 2019-05-04
 Title: Quantitative Trait Locus Mapping in Experimental Crosses
 Description: R/qtl2 provides a set of tools to perform quantitative
     trait locus (QTL) analysis in experimental crosses. It is a
@@ -9,8 +9,10 @@ Description: R/qtl2 provides a set of tools to perform quantitative
     designed to make it easy to install and load multiple R/qtl2
     packages in a single step.
     Broman et al. (2018) <doi:10.1534/genetics.118.301595>.
-Author: Karl W Broman <broman@wisc.edu>
+Author: Karl W Broman [aut, cre] (<https://orcid.org/0000-0002-4914-6671>)
 Maintainer: Karl W Broman <broman@wisc.edu>
+Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
+             email="broman@wisc.edu", comment=c(ORCID = "0000-0002-4914-6671")))
 Depends:
     R (>= 3.1.0)
 Imports:
