@@ -1,4 +1,4 @@
-## qtl2 0.19-11 (2019-05-21)
+## qtl2 0.19-12 (2019-05-21)
 
 ### Major changes
 
@@ -7,6 +7,9 @@
   coefficient being the intercept. This makes it more like DOQTL (and
   `scan1blup()`). The previous behavior can be obtained with the
   argument `zerosum=FALSE`.
+
+- Add function `create_snpinfo()` for creating a SNP information table
+  from a cross2 object, for use with `scan1snps()`.
 
 ### Minor changes
 
