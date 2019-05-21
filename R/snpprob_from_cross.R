@@ -12,6 +12,13 @@ snpprob_from_cross <-
     # drop markers that are missing any founder genotypes
     cross <- drop_markers(cross, unlist(lapply(cross$founder_geno, function(a) colnames(a)[colSums(a==0)>0])))
 
+    # subset to common chr
+    chr_pr <- names(genoprobs)
+    chr_cross <- chrnames(cross)
+    chr <- chr_pr[chr_pr %in% chr_cross]
+    cross <- cross[,chr]
+    genoprobs <- genoprobs[,chr]
+
     # get physical map, if available; otherwise genetic map
     map <- cross$pmap
     if(is.null(map)) map <- cross$gmap
@@ -23,8 +30,23 @@ snpprob_from_cross <-
                           sdp=sdp,
                           snp=names(sdp))
 
+    mar2keep <- NULL
     for(i in seq_along(genoprobs)) {
-        genoprobs[[i]] <- genoprobs[[i]][,,colnames(cross$geno[[i]]),drop=FALSE]
+        mar <- colnames(cross$geno[[i]])
+        mar <- mar[mar %in% dimnames(genoprobs)[[3]][[i]]]
+        if(length(mar) == 0) {
+            stop("No overlap between genoprobs and markers on chr ", names(genoprobs)[i])
+        }
+        map[[i]] <- map[[i]][mar]
+
+        if("fst_genoprob" %in% class(genoprobs)) {
+            mar2keep <- c(mar2keep, mar)
+        } else {
+            genoprobs[[i]] <- genoprobs[[i]][,,mar,drop=FALSE]
+        }
+    }
+    if("fst_genoprob" %in% class(genoprobs)) {
+        genoprobs <- subset(genoprobs, mar=mar2keep)
     }
 
     snpinfo <- index_snps(map, snpinfo)

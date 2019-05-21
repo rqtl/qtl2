@@ -27,7 +27,8 @@
 #' Alternatively, `snpinfo` can be a cross object for a multi-parent
 #' population with founder genotypes, in which case the SNP
 #' information for all markers with complete founder genotype data is
-#' calculated and then used.
+#' calculated and then used. But, in this case, the genotype
+#' probabilities must be at the markers in the cross.
 #'
 #' @return An object like the `genoprobs` input, but with imputed
 #' genotype probabilities at the selected SNPs indicated in
