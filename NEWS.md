@@ -1,4 +1,4 @@
-## qtl2 0.19-10 (2019-05-03)
+## qtl2 0.19-11 (2019-05-21)
 
 ### Major changes
 
@@ -21,6 +21,9 @@
 - Use Markdown for function documentation, throughout
 
 ### Bug fixes
+
+- In `genoprob_to_snpprob()` when a cross object is provided, make
+  sure the genotype probabilities get subset to the cross markers.
 
 - Fixed bug in `scan1snps()` re `keep_all_snps=FALSE`. It wasn't
   subsetting to the index SNPs properly. Added an internal function
