@@ -56,8 +56,9 @@
 #'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For
-#' example, `bgcolor` to control the background color and `altbgcolor`
-#' to control the background color on alternate chromosomes.
+#' example, `bgcolor` to control the background color,`altbgcolor`
+#' to control the background color on alternate chromosomes,
+#' `altcol` to control the point color on alternate chromosomes,
 #' `cex` for character expansion for the points (default 0.5),
 #' `pch` for the plotting character for the points (default 16),
 #' and `ylim` for y-axis limits.
