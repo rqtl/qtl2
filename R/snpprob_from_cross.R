@@ -14,7 +14,7 @@ snpprob_from_cross <-
 
     # subset to common chr
     chr_pr <- names(genoprobs)
-    chr_cross <- chrnames(cross)
+    chr_cross <- chr_names(cross)
     chr <- chr_pr[chr_pr %in% chr_cross]
     cross <- cross[,chr]
     genoprobs <- genoprobs[,chr]
