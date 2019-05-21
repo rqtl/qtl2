@@ -70,8 +70,9 @@ Plot SNP associations, with possible expansion from distinct snps to all snps.
 \section{Hidden graphics parameters}{
 
 A number of graphics parameters can be passed via \code{...}. For
-example, \code{bgcolor} to control the background color and \code{altbgcolor}
-to control the background color on alternate chromosomes.
+example, \code{bgcolor} to control the background color,\code{altbgcolor}
+to control the background color on alternate chromosomes,
+\code{altcol} to control the point color on alternate chromosomes,
 \code{cex} for character expansion for the points (default 0.5),
 \code{pch} for the plotting character for the points (default 16),
 and \code{ylim} for y-axis limits.
