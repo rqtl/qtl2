@@ -41,6 +41,8 @@ description: Annotated/categorized list of functions in R/qtl2
 
 ### Combining data
 
+- `cbind_expand` - Like `cbind()` but using row names to align the
+  rows and expanding with missing values as necessary
 - `cbind.calc_genoprob` - combine genotype probabilities for multiple
   chromosomes but on the same set of individuals
 - `rbind.calc_genoprob` - combine genotype probabilities for different individuals
@@ -147,6 +149,8 @@ description: Annotated/categorized list of functions in R/qtl2
   identify potential genotyping errors and problem markers or individuals
 - `calc_geno_freq` - calculate genotype frequencies, by individual or
   marker, from genotype probabilities
+- `calc_het` - Calculate heterozygosities, by individual or marker,
+  from genotype probabilities
 - `chisq_colpairs` - Perform chi-square test for independence for all
   pairs of columns of a matrix
 - `convert2cross2` - convert an R/qtl1 `"cross"` object to the R/qtl2
@@ -264,6 +268,7 @@ description: Annotated/categorized list of functions in R/qtl2
   partition
 - `find_index_snp` - For a particular SNP, find the corresponding
   indexed SNP.
+- `create_snpinfo` - Create a table of SNP information from a cross2 object.
 
 
 
@@ -303,8 +308,3 @@ description: Annotated/categorized list of functions in R/qtl2
 - `print.summary.cross2` - print method for the output of `summary.cross2`
 - `print.summary.compare_geno` - print method for the output of `summary.compare_geno`
 - `print.summary.scan1perm` - print method for the output of `summary.scan1perm`
-
-
-### Other functions
-- `calc_het`
-- `cbind_expand`
