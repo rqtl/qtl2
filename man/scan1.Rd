@@ -93,7 +93,7 @@ linearly dependent on others and should be omitted); default
 slower) method, with values \code{"highmem"} or \code{"lowmem"}; default
 \code{"lowmem"}. \code{max_batch} indicates the maximum number of phenotypes
 to run together; default is unlimited. \code{maxit} is the maximum
-number of iteractions for converence of the iterative algorithm
+number of iterations for converence of the iterative algorithm
 used when \code{model=binary}. \code{bintol} is used as a tolerance for
 converence for the iterative algorithm used when \code{model=binary}.
 \code{eta_max} is the maximum value for the "linear predictor" in the

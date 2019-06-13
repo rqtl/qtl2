@@ -66,7 +66,7 @@
 #' your point of view). `tol` is used as a tolerance value for linear
 #' regression by QR decomposition (in determining whether columns are
 #' linearly dependent on others and should be omitted); default
-#' `1e-12`. `maxit` is the maximum number of iteractions for
+#' `1e-12`. `maxit` is the maximum number of iterations for
 #' converence of the iterative algorithm used when `model=binary`.
 #' `bintol` is used as a tolerance for converence for the iterative
 #' algorithm used when `model=binary`. `eta_max` is the maximum value

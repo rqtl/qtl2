@@ -70,7 +70,7 @@
 #' slower) method, with values `"highmem"` or `"lowmem"`; default
 #' `"lowmem"`. `max_batch` indicates the maximum number of phenotypes
 #' to run together; default is unlimited. `maxit` is the maximum
-#' number of iteractions for converence of the iterative algorithm
+#' number of iterations for converence of the iterative algorithm
 #' used when `model=binary`. `bintol` is used as a tolerance for
 #' converence for the iterative algorithm used when `model=binary`.
 #' `eta_max` is the maximum value for the "linear predictor" in the

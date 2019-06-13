@@ -90,7 +90,7 @@ parameters; suspended for simplicity (or confusion, depending on
 your point of view). \code{tol} is used as a tolerance value for linear
 regression by QR decomposition (in determining whether columns are
 linearly dependent on others and should be omitted); default
-\code{1e-12}. \code{maxit} is the maximum number of iteractions for
+\code{1e-12}. \code{maxit} is the maximum number of iterations for
 converence of the iterative algorithm used when \code{model=binary}.
 \code{bintol} is used as a tolerance for converence for the iterative
 algorithm used when \code{model=binary}. \code{eta_max} is the maximum value

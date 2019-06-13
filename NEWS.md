@@ -1,3 +1,10 @@
+## qtl2 0.21-1 (2019-06-12)
+
+### Bug fixes
+
+- Fix typo in help for `scan1()` and related functions.
+
+
 ## qtl2 0.20 (2019-06-03)
 
 ### Major changes
