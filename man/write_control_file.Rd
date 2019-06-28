@@ -18,7 +18,7 @@ write_control_file(output_file, crosstype = NULL, geno_file = NULL,
 }
 \arguments{
 \item{output_file}{File name (with path) of the
-\href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON} file to be created, as a character
+\href{https://yaml.org}{YAML} or \href{https://json.org}{JSON} file to be created, as a character
 string. If extension is \code{.json}, JSON format is used; otherwise, YAML is used.}
 
 \item{crosstype}{Character string with the cross type.}
@@ -107,12 +107,12 @@ within the control object.}
 (Invisibly) The data structure that was written.
 }
 \description{
-Write the control file (in \href{http://www.yaml.org}{YAML} or \href{http://www.json.org}{JSON}) needed
+Write the control file (in \href{https://yaml.org}{YAML} or \href{https://json.org}{JSON}) needed
 by \code{\link[=read_cross2]{read_cross2()}} for a set of QTL data.
 }
 \details{
 This function takes a set of parameters and creates the
-control file (in \href{http://www.yaml.org}{YAML} format) needed
+control file (in \href{https://yaml.org}{YAML} or \href{https://json.org}{JSON} format) needed
 for the new input data file format for
 \href{https://kbroman.org/qtl2}{R/qtl2}.  See the
 \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the

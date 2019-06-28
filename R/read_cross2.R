@@ -4,7 +4,7 @@
 #' Read QTL data from a set of files
 #'
 #' @param file Character string with path to the
-#' [YAML](http://www.yaml.org) or [JSON](http://www.json.org/) file containing all of the control
+#' [YAML](https://yaml.org) or [JSON](https://json.org) file containing all of the control
 #' information. This could instead be a zip file containing all of the
 #' data files, in which case the contents are unzipped to a temporary
 #' directory and then read.
@@ -14,8 +14,8 @@
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @details
-#' A control file in [YAML](http://www.yaml.org) or
-#' [JSON](http://www.json.org/) format contains information
+#' A control file in [YAML](https://yaml.org) or
+#' [JSON](https://json.org) format contains information
 #' about basic parameters as well as the names of the series of
 #' data files to be read. See the
 #' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the

@@ -8,7 +8,7 @@ read_cross2(file, quiet = TRUE)
 }
 \arguments{
 \item{file}{Character string with path to the
-\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} file containing all of the control
+\href{https://yaml.org}{YAML} or \href{https://json.org}{JSON} file containing all of the control
 information. This could instead be a zip file containing all of the
 data files, in which case the contents are unzipped to a temporary
 directory and then read.}
@@ -23,8 +23,8 @@ Object of class \code{"cross2"}. For details, see the
 Read QTL data from a set of files
 }
 \details{
-A control file in \href{http://www.yaml.org}{YAML} or
-\href{http://www.json.org/}{JSON} format contains information
+A control file in \href{https://yaml.org}{YAML} or
+\href{https://json.org}{JSON} format contains information
 about basic parameters as well as the names of the series of
 data files to be read. See the
 \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the

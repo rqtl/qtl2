@@ -9,7 +9,7 @@ zip_datafiles(control_file, zip_file = NULL, overwrite = FALSE,
 }
 \arguments{
 \item{control_file}{Character string with path to the control file
-(\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON})
+(\href{https://yaml.org}{YAML} or \href{https://json.org}{JSON})
 containing all of the control information.}
 
 \item{zip_file}{Name of zip file to use. If NULL, we use the
@@ -29,7 +29,7 @@ Zip a set of data files (in format read by \code{\link[=read_cross2]{read_cross2
 }
 \details{
 The input \code{control_file} is the control file (in
-\href{http://www.yaml.org}{YAML} or \href{http://www.json.org/}{JSON} format)
+\href{https://yaml.org}{YAML} or \href{https://json.org}{JSON} format)
 to be read by \code{\link[=read_cross2]{read_cross2()}}.  (See the
 \href{https://kbroman.org/qtl2/pages/sampledata.html}{sample data files} and the
 \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.)

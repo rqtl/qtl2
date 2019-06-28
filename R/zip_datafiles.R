@@ -4,7 +4,7 @@
 #' Zip a set of data files (in format read by [read_cross2()]).
 #'
 #' @param control_file Character string with path to the control file
-#' ([YAML](http://www.yaml.org) or [JSON](http://www.json.org/))
+#' ([YAML](https://yaml.org) or [JSON](https://json.org))
 #' containing all of the control information.
 #' @param zip_file Name of zip file to use. If NULL, we use the
 #' stem of `control_file` but with a `.zip` extension.
@@ -16,7 +16,7 @@
 #' was created.
 #'
 #' @details The input `control_file` is the control file (in
-#' [YAML](http://www.yaml.org) or [JSON](http://www.json.org/) format)
+#' [YAML](https://yaml.org) or [JSON](https://json.org) format)
 #' to be read by [read_cross2()].  (See the
 #' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the
 #' [vignette describing the input file format](https://kbroman.org/qtl2/assets/vignettes/input_files.html).)

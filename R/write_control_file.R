@@ -1,11 +1,11 @@
 # write_control_file
 #' Write a control file for QTL data
 #'
-#' Write the control file (in [YAML](http://www.yaml.org) or [JSON](http://www.json.org)) needed
+#' Write the control file (in [YAML](https://yaml.org) or [JSON](https://json.org)) needed
 #' by [read_cross2()] for a set of QTL data.
 #'
 #' @param output_file File name (with path) of the
-#' [YAML](http://www.yaml.org) or [JSON](http://www.json.org) file to be created, as a character
+#' [YAML](https://yaml.org) or [JSON](https://json.org) file to be created, as a character
 #' string. If extension is `.json`, JSON format is used; otherwise, YAML is used.
 #'
 #' @param crosstype Character string with the cross type.
@@ -66,7 +66,7 @@
 #' @return (Invisibly) The data structure that was written.
 #'
 #' @details This function takes a set of parameters and creates the
-#' control file (in [YAML](http://www.yaml.org) format) needed
+#' control file (in [YAML](https://yaml.org) or [JSON](https://json.org) format) needed
 #' for the new input data file format for
 #' [R/qtl2](https://kbroman.org/qtl2).  See the
 #' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the
