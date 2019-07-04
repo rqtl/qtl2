@@ -28,7 +28,7 @@ Data from
 [Moore et al. (2013) Genetics 195:1077-1086](http://www.genetics.org/content/195/3/1077.abstract)
 (the second replicate of RILs).
 
-- [`grav2.yaml`](../assets/sampledata/grav2/grav2.yaml), the control file ([YAML format](https://yaml.org/))
+- [`grav2.yaml`](../assets/sampledata/grav2/grav2.yaml), the control file ([YAML format](https://yaml.org))
 - [`grav2_geno.csv`](../assets/sampledata/grav2/grav2_geno.csv), genotype data
 - [`grav2_gmap.csv`](../assets/sampledata/grav2/grav2_gmap.csv), genetic map
 - [`grav2_pheno.csv`](../assets/sampledata/grav2/grav2_pheno.csv), phenotype data
@@ -61,7 +61,7 @@ file can be read as follows:
 
 Data from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 
-- [`iron.yaml`](../assets/sampledata/iron/iron.yaml), the control file ([YAML format](https://yaml.org/))
+- [`iron.yaml`](../assets/sampledata/iron/iron.yaml), the control file ([YAML format](https://yaml.org))
 - [`iron_geno.csv`](../assets/sampledata/iron/iron_geno.csv), genotype data
 - [`iron_gmap.csv`](../assets/sampledata/iron/iron_gmap.csv), genetic map
 - [`iron_covar.csv`](../assets/sampledata/iron/iron_covar.csv), covariate data (sex and cross direction)
