@@ -4,7 +4,7 @@ Sample input data files from
 [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 (an intercross)
 
-- [`iron.yaml`](iron.yaml), the control file ([YAML format](http://www.yaml.org/))
+- [`iron.yaml`](iron.yaml), the control file ([YAML format](https://yaml.org))
 - [`iron_geno.csv`](iron_geno.csv), genotype data
 - [`iron_gmap.csv`](iron_gmap.csv), genetic map
 - [`iron_pmap.csv`](iron_pmap.csv), physical map
