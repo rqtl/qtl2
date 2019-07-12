@@ -22,8 +22,8 @@ R/qtl2.
 
 The input file format has been completely changed. R/qtl2 allows just
 a single format, with data split across multiple CSV files, and with
-a control file (in [YAML](http://www.yaml.org) or
-[JSON](http://www.json.org) format).
+a control file (in [YAML](https://yaml.org) or
+[JSON](https://json.org) format).
 
 For more information about the new file format, see the
 [related vignette](https://kbroman.org/qtl2/assets/vignettes/input_files.html),
