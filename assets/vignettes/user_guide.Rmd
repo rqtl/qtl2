@@ -102,8 +102,8 @@ In addition to the set of CSV files with the primary data, we need a
 separate &ldquo;control&rdquo; file with various control parameters
 (or metadata), including the names of all of the other data files and
 the genotype codes used in the genotype data file. The control file is
-in a specific format using either [YAML](http://www.yaml.org) or
-[JSON](http://json.org); these are human-readable text files for
+in a specific format using either [YAML](https://yaml.org) or
+[JSON](https://json.org); these are human-readable text files for
 representing relatively complex data.
 
 A big advantage of this control file scheme is that it greatly
