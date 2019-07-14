@@ -382,8 +382,8 @@ of the structure of the files.
 
 ### Control file
 
-The control file can be in [YAML](http://www.yaml.org) or
-[JSON](http://www.json.org) formats. Both are
+The control file can be in [YAML](https://yaml.org) or
+[JSON](https://json.org) formats. Both are
 human-readable text file for representing relatively complex
 data. YAML tends to be more readable, but JSON is more robust.
 
