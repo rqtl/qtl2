@@ -33,7 +33,7 @@ recode_snps <-
         fg <- cross$founder_geno[[chr]]
         fg[fg!=1 & fg!=3] <- NA
         p1 <- colMeans(fg==1, na.rm=TRUE)
-        recode <- (p1 < 0.5)
+        recode <- (!is.na(p1) & p1 < 0.5)
 
         g <- cross$geno[[chr]]
         g[g==0] <- NA
