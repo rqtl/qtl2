@@ -1,4 +1,10 @@
-## qtl2 0.21-2 (2019-06-28)
+## qtl2 0.21-3 (2019-07-16)
+
+### Major changes
+
+- Added some functions for diagnostics: `recode_snps()`,
+  `calc_raw_het()`, `calc_raw_geno_freq()`, `calc_raw_maf()`, and
+  `calc_raw_founder_maf()`.
 
 ### Bug fixes
 
