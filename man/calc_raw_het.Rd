@@ -25,4 +25,7 @@ DOex <- read_cross2(file)
 DOex_het <- calc_raw_het(DOex)
 }
 }
+\seealso{
+\code{\link[=recode_snps]{recode_snps()}}, \code{\link[=calc_raw_maf]{calc_raw_maf()}}, \code{\link[=calc_raw_founder_maf]{calc_raw_founder_maf()}}, \code{\link[=calc_raw_geno_freq]{calc_raw_geno_freq()}}
+}
 \keyword{utilities}

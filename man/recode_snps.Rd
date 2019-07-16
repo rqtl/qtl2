@@ -28,4 +28,7 @@ DOex <- read_cross2(file)
 DOex <- recode_snps(DOex)
 }
 }
+\seealso{
+\code{\link[=calc_raw_founder_maf]{calc_raw_founder_maf()}}, \code{\link[=calc_raw_maf]{calc_raw_maf()}}
+}
 \keyword{utilities}

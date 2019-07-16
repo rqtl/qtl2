@@ -28,4 +28,7 @@ DOex <- read_cross2(file)
 gfreq <- calc_raw_geno_freq(DOex)
 }
 }
+\seealso{
+\code{\link[=calc_raw_maf]{calc_raw_maf()}}, \code{\link[=calc_raw_het]{calc_raw_het()}}, \code{\link[=recode_snps]{recode_snps()}}
+}
 \keyword{utilities}

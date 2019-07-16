@@ -11,6 +11,7 @@
 #'
 #' @export
 #' @keywords utilities
+#' @seealso [recode_snps()], [calc_raw_maf()], [calc_raw_founder_maf()], [calc_raw_geno_freq()]
 #'
 #' @examples
 #' \dontrun{
@@ -42,6 +43,7 @@ calc_raw_het <-
 #'
 #' @export
 #' @keywords utilities
+#' @seealso [recode_snps()], [calc_raw_founder_maf()], [calc_raw_het()], [calc_raw_geno_freq()]
 #'
 #' @examples
 #' \dontrun{
@@ -81,6 +83,7 @@ calc_raw_maf <-
 #'
 #' @export
 #' @keywords utilities
+#' @seealso [recode_snps()], [calc_raw_maf()]
 #'
 #' @examples
 #' \dontrun{
@@ -124,6 +127,7 @@ calc_raw_founder_maf <-
 #'
 #' @export
 #' @keywords utilities
+#' @seealso [calc_raw_maf()], [calc_raw_het()], [recode_snps()]
 #'
 #' @examples
 #' \dontrun{

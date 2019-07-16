@@ -12,6 +12,7 @@
 #'
 #' @export
 #' @keywords utilities
+#' @seealso [calc_raw_founder_maf()], [calc_raw_maf()]
 #'
 #' @examples
 #' \dontrun{
