@@ -10,6 +10,10 @@
   fixed QTL position. At present, just gives estimates and
   coefficients by calling `scan1blup()` with a single position.
 
+- `pull_genoprobpos()` can now take either a marker name (as before) or
+  a set of map, chromosome, and position (from which it uses
+  `find_marker()` to get the marker name).
+
 ### Bug fixes
 
 - Fix typo in help for `scan1()` and related functions.

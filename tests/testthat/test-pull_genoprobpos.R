@@ -10,6 +10,7 @@ test_that("pull_genoprobpos works", {
     pmar <- find_marker(gmap, 8, 40)
     pr_8_40 <- pull_genoprobpos(pr, pmar)
     expect_equal(pr_8_40, pr[["8"]][,,"c8.loc40"])
+    expect_equal(pr_8_40, pull_genoprobpos(pr, marker=pmar))
 
     expect_equal(pull_genoprobpos(pr["275",], pmar),
                  pr_8_40["275",,drop=FALSE])
@@ -17,5 +18,9 @@ test_that("pull_genoprobpos works", {
     expect_warning(pull_genoprobpos(pr, c("c8.loc40", find_marker(gmap, 8, 70))))
 
     expect_error(pull_genoprobpos(pr, "karl"))
+
+
+    # same result if you provide gmap, chr, pos
+    expect_equal(pr_8_40, pull_genoprobpos(pr, gmap, 8, 40))
 
 })

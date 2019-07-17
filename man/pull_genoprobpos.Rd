@@ -4,11 +4,21 @@
 \alias{pull_genoprobpos}
 \title{Pull genotype probabilities for a particular position}
 \usage{
-pull_genoprobpos(genoprobs, marker)
+pull_genoprobpos(genoprobs, map = NULL, chr = NULL, pos = NULL,
+  marker = NULL)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
 \code{\link[=calc_genoprob]{calc_genoprob()}}.}
+
+\item{map}{A map object: a list (corresponding to chromosomes) of
+vectors of marker positions. Can also be a snpinfo object (data
+frame with columns \code{chr} and \code{pos}; marker names taken from
+column \code{snp} or if that doesn't exist from the row names)}
+
+\item{chr}{A chromosome ID}
+
+\item{pos}{A numeric position}
 
 \item{marker}{A single character string with the name of the
 position to pull out.}
@@ -20,6 +30,10 @@ A matrix of genotype probabilities for the specified position.
 Pull out the genotype probabilities for a particular position (by
 name)
 }
+\details{
+Provide either a marker/pseudomarker name (with the argument \code{marker})
+or all of \code{map}, \code{chr}, and \code{pos}.
+}
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 \dontshow{iron <- iron[,"8"]}
@@ -28,6 +42,8 @@ pr <- calc_genoprob(iron, gmap, error_prob=0.002)
 
 pmar <- find_marker(gmap, 8, 40)
 pr_8_40 <- pull_genoprobpos(pr, pmar)
+
+pr_8_40_alt <- pull_genoprobpos(pr, gmap, 8, 40)
 
 }
 \seealso{

@@ -5,10 +5,19 @@
 #'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
+#' @param map A map object: a list (corresponding to chromosomes) of
+#'     vectors of marker positions. Can also be a snpinfo object (data
+#'     frame with columns `chr` and `pos`; marker names taken from
+#'     column `snp` or if that doesn't exist from the row names)
+#' @param chr A chromosome ID
+#' @param pos A numeric position
 #' @param marker A single character string with the name of the
 #' position to pull out.
 #'
 #' @return A matrix of genotype probabilities for the specified position.
+#'
+#' @details Provide either a marker/pseudomarker name (with the argument `marker`)
+#' or all of `map`, `chr`, and `pos`.
 #'
 #' @seealso [find_marker()], [fit1()], [pull_genoprobint()]
 #'
@@ -21,11 +30,27 @@
 #' pmar <- find_marker(gmap, 8, 40)
 #' pr_8_40 <- pull_genoprobpos(pr, pmar)
 #'
+#' pr_8_40_alt <- pull_genoprobpos(pr, gmap, 8, 40)
+#'
 #' @export
 pull_genoprobpos <-
-    function(genoprobs, marker)
+    function(genoprobs, map=NULL, chr=NULL, pos=NULL, marker=NULL)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
+
+    if(is.character(map) && is.null(chr) && is.null(pos) && is.null(marker)) {
+        # treat this as map -> marker
+        marker <- map
+        map <- NULL
+    }
+
+    if(!is.null(marker) && (!is.null(map) || !is.null(chr) || !is.null(pos))) {
+        warning("Provide either {map,chr,pos} or marker, not both; using marker")
+    }
+    if(is.null(marker)) {
+        marker <- find_marker(map, chr, pos)
+    }
+
     if(length(marker) == 0) stop("marker has length 0")
     if(length(marker) > 1) {
         marker <- marker[1]
