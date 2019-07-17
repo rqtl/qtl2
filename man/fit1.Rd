@@ -7,7 +7,7 @@
 fit1(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   nullcovar = NULL, intcovar = NULL, weights = NULL,
   contrasts = NULL, model = c("normal", "binary"), zerosum = TRUE,
-  se = TRUE, hsq = NULL, reml = TRUE, ...)
+  se = TRUE, hsq = NULL, reml = TRUE, blup = FALSE, ...)
 }
 \arguments{
 \item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes}
@@ -55,6 +55,8 @@ the mean. Ignored if \code{contrasts} is provided.}
 \item{reml}{If \code{kinship} provided: if \code{reml=TRUE}, use
 REML; otherwise maximum likelihood.}
 
+\item{blup}{If TRUE, fit a model with QTL effects being random, as in \code{\link[=scan1blup]{scan1blup()}}.}
+
 \item{...}{Additional control parameters; see Details;}
 }
 \value{
@@ -65,6 +67,7 @@ A list containing
 \item \code{lod} - The overall lod score.
 \item \code{ind_lod} - Vector of individual contributions to the LOD score.
 \item \code{fitted}  - Fitted values.
+If \code{blup==TRUE}, only \code{coef} and \code{SE} are included at present.
 }
 }
 \description{

@@ -1,10 +1,14 @@
-## qtl2 0.21-3 (2019-07-16)
+## qtl2 0.21-3 (2019-07-17)
 
 ### Major changes
 
 - Added some functions for diagnostics: `recode_snps()`,
   `calc_raw_het()`, `calc_raw_geno_freq()`, `calc_raw_maf()`, and
   `calc_raw_founder_maf()`.
+
+- Added argument `blup` to `fit1()`, for getting BLUPs for a single
+  fixed QTL position. At present, just gives estimates and
+  coefficients by calling `scan1blup()` with a single position.
 
 ### Bug fixes
 
