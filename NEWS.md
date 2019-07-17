@@ -1,4 +1,4 @@
-## qtl2 0.21-3 (2019-07-17)
+## qtl2 0.21-4 (2019-07-17)
 
 ### Major changes
 
@@ -16,7 +16,7 @@
 
 ### Bug fixes
 
-- Fix typo in help for `scan1()` and related functions.
+- Fixed typo in help for `scan1()` and related functions.
 
 
 ## qtl2 0.20 (2019-06-03)
@@ -29,7 +29,7 @@
   `scan1blup()`). The previous behavior can be obtained with the
   argument `zerosum=FALSE`.
 
-- Add function `create_snpinfo()` for creating a SNP information table
+- Added function `create_snpinfo()` for creating a SNP information table
   from a cross2 object, for use with `scan1snps()`.
 
 ### Minor changes
@@ -40,7 +40,7 @@
 - In `check_cross2()`, added a test for alleles being a vector of
   character strings.
 
-- Fix some tests for R 3.6, due to change in random number generation.
+- Fixed some tests for R 3.6, due to change in random number generation.
 
 - Use Markdown for function documentation, throughout
 
