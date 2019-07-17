@@ -18,6 +18,9 @@
 
 - Fixed typo in help for `scan1()` and related functions.
 
+- `genoprob_to_snpprob()` was giving an error if you gave a cross2
+  object in place of a snpinfo table and it had monomorphic markers.
+
 
 ## qtl2 0.20 (2019-06-03)
 
