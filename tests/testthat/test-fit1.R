@@ -509,3 +509,29 @@ test_that("fit1 handles contrasts properly in an intercross", {
     expect_equal(attr(ests_c13, "SE")["D13M254",], out_fit1b$SE)
 
 })
+
+test_that("fit1 works with blup=TRUE", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    Xcovar <- get_x_covar(iron)
+    kinship <- calc_kinship(probs, "loco")
+
+    # pull out a position
+    marker <- find_marker(map, "2", 56.8)
+    pr_pos <- pull_genoprobpos(probs, marker=marker)
+
+    # reduce the probs to a few positions
+    probs[[2]] <- probs[[2]][,, which(dimnames(probs[[2]])[[3]]==marker) + -2:1]
+
+    out_scan1blup <- scan1blup(probs[,2], iron$pheno[,1], kinship[[2]])
+    out_scan1blup_nok <- scan1blup(probs[,2], iron$pheno[,1])
+
+    expect_equal( fit1(pr_pos, iron$pheno[,1], kinship[[2]], blup=TRUE, se=FALSE)$coef,
+                 out_scan1blup[marker,] )
+
+    expect_equal( fit1(pr_pos, iron$pheno[,1], blup=TRUE, se=FALSE)$coef,
+                 out_scan1blup_nok[marker,] )
+
+})

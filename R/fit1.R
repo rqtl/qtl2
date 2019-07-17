@@ -35,6 +35,7 @@
 #' `kinship` provided.
 #' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
+#' @param blup If TRUE, fit a model with QTL effects being random, as in [scan1blup()].
 #' @param ... Additional control parameters; see Details;
 #'
 #' @return A list containing
@@ -43,6 +44,7 @@
 #' * `lod` - The overall lod score.
 #' * `ind_lod` - Vector of individual contributions to the LOD score.
 #' * `fitted`  - Fitted values.
+#' If `blup==TRUE`, only `coef` and `SE` are included at present.
 #'
 #' @details For each of the inputs, the row names are used as
 #' individual identifiers, to align individuals.
@@ -120,17 +122,36 @@ fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
              contrasts=NULL, model=c("normal", "binary"),
-             zerosum=TRUE, se=TRUE, hsq=NULL, reml=TRUE, ...)
+             zerosum=TRUE, se=TRUE, hsq=NULL, reml=TRUE, blup=FALSE, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
+
+    model <- match.arg(model)
+
+    if(blup) {
+        if(!is.null(intcovar)) warning("If blup==TRUE, intcovar ignored")
+        if(model != "normal") warning('If blup==TRUE, model taken to be "normal"')
+        if(!is.null(weights)) warning("If blup==TRUE, weights ignored")
+        if(!is.null(hsq)) warning("If blup==TRUE, hsq ignored")
+
+        rn <- rownames(genoprobs)
+        cn <- colnames(genoprobs)
+        genoprobs <- list("1" = array(genoprobs, dim=c(dim(genoprobs), 1)))
+        dimnames(genoprobs[[1]]) <- list(rn, cn, "marker")
+
+        blup_result <- scan1blup(genoprobs, pheno, kinship=kinship, addcovar=addcovar,
+                                 nullcovar=nullcovar, contrasts=contrasts, se=se, reml=reml,
+                                 tol=grab_dots(list("..."), "tol", 1e-12))
+        result <- list(coef=blup_result[1,])
+        if(se) result$SE <- attr(blup_result, "SE")[1,]
+        return(result)
+    }
 
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
                        intcovar, weights, contrasts, zerosum, se, hsq, reml, ...))
     }
-
-    model <- match.arg(model)
 
     # deal with the dot args
     dotargs <- list("...")

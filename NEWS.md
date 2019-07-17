@@ -1,4 +1,4 @@
-## qtl2 0.21-3 (2019-07-16)
+## qtl2 0.21-4 (2019-07-17)
 
 ### Major changes
 
@@ -6,9 +6,20 @@
   `calc_raw_het()`, `calc_raw_geno_freq()`, `calc_raw_maf()`, and
   `calc_raw_founder_maf()`.
 
+- Added argument `blup` to `fit1()`, for getting BLUPs for a single
+  fixed QTL position. At present, just gives estimates and
+  coefficients by calling `scan1blup()` with a single position.
+
+- `pull_genoprobpos()` can now take either a marker name (as before) or
+  a set of map, chromosome, and position (from which it uses
+  `find_marker()` to get the marker name).
+
 ### Bug fixes
 
-- Fix typo in help for `scan1()` and related functions.
+- Fixed typo in help for `scan1()` and related functions.
+
+- `genoprob_to_snpprob()` was giving an error if you gave a cross2
+  object in place of a snpinfo table and it had monomorphic markers.
 
 
 ## qtl2 0.20 (2019-06-03)
@@ -21,7 +32,7 @@
   `scan1blup()`). The previous behavior can be obtained with the
   argument `zerosum=FALSE`.
 
-- Add function `create_snpinfo()` for creating a SNP information table
+- Added function `create_snpinfo()` for creating a SNP information table
   from a cross2 object, for use with `scan1snps()`.
 
 ### Minor changes
@@ -32,7 +43,7 @@
 - In `check_cross2()`, added a test for alleles being a vector of
   character strings.
 
-- Fix some tests for R 3.6, due to change in random number generation.
+- Fixed some tests for R 3.6, due to change in random number generation.
 
 - Use Markdown for function documentation, throughout
 

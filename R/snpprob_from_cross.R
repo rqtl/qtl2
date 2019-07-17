@@ -9,8 +9,10 @@ snpprob_from_cross <-
         stop("cross doesn't contain founder_geno")
 
     ### calculate snp info from cross
-    # drop markers that are missing any founder genotypes
-    cross <- drop_markers(cross, unlist(lapply(cross$founder_geno, function(a) colnames(a)[colSums(a==0)>0])))
+    # drop markers that are missing any founder genotypes or that are monomorphic
+    fg <- do.call("cbind", cross$founder_geno)
+    mar2drop <- colnames(fg)[colSums(fg != 1 & fg != 3) > 0 | colSums(fg==1)==0 | colSums(fg==3)==0]
+    cross <- drop_markers(cross, mar2drop)
 
     # subset to common chr
     chr_pr <- names(genoprobs)
