@@ -37,6 +37,9 @@ test_that("basic summaries give correct numbers for iron data", {
     expect_equal(ind_ids_pheno(iron), paste(1:284))
     expect_equal(ind_ids_gnp(iron), paste(1:284))
 
+    expect_equal(n_founders(iron), 2)
+    expect_equal(founders(iron), c("S", "B"))
+
     # run summary
     z <- summary(iron)
 
@@ -111,7 +114,44 @@ test_that("basic summaries give correct numbers for grav2 data", {
                                         "DF.119L", "CH.331L-Col", "CH.124C", "GD.222C-Col", "g2368",
                                         "FD.188C", "EG.205L", "HH.122C/120L"))
 
+    expect_equal(n_founders(grav2), 2)
+    expect_equal(founders(grav2), c("L", "C"))
+
     # run summary
     z <- summary(grav2)
+
+})
+
+
+
+test_that("basic summaries give correct numbers for recla data", {
+
+    if(isnt_karl()) skip("This test only run locally")
+
+    file <- paste0("https://raw.githubusercontent.com/rqtl/",
+                   "qtl2data/master/DO_Recla/recla.zip")
+    recla <- read_cross2(file)
+
+    expect_equal(n_ind(recla), 261)
+    expect_equal(n_ind_geno(recla), 261)
+    expect_equal(n_ind_pheno(recla), 261)
+    expect_equal(n_ind_gnp(recla), 261)
+    expect_equal(n_chr(recla), 20)
+    expect_equal(chr_names(recla), paste0(c(1:19, "X")))
+    expect_equal(tot_mar(recla), 6394)
+    expect_equal(n_mar(recla), c("1"=448, "2"=447, "3"=396, "4"=376, "5"=359, "6"=378, "7"=348, "8"=305,
+                                 "9"=321, "10"=358, "11"=314, "12"=300, "13"=306, "14"=306, "15"=248, "16"=246,
+                                 "17"=216, "18"=207, "19"=146, "X"=369))
+    expect_equal(n_pheno(recla), 26)
+    expect_equal(n_covar(recla), 6)
+    expect_equal(covar_names(recla), c("Sex", "Cohort", "Group", "Subgroup", "ngen", "coat_color"))
+    expect_equal(n_phenocovar(recla), 0)
+    expect_equal(phenocovar_names(recla), NULL)
+
+    expect_equal(n_founders(recla), 8)
+    expect_equal(founders(recla), LETTERS[1:8])
+
+    # run summary
+    z <- summary(recla)
 
 })

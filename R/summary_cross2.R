@@ -136,6 +136,30 @@ function(cross2)
     length(cross2$geno)
 }
 
+#' @describeIn basic_summaries Number of founder strains
+#' @export
+n_founders <-
+    function(cross2)
+{
+    if("founder_geno" %in% names(cross2)) {
+        return(nrow(cross2$founder_geno[[1]]))
+    }
+
+    return(2) # if no founder_geno, must be just two founders, right?
+}
+
+#' @describeIn basic_summaries Names of founder strains
+#' @export
+founders <-
+    function(cross2)
+{
+    if("founder_geno" %in% names(cross2)) {
+        return(rownames(cross2$founder_geno[[1]]))
+    }
+
+    return(cross2$alleles)
+}
+
 #' @describeIn basic_summaries Chromosome names
 #' @export
 chr_names <-
