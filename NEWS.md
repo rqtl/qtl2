@@ -24,6 +24,8 @@
   gives a warning if there are cross info conversion codes but more
   than one cross info column.
 
+- Small fix in `read_cross2()` to allow multiple cross info covariates.
+
 ### Bug fixes
 
 - Fixed typo in help for `scan1()` and related functions.

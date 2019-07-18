@@ -547,8 +547,11 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
     }
     else if("covar" %in% names(cross_info_control)) { # cross_info within the covariates
-        if(!(cross_info_control$covar %in% colnames(covar)))
-            stop('cross_info column "', cross_info_control$covar, '" not found in covar')
+        if(!all(cross_info_control$covar %in% colnames(covar))) {
+            not_found <- cross_info_control$covar[!(cross_info_control$covar %in% colnames(covar))]
+            not_found <- paste0('"', not_found, '"', collapse=", ")
+            stop('cross_info column ', not_found, '" not found in covar')
+        }
         cross_info <- covar[,cross_info_control$covar, drop=FALSE]
     }
     else return(NULL)
