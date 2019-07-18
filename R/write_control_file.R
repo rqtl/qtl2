@@ -202,7 +202,6 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
         storage.mode(crossinfo_codes) <- "integer"
         result$cross_info <- c(result$cross_info, as.list(crossinfo_codes))
     }
-    print(result$cross_info)
 
     # JSON or YAML?
     if(grepl("\\.json$", output_file)) { # assume JSON
