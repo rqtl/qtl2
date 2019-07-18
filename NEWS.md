@@ -14,6 +14,9 @@
   a set of map, chromosome, and position (from which it uses
   `find_marker()` to get the marker name).
 
+- Added plot function for the results of `compare_geno()`. (Plots
+  histogram of upper triangle.)
+
 ### Bug fixes
 
 - Fixed typo in help for `scan1()` and related functions.

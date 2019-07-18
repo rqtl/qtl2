@@ -283,3 +283,41 @@ max_compare_geno <-
 #' @rdname max_compare_geno
 #' @export
 max.compare_geno <- max_compare_geno
+
+#' Plot of compare_geno object.
+#'
+#' From results of [compare_geno()], plot histogram of
+#'
+#' @param x A square matrix with genotype comparisons for pairs
+#'     of individuals, as output by [compare_geno()].
+#' @param rug If true, use [rug()] to plot tick marks at observed values below the histogram.
+#' @param ... Additional graphics parameters passed to [hist()]
+#'
+#' @return None.
+#'
+#' @export
+#' @keywords graphics
+#' @importFrom graphics hist rug
+#'
+#' @examples
+#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+#' cg <- compare_geno(grav2)
+#' plot(cg)
+plot_compare_geno <-
+    function(x, rug=TRUE, ...)
+{
+    .plot_compare_geno <-
+        function(x, breaks=seq(0, 1, length=101), xlab="Proportion matching genotypes",
+                 main="", las=1, rug=TRUE, ...)
+        {
+            x <- x[upper.tri(x)]
+            hist(x, breaks=breaks, las=las, main=main, xlab=xlab)
+            if(rug) rug(x)
+        }
+
+    .plot_compare_geno(x, rug=rug, ...)
+}
+
+#' @rdname plot_compare_geno
+#' @export
+plot.compare_geno <- plot_compare_geno
