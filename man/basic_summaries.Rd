@@ -13,6 +13,8 @@
 \alias{ind_ids_covar}
 \alias{ind_ids_gnp}
 \alias{n_chr}
+\alias{n_founders}
+\alias{founders}
 \alias{chr_names}
 \alias{tot_mar}
 \alias{n_mar}
@@ -46,6 +48,10 @@ ind_ids_covar(cross2)
 ind_ids_gnp(cross2)
 
 n_chr(cross2)
+
+n_founders(cross2)
+
+founders(cross2)
 
 chr_names(cross2)
 
@@ -97,6 +103,10 @@ Basic summaries of a cross2 object.
 \item \code{ind_ids_gnp}: IDs of individuals with both genotype and phenotype data
 
 \item \code{n_chr}: Number of chromosomes
+
+\item \code{n_founders}: Number of founder strains
+
+\item \code{founders}: Names of founder strains
 
 \item \code{chr_names}: Chromosome names
 

@@ -17,6 +17,9 @@
 - Added plot function for the results of `compare_geno()`. (Plots
   histogram of upper triangle.)
 
+- Added functions `n_founders()` and `founders()` for getting the
+  number of founders and the founder strain names for a cross2 object.
+
 ### Minor changes
 
 - `write_control_file()` now allows cross info codes with a cross info
@@ -25,6 +28,9 @@
   than one cross info column.
 
 - Small fix in `read_cross2()` to allow multiple cross info covariates.
+
+- Added a check that the founder genotypes have the same strain IDs on
+  each chromosome.
 
 ### Bug fixes
 

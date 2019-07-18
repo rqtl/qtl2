@@ -368,6 +368,17 @@ function(cross2)
                         result <- FALSE
                     }
                 }
+
+                # checkout founder strain labels
+                founders <- founders(cross2)
+                for(i in seq(along=geno)) {
+                    if(length(founders) != nrow(founder_geno[[i]]) ||
+                       any(founders != rownames(founder_geno[[i]]))) {
+                        warning("Mismatch in founder strain labels on chr ", names(geno)[i])
+                        result <- FALSE
+                    }
+                }
+
             }
         }
     }
