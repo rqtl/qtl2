@@ -308,3 +308,18 @@ description: Annotated/categorized list of functions in R/qtl2
 - `print.summary.cross2` - print method for the output of `summary.cross2`
 - `print.summary.compare_geno` - print method for the output of `summary.compare_geno`
 - `print.summary.scan1perm` - print method for the output of `summary.scan1perm`
+
+### Newly added functions (in development version)
+
+- `plot_compare_geno` - Plot histogram of the results of
+  `compare_geno()` (_diagnostic plots_)
+- `plot.compare_geno` - Same as `plot_compare_geno()` (_diagnostic plots_)
+- `recode_snps` - Recode the SNP genotypes so that `1` is for the
+  major allele in the founders (_utilities_)
+- `calc_raw_het` - Calculate heterozygosity in the raw SNP genotypes (_diagnostics_)
+- `calc_raw_maf` - Calculate the minor allele frequency in the raw SNP
+  genotypes (_diagnostics_)
+- `calc_raw_geno_freq` - Calculate the genotype frequencies in the raw
+  SNP data (_diagnostics_)
+- `calc_raw_founder_maf` - Calculate the minor allele frequency in the
+  founder strains' SNP genotypes (_diagnostics_)
