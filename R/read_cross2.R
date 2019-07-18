@@ -569,6 +569,10 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
         return(cross_info)
     }
 
+    if(ncol(cross_info) > 1) {
+        warning("cross_info has more than one column but uses conversion codes (which are intended for a single column)")
+    }
+
     # any mismatches?
     cich <- as.character(cross_info)
     mismatch <- !is.na(cich) & is.na(match(cich,cicode))

@@ -56,13 +56,13 @@ one of \code{crossinfo_file} or \code{crossinfo_covar}.)}
 corresponds to the \code{cross_info} data. (Specify just one of
 \code{crossinfo_file} or \code{crossinfo_covar}.)}
 
-\item{crossinfo_codes}{In the case that \code{crossinfo_covar} is
-provided (and not \code{crossinfo_file}; it would be left
-untouched), a named vector of character strings specifying the
+\item{crossinfo_codes}{In the case that there is a single cross
+info column (whether in a file or as a covariate), you can
+provide a named vector of character strings specifying the
 encoding of \code{cross_info}. The names attribute should be the
-codes used in the covariate column; the values within the vector
-should be the codes to which they will be converted (for example,
-\code{0} and \code{1} for an intercross).}
+codes used; the values within the vector should be the codes to
+which they will be converted (for example, \code{0} and \code{1} for an
+intercross).}
 
 \item{geno_codes}{Named vector specifying the encoding of
 genotypes. The names attribute has the codes used within the

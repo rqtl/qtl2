@@ -30,13 +30,13 @@
 #' @param crossinfo_covar Column name in the covariate data that
 #' corresponds to the `cross_info` data. (Specify just one of
 #' `crossinfo_file` or `crossinfo_covar`.)
-#' @param crossinfo_codes In the case that `crossinfo_covar` is
-#' provided (and not `crossinfo_file`; it would be left
-#' untouched), a named vector of character strings specifying the
+#' @param crossinfo_codes In the case that there is a single cross
+#' info column (whether in a file or as a covariate), you can
+#' provide a named vector of character strings specifying the
 #' encoding of `cross_info`. The names attribute should be the
-#' codes used in the covariate column; the values within the vector
-#' should be the codes to which they will be converted (for example,
-#' `0` and `1` for an intercross).
+#' codes used; the values within the vector should be the codes to
+#' which they will be converted (for example, `0` and `1` for an
+#' intercross).
 #' @param geno_codes Named vector specifying the encoding of
 #' genotypes. The names attribute has the codes used within the
 #' genotype and founder genotype data files; the values within the
@@ -189,14 +189,12 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
     if(!is.null(crossinfo_file)) {
         if(!is.null(crossinfo_covar))
             stop("Specify just one of crossinfo_file and crossinfo_covar")
-        if(!is.null(crossinfo_codes))
-            warning("if crossinfo_file is specified, crossinfo_codes is ignored")
         result$cross_info <- list(file=crossinfo_file)
     }
     else {
         if(!is.null(crossinfo_codes)) {
             if(is.null(crossinfo_covar))
-                stop("if crossinfo_codes is provided, crossinfo_covar must also be provided")
+                stop("if crossinfo_codes is provided, crossinfo_covar or crossinfo_file must also be provided")
             storage.mode(crossinfo_codes) <- "integer"
             result$cross_info <- c(list(covar=crossinfo_covar),
                                    as.list(crossinfo_codes))

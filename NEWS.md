@@ -17,6 +17,13 @@
 - Added plot function for the results of `compare_geno()`. (Plots
   histogram of upper triangle.)
 
+### Minor changes
+
+- `write_control_file()` now allows cross info codes with a cross info
+  file (previously only allowed with a covariate). `read_cross2()`
+  gives a warning if there are cross info conversion codes but more
+  than one cross info column.
+
 ### Bug fixes
 
 - Fixed typo in help for `scan1()` and related functions.
