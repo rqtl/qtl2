@@ -14,6 +14,18 @@
   a set of map, chromosome, and position (from which it uses
   `find_marker()` to get the marker name).
 
+- Added plot function for the results of `compare_geno()`. (Plots
+  histogram of upper triangle.)
+
+### Minor changes
+
+- `write_control_file()` now allows cross info codes with a cross info
+  file (previously only allowed with a covariate). `read_cross2()`
+  gives a warning if there are cross info conversion codes but more
+  than one cross info column.
+
+- Small fix in `read_cross2()` to allow multiple cross info covariates.
+
 ### Bug fixes
 
 - Fixed typo in help for `scan1()` and related functions.
@@ -21,9 +33,12 @@
 - `genoprob_to_snpprob()` was giving an error if you gave a cross2
   object in place of a snpinfo table and it had monomorphic markers.
 
-- Fix problem with weights in `scan1()` and related functions when
+- Fixed problem with weights in `scan1()` and related functions when
   their derived from `table()`. Make sure they're a plain numeric
   vector, not an array.
+
+- Fixed `check_cross2()`: the check for invalid genotypes wasn't
+  happening.
 
 
 ## qtl2 0.20 (2019-06-03)
