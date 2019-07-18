@@ -76,7 +76,7 @@ double calc_ll_binreg_weighted_eigenchol(const NumericMatrix& X, const NumericVe
 
     } // end iterations
 
-    if(!converged) r_warning("binreg didn't converge");
+    if(!converged) r_warning("binary trait regression didn't converge: increase maxit or tol");
 
     return llik;
 }
@@ -147,7 +147,7 @@ double calc_ll_binreg_weighted_eigenqr(const NumericMatrix& X, const NumericVect
 
     } // end iterations
 
-    if(!converged) r_warning("binreg didn't converge");
+    if(!converged) r_warning("binary trait regression didn't converge: increase maxit or tol");
 
     return llik;
 }
@@ -259,7 +259,7 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
         curllik = llik;
     } // end iterations
 
-    if(!converged) r_warning("binreg didn't converge");
+    if(!converged) r_warning("binary trait regression didn't converge: increase maxit or tol");
 
     // now get coefficients, SEs, etc.
     List fit = fit_linreg_eigenqr(XX, z, true, qr_tol);
