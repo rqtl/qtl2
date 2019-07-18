@@ -29,6 +29,8 @@ sqrt_weights <-
     if(all(!is.na(weights) & abs(weights - 1)<tol))
         return(NULL)
 
+    weights <- stats::setNames( as.numeric(weights), names(weights) )
+
     return(sqrt(weights))
 }
 

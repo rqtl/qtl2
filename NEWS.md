@@ -1,4 +1,4 @@
-## qtl2 0.21-4 (2019-07-17)
+## qtl2 0.21-5 (2019-07-18)
 
 ### Major changes
 
@@ -20,6 +20,10 @@
 
 - `genoprob_to_snpprob()` was giving an error if you gave a cross2
   object in place of a snpinfo table and it had monomorphic markers.
+
+- Fix problem with weights in `scan1()` and related functions when
+  their derived from `table()`. Make sure they're a plain numeric
+  vector, not an array.
 
 
 ## qtl2 0.20 (2019-06-03)

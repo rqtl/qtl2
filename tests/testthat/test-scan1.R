@@ -633,3 +633,23 @@ test_that("scan1 can handle decomposed kinship matrix", {
                   scan1(pr, iron$pheno, k) )
 
 })
+
+
+test_that("weights derived from table() are okay", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    pr <- calc_genoprob(iron)
+    k <- calc_kinship(pr)
+
+    w1 <- setNames(sample(1:10, nrow(iron$pheno), replace=TRUE), rownames(iron$pheno))
+    out1 <- scan1(pr, iron$pheno, weights=w1)
+    out1k <- scan1(pr, iron$pheno, k, weights=w1)
+
+    w2 <- table( rep(names(w1), w1) )
+    out2 <- scan1(pr, iron$pheno, weights=w2)
+    out2k <- scan1(pr, iron$pheno, k, weights=w2)
+
+    expect_equal(out1, out2)
+    expect_equal(out1k, out2k)
+
+})
