@@ -429,10 +429,12 @@ function(cross2)
         }
     }
 
-    if(!result) { # check genotypes only if everything else is okay
+    if(result) { # check genotypes only if everything else is okay
         n_invalid <- count_invalid_genotypes(cross2)
-        if(sum(n_invalid)>0)
-            warning(sum(n_invalid), " genotypes in cross")
+        if(sum(n_invalid)>0) {
+            result <- FALSE
+            warning(sum(n_invalid), " invalid genotypes in cross")
+        }
     }
 
     result

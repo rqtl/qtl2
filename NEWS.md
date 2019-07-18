@@ -33,9 +33,12 @@
 - `genoprob_to_snpprob()` was giving an error if you gave a cross2
   object in place of a snpinfo table and it had monomorphic markers.
 
-- Fix problem with weights in `scan1()` and related functions when
+- Fixed problem with weights in `scan1()` and related functions when
   their derived from `table()`. Make sure they're a plain numeric
   vector, not an array.
+
+- Fixed `check_cross2()`: the check for invalid genotypes wasn't
+  happening.
 
 
 ## qtl2 0.20 (2019-06-03)
