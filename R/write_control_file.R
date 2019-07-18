@@ -187,22 +187,22 @@ function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gm
 
     # cross_info
     if(!is.null(crossinfo_file)) {
-        if(!is.null(crossinfo_covar))
+        if(!is.null(crossinfo_covar)) {
             stop("Specify just one of crossinfo_file and crossinfo_covar")
+        }
         result$cross_info <- list(file=crossinfo_file)
     }
-    else {
-        if(!is.null(crossinfo_codes)) {
-            if(is.null(crossinfo_covar))
-                stop("if crossinfo_codes is provided, crossinfo_covar or crossinfo_file must also be provided")
-            storage.mode(crossinfo_codes) <- "integer"
-            result$cross_info <- c(list(covar=crossinfo_covar),
-                                   as.list(crossinfo_codes))
-        }
-        else if(!is.null(crossinfo_covar)) {
-            result$cross_info <- list(covar=crossinfo_covar)
-        }
+    else if(!is.null(crossinfo_covar)) {
+        result$cross_info <- list(covar=crossinfo_covar)
     }
+    if(!is.null(crossinfo_codes)) {
+        if(is.null(crossinfo_covar) && is.null(crossinfo_file)) {
+            stop("if crossinfo_codes is provided, crossinfo_covar or crossinfo_file must also be provided")
+        }
+        storage.mode(crossinfo_codes) <- "integer"
+        result$cross_info <- c(result$cross_info, as.list(crossinfo_codes))
+    }
+    print(result$cross_info)
 
     # JSON or YAML?
     if(grepl("\\.json$", output_file)) { # assume JSON
