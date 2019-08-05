@@ -123,6 +123,7 @@ scan1_pg <-
     }
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
+
     # loop over batches of phenotypes with the same pattern of NAs
     for(batch in seq_along(phe_batches)) {
 
@@ -158,13 +159,14 @@ scan1_pg <-
             nullresult <- calc_hsq_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
                                          is_x_chr=is_x_chr, weights=wts, reml=reml,
                                          cores=cores, check_boundary=check_boundary, tol=tol)
+
             hsq[, phecol] <- nullresult$hsq
         }
         else {
             loglik <- calc_nullLL_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
                                         is_x_chr=is_x_chr, weights=wts, reml=reml,
-                                        hsq=hsq[,phecol], cores=cores)
-            nullresult <- list(hsq=hsq[,phecol],
+                                        hsq=hsq[,phecol,drop=FALSE], cores=cores)
+            nullresult <- list(hsq=hsq[,phecol,drop=FALSE],
                                loglik=loglik)
         }
 
@@ -181,7 +183,7 @@ scan1_pg <-
     attr(result, "hsq") <- hsq
     attr(result, "sample_size") <- n
 
-    class(result) <- c("scan1", "matrix")
+
     result
 }
 
@@ -246,7 +248,7 @@ calc_hsq_clean <-
 # hsq is a matrix with ncol = ncol(pheno)
 calc_nullLL_clean <-
     function(Ke, pheno, addcovar=NULL, Xcovar=NULL, is_x_chr=FALSE, weights=NULL,
-             reml=TRUE, hsq, cores=1)
+             reml=TRUE, hsq, cores=1, tol=1e-12)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
@@ -276,7 +278,7 @@ calc_nullLL_clean <-
             logdetXpX = Rcpp_calc_logdetXpX(ac)
             ac <- Ke[[chr]]$vectors %*% ac
 
-            Rcpp_calcLL_mat(Ke[[chr]]$values, y, ac, reml, hsq[chr,], logdetXpX)
+            Rcpp_calcLL_mat(hsq[chr,], Ke[[chr]]$values, y, ac, reml, logdetXpX)
         }
 
     # now do the work
@@ -288,8 +290,7 @@ calc_nullLL_clean <-
         stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
     # re-arrange results
-    matrix(unlist(lapply(result, function(a) a$loglik)), byrow=TRUE,
-           ncol=nphe)
+    matrix(unlist(result), byrow=TRUE, ncol=nphe)
 }
 
 # perform the LMM scan

@@ -105,8 +105,8 @@ Rcpp::NumericVector Rcpp_calcLL_mat(const Rcpp::NumericVector& hsq,
                                     const Rcpp::NumericVector& Kva,
                                     const Rcpp::NumericMatrix& Y,
                                     const Rcpp::NumericMatrix& X,
-                                    const bool reml=true,
-                                    const double logdetXpX=NA_REAL);
+                                    const bool reml,
+                                    const double logdetXpX);
 
 
 // just the negative log likelihood, for the optimization

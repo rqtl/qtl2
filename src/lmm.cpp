@@ -213,8 +213,12 @@ double Rcpp_calcLL(const double hsq, const NumericVector& Kva, const NumericVect
 
 // calcLMM with matrix of phenotypes (looping over phenotype columns)
 // [[Rcpp::export]]
-NumericVector Rcpp_calcLL_mat(const NumericVector& hsq, const NumericVector& Kva, const NumericMatrix& Y,
-                              const NumericMatrix& X, const bool reml=true, const double logdetXpX=NA_REAL)
+NumericVector Rcpp_calcLL_mat(const NumericVector& hsq,
+                              const NumericVector& Kva,
+                              const NumericMatrix& Y,
+                              const NumericMatrix& X,
+                              const bool reml=true,
+                              const double logdetXpX=NA_REAL)
 {
     const MatrixXd eKva(as<Map<MatrixXd> >(Kva));
     const MatrixXd eY(as<Map<MatrixXd> >(Y));
