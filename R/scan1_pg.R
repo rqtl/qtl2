@@ -161,8 +161,6 @@ scan1_pg <-
                                          cores=cores, check_boundary=check_boundary, tol=tol)
 
             hsq[, phecol] <- nullresult$hsq
-
-            print(nullresult)
         }
         else {
             # for the log likelihood, calculate the reml=FALSE version
@@ -172,8 +170,6 @@ scan1_pg <-
                                         cores=cores)
             nullresult <- list(hsq=hsq[,phecol,drop=FALSE],
                                loglik=loglik)
-
-            print(nullresult)
         }
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes
