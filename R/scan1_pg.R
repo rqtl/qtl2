@@ -161,13 +161,19 @@ scan1_pg <-
                                          cores=cores, check_boundary=check_boundary, tol=tol)
 
             hsq[, phecol] <- nullresult$hsq
+
+            print(nullresult)
         }
         else {
-            loglik <- calc_nullLL_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
-                                        is_x_chr=is_x_chr, weights=wts, reml=reml,
-                                        hsq=hsq[,phecol,drop=FALSE], cores=cores)
+            # for the log likelihood, calculate the reml=FALSE version
+            loglik <- calc_nullLL_clean(hsq=hsq[,phecol,drop=FALSE], Ke=Ke, pheno=ph,
+                                        addcovar=ac, Xcovar=Xc,
+                                        is_x_chr=is_x_chr, weights=wts, reml=FALSE,
+                                        cores=cores)
             nullresult <- list(hsq=hsq[,phecol,drop=FALSE],
                                loglik=loglik)
+
+            print(nullresult)
         }
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes
@@ -247,8 +253,8 @@ calc_hsq_clean <-
 #
 # hsq is a matrix with ncol = ncol(pheno)
 calc_nullLL_clean <-
-    function(Ke, pheno, addcovar=NULL, Xcovar=NULL, is_x_chr=FALSE, weights=NULL,
-             reml=TRUE, hsq, cores=1, tol=1e-12)
+    function(hsq, Ke, pheno, addcovar=NULL, Xcovar=NULL, is_x_chr=FALSE,
+             weights=NULL, reml=FALSE, cores=1, tol=1e-12)
 {
     n <- nrow(pheno)
     nphe <- ncol(pheno)
