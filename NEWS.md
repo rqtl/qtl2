@@ -20,8 +20,8 @@
 - Added functions `n_founders()` and `founders()` for getting the
   number of founders and the founder strain names for a cross2 object.
 
-- `scan1()` now takes an `hsq` argument, so that the residual
-  heritability may be specified rather than calculated.
+- `scan1()` now takes an optional `hsq` argument, so that the residual
+  heritability may be specified rather than estimated.
 
 ### Minor changes
 
