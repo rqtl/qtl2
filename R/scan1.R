@@ -21,6 +21,12 @@
 #' @param model Indicates whether to use a normal model (least
 #'     squares) or binary model (logistic regression) for the phenotype.
 #'     If `model="binary"`, the phenotypes must have values in \eqn{[0, 1]}.
+#' @param hsq Considered only if `kinship` is provided, in which case
+#'     this is taken as the assumed value for the residual
+#'     heritability. It should be a vector with length corresponding
+#'     to the number of columns in `pheno`, or (if `kinship`
+#'     corresponds to a list of LOCO kinship matrices) a matrix with dimension
+#'     `length(kinship) x ncol(pheno)`.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
@@ -127,7 +133,7 @@
 scan1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL, reml=TRUE,
-             model=c("normal", "binary"), cores=1, ...)
+             model=c("normal", "binary"), hsq=NULL, cores=1, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
@@ -142,7 +148,7 @@ scan1 <-
     if(!is.null(kinship)) { # fit linear mixed model
         if(model=="binary") warning("Can't fit binary model with kinship matrix; using normal model")
         return(scan1_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
-                        weights, reml, cores, ...))
+                        weights, reml, hsq, cores, ...))
     }
 
     # deal with the dot args

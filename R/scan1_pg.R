@@ -3,7 +3,8 @@
 # called by scan1() when kinship() is provided.
 scan1_pg <-
     function(genoprobs, pheno, kinship, addcovar=NULL, Xcovar=NULL,
-             intcovar=NULL, weights=NULL, reml=TRUE, cores=1, ...)
+             intcovar=NULL, weights=NULL, reml=TRUE, hsq=NULL,
+             cores=1, ...)
 {
     # deal with the dot args
     dotargs <- list(...)
@@ -103,8 +104,23 @@ scan1_pg <-
     else if(!is.null(Xcovar)) n_null_chr <- any(is_x_chr) + any(!is_x_chr)
     else n_null_chr <- 1
 
-    hsq <- matrix(nrow=n_null_chr, ncol=ncol(pheno))
-    dimnames(hsq) <- hsq_dimnames(kinship, Xcovar, is_x_chr, pheno)
+    if(is.null(hsq)) {
+        hsq <- matrix(nrow=n_null_chr, ncol=ncol(pheno))
+        dimnames(hsq) <- hsq_dimnames(kinship, Xcovar, is_x_chr, pheno)
+        estimate_hsq <- TRUE
+    } else {
+        if(length(hsq) != n_null_chr * ncol(pheno)) {
+            stop("hsq should be NULL or a matrix of size ", n_null_chr, " x ", ncol(pheno))
+        }
+        if(!is.matrix(hsq)) hsq <- as.matrix(hsq, ncol=ncol(pheno))
+        if(nrow(hsq) != n_null_chr) {
+            stop("hsq should be NULL or a matrix of size ", n_null_chr, " x ", ncol(pheno))
+        }
+        if(any(hsq < 0 | hsq > 1)) {
+            stop("hsq values should be between 0 and 1.")
+        }
+        estimate_hsq <- FALSE
+    }
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
     # loop over batches of phenotypes with the same pattern of NAs
@@ -138,10 +154,16 @@ scan1_pg <-
         Ke <- decomp_kinship(K, cores=cores)
 
         # fit LMM for each phenotype, one at a time
-        nullresult <- calc_hsq_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
-                                     is_x_chr=is_x_chr, weights=wts, reml=reml,
-                                     cores=cores, check_boundary=check_boundary, tol=tol)
-        hsq[, phecol] <- nullresult$hsq
+        if(estimate_hsq) {
+            nullresult <- calc_hsq_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
+                                         is_x_chr=is_x_chr, weights=wts, reml=reml,
+                                         cores=cores, check_boundary=check_boundary, tol=tol)
+            hsq[, phecol] <- nullresult$hsq
+        }
+        else {
+            nullresult <- list(hsq=hsq[,phecol],
+                               loglik=NA)
+        }
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes
         lod <- scan1_pg_clean(genoprobs, these2keep, Ke, ph, ac, ic, is_x_chr,
@@ -212,6 +234,59 @@ calc_hsq_clean <-
                   ncol=nphe)
 
     list(hsq=hsq, loglik=loglik)
+}
+
+# calculate log likelihood for given hsq and
+# for each column of a matrix of phenotypes
+# Ke is eigendecomposition of 2*kinship
+#
+# hsq is a matrix with ncol = ncol(pheno)
+calc_nullLL_clean <-
+    function(Ke, pheno, addcovar=NULL, Xcovar=NULL, is_x_chr=FALSE, weights=NULL,
+             reml=TRUE, hsq, cores=1)
+{
+    n <- nrow(pheno)
+    nphe <- ncol(pheno)
+    if(ncol(hsq) != nphe) stop("ncol(hsq) != ncol(pheno)")
+
+    # if just one kinship matrix, force it to be a list
+    if(!is_kinship_list(Ke)) {
+        # X chromosome with special covariates
+        if(!is.null(Xcovar) && any(is_x_chr) && any(!is_x_chr)) {
+            Ke <- list(Ke, Ke)
+            is_x_chr <- c(FALSE, TRUE)
+        }
+        else { Ke <- list(Ke) }
+    }
+    if(nrow(hsq) != length(Ke)) stop("nrow(hsq) != no. chr")
+
+    # function that does the work
+    by_chr_func <-
+        function(chr)
+        {
+            # premultiply phenotypes and covariates by transposed eigenvectors
+            y <- Ke[[chr]]$vectors %*% pheno
+            intercept <- weights; if(is_null_weights(weights)) intercept <- rep(1,n)
+            ac <- cbind(intercept, addcovar)
+            if(!is.null(Xcovar) && is_x_chr[chr]) # add Xcovar if necessary
+                ac <- drop_depcols(cbind(ac, Xcovar), FALSE, tol)
+            logdetXpX = Rcpp_calc_logdetXpX(ac)
+            ac <- Ke[[chr]]$vectors %*% ac
+
+            Rcpp_calcLL_mat(Ke[[chr]]$values, y, ac, reml, hsq[chr,], logdetXpX)
+        }
+
+    # now do the work
+    result <- cluster_lapply(cores, seq_along(Ke), by_chr_func)
+
+    # check for problems (if clusters run out of memory, they'll return NULL)
+    result_is_null <- vapply(result, is.null, TRUE)
+    if(any(result_is_null))
+        stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
+
+    # re-arrange results
+    matrix(unlist(lapply(result, function(a) a$loglik)), byrow=TRUE,
+           ncol=nphe)
 }
 
 # perform the LMM scan

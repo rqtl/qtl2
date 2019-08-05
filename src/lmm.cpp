@@ -211,6 +211,29 @@ double Rcpp_calcLL(const double hsq, const NumericVector& Kva, const NumericVect
 }
 
 
+// calcLMM with matrix of phenotypes (looping over phenotype columns)
+// [[Rcpp::export]]
+NumericVector Rcpp_calcLL_mat(const NumericVector& hsq, const NumericVector& Kva, const NumericMatrix& Y,
+                              const NumericMatrix& X, const bool reml=true, const double logdetXpX=NA_REAL)
+{
+    const MatrixXd eKva(as<Map<MatrixXd> >(Kva));
+    const MatrixXd eY(as<Map<MatrixXd> >(Y));
+    const MatrixXd eX(as<Map<MatrixXd> >(X));
+
+    const int nphe = Y.cols();
+
+    NumericVector loglik(nphe);
+
+    for(int i=0; i<nphe; i++) {
+        const struct lmm_fit result = calcLL(hsq[i], eKva, eY.col(i), eX, reml, logdetXpX);
+        loglik[i] = result.loglik;
+    }
+
+    return loglik;
+}
+
+
+
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args)
 {

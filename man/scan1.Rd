@@ -6,7 +6,7 @@
 \usage{
 scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  model = c("normal", "binary"), cores = 1, ...)
+  model = c("normal", "binary"), hsq = NULL, cores = 1, ...)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -35,6 +35,13 @@ REML; otherwise maximum likelihood.}
 \item{model}{Indicates whether to use a normal model (least
 squares) or binary model (logistic regression) for the phenotype.
 If \code{model="binary"}, the phenotypes must have values in \eqn{[0, 1]}.}
+
+\item{hsq}{Considered only if \code{kinship} is provided, in which case
+this is taken as the assumed value for the residual
+heritability. It should be a vector with length corresponding
+to the number of columns in \code{pheno}, or (if \code{kinship}
+corresponds to a list of LOCO kinship matrices) a matrix with dimension
+\code{length(kinship) x ncol(pheno)}.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
