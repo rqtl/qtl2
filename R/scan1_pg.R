@@ -161,8 +161,11 @@ scan1_pg <-
             hsq[, phecol] <- nullresult$hsq
         }
         else {
+            loglik <- calc_nullLL_clean(Ke=Ke, pheno=ph, addcovar=ac, Xcovar=Xc,
+                                        is_x_chr=is_x_chr, weights=wts, reml=reml,
+                                        hsq=hsq[,phecol], cores=cores)
             nullresult <- list(hsq=hsq[,phecol],
-                               loglik=NA)
+                               loglik=loglik)
         }
 
         # weighted least squares genome scan, using cluster_lapply across chromosomes

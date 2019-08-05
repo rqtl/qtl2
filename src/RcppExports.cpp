@@ -1351,6 +1351,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Rcpp_calcLL_mat
+NumericVector Rcpp_calcLL_mat(const NumericVector& hsq, const NumericVector& Kva, const NumericMatrix& Y, const NumericMatrix& X, const bool reml, const double logdetXpX);
+RcppExport SEXP _qtl2_Rcpp_calcLL_mat(SEXP hsqSEXP, SEXP KvaSEXP, SEXP YSEXP, SEXP XSEXP, SEXP remlSEXP, SEXP logdetXpXSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericVector& >::type hsq(hsqSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type Kva(KvaSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const bool >::type reml(remlSEXP);
+    Rcpp::traits::input_parameter< const double >::type logdetXpX(logdetXpXSEXP);
+    rcpp_result_gen = Rcpp::wrap(Rcpp_calcLL_mat(hsq, Kva, Y, X, reml, logdetXpX));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Rcpp_fitLMM
 List Rcpp_fitLMM(const NumericVector& Kva, const NumericVector& y, const NumericMatrix& X, const bool reml, const bool check_boundary, const double logdetXpX, const double tol);
 RcppExport SEXP _qtl2_Rcpp_fitLMM(SEXP KvaSEXP, SEXP ySEXP, SEXP XSEXP, SEXP remlSEXP, SEXP check_boundarySEXP, SEXP logdetXpXSEXP, SEXP tolSEXP) {
@@ -2490,6 +2506,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_Rcpp_eigen_rotation", (DL_FUNC) &_qtl2_Rcpp_eigen_rotation, 3},
     {"_qtl2_Rcpp_calc_logdetXpX", (DL_FUNC) &_qtl2_Rcpp_calc_logdetXpX, 1},
     {"_qtl2_Rcpp_calcLL", (DL_FUNC) &_qtl2_Rcpp_calcLL, 6},
+    {"_qtl2_Rcpp_calcLL_mat", (DL_FUNC) &_qtl2_Rcpp_calcLL_mat, 6},
     {"_qtl2_Rcpp_fitLMM", (DL_FUNC) &_qtl2_Rcpp_fitLMM, 7},
     {"_qtl2_Rcpp_fitLMM_mat", (DL_FUNC) &_qtl2_Rcpp_fitLMM_mat, 7},
     {"_qtl2_locate_xo", (DL_FUNC) &_qtl2_locate_xo, 4},

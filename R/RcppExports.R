@@ -373,6 +373,10 @@ Rcpp_calcLL <- function(hsq, Kva, y, X, reml = TRUE, logdetXpX = NA_real_) {
     .Call(`_qtl2_Rcpp_calcLL`, hsq, Kva, y, X, reml, logdetXpX)
 }
 
+Rcpp_calcLL_mat <- function(hsq, Kva, Y, X, reml = TRUE, logdetXpX = NA_real_) {
+    .Call(`_qtl2_Rcpp_calcLL_mat`, hsq, Kva, Y, X, reml, logdetXpX)
+}
+
 Rcpp_fitLMM <- function(Kva, y, X, reml = TRUE, check_boundary = TRUE, logdetXpX = NA_real_, tol = 1e-4) {
     .Call(`_qtl2_Rcpp_fitLMM`, Kva, y, X, reml, check_boundary, logdetXpX, tol)
 }
