@@ -184,7 +184,7 @@ scan1_pg <-
     # add attributes
     attr(result, "hsq") <- hsq
     attr(result, "sample_size") <- n
-
+    class(result) <- c("scan1", "matrix")
 
     result
 }
