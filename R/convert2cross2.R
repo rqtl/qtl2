@@ -90,7 +90,9 @@ function(cross)
     }
 
     # alleles
-    result$alleles <- attr(cross, "alleles")
+    alleles <- attr(cross, "alleles")
+    if(!is.null(alleles)) result$alleles <- alleles
+    else result$alleles <- LETTERS[seq_len(nalleles(result$crosstype))]
 
     class(result) <- "cross2"
 
