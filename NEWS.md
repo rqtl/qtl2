@@ -32,6 +32,9 @@
 - Added a check that the founder genotypes have the same strain IDs on
   each chromosome.
 
+- `convert2cross2()` now includes `alleles` component even if it
+  wasn't present as an attribute.
+
 ### Bug fixes
 
 - Fixed typo in help for `scan1()` and related functions.
