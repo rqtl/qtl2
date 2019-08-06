@@ -690,3 +690,53 @@ test_that("scan1 with weights and kinship", {
     expect_equal(out_reml, result, tol=1e-6)
 
 })
+
+test_that("scan1 works with hsq specified", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    kinship <- calc_kinship(probs)
+    kinship_loco <- calc_kinship(probs, "loco")
+
+    Xc <- get_x_covar(iron)
+    X <- match(iron$covar$sex, c("f", "m"))-1
+    names(X) <- rownames(iron$covar)
+
+    # no covariates, single kinship
+    out <- scan1(probs, iron$pheno, kinship)
+    expect_equal(scan1(probs, iron$pheno, kinship, hsq=attr(out, "hsq")), out)
+
+    # no covariates, loco kinship
+    out <- scan1(probs, iron$pheno, kinship_loco)
+    expect_equal(scan1(probs, iron$pheno, kinship_loco, hsq=attr(out, "hsq")), out)
+
+
+    # X covariates, single kinship
+    out <- scan1(probs, iron$pheno, kinship, Xcovar=Xc)
+    expect_equal(scan1(probs, iron$pheno, kinship, Xcovar=Xc, hsq=attr(out, "hsq")), out)
+
+    # X covariates, loco kinship
+    out <- scan1(probs, iron$pheno, kinship_loco, Xcovar=Xc)
+    expect_equal(scan1(probs, iron$pheno, kinship_loco, Xcovar=Xc, hsq=attr(out, "hsq")), out)
+
+
+    # covariates, single kinship
+    out <- scan1(probs, iron$pheno, kinship, addcovar=X)
+    expect_equal(scan1(probs, iron$pheno, kinship, addcovar=X, hsq=attr(out, "hsq")), out)
+
+    # covariates, loco kinship
+    out <- scan1(probs, iron$pheno, kinship_loco, addcovar=X)
+    expect_equal(scan1(probs, iron$pheno, kinship_loco, addcovar=X, hsq=attr(out, "hsq")), out)
+
+
+
+    # covariates + X covar, single kinship
+    out <- scan1(probs, iron$pheno, kinship, addcovar=X, Xcovar=Xc)
+    expect_equal(scan1(probs, iron$pheno, kinship, addcovar=X, Xcovar=Xc, hsq=attr(out, "hsq")), out)
+
+    # covariates + X covar, loco kinship
+    out <- scan1(probs, iron$pheno, kinship_loco, addcovar=X, Xcovar=Xc)
+    expect_equal(scan1(probs, iron$pheno, kinship_loco, addcovar=X, Xcovar=Xc, hsq=attr(out, "hsq")), out)
+
+})

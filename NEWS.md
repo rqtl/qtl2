@@ -1,4 +1,4 @@
-## qtl2 0.21-5 (2019-07-18)
+## qtl2 0.21-6 (2019-08-05)
 
 ### Major changes
 
@@ -20,6 +20,9 @@
 - Added functions `n_founders()` and `founders()` for getting the
   number of founders and the founder strain names for a cross2 object.
 
+- `scan1()` now takes an optional `hsq` argument, so that the residual
+  heritability may be specified rather than estimated.
+
 ### Minor changes
 
 - `write_control_file()` now allows cross info codes with a cross info
@@ -31,6 +34,9 @@
 
 - Added a check that the founder genotypes have the same strain IDs on
   each chromosome.
+
+- `convert2cross2()` now includes `alleles` component even if it
+  wasn't present as an attribute.
 
 ### Bug fixes
 

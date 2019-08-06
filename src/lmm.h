@@ -100,6 +100,15 @@ double Rcpp_calcLL(const double hsq,
                    const bool reml,
                    const double logdetXpX);
 
+// calcLMM with matrix of phenotypes (looping over phenotype columns)
+Rcpp::NumericVector Rcpp_calcLL_mat(const Rcpp::NumericVector& hsq,
+                                    const Rcpp::NumericVector& Kva,
+                                    const Rcpp::NumericMatrix& Y,
+                                    const Rcpp::NumericMatrix& X,
+                                    const bool reml,
+                                    const double logdetXpX);
+
+
 // just the negative log likelihood, for the optimization
 double negLL(const double x, struct calcLL_args *args);
 
