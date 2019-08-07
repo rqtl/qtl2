@@ -1,4 +1,4 @@
-## qtl2 0.21-6 (2019-08-05)
+## qtl2 0.21-7 (2019-08-07)
 
 ### Major changes
 
@@ -51,6 +51,9 @@
 
 - Fixed `check_cross2()`: the check for invalid genotypes wasn't
   happening.
+
+- Better error message for the case that there are no markers in
+  common between map and genotypes.
 
 
 ## qtl2 0.20 (2019-06-03)

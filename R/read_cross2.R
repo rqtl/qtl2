@@ -728,6 +728,9 @@ drop_incomplete_markers <-
         if(!is.null(output$founder_geno))
             output$founder_geno <- output$founder_geno[, fg_mar %in% keep_mar, drop=FALSE]
     }
+    if(length(keep_mar) == 0) {
+        stop("No markers in common between map and genotypes")
+    }
 
     output
 }
