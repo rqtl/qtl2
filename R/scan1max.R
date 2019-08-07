@@ -1,8 +1,8 @@
-#' Genome scan maximum LOD score with a single-QTL model
+#' Maximum LOD score from genome scan with a single-QTL model
 #'
-#' Genome scan with a single-QTL model by Haley-Knott regression or a
-#' linear mixed model, with possible allowance for covariates, but
-#' just calculate the genome-wide maximum LOD.
+#' Maximum LOD score from genome scan with a single-QTL model by
+#' Haley-Knott regression or a linear mixed model, with possible
+#' allowance for covariates.
 #'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
@@ -40,7 +40,7 @@
 #'     with the rows being the chromosomes and the columns being the
 #'     phenotypes.
 #'
-#' @details Basically runs `scan1()` and then just saves the column
+#' @details Equivalent to running `scan1()` and then saving the column
 #'     maxima, with some savings in memory usage.
 #'
 #' @examples

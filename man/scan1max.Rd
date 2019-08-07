@@ -2,7 +2,7 @@
 % Please edit documentation in R/scan1max.R
 \name{scan1max}
 \alias{scan1max}
-\title{Genome scan maximum LOD score with a single-QTL model}
+\title{Maximum LOD score from genome scan with a single-QTL model}
 \usage{
 scan1max(genoprobs, pheno, kinship = NULL, addcovar = NULL,
   Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
@@ -60,12 +60,12 @@ with the rows being the chromosomes and the columns being the
 phenotypes.
 }
 \description{
-Genome scan with a single-QTL model by Haley-Knott regression or a
-linear mixed model, with possible allowance for covariates, but
-just calculate the genome-wide maximum LOD.
+Maximum LOD score from genome scan with a single-QTL model by
+Haley-Knott regression or a linear mixed model, with possible
+allowance for covariates.
 }
 \details{
-Basically runs \code{scan1()} and then just saves the column
+Equivalent to running \code{scan1()} and then saving the column
 maxima, with some savings in memory usage.
 }
 \examples{
