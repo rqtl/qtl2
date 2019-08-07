@@ -127,7 +127,7 @@
 #' # genome scan with a linear mixed model
 #' out_lmm <- scan1(probs, pheno, kinship, covar, Xcovar)
 #'
-#' @seealso [scan1perm()], [scan1coef()], [cbind.scan1()], [rbind.scan1()]
+#' @seealso [scan1perm()], [scan1coef()], [cbind.scan1()], [rbind.scan1()], [scan1max()]
 #'
 #' @export
 scan1 <-
