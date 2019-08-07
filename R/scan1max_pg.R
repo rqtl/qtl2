@@ -4,7 +4,7 @@
 scan1max_pg <-
     function(genoprobs, pheno, kinship, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL, reml=TRUE, hsq=NULL,
-             bychr=FALSE, cores=1, ...)
+             by_chr=FALSE, cores=1, ...)
 {
     # deal with the dot args
     dotargs <- list(...)
@@ -118,7 +118,7 @@ scan1max_pg <-
     }
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
 
-    chr_index <- rep(seq_len(n_chr), sapply(genoprobs, ncol))
+    chr_index <- rep(seq_len(n_chr), sapply(genoprobs, function(a) dim(a)[3]))
 
     # loop over batches of phenotypes with the same pattern of NAs
     for(batch in seq_along(phe_batches)) {
@@ -174,15 +174,14 @@ scan1max_pg <-
                               nullresult$hsq, nullresult$loglik, reml, cores,
                               intcovar_method, tol)
 
-        result[,phecol] <- tapply(lod, chr_index, max, na.rm=TRUE)
+        result[,phecol] <- apply(lod, 2, tapply, chr_index, max, na.rm=TRUE)
     }
 
-    if(by_chr) result <- apply(result, 2, max, na.rm=TRUE)
+    if(!by_chr) result <- apply(result, 2, max, na.rm=TRUE)
 
     # add attributes
     attr(result, "hsq") <- hsq
     attr(result, "sample_size") <- n
-    class(result) <- c("scan1", "matrix")
 
     result
 }

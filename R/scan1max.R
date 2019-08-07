@@ -299,6 +299,5 @@ scan1max <-
     # add some attributes with details on analysis
     attr(result, "sample_size") <- n
 
-    class(result) <- c("scan1max", "matrix")
     result
 }
