@@ -323,3 +323,6 @@ description: Annotated/categorized list of functions in R/qtl2
   SNP data (_diagnostics_)
 - `calc_raw_founder_maf` - Calculate the minor allele frequency in the
   founder strains' SNP genotypes (_diagnostics_)
+- `founders` - names of the founder strains (_data summaries_)
+- `n_founders` - number of founder strains (_data summaries_)
+- `scan1max` - genome-wide maximum LOD score from genome scan (_QTL analysis_)
