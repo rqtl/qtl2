@@ -6,8 +6,9 @@
 #'
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' @param by Indicates whether to summarize by founder strain (`"individual"`) or by marker.
 #'
-#' @return A vector of heterozygosities, one for each individual.
+#' @return A vector of heterozygosities, one for each individual or marker.
 #'
 #' @export
 #' @keywords utilities
@@ -22,11 +23,16 @@
 #' DOex_het <- calc_raw_het(DOex)
 #' }
 calc_raw_het <-
-    function(cross)
+    function(cross, by=c("individual", "marker"))
 {
+    by <- match.arg(by)
+
     g <- do.call("cbind", cross$geno)
     g[g < 1 | g > 3] <- NA
-    rowMeans(g==2, na.rm=TRUE)
+
+    if(by=="individual") return( rowMeans(g==2, na.rm=TRUE) )
+
+    colMeans(g==2, na.rm=TRUE)
 }
 
 

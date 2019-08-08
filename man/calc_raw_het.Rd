@@ -4,14 +4,16 @@
 \alias{calc_raw_het}
 \title{Calculate estimated heterozygosity from raw SNP genotypes}
 \usage{
-calc_raw_het(cross)
+calc_raw_het(cross, by = c("individual", "marker"))
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
+
+\item{by}{Indicates whether to summarize by founder strain (\code{"individual"}) or by marker.}
 }
 \value{
-A vector of heterozygosities, one for each individual.
+A vector of heterozygosities, one for each individual or marker.
 }
 \description{
 Calculate estimated heterozygosity for each individual from raw SNP genotypes
