@@ -1,7 +1,8 @@
-#' Genome scan with a single-QTL model
+#' Maximum LOD score from genome scan with a single-QTL model
 #'
-#' Genome scan with a single-QTL model by Haley-Knott regression or a
-#' linear mixed model, with possible allowance for covariates.
+#' Maximum LOD score from genome scan with a single-QTL model by
+#' Haley-Knott regression or a linear mixed model, with possible
+#' allowance for covariates.
 #'
 #' @param genoprobs Genotype probabilities as calculated by
 #' [calc_genoprob()].
@@ -27,79 +28,20 @@
 #'     to the number of columns in `pheno`, or (if `kinship`
 #'     corresponds to a list of LOCO kinship matrices) a matrix with dimension
 #'     `length(kinship) x ncol(pheno)`.
+#' @param by_chr If TRUE, save the individual chromosome maxima.
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A matrix of LOD scores, positions x phenotypes.
-#' Also contains one or more of the following attributes:
-#' * `sample_size` - Vector of sample sizes used for each
-#'    phenotype
-#' * `hsq` - Included if `kinship` provided: A matrix of
-#'    estimated heritabilities under the null hypothesis of no
-#'    QTL. Columns are the phenotypes. If the `"loco"` method was
-#'    used with [calc_kinship()] to calculate a list
-#'    of kinship matrices, one per chromosome, the rows of `hsq`
-#'    will be the heritabilities for the different chromosomes (well,
-#'    leaving out each one). If `Xcovar` was not NULL, there will at
-#'    least be an autosome and X chromosome row.
+#' @return Either a vector of genome-wide maximum LOD scores, or if
+#'     `by_chr` is TRUE, a matrix with the chromosome-specific maxima,
+#'     with the rows being the chromosomes and the columns being the
+#'     phenotypes.
 #'
-#' @details
-#' We first fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e}
-#' where \eqn{X} is a matrix of covariates (or just an intercept) and
-#' \eqn{\epsilon}{e} is multivariate normal with mean 0 and covariance
-#' matrix \eqn{\sigma^2 [h^2 (2 K) + I]}{sigmasq*[hsq*2*K+I]} where
-#' \eqn{K} is the kinship matrix and \eqn{I} is the identity matrix.
-#'
-#' We then take \eqn{h^2}{hsq} as fixed and then scan the genome, at
-#' each genomic position fitting the model \eqn{y = P \alpha + X \beta
-#' + \epsilon}{y = Xb + e} where \eqn{P} is a matrix of genotype
-#' probabilities for the current position and again \eqn{X} is a
-#' matrix of covariates \eqn{\epsilon}{e} is multivariate normal with
-#' mean 0 and covariance matrix \eqn{\sigma^2 [h^2 (2 K) +
-#' I]}{sigmasq*[hsq*2*K+I]}, taking \eqn{h^2}{hsq} to be known.
-#'
-#' For each of the inputs, the row names are used as
-#' individual identifiers, to align individuals. The `genoprobs`
-#' object should have a component `"is_x_chr"` that indicates
-#' which of the chromosomes is the X chromosome, if any.
-#'
-#' The `...` argument can contain several additional control
-#' parameters; suspended for simplicity (or confusion, depending on
-#' your point of view). `tol` is used as a tolerance value for linear
-#' regression by QR decomposition (in determining whether columns are
-#' linearly dependent on others and should be omitted); default
-#' `1e-12`. `intcovar_method` indicates whether to use a high-memory
-#' (but potentially faster) method or a low-memory (and possibly
-#' slower) method, with values `"highmem"` or `"lowmem"`; default
-#' `"lowmem"`. `max_batch` indicates the maximum number of phenotypes
-#' to run together; default is unlimited. `maxit` is the maximum
-#' number of iterations for converence of the iterative algorithm
-#' used when `model=binary`. `bintol` is used as a tolerance for
-#' converence for the iterative algorithm used when `model=binary`.
-#' `eta_max` is the maximum value for the "linear predictor" in the
-#' case `model="binary"` (a bit of a technicality to avoid fitted
-#' values exactly at 0 or 1).
-#'
-#' If `kinship` is absent, Haley-Knott regression is performed.
-#' If `kinship` is provided, a linear mixed model is used, with a
-#' polygenic effect estimated under the null hypothesis of no (major)
-#' QTL, and then taken as fixed as known in the genome scan.
-#'
-#' If `kinship` is a single matrix, then the `hsq`
-#' in the results is a vector of heritabilities (one value for each phenotype). If
-#' `kinship` is a list (one matrix per chromosome), then
-#' `hsq` is a matrix, chromosomes x phenotypes.
-#'
-#' @references Haley CS, Knott SA (1992) A simple
-#' regression method for mapping quantitative trait loci in line
-#' crosses using flanking markers.  Heredity 69:315--324.
-#'
-#' Kang HM, Zaitlen NA, Wade CM, Kirby A, Heckerman D, Daly MJ, Eskin
-#' E (2008) Efficient control of population structure in model
-#' organism association mapping. Genetics 178:1709--1723.
+#' @details Equivalent to running `scan1()` and then saving the column
+#'     maxima, with some savings in memory usage.
 #'
 #' @examples
 #' # read data
@@ -119,21 +61,16 @@
 #' Xcovar <- get_x_covar(iron)
 #'
 #' # perform genome scan
-#' out <- scan1(probs, pheno, addcovar=covar, Xcovar=Xcovar)
+#' out <- scan1max(probs, pheno, addcovar=covar, Xcovar=Xcovar)
 #'
-#' # leave-one-chromosome-out kinship matrices
-#' kinship <- calc_kinship(probs, "loco")
-#'
-#' # genome scan with a linear mixed model
-#' out_lmm <- scan1(probs, pheno, kinship, covar, Xcovar)
-#'
-#' @seealso [scan1perm()], [scan1coef()], [cbind.scan1()], [rbind.scan1()], [scan1max()]
+#' @seealso [scan1()], [scan1perm()]
 #'
 #' @export
-scan1 <-
+scan1max <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL, reml=TRUE,
-             model=c("normal", "binary"), hsq=NULL, cores=1, ...)
+             model=c("normal", "binary"), hsq=NULL,
+             by_chr=FALSE, cores=1, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
@@ -147,8 +84,8 @@ scan1 <-
 
     if(!is.null(kinship)) { # fit linear mixed model
         if(model=="binary") warning("Can't fit binary model with kinship matrix; using normal model")
-        return(scan1_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
-                        weights, reml, hsq, cores, ...))
+        return(scan1max_pg(genoprobs, pheno, kinship, addcovar, Xcovar, intcovar,
+                           weights, reml, hsq, by_chr, cores, ...))
     }
 
     # deal with the dot args
@@ -243,6 +180,8 @@ scan1 <-
         quiet <- TRUE # make the rest quiet
     }
 
+    n_chr <- length(genoprobs)
+
     # batches for analysis, to allow parallel analysis
     run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)),
                               phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)))
@@ -303,22 +242,14 @@ scan1 <-
             lod <- lod - nulllod
         }
 
-        list(lod=lod, n=nrow(ph)) # return LOD & number of individuals used
+        list(lod=apply(lod, 1, max, na.rm=TRUE), n=nrow(ph)) # return LOD & number of individuals used
     }
 
-    # number of markers/pseudomarkers by chromosome, and their indexes to result matrix
-    npos_by_chr <- dim(genoprobs)[3,]
-    totpos <- sum(npos_by_chr)
-    pos_index <- split(seq_len(totpos), rep(seq_len(length(genoprobs)), npos_by_chr))
-
     # object to contain the LOD scores; also attr to contain sample size
-    result <- matrix(nrow=totpos, ncol=ncol(pheno))
+    result <- matrix(nrow=n_chr, ncol=ncol(pheno))
     n <- rep(NA, ncol(pheno)); names(n) <- colnames(pheno)
-    if(totpos==0) { # edge case of no genoprobs
-        colnames(result) <- colnames(pheno)
-        attr(result, "sample_size") <- n
-        class(result) <- c("scan1", "matrix")
-        return(result)
+    if(n_chr==0) { # edge case of no genoprobs
+        return(NULL)
     }
 
     if(n_cores(cores)==1) { # no parallel processing
@@ -330,7 +261,7 @@ scan1 <-
 
             this_result <- by_group_func(i)
             if(!is.null(this_result)) {
-                result[pos_index[[chr]], phecol] <- t(this_result$lod)
+                result[chr, phecol] <- this_result$lod
                 if(chr==1) n[phecol] <- this_result$n
             }
         }
@@ -352,121 +283,21 @@ scan1 <-
             phecol <- phebatch$cols
 
             if(!is.null(list_result[[i]])) {
-                result[pos_index[[chr]], phecol] <- t(list_result[[i]]$lod)
+                result[chr, phecol] <- list_result[[i]]$lod
                 if(chr==1) n[phecol] <- list_result[[i]]$n
             }
         }
     }
 
-    pos_names <- unlist(dimnames(genoprobs)[[3]])
-    names(pos_names) <- NULL # this is just annoying
-    dimnames(result) <- list(pos_names, colnames(pheno))
+    if(by_chr) {
+        dimnames(result) <- list(names(genoprobs), colnames(pheno))
+    } else {
+        result <- apply(result, 2, max, na.rm=TRUE)
+        names(result) <- colnames(pheno)
+    }
 
     # add some attributes with details on analysis
     attr(result, "sample_size") <- n
 
-    class(result) <- c("scan1", "matrix")
     result
-}
-
-
-# scan1 function taking nicely aligned data with no missing values
-#
-# Here genoprobs is a plain 3d array
-scan1_clean <-
-    function(genoprobs, pheno, addcovar, intcovar,
-             weights, add_intercept=TRUE, tol, intcovar_method)
-{
-    n <- nrow(pheno)
-    if(add_intercept)
-        addcovar <- cbind(rep(1,n), addcovar) # add intercept
-
-    if(is.null(intcovar)) { # no interactive covariates
-
-        if(is.null(weights)) { # no weights
-            return( scan_hk_onechr(genoprobs, pheno, addcovar, tol) )
-        } else { # weights included
-            # note: pheno gets multiplied by weights in c++ (or really sqrt of original weights)
-            return( scan_hk_onechr_weighted(genoprobs, pheno, addcovar, weights, tol) )
-        }
-
-    } else { # interactive covariates
-        # high- and low-memory versions of functions
-        if(intcovar_method=="highmem")
-            scanf <- c(scan_hk_onechr_intcovar_highmem,
-                       scan_hk_onechr_intcovar_weighted_highmem)
-        else
-            scanf <- c(scan_hk_onechr_intcovar_lowmem,
-                       scan_hk_onechr_intcovar_weighted_lowmem)
-
-        if(is.null(weights)) { # no weights
-            return( scanf[[1]](genoprobs, pheno, addcovar, intcovar, tol) )
-        } else { # weights included
-            # note: pheno gets multiplied by weights in c++ (or really sqrt of original weights)
-            return( scanf[[2]](genoprobs, pheno, addcovar, intcovar, weights, tol) )
-        }
-
-    }
-}
-
-# calculate null RSS, with nicely aligned data with no missing values
-nullrss_clean <-
-    function(pheno, addcovar, weights, add_intercept=TRUE, tol)
-{
-    n <- nrow(pheno)
-    if(add_intercept)
-        addcovar <- cbind(rep(1,n), addcovar) # add intercept
-
-    if(is.null(weights) || length(weights)==0) { # no weights
-        result <- calc_rss_linreg(addcovar, pheno, tol)
-    } else { # weights included
-        result <- calc_rss_linreg(addcovar*weights, pheno*weights, tol)
-    }
-
-    as.numeric(result)
-}
-
-# function to add column names as attribute
-colnames4attr <-
-    function(mat)
-{
-    if(is.null(mat)) return(NULL)
-
-    if(!is.matrix(mat)) mat <- as.matrix(mat)
-    if(ncol(mat)==0) return(NULL)
-    cn <- colnames(mat)
-
-    if(is.null(cn)) cn <- rep("", ncol(mat))
-
-    if(any(cn=="")) cn[cn==""] <- paste0("unnamed", seq_len(sum(cn=="")))
-
-    cn
-}
-
-# check that objects have rownames, if they are matrices
-#   (or names, if not matrices)
-check4names <-
-    function(pheno=NULL, addcovar=NULL, Xcovar=NULL, intcovar=NULL, nullcovar=NULL)
-{
-    args <- list(pheno=pheno,
-                 addcovar=addcovar,
-                 Xcovar=Xcovar,
-                 intcovar=intcovar,
-                 nullcovar=nullcovar)
-
-    for(i in seq_along(args)) {
-        a <- args[[i]]
-        if(!is.null(a)) {
-            if(is.matrix(a)) {
-                if(is.null(rownames(a)))
-                    stop(names(args)[i], " has no rownames")
-            }
-            else {
-                if(is.null(names(a)))
-                    stop(names(args)[i], " has no names")
-            }
-        } # end if(!is.null)
-    } # end loop
-
-    TRUE
 }
