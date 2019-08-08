@@ -4,13 +4,18 @@
 \alias{calc_raw_geno_freq}
 \title{Calculate genotype frequencies from raw SNP genotypes}
 \usage{
-calc_raw_geno_freq(cross, by = c("individual", "marker"))
+calc_raw_geno_freq(cross, by = c("individual", "marker"), cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
 \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{by}{Indicates whether to summarize by individual or by marker.}
+
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A matrix of genotypes frequencies with 3 columns (AA, AB,

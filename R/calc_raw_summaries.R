@@ -127,6 +127,10 @@ calc_raw_founder_maf <-
 #' @param cross Object of class `"cross2"`. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param by Indicates whether to summarize by individual or by marker.
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A matrix of genotypes frequencies with 3 columns (AA, AB,
 #' and BB) and with rows being either individuals or markers.
@@ -144,18 +148,37 @@ calc_raw_founder_maf <-
 #' gfreq <- calc_raw_geno_freq(DOex)
 #' }
 calc_raw_geno_freq <-
-    function(cross, by=c("individual", "marker"))
+    function(cross, by=c("individual", "marker"), cores=1)
 {
     by <- match.arg(by)
 
     g <- do.call("cbind", cross$geno)
     g[g<1 | g>3] <- NA
 
-    if(by=="individual") {
-        result <- t(apply(g, 1, function(a) table(factor(a, levels=1:3))))
+    cores <- setup_cluster(cores)
+
+    if(n_cores(cores)==1) {
+        if(by=="individual") {
+            result <- t(apply(g, 1, function(a) table(factor(a, levels=1:3))))
+        } else {
+            result <- t(apply(g, 2, function(a) table(factor(a, levels=1:3))))
+        }
     } else {
-        result <- t(apply(g, 2, function(a) table(factor(a, levels=1:3))))
+
+        if(by=="individual") {
+
+            rn <- rownames(g)
+            result <- cluster_lapply(cores, seq_len(nrow(g)), function(row_index) table(factor(g[row_index,], levels=1:3)))
+        } else {
+
+            rn <- colnames(g)
+            result <- cluster_lapply(cores, seq_len(ncol(g)), function(col_index) table(factor(g[,col_index], levels=1:3)))
+        }
+
+        result <- matrix(unlist(result), byrow=TRUE, ncol=3)
+        rownames(result) <- rn
     }
+
     colnames(result) <- c("AA", "AB", "BB")
 
     result/rowSums(result)
