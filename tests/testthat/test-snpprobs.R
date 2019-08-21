@@ -89,6 +89,35 @@ test_that("invert_sdp works", {
 })
 
 
+test_that("sdp2char works", {
+
+    expect_equal(sdp2char(c(1,2), 2), c("A|B", "B|A"))
+
+    expect_equal(sdp2char(c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14), 4),
+                 c("A|BCD", "B|ACD", "C|ABD", "D|ABC",
+                   "AB|CD", "AC|BD", "AD|BC", "BC|AD", "BD|AC", "CD|AB",
+                   "ABC|D", "ABD|C", "ACD|B", "BCD|A"))
+
+    expect_equal(sdp2char(c(1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14),
+                          strains=LETTERS[1:4]),
+                 c("A|BCD", "B|ACD", "C|ABD", "D|ABC",
+                   "AB|CD", "AC|BD", "AD|BC", "BC|AD", "BD|AC", "CD|AB",
+                   "ABC|D", "ABD|C", "ACD|B", "BCD|A"))
+
+    expect_equal(sdp2char(c(1,2,32,128,129,170,85,15,240,195), 8),
+                 c("A|BCDEFGH", "B|ACDEFGH", "F|ABCDEGH", "H|ABCDEFG",
+                   "AH|BCDEFG", "BDFH|ACEG", "ACEG|BDFH", "ABCD|EFGH",
+                   "EFGH|ABCD", "ABGH|CDEF"))
+
+    expect_equal(sdp2char(c(1,2,32,128,129,170,85,15,240,195),
+                          strains=LETTERS[1:8]),
+                 c("A|BCDEFGH", "B|ACDEFGH", "F|ABCDEGH", "H|ABCDEFG",
+                   "AH|BCDEFG", "BDFH|ACEG", "ACEG|BDFH", "ABCD|EFGH",
+                   "EFGH|ABCD", "ABGH|CDEF"))
+
+})
+
+
 
 test_that(".alleleprob_to_snpprob works in simple cases", {
 

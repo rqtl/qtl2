@@ -1,4 +1,4 @@
-## qtl2 0.21-9 (2019-08-08)
+## qtl2 0.21-10 (2019-08-20)
 
 ### Major changes
 
@@ -37,6 +37,9 @@
 
 - `convert2cross2()` now includes `alleles` component even if it
   wasn't present as an attribute.
+
+- Added function `sdp2char()` for converting numeric SDP codes to
+  character strings like `"ABC|DEFGH"`.
 
 ### Bug fixes
 
