@@ -10,22 +10,22 @@ output:
 <meta name="author" content="Karl Broman">
 
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
-[R/qtl](http://rqtl.org), to better handle high-dimensional data
+[R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-The input data file formats for [R/qtl](http://rqtl.org) cannot
+The input data file formats for [R/qtl](https://rqtl.org) cannot
 handle complex crosses, and so for R/qtl2, we need to define a new
 input file format. This document describes the details.
 
 For simple cross types, we can continue to use the file formats for
-[R/qtl](http://rqtl.org), use `qtl::read.cross()` to read in the
+[R/qtl](https://rqtl.org), use `qtl::read.cross()` to read in the
 data, and then use a conversion function (`qtl2::convert2cross2()`) to convert
 the data into the new format.
 
 For more complex crosses, we need to define a new format. I was
-persuaded by [Aaron Wolen](http://aaronwolen.com/)'s idea of a
+persuaded by [Aaron Wolen](https://aaronwolen.com/)'s idea of a
 [&ldquo;tidy&rdquo; format](https://github.com/kbroman/qtl/pull/20)
-for [R/qtl](http://rqtl.org), with three separate CSV files, one
+for [R/qtl](https://rqtl.org), with three separate CSV files, one
 for phenotypes, one for genotypes, and one for the genetic map.
 
 Another important idea is from [Pjotr Prins](http://thebird.nl/)'s
@@ -624,7 +624,7 @@ The equivalent json specification is:
 "cross_info":{"covar":"cross_direction", "(AxB)x(AxB)":0, "(BxA)x(AxB)":0, "(BxA)x(BxA)":1, "(AxB)x(BxA)":1}
 ```
 
-If you've coded the cross direction as in [R/qtl](http://rqtl.org),
+If you've coded the cross direction as in [R/qtl](https://rqtl.org),
 with a covariate `pgm` with values `0` and `1`, your yaml file would
 contain the following lines.
 

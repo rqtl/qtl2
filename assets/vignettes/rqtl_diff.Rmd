@@ -11,7 +11,7 @@ output:
 
 [R/qtl2](https://kbroman.org/qtl2) is a
 reimplementation of the QTL analysis software
-[R/qtl](http://rqtl.org), to better handle high-dimensional data
+[R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
 There have been a number of big changes. We summarize some of them

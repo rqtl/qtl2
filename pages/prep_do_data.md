@@ -6,9 +6,9 @@ description: "How to prepare Diversity Outbred (DO) mouse data, including SNP ge
 
 Studies using [Diversity Outbred (DO) mice](https://www.jax.org/strain/009376)
 often involve SNP genotype data from the
-[MegaMUGA or GigaMUGA arrays](http://csbio.unc.edu/CCstatus/index.py?run=Genotype)
-from [GeneSeek](http://genomics.neogen.com/en/mouse-universal-genotyping-array).
-To analyze such data with [R/qtl2](http://kbroman.org/qtl2), you first
+[MegaMUGA or GigaMUGA arrays](https://csbio.unc.edu/CCstatus/index.py?run=Genotype)
+from [GeneSeek](https://genomics.neogen.com/en/mouse-universal-genotyping-array).
+To analyze such data with [R/qtl2](https://kbroman.org/qtl2), you first
 need to do some data reorganization and pre-processing. In this
 document, we will attempt to explain what to do.
 

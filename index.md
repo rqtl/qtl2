@@ -6,7 +6,7 @@ description: R/qtl2, a reimplementation of R/qtl to better handle high-dimension
 ---
 
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
-the QTL analysis software [R/qtl](http://rqtl.org), to better handle
+the QTL analysis software [R/qtl](https://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
 
 ---
@@ -26,10 +26,10 @@ for the discussion/questions about the original R/qtl only.)
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
 Make sure you have the latest version of [R](https://cran.r-project.org).
 
-    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
 _Alternatively_, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
@@ -47,7 +47,7 @@ package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [data.table](https://cran.r-project.org/package=data.table),
 [RcppEigen](https://github.com/RcppCore/RcppEigen),
 [RSQLite](https://github.com/rstats-db/RSQLite), and
-[qtl](http://rqtl.org).
+[qtl](https://rqtl.org).
 (Additional, secondary dependencies will also be installed.)
 
     install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))

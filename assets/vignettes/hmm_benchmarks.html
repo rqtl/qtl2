@@ -242,7 +242,7 @@ div.tocify {
 
 <p><a href="https://kbroman.org/qtl2">R/qtl2</a> includes a reimplementation of the basic hidden Markov model code for the calculation of conditional genotype probabilities (given the available multipoint marker genotype data) and the estimation of genetic maps.</p>
 <p>The new HMM code can potentially handle more general cases and uses C++ classes to simplify the extension to new cross types. I’ve also split out the forward and backward equations as separate functions, to reduce code duplication. And the basic calculations are separated by individual, which may allow for low-level parallel processing (i.e., <a href="https://en.wikipedia.org/wiki/Concurrency_(computer_science)">concurrency</a>). (I’m considered using <a href="http://dirk.eddelbuettel.com/blog/2014/07/16/#introducing_rcppparallel">RcppParallel</a> for this.)</p>
-<p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="http://rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="http://rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
+<p>The new code for calculating conditional genotype probabilities is about the same as that in <a href="https://rqtl.org">R/qtl</a>. The new code for estimating the genetic map, on the other hand, is considerably slower than that in <a href="https://rqtl.org">R/qtl</a>. The present document provides detailed benchmarks on this point.</p>
 <div id="genotype-probabilities" class="section level2">
 <h2>Genotype probabilities</h2>
 <p>First let’s look at the calculation of conditional genotype probabilities (given multiple genetic marker genotypes). We’ll consider simulated data, first of a backcross with 500 individuals (250 males and 250 females) and with markers at a 1 cM spacing on 20 chromosomes (including the X chromosome), and 5% missing data. We use <code>qtl::sim.map()</code> and <code>qtl:sim.cross()</code> to simulate the data.</p>
@@ -315,7 +315,7 @@ print(mapf2, unit=&quot;s&quot;)</code></pre>
 </div>
 <div id="why-the-differences-in-speed" class="section level2">
 <h2>Why the differences in speed?</h2>
-<p>I made a number of changes to the HMM code between <a href="http://rqtl.org">R/qtl</a> and <a href="https://kbroman.org/qtl2">R/qtl2</a>.</p>
+<p>I made a number of changes to the HMM code between <a href="https://rqtl.org">R/qtl</a> and <a href="https://kbroman.org/qtl2">R/qtl2</a>.</p>
 <ul>
 <li>Split out the forward/backward equations as separate functions (to avoid code duplication and to make the code potentially clearer).</li>
 <li>Calculations are by individual, with an eye towards low-level parallel processing</li>

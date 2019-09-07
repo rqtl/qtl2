@@ -15,8 +15,8 @@ options(width=127, digits=5)
 ```
 
 
-[R/qtl2](http://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
-[R/qtl](http://rqtl.org), to better handle high-dimensional data
+[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of the QTL analysis software
+[R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
 The software was previously split into multiple packages
@@ -26,9 +26,9 @@ these have been combined into a single package
 The [qtl2convert](https://github.com/rqtl/qtl2convert) package (for
 converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
-and [R/qtl](http://rqtl.org) formats) will remain a separate package.
+and [R/qtl](https://rqtl.org) formats) will remain a separate package.
 
-[R/qtl2](http://kbroman.org/qtl2) contains _a lot_ of functions. To
+[R/qtl2](https://kbroman.org/qtl2) contains _a lot_ of functions. To
 identify functions of interest, see the [organized list of
 R/qtl2 functions, with brief descriptions](../../pages/rqtl2_functions.html).
 
@@ -36,10 +36,10 @@ R/qtl2 functions, with brief descriptions](../../pages/rqtl2_functions.html).
 ## Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
+it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
 Make sure you have the latest version of [R (3.4.3)](https://cran.r-project.org).
 
-    install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
+    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
 
 _Alternatively_, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
@@ -57,7 +57,7 @@ package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 [data.table](https://cran.r-project.org/package=data.table),
 [RcppEigen](https://github.com/RcppCore/RcppEigen),
 [RSQLite](https://github.com/rstats-db/RSQLite), and
-[qtl](http://rqtl.org).
+[qtl](https://rqtl.org).
 (Additional, secondary dependencies will also be installed.)
 
     install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))
@@ -69,11 +69,11 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 
 ## Data file format
 
-The input data file formats for [R/qtl](http://rqtl.org) cannot
+The input data file formats for [R/qtl](https://rqtl.org) cannot
 handle complex crosses, and so for R/qtl2, we have defined a new
 format for the data files. We'll describe it here briefly; for
 details, see the separate
-[vignette on the input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
+[vignette on the input file format](https://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 QTL mapping data consists of a set of tables of data: marker
 genotypes, phenotypes, marker maps, etc. In the new format, these
@@ -142,7 +142,7 @@ grav2 <- read_cross2("~/my_data/grav2.zip")
 This can even be done with remote files.
 
 ```{r read_remote_zip, eval=FALSE}
-grav2 <- read_cross2("http://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
+grav2 <- read_cross2("https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.zip")
 ```
 
 Of course, the other advantage of the zip file is that it is
@@ -157,7 +157,7 @@ or JSON control file in the appropriate format.
 ## Sample data sets
 
 The R/qtl2 web site includes
-[sample data files](http://kbroman.org/qtl2/pages/sampledata.html) in
+[sample data files](https://kbroman.org/qtl2/pages/sampledata.html) in
 the new format. Zipped versions of these datasets are included with
 the [qtl2](https://github.com/rqtl/qtl2) package and can be
 loaded into R using the `read_cross2()` function.
@@ -191,7 +191,7 @@ The first basic task in QTL analysis is to calculate conditional
 genotype probabilities, given the observed marker data, at each
 putative QTL position. This is accomplished with the `calc_genoprob()`
 function. Unlike the corresponding function in
-[R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
+[R/qtl](https://rqtl.org), `calc.genoprob()`, the result is not inserted back into the
 input cross object, but is returned as a list of three-dimensional
 arrays (one per chromosome). Each 3d array of probabilities is
 arranged as individuals &times; genotypes &times; positions.
@@ -199,7 +199,7 @@ arranged as individuals &times; genotypes &times; positions.
 If we wish to perform QTL calculations at positions between markers
 (so called "pseudomarkers"), we first need to insert such positions
 into the genetic map with the function `insert_pseudomarkers()`.
-Unlike [R/qtl](http://rqtl.org), the map is kept separate from the genotype
+Unlike [R/qtl](https://rqtl.org), the map is kept separate from the genotype
 probabilities.
 
 We'll use the
@@ -344,7 +344,7 @@ The function `plot_scan1()` can be used to
 plot the LOD curves. You can just write `plot()`, as there's an S3
 method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
 Use the argument `lodcolumn` to indicate which column to plot. Unlike the
-`plot.scanone()` function in [R/qtl](http://rqtl.org), the
+`plot.scanone()` function in [R/qtl](https://rqtl.org), the
 `plot_scan1()` function will only plot one set of LOD curves at a
 time, and you need to provide the marker/pseudomarker map (created by
 `insert_pseudomarkers()`).
@@ -515,7 +515,7 @@ find_peaks(out_bin, map, threshold=3.5, drop=1.5)
 
 To perform a permutation test to establish the statistical significance of
 the results of a genome scan, use the function `scan1perm()`. (In
-[R/qtl](http://rqtl.org), a single function, `scanone()`, was used for
+[R/qtl](https://rqtl.org), a single function, `scanone()`, was used for
 both performing a genome scan and for getting permutation-based
 significance thresholds, but in [R/qtl2](https://kbroman.org/qtl2),
 we've decided to make two separate functions).

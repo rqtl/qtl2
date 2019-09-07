@@ -29,9 +29,9 @@ individual, which may allow for low-level parallel processing (i.e.,
 for this.)
 
 The new code for calculating conditional genotype probabilities is
-about the same as that in [R/qtl](http://rqtl.org).  The new code
+about the same as that in [R/qtl](https://rqtl.org).  The new code
 for estimating the genetic map, on the other hand, is considerably
-slower than that in [R/qtl](http://rqtl.org). The present document
+slower than that in [R/qtl](https://rqtl.org). The present document
 provides detailed benchmarks on this point.
 
 ## Genotype probabilities
@@ -157,7 +157,7 @@ longer; for the intercross, the new code takes
 ## Why the differences in speed?
 
 I made a number of changes to the HMM code between
-[R/qtl](http://rqtl.org) and [R/qtl2](https://kbroman.org/qtl2).
+[R/qtl](https://rqtl.org) and [R/qtl2](https://kbroman.org/qtl2).
 
 - Split out the forward/backward equations as separate functions (to
   avoid code duplication and to make the code potentially clearer).

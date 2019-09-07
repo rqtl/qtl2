@@ -5,7 +5,7 @@ description: Sample input data files for R/qtl2
 ---
 
 The internal data structure for [R/qtl2](https://kbroman.org/qtl2) is
-different from that of [R/qtl](http://rqtl.org), and the input
+different from that of [R/qtl](https://rqtl.org), and the input
 data file format has also changed. Details on the new internal data
 structure are in the
 [R/qtl2 developer guide](../assets/vignettes/developer_guide.html).  Details
@@ -13,7 +13,7 @@ on the new data file format are described in
 [a separate vignette](../assets/vignettes/input_files.html).
 
 For simple crosses (such as a backcross or intercross), one can
-continue to use the [old R/qtl formats](http://rqtl.org/sampledata/),
+continue to use the [old R/qtl formats](https://rqtl.org/sampledata/),
 load them with `qtl::read.cross()`, and then convert the data to the
 new format with `qtl2::convert2cross2()`.
 

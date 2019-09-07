@@ -29,12 +29,12 @@ et al. (2017)](https://doi.org/10.1101/098657).
 
 The genotype data are for a set of 291 mice from DO generations 8 and
 11, with genotypes from the
-[MegaMUGA array](http://genomics.neogen.com/en/mouse-universal-genotyping-array).
+[MegaMUGA array](https://genomics.neogen.com/en/mouse-universal-genotyping-array).
 The primary genotype data are in two `FinalReport.txt` files, in the form provided by
 GeneSeek, available at <https://doi.org/10.6084/m9.figshare.7359542.v1>.
 The data have been converted to
-[R/qtl2](http://kbroman.org/qtl2) format following the document
-["Preparing Diversity Outbred (DO) mouse data for R/qtl2"](http://kbroman.org/qtl2/pages/prep_do_data.html).
+[R/qtl2](https://kbroman.org/qtl2) format following the document
+["Preparing Diversity Outbred (DO) mouse data for R/qtl2"](https://kbroman.org/qtl2/pages/prep_do_data.html).
 The processed data are available
 at <https://github.com/rqtl/qtl2data/tree/master/DO_Svenson291>.
 
