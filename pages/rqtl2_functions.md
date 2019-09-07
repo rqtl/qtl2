@@ -298,7 +298,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `clean.calc_genoprob` - clean a `"calc_genoprob"` object (setting
   small values to 0)
 - `clean_genoprob` - same as `clean.calc_genoprob`
-- `qtl2version` - print the installed version of [R/qtl2](http://kbroman.org/qtl2)
+- `qtl2version` - print the installed version of [R/qtl2](https://kbroman.org/qtl2)
 
 
 
