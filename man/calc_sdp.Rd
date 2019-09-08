@@ -27,5 +27,5 @@ x <- rbind(m1=c(3, 1, 1, 1, 1, 1, 1, 1),
 calc_sdp(x)
 }
 \seealso{
-\code{\link[=invert_sdp]{invert_sdp()}}
+\code{\link[=invert_sdp]{invert_sdp()}}, \code{\link[=sdp2char]{sdp2char()}}
 }
