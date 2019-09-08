@@ -10,6 +10,9 @@ sdp2char(sdp, n_strains = NULL, strains = NULL)
 \item{sdp}{Vector of strain distribution patterns (integers between
 1 and \eqn{2^n-2} where \eqn{n} is the number of strains.}
 
+\item{n_strains}{Number of founder strains (if missing but
+\code{strains} is provided, we use the length of \code{strains})}
+
 \item{strains}{Vector of single-letter codes for the strains}
 }
 \value{

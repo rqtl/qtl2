@@ -90,7 +90,8 @@ invert_sdp <-
 #'
 #' @param sdp Vector of strain distribution patterns (integers between
 #' 1 and \eqn{2^n-2} where \eqn{n} is the number of strains.
-#' @param n_strains
+#' @param n_strains Number of founder strains (if missing but
+#' `strains` is provided, we use the length of `strains`)
 #' @param strains Vector of single-letter codes for the strains
 #'
 #' @return Vector of character strings with the two groups of alleles
