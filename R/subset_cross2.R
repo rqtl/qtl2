@@ -40,7 +40,7 @@
 #'
 #' @section Warning:
 #' The order of the two arguments is reversed relative to the related
-#' function in [R/qtl](http://rqtl.org).
+#' function in [R/qtl](https://rqtl.org).
 #'
 #' @export
 #' @keywords utilities

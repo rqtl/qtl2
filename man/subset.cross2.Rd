@@ -53,7 +53,7 @@ use negative subscripts like this.
 \section{Warning}{
 
 The order of the two arguments is reversed relative to the related
-function in \href{http://rqtl.org}{R/qtl}.
+function in \href{https://rqtl.org}{R/qtl}.
 }
 
 \examples{
