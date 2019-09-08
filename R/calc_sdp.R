@@ -103,6 +103,7 @@ invert_sdp <-
 #' @examples
 #' sdp <- c(m1=1, m2=12, m3=240)
 #' sdp2char(sdp, 8)
+#' sdp2char(sdp, strains=c("A", "B", "1", "D", "Z", "C", "P", "W"))
 sdp2char <-
     function(sdp, n_strains=NULL, strains=NULL)
 {
