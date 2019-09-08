@@ -24,7 +24,7 @@ Convert a vector of numeric codes for strain distribution patterns to character 
 }
 \examples{
 sdp <- c(m1=1, m2=12, m3=240)
-sdp2char(sdp, LETTERS[1:8])
+sdp2char(sdp, 8)
 }
 \seealso{
 \code{\link[=invert_sdp]{invert_sdp()}}, \code{\link[=calc_sdp]{calc_sdp()}}
