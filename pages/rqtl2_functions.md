@@ -326,3 +326,5 @@ description: Annotated/categorized list of functions in R/qtl2
 - `founders` - names of the founder strains (_data summaries_)
 - `n_founders` - number of founder strains (_data summaries_)
 - `scan1max` - genome-wide maximum LOD score from genome scan (_QTL analysis_)
+- `sdp2char` - convert strain distribution pattern numeric codes to
+  more meaningful character strings (_SNP/gene databases_)
