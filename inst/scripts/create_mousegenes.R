@@ -1,8 +1,8 @@
 # create sqlite database with mouse genes, from MGI
 #
-# source (dated 2019-02-25):
+# source (dated 2019-08-12):
 #      http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/
-#          MGI.201902.gff3.gz
+#          MGI.201908.gff3.gz
 #
 #      http://www.informatics.jax.org/downloads/mgigff/
 #          MGI_GFF_Spec.docx (annotations, e.g. column names)
@@ -11,8 +11,8 @@ library(RSQLite)
 
 ### download files
 site <- "http://www.informatics.jax.org/downloads/mgigff3/archive/monthly"
-file <- "MGI.201902.gff3.gz"
-date_source <- as.character(as.Date("201902", format="%Y%m%d"))
+file <- "MGI.201908.gff3.gz"
+date_source <- as.character(as.Date("20190812", format="%Y%m%d"))
 genome_build <- "GRCm38/mm10"
 url <- paste0(site, "/", file)
 if(!file.exists(file))
@@ -70,7 +70,7 @@ dbfile <- "mouse_genes.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)
 db <- dbConnect(SQLite(), dbfile)
 dbWriteTable(db, "genes", tab)
-dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
+dbExecute(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
 
 # add description table
 description <- data.frame(description="mouse gene information",

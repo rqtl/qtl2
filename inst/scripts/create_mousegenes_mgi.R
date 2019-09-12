@@ -10,22 +10,24 @@ dbDisconnect(db)
 #    ... pick a random one of each
 tab_name <- table(tab$Name)
 dup <- names(tab_name)[tab_name > 1]
-omit <- NULL
-for(i in dup) {
-    z <- which(tab$Name==i)
-    dbxref <- unique(tab$Dbxref[z])
-    keep <- sample(length(z), 1)
-    tab$Dbxref[z[keep]] <- paste(dbxref, collapse=",")
-    omit <- c(omit, z[-keep])
+if(length(dup) > 0) {
+    omit <- NULL
+    for(i in dup) {
+        z <- which(tab$Name==i)
+        dbxref <- unique(tab$Dbxref[z])
+        keep <- sample(length(z), 1)
+        tab$Dbxref[z[keep]] <- paste(dbxref, collapse=",")
+        omit <- c(omit, z[-keep])
+    }
+    tab <- tab[-omit,]
 }
-tab <- tab[-omit,]
 
 # write to new database
 dbfile <- "mouse_genes_mgi.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)
 db <- dbConnect(SQLite(), dbfile)
 dbWriteTable(db, "genes", tab)
-dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
+dbExecute(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
 
 # add description table
 description[1] <- paste(description[1], "(subset to source='MGI' records)")

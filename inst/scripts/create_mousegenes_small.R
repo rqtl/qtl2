@@ -22,7 +22,7 @@ dbfile <- "../extdata/mouse_genes_small.sqlite"
 if(file.exists(dbfile)) unlink(dbfile)
 db <- dbConnect(SQLite(), dbfile)
 dbWriteTable(db, "genes", tab)
-dbGetQuery(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
+dbExecute(db, "CREATE INDEX chr_start_stop ON genes (chr, start, stop)")
 
 # add description table
 description[1] <- paste(description[1], "(subset to 2 regions)")
