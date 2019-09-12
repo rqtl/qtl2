@@ -46,10 +46,10 @@ The larger database files created by these scripts are available for
 direct download from [figshare](https://figshare.com):
 
 - [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v2](https://doi.org/10.6084/m9.figshare.5280229.v2)
-- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v5](https://doi.org/10.6084/m9.figshare.5280238.v6)
+- [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v6](https://doi.org/10.6084/m9.figshare.5280238.v6)
 
 A smaller version of the mouse genes database, with just the records
 with `source=="MGI"`, is also available at
 [figshare](https://figshare.com):
 
-- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v6](https://doi.org/10.6084/m9.figshare.5286019.v7)
+- [`mouse_genes_mgi.sqlite` doi:10.6084/m9.figshare.5286019.v7](https://doi.org/10.6084/m9.figshare.5286019.v7)
