@@ -675,7 +675,9 @@ extract_dim_from_header <-
             stop('Multiple header lines with "', nam[i], '"')
         if(sum(matchhead) == 0) next
         spl <- strsplit(header[matchhead], "\\s+")[[1]]
-        result[i] <- as.numeric(spl[length(spl)])
+        number <- spl[length(spl)]
+        number <- gsub("(^[0-9]+).*$", "\\1", number)
+        result[i] <- as.numeric(number)
     }
 
     result

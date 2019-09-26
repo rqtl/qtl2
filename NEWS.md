@@ -1,4 +1,4 @@
-## qtl2 0.21-12 (2019-09-12)
+## qtl2 0.21-13 (2019-09-26)
 
 ### Major changes
 
@@ -60,6 +60,9 @@
 
 - Better error message for the case that there are no markers in
   common between map and genotypes.
+
+- `extract_dim_from_header()`, used by `read_cross2()` and `read_csv()`,
+  now just looks for the number part in the rest of the line.
 
 
 ## qtl2 0.20 (2019-06-03)
