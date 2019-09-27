@@ -64,6 +64,9 @@
 - `extract_dim_from_header()`, used by `read_cross2()` and `read_csv()`,
   now just looks for the number part in the rest of the line.
 
+- `maxlod()` now handles missing values (forcing `na.rm=TRUE`). If all
+  values are missing it gives a warning and returns `-Inf`.
+  [Fixes Issue #134.]
 
 ## qtl2 0.20 (2019-06-03)
 

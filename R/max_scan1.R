@@ -209,17 +209,17 @@ maxlod <-
         coef <- unclass(scan1_output)
         sign <- (coef >= 0)*2-1 # sign +1/-1
         coef <- abs(coef)
-        maxcoef <- max(coef)
+        maxcoef <- max(coef, na.rm=TRUE)
 
         # deal with ties
-        wh <- which(coef == maxcoef)
+        wh <- which(!is.na(coef) & coef == maxcoef)
         if(length(wh)>1) wh <- sample(wh, 1)
 
         return(maxcoef * sign[wh])
     }
     else {
         lod <- unclass(scan1_output)
-        return(max(lod))
+        return(max(lod, na.rm=TRUE))
     }
 }
 
