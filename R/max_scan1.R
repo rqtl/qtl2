@@ -59,6 +59,11 @@ max_scan1 <-
 {
     if(is.null(scan1_output)) stop("scan1_output is NULL")
 
+    # force column names
+    if(is.null(colnames(scan1_output))) {
+        colnames(scan1_output) <- paste0("lod", seq_len(ncol(scan1_output)))
+    }
+
     if(is.null(lodcolumn)) {
         return(maxall_scan1(scan1_output, map=map, chr=chr, na.rm=na.rm, ...))
     }
@@ -73,7 +78,7 @@ max_scan1 <-
         lodcolumn <- lodcolumn_num
     }
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output)) {
-        stop("column [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(lod), ")")
+        stop("column [", lodcolumn, "] out of range (should be in 1 - ", ncol(scan1_output), ")")
     }
 
     if(is.null(map)) {
@@ -209,17 +214,17 @@ maxlod <-
         coef <- unclass(scan1_output)
         sign <- (coef >= 0)*2-1 # sign +1/-1
         coef <- abs(coef)
-        maxcoef <- max(coef)
+        maxcoef <- max(coef, na.rm=TRUE)
 
         # deal with ties
-        wh <- which(coef == maxcoef)
+        wh <- which(!is.na(coef) & coef == maxcoef)
         if(length(wh)>1) wh <- sample(wh, 1)
 
         return(maxcoef * sign[wh])
     }
     else {
         lod <- unclass(scan1_output)
-        return(max(lod))
+        return(max(lod, na.rm=TRUE))
     }
 }
 
