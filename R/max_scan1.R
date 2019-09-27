@@ -59,6 +59,11 @@ max_scan1 <-
 {
     if(is.null(scan1_output)) stop("scan1_output is NULL")
 
+    # force column names
+    if(is.null(colnames(scan1_output))) {
+        colnames(scan1_output) <- paste0("lod", seq_len(ncol(scan1_output)))
+    }
+
     if(is.null(lodcolumn)) {
         return(maxall_scan1(scan1_output, map=map, chr=chr, na.rm=na.rm, ...))
     }
@@ -104,7 +109,6 @@ max_scan1 <-
     if("scan1coef" %in% class(scan1_output)) lod <- abs(lod)
 
     coln <- colnames(lod)
-    if(is.null(coln)) coln <- rep("lod", ncol(lod))
     mnames <- rownames(lod)
 
     if(length(lodcolumn) > 1) { # If length > 1, take first value

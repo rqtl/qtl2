@@ -107,7 +107,8 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     out_na[sample(nrow(out_na), 10),1] <- NA
     expect_equal(max(out), max(out_na))
     expect_equal(max(out, map), max(out_na, map))
-    expect_equal(max(out, map, lodcolumn=NULL), max(out_na, map, lodcolumn=NULL))
+    expect_equal(max(out, lodcolumn=NULL), max(out_na, lodcolumn=NULL, na.rm=TRUE))
+    expect_equal(max(out, map, lodcolumn=NULL), max(out_na, map, lodcolumn=NULL, na.rm=TRUE))
 
     # max gives error if lodcolumn out of range
     expect_error(max(out, lodcolumn="blah"), 'LOD column "blah" not found.')
@@ -115,6 +116,15 @@ test_that("max_scan1 works for intercross with two phenotypes", {
                  "column [0] out of range (should be in 1 - 2)", fixed=TRUE)
     expect_error(max(out, lodcolumn=3),
                  "column [3] out of range (should be in 1 - 2)", fixed=TRUE)
+
+    # no column names
+    colnames(out) <- colnames(out_na) <- NULL
+    expect_equal(max(out), max(out_na))
+    expect_equal(max(out, map), max(out_na, map))
+    expect_equal(max(out, lodcolumn=2), max(out_na, lodcolumn=2))
+    expect_equal(max(out, map, lodcolumn=2), max(out_na, map, lodcolumn=2))
+    expect_equal(max(out, lodcolumn=NULL), max(out_na, lodcolumn=NULL, na.rm=TRUE))
+    expect_equal(max(out, map, lodcolumn=NULL), max(out_na, map, lodcolumn=NULL, na.rm=TRUE))
 
 })
 
