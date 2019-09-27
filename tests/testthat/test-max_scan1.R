@@ -100,6 +100,22 @@ test_that("max_scan1 works for intercross with two phenotypes", {
     expect_equal( max(out, map, lodcolumn=NULL, chr=c(3,9)), expected )
     expect_equal( max(out, map, lodcolumn=NULL, chr=c(9,3)), expected )
 
+    # max handles NA (here, just guessing that I'm unlikely to NA-out the max
+    set.seed(1331427)
+    out_na <- out
+    out_na[5,2] <- NA
+    out_na[sample(nrow(out_na), 10),1] <- NA
+    expect_equal(max(out), max(out_na))
+    expect_equal(max(out, map), max(out_na, map))
+    expect_equal(max(out, map, lodcolumn=NULL), max(out_na, map, lodcolumn=NULL))
+
+    # max gives error if lodcolumn out of range
+    expect_error(max(out, lodcolumn="blah"), 'LOD column "blah" not found.')
+    expect_error(max(out, lodcolumn=0),
+                 "column [0] out of range (should be in 1 - 2)", fixed=TRUE)
+    expect_error(max(out, lodcolumn=3),
+                 "column [3] out of range (should be in 1 - 2)", fixed=TRUE)
+
 })
 
 test_that("maxlod works for intercross with two phenotypes", {
@@ -144,5 +160,13 @@ test_that("maxlod works for intercross with two phenotypes", {
     out_shuffled <- out[sample(1:nrow(out)),,drop=FALSE]
     class(out_shuffled) <- c("scan1", "matrix")
     expect_equal( max(out_shuffled, map), max(out, map))
+
+    # maxlod handles NA (here, just guessing that I'm unlikely to NA-out the max
+    set.seed(1331427)
+    out_na <- out
+    out_na[5,2] <- NA
+    out_na[sample(nrow(out_na), 10),1] <- NA
+    expect_equal(maxlod(out), maxlod(out_na))
+    expect_equal(maxlod(out, map, 11), maxlod(out_na, map, 11))
 
 })
