@@ -1,4 +1,4 @@
-## qtl2 0.21-13 (2019-09-26)
+## qtl2 0.21-14 (2019-09-26)
 
 ### Major changes
 
@@ -67,6 +67,10 @@
 - `maxlod()` now handles missing values (forcing `na.rm=TRUE`). If all
   values are missing it gives a warning and returns `-Inf`.
   [Fixes Issue #134.]
+
+- In `max_scan1()`, treat the case that the input has no column names.
+  [Fixes Issue #133.]
+
 
 ## qtl2 0.20 (2019-06-03)
 

@@ -104,6 +104,7 @@ max_scan1 <-
     if("scan1coef" %in% class(scan1_output)) lod <- abs(lod)
 
     coln <- colnames(lod)
+    if(is.null(coln)) coln <- rep("lod", ncol(lod))
     mnames <- rownames(lod)
 
     if(length(lodcolumn) > 1) { # If length > 1, take first value
