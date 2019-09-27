@@ -71,6 +71,9 @@
 - In `max_scan1()`, treat the case that the input has no column names.
   [Fixes Issue #133.]
 
+- `max_scan1()` was giving a messed up error message if `lodcolumn`
+  was out of range. [Fixes Issue #132.]
+
 
 ## qtl2 0.20 (2019-06-03)
 

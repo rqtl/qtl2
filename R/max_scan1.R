@@ -73,7 +73,7 @@ max_scan1 <-
         lodcolumn <- lodcolumn_num
     }
     if(lodcolumn < 1 || lodcolumn > ncol(scan1_output)) {
-        stop("column [", lodcolumn, "] out of range (should be in 1, ..., ", ncol(lod), ")")
+        stop("column [", lodcolumn, "] out of range (should be in 1 - ", ncol(scan1_output), ")")
     }
 
     if(is.null(map)) {
