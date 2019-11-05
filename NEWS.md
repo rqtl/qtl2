@@ -1,4 +1,4 @@
-## qtl2 0.21-12 (2019-09-12)
+## qtl2 0.21-13 (2019-11-05)
 
 ### Major changes
 
@@ -43,6 +43,8 @@
 
 - Updated mouse gene database with 2019-08-12 data from
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
+
+- `get_common_ids()` strips off names from output, just in case.
 
 ### Bug fixes
 

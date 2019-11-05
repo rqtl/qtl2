@@ -93,5 +93,6 @@ get_common_ids <-
         else id <- id[id %in% these]
     }
 
+    names(id) <- NULL # just in case; should be bare vector of character strings
     id
 }
