@@ -179,13 +179,29 @@ for(thechr in chr) {
         gbin <- gnum
         gbin[gbin > 1] <- 3
 
-        # Consequence. Reverse engineered. Likely fragile.
-        csq <- sapply(info(snps)$CSQ, function(x) {
-            x <- strsplit(x, "|", fixed=TRUE)[[1]]
-            ensembl <- x[2]
-            csq <- gsub("&",",",x[5],fixed=TRUE)
-            c(ensembl, csq)
-        })
+        # Consequences: vectors of |-separated valued
+        #    2nd value is gene ID; 3rd is transcript ID
+        #    5th is consequence (potentially with multiple separated by &'s)
+        format_consequence <-
+            function(csq_record) {
+                x <- strsplit(csq_record, "|", fixed=TRUE)
+                genes <- sapply(x, "[", 2)
+                csq <- sapply(x, "[", 5)
+                csq <- unlist(lapply(seq_along(csq),
+                                     function(i) {
+                    if(genes[i] == "") {
+                        return(csq[i])
+                    } else {
+                        tmp <- unlist(strsplit(csq[i], "&", fixed=TRUE))
+                        return(paste(genes[i], tmp, sep=":"))
+                    }}))
+                c(paste(unique(genes), collapse=","),
+                  paste(unique(csq), collapse=","))
+              }
+
+
+        # first row = gene; 2nd row = consequence
+        csq <- sapply(info(snps)$CSQ, format_consequence)
 
         # create full table of info
         snps <- data.frame(snp_id=rownames(g),
@@ -323,17 +339,8 @@ for(thechr in chr) {
         gbin <- gnum
         gbin[gbin > 1] <- 3
 
-        # Consequence. Reverse engineered. Likely fragile.
-        csq <- sapply(info(indels)$CSQ, function(x) {
-            x <- strsplit(x, "|", fixed=TRUE)[[1]]
-            allele <- x[1]
-            ensembl <- x[2]
-            csq <- gsub("&",",",x[5],fixed=TRUE)
-            c(allele, ensembl, csq)
-        })
-        all_csq <- sapply(info(indels)$CSQ, function(x) {
-            x <- strsplit(x, "|", fixed=TRUE)[[1]]
-        })
+        # first row = gene; 2nd row = consequence
+        csq <- sapply(info(indels)$CSQ, format_consequence)
 
         # create full table of info
         indels <- data.frame(snp_id=rownames(g),
@@ -341,8 +348,8 @@ for(thechr in chr) {
                              pos=start(indels),
                              alleles=alleles_char,
                              sdp=qtl2::calc_sdp(gbin),
-                             ensembl_gene=csq[2,],
-                             consequence=csq[3,],
+                             ensembl_gene=csq[1,],
+                             consequence=csq[2,],
                              gnum,
                              type="indel",
                              stringsAsFactors=FALSE)
