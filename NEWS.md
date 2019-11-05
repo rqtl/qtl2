@@ -1,4 +1,4 @@
-## qtl2 0.21-13 (2019-11-05)
+## qtl2 0.21-15 (2019-11-05)
 
 ### Major changes
 
@@ -62,6 +62,19 @@
 
 - Better error message for the case that there are no markers in
   common between map and genotypes.
+
+- `extract_dim_from_header()`, used by `read_cross2()` and `read_csv()`,
+  now just looks for the number part in the rest of the line.
+
+- `maxlod()` now handles missing values (forcing `na.rm=TRUE`). If all
+  values are missing it gives a warning and returns `-Inf`.
+  [Fixes Issue #134.]
+
+- In `max_scan1()`, treat the case that the input has no column names.
+  [Fixes Issue #133.]
+
+- `max_scan1()` was giving a messed up error message if `lodcolumn`
+  was out of range. [Fixes Issue #132.]
 
 
 ## qtl2 0.20 (2019-06-03)
