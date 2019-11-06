@@ -54,6 +54,33 @@ for(i in seq_along(files)) {
     }
 }
 
+# function for re-formating snp/indel "consequence"
+# Consequences: vectors of |-separated valued
+#    2nd value is gene ID
+#    3rd is transcript ID (ignored)
+#    5th is consequence (potentially with multiple separated by &'s)
+format_consequence <-
+    function(csq_record)
+{
+        x <- strsplit(csq_record, "|", fixed=TRUE)
+        genes <- sapply(x, "[", 2)
+        csq <- sapply(x, "[", 5)
+        csq <- unlist(lapply(seq_along(csq),
+                             function(i) {
+            if(genes[i] == "") {
+                return(csq[i])
+            } else {
+                tmp <- unlist(strsplit(csq[i], "&", fixed=TRUE))
+                return(paste(genes[i], tmp, sep=":"))
+            }}))
+        c(paste(unique(genes), collapse=","),
+          paste(unique(csq), collapse=","))
+}
+
+
+
+
+
 ##############################
 ### SNPs
 ##############################
@@ -69,7 +96,7 @@ library(RSQLite)
 db_file <- "cc_variants.sqlite"
 db <- dbConnect(SQLite(), dbname=db_file)
 
-dbGetQuery(db, paste0("ATTACH '", db_file, "' AS NEW"))
+dbExecute(db, paste0("ATTACH '", db_file, "' AS NEW"))
 
 cat(" -SNPs\n")
 tabfile <- TabixFile(files[1], paste0(files[1], ".tbi"))
@@ -109,8 +136,9 @@ for(thechr in chr) {
         minor <- CharacterList(alt(snps))
         alleles <- matrix("", nrow=nrow(snps), ncol=4)
         alleles[,1] <- major
-        for(i in 2:4)
+        for(i in 2:4) {
             alleles[,i] <- sapply(minor, "[", i-1)
+        }
 
         # numbers of each genotype
         rs <- sapply(c("0/0", "1/1", "2/2", "3/3"),
@@ -178,27 +206,6 @@ for(thechr in chr) {
         # convert to 1/3
         gbin <- gnum
         gbin[gbin > 1] <- 3
-
-        # Consequences: vectors of |-separated valued
-        #    2nd value is gene ID; 3rd is transcript ID
-        #    5th is consequence (potentially with multiple separated by &'s)
-        format_consequence <-
-            function(csq_record) {
-                x <- strsplit(csq_record, "|", fixed=TRUE)
-                genes <- sapply(x, "[", 2)
-                csq <- sapply(x, "[", 5)
-                csq <- unlist(lapply(seq_along(csq),
-                                     function(i) {
-                    if(genes[i] == "") {
-                        return(csq[i])
-                    } else {
-                        tmp <- unlist(strsplit(csq[i], "&", fixed=TRUE))
-                        return(paste(genes[i], tmp, sep=":"))
-                    }}))
-                c(paste(unique(genes), collapse=","),
-                  paste(unique(csq), collapse=","))
-              }
-
 
         # first row = gene; 2nd row = consequence
         csq <- sapply(info(snps)$CSQ, format_consequence)
@@ -326,12 +333,14 @@ for(thechr in chr) {
 
         # gnum: turn it into consecutive numbers
         #   (if "2" is missing make 3 = 2)
-        for(i in 3:2) {
-            wh <- is.na(alleles[,i])
-            if(any(wh)) {
-                tmp <- gnum[wh,]
-                tmp[tmp >= i] <- tmp[tmp >= i] - 1
-                gnum[wh,] <- tmp
+        if(ncol(alleles) >= 3) {
+            for(i in 3:2) {
+                wh <- is.na(alleles[,i])
+                if(any(wh)) {
+                    tmp <- gnum[wh,]
+                    tmp[tmp >= i] <- tmp[tmp >= i] - 1
+                    gnum[wh,] <- tmp
+                }
             }
         }
 
@@ -452,5 +461,5 @@ dbWriteTable(db, "description", description, append=TRUE)
 ##############################
 ### add index
 ##############################
-dbGetQuery(db, "CREATE INDEX chr_pos ON variants(chr, pos)")
+dbExecute(db, "CREATE INDEX chr_pos ON variants(chr, pos)")
 dbDisconnect(db)
