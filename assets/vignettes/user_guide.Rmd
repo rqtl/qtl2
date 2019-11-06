@@ -1049,7 +1049,7 @@ If you are analyzing the CC lines or a DO population, you can download
 the SQLite databases that we have prepared and made available on
 [Figshare](https://figshare.com):
 
-- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v2](https://doi.org/10.6084/m9.figshare.5280229.v2),
+- [`cc_variants.sqlite` doi:10.6084/m9.figshare.5280229.v3](https://doi.org/10.6084/m9.figshare.5280229.v3),
   variants in the Collaborative Cross founders (3 GB)
 - [`mouse_genes.sqlite` doi:10.6084/m9.figshare.5280238.v6](https://doi.org/10.6084/m9.figshare.5280238.v6)
   full set of mouse gene annotations (530 MB)
@@ -1061,7 +1061,7 @@ For example, to download `cc_variants.sqlite` and
 the URLs for downloading the files, and then do the following:
 
 ```{r download_db, eval=FALSE}
-download.file("https://ndownloader.figshare.com/files/9746485", "cc_variants.sqlite")
+download.file("https://ndownloader.figshare.com/files/18533342", "cc_variants.sqlite")
 download.file("https://ndownloader.figshare.com/files/17609252", "mouse_genes_mgi.sqlite")
 ```
 
