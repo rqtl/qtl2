@@ -24,7 +24,7 @@
 #'
 #' Also note that a SQLite database of variants in the founder strains
 #' of the mouse Collaborative Cross is available at figshare:
-#' [doi:10.6084/m9.figshare.5280229.v2](https://doi.org/10.6084/m9.figshare.5280229.v2)
+#' [doi:10.6084/m9.figshare.5280229.v3](https://doi.org/10.6084/m9.figshare.5280229.v3)
 #'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery
