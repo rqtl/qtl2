@@ -1,4 +1,4 @@
-## qtl2 0.21-14 (2019-09-27)
+## qtl2 0.21-16 (2019-11-06)
 
 ### Major changes
 
@@ -44,6 +44,8 @@
 - Updated mouse gene database with 2019-08-12 data from
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
+- `get_common_ids()` strips off names from output, just in case.
+
 ### Bug fixes
 
 - Fixed typo in help for `scan1()` and related functions.
@@ -73,6 +75,12 @@
 
 - `max_scan1()` was giving a messed up error message if `lodcolumn`
   was out of range. [Fixes Issue #132.]
+
+- Revised the script `inst/scripts/create_ccvariants.R` to capture _all_
+  of the consequences and genes for each SNP (rather than just the
+  first), and fixing a bug that prevented capture of indels from
+  chromosomes 6-X. Consequently, revised the example SQLite database
+  `extdata/cc_variants_small.sqlite` and associated tests.
 
 
 ## qtl2 0.20 (2019-06-03)
