@@ -4,7 +4,7 @@
 is_cluster <-
     function(cores)
 {
-    "cluster" %in% class(cores) && "SOCKcluster" %in% class(cores)
+    inherits(cores, "cluster") && inherits(cores, "SOCKcluster")
 }
 
 # number of cores being used
