@@ -35,7 +35,7 @@ reduce_markers <-
     function(map, min_distance=1, weights=NULL)
 {
     if(is.null(map)) stop("map is NULL")
-    if("cross2" %in% class(map))
+    if(is.cross2(map))
         stop('Input map is a "cross2" object but should be a genetic map')
 
     if(!is.list(map) && !is.list(weights)) { # single chromosome

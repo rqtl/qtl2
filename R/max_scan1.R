@@ -106,7 +106,7 @@ max_scan1 <-
     lod <- unclass(scan1_output)
     sign <- (lod >= 0)*2-1 # sign +1
 
-    if("scan1coef" %in% class(scan1_output)) lod <- abs(lod)
+    if(inherits(scan1_output, "scan1coef") lod <- abs(lod)
 
     coln <- colnames(lod)
     mnames <- rownames(lod)
@@ -210,7 +210,7 @@ maxlod <-
 
     # to handle output of either scan1() or scan1coef()
     # for coef(), look at the sign
-    if("scan1coef" %in% class(scan1_output)) {
+    if(inherits(scan1_output, "scan1coef")) {
         coef <- unclass(scan1_output)
         sign <- (coef >= 0)*2-1 # sign +1/-1
         coef <- abs(coef)
