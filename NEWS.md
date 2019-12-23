@@ -1,4 +1,4 @@
-## qtl2 0.21-18 (2019-12-22)
+## qtl2 0.21-19 (2019-12-23)
 
 ### Major changes
 
@@ -45,6 +45,8 @@
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
 - `get_common_ids()` strips off names from output, just in case.
+
+- Added internal functions `rqtl1_crosstype()` and `rqtl1_chrtype()`.
 
 ### Bug fixes
 
