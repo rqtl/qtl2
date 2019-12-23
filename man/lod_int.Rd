@@ -4,8 +4,16 @@
 \alias{lod_int}
 \title{Calculate LOD support intervals}
 \usage{
-lod_int(scan1_output, map, chr = NULL, lodcolumn = 1, threshold = 0,
-  peakdrop = Inf, drop = 1.5, expand2markers = TRUE)
+lod_int(
+  scan1_output,
+  map,
+  chr = NULL,
+  lodcolumn = 1,
+  threshold = 0,
+  peakdrop = Inf,
+  drop = 1.5,
+  expand2markers = TRUE
+)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by

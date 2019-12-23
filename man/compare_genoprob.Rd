@@ -4,8 +4,17 @@
 \alias{compare_genoprob}
 \title{Compare two sets of genotype probabilities}
 \usage{
-compare_genoprob(probs1, probs2, cross, ind = 1, chr = NULL,
-  minprob = 0.95, minmarkers = 10, minwidth = 0, annotate = FALSE)
+compare_genoprob(
+  probs1,
+  probs2,
+  cross,
+  ind = 1,
+  chr = NULL,
+  minprob = 0.95,
+  minmarkers = 10,
+  minwidth = 0,
+  annotate = FALSE
+)
 }
 \arguments{
 \item{probs1}{Genotype probabilities (as produced by \code{\link[=calc_genoprob]{calc_genoprob()}})

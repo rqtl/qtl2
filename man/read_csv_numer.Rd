@@ -4,8 +4,14 @@
 \alias{read_csv_numer}
 \title{Read a csv file that has numeric columns}
 \usage{
-read_csv_numer(filename, sep = ",", na.strings = c("NA", "-"),
-  comment.char = "#", transpose = FALSE, rownames_included = TRUE)
+read_csv_numer(
+  filename,
+  sep = ",",
+  na.strings = c("NA", "-"),
+  comment.char = "#",
+  transpose = FALSE,
+  rownames_included = TRUE
+)
 }
 \arguments{
 \item{filename}{Name of input file}

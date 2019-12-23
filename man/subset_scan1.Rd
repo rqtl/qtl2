@@ -7,8 +7,7 @@
 \usage{
 subset_scan1(x, map = NULL, chr = NULL, lodcolumn = NULL, ...)
 
-\method{subset}{scan1}(x, map = NULL, chr = NULL, lodcolumn = NULL,
-  ...)
+\method{subset}{scan1}(x, map = NULL, chr = NULL, lodcolumn = NULL, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"scan1"} as returned by

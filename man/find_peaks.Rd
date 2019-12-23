@@ -4,10 +4,21 @@
 \alias{find_peaks}
 \title{Find peaks in a set of LOD curves}
 \usage{
-find_peaks(scan1_output, map, threshold = 3, peakdrop = Inf,
-  drop = NULL, prob = NULL, thresholdX = NULL, peakdropX = NULL,
-  dropX = NULL, probX = NULL, expand2markers = TRUE,
-  sort_by = c("column", "pos", "lod"), cores = 1)
+find_peaks(
+  scan1_output,
+  map,
+  threshold = 3,
+  peakdrop = Inf,
+  drop = NULL,
+  prob = NULL,
+  thresholdX = NULL,
+  peakdropX = NULL,
+  dropX = NULL,
+  probX = NULL,
+  expand2markers = TRUE,
+  sort_by = c("column", "pos", "lod"),
+  cores = 1
+)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by

@@ -4,8 +4,7 @@
 \alias{add_threshold}
 \title{Add thresholds to genome scan plot}
 \usage{
-add_threshold(map, thresholdA, thresholdX = NULL, chr = NULL,
-  gap = NULL, ...)
+add_threshold(map, thresholdA, thresholdX = NULL, chr = NULL, gap = NULL, ...)
 }
 \arguments{
 \item{map}{Marker map used in the genome scan plot}
@@ -18,7 +17,7 @@ list, the \code{"A"} component is taken to be \code{thresholdA} and the
 
 \item{chr}{Chromosomes that were included in the plot}
 
-\item{gap}{Gap between chromosomes in the plot. Default is 1\% of the total genome length.}
+\item{gap}{Gap between chromosomes in the plot. Default is 1\\% of the total genome length.}
 
 \item{...}{Additional arguments passed to \code{\link[graphics:segments]{graphics::segments()}}}
 }

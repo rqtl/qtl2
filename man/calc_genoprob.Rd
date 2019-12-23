@@ -4,9 +4,15 @@
 \alias{calc_genoprob}
 \title{Calculate conditional genotype probabilities}
 \usage{
-calc_genoprob(cross, map = NULL, error_prob = 0.0001,
+calc_genoprob(
+  cross,
+  map = NULL,
+  error_prob = 0.0001,
   map_function = c("haldane", "kosambi", "c-f", "morgan"),
-  lowmem = FALSE, quiet = TRUE, cores = 1)
+  lowmem = FALSE,
+  quiet = TRUE,
+  cores = 1
+)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the

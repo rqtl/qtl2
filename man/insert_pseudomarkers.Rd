@@ -4,9 +4,15 @@
 \alias{insert_pseudomarkers}
 \title{Insert pseudomarkers into a marker map}
 \usage{
-insert_pseudomarkers(map, step = 0, off_end = 0,
-  stepwidth = c("fixed", "max"), pseudomarker_map = NULL, tol = 0.01,
-  cores = 1)
+insert_pseudomarkers(
+  map,
+  step = 0,
+  off_end = 0,
+  stepwidth = c("fixed", "max"),
+  pseudomarker_map = NULL,
+  tol = 0.01,
+  cores = 1
+)
 }
 \arguments{
 \item{map}{A list of numeric vectors; each vector gives marker

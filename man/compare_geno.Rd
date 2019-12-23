@@ -4,8 +4,7 @@
 \alias{compare_geno}
 \title{Compare individuals' genotype data}
 \usage{
-compare_geno(cross, omit_x = FALSE, proportion = TRUE, quiet = TRUE,
-  cores = 1)
+compare_geno(cross, omit_x = FALSE, proportion = TRUE, quiet = TRUE, cores = 1)
 }
 \arguments{
 \item{cross}{Object of class \code{"cross2"}. For details, see the
@@ -31,7 +30,7 @@ for each individual. The values in the lower triangle are the
 numbers of markers where both of a pair were genotyped. The
 values in the upper triangle are either proportions or counts
 of matching genotypes for each pair (depending on whether
-\code{proportion=TRUE} or \code{=FALSE}). The object is given
+\code{proportion=TRUE} or \verb{=FALSE}). The object is given
 class \code{"compare_geno"}.
 }
 \description{

@@ -4,8 +4,7 @@
 \alias{zip_datafiles}
 \title{Zip a set of data files}
 \usage{
-zip_datafiles(control_file, zip_file = NULL, overwrite = FALSE,
-  quiet = TRUE)
+zip_datafiles(control_file, zip_file = NULL, overwrite = FALSE, quiet = TRUE)
 }
 \arguments{
 \item{control_file}{Character string with path to the control file

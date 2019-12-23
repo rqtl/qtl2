@@ -4,10 +4,23 @@
 \alias{scan1perm}
 \title{Permutation test for genome scan with a single-QTL model}
 \usage{
-scan1perm(genoprobs, pheno, kinship = NULL, addcovar = NULL,
-  Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  model = c("normal", "binary"), n_perm = 1, perm_Xsp = FALSE,
-  perm_strata = NULL, chr_lengths = NULL, cores = 1, ...)
+scan1perm(
+  genoprobs,
+  pheno,
+  kinship = NULL,
+  addcovar = NULL,
+  Xcovar = NULL,
+  intcovar = NULL,
+  weights = NULL,
+  reml = TRUE,
+  model = c("normal", "binary"),
+  n_perm = 1,
+  perm_Xsp = FALSE,
+  perm_strata = NULL,
+  chr_lengths = NULL,
+  cores = 1,
+  ...
+)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

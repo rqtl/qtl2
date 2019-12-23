@@ -4,9 +4,14 @@
 \alias{create_variant_query_func}
 \title{Create a function to query variants}
 \usage{
-create_variant_query_func(dbfile = NULL, db = NULL,
-  table_name = "variants", chr_field = "chr", pos_field = "pos",
-  filter = NULL)
+create_variant_query_func(
+  dbfile = NULL,
+  db = NULL,
+  table_name = "variants",
+  chr_field = "chr",
+  pos_field = "pos",
+  filter = NULL
+)
 }
 \arguments{
 \item{dbfile}{Name of database file}

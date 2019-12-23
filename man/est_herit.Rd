@@ -4,8 +4,15 @@
 \alias{est_herit}
 \title{Estimate heritability with a linear mixed model}
 \usage{
-est_herit(pheno, kinship, addcovar = NULL, weights = NULL,
-  reml = TRUE, cores = 1, ...)
+est_herit(
+  pheno,
+  kinship,
+  addcovar = NULL,
+  weights = NULL,
+  reml = TRUE,
+  cores = 1,
+  ...
+)
 }
 \arguments{
 \item{pheno}{A numeric matrix of phenotypes, individuals x phenotypes.}

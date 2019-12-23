@@ -4,9 +4,20 @@
 \alias{scan1}
 \title{Genome scan with a single-QTL model}
 \usage{
-scan1(genoprobs, pheno, kinship = NULL, addcovar = NULL,
-  Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  model = c("normal", "binary"), hsq = NULL, cores = 1, ...)
+scan1(
+  genoprobs,
+  pheno,
+  kinship = NULL,
+  addcovar = NULL,
+  Xcovar = NULL,
+  intcovar = NULL,
+  weights = NULL,
+  reml = TRUE,
+  model = c("normal", "binary"),
+  hsq = NULL,
+  cores = 1,
+  ...
+)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -41,7 +52,7 @@ this is taken as the assumed value for the residual
 heritability. It should be a vector with length corresponding
 to the number of columns in \code{pheno}, or (if \code{kinship}
 corresponds to a list of LOCO kinship matrices) a matrix with dimension
-\code{length(kinship) x ncol(pheno)}.}
+\verb{length(kinship) x ncol(pheno)}.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)

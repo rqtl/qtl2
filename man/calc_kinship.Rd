@@ -4,8 +4,14 @@
 \alias{calc_kinship}
 \title{Calculate kinship matrix}
 \usage{
-calc_kinship(probs, type = c("overall", "loco", "chr"), omit_x = FALSE,
-  use_allele_probs = TRUE, quiet = TRUE, cores = 1)
+calc_kinship(
+  probs,
+  type = c("overall", "loco", "chr"),
+  omit_x = FALSE,
+  use_allele_probs = TRUE,
+  quiet = TRUE,
+  cores = 1
+)
 }
 \arguments{
 \item{probs}{Genotype probabilities, as calculated from

@@ -4,17 +4,37 @@
 \alias{write_control_file}
 \title{Write a control file for QTL data}
 \usage{
-write_control_file(output_file, crosstype = NULL, geno_file = NULL,
-  founder_geno_file = NULL, gmap_file = NULL, pmap_file = NULL,
-  pheno_file = NULL, covar_file = NULL, phenocovar_file = NULL,
-  sex_file = NULL, sex_covar = NULL, sex_codes = NULL,
-  crossinfo_file = NULL, crossinfo_covar = NULL,
-  crossinfo_codes = NULL, geno_codes = NULL, alleles = NULL,
-  xchr = NULL, sep = ",", na.strings = c("-", "NA"),
-  comment.char = "#", geno_transposed = FALSE,
-  founder_geno_transposed = FALSE, pheno_transposed = FALSE,
-  covar_transposed = FALSE, phenocovar_transposed = FALSE,
-  description = NULL, comments = NULL, overwrite = FALSE)
+write_control_file(
+  output_file,
+  crosstype = NULL,
+  geno_file = NULL,
+  founder_geno_file = NULL,
+  gmap_file = NULL,
+  pmap_file = NULL,
+  pheno_file = NULL,
+  covar_file = NULL,
+  phenocovar_file = NULL,
+  sex_file = NULL,
+  sex_covar = NULL,
+  sex_codes = NULL,
+  crossinfo_file = NULL,
+  crossinfo_covar = NULL,
+  crossinfo_codes = NULL,
+  geno_codes = NULL,
+  alleles = NULL,
+  xchr = NULL,
+  sep = ",",
+  na.strings = c("-", "NA"),
+  comment.char = "#",
+  geno_transposed = FALSE,
+  founder_geno_transposed = FALSE,
+  pheno_transposed = FALSE,
+  covar_transposed = FALSE,
+  phenocovar_transposed = FALSE,
+  description = NULL,
+  comments = NULL,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{output_file}{File name (with path) of the

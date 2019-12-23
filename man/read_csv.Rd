@@ -4,8 +4,14 @@
 \alias{read_csv}
 \title{Read a csv file}
 \usage{
-read_csv(filename, sep = ",", na.strings = c("NA", "-"),
-  comment.char = "#", transpose = FALSE, rownames_included = TRUE)
+read_csv(
+  filename,
+  sep = ",",
+  na.strings = c("NA", "-"),
+  comment.char = "#",
+  transpose = FALSE,
+  rownames_included = TRUE
+)
 }
 \arguments{
 \item{filename}{Name of input file}

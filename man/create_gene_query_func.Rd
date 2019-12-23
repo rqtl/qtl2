@@ -4,9 +4,15 @@
 \alias{create_gene_query_func}
 \title{Create a function to query genes}
 \usage{
-create_gene_query_func(dbfile = NULL, db = NULL,
-  table_name = "genes", chr_field = "chr", start_field = "start",
-  stop_field = "stop", filter = NULL)
+create_gene_query_func(
+  dbfile = NULL,
+  db = NULL,
+  table_name = "genes",
+  chr_field = "chr",
+  start_field = "start",
+  stop_field = "stop",
+  filter = NULL
+)
 }
 \arguments{
 \item{dbfile}{Name of database file}

@@ -4,8 +4,7 @@
 \alias{pull_genoprobpos}
 \title{Pull genotype probabilities for a particular position}
 \usage{
-pull_genoprobpos(genoprobs, map = NULL, chr = NULL, pos = NULL,
-  marker = NULL)
+pull_genoprobpos(genoprobs, map = NULL, chr = NULL, pos = NULL, marker = NULL)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

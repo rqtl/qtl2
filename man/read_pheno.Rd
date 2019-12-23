@@ -4,9 +4,15 @@
 \alias{read_pheno}
 \title{Read phenotype data}
 \usage{
-read_pheno(file, phenocovarfile = NULL, sep = ",",
-  na.strings = c("-", "NA"), comment.char = "#", transpose = FALSE,
-  quiet = TRUE)
+read_pheno(
+  file,
+  phenocovarfile = NULL,
+  sep = ",",
+  na.strings = c("-", "NA"),
+  comment.char = "#",
+  transpose = FALSE,
+  quiet = TRUE
+)
 }
 \arguments{
 \item{file}{Character string with path to the phenotype data file

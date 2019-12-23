@@ -4,9 +4,19 @@
 \alias{plot_pxg}
 \title{Plot phenotype vs genotype}
 \usage{
-plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
-  swap_axes = FALSE, jitter = 0.2, force_labels = TRUE,
-  alternate_labels = FALSE, omit_points = FALSE, ...)
+plot_pxg(
+  geno,
+  pheno,
+  sort = TRUE,
+  SEmult = NULL,
+  pooledSD = TRUE,
+  swap_axes = FALSE,
+  jitter = 0.2,
+  force_labels = TRUE,
+  alternate_labels = FALSE,
+  omit_points = FALSE,
+  ...
+)
 }
 \arguments{
 \item{geno}{Vector of genotypes, as produced by
@@ -18,7 +28,7 @@ plot_pxg(geno, pheno, sort = TRUE, SEmult = NULL, pooledSD = TRUE,
 \item{sort}{If TRUE, sort genotypes from largest to smallest.}
 
 \item{SEmult}{If specified, interval estimates of the within-group
-averages will be displayed, as \code{mean +/- SE * SEmult}.}
+averages will be displayed, as \verb{mean +/- SE * SEmult}.}
 
 \item{pooledSD}{If TRUE and \code{SEmult} is specified, calculated
 a pooled within-group SD. Otherwise, get separate estimates of

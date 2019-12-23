@@ -4,9 +4,19 @@
 \alias{scan1blup}
 \title{Calculate BLUPs of QTL effects in scan along one chromosome}
 \usage{
-scan1blup(genoprobs, pheno, kinship = NULL, addcovar = NULL,
-  nullcovar = NULL, contrasts = NULL, se = FALSE, reml = TRUE,
-  tol = 0.000000000001, cores = 1, quiet = TRUE)
+scan1blup(
+  genoprobs,
+  pheno,
+  kinship = NULL,
+  addcovar = NULL,
+  nullcovar = NULL,
+  contrasts = NULL,
+  se = FALSE,
+  reml = TRUE,
+  tol = 0.000000000001,
+  cores = 1,
+  quiet = TRUE
+)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
