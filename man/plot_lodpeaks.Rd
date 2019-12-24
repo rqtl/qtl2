@@ -19,7 +19,7 @@ and end positions).}
 \item{chr}{Selected chromosomes to plot; a vector of character
 strings.}
 
-\item{gap}{Gap between chromosomes. The default is 1\\% of the total genome length.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{intervals}{If TRUE and \code{peaks} contains QTL intervals, plot the intervals.}
 

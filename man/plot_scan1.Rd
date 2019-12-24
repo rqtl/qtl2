@@ -24,7 +24,7 @@ strings.}
 \item{add}{If TRUE, add to current plot (must have same map and
 chromosomes).}
 
-\item{gap}{Gap between chromosomes. The default is 1\\% of the total genome length.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{...}{Additional graphics parameters.}
 }

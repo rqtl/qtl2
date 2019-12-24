@@ -67,7 +67,7 @@ chromosomes).}
 
 \item{col}{Color of other points}
 
-\item{gap}{Gap between chromosomes. The default is 1\\% of the total genome length.}
+\item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
 \item{minlod}{Minimum LOD to display. (Mostly for GWAS, in which
 case using \code{minlod=1} will greatly increase the plotting speed,
