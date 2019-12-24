@@ -40,7 +40,7 @@
 count_xo <-
     function(geno, quiet=TRUE, cores=1)
 {
-    if("cross2" %in% class(geno))
+    if(is.cross2(geno))
         stop('Input geno is a "cross2" object but should be genotypes as from viterbi, maxmarg, or sim_geno')
 
     # set up cluster; set quiet=TRUE if multi-core
