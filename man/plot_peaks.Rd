@@ -4,8 +4,15 @@
 \alias{plot_peaks}
 \title{Plot QTL peak locations}
 \usage{
-plot_peaks(peaks, map, chr = NULL, tick_height = 0.3, gap = NULL,
-  lod_labels = FALSE, ...)
+plot_peaks(
+  peaks,
+  map,
+  chr = NULL,
+  tick_height = 0.3,
+  gap = NULL,
+  lod_labels = FALSE,
+  ...
+)
 }
 \arguments{
 \item{peaks}{Data frame such as that produced by

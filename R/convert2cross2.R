@@ -20,7 +20,7 @@ convert2cross2 <-
 function(cross)
 {
     if(is.null(cross)) stop("cross is NULL")
-    crosstype <- class(cross)[1]
+    crosstype <- rqtl1_crosstype(cross)
     check_crosstype(crosstype)
     result <- list(crosstype=crosstype)
     n.ind <- rqtl_nind(cross)
@@ -28,7 +28,7 @@ function(cross)
     # genetic map, and grab chrtype
     result$gmap <- rqtl_pull_map(cross)
     class(result$gmap) <- "list"
-    result$is_x_chr <- vapply(result$gmap, function(a) class(a)=="X", TRUE)
+    result$is_x_chr <- vapply(result$gmap, function(a) rqtl1_chrtype(a)=="X", TRUE)
     for(i in seq(along=result$gmap))
         class(result$gmap[[i]]) <- "numeric"
 
@@ -105,7 +105,7 @@ function(cross)
 rqtl_nind <-
     function(object)
 {
-    if(!any(class(object) == "cross"))
+    if(!inherits(object, "cross"))
         stop("Input should have class \"cross\".")
 
     n.ind1 <- nrow(object$pheno)
@@ -119,7 +119,7 @@ rqtl_nind <-
 rqtl_pull_map <-
     function(cross)
 {
-    if(!any(class(cross) == "cross"))
+    if(!inherits(cross, "cross"))
         stop("Input should have class \"cross\".")
 
     result <- lapply(cross$geno,function(a) {
@@ -169,7 +169,7 @@ rqtl_getid <-
 rqtl_getsex <-
     function(cross)
 {
-    type <- class(cross)[1]
+    type <- rqtl1_crosstype(cross)
     if(type != "bc" && type != "f2" && type != "4way") return(list(sex=NULL, pgm=NULL))
 
     phe.names <- names(cross$pheno)
@@ -553,3 +553,22 @@ rqtl_reviseXdata <-
     } # end of intercross
 
 }
+
+# R/qtl1 cross type
+rqtl1_crosstype <-
+    function(cross)
+    {
+        type <- class(cross)
+        type <- type[type != "cross" & type != "list"]
+        if(length(type) > 1) {
+            warning("cross has multiple classes")
+        }
+        type[1]
+    }
+
+rqtl1_chrtype <-
+    function(object)
+    {
+        if(inherits(object, "X")) return("X")
+        "A"
+    }

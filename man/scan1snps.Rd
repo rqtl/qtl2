@@ -4,11 +4,27 @@
 \alias{scan1snps}
 \title{Single-QTL genome scan at imputed SNPs}
 \usage{
-scan1snps(genoprobs, map, pheno, kinship = NULL, addcovar = NULL,
-  Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  model = c("normal", "binary"), query_func = NULL, chr = NULL,
-  start = NULL, end = NULL, snpinfo = NULL, batch_length = 20,
-  keep_all_snps = FALSE, cores = 1, ...)
+scan1snps(
+  genoprobs,
+  map,
+  pheno,
+  kinship = NULL,
+  addcovar = NULL,
+  Xcovar = NULL,
+  intcovar = NULL,
+  weights = NULL,
+  reml = TRUE,
+  model = c("normal", "binary"),
+  query_func = NULL,
+  chr = NULL,
+  start = NULL,
+  end = NULL,
+  snpinfo = NULL,
+  batch_length = 20,
+  keep_all_snps = FALSE,
+  cores = 1,
+  ...
+)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

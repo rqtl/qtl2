@@ -4,8 +4,7 @@
 \alias{plot_lodpeaks}
 \title{Plot LOD scores vs QTL peak locations}
 \usage{
-plot_lodpeaks(peaks, map, chr = NULL, gap = NULL, intervals = FALSE,
-  ...)
+plot_lodpeaks(peaks, map, chr = NULL, gap = NULL, intervals = FALSE, ...)
 }
 \arguments{
 \item{peaks}{Data frame such as that produced by

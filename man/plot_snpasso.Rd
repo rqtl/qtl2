@@ -4,10 +4,21 @@
 \alias{plot_snpasso}
 \title{Plot SNP associations}
 \usage{
-plot_snpasso(scan1output, snpinfo, genes = NULL, lodcolumn = 1,
-  show_all_snps = TRUE, chr = NULL, add = FALSE, drop_hilit = NA,
-  col_hilit = "violetred", col = "darkslateblue", gap = NULL,
-  minlod = 0, ...)
+plot_snpasso(
+  scan1output,
+  snpinfo,
+  genes = NULL,
+  lodcolumn = 1,
+  show_all_snps = TRUE,
+  chr = NULL,
+  add = FALSE,
+  drop_hilit = NA,
+  col_hilit = "violetred",
+  col = "darkslateblue",
+  gap = NULL,
+  minlod = 0,
+  ...
+)
 }
 \arguments{
 \item{scan1output}{Output of \code{\link[=scan1]{scan1()}} using

@@ -5,11 +5,17 @@
 \alias{n_typed}
 \title{Count missing genotypes}
 \usage{
-n_missing(cross, by = c("individual", "marker"), summary = c("count",
-  "proportion"))
+n_missing(
+  cross,
+  by = c("individual", "marker"),
+  summary = c("count", "proportion")
+)
 
-n_typed(cross, by = c("individual", "marker"), summary = c("count",
-  "proportion"))
+n_typed(
+  cross,
+  by = c("individual", "marker"),
+  summary = c("count", "proportion")
+)
 }
 \arguments{
 \item{cross}{An object of class \code{"cross2"}. For details, see the

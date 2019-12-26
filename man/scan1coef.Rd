@@ -4,10 +4,22 @@
 \alias{scan1coef}
 \title{Calculate QTL effects in scan along one chromosome}
 \usage{
-scan1coef(genoprobs, pheno, kinship = NULL, addcovar = NULL,
-  nullcovar = NULL, intcovar = NULL, weights = NULL,
-  contrasts = NULL, model = c("normal", "binary"), zerosum = TRUE,
-  se = FALSE, hsq = NULL, reml = TRUE, ...)
+scan1coef(
+  genoprobs,
+  pheno,
+  kinship = NULL,
+  addcovar = NULL,
+  nullcovar = NULL,
+  intcovar = NULL,
+  weights = NULL,
+  contrasts = NULL,
+  model = c("normal", "binary"),
+  zerosum = TRUE,
+  se = FALSE,
+  hsq = NULL,
+  reml = TRUE,
+  ...
+)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by

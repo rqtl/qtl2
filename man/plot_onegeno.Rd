@@ -4,9 +4,19 @@
 \alias{plot_onegeno}
 \title{Plot one individual's genome-wide genotypes}
 \usage{
-plot_onegeno(geno, map, ind = 1, chr = NULL, col = NULL,
-  na_col = "white", swap_axes = FALSE, border = "black",
-  shift = FALSE, chrwidth = 0.5, ...)
+plot_onegeno(
+  geno,
+  map,
+  ind = 1,
+  chr = NULL,
+  col = NULL,
+  na_col = "white",
+  swap_axes = FALSE,
+  border = "black",
+  shift = FALSE,
+  chrwidth = 0.5,
+  ...
+)
 }
 \arguments{
 \item{geno}{Imputed phase-known genotypes, as a list of matrices

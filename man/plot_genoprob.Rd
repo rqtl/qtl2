@@ -5,9 +5,18 @@
 \alias{plot.calc_genoprob}
 \title{Plot genotype probabilities for one individual on one chromosome.}
 \usage{
-plot_genoprob(probs, map, ind = 1, chr = NULL, geno = NULL,
-  color_scheme = c("gray", "viridis"), col = NULL, threshold = 0,
-  swap_axes = FALSE, ...)
+plot_genoprob(
+  probs,
+  map,
+  ind = 1,
+  chr = NULL,
+  geno = NULL,
+  color_scheme = c("gray", "viridis"),
+  col = NULL,
+  threshold = 0,
+  swap_axes = FALSE,
+  ...
+)
 
 \method{plot}{calc_genoprob}(x, ...)
 }

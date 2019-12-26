@@ -5,11 +5,9 @@
 \alias{plot.scan1}
 \title{Plot a genome scan}
 \usage{
-plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE,
-  gap = NULL, ...)
+plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = NULL, ...)
 
-\method{plot}{scan1}(x, map, lodcolumn = 1, chr = NULL, add = FALSE,
-  gap = NULL, ...)
+\method{plot}{scan1}(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = NULL, ...)
 }
 \arguments{
 \item{x}{Output of \code{\link[=scan1]{scan1()}}.}

@@ -4,9 +4,16 @@
 \alias{bayes_int}
 \title{Calculate Bayes credible intervals}
 \usage{
-bayes_int(scan1_output, map, chr = NULL, lodcolumn = 1,
-  threshold = 0, peakdrop = Inf, prob = 0.95,
-  expand2markers = TRUE)
+bayes_int(
+  scan1_output,
+  map,
+  chr = NULL,
+  lodcolumn = 1,
+  threshold = 0,
+  peakdrop = Inf,
+  prob = 0.95,
+  expand2markers = TRUE
+)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
@@ -56,7 +63,7 @@ positions as the location of the peak.
 
 The default is to use \code{threshold=0}, \code{peakdrop=Inf}, and
 \code{prob=0.95}. We then return results a single peak, no matter the
-maximum LOD score, and give a 95% Bayes credible interval.
+maximum LOD score, and give a 95\% Bayes credible interval.
 }
 \examples{
 # read data

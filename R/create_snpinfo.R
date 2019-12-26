@@ -45,7 +45,7 @@
 create_snpinfo <-
     function(cross)
 {
-    if(!("cross2" %in% class(cross))) {
+    if(!is.cross2(cross)) {
         stop("Input should be a cross2 object")
     }
 

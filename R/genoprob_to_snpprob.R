@@ -90,7 +90,7 @@ genoprob_to_snpprob <-
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(snpinfo)) stop("snpinfo is NULL")
-    if("cross2" %in% class(snpinfo)) { # genoprobs -> snpprobs for all markers in a cross
+    if(inherits(snpinfo, "cross2")) { # genoprobs -> snpprobs for all markers in a cross
         return(snpprob_from_cross(genoprobs, snpinfo))
     }
 

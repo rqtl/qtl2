@@ -60,7 +60,7 @@ subset.calc_genoprob <-
     }
 
     if(!is.null(ind)) {
-        if("calc_genoprob" %in% class(x))
+        if(inherits(x, "calc_genoprob"))
             all_ind <- dimnames(x)[[1]]
         else all_ind <- rownames(x[[1]])
 

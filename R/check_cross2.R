@@ -8,7 +8,7 @@ function(crosstype, give_error=TRUE)
 {
     z <- try(.crosstype_supported(crosstype), silent=TRUE)
 
-    if("try-error" %in% class(z) || !z) {
+    if(inherits(z, "try-error") || !z) {
         if(give_error)
             stop("Cross type ", crosstype, " not yet supported.")
         return(invisible(FALSE))

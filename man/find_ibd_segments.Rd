@@ -4,8 +4,7 @@
 \alias{find_ibd_segments}
 \title{Find IBD segments for a set of strains}
 \usage{
-find_ibd_segments(geno, map, min_lod = 15, error_prob = 0.001,
-  cores = 1)
+find_ibd_segments(geno, map, min_lod = 15, error_prob = 0.001, cores = 1)
 }
 \arguments{
 \item{geno}{List of matrices of founder genotypes. The matrices

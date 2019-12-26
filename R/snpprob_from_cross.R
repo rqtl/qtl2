@@ -41,13 +41,13 @@ snpprob_from_cross <-
         }
         map[[i]] <- map[[i]][mar]
 
-        if("fst_genoprob" %in% class(genoprobs)) {
+        if(inherits(genoprobs, "fst_genoprob")) {
             mar2keep <- c(mar2keep, mar)
         } else {
             genoprobs[[i]] <- genoprobs[[i]][,,mar,drop=FALSE]
         }
     }
-    if("fst_genoprob" %in% class(genoprobs)) {
+    if(inherits(genoprobs, "fst_genoprob")) {
         genoprobs <- subset(genoprobs, mar=mar2keep)
     }
 

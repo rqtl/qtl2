@@ -411,4 +411,4 @@ function(x)
 # look for "cross2" within class()
 is.cross2 <-
     function(x)
-    "cross2" %in% class(x)
+    inherits(x, "cross2")

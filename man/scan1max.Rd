@@ -4,10 +4,21 @@
 \alias{scan1max}
 \title{Maximum LOD score from genome scan with a single-QTL model}
 \usage{
-scan1max(genoprobs, pheno, kinship = NULL, addcovar = NULL,
-  Xcovar = NULL, intcovar = NULL, weights = NULL, reml = TRUE,
-  model = c("normal", "binary"), hsq = NULL, by_chr = FALSE,
-  cores = 1, ...)
+scan1max(
+  genoprobs,
+  pheno,
+  kinship = NULL,
+  addcovar = NULL,
+  Xcovar = NULL,
+  intcovar = NULL,
+  weights = NULL,
+  reml = TRUE,
+  model = c("normal", "binary"),
+  hsq = NULL,
+  by_chr = FALSE,
+  cores = 1,
+  ...
+)
 }
 \arguments{
 \item{genoprobs}{Genotype probabilities as calculated by
@@ -42,7 +53,7 @@ this is taken as the assumed value for the residual
 heritability. It should be a vector with length corresponding
 to the number of columns in \code{pheno}, or (if \code{kinship}
 corresponds to a list of LOCO kinship matrices) a matrix with dimension
-\code{length(kinship) x ncol(pheno)}.}
+\verb{length(kinship) x ncol(pheno)}.}
 
 \item{by_chr}{If TRUE, save the individual chromosome maxima.}
 
