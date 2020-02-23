@@ -13,7 +13,7 @@ qtl2plot, and qtl2db, but that proved awkward and confusing and so the
 packages have been combined. But also see the related package,
 [qtl2convert](https://github.com/rqtl/qtl2convert), for converting
 data among the R/qtl2,
-[DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
+[DOQTL](https://www.bioconductor.org/packages/3.9/bioc/html/DOQTL.html),
 and [R/qtl](https://rqtl.org) formats.
 [qtl2convert](https://github.com/rqtl/qtl2convert) will remain a
 separate package.
@@ -86,4 +86,4 @@ To cite R/qtl2 in publications, use:
 
 ### License
 
-[Licensed](LICENSE) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
+[Licensed](LICENSE.md) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
