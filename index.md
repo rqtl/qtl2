@@ -23,6 +23,12 @@ for the discussion/questions about the original R/qtl only.)
 
 ---
 
+### Current version
+
+The latest release of R/qtl2 is [**0.22** (2020-05-21)](https://github.com/rqtl/qtl2/releases/tag/0.22).
+
+---
+
 ### Installation
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
