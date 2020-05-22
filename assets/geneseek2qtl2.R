@@ -5,6 +5,10 @@
 # - also creates 2 files containing the two channels of SNP intensities for markers on the X and Y chr
 #   (these are useful for verifying the sex of the mice)
 
+# load required packages
+library(data.table)
+library(qtl2convert)
+
 # file containing allele codes for GigaMUGA data
 #   - from GM_processed_files.zip, https://doi.org/10.6084/m9.figshare.5404759
 codefile <- "GM/GM_allelecodes.csv"
@@ -21,33 +25,8 @@ ifiles <- c("batch1_FinalReport.txt",
 # output files will be like "gm4qtl2_geno19.csv"
 ostem <- "gm4qtl2"
 
-##############################
-# define a couple of functions
-##############################
 # version of data.table::fread() where data.table=FALSE is the default
 myfread <- function(filename, data.table=FALSE, ...) data.table::fread(filename, data.table=data.table, ...)
-
-# cbind, replacing matching columns with second set and adding unique ones
-cbind_smother <-
-  function(mat1, mat2)
-  {
-      cn1 <- colnames(mat1)
-      cn2 <- colnames(mat2)
-      m <- (cn2 %in% cn1)
-      if(any(m)) {
-          mat1[,cn2[m]] <- mat2[,cn2[m],drop=FALSE]
-          if(any(!m)) {
-              mat1 <- cbind(mat1, mat2[,cn2[!m],drop=FALSE])
-          }
-      }
-      else {
-          mat1 <- cbind(mat1, mat2)
-      }
-
-      mat1
-  }
-##############################
-
 
 
 # read genotype codes
@@ -92,7 +71,7 @@ for(ifile in ifiles) {
         full_geno <- geno
     } else {
         # if any columns in both, use those from second set
-        full_geno <- cbind_smother(full_geno, geno)
+        full_geno <- qtl2convert::cbind_smother(full_geno, geno)
     }
 
     # grab X and Y intensities
@@ -118,8 +97,8 @@ for(ifile in ifiles) {
         cYint <- cY
     } else {
         # if any columns in both, use those from second set
-        cXint <- cbind_smother(cXint, cX)
-        cYint <- cbind_smother(cYint, cY)
+        cXint <- qtl2convert::cbind_smother(cXint, cX)
+        cYint <- qtl2convert::cbind_smother(cYint, cY)
     }
 
     if(rezip) {
