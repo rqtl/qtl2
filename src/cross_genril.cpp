@@ -103,8 +103,8 @@ const bool GENRIL::check_crossinfo(const IntegerMatrix& cross_info, const bool a
     bool result = true;
     const int n_row = cross_info.rows();
     const int n_col = cross_info.cols();
-    // single column with the number of generations
 
+    // number of generations of outbreeding followed by rel frequency of each founder, as integers
     if(n_col != 1 + this->n_founders) {
         result = false;
         r_message("cross_info should have (1 + n_founders) columns: no. generations + rel freq of founders, as integers");
