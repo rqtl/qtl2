@@ -122,6 +122,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `scan1blup` - like `scan1coef`, but calculating treating QTL
   effects as random and calculating BLUPs
 - `scan1snps` - single-QTL scan over SNPs in a multi-parent population
+- `scan1max` - genome-wide maximum LOD score from genome scan
 
 
 ### QTL summaries
@@ -175,6 +176,13 @@ description: Annotated/categorized list of functions in R/qtl2
   different orders between the maps.
 - `find_map_gaps` - find large gaps between markers in a genetic map
 - `reduce_map_gaps` - reduce the lengths of gaps in a genetic map
+- `calc_raw_het` - Calculate heterozygosity in the raw SNP genotypes
+- `calc_raw_maf` - Calculate the minor allele frequency in the raw SNP
+  genotypes
+- `calc_raw_geno_freq` - Calculate the genotype frequencies in the raw
+  SNP data
+- `calc_raw_founder_maf` - Calculate the minor allele frequency in the
+  founder strains' SNP genotypes
 
 
 ### Data summaries
@@ -217,6 +225,8 @@ description: Annotated/categorized list of functions in R/qtl2
 - `find_markerpos` - find the position of a marker
 - `n_missing` - number of missing genotypes, by individual or marker
 - `n_typed` - number of genotypes, by individual or marker
+- `founders` - names of the founder strains
+- `n_founders` - number of founder strains
 
 
 ### QTL plots
@@ -249,6 +259,9 @@ description: Annotated/categorized list of functions in R/qtl2
 - `plot_genoprobcomp` - plot a comparison of two sets of genotype
   probabilities for one individual on one chromosome, as a bivariate
   heat map
+- `plot_compare_geno` - Plot histogram of the results of
+  `compare_geno()`
+- `plot.compare_geno` - Same as `plot_compare_geno()`
 
 
 ### SNP/gene databases
@@ -269,6 +282,8 @@ description: Annotated/categorized list of functions in R/qtl2
 - `find_index_snp` - For a particular SNP, find the corresponding
   indexed SNP.
 - `create_snpinfo` - Create a table of SNP information from a cross2 object.
+- `sdp2char` - convert strain distribution pattern numeric codes to
+  more meaningful character strings
 
 
 
@@ -299,6 +314,8 @@ description: Annotated/categorized list of functions in R/qtl2
   small values to 0)
 - `clean_genoprob` - same as `clean.calc_genoprob`
 - `qtl2version` - print the installed version of [R/qtl2](https://kbroman.org/qtl2)
+- `recode_snps` - Recode the SNP genotypes so that `1` is for the
+  major allele in the founders
 
 
 
@@ -309,22 +326,6 @@ description: Annotated/categorized list of functions in R/qtl2
 - `print.summary.compare_geno` - print method for the output of `summary.compare_geno`
 - `print.summary.scan1perm` - print method for the output of `summary.scan1perm`
 
-### Newly added functions (in development version)
 
-- `plot_compare_geno` - Plot histogram of the results of
-  `compare_geno()` (_diagnostic plots_)
-- `plot.compare_geno` - Same as `plot_compare_geno()` (_diagnostic plots_)
-- `recode_snps` - Recode the SNP genotypes so that `1` is for the
-  major allele in the founders (_utilities_)
-- `calc_raw_het` - Calculate heterozygosity in the raw SNP genotypes (_diagnostics_)
-- `calc_raw_maf` - Calculate the minor allele frequency in the raw SNP
-  genotypes (_diagnostics_)
-- `calc_raw_geno_freq` - Calculate the genotype frequencies in the raw
-  SNP data (_diagnostics_)
-- `calc_raw_founder_maf` - Calculate the minor allele frequency in the
-  founder strains' SNP genotypes (_diagnostics_)
-- `founders` - names of the founder strains (_data summaries_)
-- `n_founders` - number of founder strains (_data summaries_)
-- `scan1max` - genome-wide maximum LOD score from genome scan (_QTL analysis_)
-- `sdp2char` - convert strain distribution pattern numeric codes to
-  more meaningful character strings (_SNP/gene databases_)
+
+### Newly added functions (in development version)
