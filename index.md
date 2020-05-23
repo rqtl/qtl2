@@ -105,6 +105,8 @@ To cite R/qtl2 in publications, use:
 
 Sources on [github](https://github.com):
 
-- The [source for the qtl2](https://github.com/rqtl/qtl2)
-- The [source for the qtl2convert](https://github.com/rqtl/qtl2convert)
-- The [source for the website](https://github.com/kbroman/qtl2/tree/gh-pages)
+- The [source for R/qtl2](https://github.com/rqtl/qtl2)
+- The source for
+  [R/qtl2convert](https://github.com/rqtl/qtl2convert) and
+  [R/qtl2fst](https://github.com/rqtl/qtl2fst)
+- The [source for this website](https://github.com/kbroman/qtl2/tree/gh-pages)
