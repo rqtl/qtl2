@@ -85,4 +85,4 @@ To cite R/qtl2 in publications, use:
 
 ### License
 
-[Licensed](LICENSE.md) under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
+Licensed under [GPL-3](https://www.r-project.org/Licenses/GPL-3).
