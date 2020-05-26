@@ -9,9 +9,7 @@
 R/qtl2 provides a set of tools to perform quantitative
     trait locus (QTL) analysis in experimental crosses. It is a
     reimplementation of the R/qtl package to better handle
-    high-dimensional data and complex cross designs. This package is
-    designed to make it easy to install and load multiple R/qtl2
-    packages in a single step.
+    high-dimensional data and complex cross designs.
     Broman et al. (2018) <doi:10.1534/genetics.118.301595>.
 }
 \section{Vignettes}{
