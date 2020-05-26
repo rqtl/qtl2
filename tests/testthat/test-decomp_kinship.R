@@ -4,7 +4,7 @@ test_that("eigen decomposition works", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
-    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    probs <- calc_genoprob(iron[,c(1,3,5)], map, error_prob=0.002) # <- use just 3 chromosomes, for speed
 
     K <- calc_kinship(probs)
     Ke <- decomp_kinship(K)
@@ -77,7 +77,7 @@ test_that("eigen decomposition works with scan1", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
-    probs <- calc_genoprob(iron, map, error_prob=0.002)
+    probs <- calc_genoprob(iron[,c(1,3,5)], map, error_prob=0.002) # <- use just 3 chromosomes, for speed
 
     K <- calc_kinship(probs)
     Ke <- decomp_kinship(K)

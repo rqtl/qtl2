@@ -105,6 +105,8 @@ test_that("fit1 by H-K works in intercross", {
 
 test_that("fit1 by H-K works in intercross, with weights", {
 
+    if(isnt_karl()) skip("This test only run locally")
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,c(18:19,"X")]
     map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -258,6 +260,8 @@ test_that("fit1 by H-K works in riself", {
 
 test_that("fit1 by LMM works in intercross", {
 
+    if(isnt_karl()) skip("This test only run locally")
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
@@ -338,6 +342,8 @@ test_that("fit1 by LMM works in intercross", {
 
 
 test_that("fit1 by LMM works in intercross, with weights", {
+
+    if(isnt_karl()) skip("This test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -511,6 +517,8 @@ test_that("fit1 handles contrasts properly in an intercross", {
 })
 
 test_that("fit1 works with blup=TRUE", {
+
+    if(isnt_karl()) skip("This test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)

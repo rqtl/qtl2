@@ -132,6 +132,8 @@ test_that("scan1 permutations work (regression test)", {
 
 test_that("scan1 permutations work with single kinship matrix (regression test)", {
 
+    if(isnt_karl()) skip("This test only run locally")
+
     seed <- 3025685
     RNGkind("L'Ecuyer-CMRG")
 
@@ -246,6 +248,8 @@ test_that("scan1 permutations work with single kinship matrix (regression test)"
 
 
 test_that("scan1 permutations work with LOCO kinship matrix (regression test)", {
+
+    if(isnt_karl()) skip("This test only run locally")
 
     seed <- 3025685
     RNGkind("L'Ecuyer-CMRG")

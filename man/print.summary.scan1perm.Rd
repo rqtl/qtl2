@@ -26,7 +26,7 @@ not called directly, but it can be in order to control the
 number of digits that appear.
 }
 \examples{
-\donttest{
+\dontrun{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
