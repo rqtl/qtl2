@@ -22,11 +22,9 @@ separate package.
 
 ### Installation
 
-R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
-Make sure you have the latest version of [R](https://cran.r-project.org).
+Install R/qtl2 from [CRAN](https://cran.r-project.org):
 
-    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
+    install.packages("qtl2")
 
 _Alternatively_, you can install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
