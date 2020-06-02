@@ -7,10 +7,20 @@ Description: 'R/qtl2' provides a set of tools to perform quantitative
     reimplementation of the 'R/qtl' package to better handle
     high-dimensional data and complex cross designs.
     Broman et al. (2018) <doi:10.1534/genetics.118.301595>.
-Author: Karl W Broman [aut, cre] (<https://orcid.org/0000-0002-4914-6671>)
+Author: Karl W Broman [aut, cre] (<https://orcid.org/0000-0002-4914-6671>),
+        Robert Gentleman [ctb], Ross Ihaka [ctb],
+        The R Foundation [ctb], The R Core Team [ctb]
 Maintainer: Karl W Broman <broman@wisc.edu>
 Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
-             email="broman@wisc.edu", comment=c(ORCID = "0000-0002-4914-6671")))
+             email="broman@wisc.edu", comment=c(ORCID = "0000-0002-4914-6671")),
+             person("Robert", "Gentleman", role="ctb"),
+             person("Ross", "Ihaka", role="ctb"),
+             person("The R Foundation", role="ctb"),
+             person("The R Core Team", role="ctb"))
+Copyright: Code for Brent's method for univariate function optimation
+    was taken from R 3.2.2 (Copyright (c) 1995, 1996 Robert Gentleman
+    and Ross Ihaka, Copyright (C) 2003-2004 The R Foundation,
+    Copyright (C) 1998-2014 The R Core Team).
 Depends:
     R (>= 3.1.0)
 Imports:
