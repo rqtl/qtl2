@@ -11,7 +11,7 @@
 \code{\link[=viterbi]{viterbi()}}. Must have the same set of individuals.}
 }
 \value{
-A single imputed genotype object.
+An object of class \code{"viterbi"}, like the input; see \code{\link[=viterbi]{viterbi()}}.
 }
 \description{
 Join multiple viterbi objects, as produced by \code{\link[=viterbi]{viterbi()}}, for the

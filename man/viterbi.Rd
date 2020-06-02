@@ -40,8 +40,9 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-A list of two-dimensional arrays of imputed genotypes,
-individuals x positions. Also contains three attributes:
+An object of class \code{"viterbi"}: a list of two-dimensional
+arrays of imputed genotypes, individuals x positions.
+Also contains three attributes:
 \itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.
 \item \code{is_x_chr} - Logical vector indicating whether chromosomes

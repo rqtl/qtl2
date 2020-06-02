@@ -21,8 +21,8 @@ string IDs. Numbers are interpreted as character string IDs.}
 \item{...}{Ignored.}
 }
 \value{
-The input viterbi object, with the selected
-individuals and/or chromsomes.
+An object of class \code{"viterbi"}, like the input, with the
+selected individuals and/or chromosomes; see \code{\link[=viterbi]{viterbi()}}.
 }
 \description{
 Pull out a specified set of individuals and/or chromosomes from
