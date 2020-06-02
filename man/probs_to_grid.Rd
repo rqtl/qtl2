@@ -14,8 +14,8 @@ probs_to_grid(probs, grid)
 are on the grid and should be retained.}
 }
 \value{
-Same list as input, but subset to just include
-pseudomarkers along a grid. The map attribute is similarly subset.
+An object of class \code{"calc_genoprob"}, like the input, subset to just include
+pseudomarkers along a grid. See \code{\link[=calc_genoprob]{calc_genoprob()}}.
 }
 \description{
 Subset genotype probability array (from \code{\link[=calc_genoprob]{calc_genoprob()}}

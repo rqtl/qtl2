@@ -18,8 +18,8 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-The \code{probs} input with probabilities
-collapsed to alleles rather than genotypes.
+An object of class \code{"calc_genoprob"}, like the input \code{probs},
+but with probabilities collapsed to alleles rather than genotypes. See \code{\link[=calc_genoprob]{calc_genoprob()}}.
 }
 \description{
 Reduce genotype probabilities (as calculated by

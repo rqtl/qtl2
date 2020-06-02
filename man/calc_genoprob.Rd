@@ -40,7 +40,7 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-A list of three-dimensional arrays of probabilities,
+An object of class \code{"calc_genoprob"}: a list of three-dimensional arrays of probabilities,
 individuals x genotypes x positions. (Note that the arrangement is
 different from R/qtl.) Also contains four attributes:
 \itemize{

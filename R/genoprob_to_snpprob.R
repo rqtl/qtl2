@@ -30,9 +30,9 @@
 #' calculated and then used. But, in this case, the genotype
 #' probabilities must be at the markers in the cross.
 #'
-#' @return An object like the `genoprobs` input, but with imputed
-#' genotype probabilities at the selected SNPs indicated in
-#' `snpinfo$index`.
+#' @return An object of class `"calc_genoprob"`, like the input `genoprobs`,
+#' but with imputed genotype probabilities at the selected SNPs indicated in
+#' `snpinfo$index`. See [calc_genoprob()].
 #'
 #' If the input `genoprobs` is for allele probabilities, the
 #' `probs` output has just two probability columns (for the two SNP

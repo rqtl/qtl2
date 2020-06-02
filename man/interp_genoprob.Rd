@@ -18,8 +18,8 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-An object like the input \code{probs} but with additional
-positions present in \code{map}.
+An object of class \code{"calc_genoprob"}, like the input,
+but with additional positions present in \code{map}. See \code{\link[=calc_genoprob]{calc_genoprob()}}.
 }
 \description{
 Linear interpolation of genotype probabilities, mostly to get two sets onto the same map for comparison purposes.

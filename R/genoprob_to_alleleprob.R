@@ -12,8 +12,8 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
-#' @return The `probs` input with probabilities
-#' collapsed to alleles rather than genotypes.
+#' @return An object of class `"calc_genoprob"`, like the input `probs`,
+#' but with probabilities collapsed to alleles rather than genotypes. See [calc_genoprob()].
 #'
 #' @export
 #' @keywords utilities

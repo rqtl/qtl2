@@ -10,8 +10,8 @@
 #' @param grid List of logical vectors that indicate which positions
 #' are on the grid and should be retained.
 #'
-#' @return Same list as input, but subset to just include
-#' pseudomarkers along a grid. The map attribute is similarly subset.
+#' @return An object of class `"calc_genoprob"`, like the input, subset to just include
+#' pseudomarkers along a grid. See [calc_genoprob()].
 #'
 #' @details This only works if [calc_genoprob()] was run
 #' with `stepwidth="fixed"`, so that the genotype

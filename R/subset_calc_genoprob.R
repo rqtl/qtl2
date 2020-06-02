@@ -12,8 +12,8 @@
 #' string IDs. Numbers are interpreted as character string IDs.
 #' @param ... Ignored.
 #'
-#' @return The input genotype probabilities, with the selected
-#' individuals and/or chromsomes.
+#' @return An object of class `"calc_genoprob"`, like the input, with the selected
+#' individuals and/or chromsomes; see [calc_genoprob()].
 #'
 #' @export
 #' @keywords utilities

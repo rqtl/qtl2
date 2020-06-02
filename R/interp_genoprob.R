@@ -11,8 +11,8 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
-#' @return An object like the input `probs` but with additional
-#' positions present in `map`.
+#' @return An object of class `"calc_genoprob"`, like the input,
+#' but with additional positions present in `map`. See [calc_genoprob()].
 #'
 #' @details We reduce `probs` to the positions present in `map` and then
 #' interpolate the genotype probabilities at additional positions

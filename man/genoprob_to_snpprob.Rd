@@ -36,9 +36,9 @@ probabilities must be at the markers in the cross.
 }}
 }
 \value{
-An object like the \code{genoprobs} input, but with imputed
-genotype probabilities at the selected SNPs indicated in
-\code{snpinfo$index}.
+An object of class \code{"calc_genoprob"}, like the input \code{genoprobs},
+but with imputed genotype probabilities at the selected SNPs indicated in
+\code{snpinfo$index}. See \code{\link[=calc_genoprob]{calc_genoprob()}}.
 
 If the input \code{genoprobs} is for allele probabilities, the
 \code{probs} output has just two probability columns (for the two SNP
