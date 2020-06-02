@@ -252,15 +252,15 @@ test_that("calc_kinship chr & loco work when multi-core", {
     probs_sub <- probs_to_grid(probs, grid)
 
     sim_chr <- calc_kinship(probs_sub, "chr")
-    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=4)
+    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=2)
     expect_equal(sim_chr_mc, sim_chr)
 
     sim_loco <- calc_kinship(probs_sub, "loco")
-    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=4)
+    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=2)
     expect_equal(sim_loco_mc, sim_loco)
 
     sim_loco <- calc_kinship(probs_sub, "loco", omit_x=FALSE)
-    sim_loco_mc <- calc_kinship(probs_sub, "loco", omit_x=FALSE, cores=4)
+    sim_loco_mc <- calc_kinship(probs_sub, "loco", omit_x=FALSE, cores=2)
     expect_equal(sim_loco_mc, sim_loco)
 
 
@@ -272,11 +272,11 @@ test_that("calc_kinship chr & loco work when multi-core", {
     probs_sub <- probs_to_grid(probs, grid)
 
     sim_chr <- calc_kinship(probs_sub, "chr")
-    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=4)
+    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=2)
     expect_equal(sim_chr_mc, sim_chr)
 
     sim_loco <- calc_kinship(probs_sub, "loco")
-    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=4)
+    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=2)
     expect_equal(sim_loco_mc, sim_loco)
 
 })

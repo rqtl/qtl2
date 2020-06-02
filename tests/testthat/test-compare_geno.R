@@ -79,7 +79,7 @@ test_that("compare_geno works when multi-core", {
     iron <- iron[1:5, c(18:19,"X")]
 
     cg <- compare_geno(iron)
-    cg_mc <- compare_geno(iron, cores=3)
+    cg_mc <- compare_geno(iron, cores=2)
     expect_equal(cg, cg_mc)
 
 })

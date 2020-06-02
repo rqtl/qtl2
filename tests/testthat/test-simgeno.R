@@ -102,17 +102,17 @@ test_that("sim_geno works when multi-core", {
 
     RNGkind("L'Ecuyer-CMRG")
     set.seed(20151209)
-    dr <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=4)
+    dr <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=2)
     set.seed(20151209)
-    dr_mc <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=4)
+    dr_mc <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=2)
     expect_equal(dr_mc, dr)
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
     set.seed(20151209)
-    dr <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=4)
+    dr <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=2)
     set.seed(20151209)
-    dr_mc <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=4)
+    dr_mc <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=2)
     expect_equal(dr_mc, dr)
 
     # re-set RNGkind

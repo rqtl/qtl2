@@ -241,24 +241,24 @@ test_that("calc_genoprob works when multi-core", {
     data(hyper)
     hyper2 <- convert2cross2(hyper)
     pr <- calc_genoprob(hyper2, error_prob=0.002, lowmem=TRUE)
-    pr_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=4, lowmem=TRUE)
+    pr_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=2, lowmem=TRUE)
     expect_equal(pr_mc, pr)
 
     pr2 <- calc_genoprob(hyper2, error_prob=0.002, lowmem=FALSE)
     expect_equal(pr2, pr)
-    pr2_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=4, lowmem=FALSE)
+    pr2_mc <- calc_genoprob(hyper2, error_prob=0.002, cores=2, lowmem=FALSE)
     expect_equal(pr2_mc, pr)
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
     map <- insert_pseudomarkers(listeria2$gmap, step=1, stepwidth="max")
     pr <- calc_genoprob(listeria2, map, error_prob=0.01, lowmem=TRUE)
-    pr_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=4, lowmem=TRUE)
+    pr_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=2, lowmem=TRUE)
     expect_equal(pr_mc, pr)
 
     pr2 <- calc_genoprob(listeria2, map, error_prob=0.01, lowmem=FALSE)
     expect_equal(pr2, pr)
-    pr2_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=4, lowmem=FALSE)
+    pr2_mc <- calc_genoprob(listeria2, map, error_prob=0.01, cores=2, lowmem=FALSE)
     expect_equal(pr2_mc, pr)
 
 })

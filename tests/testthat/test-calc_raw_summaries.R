@@ -54,8 +54,8 @@ test_that("calculation of raw summaries work", {
     expect_equal(gf_mar, cbind(AA=colMeans(g==1, na.rm=TRUE), AB=colMeans(g==2, na.rm=TRUE), BB=colMeans(g==3, na.rm=TRUE)))
 
     # multi-core
-    gf_ind_2 <- calc_raw_geno_freq(DOex, cores=8)
-    gf_mar_2 <- calc_raw_geno_freq(DOex, "marker", cores=8)
+    gf_ind_2 <- calc_raw_geno_freq(DOex, cores=2)
+    gf_mar_2 <- calc_raw_geno_freq(DOex, "marker", cores=2)
     expect_equal(gf_ind_2, gf_ind)
     expect_equal(gf_mar_2, gf_mar)
 

@@ -12,7 +12,7 @@ test_that("top_snps() works", {
     DOex <- DOex[,"2"]
 
     # calculate genotype probabilities and convert to allele probabilities
-    pr <- calc_genoprob(DOex, error_prob=0.002, cores=0) # multi-core
+    pr <- calc_genoprob(DOex, error_prob=0.002, cores=2) # multi-core
     apr <- genoprob_to_alleleprob(pr)
 
     # download snp info from web

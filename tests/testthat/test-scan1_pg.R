@@ -500,14 +500,14 @@ test_that("scan1 with kinship works with multicore", {
     out_reml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
                       Xcovar=Xc, reml=TRUE, tol=1e-12)
     out_reml_4core <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                            Xcovar=Xc, reml=TRUE, tol=1e-12, cores=4)
+                            Xcovar=Xc, reml=TRUE, tol=1e-12, cores=2)
     expect_equal(out_reml, out_reml_4core)
 
 
     out_ml <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
                     Xcovar=Xc, reml=FALSE, tol=1e-12)
     out_ml_4core <- scan1(probs, iron$pheno, kinship, addcovar=X, intcovar=X,
-                          Xcovar=Xc, reml=FALSE, tol=1e-12, cores=4)
+                          Xcovar=Xc, reml=FALSE, tol=1e-12, cores=2)
     expect_equal(out_ml, out_ml_4core)
 
 })

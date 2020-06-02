@@ -186,13 +186,13 @@ test_that("est_map works when multi-core", {
     data(hyper)
     hyper2 <- convert2cross2(hyper)
     newmap2 <- est_map(hyper2, err=0.002, tol=1e-8)
-    newmap2_mc <- est_map(hyper2, err=0.002, tol=1e-8, cores=4)
+    newmap2_mc <- est_map(hyper2, err=0.002, tol=1e-8, cores=2)
     expect_equal(newmap2_mc, newmap2)
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
     newmap2 <- est_map(listeria2, err=0.01, tol=1e-8)
-    newmap2_mc <- est_map(listeria2, err=0.01, tol=1e-8, cores=4)
+    newmap2_mc <- est_map(listeria2, err=0.01, tol=1e-8, cores=2)
     expect_equal(newmap2_mc, newmap2)
 
 })

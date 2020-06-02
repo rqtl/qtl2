@@ -485,9 +485,7 @@ test_that("multi-core scan1 works", {
 
     # scan
     out <- scan1(pr, y)
-    out_multicore <- scan1(pr, y, cores=4)
-    expect_equal(out_multicore, out)
-    out_multicore <- scan1(pr, y, cores=0) # maximum cores
+    out_multicore <- scan1(pr, y, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
@@ -496,7 +494,7 @@ test_that("multi-core scan1 works", {
     names(w) <- rownames(y)
 
     out <- scan1(pr, y, weights=w)
-    out_multicore <- scan1(pr, y, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
@@ -505,33 +503,33 @@ test_that("multi-core scan1 works", {
     names(x) <- rownames(y)
 
     out <- scan1(pr, y, addcovar=x)
-    out_multicore <- scan1(pr, y, addcovar=x, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
     # additive covariate + weights
     out <- scan1(pr, y, addcovar=x, weights=w)
-    out_multicore <- scan1(pr, y, addcovar=x, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
     # interactive covariate
     out <- scan1(pr, y, addcovar=x, intcovar=x)
-    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, cores=2)
     expect_equal(out_multicore, out)
 
     # auto add intcovar?
-    out_multicore <- scan1(pr, y, intcovar=x, cores=4)
+    out_multicore <- scan1(pr, y, intcovar=x, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
     # interactive covariate + weights
     out <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
-    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
     # auto add intcovar?
-    out_multicore <- scan1(pr, y, intcovar=x, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, intcovar=x, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
 })

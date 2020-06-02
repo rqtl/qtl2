@@ -50,14 +50,14 @@ test_that("multi-core eigen decomposition works", {
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
 
-    K <- calc_kinship(probs, "loco", cores=4)
+    K <- calc_kinship(probs, "loco", cores=2)
     Ke <- decomp_kinship(K)
-    Ke_multicore <- decomp_kinship(K, cores=4)
+    Ke_multicore <- decomp_kinship(K, cores=2)
     expect_equal(Ke_multicore, Ke)
 
-    K <- calc_kinship(probs, "chr", cores=4)
+    K <- calc_kinship(probs, "chr", cores=2)
     Ke <- decomp_kinship(K)
-    Ke_multicore <- decomp_kinship(K, cores=4)
+    Ke_multicore <- decomp_kinship(K, cores=2)
     expect_equal(Ke_multicore, Ke)
 
 })
