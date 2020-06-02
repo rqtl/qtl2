@@ -49,6 +49,10 @@ of length > 0, it is taken to be the actual jitter amounts
 
 \item{...}{Additional graphics parameters, passed to \code{\link[graphics:plot]{graphics::plot()}}.}
 }
+\value{
+(Invisibly) A matrix with rows being the genotype groups
+and columns for the means and (if \code{SEmult} is specified) the SEs.
+}
 \description{
 Plot phenotype vs genotype for a single putative QTL and a single phenotype.
 }

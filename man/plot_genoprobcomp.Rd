@@ -42,6 +42,9 @@ on the x-axis and the chromosome position is on the y-axis.}
 
 \item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
 }
+\value{
+None.
+}
 \description{
 Plot a comparison of two sets of genotype probabilities for one individual on one chromosome, as a heat map.
 }

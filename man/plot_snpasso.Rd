@@ -75,6 +75,9 @@ since the vast majority of points would be omittted.}
 
 \item{...}{Additional graphics parameters.}
 }
+\value{
+None.
+}
 \description{
 Plot SNP associations, with possible expansion from distinct snps to all snps.
 }

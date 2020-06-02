@@ -29,6 +29,8 @@
 #'
 #' @param ... Additional graphics parameters.
 #'
+#' @return None.
+#'
 #' @export
 #' @importFrom graphics layout par
 #'

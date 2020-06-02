@@ -44,6 +44,9 @@ fraction of the distance between them.}
 
 \item{...}{Additional graphics parameters}
 }
+\value{
+None.
+}
 \description{
 Plot one individual's genome-wide genotypes
 }

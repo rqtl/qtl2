@@ -11,6 +11,8 @@
 #' @param gap Gap between chromosomes in the plot. Default is 1% of the total genome length.
 #' @param ... Additional arguments passed to [graphics::segments()]
 #'
+#' @return None.
+#'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' \dontshow{iron <- iron[,c(2,16,"X")]}

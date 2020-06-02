@@ -17,6 +17,8 @@
 #' on the x-axis and the chromosome position is on the y-axis.
 #' @param ... Additional graphics parameters passed to [graphics::image()].
 #'
+#' @return None.
+#'
 #' @details
 #' We plot the first set of probabilities in the range white to blue
 #' and the second set in the range white to red and attempt to combine

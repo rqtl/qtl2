@@ -54,6 +54,8 @@
 #'
 #' @param ... Additional graphics parameters.
 #'
+#' @return None.
+#'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For
 #' example, `bgcolor` to control the background color,`altbgcolor`

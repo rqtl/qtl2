@@ -77,6 +77,9 @@ phenocovar_names(cross2)
 \item{cross2}{An object of class \code{"cross2"}. For details, see the
 \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 }
+\value{
+Variously a number, vector of numbers, or vector of character strings.
+}
 \description{
 Basic summaries of a cross2 object.
 }

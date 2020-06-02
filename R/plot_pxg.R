@@ -22,6 +22,9 @@
 #' @param omit_points If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).
 #' @param ... Additional graphics parameters, passed to [graphics::plot()].
 #'
+#' @return (Invisibly) A matrix with rows being the genotype groups
+#' and columns for the means and (if `SEmult` is specified) the SEs.
+#'
 #' @export
 #' @importFrom graphics par plot segments title axis points
 #' @importFrom stats lm runif sd

@@ -21,6 +21,9 @@ list, the \code{"A"} component is taken to be \code{thresholdA} and the
 
 \item{...}{Additional arguments passed to \code{\link[graphics:segments]{graphics::segments()}}}
 }
+\value{
+None.
+}
 \description{
 Draw line segments at significance thresholds for a genome scan plot
 }
