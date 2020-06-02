@@ -43,7 +43,7 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
-A list of three-dimensional arrays of imputed genotypes,
+An object of class \code{"sim_geno"}: a list of three-dimensional arrays of imputed genotypes,
 individuals x positions x draws. Also contains three attributes:
 \itemize{
 \item \code{crosstype} - The cross type of the input \code{cross}.

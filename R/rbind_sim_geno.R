@@ -8,7 +8,7 @@
 #' [sim_geno()]. Must have the same set of markers and
 #' genotypes.
 #'
-#' @return A single genotype probability object.
+#' @return An object of class `"sim_geno"`, like the input; see [sim_geno()].
 #'
 #' @seealso [cbind.sim_geno()], [sim_geno()]
 #'

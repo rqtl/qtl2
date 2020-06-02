@@ -7,7 +7,7 @@
 #' @param ... Genotype imputation objects as produced by
 #' [sim_geno()]. Must have the same set of individuals.
 #'
-#' @return A single genotype probability object.
+#' @return An object of class `"sim_geno"`, like the input; see [sim_geno()].
 #'
 #' @seealso [rbind.sim_geno()], [sim_geno()]
 #'
