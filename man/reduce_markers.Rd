@@ -33,12 +33,15 @@ be separated by more than \code{min_distance}.
 # read data
 grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 
-# grap genetic map
+# grab genetic map
 gmap <- grav2$gmap
 
 # subset to markers that are >= 1 cM apart
 gmap_sub <- reduce_markers(gmap, 1)
 
+# drop all of the other markers from the cross
+markers2keep <- unlist(lapply(gmap_sub, names))
+grav2_sub <- pull_markers(grav2, markers2keep)
 }
 \references{
 Broman KW, Weber JL (1999) Method for constructing
