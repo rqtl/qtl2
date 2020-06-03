@@ -3,12 +3,12 @@
 #' Row-bind multiple scan1perm objects with the same set of columns
 #'
 #' @param ... A set of permutation results from
-#' [scan1perm()] (objects of class `"scan1perm"`.
+#' [scan1perm()] (objects of class `"scan1perm"`).
 #' They must have the same set of columns. If any include
 #' autosome/X chromosome-specific permutations, they must all be
 #' such.
 #'
-#' @return The combined row-binded input, as a `scan1perm` object.
+#' @return The combined row-binded input, as an object of class `"scan1perm"`; see [scan1perm()].
 #'
 #' @details The aim of this function is to concatenate the results
 #' from multiple runs of a permutation test with
@@ -153,7 +153,7 @@ c.scan1perm <- rbind.scan1perm
 #' `NA`. However, if any include autosome/X
 #' chromosome-specific permutations, they must all be such.
 #'
-#' @return The combined column-binded input, as a `scan1perm` object.
+#' @return The combined column-binded input, as an object of class `"scan1perm"`; see [scan1perm()].
 #'
 #' @details The aim of this function is to concatenate the results
 #' from multiple runs of a permutation test with

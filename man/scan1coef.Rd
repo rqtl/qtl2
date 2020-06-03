@@ -73,7 +73,7 @@ REML; otherwise maximum likelihood.}
 \item{...}{Additional control parameters; see Details;}
 }
 \value{
-A matrix of estimated regression coefficients, of dimension
+An object of class \code{"scan1coef"}: a matrix of estimated regression coefficients, of dimension
 positions x number of effects. The number of effects is
 \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
 May also contain the following attributes:

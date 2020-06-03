@@ -40,7 +40,7 @@
 #' genome-wide maximum LOD scores, permutation replicates x
 #' phenotypes. If `perm_Xsp=TRUE`, the result is a list of
 #' two matrices, one for the autosomes and one for the X
-#' chromosome.
+#' chromosome. The object is given class `"scan1perm"`.
 #'
 #' @details
 #' If `kinship` is not provided, so that analysis proceeds by

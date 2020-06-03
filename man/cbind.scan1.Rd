@@ -7,12 +7,12 @@
 \method{cbind}{scan1}(...)
 }
 \arguments{
-\item{...}{Genome scan objects as produced by \code{\link[=scan1]{scan1()}}.
+\item{...}{Genome scan objects of class \code{"scan1"}, as produced by \code{\link[=scan1]{scan1()}}.
 Must have the same map.}
 }
 \value{
-A single genome scan object with the lod score columns
-combined as multiple columns.
+An object of class `"scan1", like the inputs, but with the lod score columns
+from the inputs combined as multiple columns in a single object.
 }
 \description{
 Join multiple \code{\link[=scan1]{scan1()}} results for different phenotypes;

@@ -74,7 +74,7 @@ If \code{perm_Xsp=FALSE}, the result is matrix of
 genome-wide maximum LOD scores, permutation replicates x
 phenotypes. If \code{perm_Xsp=TRUE}, the result is a list of
 two matrices, one for the autosomes and one for the X
-chromosome.
+chromosome. The object is given class \code{"scan1perm"}.
 }
 \description{
 Permutation test for a enome scan with a single-QTL model by

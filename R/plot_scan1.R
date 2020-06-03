@@ -2,7 +2,7 @@
 #'
 #' Plot LOD curves for a genome scan
 #'
-#' @param x Output of [scan1()].
+#' @param x An object of class `"scan1"`, as output by [scan1()].
 #'
 #' @param map A list of vectors of marker positions, as produced by
 #' [insert_pseudomarkers()].

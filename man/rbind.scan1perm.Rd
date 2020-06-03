@@ -11,13 +11,13 @@
 }
 \arguments{
 \item{...}{A set of permutation results from
-\code{\link[=scan1perm]{scan1perm()}} (objects of class \code{"scan1perm"}.
+\code{\link[=scan1perm]{scan1perm()}} (objects of class \code{"scan1perm"}).
 They must have the same set of columns. If any include
 autosome/X chromosome-specific permutations, they must all be
 such.}
 }
 \value{
-The combined row-binded input, as a \code{scan1perm} object.
+The combined row-binded input, as an object of class \code{"scan1perm"}; see \code{\link[=scan1perm]{scan1perm()}}.
 }
 \description{
 Row-bind multiple scan1perm objects with the same set of columns

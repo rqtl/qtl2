@@ -2,7 +2,7 @@
 #'
 #' Summarize permutation test results from [scan1perm()], as significance thresholds.
 #'
-#' @param object Output of [scan1perm()]
+#' @param object An object of class `"scanoneperm"`, as output by [scan1perm()]
 #' @param alpha Vector of significance levels
 #'
 #' @return

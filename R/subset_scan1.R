@@ -14,7 +14,7 @@
 #' @param ... Ignored
 #'
 #' @export
-#' @return Object of same form as input, but subset by chromosome and/or column.
+#' @return Object of class `"scan1"`, like the input, but subset by chromosome and/or column. See [scan1()].
 #'
 #' @examples
 #' \dontrun{

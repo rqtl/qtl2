@@ -10,7 +10,7 @@ summary_scan1perm(object, alpha = 0.05)
 \method{summary}{scan1perm}(object, alpha = 0.05, ...)
 }
 \arguments{
-\item{object}{Output of \code{\link[=scan1perm]{scan1perm()}}}
+\item{object}{An object of class \code{"scanoneperm"}, as output by \code{\link[=scan1perm]{scan1perm()}}}
 
 \item{alpha}{Vector of significance levels}
 

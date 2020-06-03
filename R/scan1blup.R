@@ -34,7 +34,7 @@
 #' produced by [parallel::makeCluster()].
 #' @param quiet If FALSE, print message about number of cores used when multi-core.
 #'
-#' @return A matrix of estimated regression coefficients, of dimension
+#' @return An object of class `"scan1coef"`: a matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
 #'     `n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar`.
 #' May also contain the following attributes:

@@ -15,7 +15,7 @@ columns with fewer replicates are padded with missing values
 chromosome-specific permutations, they must all be such.}
 }
 \value{
-The combined column-binded input, as a \code{scan1perm} object.
+The combined column-binded input, as an object of class \code{"scan1perm"}; see \code{\link[=scan1perm]{scan1perm()}}.
 }
 \description{
 Column-bind multiple scan1perm objects with the same numbers of rows.
