@@ -14,8 +14,8 @@ notifications:
 
 # only use travis on master branch
 branches:
-  only:
-  - master
+  except:
+  - gh-pages
 
 # avoid timeout (see <https://github.com/travis-ci/travis-ci/issues/3849#issuecomment-255096774>)
 script:
