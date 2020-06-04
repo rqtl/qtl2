@@ -1,3 +1,20 @@
+## qtl2 0.22-4 (2020-06-04)
+
+## Minor changes
+
+- Added recognition of the R Core Team as a contributor, as the
+  package includes a copy of code for Brent's method for univariate
+  function optimization. Also added a Copyright field in the
+  DESCRIPTION field, explaining the copyright of that code.
+
+- Sped up some of the examples and tests. Tests no longer use more
+  than 2 cores (even those that are only run locally).
+
+- Added `\value{}` sections in the documentation for various
+  functions. Added further explanation of `"viterbi"`, `"scan1"`,
+  `"scan1perm"`, etc. S3 classes in the documentation.
+
+
 ## qtl2 0.22 (2020-05-26)
 
 ### Major changes
