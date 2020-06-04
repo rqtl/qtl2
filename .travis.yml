@@ -5,12 +5,6 @@ cache: packages
 r_packages:
  - devtools
 
-r_github_packages:
- - rqtl/qtl2geno
- - rqtl/qtl2scan
- - rqtl/qtl2plot
- - rqtl/qtl2convert
-
 warnings_are_errors: true
 
 notifications:
@@ -18,7 +12,20 @@ notifications:
     on_success: change
     on_failure: always
 
-# only us travis on master branch
+# only use travis on master branch
 branches:
-  only:
-  - master
+  except:
+  - gh-pages
+
+# avoid timeout (see <https://github.com/travis-ci/travis-ci/issues/3849#issuecomment-255096774>)
+script:
+  - |
+    R CMD build .
+    travis_wait 20 R CMD check --as-cran qtl2_*.tar.gz
+
+# print install log
+after_failure:
+ - cat qtl2.Rcheck/00install.out
+
+after_success:
+ - cat qtl2.Rcheck/00install.out
