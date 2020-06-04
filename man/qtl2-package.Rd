@@ -6,7 +6,7 @@
 \alias{qtl2-package}
 \title{qtl2: Quantitative Trait Locus Mapping in Experimental Crosses}
 \description{
-'R/qtl2' provides a set of tools to perform quantitative
+Provides a set of tools to perform quantitative
     trait locus (QTL) analysis in experimental crosses. It is a
     reimplementation of the 'R/qtl' package to better handle
     high-dimensional data and complex cross designs.
@@ -37,10 +37,7 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Robert Gentleman [contributor]
-  \item Ross Ihaka [contributor]
-  \item The R Foundation [contributor]
-  \item The R Core Team [contributor]
+  \item R Core Team [contributor]
 }
 
 }
