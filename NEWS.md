@@ -15,7 +15,7 @@
   `"scan1perm"`, etc. S3 classes in the documentation.
 
 
-## qtl2 0.22 (2020-05-26)
+## qtl2 0.22 (2020-05-21)
 
 ### Major changes
 
