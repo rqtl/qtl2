@@ -38,6 +38,8 @@ test_that("genril init work", {
 
 test_that("genril step works", {
 
+    skip_on_cran()
+
     nf <- 38
     alpha_int <- sample(1:10, nf, replace=TRUE)
     alpha <- alpha_int/sum(alpha_int)
@@ -79,6 +81,8 @@ test_that("genril geno_names work", {
 })
 
 test_that("genril nrec work", {
+
+    skip_on_cran()
 
     x <- matrix(ncol=38, nrow=38)
     x <- matrix(as.numeric(col(x) != row(x)), ncol=38)

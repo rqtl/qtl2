@@ -20,6 +20,8 @@ test_that("est_map for backcross autosome matches R/qtl", {
 
 test_that("est_map for intercross autosome matches R/qtl", {
 
+    skip_on_cran()
+
     data(listeria)
     chr <- c(4, 14, 18)
     listeria <- listeria[chr,]
@@ -38,6 +40,8 @@ test_that("est_map for intercross autosome matches R/qtl", {
 
 test_that("f2 X chr est_map matches R/qtl", {
 
+    skip_on_cran()
+
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
     newmap <- est.map(fake.f2, err=0.01, tol=1e-8)
@@ -53,6 +57,8 @@ test_that("f2 X chr est_map matches R/qtl", {
 })
 
 test_that("bc X chr calc_genoprob matches R/qtl", {
+
+    skip_on_cran()
 
     set.seed(19115167)
     xmap <- sim.map(100, n.mar=11, anchor.tel=TRUE, include.x=TRUE, eq.spacing=TRUE)
@@ -76,6 +82,8 @@ test_that("bc X chr calc_genoprob matches R/qtl", {
 
 test_that("est_map for RIself matches R/qtl", {
 
+    skip_on_cran()
+
     data(hyper)
     chr <- c(3, 4, 17, 19)
     hyper <- hyper[chr,]
@@ -95,6 +103,8 @@ test_that("est_map for RIself matches R/qtl", {
 
 test_that("est_map for RIsib matches R/qtl", {
 
+    skip_on_cran()
+
     data(hyper)
     chr <- c(3, 4, 17, 19)
     hyper <- hyper[chr,]
@@ -112,6 +122,8 @@ test_that("est_map for RIsib matches R/qtl", {
 })
 
 test_that("est_map for doubled haploids matches R/qtl", {
+
+    skip_on_cran()
 
     data(hyper)
     hyper <- hyper[3,]
@@ -132,6 +144,8 @@ test_that("est_map for doubled haploids matches R/qtl", {
 
 test_that("est_map for haploids matches R/qtl", {
 
+    skip_on_cran()
+
     data(hyper)
     hyper <- hyper[4,]
     hyper$pheno <- hyper$pheno[,1,drop=FALSE]
@@ -150,6 +164,9 @@ test_that("est_map for haploids matches R/qtl", {
 })
 
 test_that("est_map works in case of 2 markers", {
+
+    skip_on_cran()
+
     data(hyper)
     hyper <- pull.markers(hyper, markers=markernames(hyper, chr=6)[2:3])
     hyper <- shiftmap(hyper)
@@ -166,6 +183,8 @@ test_that("est_map works in case of 2 markers", {
 })
 
 test_that("est_map works in case of 2 markers in intercross", {
+
+    skip_on_cran()
 
     data(fake.f2)
     fake.f2 <- fake.f2[18,]

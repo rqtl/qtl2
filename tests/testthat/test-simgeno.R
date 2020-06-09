@@ -62,6 +62,8 @@ test_that("sim_geno riself", {
 
 test_that("sim_geno f2", {
 
+    skip_on_cran()
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     RNGkind("Mersenne-Twister")
@@ -122,6 +124,8 @@ test_that("sim_geno works when multi-core", {
 
 test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
 
+    skip_on_cran()
+
     RNGkind("Mersenne-Twister")
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     map <- insert_pseudomarkers(grav2$gmap, step=1)
@@ -135,6 +139,8 @@ test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
 })
 
 test_that("sim_geno f2 gives same result for lowmem=TRUE and =FALSE", {
+
+    skip_on_cran()
 
     RNGkind("Mersenne-Twister")
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))

@@ -177,6 +177,8 @@ test_that("phase-known AIL emit works", {
 
 test_that("phase-known AIL step works", {
 
+    skip_on_cran()
+
     # autosome
     for(rf in c(0.01, 0.0001)) {
         for(ngen in c(3, 9, 12, 15)) {
@@ -323,6 +325,8 @@ test_that("phase-known AIL step works", {
 })
 
 test_that("nrec works for AIL-pk", {
+
+    skip_on_cran()
 
     # autosome or female X chr
     expected <- rbind(c(0,1,1,2),

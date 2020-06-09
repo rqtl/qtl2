@@ -29,6 +29,8 @@ test_that("scan1 permutations work (regression test)", {
     class(expected) <- c("scan1perm", "matrix")
     expect_equal(operm, expected)
 
+    skip_on_cran()
+
     # no covariates or missing data
     set.seed(seed)
     operm <- scan1perm(pr, pheno1, model="binary", n_perm=3, perm_strata=perm_strata)

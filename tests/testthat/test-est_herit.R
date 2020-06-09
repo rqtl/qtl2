@@ -4,7 +4,8 @@ context("estimate heritability with LMM by est_herit")
 test_that("est_herit works with intercross", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    iron[1:40, c("5", "19")]
+    map <- insert_pseudomarkers(iron$gmap, step=5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
 
@@ -19,7 +20,7 @@ test_that("est_herit works with intercross", {
                  attr(out_ml, "hsq")[1,]) # [1,] to convert to vector
 
     # try when some individuals missing from one or the other dataset
-    subind <- 1:100
+    subind <- 1:20
     expected <- est_herit(iron$pheno[subind,,drop=FALSE], kinship[subind,subind])
     expect_equal(est_herit(iron$pheno, kinship[subind, subind]), expected)
     expect_equal(est_herit(iron$pheno[subind,,drop=FALSE], kinship), expected)
@@ -27,6 +28,8 @@ test_that("est_herit works with intercross", {
 })
 
 test_that("est_herit with intercross with an additive covariate", {
+
+    skip_on_cran()
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -61,6 +64,8 @@ test_that("est_herit with intercross with an additive covariate", {
 })
 
 test_that("est_herit handles dependent covariate columns", {
+
+    skip_on_cran()
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)

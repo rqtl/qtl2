@@ -161,6 +161,8 @@ test_that("DO emit works", {
 
 test_that("DO step works", {
 
+    skip_on_cran()
+
     ng <- 36
     trmat <- matrix(nrow=ng, ncol=ng)
     # autosome
@@ -239,6 +241,8 @@ test_that("geno_names works", {
 })
 
 test_that("nrec works", {
+
+    skip_on_cran()
 
     # X chr male
     for(i in 36+(1:8)) {
