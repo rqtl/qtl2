@@ -28,9 +28,9 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
     # hsq the same?
     expect_equal(as.numeric(attr(out_reml, "hsq")[1,]),
-                 c(byhand1_reml$hsq, byhand2_reml$hsq))
+                 c(byhand1_reml$hsq, byhand2_reml$hsq), tol=1e-7)
     expect_equal(as.numeric(attr(out_ml, "hsq")[1,]),
-                 c(byhand1_ml$hsq, byhand2_ml$hsq))
+                 c(byhand1_ml$hsq, byhand2_ml$hsq), tol=1e-7)
 
     # compare chromosome 1 LOD scores
     d <- dim(probs[[1]])[3]
@@ -52,10 +52,10 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
     out_reml <- unclass(out_reml)
     out_ml <- unclass(out_ml)
     dimnames(out_reml) <- dimnames(out_ml) <- NULL
-    expect_equal(out_reml[1:d,1], lod_reml1)
-    expect_equal(out_reml[1:d,2], lod_reml2)
-    expect_equal(out_ml[1:d,1], lod_ml1)
-    expect_equal(out_ml[1:d,2], lod_ml2)
+    expect_equal(out_reml[1:d,1], lod_reml1, tol=1e-7)
+    expect_equal(out_reml[1:d,2], lod_reml2, tol=1e-7)
+    expect_equal(out_ml[1:d,1], lod_ml1, tol=1e-7)
+    expect_equal(out_ml[1:d,2], lod_ml2, tol=1e-7)
 
 })
 
