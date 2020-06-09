@@ -120,10 +120,10 @@ technicality to avoid fitted values exactly at 0 or 1).
 \examples{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-\dontshow{iron <- iron[,1:7] # subset to chr 1-7}
+\dontshow{iron <- iron[,"7"] # subset to chr 7}
 
 # insert pseudomarkers into map
-map <- insert_pseudomarkers(iron$gmap, step=1)
+map <- insert_pseudomarkers(iron$gmap, step=5)
 
 # calculate genotype probabilities
 probs <- calc_genoprob(iron, map, error_prob=0.002)
@@ -133,20 +133,17 @@ pheno <- iron$pheno[,1]
 covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 
-# leave-one-chromosome-out kinship matrix for chr 7
-kinship7 <- calc_kinship(probs, "loco")[[7]]
-
 # scan chromosome 7 to find peak
-out <- scan1(probs[,7], pheno, kinship7, addcovar=covar)
+out <- scan1(probs[,"7"], pheno, addcovar=covar)
 
 # find peak position
-max_pos <- rownames(max(out, map[7]))
+max_pos <- max(out, map)
+
+# genoprobs at max position
+pr_max <- pull_genoprobpos(probs, map, max_pos$chr, max_pos$pos)
 
 # fit QTL model just at that position
-out_fit1 <- fit1(probs[[7]][,,max_pos], pheno, addcovar=covar)
-
-# fit QTL model just at that position, with polygenic effect
-out_fit1_pg <- fit1(probs[[7]][,,max_pos], pheno, kinship7, addcovar=covar)
+out_fit1 <- fit1(pr_max, pheno, addcovar=covar)
 
 }
 \references{
