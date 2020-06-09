@@ -141,7 +141,8 @@ for the new input data file format for
 \examples{
 \dontrun{
 # Control file for the sample dataset, grav2
-write_control_file("grav2.yaml",
+tempfile <- file.path(tempdir(), "grav2.yaml")
+write_control_file(tempfile,
                    crosstype="riself",
                    geno_file="grav2_geno.csv",
                    gmap_file="grav2_gmap.csv",
@@ -152,7 +153,8 @@ write_control_file("grav2.yaml",
                    na.strings=c("-", "NA"))
 
 # Control file for the sample dataset, iron
-write_control_file("iron.yaml",
+tempfile <- file.path(tempdir(), "iron.yaml")
+write_control_file(tempfile,
                    crosstype="f2",
                    geno_file="iron_geno.csv",
                    gmap_file="iron_gmap.csv",

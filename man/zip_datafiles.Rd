@@ -42,7 +42,8 @@ resulting zip file may not work with \code{\link[=read_cross2]{read_cross2()}}.
 }
 \examples{
 \dontrun{
-zip_datafiles("grav2.yaml")
+zipfile <- file.path(tempdir(), "grav2.zip")
+zip_datafiles("grav2.yaml", zipfile)
 }
 }
 \seealso{

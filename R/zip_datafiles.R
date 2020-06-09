@@ -33,7 +33,8 @@
 #' @seealso [read_cross2()], sample data files at <https://kbroman.org/qtl2/pages/sampledata.html>
 #' @examples
 #' \dontrun{
-#' zip_datafiles("grav2.yaml")
+#' zipfile <- file.path(tempdir(), "grav2.zip")
+#' zip_datafiles("grav2.yaml", zipfile)
 #' }
 zip_datafiles <-
 function(control_file, zip_file=NULL, overwrite=FALSE, quiet=TRUE)
