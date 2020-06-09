@@ -4,7 +4,8 @@ context("LMM genome scan by scan1 with kinship matrix")
 test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-    map <- insert_pseudomarkers(iron$gmap, step=2.5)
+    iron <- iron[1:10,c(1,3)]
+    map <- insert_pseudomarkers(iron$gmap, step=5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
     kinship <- calc_kinship(probs)
 
@@ -339,6 +340,8 @@ test_that("scan1 with kinship with intercross with an interactive covariate", {
 })
 
 test_that("scan1 with kinship works with LOCO, additive covariates", {
+
+    skip_on_cran()
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
