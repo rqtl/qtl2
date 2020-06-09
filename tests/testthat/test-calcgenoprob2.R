@@ -236,7 +236,7 @@ test_that("backcross autosome with markers at same location", {
 })
 
 test_that("calc_genoprob works when multi-core", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     data(hyper)
     hyper2 <- convert2cross2(hyper)

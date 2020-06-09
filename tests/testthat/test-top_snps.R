@@ -1,7 +1,7 @@
 context("top snps from snp association analysis")
 
 test_that("top_snps() works", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # load example DO data from web
     file <- paste0("https://raw.githubusercontent.com/rqtl/",

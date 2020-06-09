@@ -98,7 +98,7 @@ test_that("check_cross2 gives proper warnings", {
 
 test_that("check_cross2 works for MPP data", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     do <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
     expect_true(check_cross2(do))

@@ -73,7 +73,7 @@ test_that("compare_geno works", {
 
 test_that("compare_geno works when multi-core", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[1:5, c(18:19,"X")]

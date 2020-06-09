@@ -56,7 +56,7 @@ test_that("scan1max works", {
 
 test_that("scan1max works with multicore", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2") )
     iron <- iron[,c("1", "19", "X")]

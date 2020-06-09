@@ -2,7 +2,7 @@ context("create snpinfo from cross2 object")
 
 test_that("create_snpinfo works", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DOex/DOex.zip")

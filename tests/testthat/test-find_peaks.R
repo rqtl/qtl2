@@ -265,7 +265,7 @@ test_that("lod_int and bayes_int give same results as R/qtl", {
 
 test_that("find_peaks works with snpinfo table", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # load example data and calculate genotype probabilities
     file <- paste0("https://raw.githubusercontent.com/rqtl/",

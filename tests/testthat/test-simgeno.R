@@ -90,7 +90,7 @@ test_that("sim_geno f2", {
 })
 
 test_that("sim_geno works when multi-core", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # can't really tell if I'm getting the same answers as w/o multi-core
     # but I can tell if I get the same thing twise, when run from same seed

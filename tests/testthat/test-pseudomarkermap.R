@@ -130,7 +130,7 @@ test_that("insert_pseudomarkers gives distinct pseudomarker names with iron data
 
 test_that("insert_pseudomarkers works with multi-core", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     data(hyper)
     map <- qtl::pull.map(hyper)

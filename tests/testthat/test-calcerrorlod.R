@@ -111,7 +111,7 @@ test_that("calc_errorlod works for RIL", {
 
 test_that("calc_errorlod works for RIL", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # this is not much more than a regression test, really
     file <- paste0("https://raw.githubusercontent.com/rqtl/",

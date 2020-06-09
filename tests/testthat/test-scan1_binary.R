@@ -96,6 +96,8 @@ test_that("scan1 with binary phenotype in intercross gives same results as R/qtl
 
 test_that("scan1 with multiple binary phenotype gives same results as R/qtl", {
 
+    skip_on_cran()
+
     library(qtl)
     data(listeria)
     listeria <- listeria[c(1,3,12),] # subset to 3 chromosomes
@@ -145,6 +147,8 @@ test_that("scan1 with multiple binary phenotype gives same results as R/qtl", {
 
 
 test_that("scan1 with weights gives the same answer as glm()", {
+
+    skip_on_cran()
 
     library(qtl)
     data(listeria)

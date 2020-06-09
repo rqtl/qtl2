@@ -2,7 +2,7 @@ context("Find IBD segments")
 
 test_that("find_ibd_segments works (regression test)", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
 

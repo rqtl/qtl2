@@ -181,7 +181,7 @@ test_that("est_map works in case of 2 markers in intercross", {
 })
 
 test_that("est_map works when multi-core", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     data(hyper)
     hyper2 <- convert2cross2(hyper)

@@ -2,7 +2,7 @@ context("calc raw summaries")
 
 test_that("calculation of raw summaries work", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     # load example data
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
