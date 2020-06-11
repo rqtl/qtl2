@@ -13,7 +13,7 @@
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' If `NULL`, return maximum for all columns.
-#' @param chr Option vector of chromosomes to consider.
+#' @param chr Optional vector of chromosomes to consider.
 #' @param na.rm Ignored (take to be TRUE)
 #' @param ... Ignored
 #'
@@ -162,7 +162,7 @@ max.scan1 <-
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
 #' [insert_pseudomarkers()].
-#' @param chr Option vector of chromosomes to consider.
+#' @param chr Optional vector of chromosomes to consider.
 #'
 #' @export
 #' @return A single number: the maximum LOD score across all columns and positions for

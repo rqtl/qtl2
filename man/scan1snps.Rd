@@ -74,7 +74,7 @@ have length 1.}
 Should be a single number, and if provided, \code{chr} should also
 have length 1.}
 
-\item{snpinfo}{Option data frame of SNPs to scan; if provided,
+\item{snpinfo}{Optional data frame of SNPs to scan; if provided,
 \code{query_func}, \code{chr}, \code{start}, and \code{end} are ignored. Should
 contain the following columns:
 \itemize{
