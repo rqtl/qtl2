@@ -31,7 +31,7 @@ in the \code{genoprobs}
 }
 
 Alternatively, \code{snpinfo} can be a object of class \code{"cross2"},
-containing the data for a multi-parent
+as output by \code{\link[=read_cross2]{read_cross2()}}, containing the data for a multi-parent
 population with founder genotypes, in which case the SNP
 information for all markers with complete founder genotype data is
 calculated and then used. But, in this case, the genotype

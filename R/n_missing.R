@@ -3,7 +3,7 @@
 #'
 #' Number (or proportion) of missing (or non-missing) genotypes by individual or marker
 #'
-#' @param cross An object of class `"cross2"`. For details, see the
+#' @param cross An object of class `"cross2"`, as output by [read_cross2()]. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param by Whether to summarize by individual or marker
 #' @param summary Whether to take count or proportion
