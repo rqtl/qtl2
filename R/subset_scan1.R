@@ -17,7 +17,7 @@
 #' @return Object of class `"scan1"`, like the input, but subset by chromosome and/or column. See [scan1()].
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'

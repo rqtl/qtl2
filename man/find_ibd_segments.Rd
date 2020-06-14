@@ -60,7 +60,7 @@ SNPs were chosen to be genotyped. (For example, were the SNPs ascertained
 based on their polymorphism between a particular strain pair?)
 }
 \examples{
-\dontrun{
+\donttest{
 # load DO data from Recla et al. (2014) Mamm Genome 25:211-222.
 recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
 

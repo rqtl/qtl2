@@ -57,7 +57,7 @@ subset of rows, and with an added column with the LOD score.
 Create a table of the top snp associations
 }
 \examples{
-\dontrun{
+\donttest{
 # load example DO data from web
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")

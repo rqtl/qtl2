@@ -147,7 +147,7 @@ summary.scan1perm <-
 #' number of digits that appear.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'

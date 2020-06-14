@@ -169,7 +169,7 @@ max.scan1 <-
 #' the selected chromosomes.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'

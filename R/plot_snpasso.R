@@ -66,7 +66,7 @@
 #' and `ylim` for y-axis limits.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # load example DO data from web
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")

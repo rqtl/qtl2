@@ -28,7 +28,7 @@ SNPs with missing founder genotypes are omitted.
 Create a table of snp information from a cross, for use with \code{\link[=scan1snps]{scan1snps()}}.
 }
 \examples{
-\dontrun{
+\donttest{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")

@@ -123,7 +123,7 @@ The analysis proceeds as follows:
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")

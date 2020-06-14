@@ -49,7 +49,7 @@
 #' Am J Hum Genet 65:1493--1500.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # load DO data from Recla et al. (2014) Mamm Genome 25:211-222.
 #' recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
 #'

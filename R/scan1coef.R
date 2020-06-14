@@ -108,7 +108,7 @@
 #' # calculate coefficients for chromosome 7
 #' coef <- scan1coef(probs[,"7"], pheno, addcovar=covar)
 #'
-#' \dontrun{
+#' \donttest{
 #' # leave-one-chromosome-out kinship matrix for chr 7
 #' kinship7 <- calc_kinship(probs, "loco")[["7"]]
 #'

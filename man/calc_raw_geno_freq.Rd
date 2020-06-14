@@ -25,7 +25,7 @@ and BB) and with rows being either individuals or markers.
 Calculate genotype frequencies from raw SNP genotypes, by individual or by marker
 }
 \examples{
-\dontrun{
+\donttest{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")

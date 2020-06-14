@@ -39,7 +39,7 @@
 #' subset of rows, and with an added column with the LOD score.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # load example DO data from web
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")

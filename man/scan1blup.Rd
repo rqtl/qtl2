@@ -117,7 +117,7 @@ names(covar) <- rownames(iron$covar)
 # calculate BLUPs of coefficients for chromosome 7
 blup <- scan1blup(aprobs[,"7"], pheno, addcovar=covar)
 
-\dontrun{
+\donttest{
 # leave-one-chromosome-out kinship matrix for chr 7
 kinship7 <- calc_kinship(probs, "loco")[["7"]]
 

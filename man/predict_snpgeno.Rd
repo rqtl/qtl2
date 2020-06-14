@@ -24,7 +24,7 @@ A list of matrices with inferred SNP genotypes, coded 1/2/3.
 Predict SNP genotypes in a multiparent population from inferred genotypes plus founder strains' SNP alleles.
 }
 \examples{
-\dontrun{
+\donttest{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")
