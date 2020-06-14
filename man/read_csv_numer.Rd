@@ -43,7 +43,7 @@ rows does not include the header row.
 The first column is taken to be a set of row names
 }
 \examples{
-\dontrun{mydata <- read_csv("myfile.csv", transpose=TRUE)}
+\dontrun{mydata <- read_csv_numer("myfile.csv", transpose=TRUE)}
 }
 \seealso{
 \code{\link[=read_csv]{read_csv()}}

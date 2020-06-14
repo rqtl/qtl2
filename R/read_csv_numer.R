@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{mydata <- read_csv("myfile.csv", transpose=TRUE)}
+#' \dontrun{mydata <- read_csv_numer("myfile.csv", transpose=TRUE)}
 read_csv_numer <-
     function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE,
              rownames_included=TRUE)
