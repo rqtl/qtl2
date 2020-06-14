@@ -170,7 +170,7 @@ write_control_file(iron_control_file,
                    na.strings=c("-", "NA"))
 
 # Remove these files, to clean up temporary directory
-unlink(grav2_control_file, iron_control_file)
+unlink(c(grav2_control_file, iron_control_file))
 }
 \seealso{
 \code{\link[=read_cross2]{read_cross2()}}, sample data files at

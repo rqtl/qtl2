@@ -108,7 +108,7 @@
 #'                    na.strings=c("-", "NA"))
 #'
 #' # Remove these files, to clean up temporary directory
-#' unlink(grav2_control_file, iron_control_file)
+#' unlink(c(grav2_control_file, iron_control_file))
 write_control_file <-
 function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gmap_file=NULL,
          pmap_file=NULL, pheno_file=NULL, covar_file=NULL, phenocovar_file=NULL,
