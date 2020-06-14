@@ -77,10 +77,9 @@
 #' @seealso [read_cross2()], sample data files at
 #' <https://kbroman.org/qtl2/pages/sampledata.html>
 #' @examples
-#' \dontrun{
 #' # Control file for the sample dataset, grav2
-#' tempfile <- file.path(tempdir(), "grav2.yaml")
-#' write_control_file(tempfile,
+#' grav2_control_file <- file.path(tempdir(), "grav2.yaml")
+#' write_control_file(grav2_control_file,
 #'                    crosstype="riself",
 #'                    geno_file="grav2_geno.csv",
 #'                    gmap_file="grav2_gmap.csv",
@@ -91,8 +90,8 @@
 #'                    na.strings=c("-", "NA"))
 #'
 #' # Control file for the sample dataset, iron
-#' tempfile <- file.path(tempdir(), "iron.yaml")
-#' write_control_file(tempfile,
+#' iron_control_file <- file.path(tempdir(), "iron.yaml")
+#' write_control_file(iron_control_file,
 #'                    crosstype="f2",
 #'                    geno_file="iron_geno.csv",
 #'                    gmap_file="iron_gmap.csv",
@@ -107,7 +106,9 @@
 #'                    xchr="X",
 #'                    alleles=c("S", "B"),
 #'                    na.strings=c("-", "NA"))
-#' }
+#'
+#' # Remove these files, to clean up temporary directory
+#' unlink(grav2_control_file, iron_control_file)
 write_control_file <-
 function(output_file, crosstype=NULL, geno_file=NULL, founder_geno_file=NULL, gmap_file=NULL,
          pmap_file=NULL, pheno_file=NULL, covar_file=NULL, phenocovar_file=NULL,

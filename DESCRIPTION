@@ -1,6 +1,6 @@
 Package: qtl2
-Version: 0.22-5
-Date: 2020-06-09
+Version: 0.22-6
+Date: 2020-06-14
 Title: Quantitative Trait Locus Mapping in Experimental Crosses
 Description: Provides a set of tools to perform quantitative
     trait locus (QTL) analysis in experimental crosses. It is a
