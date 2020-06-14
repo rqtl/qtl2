@@ -38,10 +38,12 @@
 #' pr_e <- calc_genoprob(iron, map, error_prob=0.002)
 #'
 #' # image of probabilities + comparison
+#' \dontshow{old_mfrow <- par("mfrow")}
 #' par(mfrow=c(3,1))
 #' plot_genoprob(pr_ne, map, main="No error")
 #' plot_genoprob(pr_e, map, main="With an error")
 #' plot_genoprobcomp(pr_ne, pr_e, map, main="Comparison")
+#' \dontshow{par(mfrow=old_mfrow)}
 #'
 #' @export
 #' @importFrom grDevices rgb
