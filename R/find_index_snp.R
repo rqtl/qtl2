@@ -12,7 +12,7 @@
 #' @return A vector of SNP IDs (the corresponding indexed SNPs), with NA if a SNP is not found.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # load example data and calculate genotype probabilities
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DO_Recla/recla.zip")

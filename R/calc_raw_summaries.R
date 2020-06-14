@@ -15,7 +15,7 @@
 #' @seealso [recode_snps()], [calc_raw_maf()], [calc_raw_founder_maf()], [calc_raw_geno_freq()]
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # load example data and calculate genotype probabilities
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
@@ -52,7 +52,7 @@ calc_raw_het <-
 #' @seealso [recode_snps()], [calc_raw_founder_maf()], [calc_raw_het()], [calc_raw_geno_freq()]
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # load example data and calculate genotype probabilities
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
@@ -92,7 +92,7 @@ calc_raw_maf <-
 #' @seealso [recode_snps()], [calc_raw_maf()]
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # load example data and calculate genotype probabilities
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
@@ -140,7 +140,7 @@ calc_raw_founder_maf <-
 #' @seealso [calc_raw_maf()], [calc_raw_het()], [recode_snps()]
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # load example data and calculate genotype probabilities
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")

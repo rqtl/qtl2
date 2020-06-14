@@ -49,7 +49,7 @@
 #' plot_genoprob(pr, map, ind="262", swap_axes=TRUE, ylab="Position (cM)")
 #'
 #' # This is more interesting for a Diversity Outbred mouse example
-#' \donttest{
+#' \dontrun{
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")
 #' DOex <- read_cross2(file)

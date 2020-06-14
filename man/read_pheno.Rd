@@ -51,7 +51,7 @@ covariate data from a separate CSV file). The CSV files may be
 contained in zip files, separately or together.
 }
 \examples{
-\donttest{
+\dontrun{
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/Gough/gough_pheno.csv")
 phe <- read_pheno(file)

@@ -28,7 +28,7 @@
 #' and <https://github.com/rqtl/qtl2data>
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' yaml_file <- "https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 #' grav2 <- read_cross2(yaml_file)
 #' }

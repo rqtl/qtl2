@@ -75,7 +75,7 @@ ph <- guess_phase(iron, m)
 plot_onegeno(ph, map, shift=TRUE, col=c("slateblue", "Orchid"))
 
 # this is more interesting for Diversity Outbred mouse data
-\donttest{
+\dontrun{
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")
 DOex <- read_cross2(file)

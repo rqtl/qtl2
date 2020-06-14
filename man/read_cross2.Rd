@@ -31,7 +31,7 @@ data files to be read. See the
 \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{vignette describing the input file format}.
 }
 \examples{
-\donttest{
+\dontrun{
 yaml_file <- "https://kbroman.org/qtl2/assets/sampledata/grav2/grav2.yaml"
 grav2 <- read_cross2(yaml_file)
 }

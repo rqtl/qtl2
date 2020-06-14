@@ -75,7 +75,7 @@
 #' @seealso [scan1()], [genoprob_to_snpprob()], [index_snps()], [create_variant_query_func()], [plot_snpasso()]
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # load example data and calculate genotype probabilities
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
 #'                "qtl2data/master/DOex/DOex.zip")

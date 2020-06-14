@@ -19,7 +19,7 @@ A vector of heterozygosities, one for each individual or marker.
 Calculate estimated heterozygosity for each individual from raw SNP genotypes
 }
 \examples{
-\donttest{
+\dontrun{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DOex/DOex.zip")
