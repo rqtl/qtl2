@@ -32,7 +32,7 @@
 #' cluttering the function definition.
 #'
 #' @export
-#' @importFrom graphics plot rect lines par axis title abline box
+#' @importFrom graphics rect lines par axis title abline box
 #'
 #' @return None.
 #'

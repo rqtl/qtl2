@@ -61,7 +61,7 @@
 #' }
 #'
 #' @export
-#' @importFrom graphics plot rect par axis title abline box
+#' @importFrom graphics rect par axis title abline box
 plot_onegeno <-
     function(geno, map, ind=1, chr=NULL,
              col=NULL, na_col="white",

@@ -14,13 +14,13 @@
 #' @param stop_field Character string with name of column containing the genes' stop positions.
 #' @param strand_field Character string with name of column containing the genes' strands.
 #' @param name_field Character string with name of column containing the genes' names.
-#' @param ... Optional arguments passed to [graphics::plot()].
+#' @param ... Optional arguments passed to [base::plot()].
 #'
 #' @return None.
 #'
 #' @keywords hgraphics
 #' @export
-#' @importFrom graphics strheight strwidth text plot par rect abline box
+#' @importFrom graphics strheight strwidth text par rect abline box
 #'
 #' @section Hidden graphics parameters:
 #' Graphics parameters can be passed via `...`. For
