@@ -26,9 +26,9 @@ not called directly, but it can be in order to control the
 number of digits that appear.
 }
 \examples{
-\donttest{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[,c(10,18,"X")]}
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -43,13 +43,12 @@ names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
 # permutations with genome scan
+\dontrun{
 operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-                   n_perm=100, perm_Xsp=TRUE,
-                   chr_lengths=chr_lengths(iron$gmap))
-
-summary(operm, alpha=c(0.20, 0.05))
+                   n_perm=1000, perm_Xsp=TRUE,
+                   chr_lengths=chr_lengths(iron$gmap))}
+\dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3)}
 
 print( summary(operm, alpha=c(0.20, 0.05)), digits=8 )
-}
 
 }

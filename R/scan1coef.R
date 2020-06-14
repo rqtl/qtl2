@@ -108,13 +108,11 @@
 #' # calculate coefficients for chromosome 7
 #' coef <- scan1coef(probs[,"7"], pheno, addcovar=covar)
 #'
-#' \donttest{
 #' # leave-one-chromosome-out kinship matrix for chr 7
 #' kinship7 <- calc_kinship(probs, "loco")[["7"]]
 #'
 #' # calculate coefficients for chromosome 7, adjusting for residual polygenic effect
 #' coef_pg <- scan1coef(probs[,"7"], pheno, kinship7, addcovar=covar)
-#' }
 #'
 #' @export
 scan1coef <-

@@ -23,7 +23,6 @@ the selected chromosomes.
 Find overall maximum LOD score in genome scan results, across all positions and columns.
 }
 \examples{
-\donttest{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
@@ -47,5 +46,4 @@ maxlod(out)
 
 # maximum on chromosome 2
 maxlod(out, map, "2")
-}
 }

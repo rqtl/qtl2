@@ -169,7 +169,6 @@ max.scan1 <-
 #' the selected chromosomes.
 #'
 #' @examples
-#' \donttest{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
@@ -193,7 +192,6 @@ max.scan1 <-
 #'
 #' # maximum on chromosome 2
 #' maxlod(out, map, "2")
-#' }
 maxlod <-
     function(scan1_output, map=NULL, chr=NULL)
 {

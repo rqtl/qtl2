@@ -17,7 +17,6 @@
 #' @return Object of class `"scan1"`, like the input, but subset by chromosome and/or column. See [scan1()].
 #'
 #' @examples
-#' \donttest{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
@@ -44,7 +43,6 @@
 #'
 #' # all positions, but just the "liver" column
 #' out_spleen <- subset(out, map, lodcolumn="spleen")
-#' }
 subset_scan1 <-
     function(x, map=NULL, chr=NULL, lodcolumn=NULL, ...)
 {
