@@ -6,7 +6,7 @@
 #' Pull out a specified set of individuals and/or chromosomes from a
 #' `cross2` object.
 #'
-#' @param x An object of class `"cross2"`. For details, see the
+#' @param x An object of class `"cross2"`, as output by [read_cross2()]. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs.

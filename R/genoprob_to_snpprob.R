@@ -24,7 +24,9 @@
 #'     intervals the SNPs reside.
 #' * `on_map` - Indicate whether SNP coincides with a marker
 #'     in the `genoprobs`
-#' Alternatively, `snpinfo` can be a cross object for a multi-parent
+#'
+#' Alternatively, `snpinfo` can be a object of class `"cross2"`,
+#' as output by [read_cross2()], containing the data for a multi-parent
 #' population with founder genotypes, in which case the SNP
 #' information for all markers with complete founder genotype data is
 #' calculated and then used. But, in this case, the genotype

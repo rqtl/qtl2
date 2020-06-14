@@ -13,7 +13,7 @@ maxlod(scan1_output, map = NULL, chr = NULL)
 \item{map}{A list of vectors of marker positions, as produced by
 \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
-\item{chr}{Option vector of chromosomes to consider.}
+\item{chr}{Optional vector of chromosomes to consider.}
 }
 \value{
 A single number: the maximum LOD score across all columns and positions for
