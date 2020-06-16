@@ -945,6 +945,48 @@ The json equivalent is:
 "cross_info": {"covar": "n_gen"}
 ```
 
+### General advanced intercross lines
+
+The `"genail"` cross type seeks to serve as an approximation for a
+variety of multi-parent heterozygous populations. The specific cross
+type to use is `"genail[n]"` where `[n]` is to be replaced by the
+number of founder lines, for example `"genail8"` for an 8-way AIL
+population.
+
+We imagine that each individual is derived from a specified number of
+generations of random outbreeding with large population sizes,
+starting with a population that consists of the founders in specified
+proportions, $\alpha_i$ for founder $i$.
+
+The cross information file should have one row per individual and
+should give the number of generations of outbreeding followed by
+integer values $a_i$ such that $\alpha_i = a_i / \sum a_i$. None of
+the $a_i$ may be 0.
+
+Founder genotype data are also required.
+
+
+### General recombinant inbred lines
+
+The `"genril"` cross type is like the `"genail"` cross type except
+for homozygous lines. It seeks to serve as an approximation for a
+variety of multi-parent recombinant inbred populations. The specific cross
+type to use is `"genril[n]"` where `[n]` is to be replaced by the
+number of founder lines, for example `"genril8"` for an 8-way RIL
+population.
+
+We imagine that the individual lines are doubled haploids derived
+following a specified number of generations of random outbreeding with
+large population sizes, starting with a population that consists of
+the founders in specified proportions, $\alpha_i$ for founder $i$.
+
+The cross information file should have one row per line and
+should give the number of generations of outbreeding followed by
+integer values $a_i$ such that $\alpha_i = a_i / \sum a_i$. None of
+the $a_i$ may be 0.
+
+Founder genotype data are also required.
+
 ---
 
 [![CC BY](https://i.creativecommons.org/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/3.0/)
