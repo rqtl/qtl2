@@ -34,10 +34,9 @@ map <- insert_pseudomarkers(iron$gmap, step=5)
 probs <- calc_genoprob(iron, map, error_prob=0.002)
 Xcovar <- get_x_covar(iron)
 out <- scan1(probs, iron$pheno[,1], Xcovar=Xcovar)
-\dontrun{operm <- scan1perm(probs, iron$pheno[,1], addcovar=Xcovar,
-                   n_perm=1000, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))}
-\dontshow{operm <- scan1perm(probs, iron$pheno[,1], addcovar=Xcovar,
-                   n_perm=3, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))}
+# run just 3 permutations, as a fast illustration
+operm <- scan1perm(probs, iron$pheno[,1], addcovar=Xcovar,
+                   n_perm=3, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
 
 plot(out, map)
 add_threshold(map, summary(operm), col="violetred", lty=2)

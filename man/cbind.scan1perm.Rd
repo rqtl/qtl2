@@ -44,20 +44,9 @@ covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
-# permutations with genome scan
-\dontrun{
-operm1 <- scan1perm(probs, pheno[,1,drop=FALSE], addcovar=covar, Xcovar=Xcovar,
-                n_perm=1000, perm_Xsp=TRUE,
-                chr_lengths=chr_lengths(iron$gmap))
-operm2 <- scan1perm(probs, pheno[,2,drop=FALSE], addcovar=covar, Xcovar=Xcovar,
-                n_perm=1000, perm_Xsp=TRUE,
-                chr_lengths=chr_lengths(iron$gmap))
-}
-
-\dontshow{
+# permutations with genome scan (just 3 replicates, for illustration)
 operm1 <- scan1perm(probs, pheno[,1,drop=FALSE], addcovar=covar, Xcovar=Xcovar, n_perm=3)
 operm2 <- scan1perm(probs, pheno[,2,drop=FALSE], addcovar=covar, Xcovar=Xcovar, n_perm=3)
-}
 
 operm <- cbind(operm1, operm2)
 

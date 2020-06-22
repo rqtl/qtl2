@@ -130,26 +130,21 @@ Xcovar <- get_x_covar(iron)
 # strata for permutations
 perm_strata <- mat2strata(Xcovar)
 
-# permutations with genome scan
-\dontrun{
+# permutations with genome scan (just 3 replicates, for illustration)
 operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-                   n_perm=1000, perm_Xsp=TRUE, perm_strata=perm_strata,
-                   chr_lengths=chr_lengths(iron$gmap))}
-\dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=2, perm_strata=perm_strata)}
+                   n_perm=3, perm_strata=perm_strata)
 summary(operm)
 
 # leave-one-chromosome-out kinship matrices
 kinship <- calc_kinship(probs, "loco")
 
-# genome scan with a linear mixed model
-\dontrun{
-operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=1000,
+# permutations of genome scan with a linear mixed model
+\donttest{
+operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=3,
                        perm_Xsp=TRUE, perm_strata=perm_strata,
-                       chr_lengths=chr_lengths(map))}
-\dontshow{operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=2,
-                                 perm_Xsp=TRUE, perm_strata=perm_strata,
-                                 chr_lengths=chr_lengths(map))}
+                       chr_lengths=chr_lengths(map))
 summary(operm_lmm)
+}
 
 }
 \references{
