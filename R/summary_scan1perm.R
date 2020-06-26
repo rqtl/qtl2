@@ -2,7 +2,7 @@
 #'
 #' Summarize permutation test results from [scan1perm()], as significance thresholds.
 #'
-#' @param object Output of [scan1perm()]
+#' @param object An object of class `"scanoneperm"`, as output by [scan1perm()]
 #' @param alpha Vector of significance levels
 #'
 #' @return
@@ -53,12 +53,9 @@
 #' names(covar) <- rownames(iron$covar)
 #' Xcovar <- get_x_covar(iron)
 #'
-#' # permutations with genome scan
-#' \dontrun{
+#' # permutations with genome scan (just 3 replicates, for illustration)
 #' operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                    n_perm=1000, perm_Xsp=TRUE,
-#'                    chr_lengths=chr_lengths(iron$gmap))}
-#' \dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3)}
+#'                    n_perm=3)
 #'
 #' summary(operm, alpha=c(0.20, 0.05))
 #'
@@ -147,9 +144,9 @@ summary.scan1perm <-
 #' number of digits that appear.
 #'
 #' @examples
-#' \dontrun{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+#' \dontshow{iron <- iron[,c(10,18,"X")]}
 #'
 #' # insert pseudomarkers into map
 #' map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -163,15 +160,11 @@ summary.scan1perm <-
 #' names(covar) <- rownames(iron$covar)
 #' Xcovar <- get_x_covar(iron)
 #'
-#' # permutations with genome scan
+#' # permutations with genome scan (just 3 replicates, for illustration)
 #' operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                    n_perm=100, perm_Xsp=TRUE,
-#'                    chr_lengths=chr_lengths(iron$gmap))
-#'
-#' summary(operm, alpha=c(0.20, 0.05))
+#'                    n_perm=3)
 #'
 #' print( summary(operm, alpha=c(0.20, 0.05)), digits=8 )
-#' }
 #'
 #' @export
 print.summary.scan1perm <-

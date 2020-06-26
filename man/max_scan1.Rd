@@ -28,7 +28,7 @@ as from \code{\link[=index_snps]{index_snps()}} or \code{\link[=scan1snps]{scan1
 score column, either as a numeric index or column name.
 If \code{NULL}, return maximum for all columns.}
 
-\item{chr}{Option vector of chromosomes to consider.}
+\item{chr}{Optional vector of chromosomes to consider.}
 
 \item{na.rm}{Ignored (take to be TRUE)}
 

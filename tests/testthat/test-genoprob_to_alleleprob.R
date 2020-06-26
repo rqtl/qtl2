@@ -56,14 +56,14 @@ test_that("genoprob_to_alleleprob works for F2", {
 })
 
 test_that("genoprob_to_alleleprob works when multi-core", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
 
     allele_probs <- genoprob_to_alleleprob(probs)
-    allele_probs_mc <- genoprob_to_alleleprob(probs, cores=4)
+    allele_probs_mc <- genoprob_to_alleleprob(probs, cores=2)
     expect_equal(allele_probs_mc, allele_probs)
 
     # following shouldn't really matter, since no calculations are done
@@ -71,7 +71,7 @@ test_that("genoprob_to_alleleprob works when multi-core", {
     map <- insert_pseudomarkers(grav2$gmap, step=1)
     probs <- calc_genoprob(grav2, map, error_prob=0.002)
     allele_probs <- genoprob_to_alleleprob(probs)
-    allele_probs_mc <- genoprob_to_alleleprob(probs, cores=4)
+    allele_probs_mc <- genoprob_to_alleleprob(probs, cores=2)
     expect_equal(allele_probs_mc, allele_probs)
 
 })

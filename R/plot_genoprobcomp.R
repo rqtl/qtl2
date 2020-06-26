@@ -17,6 +17,8 @@
 #' on the x-axis and the chromosome position is on the y-axis.
 #' @param ... Additional graphics parameters passed to [graphics::image()].
 #'
+#' @return None.
+#'
 #' @details
 #' We plot the first set of probabilities in the range white to blue
 #' and the second set in the range white to red and attempt to combine
@@ -27,19 +29,21 @@
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-#' iron <- iron[1,"2"]   # subset to first individual on chr 2
-#' map <- insert_pseudomarkers(iron$gmap, step=1)
+#' iron <- iron[228,"1"]   # subset to one individual on chr 1
+#' map <- insert_pseudomarkers(iron$gmap, step=5)
 #'
-#' # in presence of a genotyping error, how much does error_prob matter?
-#' iron$geno[[1]][1,3] <- 3
+#' # introduce genotype error and look at difference in genotype probabilities
+#' pr_ne <- calc_genoprob(iron, map, error_prob=0.002)
+#' iron$geno[[1]][1,2] <- 3
 #' pr_e <- calc_genoprob(iron, map, error_prob=0.002)
-#' pr_ne <- calc_genoprob(iron, map, error_prob=1e-15)
 #'
 #' # image of probabilities + comparison
+#' \dontshow{old_mfrow <- par("mfrow")}
 #' par(mfrow=c(3,1))
-#' plot_genoprob(pr_e, map, main="Allow errors")
-#' plot_genoprob(pr_ne, map, main="Assume very low error error")
-#' plot_genoprobcomp(pr_e, pr_ne, map, main="Comparison")
+#' plot_genoprob(pr_ne, map, main="No error")
+#' plot_genoprob(pr_e, map, main="With an error")
+#' plot_genoprobcomp(pr_ne, pr_e, map, main="Comparison")
+#' \dontshow{par(mfrow=old_mfrow)}
 #'
 #' @export
 #' @importFrom grDevices rgb

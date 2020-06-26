@@ -2,14 +2,14 @@ context("recode_snps")
 
 test_that("recode_snps works", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     # load example data
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DOex/DOex.zip")
     DOex <- read_cross2(file)
 
-    pr <- calc_genoprob(DOex, error_prob=0.002, cores=0)
+    pr <- calc_genoprob(DOex, error_prob=0.002, cores=2)
     nmis_ind <- n_missing(DOex)
     nmis_mar <- n_missing(DOex, "mar")
 
@@ -20,7 +20,7 @@ test_that("recode_snps works", {
     expect_equal(nmis_mar, n_missing(DOex, "mar"))
 
     # no change in genotype probabilities
-    expect_equal(pr, calc_genoprob(DOex, error_prob=0.002, cores=0))
+    expect_equal(pr, calc_genoprob(DOex, error_prob=0.002, cores=2))
 
     fg <- do.call("cbind", DOex$founder_geno)
     fg[fg!=1 & fg!=3] <- NA

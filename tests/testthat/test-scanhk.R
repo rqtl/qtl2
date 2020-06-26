@@ -76,7 +76,7 @@ test_that("chromosome scan by Haley-Knott works", {
 
 test_that("chromosome scan by Haley-Knott with multiple phenotypes works", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151201)
     # data for chr 6
@@ -154,7 +154,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes works", {
 
 test_that("chromosome scan by Haley-Knott works with additive covariates", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151201)
 
@@ -213,7 +213,7 @@ test_that("chromosome scan by Haley-Knott works with additive covariates", {
 
 test_that("chromosome scan by Haley-Knott with multiple phenotypes and an additive covariate works", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151201)
     # data for chr 6
@@ -275,7 +275,7 @@ test_that("chromosome scan by Haley-Knott with multiple phenotypes and an additi
 
 test_that("chromosome scan by Haley-Knott works with interactive covariates", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151201)
 
@@ -340,7 +340,7 @@ test_that("chromosome scan by Haley-Knott works with interactive covariates", {
 
 test_that("chromosome scan by Haley-Knott with multiple phenotypes and an interactive covariate works", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151201)
     # data for chr 6

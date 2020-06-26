@@ -4,8 +4,10 @@
 #'
 #' Basic summaries of a cross2 object.
 #'
-#' @param cross2 An object of class `"cross2"`. For details, see the
+#' @param cross2 An object of class `"cross2"`, as output by [read_cross2()]. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#'
+#' @return Variously a number, vector of numbers, or vector of character strings.
 #'
 #' @name basic_summaries
 #' @keywords utilities
@@ -314,7 +316,7 @@ function(cross2)
 #'
 #' Print a summary of a cross2 object
 #'
-#' @param x An object of class `"cross2"`. For details, see the
+#' @param x An object of class `"cross2"`, as output by [read_cross2()]. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
 #'
@@ -335,7 +337,7 @@ function(x, ...)
 #'
 #' Summarize a cross2 object
 #'
-#' @param object An object of class `"cross2"`. For details, see the
+#' @param object An object of class `"cross2"`, as output by [read_cross2()]. For details, see the
 #' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #' @param ... Ignored.
 #'

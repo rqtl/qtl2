@@ -3,7 +3,7 @@ context("est_map gives same results w/ lowmem=T or F")
 test_that("est_map2 works with intercross", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-    iron <- iron[,c(2,3,19,"X")]
+    iron <- iron[1:20,c(3,19,"X")]
 
     map_lomem <- est_map(iron, lowmem=TRUE)
     map_himem <- est_map(iron, lowmem=FALSE)
@@ -12,6 +12,8 @@ test_that("est_map2 works with intercross", {
 })
 
 test_that("est_map2 works with RIL by selfing", {
+
+    skip_on_cran()
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
     grav2 <- grav2[,4:5]
@@ -24,6 +26,8 @@ test_that("est_map2 works with RIL by selfing", {
 
 
 test_that("est_map2 works with a backcross with both sexes", {
+
+    skip_on_cran()
 
     library(qtl)
     data(hyper)

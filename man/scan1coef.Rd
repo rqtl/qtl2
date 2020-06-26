@@ -73,7 +73,7 @@ REML; otherwise maximum likelihood.}
 \item{...}{Additional control parameters; see Details;}
 }
 \value{
-A matrix of estimated regression coefficients, of dimension
+An object of class \code{"scan1coef"}: a matrix of estimated regression coefficients, of dimension
 positions x number of effects. The number of effects is
 \code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
 May also contain the following attributes:
@@ -123,6 +123,7 @@ technicality to avoid fitted values exactly at 0 or 1).
 \examples{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+\dontshow{iron <- iron[,c(7,19)] # reduce to chr 7 and 19}
 
 # insert pseudomarkers into map
 map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -137,14 +138,13 @@ covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 
 # calculate coefficients for chromosome 7
-coef <- scan1coef(probs[,7], pheno, addcovar=covar)
+coef <- scan1coef(probs[,"7"], pheno, addcovar=covar)
 
 # leave-one-chromosome-out kinship matrix for chr 7
-kinship7 <- calc_kinship(probs, "loco")[[7]]
+kinship7 <- calc_kinship(probs, "loco")[["7"]]
 
 # calculate coefficients for chromosome 7, adjusting for residual polygenic effect
-coef_pg <- scan1coef(probs[,7], pheno, kinship7, addcovar=covar)
-
+coef_pg <- scan1coef(probs[,"7"], pheno, kinship7, addcovar=covar)
 
 }
 \references{

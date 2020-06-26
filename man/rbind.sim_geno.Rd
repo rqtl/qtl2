@@ -12,7 +12,7 @@
 genotypes.}
 }
 \value{
-A single genotype probability object.
+An object of class \code{"sim_geno"}, like the input; see \code{\link[=sim_geno]{sim_geno()}}.
 }
 \description{
 Join multiple genotype imputation objects, as produced by

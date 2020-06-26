@@ -130,7 +130,7 @@ test_that("insert_pseudomarkers gives distinct pseudomarker names with iron data
 
 test_that("insert_pseudomarkers works with multi-core", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     data(hyper)
     map <- qtl::pull.map(hyper)
@@ -144,7 +144,7 @@ test_that("insert_pseudomarkers works with multi-core", {
         names(pseudomarker_map[[i]]) <- paste0("c", names(map)[i], ".loc", 1:n.pmar)
     }
 
-    combined_map <- insert_pseudomarkers(map, pseudomarker_map = pseudomarker_map, cores=8)
+    combined_map <- insert_pseudomarkers(map, pseudomarker_map = pseudomarker_map, cores=2)
     expect_equal(sapply(map, length) + sapply(pseudomarker_map, length),
                  sapply(combined_map, length))
 

@@ -24,8 +24,9 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
-#' @return A list of two-dimensional arrays of imputed genotypes,
-#' individuals x positions. Also contains three attributes:
+#' @return An object of class `"viterbi"`: a list of two-dimensional
+#' arrays of imputed genotypes, individuals x positions.
+#' Also contains three attributes:
 #' * `crosstype` - The cross type of the input `cross`.
 #' * `is_x_chr` - Logical vector indicating whether chromosomes
 #'     are to be treated as the X chromosome or not, from input `cross`.

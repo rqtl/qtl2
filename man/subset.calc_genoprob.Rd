@@ -21,8 +21,8 @@ string IDs. Numbers are interpreted as character string IDs.}
 \item{...}{Ignored.}
 }
 \value{
-The input genotype probabilities, with the selected
-individuals and/or chromsomes.
+An object of class \code{"calc_genoprob"}, like the input, with the selected
+individuals and/or chromsomes; see \code{\link[=calc_genoprob]{calc_genoprob()}}.
 }
 \description{
 Pull out a specified set of individuals and/or chromosomes from

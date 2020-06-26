@@ -13,7 +13,7 @@ maxlod(scan1_output, map = NULL, chr = NULL)
 \item{map}{A list of vectors of marker positions, as produced by
 \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
-\item{chr}{Option vector of chromosomes to consider.}
+\item{chr}{Optional vector of chromosomes to consider.}
 }
 \value{
 A single number: the maximum LOD score across all columns and positions for
@@ -23,7 +23,6 @@ the selected chromosomes.
 Find overall maximum LOD score in genome scan results, across all positions and columns.
 }
 \examples{
-\dontrun{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
@@ -47,5 +46,4 @@ maxlod(out)
 
 # maximum on chromosome 2
 maxlod(out, map, "2")
-}
 }

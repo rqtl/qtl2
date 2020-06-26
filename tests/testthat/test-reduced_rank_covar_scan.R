@@ -19,15 +19,16 @@ test_that("scan1 etc work with reduced-rank covariates", {
     phe[batch==n_batch,1] <- NA
     phe[batch==1,2] <- NA
 
-    k <- calc_kinship(pr)
-
     # scan1 with no kinship
     out <- scan1(pr, phe, Xcovar=Xcovar, addcovar=X)
     expected <- cbind(scan1(pr, phe[!is.na(phe[,1]),1,drop=FALSE], Xcovar=Xcovar, addcovar=X[,-3]),
                       scan1(pr, phe[!is.na(phe[,2]),2,drop=FALSE], Xcovar=Xcovar, addcovar=X[,-3]))
     expect_equal(out, expected)
 
+    skip_on_cran()
+
     # scan1 with kinship
+    k <- calc_kinship(pr)
     out_k <- scan1(pr, phe, k, Xcovar=Xcovar, addcovar=X)
     expected_k <- cbind(scan1(pr, phe[!is.na(phe[,1]),1,drop=FALSE], k, Xcovar=Xcovar, addcovar=X[,-3]),
                         scan1(pr, phe[!is.na(phe[,2]),2,drop=FALSE], k, Xcovar=Xcovar, addcovar=X[,-3]))

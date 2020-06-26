@@ -49,6 +49,10 @@ maximum SNP association.}
 
 \item{show_all_snps}{If TRUE, expand to show all SNPs.}
 }
+\value{
+Data frame like the input \code{snpinfo} with just the selected
+subset of rows, and with an added column with the LOD score.
+}
 \description{
 Create a table of the top snp associations
 }

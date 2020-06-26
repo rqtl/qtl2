@@ -355,12 +355,12 @@ test_that("fit one for binary traits handles NA case", {
 
 test_that("fit one for binary traits handles NA case with DO data", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DOex/DOex.zip")
     DOex <- read_cross2(file)
-    probs <- calc_genoprob(DOex, error_prob=0.002, cores=0)
+    probs <- calc_genoprob(DOex, error_prob=0.002, cores=2)
     apr <- genoprob_to_alleleprob(probs)
 
     phe <- setNames((DOex$pheno[,1] > quantile(DOex$pheno[,1], 0.95, na.rm=TRUE))*1, rownames(DOex$pheno))

@@ -72,6 +72,9 @@ proportion of the plot that is devoted to the top panel.}
 
 \item{...}{Additional graphics parameters.}
 }
+\value{
+None.
+}
 \description{
 Plot estimated QTL effects along a chromosomes.
 }

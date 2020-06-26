@@ -165,6 +165,8 @@ test_that("scan1coef for backcross", {
 
 test_that("scan1coef for backcross, with contrasts", {
 
+    skip_on_cran()
+
     set.seed(9308594)
 
     library(qtl)
@@ -290,6 +292,8 @@ test_that("scan1coef for backcross, with contrasts", {
 
 test_that("scan1coef for intercross", {
 
+    skip_on_cran()
+
     set.seed(9308594)
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
@@ -408,6 +412,8 @@ test_that("scan1coef for intercross", {
 })
 
 test_that("scan1coef for intercross, with contrasts", {
+
+    skip_on_cran()
 
     set.seed(9308594)
 
@@ -539,6 +545,9 @@ test_that("scan1coef for intercross, with contrasts", {
 
 
 test_that("scan1coef deals with mismatching individuals", {
+
+    skip_on_cran()
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)

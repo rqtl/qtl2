@@ -56,7 +56,7 @@ test_that("scan1max works", {
 
 test_that("scan1max works with multicore", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2") )
     iron <- iron[,c("1", "19", "X")]
@@ -68,44 +68,44 @@ test_that("scan1max works with multicore", {
     k_loco <- calc_kinship(pr, "loco")
     chr <- factor(rep(names(map), sapply(map, length)), names(map))
 
-    out <- scan1(pr, iron$pheno, cores=4)
+    out <- scan1(pr, iron$pheno, cores=2)
     expected <- apply(out, 2, max, na.rm=TRUE)
     expected_bychr <- apply(out, 2, tapply, chr, max, na.rm=TRUE)
     attr(expected, "sample_size") <- attr(expected_bychr, "sample_size") <- attr(out, "sample_size")
-    expect_equal(scan1max(pr, iron$pheno, cores=4), expected)
-    expect_equal(scan1max(pr, iron$pheno, by_chr=TRUE, cores=4), expected_bychr)
+    expect_equal(scan1max(pr, iron$pheno, cores=2), expected)
+    expect_equal(scan1max(pr, iron$pheno, by_chr=TRUE, cores=2), expected_bychr)
 
-    out <- scan1(pr, iron$pheno, Xcovar=Xc, cores=4)
+    out <- scan1(pr, iron$pheno, Xcovar=Xc, cores=2)
     expected <- apply(out, 2, max, na.rm=TRUE)
     expected_bychr <- apply(out, 2, tapply, chr, max, na.rm=TRUE)
     attr(expected, "sample_size") <- attr(expected_bychr, "sample_size") <- attr(out, "sample_size")
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, cores=4), expected)
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, by_chr=TRUE, cores=4), expected_bychr)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, cores=2), expected)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, by_chr=TRUE, cores=2), expected_bychr)
 
-    out <- scan1(pr, iron$pheno, Xcovar=Xc, addcovar=X, cores=4)
+    out <- scan1(pr, iron$pheno, Xcovar=Xc, addcovar=X, cores=2)
     expected <- apply(out, 2, max, na.rm=TRUE)
     expected_bychr <- apply(out, 2, tapply, chr, max, na.rm=TRUE)
     attr(expected, "sample_size") <- attr(expected_bychr, "sample_size") <- attr(out, "sample_size")
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, cores=4), expected)
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, by_chr=TRUE, cores=4), expected_bychr)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, cores=2), expected)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, by_chr=TRUE, cores=2), expected_bychr)
 
-    out <- scan1(pr, iron$pheno, Xcovar=Xc, kinship=k, cores=4)
+    out <- scan1(pr, iron$pheno, Xcovar=Xc, kinship=k, cores=2)
     expected <- apply(out, 2, max, na.rm=TRUE)
     expected_bychr <- apply(out, 2, tapply, chr, max, na.rm=TRUE)
     for(at in c("sample_size", "hsq")) {
         attr(expected, at) <- attr(expected_bychr, at) <- attr(out, at)
     }
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, kinship=k, cores=4), expected)
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, kinship=k, by_chr=TRUE, cores=4), expected_bychr)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, kinship=k, cores=2), expected)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, kinship=k, by_chr=TRUE, cores=2), expected_bychr)
 
-    out <- scan1(pr, iron$pheno, Xcovar=Xc, addcovar=X, kinship=k_loco, cores=4)
+    out <- scan1(pr, iron$pheno, Xcovar=Xc, addcovar=X, kinship=k_loco, cores=2)
     expected <- apply(out, 2, max, na.rm=TRUE)
     expected_bychr <- apply(out, 2, tapply, chr, max, na.rm=TRUE)
     for(at in c("sample_size", "hsq")) {
         attr(expected, at) <- attr(expected_bychr, at) <- attr(out, at)
     }
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, kinship=k_loco, cores=4), expected)
-    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, kinship=k_loco, by_chr=TRUE, cores=4),
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, kinship=k_loco, cores=2), expected)
+    expect_equal(scan1max(pr, iron$pheno, Xcovar=Xc, addcovar=X, kinship=k_loco, by_chr=TRUE, cores=2),
                  expected_bychr)
 
 })

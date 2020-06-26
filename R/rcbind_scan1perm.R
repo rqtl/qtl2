@@ -3,12 +3,12 @@
 #' Row-bind multiple scan1perm objects with the same set of columns
 #'
 #' @param ... A set of permutation results from
-#' [scan1perm()] (objects of class `"scan1perm"`.
+#' [scan1perm()] (objects of class `"scan1perm"`).
 #' They must have the same set of columns. If any include
 #' autosome/X chromosome-specific permutations, they must all be
 #' such.
 #'
-#' @return The combined row-binded input, as a `scan1perm` object.
+#' @return The combined row-binded input, as an object of class `"scan1perm"`; see [scan1perm()].
 #'
 #' @details The aim of this function is to concatenate the results
 #' from multiple runs of a permutation test with
@@ -32,20 +32,9 @@
 #' names(covar) <- rownames(iron$covar)
 #' Xcovar <- get_x_covar(iron)
 #'
-#' # permutations with genome scan
-#' \dontrun{
-#' operm1 <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                 n_perm=500, perm_Xsp=TRUE,
-#'                 chr_lengths=chr_lengths(iron$gmap))
-#' operm2 <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-#'                 n_perm=500, perm_Xsp=TRUE,
-#'                 chr_lengths=chr_lengths(iron$gmap))
-#' }
-#'
-#' \dontshow{
+#' # permutations with genome scan (just 3 replicates, for illustration)
 #' operm1 <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3)
 #' operm2 <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3)
-#' }
 #'
 #' operm <- rbind(operm1, operm2)
 #'
@@ -153,7 +142,7 @@ c.scan1perm <- rbind.scan1perm
 #' `NA`. However, if any include autosome/X
 #' chromosome-specific permutations, they must all be such.
 #'
-#' @return The combined column-binded input, as a `scan1perm` object.
+#' @return The combined column-binded input, as an object of class `"scan1perm"`; see [scan1perm()].
 #'
 #' @details The aim of this function is to concatenate the results
 #' from multiple runs of a permutation test with
@@ -178,20 +167,9 @@ c.scan1perm <- rbind.scan1perm
 #' names(covar) <- rownames(iron$covar)
 #' Xcovar <- get_x_covar(iron)
 #'
-#' # permutations with genome scan
-#' \dontrun{
-#' operm1 <- scan1perm(probs, pheno[,1,drop=FALSE], addcovar=covar, Xcovar=Xcovar,
-#'                 n_perm=1000, perm_Xsp=TRUE,
-#'                 chr_lengths=chr_lengths(iron$gmap))
-#' operm2 <- scan1perm(probs, pheno[,2,drop=FALSE], addcovar=covar, Xcovar=Xcovar,
-#'                 n_perm=1000, perm_Xsp=TRUE,
-#'                 chr_lengths=chr_lengths(iron$gmap))
-#' }
-#'
-#' \dontshow{
+#' # permutations with genome scan (just 3 replicates, for illustration)
 #' operm1 <- scan1perm(probs, pheno[,1,drop=FALSE], addcovar=covar, Xcovar=Xcovar, n_perm=3)
 #' operm2 <- scan1perm(probs, pheno[,2,drop=FALSE], addcovar=covar, Xcovar=Xcovar, n_perm=3)
-#' }
 #'
 #' operm <- cbind(operm1, operm2)
 #'

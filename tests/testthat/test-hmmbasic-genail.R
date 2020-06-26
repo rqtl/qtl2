@@ -60,6 +60,8 @@ test_that("genail init work", {
 
 test_that("genail step works", {
 
+    skip_on_cran()
+
     nf <- 7
     ng <- nf + choose(nf,2)
     alpha_int <- sample(1:10, nf, replace=TRUE)
@@ -124,6 +126,8 @@ test_that("genail geno_names work", {
 })
 
 test_that("genail nrec work", {
+
+    skip_on_cran()
 
     nf <- 19
     ng <- nf + choose(nf, 2)

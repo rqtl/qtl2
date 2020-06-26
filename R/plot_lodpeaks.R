@@ -25,7 +25,7 @@
 #' cluttering the function definition.
 #'
 #' @export
-#' @importFrom graphics plot segments abline par axis title box rect
+#' @importFrom graphics segments abline par axis title box rect
 #'
 #' @return None.
 #'

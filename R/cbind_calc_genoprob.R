@@ -7,7 +7,7 @@
 #' @param ... Genotype probability objects as produced by
 #' [calc_genoprob()]. Must have the same set of individuals.
 #'
-#' @return A single genotype probability object.
+#' @return An object of class `"calc_genoprob"`, like the input; see [calc_genoprob()].
 #'
 #' @seealso [rbind.calc_genoprob()]
 #'

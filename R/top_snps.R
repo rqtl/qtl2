@@ -35,6 +35,9 @@
 #' @param drop Show all SNPs with LOD score within this amount of the
 #' maximum SNP association.
 #'
+#' @return Data frame like the input `snpinfo` with just the selected
+#' subset of rows, and with an added column with the LOD score.
+#'
 #' @examples
 #' \dontrun{
 #' # load example DO data from web

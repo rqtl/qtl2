@@ -42,6 +42,9 @@ on the x-axis and the chromosome position is on the y-axis.}
 
 \item{...}{Additional graphics parameters passed to \code{\link[graphics:image]{graphics::image()}}.}
 }
+\value{
+None.
+}
 \description{
 Plot a comparison of two sets of genotype probabilities for one individual on one chromosome, as a heat map.
 }
@@ -53,19 +56,21 @@ where both are large something like blackish purple.
 }
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-iron <- iron[1,"2"]   # subset to first individual on chr 2
-map <- insert_pseudomarkers(iron$gmap, step=1)
+iron <- iron[228,"1"]   # subset to one individual on chr 1
+map <- insert_pseudomarkers(iron$gmap, step=5)
 
-# in presence of a genotyping error, how much does error_prob matter?
-iron$geno[[1]][1,3] <- 3
+# introduce genotype error and look at difference in genotype probabilities
+pr_ne <- calc_genoprob(iron, map, error_prob=0.002)
+iron$geno[[1]][1,2] <- 3
 pr_e <- calc_genoprob(iron, map, error_prob=0.002)
-pr_ne <- calc_genoprob(iron, map, error_prob=1e-15)
 
 # image of probabilities + comparison
+\dontshow{old_mfrow <- par("mfrow")}
 par(mfrow=c(3,1))
-plot_genoprob(pr_e, map, main="Allow errors")
-plot_genoprob(pr_ne, map, main="Assume very low error error")
-plot_genoprobcomp(pr_e, pr_ne, map, main="Comparison")
+plot_genoprob(pr_ne, map, main="No error")
+plot_genoprob(pr_e, map, main="With an error")
+plot_genoprobcomp(pr_ne, pr_e, map, main="Comparison")
+\dontshow{par(mfrow=old_mfrow)}
 
 }
 \seealso{

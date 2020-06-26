@@ -13,7 +13,7 @@
 #' @param lodcolumn An integer or character string indicating the LOD
 #' score column, either as a numeric index or column name.
 #' If `NULL`, return maximum for all columns.
-#' @param chr Option vector of chromosomes to consider.
+#' @param chr Optional vector of chromosomes to consider.
 #' @param na.rm Ignored (take to be TRUE)
 #' @param ... Ignored
 #'
@@ -162,14 +162,13 @@ max.scan1 <-
 #' [scan1()].
 #' @param map A list of vectors of marker positions, as produced by
 #' [insert_pseudomarkers()].
-#' @param chr Option vector of chromosomes to consider.
+#' @param chr Optional vector of chromosomes to consider.
 #'
 #' @export
 #' @return A single number: the maximum LOD score across all columns and positions for
 #' the selected chromosomes.
 #'
 #' @examples
-#' \dontrun{
 #' # read data
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #'
@@ -193,7 +192,6 @@ max.scan1 <-
 #'
 #' # maximum on chromosome 2
 #' maxlod(out, map, "2")
-#' }
 maxlod <-
     function(scan1_output, map=NULL, chr=NULL)
 {

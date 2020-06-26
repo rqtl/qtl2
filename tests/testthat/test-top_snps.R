@@ -1,7 +1,7 @@
 context("top snps from snp association analysis")
 
 test_that("top_snps() works", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # load example DO data from web
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
@@ -12,7 +12,7 @@ test_that("top_snps() works", {
     DOex <- DOex[,"2"]
 
     # calculate genotype probabilities and convert to allele probabilities
-    pr <- calc_genoprob(DOex, error_prob=0.002, cores=0) # multi-core
+    pr <- calc_genoprob(DOex, error_prob=0.002, cores=2) # multi-core
     apr <- genoprob_to_alleleprob(pr)
 
     # download snp info from web

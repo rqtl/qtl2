@@ -24,13 +24,12 @@ score columns, either as a numeric indexes or column names.}
 \item{...}{Ignored}
 }
 \value{
-Object of same form as input, but subset by chromosome and/or column.
+Object of class \code{"scan1"}, like the input, but subset by chromosome and/or column. See \code{\link[=scan1]{scan1()}}.
 }
 \description{
 Subset the output of \code{\link[=scan1]{scan1()}} by chromosome or column
 }
 \examples{
-\dontrun{
 # read data
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
@@ -57,5 +56,4 @@ out_c2_spleen <- subset(out, map, "2", "spleen")
 
 # all positions, but just the "liver" column
 out_spleen <- subset(out, map, lodcolumn="spleen")
-}
 }

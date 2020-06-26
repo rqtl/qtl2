@@ -17,6 +17,8 @@
 #'     fraction of the distance between them.
 #' @param ... Additional graphics parameters
 #'
+#' @return None.
+#'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For
 #' example, `bgcolor` to control the background color.
@@ -59,7 +61,7 @@
 #' }
 #'
 #' @export
-#' @importFrom graphics plot rect par axis title abline box
+#' @importFrom graphics rect par axis title abline box
 plot_onegeno <-
     function(geno, map, ind=1, chr=NULL,
              col=NULL, na_col="white",

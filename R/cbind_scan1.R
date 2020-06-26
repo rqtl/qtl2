@@ -3,11 +3,11 @@
 #' Join multiple [scan1()] results for different phenotypes;
 #' must have the same map.
 #'
-#' @param ... Genome scan objects as produced by [scan1()].
+#' @param ... Genome scan objects of class `"scan1"`, as produced by [scan1()].
 #' Must have the same map.
 #'
-#' @return A single genome scan object with the lod score columns
-#' combined as multiple columns.
+#' @return An object of class `"scan1", like the inputs, but with the lod score columns
+#' from the inputs combined as multiple columns in a single object.
 #'
 #' @details If components `addcovar()`, `Xcovar`,
 #' `intcovar`, `weights` do not match between objects, we

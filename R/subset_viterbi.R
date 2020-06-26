@@ -12,8 +12,8 @@
 #' string IDs. Numbers are interpreted as character string IDs.
 #' @param ... Ignored.
 #'
-#' @return The input viterbi object, with the selected
-#' individuals and/or chromsomes.
+#' @return An object of class `"viterbi"`, like the input, with the
+#' selected individuals and/or chromosomes; see [viterbi()].
 #'
 #' @export
 #' @keywords utilities

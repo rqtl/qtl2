@@ -11,7 +11,7 @@
 \code{\link[=calc_genoprob]{calc_genoprob()}}. Must have the same set of individuals.}
 }
 \value{
-A single genotype probability object.
+An object of class \code{"calc_genoprob"}, like the input; see \code{\link[=calc_genoprob]{calc_genoprob()}}.
 }
 \description{
 Join multiple genotype probability objects, as produced by

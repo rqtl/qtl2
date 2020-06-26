@@ -21,8 +21,8 @@ string IDs. Numbers are interpreted as character string IDs.}
 \item{...}{Ignored.}
 }
 \value{
-The input imputed genotypes, with the selected
-individuals and/or chromsomes.
+An object of class \code{"sim_geno"}, like the input
+with the selected individuals and/or chromsomes; see \code{\link[=sim_geno]{sim_geno()}}.
 }
 \description{
 Pull out a specified set of individuals and/or chromosomes from

@@ -205,7 +205,7 @@ test_that("scan1 for backcross with one phenotype", {
 
 test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -325,7 +325,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
 test_that("scan1 works with NAs in the covariates", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -372,7 +372,7 @@ test_that("scan1 works with NAs in the covariates", {
 
 test_that("scan1 aligns the individuals", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -459,7 +459,7 @@ test_that("scan1 aligns the individuals", {
 
 
 test_that("multi-core scan1 works", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -485,9 +485,7 @@ test_that("multi-core scan1 works", {
 
     # scan
     out <- scan1(pr, y)
-    out_multicore <- scan1(pr, y, cores=4)
-    expect_equal(out_multicore, out)
-    out_multicore <- scan1(pr, y, cores=0) # maximum cores
+    out_multicore <- scan1(pr, y, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
@@ -496,7 +494,7 @@ test_that("multi-core scan1 works", {
     names(w) <- rownames(y)
 
     out <- scan1(pr, y, weights=w)
-    out_multicore <- scan1(pr, y, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
@@ -505,33 +503,33 @@ test_that("multi-core scan1 works", {
     names(x) <- rownames(y)
 
     out <- scan1(pr, y, addcovar=x)
-    out_multicore <- scan1(pr, y, addcovar=x, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
     # additive covariate + weights
     out <- scan1(pr, y, addcovar=x, weights=w)
-    out_multicore <- scan1(pr, y, addcovar=x, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
     # interactive covariate
     out <- scan1(pr, y, addcovar=x, intcovar=x)
-    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, cores=2)
     expect_equal(out_multicore, out)
 
     # auto add intcovar?
-    out_multicore <- scan1(pr, y, intcovar=x, cores=4)
+    out_multicore <- scan1(pr, y, intcovar=x, cores=2)
     expect_equal(out_multicore, out)
 
     ##############################
     # interactive covariate + weights
     out <- scan1(pr, y, addcovar=x, intcovar=x, weights=w)
-    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, addcovar=x, intcovar=x, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
     # auto add intcovar?
-    out_multicore <- scan1(pr, y, intcovar=x, weights=w, cores=4)
+    out_multicore <- scan1(pr, y, intcovar=x, weights=w, cores=2)
     expect_equal(out_multicore, out)
 
 })
@@ -539,7 +537,7 @@ test_that("multi-core scan1 works", {
 
 test_that("scan1 LOD results don't depend on scale of x and y", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -612,7 +610,7 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
 
 test_that("scan1 deals with mismatching individuals", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -635,7 +633,7 @@ test_that("scan1 deals with mismatching individuals", {
 
 test_that("scan1 can handle decomposed kinship matrix", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 

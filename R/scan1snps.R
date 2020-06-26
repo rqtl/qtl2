@@ -38,7 +38,7 @@
 #' @param end Position defining the end of an interval to scan.
 #' Should be a single number, and if provided, `chr` should also
 #' have length 1.
-#' @param snpinfo Option data frame of SNPs to scan; if provided,
+#' @param snpinfo Optional data frame of SNPs to scan; if provided,
 #' `query_func`, `chr`, `start`, and `end` are ignored. Should
 #' contain the following columns:
 #' * `chr` - Character string or factor with chromosome

@@ -3,11 +3,11 @@
 #' Join multiple [scan1()] results for different
 #' chromosomes; must have the same set of lod score column.
 #'
-#' @param ... Genome scan objects as produced by [scan1()].
+#' @param ... Genome scan objects of class `"scan1"`, as produced by [scan1()].
 #' Must have the same lod score columns.
 #'
-#' @return A single genome scan object with the results for
-#' different sets of chromosomes combined.
+#' @return An object of class `"scan1", like the inputs, but with
+#' the results for different sets of chromosomes combined.
 #'
 #' @details If components `addcovar`, `Xcovar`,
 #' `intcovar`, `weights`, `sample_size` do not match

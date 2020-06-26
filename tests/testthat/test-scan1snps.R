@@ -2,7 +2,7 @@ context("snp association scan")
 
 test_that("scan1snps works", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     RNGkind("Mersenne-Twister") # make sure we're using the standard RNG
     set.seed(20180727)

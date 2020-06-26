@@ -23,7 +23,7 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
-#' @return A list of three-dimensional arrays of probabilities,
+#' @return An object of class `"calc_genoprob"`: a list of three-dimensional arrays of probabilities,
 #'     individuals x genotypes x positions. (Note that the arrangement is
 #'     different from R/qtl.) Also contains four attributes:
 #' * `crosstype` - The cross type of the input `cross`.

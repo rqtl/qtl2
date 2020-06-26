@@ -17,6 +17,8 @@
 #' on the x-axis and the chromosome position is on the y-axis.
 #' @param ... Additional graphics parameters passed to [graphics::image()].
 #'
+#' @return None.
+#'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For
 #' example, `hlines`, `hlines_col`, `hlines_lwd`, and `hlines_lty` to

@@ -62,7 +62,7 @@ produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 \item{...}{Additional control parameters; see Details.}
 }
 \value{
-A matrix of LOD scores, positions x phenotypes.
+An object of class \code{"scan1"}: a matrix of LOD scores, positions x phenotypes.
 Also contains one or more of the following attributes:
 \itemize{
 \item \code{sample_size} - Vector of sample sizes used for each

@@ -83,6 +83,8 @@ test_that("find_peaks works", {
 
     expect_equal(find_peaks(out, map, 3, 1, 0.9), expected_3_1_lodint)
 
+    skip_on_cran()
+
     # sorting
     expect_equal(find_peaks(out, map, 3, 1, 0.9, sort_by="pos"), expected_3_1_lodint[c(1,2,3,9,4,10,5,6,7,8),])
     expect_equal(find_peaks(out, map, 3, 1, 0.9, sort_by="lod"), expected_3_1_lodint[c(10,7,9,1,3,6,2,4,5,8),])
@@ -223,6 +225,8 @@ test_that("bayes_int works", {
 
 test_that("lod_int and bayes_int give same results as R/qtl", {
 
+    skip_on_cran()
+
     out_rqtl <- data.frame(chr=map2chr(map),
                            pos=map2pos(map),
                            unclass(out))
@@ -265,7 +269,7 @@ test_that("lod_int and bayes_int give same results as R/qtl", {
 
 test_that("find_peaks works with snpinfo table", {
 
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # load example data and calculate genotype probabilities
     file <- paste0("https://raw.githubusercontent.com/rqtl/",

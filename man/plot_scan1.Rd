@@ -10,7 +10,7 @@ plot_scan1(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = NULL, ...)
 \method{plot}{scan1}(x, map, lodcolumn = 1, chr = NULL, add = FALSE, gap = NULL, ...)
 }
 \arguments{
-\item{x}{Output of \code{\link[=scan1]{scan1()}}.}
+\item{x}{An object of class \code{"scan1"}, as output by \code{\link[=scan1]{scan1()}}.}
 
 \item{map}{A list of vectors of marker positions, as produced by
 \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}

@@ -8,7 +8,7 @@
 #' [calc_genoprob()]. Must have the same set of markers and
 #' genotypes.
 #'
-#' @return A single genotype probability object.
+#' @return An object of class `"calc_genoprob"`, like the input; see [calc_genoprob()].
 #'
 #' @seealso [cbind.calc_genoprob()]
 #'

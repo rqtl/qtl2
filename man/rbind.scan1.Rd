@@ -7,12 +7,12 @@
 \method{rbind}{scan1}(...)
 }
 \arguments{
-\item{...}{Genome scan objects as produced by \code{\link[=scan1]{scan1()}}.
+\item{...}{Genome scan objects of class \code{"scan1"}, as produced by \code{\link[=scan1]{scan1()}}.
 Must have the same lod score columns.}
 }
 \value{
-A single genome scan object with the results for
-different sets of chromosomes combined.
+An object of class `"scan1", like the inputs, but with
+the results for different sets of chromosomes combined.
 }
 \description{
 Join multiple \code{\link[=scan1]{scan1()}} results for different

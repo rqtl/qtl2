@@ -152,6 +152,8 @@ test_that("Phase-known DO emit works", {
 
 test_that("Phase-known DO step works", {
 
+    skip_on_cran()
+
     # autosome
     ng <- 64
     trmat <- matrix(nrow=ng, ncol=ng)
@@ -218,6 +220,8 @@ test_that("Phase-known DO step works", {
 })
 
 test_that("nrec works", {
+
+    skip_on_cran()
 
     # X chr male
     for(i in 64+(1:8)) {

@@ -47,7 +47,11 @@ of length > 0, it is taken to be the actual jitter amounts
 
 \item{omit_points}{If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).}
 
-\item{...}{Additional graphics parameters, passed to \code{\link[graphics:plot]{graphics::plot()}}.}
+\item{...}{Additional graphics parameters, passed to \code{\link[base:plot]{base::plot()}}.}
+}
+\value{
+(Invisibly) A matrix with rows being the genotype groups
+and columns for the means and (if \code{SEmult} is specified) the SEs.
 }
 \description{
 Plot phenotype vs genotype for a single putative QTL and a single phenotype.

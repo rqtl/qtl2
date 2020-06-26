@@ -43,6 +43,7 @@ calc_blup <-
 
 
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+iron <- iron[c(1:30, 190:210),]
 phe <- iron$pheno[,1,drop=FALSE]
 
 test_that("scan1blup works with no kinship matrix", {
@@ -79,6 +80,8 @@ test_that("scan1blup works with no kinship matrix", {
 
 test_that("scan1blup works with kinship matrix", {
 
+    skip_on_cran()
+
     pr <- calc_genoprob(iron)
     K <- calc_kinship(pr[,c(1:15,17:19,"X")])
     pr <- pr[,"16"]
@@ -102,7 +105,7 @@ test_that("scan1blup works with kinship matrix", {
 
 test_that("scan1blup works with kinship matrix on another chromosome", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     pr <- calc_genoprob(iron)
     K <- calc_kinship(pr[,c(1:10,12:19,"X")])
@@ -127,7 +130,7 @@ test_that("scan1blup works with kinship matrix on another chromosome", {
 
 test_that("scan1blup deals with mismatching individuals", {
 
-    if(isnt_karl()) skip("This test only run locally")
+    skip_if(isnt_karl(), "This test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)

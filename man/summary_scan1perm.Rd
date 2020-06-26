@@ -10,7 +10,7 @@ summary_scan1perm(object, alpha = 0.05)
 \method{summary}{scan1perm}(object, alpha = 0.05, ...)
 }
 \arguments{
-\item{object}{Output of \code{\link[=scan1perm]{scan1perm()}}}
+\item{object}{An object of class \code{"scanoneperm"}, as output by \code{\link[=scan1perm]{scan1perm()}}}
 
 \item{alpha}{Vector of significance levels}
 
@@ -62,12 +62,9 @@ covar <- match(iron$covar$sex, c("f", "m")) # make numeric
 names(covar) <- rownames(iron$covar)
 Xcovar <- get_x_covar(iron)
 
-# permutations with genome scan
-\dontrun{
+# permutations with genome scan (just 3 replicates, for illustration)
 operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar,
-                   n_perm=1000, perm_Xsp=TRUE,
-                   chr_lengths=chr_lengths(iron$gmap))}
-\dontshow{operm <- scan1perm(probs, pheno, addcovar=covar, Xcovar=Xcovar, n_perm=3)}
+                   n_perm=3)
 
 summary(operm, alpha=c(0.20, 0.05))
 

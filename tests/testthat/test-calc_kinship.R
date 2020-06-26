@@ -3,9 +3,10 @@ context("Calculation of kinship matrix")
 test_that("calc_kinship works for RIL", {
 
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    grav2 <- grav2[1:10,c(1,3)]
+    map <- insert_pseudomarkers(grav2$gmap, step=5)
     probs <- calc_genoprob(grav2, map, error_prob=0.002)
-    grid <- calc_grid(grav2$gmap, step=1)
+    grid <- calc_grid(grav2$gmap, step=5)
     probs_sub <- probs_to_grid(probs, grid)
     sim <- calc_kinship(probs_sub)
 
@@ -35,9 +36,10 @@ test_that("calc_kinship works for RIL", {
 test_that("calc_kinship works for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-    map <- insert_pseudomarkers(iron$gmap, step=1)
+    iron <- iron[1:10,c(1,3)]
+    map <- insert_pseudomarkers(iron$gmap, step=5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
-    grid <- calc_grid(iron$gmap, step=1)
+    grid <- calc_grid(iron$gmap, step=5)
     probs_sub <- probs_to_grid(probs, grid)
     sim <- calc_kinship(probs_sub, omit_x=TRUE)
 
@@ -164,9 +166,10 @@ test_that("calc_kinship works for F2", {
 test_that("calc_kinship chr & loco work for F2", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-    map <- insert_pseudomarkers(iron$gmap, step=1)
+    iron <- iron[1:10, c(1,3)]
+    map <- insert_pseudomarkers(iron$gmap, step=5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
-    grid <- calc_grid(iron$gmap, step=1)
+    grid <- calc_grid(iron$gmap, step=5)
     probs_sub <- probs_to_grid(probs, grid)
     sim <- calc_kinship(probs_sub, omit_x=TRUE)
 
@@ -175,9 +178,9 @@ test_that("calc_kinship chr & loco work for F2", {
 
     # combine results from sim_chr and compare to sim
     sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")
-    for(i in 2:19)
+    for(i in seq_len(n_chr(iron))[-1])
         sim_combchr <- sim_combchr + sim_chr[[i]]*attr(sim_chr[[i]], "n_pos")
-    totpos <- sum(sapply(sim_chr[1:19], attr, "n_pos"))
+    totpos <- sum(sapply(sim_chr[seq_len(n_chr(iron))], attr, "n_pos"))
     sim_combchr <- sim_combchr/totpos
     attr(sim_combchr, "n_pos") <- totpos
     expect_equal(sim_combchr, sim)
@@ -210,9 +213,10 @@ test_that("calc_kinship chr & loco work for F2", {
 test_that("calc_kinship chr & loco work for F2, when including X", {
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
-    map <- insert_pseudomarkers(iron$gmap, step=1)
+    iron <- iron[1:10,c(1,3,"X")]
+    map <- insert_pseudomarkers(iron$gmap, step=5)
     probs <- calc_genoprob(iron, map, error_prob=0.002)
-    grid <- calc_grid(iron$gmap, step=1)
+    grid <- calc_grid(iron$gmap, step=5)
     probs_sub <- probs_to_grid(probs, grid)
     sim <- calc_kinship(probs_sub, omit_x=FALSE) # *not* omitting X chr
 
@@ -221,7 +225,7 @@ test_that("calc_kinship chr & loco work for F2, when including X", {
 
     # combine results from sim_chr and compare to sim
     sim_combchr <- sim_chr[[1]]*attr(sim_chr[[1]], "n_pos")
-    for(i in 2:20)
+    for(i in seq_len(n_chr(iron))[-1])
         sim_combchr <- sim_combchr + sim_chr[[i]]*attr(sim_chr[[i]], "n_pos")
     totpos <- sum(sapply(sim_chr, attr, "n_pos"))
     sim_combchr <- sim_combchr/totpos
@@ -243,7 +247,7 @@ test_that("calc_kinship chr & loco work for F2, when including X", {
 
 
 test_that("calc_kinship chr & loco work when multi-core", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)
@@ -252,15 +256,15 @@ test_that("calc_kinship chr & loco work when multi-core", {
     probs_sub <- probs_to_grid(probs, grid)
 
     sim_chr <- calc_kinship(probs_sub, "chr")
-    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=4)
+    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=2)
     expect_equal(sim_chr_mc, sim_chr)
 
     sim_loco <- calc_kinship(probs_sub, "loco")
-    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=4)
+    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=2)
     expect_equal(sim_loco_mc, sim_loco)
 
     sim_loco <- calc_kinship(probs_sub, "loco", omit_x=FALSE)
-    sim_loco_mc <- calc_kinship(probs_sub, "loco", omit_x=FALSE, cores=4)
+    sim_loco_mc <- calc_kinship(probs_sub, "loco", omit_x=FALSE, cores=2)
     expect_equal(sim_loco_mc, sim_loco)
 
 
@@ -272,11 +276,11 @@ test_that("calc_kinship chr & loco work when multi-core", {
     probs_sub <- probs_to_grid(probs, grid)
 
     sim_chr <- calc_kinship(probs_sub, "chr")
-    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=4)
+    sim_chr_mc <- calc_kinship(probs_sub, "chr", cores=2)
     expect_equal(sim_chr_mc, sim_chr)
 
     sim_loco <- calc_kinship(probs_sub, "loco")
-    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=4)
+    sim_loco_mc <- calc_kinship(probs_sub, "loco", cores=2)
     expect_equal(sim_loco_mc, sim_loco)
 
 })

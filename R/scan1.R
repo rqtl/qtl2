@@ -33,7 +33,7 @@
 #' produced by [parallel::makeCluster()].
 #' @param ... Additional control parameters; see Details.
 #'
-#' @return A matrix of LOD scores, positions x phenotypes.
+#' @return An object of class `"scan1"`: a matrix of LOD scores, positions x phenotypes.
 #' Also contains one or more of the following attributes:
 #' * `sample_size` - Vector of sample sizes used for each
 #'    phenotype

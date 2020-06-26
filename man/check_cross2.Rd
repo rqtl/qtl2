@@ -7,7 +7,7 @@
 check_cross2(cross2)
 }
 \arguments{
-\item{cross2}{An object of class \code{"cross2"}. For details, see the
+\item{cross2}{An object of class \code{"cross2"}, as output by \code{\link[=read_cross2]{read_cross2()}}. For details, see the
 \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 }
 \value{

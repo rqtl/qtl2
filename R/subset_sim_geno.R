@@ -12,8 +12,8 @@
 #' string IDs. Numbers are interpreted as character string IDs.
 #' @param ... Ignored.
 #'
-#' @return The input imputed genotypes, with the selected
-#' individuals and/or chromsomes.
+#' @return An object of class `"sim_geno"`, like the input
+#' with the selected individuals and/or chromsomes; see [sim_geno()].
 #'
 #' @export
 #' @keywords utilities

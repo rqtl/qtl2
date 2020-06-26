@@ -62,6 +62,8 @@ test_that("sim_geno riself", {
 
 test_that("sim_geno f2", {
 
+    skip_on_cran()
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 
     RNGkind("Mersenne-Twister")
@@ -90,7 +92,7 @@ test_that("sim_geno f2", {
 })
 
 test_that("sim_geno works when multi-core", {
-    if(isnt_karl()) skip("this test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # can't really tell if I'm getting the same answers as w/o multi-core
     # but I can tell if I get the same thing twise, when run from same seed
@@ -102,17 +104,17 @@ test_that("sim_geno works when multi-core", {
 
     RNGkind("L'Ecuyer-CMRG")
     set.seed(20151209)
-    dr <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=4)
+    dr <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=2)
     set.seed(20151209)
-    dr_mc <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=4)
+    dr_mc <- sim_geno(hyper2, n_draws=2, error_prob=0.002, cores=2)
     expect_equal(dr_mc, dr)
 
     data(listeria)
     listeria2 <- convert2cross2(listeria)
     set.seed(20151209)
-    dr <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=4)
+    dr <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=2)
     set.seed(20151209)
-    dr_mc <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=4)
+    dr_mc <- sim_geno(listeria2, n_draws=2, error_prob=0.002, cores=2)
     expect_equal(dr_mc, dr)
 
     # re-set RNGkind
@@ -121,6 +123,8 @@ test_that("sim_geno works when multi-core", {
 
 
 test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
+
+    skip_on_cran()
 
     RNGkind("Mersenne-Twister")
     grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
@@ -135,6 +139,8 @@ test_that("sim_geno riself gives same result for lowmem=TRUE and =FALSE", {
 })
 
 test_that("sim_geno f2 gives same result for lowmem=TRUE and =FALSE", {
+
+    skip_on_cran()
 
     RNGkind("Mersenne-Twister")
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))

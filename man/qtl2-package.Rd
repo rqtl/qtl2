@@ -6,9 +6,9 @@
 \alias{qtl2-package}
 \title{qtl2: Quantitative Trait Locus Mapping in Experimental Crosses}
 \description{
-R/qtl2 provides a set of tools to perform quantitative
+Provides a set of tools to perform quantitative
     trait locus (QTL) analysis in experimental crosses. It is a
-    reimplementation of the R/qtl package to better handle
+    reimplementation of the 'R/qtl' package to better handle
     high-dimensional data and complex cross designs.
     Broman et al. (2018) <doi:10.1534/genetics.118.301595>.
 }
@@ -34,6 +34,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Karl W Broman \email{broman@wisc.edu} (\href{https://orcid.org/0000-0002-4914-6671}{ORCID})
+
+Other contributors:
+\itemize{
+  \item R Core Team [contributor]
+}
 
 }
 \keyword{internal}

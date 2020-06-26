@@ -50,6 +50,9 @@ on the x-axis and the chromosome position is on the y-axis.}
 \code{\link[=genoprob_to_alleleprob]{genoprob_to_alleleprob()}}). (For the S3 type plot
 function, this has to be called \code{x}.)}
 }
+\value{
+None.
+}
 \description{
 Plot the genotype probabilities for one individual on one chromosome, as a heat map.
 }

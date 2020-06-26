@@ -6,7 +6,7 @@
 #' @param ... Imputed genotype objects as produced by
 #' [viterbi()]. Must have the same set of individuals.
 #'
-#' @return A single imputed genotype object.
+#' @return An object of class `"viterbi"`, like the input; see [viterbi()].
 #'
 #' @seealso [rbind.viterbi()], [viterbi()]
 #'
