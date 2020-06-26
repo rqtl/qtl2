@@ -5,6 +5,9 @@ tagline: QTL analysis for high-dimensional data and complex crosses
 description: R/qtl2, a reimplementation of R/qtl to better handle high-dimensional data and complex cross designs
 ---
 
+[![Build Status](https://travis-ci.org/rqtl/qtl2.svg?branch=master)](https://travis-ci.org/rqtl/qtl2)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2)](https://cran.r-project.org/package=qtl2)
+
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
@@ -23,48 +26,15 @@ for the discussion/questions about the original R/qtl only.)
 
 ---
 
-### Current version
-
-The latest release of R/qtl2 is [**0.22** (2020-05-21)](https://github.com/rqtl/qtl2/releases/tag/0.22).
-
----
-
 ### Installation
 
-R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](https://rqtl.org).
-Make sure you have the latest version of [R](https://cran.r-project.org).
+Install R/qtl2 from [CRAN](https://cran.r-project.org):
 
-    install.packages("qtl2", repos="https://rqtl.org/qtl2cran")
+    install.packages("qtl2")
 
-_Alternatively_, you can install R/qtl2 from its source on
-[GitHub](https://github.com/rqtl). (But note that compiling the C++
-code can be rather slow.)
-
-On _Windows_, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
-
-On _Mac OS X_, you'll need the
-[command-line developer tools](https://mac-how-to.gadgethacks.com/how-to/install-command-line-developer-tools-without-xcode-0168115/).
-
-You then need to install the
-[devtools](https://github.com/hadley/devtools) package, plus a set of
-package dependencies: [yaml](https://cran.r-project.org/package=yaml),
-[jsonlite](https://cran.r-project.org/package=jsonlite),
-[data.table](https://cran.r-project.org/package=data.table),
-[RcppEigen](https://github.com/RcppCore/RcppEigen),
-[RSQLite](https://github.com/rstats-db/RSQLite), and
-[qtl](https://rqtl.org).
-(Additional, secondary dependencies will also be installed.)
-
-    install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))
-
-Finally, install R/qtl2 using `devtools::install_github()`.
-
-    library(devtools)
-    install_github("rqtl/qtl2")
+The latest release of R/qtl2 is [**0.22-8** (2020-06-22)](https://github.com/rqtl/qtl2/releases/tag/0.22-8).
 
 ---
-
 
 ### Documentation
 
