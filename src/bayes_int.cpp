@@ -60,7 +60,7 @@ std::vector<int> bayes_int_plain(const NumericVector& lod,
     //  10^LOD * interval_width
     std::vector<area> areas(n);
     for(int i=0; i<n; i++) {
-        areas[i].area = (lod[i]*log(10) + lwidth[i]);
+        areas[i].area = (lod[i]*log(10.0) + lwidth[i]);
         areas[i].lod = lod[i];
         areas[i].index = i;
     }
@@ -142,7 +142,7 @@ std::vector<int> bayes_int_contained(const NumericVector& lod,
     for(int i=0; i<n_used; i++) {
         if(start+i != peakindex && lod[start+i] == maxlod)
             maxpos.push_back(peakindex); // finding multiple locations sharing the max LOD
-        areas[i].area = (lod[start+i]*log(10) + lwidth[start+i]);
+        areas[i].area = (lod[start+i]*log(10.0) + lwidth[start+i]);
         areas[i].lod = lod[start+i];
         areas[i].index = start + i;
     }

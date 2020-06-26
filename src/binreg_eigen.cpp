@@ -35,8 +35,8 @@ double calc_ll_binreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
 
     for(int ind=0; ind<n_ind; ind++) {
         pi[ind] = (y[ind] + 0.5)/2;
-        wt[ind] = sqrt(pi[ind] * (1-pi[ind]));
-        eta[ind] = log(pi[ind]) - log(1-pi[ind]);
+        wt[ind] = sqrt(pi[ind] * (1.0-pi[ind]));
+        eta[ind] = log(pi[ind]) - log(1.0-pi[ind]);
         z[ind] = eta[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
         curllik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
     }
@@ -107,8 +107,8 @@ double calc_ll_binreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
 
     for(int ind=0; ind<n_ind; ind++) {
         pi[ind] = (y[ind] + 0.5)/2;
-        wt[ind] = sqrt(pi[ind] * (1-pi[ind]));
-        eta[ind] = log(pi[ind]) - log(1-pi[ind]);
+        wt[ind] = sqrt(pi[ind] * (1.0-pi[ind]));
+        eta[ind] = log(pi[ind]) - log(1.0-pi[ind]);
         z[ind] = eta[ind]*wt[ind] + (y[ind] - pi[ind])/wt[ind];
         curllik += y[ind] * log10(pi[ind]) + (1.0-y[ind])*log10(1.0-pi[ind]);
     }
