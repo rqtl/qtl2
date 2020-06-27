@@ -1,6 +1,14 @@
+## qtl2 0.22-9 (2020-06-26)
+
+### Bug fixes
+
+- Fixed compilation error on Solaris on CRAN, due to a log(10).
+  Solaris refuses to do log(int), I guess.
+
+
 ## qtl2 0.22-8 (2020-06-22)
 
-## Minor changes
+### Minor changes
 
 - Added recognition of the R Core Team as a contributor, as the
   package includes a copy of code for Brent's method for univariate

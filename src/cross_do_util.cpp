@@ -373,7 +373,7 @@ const double DOstep_auto(int left, int right, double r, int s,
         else {
             if((left1==right1 && left2==right2) ||
                (left1==right2 && left2==right1)) { // AB -> AB
-                return( log(recprob*recprob/49.0 + (1-recprob)*(1-recprob)) );
+                return( log(recprob*recprob/49.0 + (1.0-recprob)*(1.0-recprob)) );
             }
             else if(left1==right1 || left1==right2 ||
                     left2==right1 || left2==right2) { // AB -> AC
@@ -439,7 +439,7 @@ const double DOstep_femX(int left, int right, double r, int s,
         else {
             if((left1==right1 && left2==right2) ||
                (left1==right2 && left2==right1)) { // AB -> AB
-                return( log(recprob*recprob/49.0 + (1-recprob)*(1-recprob)) );
+                return( log(recprob*recprob/49.0 + (1.0-recprob)*(1.0-recprob)) );
             }
             else if(left1==right1 || left1==right2 ||
                     left2==right1 || left2==right2) { // AB -> AC
@@ -533,7 +533,7 @@ const double DOPKstep_auto(int left, int right, double r, int s,
         }
         else {
             if(left1==right1 && left2==right2) { // AB -> AB
-                return( 2.0*log(1-recprob) );
+                return( 2.0*log(1.0-recprob) );
             }
             else if(left1==right2 && left2==right1) { // AB -> BA
                 return( 2.0*log(recprob) - log(49.0) );
@@ -602,7 +602,7 @@ const double DOPKstep_femX(int left, int right, double r, int s,
         }
         else {
             if(left1==right1 && left2==right2) { // AB -> AB
-                return( 2.0*log(1-recprob) );
+                return( 2.0*log(1.0-recprob) );
             }
             else if(left1==right2 && left2==right1) { // AB -> BA
                 return( 2.0*log(recprob) - log(49.0) );

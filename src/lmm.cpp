@@ -189,7 +189,7 @@ struct lmm_fit calcLL(const double hsq, const VectorXd& Kva, const VectorXd& y,
         if(NumericVector::is_na(logdetXpX_val)) // need to calculate it
             logdetXpX_val = calc_logdetXpX(X);
 
-        loglik += 0.5*(p*log(2 * M_PI * ml_soln.sigmasq) + logdetXpX_val - ml_soln.logdetXSX);
+        loglik += 0.5*(p*log(2.0 * M_PI * ml_soln.sigmasq) + logdetXpX_val - ml_soln.logdetXSX);
     }
 
     ml_soln.loglik = loglik;
