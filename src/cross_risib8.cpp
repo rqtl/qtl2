@@ -289,7 +289,7 @@ const double RISIB8::est_rec_frac(const Rcpp::NumericVector& gamma, const bool i
         }
 
         // solved via maxima
-        return (4*c + b+ 5*a - sqrt(16*c*c + 8*(5*a-b)*c + b*b + 10*a*b + 25*a*a))/8/c;
+        return (4.0*c + b+ 5.0*a - sqrt(16.0*c*c + 8.0*(5.0*a-b)*c + b*b + 10.0*a*b + 25.0*a*a))/8.0/c;
     }
 }
 

@@ -110,7 +110,7 @@ const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr
 
         // the MLE is solution to a quadratic equation
         return (2.0*denom - sum00 - 3.0*sum01  -
-                (sqrt(sum01*sum01 + (-2*sum00-4*denom)*sum01 + sum00*sum00 -
+                (sqrt(sum01*sum01 + (-2.0*sum00-4.0*denom)*sum01 + sum00*sum00 -
                       4.0*denom*sum00 + 4.0*denom*denom)))/8.0/(sum01+sum00-denom);
 
     }

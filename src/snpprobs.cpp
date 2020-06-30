@@ -181,7 +181,7 @@ NumericVector genoprob_to_snpprob(const NumericVector& genoprob,
         throw std::invalid_argument("genoprob should be a 3d array");
     const int n_ind = d[0];
     const int n_gen = d[1];
-    const int n_str = (sqrt(8*n_gen + 1) - 1)/2;
+    const int n_str = (sqrt(8.0*(double)n_gen + 1.0) - 1.0)/2.0;
     if(n_gen != n_str*(n_str+1)/2)
         throw std::invalid_argument("n_gen must == n(n+1)/2 for some n");
     const int n_pos = d[2];
@@ -293,7 +293,7 @@ NumericVector Xgenoprob_to_snpprob(const NumericVector& genoprob,
         throw std::invalid_argument("genoprob should be a 3d array");
     const int n_ind = d[0];
     const int n_gen = d[1];
-    const int n_str = (sqrt(8*n_gen + 9) - 3)/2;
+    const int n_str = (sqrt(8.0*(double)n_gen + 9.0) - 3.0)/2.0;
     if(n_gen != n_str*(n_str+1)/2 + n_str)
         throw std::invalid_argument("n_gen must == n + n(n+1)/2 for some n");
     const int n_pos = d[2];
