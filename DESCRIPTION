@@ -14,9 +14,9 @@ Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
              email="broman@wisc.edu", comment=c(ORCID = "0000-0002-4914-6671")),
              person("R Core Team", role="ctb"))
 Copyright: Code for Brent's method for univariate function optimization
-    was taken from R 3.2.2 (Copyright (c) 1995, 1996 Robert Gentleman
-    and Ross Ihaka, Copyright (C) 2003-2004 The R Foundation,
-    Copyright (C) 1998-2014 The R Core Team).
+    was taken from R 3.2.2 (Copyright 1995, 1996 Robert Gentleman
+    and Ross Ihaka, Copyright 2003-2004 The R Foundation,
+    Copyright 1998-2014 The R Core Team).
 Depends:
     R (>= 3.1.0)
 Imports:
