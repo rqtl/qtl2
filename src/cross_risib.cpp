@@ -6,7 +6,7 @@
 #include "cross.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {AA=1, BB=2};
+enum gen_risib {AA=1, BB=2};
 
 const double RISIB::init(const int true_gen,
                          const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)

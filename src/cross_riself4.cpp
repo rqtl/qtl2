@@ -8,7 +8,7 @@
 #include "cross_do_util.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {A=1, H=2, B=3, notA=5, notB=4};
+enum gen_riself4 {A=1, H=2, B=3, notA=5, notB=4};
 
 const bool RISELF4::check_geno(const int gen, const bool is_observed_value,
                                 const bool is_x_chr, const bool is_female,
