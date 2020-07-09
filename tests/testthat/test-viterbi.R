@@ -73,6 +73,8 @@ test_that("riself autosome", {
 
 test_that("f2 X chr", {
 
+    skip_on_cran()
+
     data(fake.f2)
     fake.f2 <- fake.f2["X",]
 
@@ -86,9 +88,9 @@ test_that("f2 X chr", {
     map <- insert_pseudomarkers(fake.f2$gmap, step=1, stepwidth="max")
 
     set.seed(20150524)
-    g <- viterbi(fake.f2, map, error_prob=0.01, lowmem=TRUE)
+    g <- viterbi(fake.f2, map, error_prob=0.001, lowmem=TRUE)
     set.seed(20150524)
-    g2 <- viterbi(fake.f2, map, error_prob=0.01, lowmem=FALSE)
+    g2 <- viterbi(fake.f2, map, error_prob=0.001, lowmem=FALSE)
 
     expect_equal(g, g2)
 

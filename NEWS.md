@@ -1,3 +1,10 @@
+## qtl2 0.22-11 (2020-07-09)
+
+### Bug fixes
+
+- Small changes in tests to avoid failures on solaris
+
+
 ## qtl2 0.22-10 (2020-06-30)
 
 ### Bug fixes
