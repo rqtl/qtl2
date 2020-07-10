@@ -1,3 +1,12 @@
+## qtl2 0.23-1 (2020-07-10)
+
+Minor changes
+
+- Revised `reduce_markers()` so that it can handle the case of _many_
+  markers, by working with them in smaller batches.
+
+
+
 ## qtl2 0.22-11 (2020-07-09)
 
 ### Bug fixes
