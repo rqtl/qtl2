@@ -6,9 +6,9 @@
 #include "cross.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {AA=1, AB=2, BA=3, BB=4,
-          A=1, H=2, B=3, notB=4, notA=5,
-          AY=5, BY=6};
+enum gen_f2pk {AA=1, AB=2, BA=3, BB=4,
+               A=1, H=2, B=3, notB=4, notA=5,
+               AY=5, BY=6};
 
 const bool F2PK::check_geno(const int gen, const bool is_observed_value,
                             const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)

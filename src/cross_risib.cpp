@@ -6,7 +6,7 @@
 #include "cross.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {AA=1, BB=2};
+enum gen_risib {AA=1, BB=2};
 
 const double RISIB::init(const int true_gen,
                          const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
@@ -110,7 +110,7 @@ const double RISIB::est_rec_frac(const NumericVector& gamma, const bool is_x_chr
 
         // the MLE is solution to a quadratic equation
         return (2.0*denom - sum00 - 3.0*sum01  -
-                (sqrt(sum01*sum01 + (-2*sum00-4*denom)*sum01 + sum00*sum00 -
+                (sqrt(sum01*sum01 + (-2.0*sum00-4.0*denom)*sum01 + sum00*sum00 -
                       4.0*denom*sum00 + 4.0*denom*denom)))/8.0/(sum01+sum00-denom);
 
     }

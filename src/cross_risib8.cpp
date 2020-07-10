@@ -8,7 +8,7 @@
 #include "cross_do_util.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {A=1, H=2, B=3, notA=5, notB=4};
+enum gen_risib8 {A=1, H=2, B=3, notA=5, notB=4};
 
 const bool RISIB8::check_geno(const int gen, const bool is_observed_value,
                                 const bool is_x_chr, const bool is_female,
@@ -289,7 +289,7 @@ const double RISIB8::est_rec_frac(const Rcpp::NumericVector& gamma, const bool i
         }
 
         // solved via maxima
-        return (4*c + b+ 5*a - sqrt(16*c*c + 8*(5*a-b)*c + b*b + 10*a*b + 25*a*a))/8/c;
+        return (4.0*c + b+ 5.0*a - sqrt(16.0*c*c + 8.0*(5.0*a-b)*c + b*b + 10.0*a*b + 25.0*a*a))/8.0/c;
     }
 }
 

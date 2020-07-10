@@ -13,7 +13,7 @@
 #include "cross_do_util.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {A=1, H=2, B=3, notA=5, notB=4};
+enum gen_magic19 {A=1, H=2, B=3, notA=5, notB=4};
 
 const bool MAGIC19::check_geno(const int gen, const bool is_observed_value,
                                const bool is_x_chr, const bool is_female,
@@ -193,7 +193,7 @@ const double MAGIC19::est_rec_frac(const Rcpp::NumericVector& gamma, const bool 
     double C = -pow(A+B, 1.0/3.0);
 
     double D = 18.0-19.0*R;
-    double E = sqrt(2475.0 - 304.0*R)*(18.0-19.0*R)/4.0/pow(3,4.5);
+    double E = sqrt(2475.0 - 304.0*R)*(18.0-19.0*R)/4.0/pow(3.0,4.5);
     double F = (18.0-19.0*R)/12.0;
     double G = pow(E+F, 1.0/3.0) * 27.0;
 

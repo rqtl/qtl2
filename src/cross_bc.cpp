@@ -6,7 +6,7 @@
 #include "cross.h"
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {AA=1, AB=2, BB=3, AY=3, BY=4};
+enum gen_bc {AA=1, AB=2, BB=3, AY=3, BY=4};
 
 const bool BC::check_geno(const int gen, const bool is_observed_value,
                           const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)

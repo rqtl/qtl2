@@ -8,8 +8,8 @@
 #include "cross_util.h" // mpp_encode_alleles and mpp_decode_geno
 #include "r_message.h" // defines RQTL2_NODEBUG and r_message()
 
-enum gen {AA=1, AB=2, BB=3, notA=5, notB=4,
-          A=1, H=2, B=3};
+enum gen_ail3 {AA=1, AB=2, BB=3, notA=5, notB=4,
+               A=1, H=2, B=3};
 
 const bool AIL3::check_geno(const int gen, const bool is_observed_value,
                             const bool is_x_chr, const bool is_female, const IntegerVector& cross_info)
