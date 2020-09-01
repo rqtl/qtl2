@@ -148,19 +148,12 @@ fit1_pg <-
     n <- length(pheno)
     lod <- (n/2)*log10(fit0$rss/fitA$rss)
 
-    # residual SDs using 1/n
-    sigsq0 <- fit0$sigma^2/n*fit0$df
-    sigsqA <- fitA$sigma^2/n*fitA$df
-
-    # individual contributions to the lod score
-    ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
-    names(ind_lod) <- names(pheno)
-
     # names of coefficients
     coef_names <- scan1coef_names(genoprobs, addcovar, intcovar)
 
     # fitted values
-    fitted <- pheno - fitA$resid
+    fitted <- setNames(fitA$fitted, names(pheno))
+    resid <- pheno - fitted
 
     # center the QTL effects at zero and add an intercept
     if(zerosum && is.null(contrasts)) {
@@ -177,14 +170,13 @@ fit1_pg <-
         }
     }
 
-
     if(se) # results include standard errors
-        return(list(lod=lod, ind_lod=ind_lod,
+        return(list(lod=lod,
                     coef=stats::setNames(fitA$coef, coef_names),
                     SE=stats::setNames(fitA$SE, coef_names),
-                    fitted=fitted))
+                    fitted=fitted, resid=resid))
     else
-        return(list(lod=lod, ind_lod=ind_lod,
+        return(list(lod=lod,
                     coef=stats::setNames(fitA$coef, coef_names),
-                    fitted=fitted))
+                    fitted=fitted, resid=resid))
 }
