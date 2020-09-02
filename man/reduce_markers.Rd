@@ -4,7 +4,14 @@
 \alias{reduce_markers}
 \title{Reduce markers to a subset of more-evenly-spaced ones}
 \usage{
-reduce_markers(map, min_distance = 1, weights = NULL)
+reduce_markers(
+  map,
+  min_distance = 1,
+  weights = NULL,
+  max_batch = 10000,
+  batch_distance_mult = 1,
+  cores = 1
+)
 }
 \arguments{
 \item{map}{A list with each component being a vector with the
@@ -14,6 +21,16 @@ marker positions for a chromosome.}
 
 \item{weights}{A (optional) list of weights on the markers; same
 size as \code{map}.}
+
+\item{max_batch}{Maximum number of markers to consider in a batch}
+
+\item{batch_distance_mult}{If working with batches of markers,
+reduce \code{min_distance} by this multiple.}
+
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A list like the input \code{map}, but with the selected
@@ -28,6 +45,13 @@ Uses a dynamic programming algorithm to find, for each
 chromosome, the subset of markers for with max(\code{weights}) is
 maximal, subject to the constraint that no two adjacent markers may
 be separated by more than \code{min_distance}.
+
+The computation time for the algorithm grows with like the square
+of the number of markers, like 1 sec for 10k markers
+but 30 sec for 50k markers. If the number of markers on a chromosome
+is greater than \code{max_batch}, the markers are split into batches and
+the algorithm applied to each batch with min_distance smaller by a
+factor \code{min_distance_mult}, and then merged together for one last pass.
 }
 \examples{
 # read data

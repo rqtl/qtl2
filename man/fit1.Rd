@@ -78,8 +78,9 @@ A list containing
 \item \code{coef} - Vector of estimated coefficients.
 \item \code{SE} - Vector of estimated standard errors (included if \code{se=TRUE}).
 \item \code{lod} - The overall lod score.
-\item \code{ind_lod} - Vector of individual contributions to the LOD score.
+\item \code{ind_lod} - Vector of individual contributions to the LOD score (not provided if \code{kinship} is used).
 \item \code{fitted}  - Fitted values.
+\item \code{resid}  - Residuals.
 If \code{blup==TRUE}, only \code{coef} and \code{SE} are included at present.
 }
 }

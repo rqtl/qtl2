@@ -1,3 +1,23 @@
+## qtl2 0.23-2 (2020-09-01)
+
+### Minor changes
+
+- Revised `reduce_markers()` so that it can handle the case of _many_
+  markers, by working with them in smaller batches.
+
+- `fit1()` now returns both fitted values and residuals.
+
+### Bug fixes
+
+- Fixed [Issue #172](https://github.com/rqtl/qtl2/issues/172), where
+  `fit1()` gave incorrect fitted values when `kinship` is provided,
+  because they weren't "rotated back".
+
+- `fit1()` no longer provides individual LOD scores (`ind_lod`) when
+  `kinship` is used, as with the linear mixed model, the LOD score is
+  not simply the sum of individual contributions.
+
+
 ## qtl2 0.22-11 (2020-07-09)
 
 ### Bug fixes

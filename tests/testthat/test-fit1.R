@@ -313,15 +313,13 @@ test_that("fit1 by LMM works in intercross", {
         else { nullcov <- NULL; cov <- covar }      # sex as covariate; no additional covariates under null
         fit1(probs[[chr[i]]][,,index[i]], pheno, kinship_loco[[chr[i]]], addcovar=cov, nullcovar=nullcov, se=TRUE, zerosum=FALSE) })
 
-    # check LOD vs scan1, plus ind'l contributions to LOD
+    # check LOD vs scan1
     for(i in seq(along=out_fit1)) {
         expect_equal(out_fit1[[i]]$lod, out[pos[i],1], tol=1e-6)
-        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
     }
     # same with _loco version
     for(i in seq(along=out_fit1)) {
         expect_equal(out_fit1_loco[[i]]$lod, out_loco[pos[i],1], tol=1e-6)
-        expect_equal(sum(out_fit1_loco[[i]]$ind_lod), out_fit1_loco[[i]]$lod)
     }
 
     # check coefficients
@@ -400,15 +398,13 @@ test_that("fit1 by LMM works in intercross, with weights", {
         fit1(probs[[chr[i]]][,,index[i]], pheno, kinship_loco[[chr[i]]], addcovar=cov, nullcovar=nullcov,
              se=TRUE, weights=w, zerosum=FALSE) })
 
-    # check LOD vs scan1, plus ind'l contributions to LOD
+    # check LOD vs scan1
     for(i in seq(along=out_fit1)) {
         expect_equal(out_fit1[[i]]$lod, out[pos[i],1], tol=1e-6)
-        expect_equal(sum(out_fit1[[i]]$ind_lod), out_fit1[[i]]$lod)
     }
     # same with _loco version
     for(i in seq(along=out_fit1)) {
         expect_equal(out_fit1_loco[[i]]$lod, out_loco[pos[i],1], tol=1e-6)
-        expect_equal(sum(out_fit1_loco[[i]]$ind_lod), out_fit1_loco[[i]]$lod)
     }
 
     # check coefficients
@@ -542,4 +538,38 @@ test_that("fit1 works with blup=TRUE", {
     expect_equal( fit1(pr_pos, iron$pheno[,1], blup=TRUE, se=FALSE)$coef,
                  out_scan1blup_nok[marker,] )
 
+})
+
+
+test_that("fit1 fitted values don't depend on order of individuals", {
+
+    skip_if(isnt_karl(), "This test only run locally")
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    map <- insert_pseudomarkers(iron$gmap, step=5)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+
+    pheno <- iron$pheno[,1]
+
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+
+    out <- scan1(probs[,"7"], pheno, addcovar=covar)
+    max_pos <- max(out, map)
+    pr_max <- pull_genoprobpos(probs, map, max_pos$chr, max_pos$pos)
+
+    out_fit1 <- fit1(pr_max, pheno, addcovar=covar)
+
+    ind <- rownames(pr_max)
+    pr_max_samp <- pr_max[sample(ind),]
+    out_fit1b <- fit1(pr_max_samp, pheno, addcovar=covar)
+
+    testthat::expect_equal(out_fit1$fitted[ind] , out_fit1b$fitted[ind])
+
+    k <- calc_kinship(probs)
+
+    out_fit1 <- fit1(pr_max, pheno, addcovar=covar, kinship=k)
+    out_fit1b <- fit1(pr_max_samp[ind,], pheno[ind], addcovar=covar[ind], kinship=k[ind,ind])
+
+    testthat::expect_equal(out_fit1$fitted[ind] , out_fit1b$fitted[ind])
 })

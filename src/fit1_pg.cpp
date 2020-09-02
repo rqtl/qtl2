@@ -10,7 +10,7 @@ using namespace Rcpp;
 
 // fit single-QTL model at a single position
 //
-// genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
+// genoprobs = matrix of genotype probabilities (individuals x genotypes)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
 // addcovar  = additive covariates (can be null)
@@ -62,13 +62,21 @@ List fit1_pg_addcovar(const NumericMatrix& genoprobs,
     X = weighted_matrix(X, weights);
 
     // do regression
-    return fit_linreg(X, pheno_rev, se, tol);
+    List result = fit_linreg(X, pheno_rev, se, tol);
+
+    // fix the fitted values (leave the residuals as they are)
+    NumericVector fitted = result["fitted"];
+    NumericVector fitted_rev = matrix_x_vector(transpose(eigenvec), fitted/weights);
+
+    result["fitted"] = fitted_rev;
+
+    return result;
 }
 
 
 // fit single-QTL model at a single position
 //
-// genoprobs = 3d array of genotype probabilities (individuals x genotypes x positions)
+// genoprobs = matrix of genotype probabilities (individuals x genotypes)
 // pheno     = vector of numeric phenotypes (individuals x 1)
 //             (no missing data allowed)
 // addcovar  = additive covariates (can be null)
@@ -113,5 +121,13 @@ List fit1_pg_intcovar(const NumericMatrix& genoprobs,
     X = weighted_matrix(X, weights);
 
     // do regression
-    return fit_linreg(X, pheno_rev, se, tol);
+    List result = fit_linreg(X, pheno_rev, se, tol);
+
+    // fix the fitted values (leave the residuals as they are)
+    NumericVector fitted = result["fitted"];
+    NumericVector fitted_rev = matrix_x_vector(transpose(eigenvec), fitted/weights);
+
+    result["fitted"] = fitted_rev;
+
+    return result;
 }

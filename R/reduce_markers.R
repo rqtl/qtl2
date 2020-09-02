@@ -8,6 +8,13 @@
 #' @param min_distance Minimum distance between markers.
 #' @param weights A (optional) list of weights on the markers; same
 #' size as `map`.
+#' @param max_batch Maximum number of markers to consider in a batch
+#' @param batch_distance_mult If working with batches of markers,
+#' reduce `min_distance` by this multiple.
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
 #'
 #' @return A list like the input `map`, but with the selected
 #' subset of markers.
@@ -16,6 +23,13 @@
 #' chromosome, the subset of markers for with max(`weights`) is
 #' maximal, subject to the constraint that no two adjacent markers may
 #' be separated by more than `min_distance`.
+#'
+#' The computation time for the algorithm grows with like the square
+#' of the number of markers, like 1 sec for 10k markers
+#' but 30 sec for 50k markers. If the number of markers on a chromosome
+#' is greater than `max_batch`, the markers are split into batches and
+#' the algorithm applied to each batch with min_distance smaller by a
+#' factor `min_distance_mult`, and then merged together for one last pass.
 #'
 #' @references Broman KW, Weber JL (1999) Method for constructing
 #' confidently ordered linkage maps. Genet Epidemiol 16:337--343
@@ -35,7 +49,8 @@
 #' grav2_sub <- pull_markers(grav2, markers2keep)
 #' @export
 reduce_markers <-
-    function(map, min_distance=1, weights=NULL)
+    function(map, min_distance=1, weights=NULL,
+             max_batch=10000, batch_distance_mult=1, cores=1)
 {
     if(is.null(map)) stop("map is NULL")
     if(is.cross2(map))
@@ -60,8 +75,45 @@ reduce_markers <-
 
     for(i in seq(along=map)) {
         if(length(map[[i]]) < 2) next
-        map[[i]] <- map[[i]][.reduce_markers(map[[i]], min_distance, weights[[i]])]
+        map[[i]] <- reduce_markers_onechr(map[[i]], min_distance, weights[[i]],
+                                          max_batch, batch_distance_mult, cores)
     }
 
     map
+}
+
+reduce_markers_onechr <-
+    function(marker_pos, min_distance=1, weights=NULL,
+             max_batch=10000, batch_distance_mult=1, cores=1)
+{
+    num_mar <- length(marker_pos)
+    if(is.null(weights)) {
+        weights <- rep(1, num_mar)
+    }
+    stopifnot(num_mar == length(weights))
+
+    cores <- setup_cluster(cores)
+
+    # repeat the following until number hasn't decreased and
+    while(num_mar > max_batch) {
+        # split markers into groups of length
+        batches <- batch_vec(seq_len(num_mar), max_batch, n_cores=1)
+
+#        message(num_mar, " in ", length(batches), " batches")
+
+        batch_func <- function(batch) {
+            result <- .reduce_markers(marker_pos[batch], min_distance/batch_distance_mult, weights[batch])
+            batch[result]
+        }
+
+        sub_map <- unlist( cluster_lapply(cores, batches, batch_func) )
+
+        marker_pos <- marker_pos[sub_map]
+        weights <- weights[sub_map]
+
+        if(length(marker_pos) == num_mar) break # there's been no change in number of markers
+        num_mar <- length(marker_pos)
+    }
+
+    marker_pos[.reduce_markers(marker_pos, min_distance, weights)]
 }

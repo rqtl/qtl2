@@ -42,8 +42,9 @@
 #' * `coef` - Vector of estimated coefficients.
 #' * `SE` - Vector of estimated standard errors (included if `se=TRUE`).
 #' * `lod` - The overall lod score.
-#' * `ind_lod` - Vector of individual contributions to the LOD score.
+#' * `ind_lod` - Vector of individual contributions to the LOD score (not provided if `kinship` is used).
 #' * `fitted`  - Fitted values.
+#' * `resid`  - Residuals.
 #' If `blup==TRUE`, only `coef` and `SE` are included at present.
 #'
 #' @details For each of the inputs, the row names are used as
@@ -286,7 +287,8 @@ fit1 <-
         ind_lod <- 0.5*(fit0$resid^2/sigsq0 - fitA$resid^2/sigsqA + log(sigsq0) - log(sigsqA))/log(10)
         names(ind_lod) <- names(pheno)
 
-        fitted <- pheno - fitA$resid
+        fitted <- setNames(fitA$fitted, names(pheno))
+        resid <- pheno - fitted
     }
     else { # binary phenotype
         # null fit
@@ -319,6 +321,7 @@ fit1 <-
         ind_lod <- ind_lodA - ind_lod0
 
         fitted <- stats::setNames(pA, names(pheno))
+        resid <- pheno - fitted
     }
 
     # names of coefficients
@@ -343,9 +346,9 @@ fit1 <-
         return(list(lod=lod, ind_lod=ind_lod,
                     coef=stats::setNames(fitA$coef, coef_names),
                     SE=stats::setNames(fitA$SE, coef_names),
-                    fitted=fitted))
+                    fitted=fitted, resid=resid))
     else
         return(list(lod=lod, ind_lod=ind_lod,
                     coef=stats::setNames(fitA$coef, coef_names),
-                    fitted=fitted))
+                    fitted=fitted, resid=resid))
 }
