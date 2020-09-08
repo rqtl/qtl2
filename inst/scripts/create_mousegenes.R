@@ -1,8 +1,8 @@
 # create sqlite database with mouse genes, from MGI
 #
-# source (dated 2019-08-12):
+# source (dated 2020-09-07):
 #      http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/
-#          MGI.201908.gff3.gz
+#          MGI.202009.gff3.gz
 #
 #      http://www.informatics.jax.org/downloads/mgigff/
 #          MGI_GFF_Spec.docx (annotations, e.g. column names)
@@ -11,8 +11,8 @@ library(RSQLite)
 
 ### download files
 site <- "http://www.informatics.jax.org/downloads/mgigff3/archive/monthly"
-file <- "MGI.201908.gff3.gz"
-date_source <- as.character(as.Date("20190812", format="%Y%m%d"))
+file <- "MGI.202009.gff3.gz"
+date_source <- as.character(as.Date("20200907", format="%Y%m%d"))
 genome_build <- "GRCm38/mm10"
 url <- paste0(site, "/", file)
 if(!file.exists(file))

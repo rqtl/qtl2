@@ -1,4 +1,4 @@
-## qtl2 0.23-2 (2020-09-01)
+## qtl2 0.23-3 (2020-09-08)
 
 ### Minor changes
 
@@ -6,6 +6,9 @@
   markers, by working with them in smaller batches.
 
 - `fit1()` now returns both fitted values and residuals.
+
+- Updated mouse gene database with 2020-09-07 data from
+  [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
 ### Bug fixes
 
