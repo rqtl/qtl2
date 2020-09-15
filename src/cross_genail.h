@@ -37,6 +37,8 @@ class GENAIL : public QTLCross
     const int ngen(const bool is_x_chr);
     const int nalleles();
 
+    const Rcpp::NumericMatrix geno2allele_matrix(const bool is_x_chr);
+
     const bool check_crossinfo(const Rcpp::IntegerMatrix& cross_info, const bool any_x_chr);
 
     const bool check_founder_geno_size(const Rcpp::IntegerMatrix& founder_geno, const int n_markers);

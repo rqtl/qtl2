@@ -20,6 +20,10 @@
   `kinship` is used, as with the linear mixed model, the LOD score is
   not simply the sum of individual contributions.
 
+- Fixed [Issue #174](https://github.com/rqtl/qtl2/issues/174) re
+  `genoprob_to_alleleprob()` for general AIL crosses. We had not
+  implemented the `geno2allele_matrix()` function.
+
 
 ## qtl2 0.22-11 (2020-07-09)
 

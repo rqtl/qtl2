@@ -435,3 +435,35 @@ const NumericVector GENAIL::est_map2(const IntegerMatrix& genotypes,
     for(int i=0; i<n_rf; i++) result[i] = NA_REAL;
     return result ;
 }
+
+const NumericMatrix GENAIL::geno2allele_matrix(const bool is_x_chr)
+{
+    const int n_alleles = this->n_founders;
+    const int n_geno = this->ngen(false);
+
+    if(is_x_chr) {
+        NumericMatrix result(n_geno+n_alleles, n_alleles);
+        // female X
+        for(int trueg=0; trueg<n_geno; trueg++) {
+            IntegerVector alleles = mpp_decode_geno(trueg+1, n_alleles, false);
+            result(trueg,alleles[0]-1) += 0.5;
+            result(trueg,alleles[1]-1) += 0.5;
+        }
+        // male X
+        for(int trueg=0; trueg<n_alleles; trueg++)
+            result(trueg+n_geno, trueg) = 1.0;
+
+        return result;
+    }
+    else { // autosome
+        NumericMatrix result(n_geno,n_alleles);
+
+        for(int trueg=0; trueg<n_geno; trueg++) {
+            IntegerVector alleles = mpp_decode_geno(trueg+1, n_alleles, false);
+            result(trueg,alleles[0]-1) += 0.5;
+            result(trueg,alleles[1]-1) += 0.5;
+        }
+
+        return result;
+    }
+}
