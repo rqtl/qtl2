@@ -1,5 +1,11 @@
 ## qtl2 0.23-3 (2020-09-08)
 
+### Major changes
+
+- Revised treatment of X chromosome in "general AIL" cross type, to be
+  the same as the autosomes but with 2/3 as many generations for
+  recombination. This should provide a better approximation.
+
 ### Minor changes
 
 - Revised `reduce_markers()` so that it can handle the case of _many_

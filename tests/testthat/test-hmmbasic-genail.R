@@ -74,8 +74,8 @@ test_that("genail step works", {
 
             # male X chr
             R <- alpha*(1-(1-rf)^ngen)
-            expected <- matrix(rep(alpha*(1-(1-rf)^ngen),nf), ncol=nf, byrow=TRUE)
-            diag(expected) <- alpha + (1-alpha)*(1-rf)^ngen
+            expected <- matrix(rep(alpha*(1-(1-rf)^(ngen*2/3)),nf), ncol=nf, byrow=TRUE)
+            diag(expected) <- alpha + (1-alpha)*(1-rf)^(ngen*2/3)
 
             result <- matrix(ncol=nf, nrow=nf)
             for(i in 1:nf) {
@@ -99,6 +99,18 @@ test_that("genail step works", {
             }
             # rows sum to 1?
             expect_equal(rowSums(exp(result)), rep(1, ng))
+
+
+            # female X chr
+            result <- matrix(ncol=ng, nrow=ng)
+            for(i in 1:ng) {
+                for(j in 1:ng) {
+                    result[i,j] <- test_step(paste0("genail", nf), i, j, rf, TRUE, TRUE, c(ngen, alpha_int))
+                }
+            }
+            # rows sum to 1?
+            expect_equal(rowSums(exp(result)), rep(1, ng))
+
         }
     }
 

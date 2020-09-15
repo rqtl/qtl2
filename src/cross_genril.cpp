@@ -263,17 +263,18 @@ const double step_genchr(const int gen_left, const int gen_right, const double r
     }
     #endif
 
-    const int k = cross_info[0]; // number of generations
+    double k = (double)cross_info[0]; // number of generations
+    if(is_x_chr) k *= 2.0/3.0; // for X chromosome, treat as 2/3 as many generations
 
     // sum of relative frequencies
     int denom=0.0;
     for(int i=0; i<n_founders; i++) denom += cross_info[i+1];
 
     if(gen_left == gen_right)
-        return log((double)cross_info[gen_left] + pow(1.0-rec_frac, (double)k) * (denom - cross_info[gen_left])) -
+        return log((double)cross_info[gen_left] + pow(1.0-rec_frac, k) * (denom - cross_info[gen_left])) -
             log((double)denom);
     else
         return log((double)cross_info[gen_right]) - log((double)denom) +
-            log(1.0 - pow(1.0 - rec_frac, (double)k));
+            log(1.0 - pow(1.0 - rec_frac, k));
 
 }
