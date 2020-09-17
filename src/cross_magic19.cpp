@@ -1,4 +1,4 @@
-// 16-way MAGIC (RIL by selfing) QTLCross class (for HMM)
+// 19-way MAGIC (RIL by selfing) QTLCross class (for HMM)
 //
 // See Kover et al (2009) PLOS Genet 5: e1000551 doi:10.1371/journal.pgen.1000551
 // full diallel (in both directions) among 19 strains
