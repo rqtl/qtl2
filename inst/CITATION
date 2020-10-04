@@ -16,7 +16,7 @@ citEntry(entry="article",
          volume=211,
          pages="495-502",
          url = "https://doi.org/10.1534/genetics.118.301595",
-         eprint = "http://www.genetics.org/content/genetics/211/2/495.full.pdf",
+         eprint = "https://www.genetics.org/content/genetics/211/2/495.full.pdf",
          key = "Broman2018",
 
          textVersion =
