@@ -20,7 +20,7 @@
 #' @param force_labels If TRUE, force all genotype labels to be shown.
 #' @param alternate_labels If TRUE, place genotype labels in two rows
 #' @param omit_points If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).
-#' @param ... Additional graphics parameters, passed to [base::plot()].
+#' @param ... Additional graphics parameters, passed to `plot()`.
 #'
 #' @return (Invisibly) A matrix with rows being the genotype groups
 #' and columns for the means and (if `SEmult` is specified) the SEs.

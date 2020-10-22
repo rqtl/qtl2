@@ -47,7 +47,7 @@ of length > 0, it is taken to be the actual jitter amounts
 
 \item{omit_points}{If TRUE, omit the points, just plotting the averages (and, potentially, the +/- SE intervals).}
 
-\item{...}{Additional graphics parameters, passed to \code{\link[base:plot]{base::plot()}}.}
+\item{...}{Additional graphics parameters, passed to \code{plot()}.}
 }
 \value{
 (Invisibly) A matrix with rows being the genotype groups

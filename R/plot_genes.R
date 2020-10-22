@@ -14,7 +14,7 @@
 #' @param stop_field Character string with name of column containing the genes' stop positions.
 #' @param strand_field Character string with name of column containing the genes' strands.
 #' @param name_field Character string with name of column containing the genes' names.
-#' @param ... Optional arguments passed to [base::plot()].
+#' @param ... Optional arguments passed to `plot()`.
 #'
 #' @return None.
 #'

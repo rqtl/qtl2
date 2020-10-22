@@ -38,7 +38,7 @@ Mbp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 
 \item{name_field}{Character string with name of column containing the genes' names.}
 
-\item{...}{Optional arguments passed to \code{\link[base:plot]{base::plot()}}.}
+\item{...}{Optional arguments passed to \code{plot()}.}
 }
 \value{
 None.
