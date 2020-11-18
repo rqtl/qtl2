@@ -41,17 +41,17 @@ calc_het <-
 
     # determine which columns are het
     het_col <- vector("list", n_chr)
+    geno <- dimnames(probs)[[2]]
     for(chr in seq_len(n_chr)) {
-        geno <- colnames(probs[[chr]])
-        a1 <- substr(geno, 1, 1)
-        a2 <- substr(geno, 2, 2)
+        a1 <- substr(geno[[chr]], 1, 1)
+        a2 <- substr(geno[[chr]], 2, 2)
         if(is_x_chr[chr]) het_col[[chr]] <- (a1 != a2 & a2 != "Y")
         else het_col[[chr]] <- (a1 != a2)
     }
 
     if(by=="individual") {
         # total markers
-        total_mar <- sum( vapply(probs, function(a) dim(a)[3], 1) )
+        total_mar <- sum(dim(probs)[3,])
 
         # summarize each chromosome
         result <- lapply(seq_len(n_chr), function(chr) apply(probs[[chr]][,het_col[[chr]],,drop=FALSE], 1, sum))

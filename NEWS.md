@@ -1,4 +1,4 @@
-## qtl2 0.23-6 (2020-10-22)
+## qtl2 0.23-7 (2020-11-18)
 
 ### Major changes
 
@@ -17,6 +17,11 @@
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
 ### Bug fixes
+
+- Fixed [Issue #181](https://github.com/rqtl/qtl2/issues/181), where
+  `calc_het()` gave values > 1 when used with
+  [R/qtl2fst](https://github.com/rqtl/qtl2fst)-based probabilities.
+  Also fixed a similar bug in `calc_geno_freq()`.
 
 - Fixed [Issue #172](https://github.com/rqtl/qtl2/issues/172), where
   `fit1()` gave incorrect fitted values when `kinship` is provided,

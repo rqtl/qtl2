@@ -61,12 +61,14 @@ calc_geno_freq <-
 
     # for rest, can assume that they're all one group
 
+    n_chr <- length(probs)
+
     if(by=="individual") {
         # total markers
-        total_mar <- sum( vapply(probs, function(a) dim(a)[3], 1) )
+        total_mar <- sum(dim(probs)[3,])
 
         # summarize each chromosome
-        result <- lapply(probs, apply, 1:2, sum)
+        result <- lapply(seq_len(n_chr), function(chr) apply(probs[[chr]], 1:2, sum))
 
         if(length(result)>1) {
             for(i in seq_along(result)[-1])
@@ -76,5 +78,5 @@ calc_geno_freq <-
     }
 
     # else: by marker
-    t(do.call("cbind", lapply(probs, apply, 2:3, mean)))
+    t(do.call("cbind", lapply(seq_len(n_chr), function(chr) apply(probs[[chr]], 2:3, mean))))
 }
