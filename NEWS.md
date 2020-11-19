@@ -1,4 +1,4 @@
-## qtl2 0.23-7 (2020-11-18)
+## qtl2 0.23-8 (2020-11-18)
 
 ### Major changes
 
@@ -34,6 +34,9 @@
 - Fixed [Issue #174](https://github.com/rqtl/qtl2/issues/174) re
   `genoprob_to_alleleprob()` for general AIL crosses. We had not
   implemented the `geno2allele_matrix()` function.
+
+- Fix Issue #164, so `plot_pxg()` can handle a phenotype that is a
+  single-column data frame.
 
 
 ## qtl2 0.22-11 (2020-07-09)

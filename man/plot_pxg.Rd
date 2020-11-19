@@ -19,9 +19,8 @@ plot_pxg(
 )
 }
 \arguments{
-\item{geno}{Vector of genotypes, as produced by
-\code{\link[=maxmarg]{maxmarg()}} with specific \code{chr} and
-\code{pos}.}
+\item{geno}{Vector of genotypes, for example as produced by
+\code{\link[=maxmarg]{maxmarg()}} with specific \code{chr} and \code{pos}.}
 
 \item{pheno}{Vector of phenotypes.}
 

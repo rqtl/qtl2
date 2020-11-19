@@ -2,9 +2,8 @@
 #'
 #' Plot phenotype vs genotype for a single putative QTL and a single phenotype.
 #'
-#' @param geno Vector of genotypes, as produced by
-#' [maxmarg()] with specific `chr` and
-#' `pos`.
+#' @param geno Vector of genotypes, for example as produced by
+#' [maxmarg()] with specific `chr` and `pos`.
 #' @param pheno Vector of phenotypes.
 #' @param sort If TRUE, sort genotypes from largest to smallest.
 #' @param SEmult If specified, interval estimates of the within-group
@@ -90,6 +89,15 @@ plot_pxg <-
         jitter <- runif(length(geno), -jitter, jitter)
     }
     names(jitter) <- names(geno)
+
+    # force pheno to be numeric
+    if(is.matrix(pheno) || is.data.frame(pheno)) {
+        if(ncol(pheno)>1) {
+            pheno <- pheno[,1,drop=FALSE]
+            warning("pheno is a ", class(pheno)[1], "; using the first column")
+        }
+        pheno <- setNames(as.numeric(unlist(pheno)), rownames(pheno))
+    }
 
     # align geno and pheno
     ind_g <- names(geno)
