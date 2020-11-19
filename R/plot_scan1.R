@@ -77,6 +77,9 @@ plot_scan1 <-
 
     if(!is.list(map)) map <- list(" "=map) # if a vector, treat it as a list with no names
 
+    # if input x is a vector, try turning it into a matrix, since we'll be pull out row names
+    if(!is.matrix(x) && !is.data.frame(x) && is.numeric(x)) x <- as.matrix(x)
+
     # subset chromosomes
     if(!is.null(chr)) {
         chri <- match(chr, names(map))

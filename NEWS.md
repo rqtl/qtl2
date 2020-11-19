@@ -38,6 +38,9 @@
 - Fix Issue #164, so `plot_pxg()` can handle a phenotype that is a
   single-column data frame.
 
+- Fix Issue #135, so `plot_scan1()` can take vector input (which is
+  then converted to a single-column matrix).
+
 
 ## qtl2 0.22-11 (2020-07-09)
 
