@@ -4,7 +4,7 @@
 \alias{calc_het}
 \title{Calculate heterozygosities}
 \usage{
-calc_het(probs, by = c("individual", "marker"), omit_x = TRUE)
+calc_het(probs, by = c("individual", "marker"), omit_x = TRUE, cores = 1)
 }
 \arguments{
 \item{probs}{List of arrays of genotype probabilities, as
@@ -13,6 +13,11 @@ calculated by \code{\link[=calc_genoprob]{calc_genoprob()}}.}
 \item{by}{Whether to summarize by individual or marker}
 
 \item{omit_x}{If TRUE, omit the X chromosome.}
+
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 The result is a vector of estimated heterozygosities

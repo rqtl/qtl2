@@ -1,4 +1,4 @@
-## qtl2 0.23-8 (2020-11-18)
+## qtl2 0.23-9 (2020-12-02)
 
 ### Major changes
 
@@ -15,6 +15,8 @@
 
 - Updated mouse gene database with 2020-09-07 data from
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
+
+- Implemented Issue #184, to make `calc_het()` multi-core.
 
 ### Bug fixes
 

@@ -25,3 +25,18 @@ test_that("calc_het works for an intercross", {
     expect_equal(calc_het(pr[,c(19,"X")], "marker", omit_x=FALSE), expected)
 
 })
+
+test_that("calc_het works with multi-core", {
+
+    skip_if(isnt_karl(), "This test only run locally")
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    pr <- calc_genoprob(iron, err=0.002)
+
+    # test multicore
+    expect_equal(calc_het(pr), calc_het(pr, cores=4))
+    expect_equal(calc_het(pr, "marker"), calc_het(pr, "marker", cores=4))
+    expect_equal(calc_het(pr, omit_x=FALSE), calc_het(pr, omit_x=FALSE, cores=4))
+    expect_equal(calc_het(pr, "marker", omit_x=FALSE), calc_het(pr, "marker", omit_x=FALSE, cores=4))
+
+})
