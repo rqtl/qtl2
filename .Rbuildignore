@@ -1,9 +1,9 @@
 ^LICENSE\.md$
 Makefile$
-^\.travis\.yml$
 \.Rout$
 ^inst/scripts/.+\.gz$
 ^inst/scripts/.+\.tbi$
 ^inst/scripts/.+\.sqlite$
 ^\.RData$
 ^inst/scripts/\.RData$
+^\.github$

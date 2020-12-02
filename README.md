@@ -1,6 +1,6 @@
 ### [R/qtl2](https://kbroman.org/qtl2)
 
-[![Build Status](https://travis-ci.org/rqtl/qtl2.svg?branch=master)](https://travis-ci.org/rqtl/qtl2)
+[![R build status](https://github.com/rqtl/qtl2/workflows/R-CMD-check/badge.svg)](https://github.com/rqtl/qtl2/actions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2)](https://cran.r-project.org/package=qtl2)
 
 [Karl Broman](https://kbroman.org)
