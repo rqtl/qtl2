@@ -166,7 +166,7 @@ For examples of these files, see the
 [`do_pheno.csv`](https://github.com/rqtl/qtl2data/blob/master/DO_Gatti2014/do_pheno.csv)
 and
 [`do_covar.csv`](https://github.com/rqtl/qtl2data/blob/master/DO_Gatti2014/do_covar.csv),
-for the [Gatti et al. (2014)](http://www.g3journal.org/content/ggg/4/9/1623.full.pdf) data.
+for the [Gatti et al. (2014)](https://www.g3journal.org/content/ggg/4/9/1623.full.pdf) data.
 
 The covariate data needs to contain a `sex` column, plus a column
 giving the generation number (e.g., `ngen`) for each DO animal.

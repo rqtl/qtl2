@@ -1,7 +1,7 @@
 ## Data from Moore et al. (2013)
 
-Sample input data files from 
-[Moore et al. (2013) Genetics 195:1077-1086](http://www.genetics.org/content/195/3/1077.abstract)
+Sample input data files from
+[Moore et al. (2013) Genetics 195:1077-1086](https://www.genetics.org/content/195/3/1077.abstract)
 (the second replicate of RILs).
 
 - [`grav2.yaml`](grav2.yaml), the control file ([YAML format](https://yaml.org))
