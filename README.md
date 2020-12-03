@@ -5,7 +5,7 @@
 
 [Karl Broman](https://kbroman.org)
 
-[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
+[R/qtl2](https://kbroman.org/qtl2/) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
 

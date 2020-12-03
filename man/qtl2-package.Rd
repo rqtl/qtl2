@@ -26,7 +26,7 @@ Provides a set of tools to perform quantitative
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://kbroman.org/qtl2}
+  \item \url{https://kbroman.org/qtl2/}
   \item \url{https://github.com/rqtl/qtl2}
   \item Report bugs at \url{https://github.com/rqtl/qtl2/issues}
 }

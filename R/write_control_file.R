@@ -68,7 +68,7 @@
 #' @details This function takes a set of parameters and creates the
 #' control file (in [YAML](https://yaml.org) or [JSON](https://json.org) format) needed
 #' for the new input data file format for
-#' [R/qtl2](https://kbroman.org/qtl2).  See the
+#' [R/qtl2](https://kbroman.org/qtl2/).  See the
 #' [sample data files](https://kbroman.org/qtl2/pages/sampledata.html) and the
 #' [vignette describing the input file format](https://kbroman.org/qtl2/assets/vignettes/input_files.html).
 #'
