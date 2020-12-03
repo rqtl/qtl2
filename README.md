@@ -1,11 +1,11 @@
 ### [R/qtl2](https://kbroman.org/qtl2)
 
-[![Build Status](https://travis-ci.org/rqtl/qtl2.svg?branch=master)](https://travis-ci.org/rqtl/qtl2)
+[![R build status](https://github.com/rqtl/qtl2/workflows/R-CMD-check/badge.svg)](https://github.com/rqtl/qtl2/actions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2)](https://cran.r-project.org/package=qtl2)
 
 [Karl Broman](https://kbroman.org)
 
-[R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
+[R/qtl2](https://kbroman.org/qtl2/) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
 
@@ -47,7 +47,7 @@ To cite R/qtl2 in publications, use:
 > Yandell BS, Churchill GA (2018)
 > R/qtl2: software for mapping quantitative trait loci with
 > high-dimensional data and multi-parent populations.
-> [Genetics](http://genetics.org) 211:495-502
+> [Genetics](https://www.genetics.org) 211:495-502
 > [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
 
 ---
