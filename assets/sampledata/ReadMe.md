@@ -1,7 +1,7 @@
 ## Sample input data files
 
 - [`grav2`](grav2), data from
-  [Moore et al. (2013) Genetics 195:1077-1086](https://www.genetics.org/content/195/3/1077.abstract)
+  [Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346)
   (the second replicate of the RILs)
 
 - [`iron`](iron), data from

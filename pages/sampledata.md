@@ -25,7 +25,7 @@ Also see <https://github.com/rqtl/qtl2data>.
 ### RIL by selfing
 
 Data from
-[Moore et al. (2013) Genetics 195:1077-1086](https://www.genetics.org/content/195/3/1077.abstract)
+[Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346)
 (the second replicate of RILs).
 
 - [`grav2.yaml`](../assets/sampledata/grav2/grav2.yaml), the control file ([YAML format](https://yaml.org))

@@ -145,7 +145,7 @@ path to these files.
 
 For example, one of the sample data sets concerns a gravitropism
 phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from
-[Moore et al. (2013) Genetics 195:1077-1086](http://www.genetics.org/content/195/3/1077.abstract).
+[Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346).
 The data are in `qtl2/extdata/grav2.zip`, which can be loaded as
 follows:
 
@@ -278,7 +278,7 @@ kinship_loco <- calc_kinship(pr, "loco", cores=4)
 In a QTL scan of the X chromosome, special covariates (such as sex)
 may need to be included under the null hypothesis of no QTL, to avoid
 spurious evidence of linkage. (See
-[Broman et al. (2006) Genetics 174:2151-2158](http://www.genetics.org/content/174/4/2151.long).)
+[Broman et al. (2006) Genetics 174:2151-2158](https://doi.org/10.1534/genetics.106.061176).)
 
 The particular X chromosome covariates depend on the cross, and can
 be obtained with the function `get_x_covar()`.
