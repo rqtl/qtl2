@@ -2,6 +2,8 @@ context("plot_genes")
 
 test_that("plot_genes works", {
 
+    skip_if(isnt_karl(), "plot tests only done locally")
+
     genes <- data.frame(chr = c("6", "6", "6", "6", "6", "6", "6", "6"),
                         start = c(139988753, 140680185, 141708118, 142234227, 142587862,
                                   143232344, 144398099, 144993835),

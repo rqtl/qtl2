@@ -1,4 +1,4 @@
-## qtl2 0.23-9 (2020-12-02)
+## qtl2 0.23-10 (2020-12-03)
 
 ### Major changes
 
@@ -17,6 +17,10 @@
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
 - Implemented Issue #184, to make `calc_het()` multi-core.
+
+- Making the tests of the plot functions only run locally, as they are
+  failing on R-devel and it seems like it could be a pain running
+  these on CRAN.
 
 ### Bug fixes
 

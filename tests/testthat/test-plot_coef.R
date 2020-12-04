@@ -2,6 +2,8 @@ context("plot_coef")
 
 test_that("plot_coef works", {
 
+    skip_if(isnt_karl(), "plot tests only done locally")
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,2]
     map <- insert_pseudomarkers(iron$gmap, step=1)

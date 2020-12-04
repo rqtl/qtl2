@@ -2,6 +2,8 @@ context("plot_genoprob")
 
 test_that("plot_genoprob works", {
 
+    skip_if(isnt_karl(), "plot tests only done locally")
+
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[c("116", "232"),2]
     map <- insert_pseudomarkers(iron$gmap, step=1)
