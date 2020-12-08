@@ -74,10 +74,11 @@ function(cross, map=NULL, error_prob=1e-4,
     if(!is_nonneg_number(error_prob)) stop("error_prob should be a single non-negative number")
     map_function <- match.arg(map_function)
 
-    if(!lowmem) # use other version
+    if(!lowmem) { # use other version
         return(calc_genoprob2(cross=cross, map=map,
                               error_prob=error_prob, map_function=map_function,
                               quiet=quiet, cores=cores))
+    }
 
     # set up cluster; set quiet=TRUE if multi-core
     cores <- setup_cluster(cores, quiet)
@@ -87,8 +88,10 @@ function(cross, map=NULL, error_prob=1e-4,
     }
 
     # pseudomarker map
-    if(is.null(map))
+    if(is.null(map)) {
+        if(is.null(cross$gmap)) stop("If cross does not contain a genetic map, map must be provided.")
         map <- insert_pseudomarkers(cross$gmap)
+    }
     # possibly subset the map
     if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
         chr <- names(cross$geno)

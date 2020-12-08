@@ -50,6 +50,9 @@
 - Fix Issue #135, so `plot_scan1()` can take vector input (which is
   then converted to a single-column matrix).
 
+- Fix Issue #157, to have `calc_genoprob()` give a better error
+  message about missing genetic map.
+
 
 ## qtl2 0.22-11 (2020-07-09)
 
