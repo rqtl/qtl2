@@ -664,3 +664,30 @@ test_that("weights derived from table() are okay", {
     expect_equal(out1k, out2k)
 
 })
+
+test_that("scan1 can handle names in the phenotype rownames", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    pr <- calc_genoprob(iron, error_prob=0.002)
+    pheno <- iron$pheno
+    out <- scan1(pr, pheno)
+
+    names(rownames(pheno)) <- paste0("mouse", rownames(pheno))
+    expect_equal(scan1(pr, pheno), out)
+
+    names(rownames(pheno)) <- rep(NA, nrow(pheno))
+    expect_equal(scan1(pr, pheno), out)
+
+
+    # the same with kinship matrix
+    pheno <- iron$pheno
+    k <- calc_kinship(pr)
+    out <- scan1(pr, pheno, k)  # no error
+
+    names(rownames(pheno)) <- paste0("mouse", rownames(pheno))
+    expect_equal(scan1(pr, pheno, k), out)
+
+    names(rownames(pheno)) <- rep(NA, nrow(pheno))
+    expect_equal(scan1(pr, pheno, k), out)
+
+})

@@ -1,4 +1,4 @@
-## qtl2 0.23-10 (2020-12-03)
+## qtl2 0.23-11 (2020-12-08)
 
 ### Major changes
 
@@ -18,9 +18,8 @@
 
 - Implemented Issue #184, to make `calc_het()` multi-core.
 
-- Making the tests of the plot functions only run locally, as they are
-  failing on R-devel and it seems like it could be a pain running
-  these on CRAN.
+- Make the [vdiffr](https://vdiffr.r-lib.org) package optional: only
+  test the plots locally, and only if vdiffr is installed.
 
 ### Bug fixes
 
@@ -46,6 +45,14 @@
 
 - Fix Issue #135, so `plot_scan1()` can take vector input (which is
   then converted to a single-column matrix).
+
+- Fix Issue #157, to have `calc_genoprob()` give a better error
+  message about missing genetic map.
+
+- Fix Issue #178, to have `read_cross2()` give a warning not an error
+  if incorrect number of alleles.
+
+- Fix Issue #180 re `scan1()` error if phenotypes' rownames have rownames.
 
 
 ## qtl2 0.22-11 (2020-07-09)

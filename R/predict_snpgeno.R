@@ -16,6 +16,7 @@
 #' @keywords utilities
 #' @seealso [maxmarg()], [viterbi()], [calc_errorlod()]
 #' @export
+#' @importFrom stats setNames
 #'
 #' @examples
 #' \dontrun{
@@ -42,7 +43,7 @@ function(cross, geno, cores=1)
    # ensure same chromosomes
    if(n_chr(cross) != length(geno) ||
       any(chr_names(cross) != names(geno))) {
-       chr <- get_common_ids(chr_names(cross), names(geno))
+       chr <- get_common_ids(setNames(chr_names(cross), NULL), setNames(names(geno), NULL))
        cross <- cross[,chr]
        geno <- geno[,chr]
    }
@@ -50,7 +51,7 @@ function(cross, geno, cores=1)
    # ensure same individuals
    if(n_ind_geno(cross) != nrow(geno[[1]]) ||
       any(ind_ids_geno(cross) != rownames(geno[[1]]))) {
-       ind <- get_common_ids(ind_ids_geno(cross), rownames(geno[[1]]))
+       ind <- get_common_ids(setNames(ind_ids_geno(cross), NULL), setNames(rownames(geno[[1]]), NULL))
        cross <- cross[ind,]
        geno <- geno[ind,]
    }
@@ -75,7 +76,7 @@ function(cross, geno, cores=1)
        ph2 <- ph[[chr]][,,2]
        if(ncol(fg) != ncol(ph1) ||
           any(colnames(fg) != colnames(ph1))) {
-           mar <- get_common_ids(colnames(fg), colnames(ph1))
+           mar <- get_common_ids(setNames(colnames(fg), NULL), setNames(colnames(ph1), NULL))
            fg <- fg[,mar,drop=FALSE]
            ph1 <- ph1[,mar,drop=FALSE]
            ph2 <- ph2[,mar,drop=FALSE]

@@ -36,18 +36,20 @@ sqrt_weights <-
 
 
 # multiply a vector by a set of weights
+#' @importFrom stats setNames
 weight_vector <-
     function(vec, weights, tol=1e-12)
 {
     if(is_null_weights(weights, tol) || is.null(vec)) return(vec)
 
     # align and multiply
-    id <- get_common_ids(names(vec), names(weights))
+    id <- get_common_ids(setNames(names(vec), NULL), setNames(names(weights), NULL))
     vec[id] * weights[id]
 }
 
 
 # multiply a matrix by a set of weights
+#' @importFrom stats setNames
 weight_matrix <-
     function(mat, weights, tol=1e-12)
 {
@@ -57,11 +59,12 @@ weight_matrix <-
     if(!is.matrix(mat)) mat <- as.matrix(mat)
 
     # align and multiply
-    id <- get_common_ids(rownames(mat), names(weights))
+    id <- get_common_ids(setNames(rownames(mat), NULL), setNames(names(weights), NULL))
     mat[id,,drop=FALSE] * weights[id]
 }
 
 # multiply an array by a set of weights
+#' @importFrom stats setNames
 weight_array <-
     function(arr, weights, tol=1e-12)
 {
@@ -72,6 +75,6 @@ weight_array <-
         stop("arr should be a 3-dimensional array")
 
     # align and multiply
-    id <- get_common_ids(rownames(arr), names(weights))
+    id <- get_common_ids(setNames(rownames(arr), NULL), setNames(names(weights), NULL))
     arr[id,,,drop=FALSE] * weights[id]
 }

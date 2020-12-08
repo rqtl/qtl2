@@ -110,6 +110,7 @@ check_kinship_onechr <-
 
 # multiply kinship by weights (from and back)
 # assuming weights are really square-root weights
+#' @importFrom stats setNames
 weight_kinship <-
     function(kinship, weights=NULL, tol=1e-8)
 {
@@ -132,7 +133,7 @@ weight_kinship <-
     }
 
     # line them up
-    ind2keep <- get_common_ids(rownames(kinship), names(weights))
+    ind2keep <- get_common_ids(setNames(rownames(kinship), NULL), setNames(names(weights), NULL))
     weights <- weights[ind2keep]
     kinship <- kinship[ind2keep, ind2keep, drop=FALSE]
 

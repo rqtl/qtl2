@@ -5,5 +5,5 @@ Makefile$
 ^inst/scripts/.+\.tbi$
 ^inst/scripts/.+\.sqlite$
 ^\.RData$
-^inst/scripts/\.RData$
+/\.RData$
 ^\.github$

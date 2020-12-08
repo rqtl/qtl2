@@ -11,9 +11,9 @@ test_that("plot_pxg works", {
     geno <- maxmarg(probs, map, chr=16, pos=28.6, return_char=TRUE)
 
     test_plot_pxg <- function() plot_pxg(geno, log10(iron$pheno[,1]), ylab="log liver")
-    vdiffr::expect_doppelganger("plot_pxg", test_plot_pxg)
+    expect_doppelganger("plot_pxg", test_plot_pxg)
 
     test_plot_pxg_se <- function() plot_pxg(geno, log10(iron$pheno[,1]), ylab="log liver", SEmult=2)
-    vdiffr::expect_doppelganger("plot_pxg_se", test_plot_pxg_se)
+    expect_doppelganger("plot_pxg_se", test_plot_pxg_se)
 
 })

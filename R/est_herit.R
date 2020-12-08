@@ -98,7 +98,7 @@ est_herit <-
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(kinshipIDs, addcovar, weights, complete.cases=TRUE)
-    ind2keep <- get_common_ids(ind2keep, rownames(pheno)[rowSums(is.finite(pheno)) > 0])
+    ind2keep <- get_common_ids(ind2keep, pheno[rowSums(is.finite(pheno)) > 0,,drop=FALSE])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
             stop("No individuals in common.")

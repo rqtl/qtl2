@@ -249,11 +249,19 @@ function(file, quiet=TRUE)
     if("alleles" %in% names(control)) {
         output$alleles <- control$alleles
         used_control["alleles"] <- TRUE # indicate that we used it
-        if(n_alleles != length(output$alleles))
-            stop("length(alleles) [", length(output$alleles),
-                 "] != expected number [", n_alleles, "]")
+        if(n_alleles != length(output$alleles)) {
+            if(length(output$alleles) < n_alleles) {
+                # pad with a bunch of letters
+                output$alleles <- c(output$alleles,
+                                    rep(LETTERS[!(LETTERS %in% output$alleles)], n_alleles))
+            }
+            # trim to n_alleles
+            output$alleles <- output$alleles[seq_len(n_alleles)]
+            warning("length(alleles) [", length(output$alleles),
+                    "] != expected number [", n_alleles, "]")
+        }
     } else {
-        output$alleles <- LETTERS[1:n_alleles]
+        output$alleles <- LETTERS[seq_len(n_alleles)]
     }
 
     class(output) <- "cross2"
