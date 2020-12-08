@@ -53,6 +53,9 @@
 - Fix Issue #157, to have `calc_genoprob()` give a better error
   message about missing genetic map.
 
+- Fix Issue #178, to have `read_cross2()` give a warning not an error
+  if incorrect number of alleles.
+
 
 ## qtl2 0.22-11 (2020-07-09)
 
