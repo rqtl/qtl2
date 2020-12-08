@@ -1,4 +1,4 @@
-## qtl2 0.23-10 (2020-12-03)
+## qtl2 0.23-11 (2020-12-08)
 
 ### Major changes
 
@@ -21,6 +21,9 @@
 - Making the tests of the plot functions only run locally, as they are
   failing on R-devel and it seems like it could be a pain running
   these on CRAN.
+
+- Make the [vdiffr](https://vdiffr.r-lib.org) package optional: only
+  test the plots locally, and only if vdiffr is installed.
 
 ### Bug fixes
 

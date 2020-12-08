@@ -15,6 +15,6 @@ test_that("plot_genoprob works", {
         plot_genoprob(probs, map, ind="232", main="232")
     }
 
-    vdiffr::expect_doppelganger("plot_genoprob", test_plot_genoprob)
+    expect_doppelganger("plot_genoprob", test_plot_genoprob)
 
 })

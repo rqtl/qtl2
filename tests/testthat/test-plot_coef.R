@@ -16,6 +16,6 @@ test_that("plot_coef works", {
 
     test_plot_coef <- function() plot(coef, map, columns=1:3)
 
-    vdiffr::expect_doppelganger("plot_coef", test_plot_coef)
+    expect_doppelganger("plot_coef", test_plot_coef)
 
 })

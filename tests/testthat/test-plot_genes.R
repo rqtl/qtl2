@@ -16,6 +16,6 @@ test_that("plot_genes works", {
 
     test_plot_genes <- function() plot_genes(genes, xlim=c(140, 146), scale=1e-6)
 
-    vdiffr::expect_doppelganger("plot_genes", test_plot_genes)
+    expect_doppelganger("plot_genes", test_plot_genes)
 
 })
