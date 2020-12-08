@@ -56,6 +56,8 @@
 - Fix Issue #178, to have `read_cross2()` give a warning not an error
   if incorrect number of alleles.
 
+- Fix Issue #180 re `scan1()` error if phenotypes' rownames have rownames.
+
 
 ## qtl2 0.22-11 (2020-07-09)
 
