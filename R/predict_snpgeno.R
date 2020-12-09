@@ -56,8 +56,14 @@ function(cross, geno, cores=1)
        geno <- geno[ind,]
    }
 
+   phase_known <- is_phase_known(cross)
+
    # guess phase
-   ph <- guess_phase(cross, geno, cores=cores)
+   if(!phase_known) {
+       ph <- guess_phase(cross, geno, cores=cores)
+   } else {
+       ph <- cross$geno
+   }
 
    # subset cross chromosomes
    cross <- cross[,names(ph)]
@@ -72,8 +78,12 @@ function(cross, geno, cores=1)
    by_chr_func <- function(chr) {
        # ensure the same markers
        fg <- cross$founder_geno[[chr]]
-       ph1 <- ph[[chr]][,,1]
-       ph2 <- ph[[chr]][,,2]
+       if(phase_known) {
+           ph1 <- ph2 <- geno[[chr]]
+       } else {
+           ph1 <- ph[[chr]][,,1]
+           ph2 <- ph[[chr]][,,2]
+       }
        if(ncol(fg) != ncol(ph1) ||
           any(colnames(fg) != colnames(ph1))) {
            mar <- get_common_ids(setNames(colnames(fg), NULL), setNames(colnames(ph1), NULL))

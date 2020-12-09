@@ -1,4 +1,4 @@
-## qtl2 0.23-11 (2020-12-08)
+## qtl2 0.23-12 (2020-12-09)
 
 ### Major changes
 
@@ -40,19 +40,22 @@
   `genoprob_to_alleleprob()` for general AIL crosses. We had not
   implemented the `geno2allele_matrix()` function.
 
-- Fix Issue #164, so `plot_pxg()` can handle a phenotype that is a
+- Fixed Issue #164, so `plot_pxg()` can handle a phenotype that is a
   single-column data frame.
 
-- Fix Issue #135, so `plot_scan1()` can take vector input (which is
+- Fixed Issue #135, so `plot_scan1()` can take vector input (which is
   then converted to a single-column matrix).
 
-- Fix Issue #157, to have `calc_genoprob()` give a better error
+- Fixed Issue #157, to have `calc_genoprob()` give a better error
   message about missing genetic map.
 
-- Fix Issue #178, to have `read_cross2()` give a warning not an error
+- Fixed Issue #178, to have `read_cross2()` give a warning not an error
   if incorrect number of alleles.
 
-- Fix Issue #180 re `scan1()` error if phenotypes' rownames have rownames.
+- Fixed Issue #180 re `scan1()` error if phenotypes' rownames have rownames.
+
+- Fixed Issue #146, revising `predict_snpgeno()` so that it works for
+  homozygous populations, like MAGIC lines or the Collaborative Cross.
 
 
 ## qtl2 0.22-11 (2020-07-09)
