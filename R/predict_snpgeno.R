@@ -43,7 +43,7 @@ function(cross, geno, cores=1)
    # ensure same chromosomes
    if(n_chr(cross) != length(geno) ||
       any(chr_names(cross) != names(geno))) {
-       chr <- get_common_ids(setNames(chr_names(cross), NULL), setNames(names(geno), NULL))
+       chr <- get_common_ids(setNames(names(geno), NULL), setNames(chr_names(cross), NULL))
        cross <- cross[,chr]
        geno <- geno[,chr]
    }
@@ -51,7 +51,7 @@ function(cross, geno, cores=1)
    # ensure same individuals
    if(n_ind_geno(cross) != nrow(geno[[1]]) ||
       any(ind_ids_geno(cross) != rownames(geno[[1]]))) {
-       ind <- get_common_ids(setNames(ind_ids_geno(cross), NULL), setNames(rownames(geno[[1]]), NULL))
+       ind <- get_common_ids(setNames(rownames(geno[[1]]), NULL), setNames(ind_ids_geno(cross), NULL))
        cross <- cross[ind,]
        geno <- geno[ind,]
    }
