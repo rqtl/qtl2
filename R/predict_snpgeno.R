@@ -43,7 +43,7 @@ function(cross, geno, cores=1)
    # ensure same chromosomes
    if(n_chr(cross) != length(geno) ||
       any(chr_names(cross) != names(geno))) {
-       chr <- get_common_ids(setNames(chr_names(cross), NULL), setNames(names(geno), NULL))
+       chr <- get_common_ids(setNames(names(geno), NULL), setNames(chr_names(cross), NULL))
        cross <- cross[,chr]
        geno <- geno[,chr]
    }
@@ -51,13 +51,19 @@ function(cross, geno, cores=1)
    # ensure same individuals
    if(n_ind_geno(cross) != nrow(geno[[1]]) ||
       any(ind_ids_geno(cross) != rownames(geno[[1]]))) {
-       ind <- get_common_ids(setNames(ind_ids_geno(cross), NULL), setNames(rownames(geno[[1]]), NULL))
+       ind <- get_common_ids(setNames(rownames(geno[[1]]), NULL), setNames(ind_ids_geno(cross), NULL))
        cross <- cross[ind,]
        geno <- geno[ind,]
    }
 
+   phase_known <- is_phase_known(cross)
+
    # guess phase
-   ph <- qtl2::guess_phase(cross, geno, cores=cores)
+   if(!phase_known) {
+       ph <- guess_phase(cross, geno, cores=cores)
+   } else {
+       ph <- cross$geno
+   }
 
    # subset cross chromosomes
    cross <- cross[,names(ph)]
@@ -72,8 +78,12 @@ function(cross, geno, cores=1)
    by_chr_func <- function(chr) {
        # ensure the same markers
        fg <- cross$founder_geno[[chr]]
-       ph1 <- ph[[chr]][,,1]
-       ph2 <- ph[[chr]][,,2]
+       if(phase_known) {
+           ph1 <- ph2 <- geno[[chr]]
+       } else {
+           ph1 <- ph[[chr]][,,1]
+           ph2 <- ph[[chr]][,,2]
+       }
        if(ncol(fg) != ncol(ph1) ||
           any(colnames(fg) != colnames(ph1))) {
            mar <- get_common_ids(setNames(colnames(fg), NULL), setNames(colnames(ph1), NULL))
