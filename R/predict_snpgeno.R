@@ -57,7 +57,7 @@ function(cross, geno, cores=1)
    }
 
    # guess phase
-   ph <- qtl2::guess_phase(cross, geno, cores=cores)
+   ph <- guess_phase(cross, geno, cores=cores)
 
    # subset cross chromosomes
    cross <- cross[,names(ph)]
