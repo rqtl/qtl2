@@ -13,7 +13,7 @@ class GENAIL : public QTLCross
 
     GENAIL(int nf){
         crosstype = "genail";
-        phase_known_crosstype = "genail";
+        phase_known_crosstype = "genailpk"; // this actually doesn't exist
         if(nf < 2) {
             throw std::range_error("general AIL should have >= 2 founders");
         }

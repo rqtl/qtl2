@@ -1,4 +1,4 @@
-## qtl2 0.23-12 (2020-12-09)
+## qtl2 0.23-13 (2020-12-10)
 
 ### Major changes
 
@@ -56,6 +56,11 @@
 
 - Fixed Issue #146, revising `predict_snpgeno()` so that it works for
   homozygous populations, like MAGIC lines or the Collaborative Cross.
+
+- Fixed Issue #176, that `guess_phase()` doesn't work with cross type
+  `"genail"`. Needed to define `phase_known_crosstype` as `"genailpk"` in
+  [`cross_genail.h`](https://github.com/rqtl/qtl2/blob/master/src/cross_genail.h)
+  because otherwise `is_phase_known()` will return TRUE.
 
 
 ## qtl2 0.22-11 (2020-07-09)
