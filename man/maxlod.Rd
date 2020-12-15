@@ -4,7 +4,7 @@
 \alias{maxlod}
 \title{Overall maximum LOD score}
 \usage{
-maxlod(scan1_output, map = NULL, chr = NULL)
+maxlod(scan1_output, map = NULL, chr = NULL, lodcolumn = NULL)
 }
 \arguments{
 \item{scan1_output}{An object of class \code{"scan1"} as returned by
@@ -14,6 +14,10 @@ maxlod(scan1_output, map = NULL, chr = NULL)
 \code{\link[=insert_pseudomarkers]{insert_pseudomarkers()}}.}
 
 \item{chr}{Optional vector of chromosomes to consider.}
+
+\item{lodcolumn}{An integer or character string indicating the LOD
+score column, either as a numeric index or column name.
+If \code{NULL}, return maximum for all columns.}
 }
 \value{
 A single number: the maximum LOD score across all columns and positions for

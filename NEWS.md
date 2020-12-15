@@ -26,6 +26,8 @@
 
 - `calc_sdp()` can now take a plain vector (Issue #142).
 
+- Added a `lodcolumn` argument to `maxlod()` (Issue #137).
+
 ### Bug fixes
 
 - Fixed [Issue #181](https://github.com/rqtl/qtl2/issues/181), where

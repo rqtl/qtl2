@@ -163,6 +163,9 @@ max.scan1 <-
 #' @param map A list of vectors of marker positions, as produced by
 #' [insert_pseudomarkers()].
 #' @param chr Optional vector of chromosomes to consider.
+#' @param lodcolumn An integer or character string indicating the LOD
+#' score column, either as a numeric index or column name.
+#' If `NULL`, return maximum for all columns.
 #'
 #' @export
 #' @return A single number: the maximum LOD score across all columns and positions for
@@ -193,7 +196,7 @@ max.scan1 <-
 #' # maximum on chromosome 2
 #' maxlod(out, map, "2")
 maxlod <-
-    function(scan1_output, map=NULL, chr=NULL)
+    function(scan1_output, map=NULL, chr=NULL, lodcolumn=NULL)
 {
     if(is.null(scan1_output)) stop("scan1_output is NULL")
 
@@ -204,6 +207,10 @@ maxlod <-
     else {
         # subset by chromosome
         scan1_output <- subset(scan1_output, map=map, chr=chr)
+    }
+
+    if(!is.null(lodcolumn)) {
+        scan1_output <- subset(scan1_output, lodcolumn=lodcolumn)
     }
 
     # to handle output of either scan1() or scan1coef()
