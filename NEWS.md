@@ -24,6 +24,8 @@
 - Make the [vdiffr](https://vdiffr.r-lib.org) package optional: only
   test the plots locally, and only if vdiffr is installed.
 
+- `calc_sdp()` can now take a plain vector (Issue #142).
+
 ### Bug fixes
 
 - Fixed [Issue #181](https://github.com/rqtl/qtl2/issues/181), where

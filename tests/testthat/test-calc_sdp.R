@@ -42,6 +42,10 @@ test_that("calc_sdp works", {
     g <- g[n_AA > 0 & n_AA < 8,]
     expect_equal(calc_sdp(g),
                  apply(g, 1, function(a) sum(((a-1)/2)*2^(seq(along=a)-1))))
+
+    expect_equal( calc_sdp( c(1,1,1,3,1,1,1,1) ), 8)
+    expect_equal( calc_sdp( data.frame(1,1,1,3,1,1,1,1)),  8)
+
 })
 
 

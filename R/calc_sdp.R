@@ -23,9 +23,14 @@ calc_sdp <-
     function(geno)
 {
     # tolerate data frames, but convert to matrix
-    if(!is.matrix(geno) && is.data.frame(geno))
-        geno <- as.matrix(geno)
-    if(!is.matrix(geno)) stop("geno should be a matrix")
+    if(!is.matrix(geno)) {
+        if(is.data.frame(geno)) {
+            geno <- as.matrix(geno)
+        } else {
+            geno <- rbind(geno)
+            dimnames(geno) <- NULL
+        }
+    }
 
     n_str <- ncol(geno)
 
