@@ -3,7 +3,8 @@
 #' Fit a single-QTL model at a single putative QTL position and get detailed results
 #' about estimated coefficients and individuals contributions to the LOD score.
 #'
-#' @param genoprobs A matrix of genotype probabilities, individuals x genotypes
+#' @param genoprobs A matrix of genotype probabilities, individuals x genotypes.
+#'     If NULL, we create a single intercept column, matching the individual IDs in `pheno`.
 #' @param pheno A numeric vector of phenotype values (just one phenotype, not a matrix of them)
 #' @param kinship Optional kinship matrix.
 #' @param addcovar An optional numeric matrix of additive covariates.
@@ -122,8 +123,13 @@ fit1 <-
              contrasts=NULL, model=c("normal", "binary"),
              zerosum=TRUE, se=TRUE, hsq=NULL, reml=TRUE, blup=FALSE, ...)
 {
-    if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
+
+    if(missing(genoprobs) || is.null(genoprobs)) { # create matrix of 1's
+        if(!is.matrix(pheno)) pheno <- cbind(pheno)
+        genoprobs <- matrix(1, ncol=1, nrow=nrow(pheno))
+        dimnames(genoprobs) <- list(rownames(pheno), "intercept")
+    }
 
     model <- match.arg(model)
 

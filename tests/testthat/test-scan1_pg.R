@@ -61,7 +61,7 @@ test_that("scan1 with kinship with intercross, vs ported lmmlite code", {
 
 test_that("scan1 with intercross with X covariates for null", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -124,7 +124,7 @@ test_that("scan1 with intercross with X covariates for null", {
 
 test_that("scan1 with kinship with intercross with an additive covariate", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -229,7 +229,7 @@ test_that("scan1 with kinship with intercross with an additive covariate", {
 
 test_that("scan1 with kinship with intercross with an interactive covariate", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -414,7 +414,7 @@ test_that("scan1 with kinship works with LOCO, additive covariates", {
 
 test_that("scan1 with kinship works with LOCO, interactive covariates", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -518,7 +518,7 @@ test_that("scan1 with kinship works with multicore", {
 
 test_that("scan1 with kinship LOD results invariant to change in scale to pheno and covar", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -545,7 +545,7 @@ test_that("scan1 with kinship LOD results invariant to change in scale to pheno 
 
 test_that("scan1 deals with mismatching individuals", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -577,7 +577,7 @@ test_that("scan1 deals with mismatching individuals", {
 
 test_that("scan1 with weights and kinship", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -713,7 +713,7 @@ test_that("scan1 with weights and kinship", {
 
 test_that("scan1 works with hsq specified", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)

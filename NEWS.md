@@ -13,6 +13,9 @@
 
 - `fit1()` now returns both fitted values and residuals.
 
+- `fit1()` can be run with genotype probabilities omitted, in which
+  case an intercept column of 1's is used (Issue #151).
+
 - Updated mouse gene database with 2020-09-07 data from
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
@@ -20,6 +23,10 @@
 
 - Make the [vdiffr](https://vdiffr.r-lib.org) package optional: only
   test the plots locally, and only if vdiffr is installed.
+
+- `calc_sdp()` can now take a plain vector (Issue #142).
+
+- Added a `lodcolumn` argument to `maxlod()` (Issue #137).
 
 ### Bug fixes
 

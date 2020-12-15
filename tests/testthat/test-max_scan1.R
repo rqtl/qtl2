@@ -149,6 +149,11 @@ test_that("maxlod works for intercross with two phenotypes", {
     # overall max
     expect_equal(maxlod(out), max(unclass(out)))
 
+    expect_equal(maxlod(out, lodcolumn="liver"), max(out[,"liver"], na.rm=TRUE))
+    expect_equal(maxlod(out, lodcolumn="spleen"), max(out[,"spleen"], na.rm=TRUE))
+    expect_equal(maxlod(out, lodcolumn=1), max(out[,"liver"], na.rm=TRUE))
+    expect_equal(maxlod(out, lodcolumn=2), max(out[,"spleen"], na.rm=TRUE))
+
     expect_equal(maxlod(out, map, c("2", "9")),
                  max(unclass(subset(out, map, c("2", "9")))))
 
