@@ -13,6 +13,9 @@
 
 - `fit1()` now returns both fitted values and residuals.
 
+- `fit1()` can be run with genotype probabilities omitted, in which
+  case an intercept column of 1's is used (Issue #151).
+
 - Updated mouse gene database with 2020-09-07 data from
   [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 

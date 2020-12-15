@@ -573,3 +573,34 @@ test_that("fit1 fitted values don't depend on order of individuals", {
 
     testthat::expect_equal(out_fit1$fitted[ind] , out_fit1b$fitted[ind])
 })
+
+test_that("fit1 works without genoprobs", {
+
+    set.seed(20201215)
+    n <- 100
+    nam <- paste0("mouse", sample(10*n, n))
+
+    phe <- setNames(rnorm(n), nam)
+    cov <- setNames(sample(0:1, n, replace=TRUE), nam)
+
+    lm_out <- lm(phe ~ cov)
+    lm_sum <- summary(lm_out)
+
+    coef_names <- c("intercept", "ac1", "intercept")
+    expected <- list(lod=0,
+                     ind_lod=setNames(rep(0, n), nam),
+                     coef=setNames(c(0, lm_out$coef[2], lm_out$coef[1]), coef_names),
+                     SE=setNames(lm_sum$coef[c(1,2,1),"Std. Error"], coef_names),
+                     fitted=lm_out$fitted,
+                     resid=lm_out$resid)
+
+    expect_equal(fit1(pheno=phe, addcovar=cov), expected)
+
+    k <- matrix(0.5,ncol=n, nrow=n)
+    diag(k) <- 1
+    dimnames(k) <- list(nam, nam)
+
+    # just test that this works
+    should_work <- fit1(pheno=phe, addcovar=cov, kinship=k)
+
+})

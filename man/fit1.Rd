@@ -23,7 +23,8 @@ fit1(
 )
 }
 \arguments{
-\item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes}
+\item{genoprobs}{A matrix of genotype probabilities, individuals x genotypes.
+If NULL, we create a single intercept column, matching the individual IDs in \code{pheno}.}
 
 \item{pheno}{A numeric vector of phenotype values (just one phenotype, not a matrix of them)}
 
