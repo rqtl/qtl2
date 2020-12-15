@@ -2,7 +2,7 @@ context("zip data files")
 
 test_that("zip_datafiles() works", {
 
-    skip_if(isnt_karl(), "This test is only run locally.")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # put files in temp directory
     tmpdir <- file.path(tempdir(), "test_zip_datafiles")

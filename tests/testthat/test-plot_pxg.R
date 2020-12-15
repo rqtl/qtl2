@@ -2,7 +2,7 @@ context("plot_pxg")
 
 test_that("plot_pxg works", {
 
-    skip_if(isnt_karl(), "plot tests only done locally")
+    skip_if(isnt_karl(), "plot tests only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=1)

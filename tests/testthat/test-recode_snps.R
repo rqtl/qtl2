@@ -2,7 +2,7 @@ context("recode_snps")
 
 test_that("recode_snps works", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     # load example data
     file <- paste0("https://raw.githubusercontent.com/rqtl/",

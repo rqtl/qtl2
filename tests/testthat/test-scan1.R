@@ -205,7 +205,7 @@ test_that("scan1 for backcross with one phenotype", {
 
 test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -325,7 +325,7 @@ test_that("scan1 for backcross with multiple phenotypes with NAs", {
 
 test_that("scan1 works with NAs in the covariates", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -372,7 +372,7 @@ test_that("scan1 works with NAs in the covariates", {
 
 test_that("scan1 aligns the individuals", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -537,7 +537,7 @@ test_that("multi-core scan1 works", {
 
 test_that("scan1 LOD results don't depend on scale of x and y", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     set.seed(20151202)
     library(qtl)
@@ -610,7 +610,7 @@ test_that("scan1 LOD results don't depend on scale of x and y", {
 
 test_that("scan1 deals with mismatching individuals", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     map <- insert_pseudomarkers(iron$gmap, step=2.5)
@@ -633,7 +633,7 @@ test_that("scan1 deals with mismatching individuals", {
 
 test_that("scan1 can handle decomposed kinship matrix", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 

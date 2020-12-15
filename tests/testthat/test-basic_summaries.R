@@ -126,7 +126,7 @@ test_that("basic summaries give correct numbers for grav2 data", {
 
 test_that("basic summaries give correct numbers for recla data", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
                    "qtl2data/master/DO_Recla/recla.zip")

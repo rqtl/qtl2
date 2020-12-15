@@ -2,7 +2,7 @@ context("plot_coef")
 
 test_that("plot_coef works", {
 
-    skip_if(isnt_karl(), "plot tests only done locally")
+    skip_if(isnt_karl(), "plot tests only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     iron <- iron[,2]

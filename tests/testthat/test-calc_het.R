@@ -28,7 +28,7 @@ test_that("calc_het works for an intercross", {
 
 test_that("calc_het works with multi-core", {
 
-    skip_if(isnt_karl(), "This test only run locally")
+    skip_if(isnt_karl(), "this test only run locally")
 
     iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
     pr <- calc_genoprob(iron, err=0.002)
