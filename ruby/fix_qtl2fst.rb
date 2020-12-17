@@ -14,13 +14,16 @@ f = File.open(file, "r")
 
 f.each_line do |line|
     if passed_head
+        if /^### / =~ line
+            line.sub!(/^### /, "## ")
+        end
         contents += line
     else
         if /^\-\-\-/ =~ line
             if !within_head
                 within_head = true
             else
-                contents += "output: html_document\n"
+                contents += "output:\n    html_document:\n        toc: true\n        toc_float: true\n"
                 passed_head = true
             end
             contents += line
