@@ -1,0 +1,856 @@
+---
+title: Detecting sample mix-ups in Diversity Outbred mouse data
+output:
+    html_document:
+        toc: true
+        toc_depth: 2
+        toc_float: true
+        code_folding: "show"
+---
+
+```{r options, include=FALSE}
+options(width=110)
+knitr::opts_chunk$set(fig.width=11, fig.height=8,
+                      dev="svg")
+set.seed(20210112)
+```
+
+
+## Introduction
+
+Sample mix-ups, mislabelings, or contamination are hard to avoid, and
+they interfere with our ability to identify genotype:phenotype
+associations. However with eQTL data, and other high-throughput
+genomic data, there is often the opportunity to identify and correct
+such mix-ups. For example, see [Westra et al.
+(2011)](https://doi.org/10.1093/bioinformatics/btr323) and [Broman et
+al. (2015)](https://doi.org/10.1534/g3.115.019778).
+
+Here, we seek to illustrate our approach for identifying sample
+mix-ups in Diversity Outbred (DO) mouse data. We will consider data from
+[Chick et al. (2016)](https://doi.org/10.1038/nature18270),
+on a set of DO mice with genotype data from the MegaMUGA array,
+liver gene expression data by RNA-seq, and
+liver proteomics data from mass spectrometry.
+The data are available via the [Churchill lab qtlviewer
+site](https://churchilllab.jax.org/qtlviewers);
+see the [Svenson DO High Fat Diet
+viewer](https://churchilllab.jax.org/qtlviewer/svenson/DOHFD), or
+download the data directly (as a `.RData` file) from
+<https://churchilllab.jax.org/qtlviewer/svenson/DOHFD/rdata>.
+
+Raw RNA-seq data are also available from
+[GEO GSE72759](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE72759),
+including [processed gene expression data with
+genotypes](https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE72759&format=file&file=GSE72759%5FDO192%5FRNAseq%5FUpperQuartileNormalized%5Fn21454genes%5FforGEOSubmission%2Etxt%2Egz).
+Proteomics data is available at [Proteomexchange,
+PXD002801](http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=pxd002801),
+though not in a form that is easy to deal with.
+Genotype and clinical phenotype data are also available at
+[DODB](https://dodb.jax.org).
+
+The basic approach we take is similar to [Figure
+1](https://www.g3journal.org/content/ggg/5/10/2177/F1.large.jpg) of
+[Broman et al. (2015)](https://doi.org/10.1534/g3.115.019778).
+
+```{r download_fig1, echo=FALSE, fig.cap="_[Figure 1](https://www.g3journal.org/content/ggg/5/10/2177/F1.large.jpg) from [Broman et al. (2015)](https://doi.org/10.1534/g3.115.019778)_"}
+url <- "https://www.g3journal.org/content/ggg/5/10/2177/F1.large.jpg"
+cache_dir <- "mixups_cache"
+if(!dir.exists(cache_dir)) dir.create(cache_dir)
+local_file <- file.path(cache_dir, basename(url))
+if(!file.exists(local_file)) download.file(url, local_file)
+knitr::include_graphics(local_file)
+```
+
+Consider two large datasets whose rows are supposed to correspond (panel
+A). We look at the association between column pairs to find pairs that
+are highly associated (panel B). We
+then reduce our focus to just those columns (panel C) and measure the
+similarity between rows, creating a similarity matrix (panel D).
+
+The two datasets could be genotypes and gene expression, or they could
+be gene expression in two different tissues, or they could be gene
+expression and protein levels. The key thing is that they contain
+strong association signals that allows us to distinguish rows that
+belong to the same individual from rows that belong to different
+individuals. And our basic approach is to first pull out the columns
+with strong association and toss the rest away, and then look at
+similarity of rows in that subset of columns.
+
+
+## Preparations
+
+We will first load a set of R packages.
+We use [R/qtl2](https://kbroman.org/rqtl2) for the QTL analysis,
+[R/lineup2](https://github.com/kbroman/lineup2)
+for the sample mix-up analysis,
+[R/broman](https://github.com/kbroman/broman) for some general
+utilities and graphs,
+and the [DT package](https://rstudio.github.io/DT/) for dynamic tables.
+
+```{r load_libraries}
+library(qtl2)
+library(lineup2)
+library(broman)
+library(DT)
+```
+
+Next we will download the data file from
+<https://churchilllab.jax.org/qtlviewer/svenson/DOHFD/rdata>. It's a
+`.RData` file that is about 3.1 GB, so this will take a while.
+
+```{r download_data}
+url <- "https://churchilllab.jax.org/qtlviewer/svenson/DOHFD/rdata"
+file <- "mixups_cache/Svenson_DO850_for_eQTL_viewer_v9.RData"
+if(!file.exists(file)) {
+    download.file(url, file)
+}
+```
+
+We can load the data with `load()`. This will also take a while.
+
+```{r load_data}
+load(file)
+```
+
+
+The file contains a number of objects, including the following:
+
+- `dataset.mrna` - a list containing the mRNA expression data
+  (`r nrow(dataset.mrna$annot.samples)` mice)
+- `dataset.protein` - a list containing the proteomics data
+  (`r nrow(dataset.protein$annot.samples)` mice)
+- `genoprobs` - genotype probabilities across the genome from
+  `calc_genoprob()`, reduced to 8 allele dosages
+  (`r nrow(genoprobs[[1]])` mice)
+
+The mRNA and protein datasets are lists containing a number of
+objects. Here are the key pieces of `dataset.mrna`:
+
+- `annot.mrna` - metadata about the mRNA traits
+  (`r vec2string(colnames(dataset.mrna$annot.mrna))`)
+- `covar.matrix` -
+  `r nrow(dataset.mrna$covar.matrix)` &times; `r ncol(dataset.mrna$covar.matrix)` matrix
+  (including `sexM`, a 0/1 indicator with 1 = male)
+- `data` - a list with "norm", "raw", "rz", each a
+  `r nrow(dataset.mrna$data$norm)` &times; `r add_commas(ncol(dataset.mrna$data$norm))` matrix
+- `lod.peaks` - a list with "additive", "diet", "sex_int",
+  each a data frame with `r vec2string(colnames(dataset.mrna$lod.peaks$additive))`
+
+The `dataset.protein` object is similar. Here are the key pieces:
+
+- `annot.protein` - metadata about the proteins
+  (`r nrow(dataset.protein$annot.samples)` mice)
+- `covar.matrix` -
+  `r nrow(dataset.protein$covar.matrix)` &times; `r ncol(dataset.protein$covar.matrix)` matrix
+  (including `sexM`, a 0/1 indicator with 1 = male)
+- `data` - a matrix of size
+  `r nrow(dataset.protein$data)` &times; `r add_commas(ncol(dataset.protein$data))`
+- `lod.peaks` - a list with "additive", "diet", "sex_int",
+  each a data frame with `r vec2string(colnames(dataset.protein$lod.peaks$additive))`
+
+
+## Expression vs. protein
+
+We'll start by comparing the gene expression data to the proteomics
+data.
+
+Let's pull out the protein and mRNA data as matrices. The
+`r nrow(dataset.protein$data)` mice in the proteomics data are all
+among the `r nrow(dataset.mrna$data$norm)` mice in the mRNA data.
+
+```{r protein_and_mrna_data}
+protein <- dataset.protein$data
+mrna <- dataset.mrna$data$norm
+protein_id <- rownames(protein)
+mrna_id <- rownames(mrna)
+
+# all mice in protein data are also in mrna data
+stopifnot(all(protein_id %in% mrna_id))
+```
+
+We want to verify that the rows in the proteomics data match their
+corresponding row in the mRNA data, but the variables are different.
+There are two solutions to that: we can look at all pairs of variables
+(protein/mRNA), or we can find the corresponding pairs, where the
+protein and transcript are for the same gene. The latter approach will
+be much faster, so let's start by looking at that.
+
+We first find the corresponding pairs. The protein annotation data
+includes a `gene.id` column that corresponds to the column names in
+the mRNA data. We also subset the mRNA data to the mice for which we
+have proteomics data.
+
+```{r align proteins and mrna}
+stopifnot(all( colnames(protein) == dataset.protein$annot.protein$protein.id))
+
+# find the gene ids for each protein
+protein_gene <- dataset.protein$annot.protein$gene.id
+
+# subset protein and mrna to sets in common
+protein_sub <- protein[, protein_gene %in% colnames(mrna)]
+mrna_sub <- mrna[rownames(protein), protein_gene[protein_gene %in% colnames(mrna)]]
+```
+
+Of the `r ncol(protein)` proteins measured, `r ncol(protein_sub)` have
+a corresponding gene in the mRNA data.
+
+But we can't just look at the correlations between the measurements
+across all genes, because it will be a sloppy mess. In any given
+tissue, most genes won't be expressed and the proteins will be absent,
+and so the observed values will be uncorrelated noise. So we first
+seek to identify a subset of highly correlated protein/gene pairs.
+
+Again, we'll start by just looking at the protein/transcript pairs that
+correspond to the same gene, because we would expect these to be among
+the most-correlated, and the calculation is fast. We use the function
+`corr_betw_matrices()` in the
+[R/lineup2](https://github.com/kbroman/lineup2) package. The third
+argument indicates that the columns of the two matrices are paired,
+and we just want the correlations between the paired columns.
+
+```{r paired_protein_mrna_corr}
+cor_protein_mrna_paired <- corr_betw_matrices(protein_sub, mrna_sub, "paired", cores=0)
+```
+
+Here is a histogram of the correlations.
+
+```{r hist_paired_protein_mrna_corr, fig.height=5, dev="png"}
+par(mar=c(5.1, 0.6, 0.6, 0.6))
+hist(cor_protein_mrna_paired, breaks=seq(-0.6, 1, len=201), main="", yaxt="n", ylab="",
+     xlab="Correlation between protein and mRNA (paired by gene)")
+```
+
+Alternatively, we could, for each protein, find the most-correlated
+gene, looking across all genes. We subset the mRNA data to the mice
+that have proteomics data, and then we use `corr_betw_matrices()` with
+the argument `"bestright"`, which returns a data frame that gives, for
+each column in the first dataset, the most-correlated column in the
+second dataset, and the value of the maximum correlation.
+
+```{r protein_mrna_corr, eval=FALSE}
+mrna_subind <- mrna[rownames(protein),]
+cor_protein_mrna <- corr_betw_matrices(protein, mrna_subind, "bestright", cores=0)
+```
+
+```{r protein_mrna_corr_really, echo=FALSE}
+mrna_subind <- mrna[rownames(protein),]
+# version that's really run, caching the results
+file <- "mixups_cache/cor_protein_mrna.rds"
+if(file.exists(file)) {
+    cor_protein_mrna <- readRDS(file)
+} else {
+<<protein_mrna_corr>>
+    saveRDS(cor_protein_mrna, file)
+}
+```
+
+Here is a histogram of these correlations:
+
+```{r hist_all_protein_mrna_corr, fig.height=5, dev="png"}
+par(mar=c(5.1, 0.6, 0.6, 0.6))
+hist(cor_protein_mrna$corr, breaks=seq(-0.6, 1, len=201), main="", yaxt="n", ylab="",
+     xlab="Correlation between protein and mRNA (max for each protein)")
+```
+
+
+It turns out, though, that for these particular data, a lot of the
+correlated protein/transcript
+pairs will be ones with a large sex difference. This leads to
+gene/protein pairs that are highly correlated but not especially
+useful for identifying samples.
+
+For our problem, of identifying sample mix-ups, it turns out to be
+better to focus on protein/transcript pairs that are highly correlated
+even after accounting for sex.
+
+So we'll choose gene/protein pairs by looking at the residual
+correlation after accounting for sex. To do so, we first "regress out"
+sex and then look at the correlations among the residuals.
+
+```{r adjust_protein_mrna_for_sex, eval=FALSE}
+protein_sex <- dataset.protein$covar.matrix[,"sexM"]
+protein_adj <- protein
+for(i in 1:ncol(protein)) {
+    r <- lm(protein[,i] ~ protein_sex)$resid
+    protein_adj[names(protein_resid[[i]]), i] <- r
+}
+
+mrna_sex <- dataset.mrna$covar.matrix[,"sexM"]
+mrna_adj <- mrna
+for(i in 1:ncol(mrna)) {
+    r <- lm(mrna[,i] ~ mrna_sex)$resid
+    mrna_adj[names(mrna_resid[[i]]),i] <- r
+}
+mrna_adj_subind <- mrna_adj[rownames(mrna_subind),]
+```
+
+```{r adjust_protein_mrna_for_sex_really, echo=FALSE}
+# this version uses mclapply() in the parallel package, for speed
+protein_sex <- dataset.protein$covar.matrix[,"sexM"]
+protein_adj <- protein
+protein_resid <- parallel::mclapply(1:ncol(protein), function(i) lm(protein[,i] ~ protein_sex)$resid,
+                                    mc.cores=parallel::detectCores())
+for(i in 1:ncol(protein)) protein_adj[names(protein_resid[[i]]),i] <- protein_resid[[i]]
+
+mrna_sex <- dataset.mrna$covar.matrix[,"sexM"]
+mrna_adj <- mrna
+mrna_resid <- parallel::mclapply(1:ncol(mrna), function(i) lm(mrna[,i] ~ mrna_sex)$resid,
+                                    mc.cores=parallel::detectCores())
+for(i in 1:ncol(mrna)) mrna_adj[names(mrna_resid[[i]]),i] <- mrna_resid[[i]]
+mrna_adj_subind <- mrna_adj[rownames(mrna_subind),]
+```
+
+Now we calculate the correlations between these adjusted protein and
+mRNA measurements. Again, for each protein we find the most-correlated
+gene.
+
+```{r protein_mrna_corr_adj, eval=FALSE}
+cor_protein_mrna_adj <- corr_betw_matrices(protein_adj, mrna_adj_subind, "bestright", cores=0)
+```
+
+```{r protein_mrna_corr_adj_really, echo=FALSE}
+# version that's really run, caching the results
+file <- "mixups_cache/cor_protein_mrna_adj.rds"
+if(file.exists(file)) {
+    cor_protein_mrna_adj <- readRDS(file)
+} else {
+<<protein_mrna_corr>>
+    saveRDS(cor_protein_mrna_adj, file)
+}
+```
+
+Now we will use these to identify the top 100 protein/transcript pairs.
+
+```{r select_gene_protein_pairs}
+o <- order(cor_protein_mrna_adj[,1], decreasing=TRUE)[1:100]
+protein_select <- rownames(cor_protein_mrna_adj)[o]
+gene_select <- cor_protein_mrna_adj[o,"ycol"]
+```
+
+And then we will use these 100 selected pairs to calculate a
+similarity matrix for the samples. We'll return to the measurements
+that haven't been adjusted for the sex difference, and calculate the
+correlation between each row in the protein data and each row in the
+mRNA data, across these 100 pairs of proteins and transcripts.
+We use `corr_betw_matrices()` with the option `"all"` to get the
+correlation of each column in one matrix with each column in the
+other. We transpose each of the protein and mRNA datasets so that the
+columns correspond to the samples.
+
+```{r calc_similarity_matrix_pve}
+x <- t(protein[,protein_select])
+y <- t(mrna[,gene_select])
+rownames(y) <- rownames(x)
+sim_pve <- corr_betw_matrices(x, y, "all", cores=0)
+```
+
+```{r save_sim_pve, echo=FALSE}
+saveRDS(sim_pve, "mixups_cache/sim_pve.rds")
+```
+
+The result is a `r nrow(sim_pve)` &times; `r ncol(sim_pve)` matrix
+of correlations. Here is a grayscale image with light being low (or
+negative) correlation and dark being high positive correlation.
+I'll use `image()` with the transpose of the similarity matrix, so the
+rows are the protein samples and the columns are the mRNA samples.
+
+```{r image_sim_pve, dev="png"}
+par(mar=c(5.1, 4.1, 0.6, 0.6), las=1)
+image(1:ncol(sim_pve), 1:nrow(sim_pve), t(sim_pve), col=revgray(),
+      xlab="mRNA samples", ylab="Protein samples")
+```
+
+The black pixels, for the most part forming two diagonal lines, are
+the matching samples. There's a rather complex pattern of associations
+in the background.
+
+Here are histograms of the similarity values, broken into the
+protein/mRNA sample pairs with the same labels and those with
+different labels.
+
+```{r hist_self_nonself_pve, dev="png"}
+hist_self_nonself(sim_pve, xlabel="similarity")
+```
+
+You can see that the correct samples have protein/mRNA correlation
+around 0.6 &ndash; 0.8, while protein/mRNA correlation for two different
+mice are mostly -0.5 &ndash; 0.5. There are clearly some problems in the
+upper histogram, with mice having low correlation between their protein
+and mRNA samples, and the lower histogram shows some well-correlated
+sample pairs with different labels.
+
+For each protein sample (rows in the similarity matrix), we can pull
+the mRNA sample with the highest correlation. It should be the one
+with the corresponding label, but it may not be. Let's make a
+scatterplot of the maximum similarity vs the self similarity. We use
+the [R/lineup2](https://github.com/kbroman/lineup2) function
+`get_self()` to pull out the values where the row and column labels
+are the same, and `get_best()` to find the optimal value in each row.
+
+```{r best_v_self_pve}
+self <- get_self(sim_pve)
+best <- get_best(sim_pve, get_min=FALSE)
+par(mar=c(5.1,4.1,0.6,0.6))
+grayplot(self, best, xlab="Self similarity", ylab="Maximum similarity")
+
+# add labels
+hilit <- names(self)[!is.na(self) & self < best]
+right <- setNames(rep(TRUE, length(hilit)), hilit)
+right[c("M404", "F401", "F423")] <- FALSE
+for(ind in hilit) {
+    text(self[ind]+0.01*(right[ind]*2-1), best[ind], ind,
+         adj=c(1-right[ind], 0.5))
+}
+```
+
+The samples along the diagonal line look to be correctly labeled:
+for these protein samples, the mRNA sample with the corresponding
+label is the one with the highest correlation.
+There are `r sum(!is.na(self) & best > self)` samples that are off the
+diagonal: there is some other mRNA sample that is more-correlated that
+the corresponding one.  M404 is near the diagonal so may just be noisy.
+M371 has low self similarity and so looks like there was a labeling
+mistake, but there is no mRNA sample that is very strongly correlated
+with its protein sample. The other `r sum(!is.na(self) & best > self)-2`
+points look to be incorrectly labeled (low self-similarity) but there
+is another mRNA sample that is quite similar.
+
+We can use the function `get_problems()` to pull out the problem
+samples. This shows, for each problem protein sample (where self similarity is less
+than optimal) which mRNA is the most closely matched sample, and also which
+is the 2nd-most optimal sample. We use the `datatable()` function in
+the [DT package](https://rstudio.github.io/DT/) to create this dynamic
+table. Also note that `get_problems()` can also be used to look by column
+rather than by row.
+
+```{r problems_pve}
+problems <- get_problems(sim_pve, get_min=FALSE)
+formatRound(datatable( problems, rownames=FALSE, options=list(pageLength=10)),
+            columns=c("self", "best", "next_best"),
+            digits=2)
+```
+
+If you look through this carefully, you find that there are nine pairs
+of apparent sample swaps, plus two mislabeled samples and one more
+(M404) that is unclear.
+
+For example, the first row shows that while the protein and mRNA
+samples labeled `r problems[1,"ind"]` are not at all similar
+(correlation `r myround(problems[1,"self"], 2)`), the protein
+sample `r problems[1,"ind"]` is very similar to the mRNA sample
+`r problems[1, "which_best"]` (correlation `r myround(problems[1,"best"],2)`).
+The next-most similar mRNA sample has considerably lower correlation.
+In the second row above, we see that the protein sample
+`r problems[1,"which_best"]` is also not similar to the
+correspondingly labeled mRNA sample but is
+similar to the `r problems[1,"ind"]` mRNA sample, so this looks like a simple sample
+swap, though we can't tell at this point whether it is that protein
+samples that were swapped or the mRNA samples.
+
+The last row in the table shows the protein sample `r problems[nrow(problems),"ind"]`,
+for which the corresponding mRNA sample is only slightly
+less-correlated than the optimal one, and so this seems not it is not
+mislabeled.
+
+In the second-to-last row, the protein sample `r problems[nrow(problems)-1,"ind"]`
+is not well correlated with the corresponding mRNA sample, but there
+is no mRNA sample that is particularly well-correlated.
+
+To further investigate the samples, we can plot the full row of
+correlations: a given protein sample compared to each of the mRNA
+samples. Let's look at six samples:
+
+```{r plot_sim_pve_rows, fig.height=14}
+par(mfrow=c(3,2), mar=c(5.1, 4.1, 2.1, 0.6))
+for(sample in c("F374", "M372", "F371", "M349", "M371", "M404")) {
+    y <- sim_pve[sample,]
+    grayplot(y, xlab="mRNA sample", ylim=range(sim_pve),
+             ylab=paste("Correlation with protein sample", sample),
+             main=paste("Protein", sample))
+
+    xd <- 4
+
+    wh_max <- which.max(y)
+    points(wh_max, y[wh_max], pch=21, col="violetred")
+    text(wh_max-xd, y[wh_max], names(y)[wh_max], adj=c(1, 0.5))
+
+    wh_self <- which(names(y) == sample)
+    points(wh_self, y[wh_self], pch=21, col="green3")
+    text(wh_self-xd, y[wh_self], sample, adj=c(1, 0.5))
+}
+```
+
+The top two panels are for protein samples F374 and M372, which both
+seem to correspond to mRNA M372. The middle two panels are for the
+sample swap F371 and M349. The bottom-left panel, for protein sample M371,
+doesn't seem to match any of the mRNA samples. The bottom-right panel,
+for protein sample M404, is also not well-correlated with any of the
+mRNA samples, though the mRNA sample with the corresponding label is
+near the top.
+
+In summary, in this relation of protein samples to mRNA samples, we see:
+
+- nine sample swaps; not yet clear if in protein samples or mRNA samples
+  - M348 &harr; M410
+  - M349 &harr; F371
+  - F349 &harr; F423
+  - F353 &harr; F366
+  - F354 &harr; M366
+  - F379 &harr; F410
+  - M379 &harr; F381
+  - F386 &harr; F401
+  - M393 &harr; M403
+
+- protein F374 looks like it should be labeled M372; M372 was in duplicate
+- protein M371 looks mislabelled but it's not clear what it should be
+- protein M404 is questionable but probably okay
+
+A number of the sample swaps are between sexes; the presence of
+proteins and genes with strong sex differences should help us to see
+these problems and potentially to determine if the problem was in the
+protein or the mRNA label. But we won't pursue this further here.
+
+
+
+
+## Expression vs. genotypes
+
+Let's now compare the gene expression data to the DNA genotypes.
+We again want to select pairs of gene expression traits and genetic markers
+that are highly correlated, and then use this subset to
+investigate the association between mRNA samples and DNA samples.
+
+So generally, the first task would be to run a genome scan for each
+expression trait, or to just focus on cis-eQTL by finding the nearest
+marker to each gene. But this dataset includes the set of eQTL with
+large LOD scores, so this can be pretty quick: the genes with strong
+eQTL have already been identified. We'll focus on the top 100 eQTL.
+
+```{r top_eqtl}
+n_traits <- 100
+top_peaks_mrna <- dataset.mrna$lod.peaks$additive
+top_peaks_mrna <- top_peaks_mrna[order(top_peaks_mrna$lod, decreasing=TRUE)[1:n_traits],]
+```
+
+The simplest way to relate the gene expression data to the
+corresponding eQTL genotypes is to compare the observed gene
+expression to the predicted expression values, given the observed
+genotypes (or really the genotype probabilities, reduced to allele
+dosages). This was the approach taken in [Westra et al.
+(2011)](https://doi.org/10.1093/bioinformatics/btr323).
+
+We first pull out the (normalized) gene expression data for these genes.
+
+```{r obs_mrna}
+obs_mrna <- dataset.mrna$data$norm[,top_peaks_mrna$gene.id]
+```
+
+Now we want to get corresponding predicted expression, based on the
+genotype probabilities. At each eQTL, we'll fit the single-QTL model
+and get estimated coefficients, and then we'll use matrix
+multiplication to get the predicted expression.
+
+We use `pull_genoprobpos()` to pull out a matrix of genotype
+probabilities (as allele dosages). Then we use the
+[R/qtl2](https://kbroman.org/qtl2) function `fit1()`, with
+`zerosum=FALSE` so that the coefficients don't get re-scaled to sum
+to 0. We could just as easily have used the base R function `lm()`;
+the main advantage of `fit1()` here, is that it aligns the samples
+using the rownames. We finally use matrix multiplication (`%*%`) to
+get fitted values. Note that while the observed mRNA expression data
+is for `r nrow(obs_mrna)` mice, we have predicted expression for
+`r nrow(genoprobs[[1]])` mice, as there was genotype data on
+additional mice that were not assayed for expression.
+
+```{r exp_mrna}
+exp_mrna <- NULL
+for(i in 1:nrow(top_peaks_mrna)) {
+    pr <- pull_genoprobpos(genoprobs, marker=top_peaks_mrna$marker.id[i])
+    out_fit1 <- fit1(pr, obs_mrna[,i,drop=FALSE], zerosum=FALSE)
+    fitted <- pr %*% out_fit1$coef
+    if(is.null(exp_mrna)) {
+        exp_mrna <- matrix(nrow=nrow(fitted), ncol=ncol(obs_mrna))
+        dimnames(exp_mrna) <- list(rownames(pr), colnames(obs_mrna))
+    }
+    exp_mrna[rownames(fitted), i] <- fitted
+}
+```
+
+While we could look at the correlation between the observed and
+predicted expression values, even better is to look at the RMS
+differences between the two, as a measure of distance. We use the
+[R/lineup2](https://github.com/kbroman/lineup2)
+function `dist_betw_matrices()` which by default calculates these RMS
+differences; it can also calculate mean absolute differences.
+
+```{r calc_distance_evg}
+d_evg <- dist_betw_matrices(obs_mrna, exp_mrna)
+```
+
+```{r save_d_evg, echo=FALSE}
+saveRDS(d_evg, "mixups_cache/dist_evg.rds")
+```
+
+Here's a plot of the self distance versus the minimum distance for
+each of the `r nrow(d_evg)` mRNA samples. As it turns out, there are
+no cases where an mRNA sample does not seem to match the
+corresponding DNA sample. This suggests the sample mix-ups in the
+protein/mRNA comparison were entirely in the protein samples.
+(There may have been mix-ups in the mRNA samples and DNA samples that
+were previously corrected.)
+
+```{r plot_best_v_self_evg}
+par(mar=c(5.1,4.1,0.6,0.6))
+grayplot(get_self(d_evg), get_best(d_evg), xlab="Self distance", ylab="Minimum distance")
+```
+
+
+
+
+## Protein vs. genotypes
+
+We will go through the same set of procedures to compare the
+proteomics data to the DNA genotype data.
+Again, the dataset includes the set of LOD peaks, so we don't need to
+re-run any genome scans. We'll focus on the top 100 pQTL.
+
+```{r top_pqtl}
+n_traits <- 100
+top_peaks_protein <- dataset.protein$lod.peaks$additive
+top_peaks_protein <- top_peaks_protein[order(top_peaks_protein$lod, decreasing=TRUE)[1:n_traits],]
+```
+
+We pull out the observed protein levels for these traits.
+
+```{r obs_protein}
+obs_protein <- dataset.protein$data[,top_peaks_protein$protein.id]
+```
+
+Next we get corresponding predicted protein levels, based on the
+genotype probabilities. As with the mRNA expression, we consider each
+pQTL, fit a single-QTL model, get estimated coefficients, and then use matrix
+multiplication to get the predicted protein levels.
+
+
+```{r predict_protein}
+exp_protein <- NULL
+for(i in 1:nrow(top_peaks_protein)) {
+    pr <- pull_genoprobpos(genoprobs, marker=top_peaks_protein$marker.id[i])
+    out_fit1 <- fit1(pr, obs_protein[,i,drop=FALSE], zerosum=FALSE)
+    fitted <- pr %*% out_fit1$coef
+    if(is.null(exp_protein)) {
+        exp_protein <- matrix(nrow=nrow(fitted), ncol=ncol(obs_protein))
+        dimnames(exp_protein) <- list(rownames(pr), colnames(obs_protein))
+    }
+    exp_protein[rownames(fitted), i] <- fitted
+}
+```
+
+We'll again use the RMS differences between the observed and predicted
+protein levels as a measure of distance.
+
+```{r d_pvg}
+d_pvg <- dist_betw_matrices(obs_protein, exp_protein)
+```
+
+```{r save_d_pvg, echo=FALSE}
+saveRDS(d_pvg, "mixups_cache/dist_pvg.rds")
+```
+
+Here is a plot of the self distance vs the minimum distance for each
+protein sample.
+
+```{r plot_best_v_self_pvg}
+par(mar=c(5.1,4.1,0.6,0.6))
+self_pvg <- get_self(d_pvg)
+best_pvg <- get_best(d_pvg)
+grayplot(self_pvg, best_pvg, xlab="Self distance", ylab="Minimum distance")
+
+# add labels
+hilit <- names(self_pvg)[!is.na(self_pvg) & self_pvg > best_pvg]
+right <- setNames(rep(FALSE, length(hilit)), hilit)
+right[c("F353", "M348", "F401", "F379")] <- TRUE
+for(ind in hilit) {
+    text(self_pvg[ind]+0.004*(right[ind]*2-1), best_pvg[ind], ind,
+         adj=c(1-right[ind], 0.5))
+}
+```
+
+There are `r sum(!is.na(self_pvg) & best_pvg < self_pvg)` protein samples that
+are off the diagonal line: the RMS difference between the observed and
+predicted protein levels is large for the DNA sample with the same
+label as the protein sample, but there is another DNA sample that is
+close.
+
+We can again use `get_problems()` to get a summary of the potential
+problems. These show exactly the same problems that we saw above when
+comparing mRNA and protein samples, with two exceptions: M404 is now
+along the diagonal (its DNA sample is the closest), and we can now
+identify the correct label for protein sample M371: it corresponds to
+DNA sample M338 (which wasn't intended to be assayed for protein or
+expression).
+
+
+```{r problems_pvg}
+problems <- get_problems(d_pvg)
+formatRound(datatable( problems, rownames=FALSE, options=list(pageLength=10)),
+            columns=c("self", "best", "next_best"),
+            digits=2)
+```
+
+A key thing we learn here: the problems were all in the protein samples,
+not the mRNA samples.
+
+Sample M404 looks okay, but it looks unusually like F330. It's
+possible that it's a mixture.
+
+```{r plot_m404_pvg, fig.height=5}
+par(mar=c(5.1,4.1,2.1,0.6))
+sample <- "M404"
+alt <- "F330"
+y <- d_pvg[sample,]
+grayplot(y, xlab="DNA sample", ylim=c(0.7, 1.3),
+         ylab=paste("Distance from protein sample", sample),
+         main=paste("Protein sample", sample))
+
+xd <- 4
+
+wh_alt <- which(names(y) == alt)
+points(wh_alt, y[wh_alt], pch=21, col="violetred")
+text(wh_alt-xd, y[wh_alt], alt, adj=c(1, 0.5))
+
+wh_self <- which(names(y) == sample)
+points(wh_self, y[wh_self], pch=21, col="green3")
+text(wh_self-xd, y[wh_self], sample, adj=c(1, 0.5))
+```
+
+## Re-calculate LOD scores
+
+Let's look at how correcting the sample mix-ups changes the evidence
+for QTL. Rather than take the time to re-run the full genome scans,
+we will focus just on the LOD peaks that were previously observed. We
+expect that when correcting the labels of
+20/`r nrow(dataset.protein$data)` protein samples, the LOD scores
+will generally increase.
+
+Let's first spot-check the results: pick five random rows from the
+`lod.peaks` results for the protein data, run `fit1()` at those
+positions, and check to see that we get the same LOD scores.
+
+```{r spot_check_lod_peaks}
+lod_peaks <- dataset.protein$lod.peaks$additive
+test_peaks <- cbind(lod_peaks[sample(nrow(lod_peaks), 5),], lod_retest=NA)
+for(row in 1:nrow(test_peaks)) {
+    y <- dataset.protein$data[,test_peaks[row,1]]
+    pr <- pull_genoprobpos(genoprobs, marker=test_peaks[row,2])
+    chr <- find_markerpos(map, test_peaks[row,2])$chr
+    test_peaks[row, "lod_retest"] <- fit1(pr, y, addcovar=dataset.protein$covar.matrix, kinship=K[[chr]])$lod
+}
+test_peaks
+```
+
+Having verified that we know what we're doing, let's create a revised
+version of the proteomics data with the row labels corrected. We will
+omit one mouse and change the labels on 19 others. This can be a bit
+tricky.
+
+```{r fix_labels}
+# make vector of IDs to swap and individuals to omit
+problems <- get_problems(d_pvg)
+swap_name <- setNames(problems$ind, problems$which_best)
+omit <- "F374"
+swap_name <- swap_name[!(swap_name %in% omit)]
+
+# this is a really contorted way to correct the names
+protein_rev <- dataset.protein$data
+protein_rev <- protein_rev[!(rownames(protein_rev) %in% omit),]
+id <- rownames(protein_rev)
+names(id) <- id
+id[swap_name] <- names(swap_name)
+names(id) <- NULL
+rownames(protein_rev) <- id
+```
+
+```{r save_revised_protein, echo=FALSE}
+saveRDS(protein_rev, "mixups_cache/protein_rev.rds")
+```
+
+Let's now go back and re-run the fit1 analyses for all of the LOD
+peaks, to get revised LOD scores when the protein samples have been
+relabeled.
+
+```{r fit_peaks, eval=FALSE}
+lod_peaks <- cbind(dataset.protein$lod.peaks$additive, lod_rev=NA)
+for(row in 1:nrow(lod_peaks)) {
+    if(row==round(row,-2)) cat(row,"\n")
+    y <- protein_rev[,lod_peaks[row,1]]
+    pr <- pull_genoprobpos(genoprobs, marker=lod_peaks[row,2])
+    chr <- find_markerpos(map, lod_peaks[row,2])$chr
+    lod_peaks[row,"lod_rev"] <- fit1(pr, y, addcovar=dataset.protein$covar.matrix, kinship=K[[chr]])$lod
+}
+```
+
+```{r fit_peaks_really, echo=FALSE}
+file <- "mixups_cache/rev_protein_peaks.rds"
+if(file.exists(file)) {
+    lod_peaks <- readRDS(file)
+} else {
+<<fit_peaks>>
+    saveRDS(lod_peaks, file)
+}
+```
+
+The LOD scores actually went **down** in
+`r round(mean(lod_peaks$lod_rev < lod_peaks$lod)*100)`%
+of cases. But it mostly went down for the LOD scores < 10. For LOD
+scores &ge; 10, it went down just
+`r round(mean((lod_peaks$lod_rev < lod_peaks$lod)[lod_peaks$lod >= 10])*100)`%
+of the time.
+
+Here's a plot of the change in LOD (revised vs original) versus the
+original LOD score.
+
+```{r plot_rev_vs_orig_lod}
+par(mar=c(5.1, 4.1, 0.6, 0.6))
+grayplot(lod_peaks$lod, lod_peaks$lod_rev - lod_peaks$lod, ylim=c(-10, 30),
+         xlab="Original LOD score", ylab="Change in LOD (revised - original)",
+         hlines=c(-10, 0, 10, 20, 30), hlines.col=c("white", "violetred", "white", "white", "white"))
+```
+
+The bulk of the smaller LOD scores went down, but the larger LOD
+scores generally went up, and many went up by a lot. The biggest
+change was for `r lod_peaks[which.max(lod_peaks$lod_rev - lod_peaks$lod),"protein.id"]`,
+at `r lod_peaks[which.max(lod_peaks$lod_rev - lod_peaks$lod),"marker.id"]`,
+where the LOD score increased from
+`r myround(lod_peaks[which.max(lod_peaks$lod_rev - lod_peaks$lod),"lod"],1)` to
+`r myround(lod_peaks[which.max(lod_peaks$lod_rev - lod_peaks$lod),"lod_rev"],1)`.
+
+
+## Summary
+
+Sample mix-ups can weaken QTL studies by reducing genotype:phenotype
+correlations. And with traditional phenotypes, we are generally blind
+to such mix-ups. But with high-throughput phenotype data with strong
+genetic effects, such as genome-wide gene expression and proteomics
+data, we may be able to detect and even correct sample mix-ups.
+
+We have illustrated our approach to detecting sample mix-ups in
+Diversity Outbred mouse data using the genotype, transcript, and protein
+data from [Chick et al. (2016)](https://doi.org/10.1038/nature18270).
+There were `r nrow(genoprobs[[1]])` genotyped mice, including
+`r nrow(mrna)` mice with mRNA expression data and `r nrow(protein)`
+mice with proteomics data. We identified a set of 20 sample mix-ups,
+including nine simple label swaps and two other mislabeled samples.
+All of the mix-ups were in the proteomics data.
+
+Our basic strategy is to work with a pair of datasets at a time,
+identify pairs of highly correlated columns, and then look at the
+correlation or RMS distance between rows, among the selected columns.
+With gene expression and protein data, we look at the correlation.
+With gene expression and genotype or with protein and genotype, we
+first get predicted gene expression or protein levels and then
+calculate the RMS difference between the observed and predicted
+values. The [R/lineup2](https://github.com/kbroman/lineup2) package
+provides utilities for calculating and summarizing these correlations
+and distances.
