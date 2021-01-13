@@ -32,8 +32,6 @@ Install R/qtl2 from [CRAN](https://cran.r-project.org):
 
     install.packages("qtl2")
 
-The latest release of R/qtl2 is [**0.22-11** (2020-07-09)](https://github.com/rqtl/qtl2/releases/tag/0.22-11).
-
 ---
 
 ### Documentation
