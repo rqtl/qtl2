@@ -945,6 +945,37 @@ The json equivalent is:
 "cross_info": {"covar": "n_gen"}
 ```
 
+
+### DOF1
+
+The `"dof1"` cross type is for a population formed by crossing a
+single inbred strain to each of multiple diversity outbred (DO) mice.
+And so these offspring have one chromosome from a DO mouse and one
+chromosome from the other inbred strain.
+
+The founder genotype data should include nine strains: the eight
+founders of the DO, followed by the inbred strain to which the DO mice
+were crossed.
+
+As with the DO, a single cross information covariate is needed, with
+the number of generations for the DO parent of each DOF1 individual.
+Sex will also be needed if the X chromosome is included.
+
+The genotype probabilities calculated for DOF1 mice will have just
+eight columns: we just keep track of the founder origin on the DO
+chromosome.
+
+
+### 3-way advanced intercross lines
+
+The `"ail3"` cross type is for an advanced intercross population
+formed from three inbred strains.
+
+The founder genotype data should include three strains. A single cross
+information covariate is needed, the number of AIL generations. A sex
+covariate is needed if the X chromosome is included.
+
+
 ### General advanced intercross lines
 
 The `"genail"` cross type seeks to serve as an approximation for a
