@@ -68,7 +68,13 @@ calc_kinship <-
 
     type <- match.arg(type)
 
+    # make sure probs has chromosome names
+    if(is.null(names(probs))) {
+        names(probs) <- as.character(seq_len(probs))
+        warning("probs is missing chromosome names.")
+    }
     allchr <- names(probs)
+
     if(omit_x && type != "chr") chrs <- which(!attr(probs, "is_x_chr"))
     else chrs <- seq(along=allchr)
 

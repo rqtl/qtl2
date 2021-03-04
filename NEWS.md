@@ -6,6 +6,9 @@
   `cross$gmap` which might have been missing; now using
   `names(cross$geno)`.
 
+- `calc_kinship()` died with cryptic error if genotype probabilities
+  didn't have a names attribute; now using `seq_len(probs)`.
+
 
 ## qtl2 0.24 (2020-12-16)
 
