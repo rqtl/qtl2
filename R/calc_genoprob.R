@@ -166,7 +166,7 @@ function(cross, map=NULL, error_prob=1e-4,
 
     }
 
-    names(probs) <- names(cross$gmap)
+    names(probs) <- names(cross$geno)
 
     attr(probs, "crosstype") <- cross$crosstype
     attr(probs, "is_x_chr") <- cross$is_x_chr

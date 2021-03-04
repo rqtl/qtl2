@@ -1,3 +1,12 @@
+## qtl2 0.25-1 (2021-03-04)
+
+### Bug fixes
+
+- Fix Issue #194: `calc_genoprob()` was taking chromosome names from
+  `cross$gmap` which might have been missing; now using
+  `names(cross$geno)`.
+
+
 ## qtl2 0.24 (2020-12-16)
 
 ### Major changes
