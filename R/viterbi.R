@@ -83,8 +83,10 @@ viterbi <-
 
 
     # pseudomarker map
-    if(is.null(map))
+    if(is.null(map)) {
+        if(is.null(cross$gmap)) stop("If cross does not contain a genetic map, map must be provided.")
         map <- insert_pseudomarkers(cross$gmap)
+    }
     # possibly subset the map
     if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
         chr <- names(cross$geno)
@@ -143,7 +145,7 @@ viterbi <-
                                         names(map[[chr]]))
     }
 
-    names(result) <- names(cross$gmap)
+    names(result) <- names(cross$geno)
     attr(result, "crosstype") <- cross$crosstype
     attr(result, "is_x_chr") <- cross$is_x_chr
     attr(result, "alleles") <- cross$alleles

@@ -9,6 +9,9 @@
 - `calc_kinship()` died with cryptic error if genotype probabilities
   didn't have a names attribute; now using `seq_len(probs)`.
 
+- Give better error messages in `est_map()`, `viterbi()`, and
+  `sim_geno()` if the cross is missing the genetic map.
+
 
 ## qtl2 0.24 (2020-12-16)
 

@@ -23,8 +23,10 @@ sim_geno2 <-
     }
 
     # pseudomarker map
-    if(is.null(map))
+    if(is.null(map)) {
+        if(is.null(cross$gmap)) stop("If cross does not contain a genetic map, map must be provided.")
         map <- insert_pseudomarkers(cross$gmap)
+    }
     # possibly subset the map
     if(length(map) != length(cross$geno) || !all(names(map) == names(cross$geno))) {
         chr <- names(cross$geno)
@@ -91,7 +93,7 @@ sim_geno2 <-
 
     }
 
-    names(draws) <- names(cross$gmap)
+    names(draws) <- names(cross$geno)
 
     attr(draws, "crosstype") <- cross$crosstype
     attr(draws, "is_x_chr") <- cross$is_x_chr

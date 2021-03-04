@@ -63,6 +63,7 @@ function(cross, error_prob=1e-4,
     cross$is_female <- handle_null_isfemale(cross$is_female, ind)
     cross$cross_info <- handle_null_isfemale(cross$cross_info, ind)
 
+    if(is.null(cross$gmap)) stop("cross needs a genetic map, as a starting point")
     map <- vector("list", length(cross$gmap))
 
     # set up cluster; make quiet=FALSE if cores>1
