@@ -1,4 +1,12 @@
-## qtl2 0.25-1 (2021-03-04)
+## qtl2 0.25-2 (2021-04-12)
+
+### Major changes
+
+- The default colors for the Collaborative Cross (CC) have been changed to
+  a color-blind friendly palette. The original CC colors remain as
+  `CCorigcolors`; the previous default is now `CCaltcolors`. The new
+  colors are derived from the palette in [Wong 2011 Nature
+  Methods](https://doi.org/10.1038/nmeth.1618).
 
 ### Bug fixes
 
