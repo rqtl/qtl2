@@ -23,6 +23,7 @@ plot_coefCC(
   x,
   map,
   columns = 1:8,
+  col = CCcolors,
   scan1_output = NULL,
   add = FALSE,
   gap = NULL,

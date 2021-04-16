@@ -1,4 +1,4 @@
-## qtl2 0.25-2 (2021-04-12)
+## qtl2 0.25-3 (2021-04-16)
 
 ### Major changes
 
@@ -7,6 +7,11 @@
   `CCorigcolors`; the previous default is now `CCaltcolors`. The new
   colors are derived from the palette in [Wong 2011 Nature
   Methods](https://doi.org/10.1038/nmeth.1618).
+
+- `plot_coefCC()` was revised to include `col=CCcolors` as an argument.
+  The default is the new color-blind friendly CC colors, but one can
+  now more easily use `col=CCaltcolors` or `col=CCorigcolors` to get a
+  different choice.
 
 ### Bug fixes
 
