@@ -156,7 +156,7 @@ plot_coef <-
 #' @export
 #' @rdname plot_coef
 plot_coefCC <-
-    function(x, map, columns=1:8, col=CCcolors, scan1_output=NULL,
+    function(x, map, columns=1:8, col=qtl2::CCcolors, scan1_output=NULL,
              add=FALSE, gap=NULL, top_panel_prop=0.65, legend=NULL, ...)
 {
     plot_coef(x, map, columns=columns, col=col,
