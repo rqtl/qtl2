@@ -20,6 +20,9 @@
 
 ### Bug fixes
 
+- Fix Issue #195: in `create_snpinfo()`, drop markers that are
+  non-informative.
+
 - Fix Issue #194: `calc_genoprob()` was taking chromosome names from
   `cross$gmap` which might have been missing; now using
   `names(cross$geno)`.
