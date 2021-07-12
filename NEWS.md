@@ -36,6 +36,9 @@
 - Fixed Issue #196, that `step()` returns `-Inf` rather than `NaN` for
   general AIL. This had to do with the handling of `-Inf` in `addlog()`.
 
+- In `fit1()` and `scan1coef()`, wasn't grabbing the `...` arguments.
+  properly.
+
 
 ## qtl2 0.24 (2020-12-16)
 

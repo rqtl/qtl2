@@ -146,7 +146,7 @@ fit1 <-
 
         blup_result <- scan1blup(genoprobs, pheno, kinship=kinship, addcovar=addcovar,
                                  nullcovar=nullcovar, contrasts=contrasts, se=se, reml=reml,
-                                 tol=grab_dots(list("..."), "tol", 1e-12))
+                                 tol=grab_dots(list(...), "tol", 1e-12))
         result <- list(coef=blup_result[1,])
         if(se) result$SE <- attr(blup_result, "SE")[1,]
         return(result)
@@ -158,7 +158,7 @@ fit1 <-
     }
 
     # deal with the dot args
-    dotargs <- list("...")
+    dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
     if(model=="binary") {
