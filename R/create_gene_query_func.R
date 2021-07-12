@@ -26,7 +26,7 @@
 #'
 #' Also note that a SQLite database of MGI mouse genes
 #' is available at figshare:
-#' [doi:10.6084/m9.figshare.5286019.v7](https://doi.org/10.6084/m9.figshare.5286019.v7)
+#' <doi:10.6084/m9.figshare.5286019.v7>
 #'
 #' @export
 #' @importFrom RSQLite SQLite dbConnect dbDisconnect dbGetQuery

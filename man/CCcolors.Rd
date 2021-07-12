@@ -16,7 +16,7 @@ Collaborative Cross and Diversity Outbreds.
 \code{CCorigcolors} are the original eight colors for the Collaborative Cross founder strains.
 \code{CCaltcolors} are a slightly modified version, but still not color-blind friendly.
 \code{CCcolors} are derived from the the Okabe-Ito color blind friendly palette in
-\href{https://doi.org/10.1038/nmeth.1618}{Wong (2011) Nature Methods}.
+Wong (2011) Nature Methods \url{doi:10.1038/nmeth.1618}.
 }
 \examples{
 data(CCcolors)
