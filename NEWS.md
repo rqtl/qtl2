@@ -20,18 +20,21 @@
 
 ### Bug fixes
 
-- Fix Issue #195: in `create_snpinfo()`, drop markers that are
-  non-informative.
-
-- Fix Issue #194: `calc_genoprob()` was taking chromosome names from
-  `cross$gmap` which might have been missing; now using
-  `names(cross$geno)`.
-
 - `calc_kinship()` died with cryptic error if genotype probabilities
   didn't have a names attribute; now using `seq_len(probs)`.
 
 - Give better error messages in `est_map()`, `viterbi()`, and
   `sim_geno()` if the cross is missing the genetic map.
+
+- Fixed Issue #194: `calc_genoprob()` was taking chromosome names from
+  `cross$gmap` which might have been missing; now using
+  `names(cross$geno)`.
+
+- Fixed Issue #195: in `create_snpinfo()`, drop markers that are
+  non-informative.
+
+- Fixed Issue #196, that `step()` returns `-Inf` rather than `NaN` for
+  general AIL. This had to do with the handling of `-Inf` in `addlog()`.
 
 
 ## qtl2 0.24 (2020-12-16)
