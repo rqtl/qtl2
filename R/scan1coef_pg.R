@@ -7,7 +7,7 @@ scan1coef_pg <-
              hsq=NULL, reml=TRUE, ...)
 {
     # deal with the dot args
-    dotargs <- list("...")
+    dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
     if(!is_pos_number(tol)) stop("tol should be a single positive number")
     check_extra_dots(dotargs, "tol")

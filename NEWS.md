@@ -1,16 +1,43 @@
-## qtl2 0.25-1 (2021-03-04)
+## qtl2 0.25-4 (2021-07-12)
+
+### Major changes
+
+- The default colors for the Collaborative Cross (CC) have been changed to
+  a color-blind friendly palette. The original CC colors remain as
+  `CCorigcolors`; the previous default is now `CCaltcolors`. The new
+  colors are derived from the palette in [Wong 2011 Nature
+  Methods](https://doi.org/10.1038/nmeth.1618).
+
+- `plot_coefCC()` was revised to include `col=CCcolors` as an argument.
+  The default is the new color-blind friendly CC colors, but one can
+  now more easily use `col=CCaltcolors` or `col=CCorigcolors` to get a
+  different choice.
+
+### Minor changes
+
+- Have `calc_het()` give an error if the input are for allele dosages.
+  [Issue #190](https://github.com/rqtl/qtl2/issues/190)
 
 ### Bug fixes
-
-- Fix Issue #194: `calc_genoprob()` was taking chromosome names from
-  `cross$gmap` which might have been missing; now using
-  `names(cross$geno)`.
 
 - `calc_kinship()` died with cryptic error if genotype probabilities
   didn't have a names attribute; now using `seq_len(probs)`.
 
 - Give better error messages in `est_map()`, `viterbi()`, and
   `sim_geno()` if the cross is missing the genetic map.
+
+- Fixed Issue #194: `calc_genoprob()` was taking chromosome names from
+  `cross$gmap` which might have been missing; now using
+  `names(cross$geno)`.
+
+- Fixed Issue #195: in `create_snpinfo()`, drop markers that are
+  non-informative.
+
+- Fixed Issue #196, that `step()` returns `-Inf` rather than `NaN` for
+  general AIL. This had to do with the handling of `-Inf` in `addlog()`.
+
+- In `fit1()` and `scan1coef()`, wasn't grabbing the `...` arguments.
+  properly.
 
 
 ## qtl2 0.24 (2020-12-16)

@@ -68,7 +68,9 @@ create_snpinfo <-
     }
     fg <- do.call("cbind", cross$founder_geno)
 
-    mar2drop <- (colSums(is.na(fg) | fg==0) > 0)
+    # drop markers with missing founders or only one allele present in founders
+    mar2drop <- (colSums(is.na(fg) | fg==0) > 0) |
+        apply(fg, 2, function(g) length(unique(g[!is.na(g) & g!=0]))==1)
 
     # drop markers with missing data; calculate founder strain distribution patterns (SDPs)
     cbind(map[!mar2drop,,drop=FALSE],

@@ -251,8 +251,6 @@ const NumericVector GENRIL::est_map2(const IntegerMatrix& genotypes,
 }
 
 // step for general chromosome, used for both general RIL and general AIL
-// TODO: at present, returns the same thing whether autosome or X chromosome
-// TODO:    - could use X-chr-specific results
 const double step_genchr(const int gen_left, const int gen_right, const double rec_frac,
                          const bool is_x_chr, const IntegerVector& cross_info, const int n_founders)
 {

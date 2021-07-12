@@ -35,6 +35,11 @@ calc_het <-
     if(is.cross2(probs))
         stop('Input probs is a "cross2" object but should be genotype probabilities, as from calc_genoprob')
 
+    aprob_attr <- attr(probs, "alleleprobs")
+    if(!is.null(aprob_attr) && aprob_attr) {
+        stop("Input probs should not be allele dosages")
+    }
+
     # set up cluster
     cores <- setup_cluster(cores, quiet=TRUE)
 

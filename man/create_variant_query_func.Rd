@@ -46,7 +46,7 @@ data frame should have \code{pos} in Mbp.
 
 Also note that a SQLite database of variants in the founder strains
 of the mouse Collaborative Cross is available at figshare:
-\href{https://doi.org/10.6084/m9.figshare.5280229.v3}{doi:10.6084/m9.figshare.5280229.v3}
+\doi{10.6084/m9.figshare.5280229.v3}
 }
 \examples{
 # create query function by connecting to file

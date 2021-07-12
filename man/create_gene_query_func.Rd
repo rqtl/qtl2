@@ -50,7 +50,7 @@ should have \code{start} and \code{stop} columns in Mbp.
 
 Also note that a SQLite database of MGI mouse genes
 is available at figshare:
-\href{https://doi.org/10.6084/m9.figshare.5286019.v7}{doi:10.6084/m9.figshare.5286019.v7}
+\doi{10.6084/m9.figshare.5286019.v7}
 }
 \examples{
 # create query function by connecting to file

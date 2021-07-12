@@ -3,6 +3,7 @@
 \name{CCcolors}
 \alias{CCcolors}
 \alias{CCorigcolors}
+\alias{CCaltcolors}
 \title{Collaborative Cross colors}
 \source{
 \url{https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
@@ -13,10 +14,13 @@ Collaborative Cross and Diversity Outbreds.
 }
 \details{
 \code{CCorigcolors} are the original eight colors for the Collaborative Cross founder strains.
-\code{CCcolors} are slightly modified.
+\code{CCaltcolors} are a slightly modified version, but still not color-blind friendly.
+\code{CCcolors} are derived from the the Okabe-Ito color blind friendly palette in
+Wong (2011) Nature Methods \doi{10.1038/nmeth.1618}.
 }
 \examples{
 data(CCcolors)
+data(CCaltcolors)
 data(CCorigcolors)
 }
 \keyword{datasets}
