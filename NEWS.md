@@ -1,4 +1,4 @@
-## qtl2 0.25-3 (2021-04-16)
+## qtl2 0.25-4 (2021-07-12)
 
 ### Major changes
 
@@ -12,6 +12,11 @@
   The default is the new color-blind friendly CC colors, but one can
   now more easily use `col=CCaltcolors` or `col=CCorigcolors` to get a
   different choice.
+
+### Minor changes
+
+- Have `calc_het()` give an error if the input are for allele dosages.
+  [Issue #190](https://github.com/rqtl/qtl2/issues/190)
 
 ### Bug fixes
 
