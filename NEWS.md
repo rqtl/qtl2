@@ -1,4 +1,4 @@
-## qtl2 0.25-4 (2021-07-12)
+## qtl2 0.25-5 (2021-07-12)
 
 ### Major changes
 
@@ -14,6 +14,9 @@
   different choice.
 
 ### Minor changes
+
+- Added `replace_ids()` for a matrix or data frame (using the row
+  names as the individual IDs). (Issue #191)
 
 - Have `calc_het()` give an error if the input are for allele dosages.
   [Issue #190](https://github.com/rqtl/qtl2/issues/190)

@@ -181,3 +181,76 @@ test_that("replace_ids() works for sim_geno output", {
     )
 
 })
+
+
+
+
+
+test_that("replace_ids() works for a matrix", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    ids <- ind_ids(iron)
+    new_ids <- setNames(paste0("mouse", ids), ids)
+    change_back <- setNames(ids, paste0("mouse", ids))
+    extra_ids <- sample(c(ids, 1001:1020))
+    extra_ids <- setNames(paste0("mouse", extra_ids), extra_ids)
+
+    # create a matrix
+    set.seed(20210712)
+    n_col <- 12
+    d <- matrix(rnorm(n_ind(iron)*n_col), ncol=n_col)
+    dimnames(d) <- list(ids, paste("V", seq_len(n_col)))
+
+    # same ids, old and new (changed back)
+    expect_equal( replace_ids(d, setNames(ids, ids)), d)
+
+    # simple replacement, everything in order
+    expect_equal( replace_ids(replace_ids(d, new_ids), change_back), d)
+
+    # simple replacement, but shuffled
+    expect_equal( replace_ids(replace_ids(d, sample(new_ids)), sample(change_back)), d)
+
+    # simple replacement, with some extras plus shuffled
+    expect_warning(
+        expect_equal( replace_ids(replace_ids(d, extra_ids), sample(change_back)), d)
+    )
+
+    # missing some individuals
+    sub_ids <- sample(ids, length(ids)-10)
+    sub_ids_ordered <- sub_ids[order(as.numeric(sub_ids))]
+    expect_warning(
+        expect_equal( replace_ids(d, setNames(sub_ids, sub_ids)),
+                      d[sub_ids_ordered,,drop=FALSE])
+    )
+
+
+    ##############################
+    # turn it into a data frame and do it all again
+    ##############################
+    d <- as.data.frame(d)
+
+    # same ids, old and new (changed back)
+    expect_equal( replace_ids(d, setNames(ids, ids)), d)
+
+    # simple replacement, everything in order
+    expect_equal( replace_ids(replace_ids(d, new_ids), change_back), d)
+
+    # simple replacement, but shuffled
+    expect_equal( replace_ids(replace_ids(d, sample(new_ids)), sample(change_back)), d)
+
+    # simple replacement, with some extras plus shuffled
+    expect_warning(
+        expect_equal( replace_ids(replace_ids(d, extra_ids), sample(change_back)), d)
+    )
+
+    # missing some individuals
+    sub_ids <- sample(ids, length(ids)-10)
+    sub_ids_ordered <- sub_ids[order(as.numeric(sub_ids))]
+    expect_warning(
+        expect_equal( replace_ids(d, setNames(sub_ids, sub_ids)),
+                      d[sub_ids_ordered,,drop=FALSE])
+    )
+
+
+
+})

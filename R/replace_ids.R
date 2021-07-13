@@ -132,3 +132,23 @@ replace_ids.viterbi <-
 #' @describeIn replace_ids Replace IDs in output from [sim_geno()]
 #' @export
 replace_ids.sim_geno <- function(x, ids) replace_ids.calc_genoprob(x, ids)
+
+#' @describeIn replace_ids Replace IDs in a matrix
+#' @export
+replace_ids.matrix <-
+    function(x, ids)
+{
+    ids <- check_new_ids(ids, rownames(x))
+    ids_names <- names(ids)
+    names(ids) <- NULL
+
+    m <- match(rownames(x), ids_names)
+    x <- x[!is.na(m),,drop=FALSE]
+    rownames(x) <- ids[m[!is.na(m)]]
+
+    x
+}
+
+#' @describeIn replace_ids Replace IDs in a data frame
+#' @export
+replace_ids.data.frame <- replace_ids.matrix

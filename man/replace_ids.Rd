@@ -6,6 +6,8 @@
 \alias{replace_ids.calc_genoprob}
 \alias{replace_ids.viterbi}
 \alias{replace_ids.sim_geno}
+\alias{replace_ids.matrix}
+\alias{replace_ids.data.frame}
 \title{Replace individual IDs}
 \usage{
 replace_ids(x, ids)
@@ -17,6 +19,10 @@ replace_ids(x, ids)
 \method{replace_ids}{viterbi}(x, ids)
 
 \method{replace_ids}{sim_geno}(x, ids)
+
+\method{replace_ids}{matrix}(x, ids)
+
+\method{replace_ids}{data.frame}(x, ids)
 }
 \arguments{
 \item{x}{Object whose IDs will be replaced}
@@ -38,6 +44,10 @@ Replace the individual IDs in an object with new ones
 \item \code{viterbi}: Replace IDs in output from \code{\link[=viterbi]{viterbi()}}
 
 \item \code{sim_geno}: Replace IDs in output from \code{\link[=sim_geno]{sim_geno()}}
+
+\item \code{matrix}: Replace IDs in a matrix
+
+\item \code{data.frame}: Replace IDs in a data frame
 }}
 
 \examples{
