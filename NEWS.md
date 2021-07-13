@@ -1,4 +1,4 @@
-## qtl2 0.25-5 (2021-07-12)
+## qtl2 0.25-6 (2021-07-13)
 
 ### Major changes
 
@@ -12,6 +12,9 @@
   The default is the new color-blind friendly CC colors, but one can
   now more easily use `col=CCaltcolors` or `col=CCorigcolors` to get a
   different choice.
+
+- Added `plot_sdp()` to plot the strain distribution patterns of SNPs
+  using tracks of tick-marks for each founder strain. (Issue #163)
 
 ### Minor changes
 
