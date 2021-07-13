@@ -17,6 +17,8 @@ plot_snpasso(
   col = "darkslateblue",
   gap = NULL,
   minlod = 0,
+  sdp_panel = FALSE,
+  strain_labels = names(qtl2::CCcolors),
   ...
 )
 }
@@ -73,6 +75,10 @@ chromosomes).}
 case using \code{minlod=1} will greatly increase the plotting speed,
 since the vast majority of points would be omittted.}
 
+\item{sdp_panel}{Include a panel with the strain distribution patterns for the highlighted SNPs}
+
+\item{strain_labels}{Labels for the strains, if \code{sdp_panel=TRUE}.}
+
 \item{...}{Additional graphics parameters.}
 }
 \value{
@@ -90,6 +96,9 @@ to control the background color on alternate chromosomes,
 \code{cex} for character expansion for the points (default 0.5),
 \code{pch} for the plotting character for the points (default 16),
 and \code{ylim} for y-axis limits.
+If you are including genes and/or SDP panels, you can use
+\code{panel_prop} to control the relative heights of the panels,
+from top to bottom.
 }
 
 \examples{
@@ -133,6 +142,9 @@ genes <- query_genes(2, 97, 98)
 
 # plot SNP association results with gene locations
 plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
+
+# plot SNP asso results with genes plus SDPs of highlighted SNPs
+plot(out_snps$lod, out_snps$snpinfo, drop_hilit=2, genes=genes, sdp_panel=TRUE)
 }
 
 }

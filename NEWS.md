@@ -1,4 +1,4 @@
-## qtl2 0.25-6 (2021-07-13)
+## qtl2 0.25-7 (2021-07-13)
 
 ### Major changes
 
@@ -15,6 +15,10 @@
 
 - Added `plot_sdp()` to plot the strain distribution patterns of SNPs
   using tracks of tick-marks for each founder strain. (Issue #163)
+
+- Added arguments `sdp_panel` and `strain_labels` to `plot_snpasso()`
+  so that you can include the `plot_sdp()` panel with the SNP
+  association results and/or the genes.
 
 ### Minor changes
 

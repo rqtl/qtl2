@@ -4,14 +4,14 @@
 \alias{plot_sdp}
 \title{plot strain distribution patterns for SNPs}
 \usage{
-plot_sdp(pos, sdp, labels = names(qtl2::CCcolors), ...)
+plot_sdp(pos, sdp, strain_labels = names(qtl2::CCcolors), ...)
 }
 \arguments{
 \item{pos}{vector of SNP positions}
 
 \item{sdp}{vector of strain distribution patterns (as integers)}
 
-\item{labels}{names of the strains}
+\item{strain_labels}{names of the strains}
 
 \item{...}{additional graphic arguments}
 }

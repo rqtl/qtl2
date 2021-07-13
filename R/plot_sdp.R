@@ -5,7 +5,7 @@
 #'
 #' @param pos vector of SNP positions
 #' @param sdp vector of strain distribution patterns (as integers)
-#' @param labels names of the strains
+#' @param strain_labels names of the strains
 #' @param ... additional graphic arguments
 #'
 #' @return None.
@@ -27,9 +27,9 @@
 #' plot_sdp(runif(n_tick, 0, 100), sample(0:255, n_tick, replace=TRUE))
 
 plot_sdp <-
-    function(pos, sdp, labels=names(qtl2::CCcolors), ...)
+    function(pos, sdp, strain_labels=names(qtl2::CCcolors), ...)
 {
-    n_str <- length(labels)
+    n_str <- length(strain_labels)
 
     stopifnot(length(pos) == length(sdp))
     stopifnot(all(sdp < 2^n_str & sdp >= 0))
@@ -72,7 +72,7 @@ plot_sdp <-
             }
 
             if(dots$yaxt != "n") {
-                axis(side=2, at=y, labels, mgp=mgp.y, las=las, tick=FALSE)
+                axis(side=2, at=y, strain_labels, mgp=mgp.y, las=las, tick=FALSE)
             }
 
             # add axis titles
