@@ -19,7 +19,10 @@
   names as the individual IDs). (Issue #191)
 
 - Have `calc_het()` give an error if the input are for allele dosages.
-  [Issue #190](https://github.com/rqtl/qtl2/issues/190)
+  (Issue #190)
+
+- Sneaky change in `ind_ids()` makes it apply to `calc_genoprob` and
+  `fst_genoprob` objects. I'm not sure how to document this. (Issue #189)
 
 ### Bug fixes
 
