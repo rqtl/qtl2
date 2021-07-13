@@ -52,6 +52,10 @@
 #'     case using `minlod=1` will greatly increase the plotting speed,
 #'     since the vast majority of points would be omittted.
 #'
+#' @param sdp_panel Include a panel with the strain distribution patterns for the highlighted SNPs
+#'
+#' @param strain_labels Labels for the strains, if `sdp_panel=TRUE`.
+#'
 #' @param ... Additional graphics parameters.
 #'
 #' @return None.
@@ -64,6 +68,9 @@
 #' `cex` for character expansion for the points (default 0.5),
 #' `pch` for the plotting character for the points (default 16),
 #' and `ylim` for y-axis limits.
+#' If you are including genes and/or SDP panels, you can use
+#' `panel_prop` to control the relative heights of the panels,
+#' from top to bottom.
 #'
 #' @examples
 #' \dontrun{
@@ -106,6 +113,9 @@
 #'
 #' # plot SNP association results with gene locations
 #' plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
+#'
+#' # plot SNP asso results with genes plus SDPs of highlighted SNPs
+#' plot(out_snps$lod, out_snps$snpinfo, drop_hilit=2, genes=genes, sdp_panel=TRUE)
 #' }
 #'
 #' @seealso [plot_scan1()], [plot_coef()], [plot_coefCC()]
@@ -116,7 +126,7 @@
 plot_snpasso <-
     function(scan1output, snpinfo, genes=NULL, lodcolumn=1, show_all_snps=TRUE, chr=NULL,
              add=FALSE, drop_hilit=NA, col_hilit="violetred", col="darkslateblue",
-             gap=NULL, minlod=0, ...)
+             gap=NULL, minlod=0, sdp_panel=FALSE, strain_labels=names(qtl2::CCcolors), ...)
 {
     if(is.null(scan1output)) stop("scan1output is NULL")
     if(is.null(snpinfo)) stop("snpinfo is NULL")
@@ -149,10 +159,24 @@ plot_snpasso <-
     if(!is.null(genes)) {
         if(length(unique(snpinfo$chr)) > 1) {
             warning("genes ignored if there are multiple chromosomes")
+        } else if(sdp_panel) {
+            return( plot_snpasso_sdp_genes(scan1output, snpinfo, show_all_snps=show_all_snps,
+                                           drop_hilit=drop_hilit, col_hilit=col_hilit,
+                                           col=col, gap=gap, minlod=minlod, genes=genes,
+                                           strain_labels=strain_labels, ...) )
         } else {
             return( plot_snpasso_and_genes(scan1output, snpinfo, show_all_snps=show_all_snps,
                                            drop_hilit=drop_hilit, col_hilit=col_hilit,
                                            col=col, gap=gap, minlod=minlod, genes=genes, ...) )
+        }
+    } else if(sdp_panel) {
+        if(length(unique(snpinfo$chr)) > 1) {
+            warning("sdp_panel ignored if there are multiple chromosomes")
+        } else {
+            return( plot_snpasso_and_sdp(scan1output, snpinfo, show_all_snps=show_all_snps,
+                                         drop_hilit=drop_hilit, col_hilit=col_hilit,
+                                         col=col, gap=gap, minlod=minlod,
+                                         strain_labels=strain_labels, ...) )
         }
     }
 
