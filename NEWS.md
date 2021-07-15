@@ -31,6 +31,9 @@
 - Sneaky change in `ind_ids()` makes it apply to `calc_genoprob` and
   `fst_genoprob` objects. I'm not sure how to document this. (Issue #189)
 
+- The output of `est_herit()` now includes the residual SD as an
+  attribute, `"resid_sd"`. (Issue #16)
+
 ### Bug fixes
 
 - `calc_kinship()` died with cryptic error if genotype probabilities

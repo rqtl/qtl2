@@ -17,7 +17,8 @@
 #' @param ... Additional control parameters (see details).
 #'
 #' @return A vector of estimated heritabilities, corresponding to the
-#' columns in `pheno`.
+#' columns in `pheno`. The result has attributes `"sample_size"`,
+#' `"log10lik"` and `"resid_sd"`.
 #'
 #' @details
 #' We fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e} where
@@ -123,7 +124,7 @@ est_herit <-
     # to contain the results
     hsq <- rep(NA, ncol(pheno))
     names(hsq) <- colnames(pheno)
-    n <- nullLL <- hsq
+    sigma <- n <- nullLL <- hsq
 
     # loop over batches of phenotypes with the same pattern of NAs
     for(batch in seq_along(phe_batches)) {
@@ -157,11 +158,13 @@ est_herit <-
                                      is_x_chr=FALSE, weights=wts, reml=reml, cores=cores,
                                      check_boundary=check_boundary, tol=tol)
         hsq[phecol] <- nullresult$hsq
-        nullLL <- nullresult$loglik
+        nullLL[phecol] <- nullresult$loglik
+        sigma[phecol] <- sqrt(nullresult$sigmasq)
     }
 
     attr(hsq, "sample_size") <- n
     attr(hsq, "log10lik") <- nullLL/log(10)
+    attr(hsq, "resid_sd") <- sigma
 
     hsq
 }

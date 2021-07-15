@@ -240,7 +240,10 @@ calc_hsq_clean <-
     loglik <- matrix(unlist(lapply(result, function(a) a$loglik)), byrow=TRUE,
                   ncol=nphe)
 
-    list(hsq=hsq, loglik=loglik)
+    sigmasq <- matrix(unlist(lapply(result, function(a) a$sigmasq)), byrow=TRUE,
+                      ncol=nphe)
+
+    list(hsq=hsq, loglik=loglik, sigmasq=sigmasq)
 }
 
 # calculate log likelihood for given hsq and

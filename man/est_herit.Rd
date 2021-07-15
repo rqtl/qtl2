@@ -36,7 +36,8 @@ produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A vector of estimated heritabilities, corresponding to the
-columns in \code{pheno}.
+columns in \code{pheno}. The result has attributes \code{"sample_size"},
+\code{"log10lik"} and \code{"resid_sd"}.
 }
 \description{
 Estimate the heritability of a set of traits via a linear mixed

@@ -336,14 +336,17 @@ List Rcpp_fitLMM_mat(const NumericVector& Kva, const NumericMatrix& Y,
 
     NumericVector hsq(nphe);
     NumericVector loglik(nphe);
+    NumericVector sigmasq(nphe);
 
     for(int i=0; i<nphe; i++) {
         const struct lmm_fit result = fitLMM(eKva, eY.col(i), eX, reml, check_boundary,
                                              logdetXpX, tol);
         hsq[i] = result.hsq;
         loglik[i] = result.loglik;
+        sigmasq[i] = result.sigmasq;
     }
 
     return List::create(Named("hsq") = hsq,
-                        Named("loglik") = loglik);
+                        Named("loglik") = loglik,
+                        Named("sigmasq") = sigmasq);
 }
