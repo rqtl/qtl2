@@ -3,11 +3,11 @@
 ### Sample input files
 
 - [`grav2.zip`](grav2.zip), data from
-  [Moore et al. (2013) Genetics 195:1077-1086](https://www.genetics.org/content/195/3/1077.abstract)
+  [Moore et al. (2013) Genetics 195:1077-1086](https://doi.org/10.1534/genetics.113.153346)
   (the second replicate of the RILs)
 
 - [`iron.zip`](iron.zip), data from
-  [Grant et al. (2006) Hepatology 44:174-185](https://pubmed.ncbi.nlm.nih.gov/16799992)
+  [Grant et al. (2006) Hepatology 44:174-185](https://doi.org/10.1002/hep.21233)
 
 See the contents at <https://kbroman.org/qtl2/pages/sampledata.html>.
 
