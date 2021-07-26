@@ -329,3 +329,6 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Newly added functions (in development version)
+- `replace_ids.data.frame` - Replace the individual IDs (in row names) in a data frame
+- `replace_ids.matrix` - Replace the individual IDs (in row names) in a matrix
+- `plot_sdp` - Plot strain distribution patterns of SNPs in a region
