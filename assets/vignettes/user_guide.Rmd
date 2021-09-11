@@ -1203,10 +1203,17 @@ top <- top_snps(out_snps$lod, out_snps$snpinfo)
 print(top[,c(1, 8:15, 20)], row.names=FALSE)
 ```
 
-The top SNPs all have NZO and CAST with a common allele, different
-from the other 6 founders. The next-best SNPs have NZO, CAST, and 129
-with a common allele, and then there's a group of SNPs where NZO has a
-unique allele.
+The top SNPs all have 129, NZO, and CAST with a common allele, different
+from the other 5 founders. The next-best SNPs have just NZO and CAST
+with a common allele.
+
+You can include a visualization of the strain distribution pattern of
+the SNPs in the association plot with the argument `sdp_panel=TRUE`.
+
+```{r plot_snp_asso_with_genes_and_sdp, fig.height=6.5}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes, sdp_panel=TRUE)
+```
 
 The `scan1snps()` function can also be used to perform a genome-wide
 SNP association scan, by providing a variant query function but
