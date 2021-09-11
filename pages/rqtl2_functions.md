@@ -243,6 +243,7 @@ description: Annotated/categorized list of functions in R/qtl2
   and using the standard colors for the Collaborative Cross (`CCcolors`)
 - `plot_snpasso` - plot SNP association results
 - `plot_genes` - plot locations of a set of genes
+- `plot_sdp` - plot strain distribution patterns of SNPs in a region
 - `plot_peaks` - plot a summary of QTL positions for multiple
   phenotypes, using the results of `find_peaks`
 - `plot_lodpeaks` - scatterplot of LOD scores vs QTL peak locatiosn
@@ -304,6 +305,8 @@ description: Annotated/categorized list of functions in R/qtl2
 - `replace_ids.cross2` - Replace the individual IDs in a `"cross2"` object
 - `replace_ids.sim_geno` - Replace the individual IDs in a `"sim_geno"` object
 - `replace_ids.viterbi` - Replace the individual IDs in a `"viterbi"` object
+- `replace_ids.data.frame` - Replace the individual IDs (in row names) in a data frame
+- `replace_ids.matrix` - Replace the individual IDs (in row names) in a matrix
 - `align_scan1_map` - aligns the markers/pseudomarkers in a `"scan1"`
   object (output by `scan1()`) and a marker map.
 - `clean` - clean an object
@@ -329,6 +332,3 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Newly added functions (in development version)
-- `replace_ids.data.frame` - Replace the individual IDs (in row names) in a data frame
-- `replace_ids.matrix` - Replace the individual IDs (in row names) in a matrix
-- `plot_sdp` - Plot strain distribution patterns of SNPs in a region
