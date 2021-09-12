@@ -20,5 +20,5 @@ qtl2version <-
         return( paste(c(version, ".", "-")[c(1,4,2,5,3)], collapse="") )
     }
 
-    return( paste(version, collapse=".") )
+    paste(version, collapse=".")
 }
