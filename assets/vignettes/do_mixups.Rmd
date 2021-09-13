@@ -140,7 +140,7 @@ objects. Here are the key pieces of `dataset.mrna`:
 The `dataset.protein` object is similar. Here are the key pieces:
 
 - `annot.protein` - metadata about the proteins
-  (`r nrow(dataset.protein$annot.samples)` mice)
+  (`r vec2string(colnames(dataset.protein$annot.protein))`)
 - `covar.matrix` -
   `r nrow(dataset.protein$covar.matrix)` &times; `r ncol(dataset.protein$covar.matrix)` matrix
   (including `sexM`, a 0/1 indicator with 1 = male)
@@ -170,7 +170,7 @@ stopifnot(all(protein_id %in% mrna_id))
 ```
 
 We want to verify that the rows in the proteomics data match their
-corresponding row in the mRNA data, but the variables are different.
+corresponding row in the mRNA data, but the variables (the columns) are different.
 There are two solutions to that: we can look at all pairs of variables
 (protein/mRNA), or we can find the corresponding pairs, where the
 protein and transcript are for the same gene. The latter approach will
@@ -273,14 +273,14 @@ protein_sex <- dataset.protein$covar.matrix[,"sexM"]
 protein_adj <- protein
 for(i in 1:ncol(protein)) {
     r <- lm(protein[,i] ~ protein_sex)$resid
-    protein_adj[names(protein_resid[[i]]), i] <- r
+    protein_adj[names(r), i] <- r
 }
 
 mrna_sex <- dataset.mrna$covar.matrix[,"sexM"]
 mrna_adj <- mrna
 for(i in 1:ncol(mrna)) {
     r <- lm(mrna[,i] ~ mrna_sex)$resid
-    mrna_adj[names(mrna_resid[[i]]),i] <- r
+    mrna_adj[names(r), i] <- r
 }
 mrna_adj_subind <- mrna_adj[rownames(mrna_subind),]
 ```
@@ -315,7 +315,7 @@ file <- "mixups_cache/cor_protein_mrna_adj.rds"
 if(file.exists(file)) {
     cor_protein_mrna_adj <- readRDS(file)
 } else {
-<<protein_mrna_corr>>
+<<protein_mrna_corr_adj>>
     saveRDS(cor_protein_mrna_adj, file)
 }
 ```
@@ -341,8 +341,7 @@ columns correspond to the samples.
 ```{r calc_similarity_matrix_pve}
 x <- t(protein[,protein_select])
 y <- t(mrna[,gene_select])
-rownames(y) <- rownames(x)
-sim_pve <- corr_betw_matrices(x, y, "all", cores=0)
+sim_pve <- corr_betw_matrices(x, y, "all", align_rows=FALSE, cores=0)
 ```
 
 ```{r save_sim_pve, echo=FALSE}
@@ -421,7 +420,7 @@ samples. This shows, for each problem protein sample (where self similarity is l
 than optimal) which mRNA is the most closely matched sample, and also which
 is the 2nd-most optimal sample. We use the `datatable()` function in
 the [DT package](https://rstudio.github.io/DT/) to create this dynamic
-table. Also note that `get_problems()` can also be used to look by column
+table. Also note that `get_problems()` can be used to look by column
 rather than by row.
 
 ```{r problems_pve}
@@ -445,12 +444,12 @@ In the second row above, we see that the protein sample
 `r problems[1,"which_best"]` is also not similar to the
 correspondingly labeled mRNA sample but is
 similar to the `r problems[1,"ind"]` mRNA sample, so this looks like a simple sample
-swap, though we can't tell at this point whether it is that protein
+swap, though we can't tell at this point whether it is the protein
 samples that were swapped or the mRNA samples.
 
 The last row in the table shows the protein sample `r problems[nrow(problems),"ind"]`,
 for which the corresponding mRNA sample is only slightly
-less-correlated than the optimal one, and so this seems not it is not
+less-correlated than the optimal one, and so it may not actually be
 mislabeled.
 
 In the second-to-last row, the protein sample `r problems[nrow(problems)-1,"ind"]`
@@ -796,7 +795,15 @@ file <- "mixups_cache/rev_protein_peaks.rds"
 if(file.exists(file)) {
     lod_peaks <- readRDS(file)
 } else {
-<<fit_peaks>>
+    result <- parallel::mclapply(1:nrow(lod_peaks), function(row) {
+        y <- protein_rev[,lod_peaks[row,1]]
+        pr <- pull_genoprobpos(genoprobs, marker=lod_peaks[row,2])
+        chr <- find_markerpos(map, lod_peaks[row,2])$chr
+        fit1(pr, y, addcovar=dataset.protein$covar.matrix, kinship=K[[chr]])$lod
+       }, mc.cores=parallel::detectCores())
+
+    lod_peaks <- cbind(dataset.protein$lod.peaks$additive, lod_rev=unlist(result))
+
     saveRDS(lod_peaks, file)
 }
 ```
@@ -854,3 +861,7 @@ calculate the RMS difference between the observed and predicted
 values. The [R/lineup2](https://github.com/kbroman/lineup2) package
 provides utilities for calculating and summarizing these correlations
 and distances.
+
+---
+
+Source document: [do_mixups.Rmd](https://github.com/rqtl/qtl2/blob/gh-pages/assets/vignettes/do_mixups.Rmd)
