@@ -795,7 +795,15 @@ file <- "mixups_cache/rev_protein_peaks.rds"
 if(file.exists(file)) {
     lod_peaks <- readRDS(file)
 } else {
-<<fit_peaks>>
+    result <- parallel::mclapply(1:nrow(lod_peaks), function(row) {
+        y <- protein_rev[,lod_peaks[row,1]]
+        pr <- pull_genoprobpos(genoprobs, marker=lod_peaks[row,2])
+        chr <- find_markerpos(map, lod_peaks[row,2])$chr
+        fit1(pr, y, addcovar=dataset.protein$covar.matrix, kinship=K[[chr]])$lod
+       }, mc.cores=parallel::detectCores())
+
+    lod_peaks <- cbind(dataset.protein$lod.peaks$additive, lod_rev=unlist(result))
+
     saveRDS(lod_peaks, file)
 }
 ```
