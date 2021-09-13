@@ -170,7 +170,7 @@ stopifnot(all(protein_id %in% mrna_id))
 ```
 
 We want to verify that the rows in the proteomics data match their
-corresponding row in the mRNA data, but the variables are different.
+corresponding row in the mRNA data, but the variables (the columns) are different.
 There are two solutions to that: we can look at all pairs of variables
 (protein/mRNA), or we can find the corresponding pairs, where the
 protein and transcript are for the same gene. The latter approach will
