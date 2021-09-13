@@ -853,3 +853,7 @@ calculate the RMS difference between the observed and predicted
 values. The [R/lineup2](https://github.com/kbroman/lineup2) package
 provides utilities for calculating and summarizing these correlations
 and distances.
+
+---
+
+Source document: [do_mixups.Rmd](https://github.com/rqtl/qtl2/blob/gh-pages/assets/vignettes/do_mixups.Rmd)
