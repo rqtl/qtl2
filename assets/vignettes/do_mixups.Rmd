@@ -140,7 +140,7 @@ objects. Here are the key pieces of `dataset.mrna`:
 The `dataset.protein` object is similar. Here are the key pieces:
 
 - `annot.protein` - metadata about the proteins
-  (`r nrow(dataset.protein$annot.samples)` mice)
+  (`r vec2string(colnames(dataset.protein$annot.protein))`)
 - `covar.matrix` -
   `r nrow(dataset.protein$covar.matrix)` &times; `r ncol(dataset.protein$covar.matrix)` matrix
   (including `sexM`, a 0/1 indicator with 1 = male)
