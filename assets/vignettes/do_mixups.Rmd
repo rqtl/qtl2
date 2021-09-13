@@ -273,14 +273,14 @@ protein_sex <- dataset.protein$covar.matrix[,"sexM"]
 protein_adj <- protein
 for(i in 1:ncol(protein)) {
     r <- lm(protein[,i] ~ protein_sex)$resid
-    protein_adj[names(protein_resid[[i]]), i] <- r
+    protein_adj[names(r), i] <- r
 }
 
 mrna_sex <- dataset.mrna$covar.matrix[,"sexM"]
 mrna_adj <- mrna
 for(i in 1:ncol(mrna)) {
     r <- lm(mrna[,i] ~ mrna_sex)$resid
-    mrna_adj[names(mrna_resid[[i]]),i] <- r
+    mrna_adj[names(r), i] <- r
 }
 mrna_adj_subind <- mrna_adj[rownames(mrna_subind),]
 ```
