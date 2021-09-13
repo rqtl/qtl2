@@ -3,4 +3,5 @@ _site
 *.Rout
 Gemfile.lock
 assets/vignettes/diag_cache
+assets/vignettes/mixups_cache
 assets/vignettes/qtl2fst.Rmd

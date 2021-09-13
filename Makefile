@@ -4,7 +4,7 @@ all: vignettes data external_vignettes extdata pages/rqtl2_functions.md
 # R_OPTS: --vanilla without --no-environ
 R_OPTS=--no-save --no-restore --no-init-file --no-site-file
 
-VIGNETTES = assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/input_files.html assets/vignettes/developer_guide.html assets/vignettes/user_guide.html assets/vignettes/do_diagnostics.html assets/vignettes/qtl2fst.html
+VIGNETTES = assets/vignettes/hmm_benchmarks.html assets/vignettes/rqtl_diff.html assets/vignettes/input_files.html assets/vignettes/developer_guide.html assets/vignettes/user_guide.html assets/vignettes/do_diagnostics.html assets/vignettes/qtl2fst.html assets/vignettes/do_mixups.html
 vignettes: ${VIGNETTES}
 
 assets/vignettes/%.html: assets/vignettes/%.Rmd ruby/add_navbar.rb ruby/vignette_head.html ruby/vignette_navbar.html
