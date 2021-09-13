@@ -420,7 +420,7 @@ samples. This shows, for each problem protein sample (where self similarity is l
 than optimal) which mRNA is the most closely matched sample, and also which
 is the 2nd-most optimal sample. We use the `datatable()` function in
 the [DT package](https://rstudio.github.io/DT/) to create this dynamic
-table. Also note that `get_problems()` can also be used to look by column
+table. Also note that `get_problems()` can be used to look by column
 rather than by row.
 
 ```{r problems_pve}
@@ -444,12 +444,12 @@ In the second row above, we see that the protein sample
 `r problems[1,"which_best"]` is also not similar to the
 correspondingly labeled mRNA sample but is
 similar to the `r problems[1,"ind"]` mRNA sample, so this looks like a simple sample
-swap, though we can't tell at this point whether it is that protein
+swap, though we can't tell at this point whether it is the protein
 samples that were swapped or the mRNA samples.
 
 The last row in the table shows the protein sample `r problems[nrow(problems),"ind"]`,
 for which the corresponding mRNA sample is only slightly
-less-correlated than the optimal one, and so this seems not it is not
+less-correlated than the optimal one, and so it may not actually be
 mislabeled.
 
 In the second-to-last row, the protein sample `r problems[nrow(problems)-1,"ind"]`
