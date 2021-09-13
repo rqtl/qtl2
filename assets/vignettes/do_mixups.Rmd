@@ -315,7 +315,7 @@ file <- "mixups_cache/cor_protein_mrna_adj.rds"
 if(file.exists(file)) {
     cor_protein_mrna_adj <- readRDS(file)
 } else {
-<<protein_mrna_corr>>
+<<protein_mrna_corr_adj>>
     saveRDS(cor_protein_mrna_adj, file)
 }
 ```
