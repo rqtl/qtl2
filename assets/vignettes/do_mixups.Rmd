@@ -341,8 +341,7 @@ columns correspond to the samples.
 ```{r calc_similarity_matrix_pve}
 x <- t(protein[,protein_select])
 y <- t(mrna[,gene_select])
-rownames(y) <- rownames(x)
-sim_pve <- corr_betw_matrices(x, y, "all", cores=0)
+sim_pve <- corr_betw_matrices(x, y, "all", align_rows=FALSE, cores=0)
 ```
 
 ```{r save_sim_pve, echo=FALSE}
