@@ -864,4 +864,4 @@ and distances.
 
 ---
 
-Source document: [do_mixups.Rmd](https://github.com/rqtl/qtl2/blob/gh-pages/assets/vignettes/do_mixups.Rmd)
+Source document: [do_mixups.Rmd](https://github.com/kbroman/qtl2/blob/gh-pages/assets/vignettes/do_mixups.Rmd)
