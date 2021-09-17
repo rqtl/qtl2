@@ -648,11 +648,11 @@ Here are some example R/qtl2 data files for F~2~ intercrosses:
   A [zip file for these data](https://kbroman.org/qtl2/assets/sampledata/iron/iron.zip) is distributed
   with the [qtl2](https://github.com/rqtl/qtl2) package.
 
-- [`B6BTBR`](https://github.com/rqtl/qtl2data/tree/master/B6BTBR) from
+- [`B6BTBR`](https://github.com/rqtl/qtl2data/tree/main/B6BTBR) from
   [Tian et al. (2015) Genetics 201:1253-1262](https://doi.org/10.1534/genetics.115.179432)
   and [Broman et al. (2015) G3 5:2177-2186](https://doi.org/10.1534/g3.115.019778).
 
-- [`Gough`](https://github.com/rqtl/qtl2data/tree/master/Gough) from
+- [`Gough`](https://github.com/rqtl/qtl2data/tree/main/Gough) from
   [Gray et al. (2015) Genetics 201:213-228](https://doi.org/10.1534/genetics.115.177790).
 
 
@@ -832,11 +832,11 @@ needed if the X chromosome is included.
 
 Here are some example R/qtl2 data files for two populations of DO mice:
 
-- [`DO_Gatti2014`](https://github.com/rqtl/qtl2data/tree/master/DO_Gatti2014),
+- [`DO_Gatti2014`](https://github.com/rqtl/qtl2data/tree/main/DO_Gatti2014),
   from
   [Gatti et al. (2014) G3 4:1623-1633](https://doi.org/10.1534/g3.114.013748)
 
-- [`DO_Recla`](https://github.com/rqtl/qtl2data/tree/master/DO_Recla),
+- [`DO_Recla`](https://github.com/rqtl/qtl2data/tree/main/DO_Recla),
   from
   [Recla et al. (2013) Mamm Genome 25:211-222](https://doi.org/10.1007/s00335-014-9508-0)
   and
@@ -914,7 +914,7 @@ full diallel followed by random mating.
 
 Here is an example of R/qtl2 data files for this population:
 
-- [`ArabMAGIC`](https://github.com/rqtl/qtl2data/tree/master/ArabMAGIC)
+- [`ArabMAGIC`](https://github.com/rqtl/qtl2data/tree/main/ArabMAGIC)
   from [Gnan et al. (2014) Genetics 198:1751-1758](https://doi.org/10.1534/genetics.114.170746)
 
 

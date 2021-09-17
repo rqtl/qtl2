@@ -36,7 +36,7 @@ The data have been converted to
 [R/qtl2](https://kbroman.org/qtl2) format following the document
 ["Preparing Diversity Outbred (DO) mouse data for R/qtl2"](https://kbroman.org/qtl2/pages/prep_do_data.html).
 The processed data are available
-at <https://github.com/rqtl/qtl2data/tree/master/DO_Svenson291>.
+at <https://github.com/rqtl/qtl2data/tree/main/DO_Svenson291>.
 
 We first load the [R/qtl2](https://github.com/rqtl/qtl2)
 package and the data. We'll also load the
@@ -50,7 +50,7 @@ library(broman)
 library(qtl2)
 library(qtlcharts)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DO_Svenson291/svenson.zip")
+               "qtl2data/main/DO_Svenson291/svenson.zip")
 svenson <- read_cross2(file)
 ```
 
@@ -61,7 +61,7 @@ library(qtlcharts)
 set.seed(94238567) # set random number seed
 
 url <- paste0("https://raw.githubusercontent.com/rqtl/",
-              "qtl2data/master/DO_Svenson291/svenson.zip")
+              "qtl2data/main/DO_Svenson291/svenson.zip")
 rds_file <- "diag_cache/svenson.rds"
 if(!dir.exists("diag_cache")) dir.create("diag_cache")
 if(!file.exists(rds_file)) {
@@ -148,14 +148,14 @@ We load them into R as follows.
 
 ```{r load_XYintensities, eval=FALSE}
 url <- paste0("https://raw.githubusercontent.com/rqtl/",
-              "qtl2data/master/DO_Svenson291/)
+              "qtl2data/main/DO_Svenson291/)
 xint <- read_csv_numer(paste0(url, "svenson_chrXint.csv"), transpose=TRUE)
 yint <- read_csv_numer(paste0(url, "svenson_chrYint.csv"), transpose=TRUE)
 ```
 
 ```{r load_XYintensities_really, echo=FALSE}
 url <- paste0("https://raw.githubusercontent.com/rqtl/",
-              "qtl2data/master/DO_Svenson291/")
+              "qtl2data/main/DO_Svenson291/")
 local_dir <- "diag_cache/"
 xfile <- "svenson_chrXint.csv"
 yfile <- "svenson_chrYint.csv"

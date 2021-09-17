@@ -7,7 +7,7 @@ library(fst)
 myfread <- function(filename) data.table::fread(filename, data.table=FALSE, skip=9)
 
 # data at https://doi.org/10.6084/m9.figshare.7359542.v1
-#     also see https://github.com/rqtl/qtl2data/tree/master/DO_Svenson291
+#     also see https://github.com/rqtl/qtl2data/tree/main/DO_Svenson291
 zip_files <- c("https://ndownloader.figshare.com/files/13599554",
                "https://ndownloader.figshare.com/files/13599572")
 
