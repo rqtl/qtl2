@@ -163,9 +163,9 @@ used in the genotype data.
 
 For examples of these files, see the
 [qtl2data repository](https://github.com/rqtl/qtl2data), in particular
-[`do_pheno.csv`](https://github.com/rqtl/qtl2data/blob/master/DO_Gatti2014/do_pheno.csv)
+[`do_pheno.csv`](https://github.com/rqtl/qtl2data/blob/main/DO_Gatti2014/do_pheno.csv)
 and
-[`do_covar.csv`](https://github.com/rqtl/qtl2data/blob/master/DO_Gatti2014/do_covar.csv),
+[`do_covar.csv`](https://github.com/rqtl/qtl2data/blob/main/DO_Gatti2014/do_covar.csv),
 for the [Gatti et al. (2014)](https://www.g3journal.org/content/ggg/4/9/1623.full.pdf) data.
 
 The covariate data needs to contain a `sex` column, plus a column

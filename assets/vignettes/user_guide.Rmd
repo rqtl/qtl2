@@ -137,7 +137,7 @@ loaded into R using the `read_cross2()` function.
 
 In the [qtl2 package source](https://github.com/rqtl/qtl2),
 the sample zip files are located in
-[`qtl2/inst/extdata`](https://github.com/rqtl/qtl2/tree/master/inst/extdata).
+[`qtl2/inst/extdata`](https://github.com/rqtl/qtl2/tree/main/inst/extdata).
 In the installed version of the package, they are in
 `qtl2/extdata`, within whatever directory your R packages were
 installed. The R function `system.file()` can be used to construct the
@@ -890,9 +890,9 @@ We'll consider a subset of the data from
 available as part of the
 [qtl2data github repository](https://github.com/rqtl/qtl2data). (The
 full data are in
-[`DO_Recla`](https://github.com/rqtl/qtl2data/tree/master/DO_Recla);
+[`DO_Recla`](https://github.com/rqtl/qtl2data/tree/main/DO_Recla);
 the directory
-[`DOex`](https://github.com/rqtl/qtl2data/tree/master/DOex) contains a
+[`DOex`](https://github.com/rqtl/qtl2data/tree/main/DOex) contains a
 reduced set, with just three chromosomes, one phenotype
 (`OF_immobile_pct`, percent immobile in the open field test), and a
 reduced set of markers.
@@ -900,7 +900,7 @@ reduced set of markers.
 You can download the data from a single zip file, as follows:
 
 ```{r read_DOex_data}
-file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip"
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/main/DOex/DOex.zip"
 DOex <- read_cross2(file)
 ```
 
@@ -917,7 +917,7 @@ apr <- genoprob_to_alleleprob(pr)
 
 ```{r download_alleleprobs, echo=FALSE, results="hide"}
 tmpfile <- tempfile()
-file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex_alleleprobs.rds"
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/main/DOex/DOex_alleleprobs.rds"
 download.file(file, tmpfile, quiet=TRUE)
 apr <- readRDS(tmpfile)
 unlink(tmpfile)
@@ -925,7 +925,7 @@ unlink(tmpfile)
 
 ```{r download_genoprobs, echo=FALSE, results="hide"}
 tmpfile <- tempfile()
-file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex_genoprobs.rds"
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/main/DOex/DOex_genoprobs.rds"
 download.file(file, tmpfile, quiet=TRUE)
 pr <- readRDS(tmpfile)
 unlink(tmpfile)
