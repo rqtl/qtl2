@@ -62,7 +62,7 @@ based on their polymorphism between a particular strain pair?)
 \examples{
 \dontrun{
 # load DO data from Recla et al. (2014) Mamm Genome 25:211-222.
-recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
+recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/main/DO_Recla/recla.zip")
 
 # grab founder genotypes and physical map
 fg <- recla$founder_geno

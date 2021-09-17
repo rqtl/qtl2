@@ -5,7 +5,7 @@ test_that("create_snpinfo works", {
     skip_if(isnt_karl(), "this test only run locally")
 
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
-                   "qtl2data/master/DOex/DOex.zip")
+                   "qtl2data/main/DOex/DOex.zip")
 
     DOex <- read_cross2(file)
 
@@ -28,7 +28,7 @@ test_that("create_snpinfo works for arab data", {
     skip_if(isnt_karl(), "this test only run locally")
 
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/ArabMAGIC/arabmagic_tair9.zip")
+               "qtl2data/main/ArabMAGIC/arabmagic_tair9.zip")
     arab <- read_cross2(file)
 
     snpinfo <- create_snpinfo(arab)

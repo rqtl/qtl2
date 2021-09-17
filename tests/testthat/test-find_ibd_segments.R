@@ -4,7 +4,7 @@ test_that("find_ibd_segments works (regression test)", {
 
     skip_if(isnt_karl(), "this test only run locally")
 
-    recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
+    recla <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/main/DO_Recla/recla.zip")
 
     # grab founder genotypes and physical map
     fg <- recla$founder_geno

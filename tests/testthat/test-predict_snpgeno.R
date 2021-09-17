@@ -6,7 +6,7 @@ test_that("predict_snpgeno works", {
 
     # load example data and calculate genotype probabilities
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
-                   "qtl2data/master/DOex/DOex.zip")
+                   "qtl2data/main/DOex/DOex.zip")
     DOex <- read_cross2(file)
     probs <- calc_genoprob(DOex[1:20,"2"], error_prob=0.002)
     m <- maxmarg(probs)
@@ -30,7 +30,7 @@ test_that("predict_snpgeno works for magic lines", {
 
     # load example data and calculate genotype probabilities
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
-                   "qtl2data/master/ArabMAGIC/arabmagic_tair9.zip")
+                   "qtl2data/main/ArabMAGIC/arabmagic_tair9.zip")
     magic <- read_cross2(file)
     ind <- paste0("MAGIC", ".", 1:20)
     chr <- "2"

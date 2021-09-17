@@ -28,7 +28,7 @@ Calculate genotype frequencies from raw SNP genotypes, by individual or by marke
 \dontrun{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
+               "qtl2data/main/DOex/DOex.zip")
 DOex <- read_cross2(file)
 gfreq <- calc_raw_geno_freq(DOex)
 }

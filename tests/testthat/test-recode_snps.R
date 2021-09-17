@@ -6,7 +6,7 @@ test_that("recode_snps works", {
 
     # load example data
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
-                   "qtl2data/master/DOex/DOex.zip")
+                   "qtl2data/main/DOex/DOex.zip")
     DOex <- read_cross2(file)
 
     pr <- calc_genoprob(DOex, error_prob=0.002, cores=2)

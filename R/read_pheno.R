@@ -36,11 +36,11 @@
 #' @examples
 #' \dontrun{
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
-#'                "qtl2data/master/Gough/gough_pheno.csv")
+#'                "qtl2data/main/Gough/gough_pheno.csv")
 #' phe <- read_pheno(file)
 #'
 #' phecovfile <- paste0("https://raw.githubusercontent.com/rqtl/",
-#'                      "qtl2data/master/Gough/gough_phenocovar.csv")
+#'                      "qtl2data/main/Gough/gough_phenocovar.csv")
 #' phe_list <- read_pheno(file, phecovfile)
 #' }
 read_pheno <-

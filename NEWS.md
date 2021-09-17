@@ -124,7 +124,7 @@
 
 - Fixed Issue #176, that `guess_phase()` doesn't work with cross type
   `"genail"`. Needed to define `phase_known_crosstype` as `"genailpk"` in
-  [`cross_genail.h`](https://github.com/rqtl/qtl2/blob/master/src/cross_genail.h)
+  [`cross_genail.h`](https://github.com/rqtl/qtl2/blob/main/src/cross_genail.h)
   because otherwise `is_phase_known()` will return TRUE.
 
 

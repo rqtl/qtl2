@@ -70,7 +70,7 @@ strain distribution pattern.
 \dontrun{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DO_Recla/recla.zip")
+               "qtl2data/main/DO_Recla/recla.zip")
 recla <- read_cross2(file)
 recla <- recla[c(1:2,53:54), c("19","X")] # subset to 4 mice and 2 chromosomes
 probs <- calc_genoprob(recla, error_prob=0.002)

@@ -51,7 +51,7 @@
 #' # This is more interesting for a Diversity Outbred mouse example
 #' \dontrun{
 #' file <- paste0("https://raw.githubusercontent.com/rqtl/",
-#'                "qtl2data/master/DOex/DOex.zip")
+#'                "qtl2data/main/DOex/DOex.zip")
 #' DOex <- read_cross2(file)
 #' # subset to chr 2 and X and individuals labeled "232" and "256"
 #' DOex <- DOex[c("232", "256"), c("2", "X")]

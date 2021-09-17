@@ -27,7 +27,7 @@ For a particular SNP, find the name of the corresponding indexed SNP.
 \dontrun{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DO_Recla/recla.zip")
+               "qtl2data/main/DO_Recla/recla.zip")
 recla <- read_cross2(file)
 
 # founder genotypes for a set of SNPs

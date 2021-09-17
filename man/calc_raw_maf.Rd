@@ -22,7 +22,7 @@ Calculate minor allele frequency from raw SNP genotypes, by individual or by mar
 \dontrun{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
+               "qtl2data/main/DOex/DOex.zip")
 DOex <- read_cross2(file)
 DOex_maf <- calc_raw_maf(DOex)
 }

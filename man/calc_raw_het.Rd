@@ -22,7 +22,7 @@ Calculate estimated heterozygosity for each individual from raw SNP genotypes
 \dontrun{
 # load example data and calculate genotype probabilities
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
+               "qtl2data/main/DOex/DOex.zip")
 DOex <- read_cross2(file)
 DOex_het <- calc_raw_het(DOex)
 }

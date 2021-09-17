@@ -43,5 +43,5 @@ LazyData: true
 Encoding: UTF-8
 ByteCompile: true
 LinkingTo: Rcpp, RcppEigen
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown=TRUE)

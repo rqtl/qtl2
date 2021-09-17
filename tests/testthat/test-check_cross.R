@@ -100,7 +100,7 @@ test_that("check_cross2 works for MPP data", {
 
     skip_if(isnt_karl(), "this test only run locally")
 
-    do <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/master/DO_Recla/recla.zip")
+    do <- read_cross2("https://raw.githubusercontent.com/rqtl/qtl2data/main/DO_Recla/recla.zip")
     expect_true(check_cross2(do))
 
     # no founder genotypes

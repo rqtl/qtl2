@@ -105,7 +105,7 @@ from top to bottom.
 \dontrun{
 # load example DO data from web
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
+               "qtl2data/main/DOex/DOex.zip")
 DOex <- read_cross2(file)
 
 # subset to chr 2

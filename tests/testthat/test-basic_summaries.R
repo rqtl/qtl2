@@ -129,7 +129,7 @@ test_that("basic summaries give correct numbers for recla data", {
     skip_if(isnt_karl(), "this test only run locally")
 
     file <- paste0("https://raw.githubusercontent.com/rqtl/",
-                   "qtl2data/master/DO_Recla/recla.zip")
+                   "qtl2data/main/DO_Recla/recla.zip")
     recla <- read_cross2(file)
 
     expect_equal(n_ind(recla), 261)
