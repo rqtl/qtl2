@@ -384,6 +384,11 @@ legend(&quot;topleft&quot;, lwd=2, col=c(&quot;slateblue&quot;, &quot;violetred&
 ## 1  13.1 25.1  28.4
 ## 2  31.7 50.1  53.6</code></pre>
 <p>Each row is a different peak; the columns are the lower interval endpoint, the estimated QTL position, and the upper interval endpoint.</p>
+<p>By default in <code>find_peaks()</code>, <code>bayes_int()</code>, and <code>lod_int()</code>, the interval endpoints are at markers. This is controlled with the argument <code>expand2markers</code>, which defaults to <code>TRUE</code>. To allow the interval endpoints to be at positions between markers (“pseudomarkers”), include <code>expand2markers=FALSE</code>.</p>
+<pre class="r"><code>lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5, expand2markers=FALSE)</code></pre>
+<pre><code>##   ci_lo  pos ci_hi
+## 1  13.1 25.1  28.4
+## 2  34.1 50.1  53.6</code></pre>
 </div>
 <div id="performing-a-genome-scan-with-a-linear-mixed-model" class="section level2">
 <h2>Performing a genome scan with a linear mixed model</h2>
