@@ -377,6 +377,18 @@ lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
 Each row is a different peak; the columns are the lower interval endpoint, the
 estimated QTL position, and the upper interval endpoint.
 
+By default in `find_peaks()`, `bayes_int()`, and `lod_int()`, the
+interval endpoints are at markers. This is controlled with the
+argument `expand2markers`, which defaults to `TRUE`. To allow the
+interval endpoints to be at positions between markers
+("pseudomarkers"), include `expand2markers=FALSE`.
+
+
+```{r lod_int_dontexpand}
+lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5, expand2markers=FALSE)
+```
+
+
 
 ## Performing a genome scan with a linear mixed model
 
