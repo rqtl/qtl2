@@ -19,14 +19,13 @@ options(width=127, digits=5)
 [R/qtl](https://rqtl.org), to better handle high-dimensional data
 and complex cross designs.
 
-The software was previously split into multiple packages
-(qtl2geno, qtl2scan, qtl2plot, and qtl2db), but as of version 0.7,
-these have been combined into a single package
-[qtl2](https://github.com/rqtl/qtl2). The multiple packages proved awkward and confusing.
-The [qtl2convert](https://github.com/rqtl/qtl2convert) package (for
+Also see the related packages,
+[qtl2convert](https://github.com/rqtl/qtl2convert) (for
 converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/3.9/bioc/html/DOQTL.html),
-and [R/qtl](https://rqtl.org) formats) will remain a separate package.
+and [R/qtl](https://rqtl.org) formats),
+and [qtl2fst](https://github.com/rqtl/qtl2fst) (for storing genotype
+probabilities on disk, for rapid access with reduced memory usage).
 
 [R/qtl2](https://kbroman.org/qtl2) contains _a lot_ of functions. To
 identify functions of interest, see the [organized list of
