@@ -1,3 +1,11 @@
+## qtl2 0.27-1 (2021-10-07)
+
+### Minor changes
+
+- Implemented a cross type `"hsf1"` that is similar to `"dof1"`, for a
+  cross between an 8-way HS individual and a 9th strain. (Issue #149)
+
+
 ## qtl2 0.26 (2021-10-07)
 
 ### Major changes
