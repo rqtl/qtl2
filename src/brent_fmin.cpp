@@ -1,6 +1,7 @@
 // 1-d optimization by Brent's method
 
 #include "brent_fmin.h"
+#include "lmm.h"
 #include <math.h>
 #include <float.h> /* DBL_EPSILON */
 
@@ -72,9 +73,11 @@
     Algol  60 procedure  localmin  given in Richard Brent, Algorithms for
     Minimization without Derivatives, Prentice-Hall, Inc. (1973).
 */
-/* changed name from Brent_fmin to qtl2_Brent_fmin */
-double qtl2_Brent_fmin(double ax, double bx, double (*f)(double, void *),
-                       void *info, double tol)
+/* changed name from Brent_fmin to lmm_Brent_fmin */
+/* hard-code the function arguments, because I couldn't figure out clang-UBsan warnings on CRAN */
+double lmm_Brent_fmin(double ax, double bx,
+                      double f(const double x, struct calcLL_args *info),
+                      calcLL_args *info, double tol)
 {
     /*  c is the squared inverse of the golden ratio */
     const double c = (3. - sqrt(5.)) * .5;

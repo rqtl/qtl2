@@ -9,7 +9,8 @@
 
 // see brent_fmin.cpp
 
-double qtl2_Brent_fmin(double ax, double bx, double (*f)(double, void *),
-                       void *info, double tol);
+double lmm_Brent_fmin(double ax, double bx,
+                      double f(const double x, struct calcLL_args *info),
+                      calcLL_args *info, double tol);
 
 #endif // BRENT_FMIN_H
