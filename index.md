@@ -12,6 +12,12 @@ description: R/qtl2, a reimplementation of R/qtl to better handle high-dimension
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
 high-dimensional data and complex cross designs.
 
+Also see the related packages,
+[qtl2convert](https://github.com/rqtl/qtl2convert) (for converting
+data among the R/qtl2, DOQTL, and R/qtl formats)
+and [qtl2fst](https://github.com/rqtl/qtl2fst) (for storing genotype
+probabilities on disk).
+
 ---
 
 ### Discussion group
