@@ -1,15 +1,4 @@
-## qtl2 0.27-3 (2021-10-07)
-
-### Minor changes
-
-- Implemented a cross type `"hsf1"` that is similar to `"dof1"`, for a
-  cross between an 8-way HS individual and a 9th strain. (Issue #149)
-
-- Ugly c++ revisions to avoid clang UBsan warnings on CRAN.
-  (Issue #169)
-
-
-## qtl2 0.26 (2021-10-07)
+## qtl2 0.28 (2021-10-11)
 
 ### Major changes
 
@@ -45,6 +34,9 @@
 - The output of `est_herit()` now includes the residual SD as an
   attribute, `"resid_sd"`. (Issue #16)
 
+- Implemented a cross type `"hsf1"` that is similar to `"dof1"`, for a
+  cross between an 8-way HS individual and a 9th strain. (Issue #149)
+
 ### Bug fixes
 
 - `calc_kinship()` died with cryptic error if genotype probabilities
@@ -65,6 +57,9 @@
 
 - In `fit1()` and `scan1coef()`, wasn't grabbing the `...` arguments.
   properly.
+
+- Ugly c++ revisions to avoid clang UBsan warnings on CRAN.
+  (Issue #169)
 
 
 ## qtl2 0.24 (2020-12-16)
