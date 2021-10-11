@@ -14,9 +14,10 @@ high-dimensional data and complex cross designs.
 
 Also see the related packages,
 [qtl2convert](https://github.com/rqtl/qtl2convert) (for converting
-data among the R/qtl2, DOQTL, and R/qtl formats)
-and [qtl2fst](https://github.com/rqtl/qtl2fst) (for storing genotype
-probabilities on disk).
+data among the R/qtl2, DOQTL, and R/qtl formats),
+[qtl2fst](https://github.com/rqtl/qtl2fst) (for storing genotype
+probabilities on disk), and [qtl2ggplot](https://github.com/byandell/qtl2ggplot)
+(for [ggplot2](https://ggplot2.tidyverse.org/)-based data visualizations).
 
 ---
 
