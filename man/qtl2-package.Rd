@@ -12,16 +12,28 @@ Provides a set of tools to perform quantitative trait locus (QTL) analysis in ex
 
 \itemize{
 \item \href{https://kbroman.org/qtl2/assets/vignettes/user_guide.html}{user guide}
-\item \href{pages/rqtl2_functions.html}{categorized list of functions in R/qtl2}
+\item \href{https://kbroman.org/qtl2/pages/rqtl2_functions.html}{categorized list of functions in R/qtl2}
 \item \href{https://kbroman.org/qtl2/assets/vignettes/input_files.html}{input file formats}
-\item \href{assets/vignettes/qtl2fst.html}{using qtl2fst for on-disk genotype probabilities}
+\item \href{https://kbroman.org/qtl2/assets/vignettes/qtl2fst.html}{using qtl2fst for on-disk genotype probabilities}
 \item \href{https://kbroman.org/qtl2/pages/prep_do_data.html}{preparing DO mouse data for R/qtl2}
-\item \href{assets/vignettes/do_diagnostics.html}{genotype diagnostics for diversity outbred mice}
-\item \href{assets/vignettes/do_mixups.html}{identifying sample mix-ups in diversity outbred mice}
+\item \href{https://kbroman.org/qtl2/assets/vignettes/do_diagnostics.html}{genotype diagnostics for diversity outbred mice}
+\item \href{https://kbroman.org/qtl2/assets/vignettes/do_mixups.html}{identifying sample mix-ups in diversity outbred mice}
 \item \href{https://kbroman.org/qtl2/assets/vignettes/rqtl_diff.html}{differences between R/qtl and R/qtl2}
 \item \href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{developer guide}
 \item \href{https://smcclatchy.github.io/mapping/}{Tutorial on R/qtl2} by
 \href{https://github.com/smcclatchy}{Susan McClatchy} and \href{https://github.com/dmgatti}{Dan Gatti}
+}
+}
+
+\section{Related packages}{
+
+\itemize{
+\item \href{https://github.com/rqtl/qtl2convert}{qtl2convert}, for converting
+data among the R/qtl2, DOQTL, and R/qtl formats
+\item \href{https://github.com/rqtl/qtl2fst}{qtl2fst}, for storing genotype
+probabilities on disk
+\item \href{https://github.com/byandell/qtl2ggplot}{qtl2ggplot},
+for \href{https://ggplot2.tidyverse.org/}{ggplot2}-based data visualizations
 }
 }
 
