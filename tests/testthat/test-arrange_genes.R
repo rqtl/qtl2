@@ -9,7 +9,7 @@ test_that("arrange_genes gives appropriate errors", {
 
 })
 
-test_that("arrange_genes gives appropriate errors", {
+test_that("arrange_genes works in simple cases", {
 
     # no overlaps
     expect_equal(arrange_genes(1,2), 1)
