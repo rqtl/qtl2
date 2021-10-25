@@ -1,3 +1,10 @@
+## qtl2 0.29-2 (2021-10-25)
+
+### Minor changes
+
+- Add dependency on version of Rcpp (>= 1.0.7)
+
+
 ## qtl2 0.28 (2021-10-11)
 
 ### Major changes
