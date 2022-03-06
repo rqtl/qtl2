@@ -59,6 +59,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 .main-container {
   max-width: 940px;
@@ -79,6 +80,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -641,14 +645,14 @@ founder_geno:
 <div id="general-advanced-intercross-lines" class="section level3">
 <h3>General advanced intercross lines</h3>
 <p>The <code>&quot;genail&quot;</code> cross type seeks to serve as an approximation for a variety of multi-parent heterozygous populations. The specific cross type to use is <code>&quot;genail[n]&quot;</code> where <code>[n]</code> is to be replaced by the number of founder lines, for example <code>&quot;genail8&quot;</code> for an 8-way AIL population.</p>
-<p>We imagine that each individual is derived from a specified number of generations of random outbreeding with large population sizes, starting with a population that consists of the founders in specified proportions, <span class="math inline">\(\alpha_i\)</span> for founder <span class="math inline">\(i\)</span>.</p>
+<p>We imagine that each individual is derived from a specified number of generations of random outbreeding with large population sizes, starting with a population that consists of the founders in specified proportions, <span class="math inline">\(\alpha_i\)</span> for founder <span class="math inline">\(i\)</span>. See <a href="https://doi.org/10.1093/g3journal/jkab396">Broman (2022)</a>.</p>
 <p>The cross information file should have one row per individual and should give the number of generations of outbreeding followed by integer values <span class="math inline">\(a_i\)</span> such that <span class="math inline">\(\alpha_i = a_i / \sum a_i\)</span>. None of the <span class="math inline">\(a_i\)</span> may be 0.</p>
 <p>Founder genotype data are also required.</p>
 </div>
 <div id="general-recombinant-inbred-lines" class="section level3">
 <h3>General recombinant inbred lines</h3>
 <p>The <code>&quot;genril&quot;</code> cross type is like the <code>&quot;genail&quot;</code> cross type except for homozygous lines. It seeks to serve as an approximation for a variety of multi-parent recombinant inbred populations. The specific cross type to use is <code>&quot;genril[n]&quot;</code> where <code>[n]</code> is to be replaced by the number of founder lines, for example <code>&quot;genril8&quot;</code> for an 8-way RIL population.</p>
-<p>We imagine that the individual lines are doubled haploids derived following a specified number of generations of random outbreeding with large population sizes, starting with a population that consists of the founders in specified proportions, <span class="math inline">\(\alpha_i\)</span> for founder <span class="math inline">\(i\)</span>.</p>
+<p>We imagine that the individual lines are doubled haploids derived following a specified number of generations of random outbreeding with large population sizes, starting with a population that consists of the founders in specified proportions, <span class="math inline">\(\alpha_i\)</span> for founder <span class="math inline">\(i\)</span>. See <a href="https://doi.org/10.1093/g3journal/jkab396">Broman (2022)</a>.</p>
 <p>The cross information file should have one row per line and should give the number of generations of outbreeding followed by integer values <span class="math inline">\(a_i\)</span> such that <span class="math inline">\(\alpha_i = a_i / \sum a_i\)</span>. None of the <span class="math inline">\(a_i\)</span> may be 0.</p>
 <p>Founder genotype data are also required.</p>
 <hr />

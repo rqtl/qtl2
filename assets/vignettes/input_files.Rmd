@@ -988,6 +988,7 @@ We imagine that each individual is derived from a specified number of
 generations of random outbreeding with large population sizes,
 starting with a population that consists of the founders in specified
 proportions, $\alpha_i$ for founder $i$.
+See [Broman (2022)](https://doi.org/10.1093/g3journal/jkab396).
 
 The cross information file should have one row per individual and
 should give the number of generations of outbreeding followed by
@@ -1010,6 +1011,7 @@ We imagine that the individual lines are doubled haploids derived
 following a specified number of generations of random outbreeding with
 large population sizes, starting with a population that consists of
 the founders in specified proportions, $\alpha_i$ for founder $i$.
+See [Broman (2022)](https://doi.org/10.1093/g3journal/jkab396).
 
 The cross information file should have one row per line and
 should give the number of generations of outbreeding followed by
