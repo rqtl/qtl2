@@ -33,11 +33,11 @@ Number (or proportion) of missing (or non-missing) genotypes by individual or ma
 }
 \section{Functions}{
 \itemize{
-\item \code{n_missing}: Count missing genotypes
+\item \code{n_missing()}: Count missing genotypes
 
-\item \code{n_typed}: Count genotypes
+\item \code{n_typed()}: Count genotypes
+
 }}
-
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 nmis_ind <- n_missing(iron)

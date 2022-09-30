@@ -37,19 +37,19 @@ Replace the individual IDs in an object with new ones
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{cross2}: Replace IDs in a \code{"cross2"} object
+\item \code{replace_ids(cross2)}: Replace IDs in a \code{"cross2"} object
 
-\item \code{calc_genoprob}: Replace IDs in output from \code{\link[=calc_genoprob]{calc_genoprob()}}
+\item \code{replace_ids(calc_genoprob)}: Replace IDs in output from \code{\link[=calc_genoprob]{calc_genoprob()}}
 
-\item \code{viterbi}: Replace IDs in output from \code{\link[=viterbi]{viterbi()}}
+\item \code{replace_ids(viterbi)}: Replace IDs in output from \code{\link[=viterbi]{viterbi()}}
 
-\item \code{sim_geno}: Replace IDs in output from \code{\link[=sim_geno]{sim_geno()}}
+\item \code{replace_ids(sim_geno)}: Replace IDs in output from \code{\link[=sim_geno]{sim_geno()}}
 
-\item \code{matrix}: Replace IDs in a matrix
+\item \code{replace_ids(matrix)}: Replace IDs in a matrix
 
-\item \code{data.frame}: Replace IDs in a data frame
+\item \code{replace_ids(data.frame)}: Replace IDs in a data frame
+
 }}
-
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 ids <- as.numeric(ind_ids(iron))

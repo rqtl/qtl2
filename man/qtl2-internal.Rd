@@ -12,7 +12,7 @@ Functions that are exported and so available to users but not really intended to
 }
 \section{Functions}{
 \itemize{
-\item \code{align_scan1_map}: Align \code{scan1()} output with a map
-}}
+\item \code{align_scan1_map()}: Align \code{scan1()} output with a map
 
+}}
 \keyword{internal}

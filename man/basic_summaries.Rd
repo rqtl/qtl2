@@ -85,53 +85,53 @@ Basic summaries of a cross2 object.
 }
 \section{Functions}{
 \itemize{
-\item \code{n_ind}: Number of individuals (either genotyped or phenotyped)
+\item \code{n_ind()}: Number of individuals (either genotyped or phenotyped)
 
-\item \code{n_ind_geno}: Number of genotyped individuals
+\item \code{n_ind_geno()}: Number of genotyped individuals
 
-\item \code{n_ind_pheno}: Number of phenotyped individuals
+\item \code{n_ind_pheno()}: Number of phenotyped individuals
 
-\item \code{n_ind_covar}: Number of individuals with covariate data
+\item \code{n_ind_covar()}: Number of individuals with covariate data
 
-\item \code{n_ind_gnp}: Number of individuals with both genotype and phenotype data
+\item \code{n_ind_gnp()}: Number of individuals with both genotype and phenotype data
 
-\item \code{ind_ids}: IDs of individuals (either genotyped or phenotyped)
+\item \code{ind_ids()}: IDs of individuals (either genotyped or phenotyped)
 
-\item \code{ind_ids_geno}: IDs of genotyped individuals
+\item \code{ind_ids_geno()}: IDs of genotyped individuals
 
-\item \code{ind_ids_pheno}: IDs of phenotyped individuals
+\item \code{ind_ids_pheno()}: IDs of phenotyped individuals
 
-\item \code{ind_ids_covar}: IDs of individuals with covariate data
+\item \code{ind_ids_covar()}: IDs of individuals with covariate data
 
-\item \code{ind_ids_gnp}: IDs of individuals with both genotype and phenotype data
+\item \code{ind_ids_gnp()}: IDs of individuals with both genotype and phenotype data
 
-\item \code{n_chr}: Number of chromosomes
+\item \code{n_chr()}: Number of chromosomes
 
-\item \code{n_founders}: Number of founder strains
+\item \code{n_founders()}: Number of founder strains
 
-\item \code{founders}: Names of founder strains
+\item \code{founders()}: Names of founder strains
 
-\item \code{chr_names}: Chromosome names
+\item \code{chr_names()}: Chromosome names
 
-\item \code{tot_mar}: Total number of markers
+\item \code{tot_mar()}: Total number of markers
 
-\item \code{n_mar}: Number of markers on each chromosome
+\item \code{n_mar()}: Number of markers on each chromosome
 
-\item \code{marker_names}: Marker names
+\item \code{marker_names()}: Marker names
 
-\item \code{n_pheno}: Number of phenotypes
+\item \code{n_pheno()}: Number of phenotypes
 
-\item \code{pheno_names}: Phenotype names
+\item \code{pheno_names()}: Phenotype names
 
-\item \code{n_covar}: Number of covariates
+\item \code{n_covar()}: Number of covariates
 
-\item \code{covar_names}: Covariate names
+\item \code{covar_names()}: Covariate names
 
-\item \code{n_phenocovar}: Number of phenotype covariates
+\item \code{n_phenocovar()}: Number of phenotype covariates
 
-\item \code{phenocovar_names}: Phenotype covariate names
+\item \code{phenocovar_names()}: Phenotype covariate names
+
 }}
-
 \seealso{
 \code{\link[=summary.cross2]{summary.cross2()}}
 }
