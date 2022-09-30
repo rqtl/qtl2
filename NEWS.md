@@ -1,8 +1,12 @@
-## qtl2 0.29-2 (2021-10-25)
+## qtl2 0.29-3 (2022-09-30)
 
 ### Minor changes
 
 - Add dependency on version of Rcpp (>= 1.0.7)
+
+### Bug fixes
+
+- Revised `predict_snpgeno()` to work for DOF1 and HSF1 populations.
 
 
 ## qtl2 0.28 (2021-10-11)
