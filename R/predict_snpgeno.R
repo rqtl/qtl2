@@ -84,6 +84,12 @@ function(cross, geno, cores=1)
            ph1 <- ph[[chr]][,,1]
            ph2 <- ph[[chr]][,,2]
        }
+
+       # ugh deal with DOF1/HSF1 specially
+       if(cross$crosstype %in% c("dof1", "hsf1")) {
+           ph2[] <- 9 # one chromosome is from 9th founder
+       }
+
        if(ncol(fg) != ncol(ph1) ||
           any(colnames(fg) != colnames(ph1))) {
            mar <- get_common_ids(setNames(colnames(fg), NULL), setNames(colnames(ph1), NULL))
