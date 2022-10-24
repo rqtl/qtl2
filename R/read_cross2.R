@@ -250,6 +250,9 @@ function(file, quiet=TRUE)
         output$alleles <- control$alleles
         used_control["alleles"] <- TRUE # indicate that we used it
         if(n_alleles != length(output$alleles)) {
+            warning("length(alleles) [", length(output$alleles),
+                    "] != expected number [", n_alleles, "]")
+
             if(length(output$alleles) < n_alleles) {
                 # pad with a bunch of letters
                 output$alleles <- c(output$alleles,
@@ -257,8 +260,6 @@ function(file, quiet=TRUE)
             }
             # trim to n_alleles
             output$alleles <- output$alleles[seq_len(n_alleles)]
-            warning("length(alleles) [", length(output$alleles),
-                    "] != expected number [", n_alleles, "]")
         }
     } else {
         output$alleles <- LETTERS[seq_len(n_alleles)]

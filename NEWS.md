@@ -11,8 +11,11 @@
 - Give a better error message in `genoprob_to_snpprob()` if `snpinfo`
   is missing the `sdp` column (Issue #207).
 
-- In `read_cross()`, give warnings if there are duplicate column names
+- In `read_csv()`, give warnings if there are duplicate column names
   or duplicate row names in the file.
+
+- In `read_cross2()`, move the warning regarding the number of alleles
+  to before the alleles object gets corrected (Issue #209).
 
 
 ## qtl2 0.28 (2021-10-11)
