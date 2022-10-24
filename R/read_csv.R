@@ -50,9 +50,16 @@ read_csv <-
         }
     }
 
+    if(length(unique(colnames(x))) != ncol(x))
+        warning("duplicate column names in file ", filename)
+
     # move first column to row names
-    if(rownames_included)
+    if(rownames_included) {
         x <- firstcol2rownames(x, filename)
+
+        if(length(unique(rownames(x))) != nrow(x))
+            warning("duplicate row names in file ", filename)
+    }
 
     # transpose if requested
     if(transpose)
