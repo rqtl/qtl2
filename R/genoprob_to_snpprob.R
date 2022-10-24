@@ -122,8 +122,8 @@ genoprob_to_snpprob <-
     uchr <- factor(factor(uchr, levels=chrID))
 
     # check for index, interval, and on_map
-    if(!all(c("index", "interval", "on_map") %in% colnames(snpinfo)))
-        stop('snpinfo should contain columns "index", "interval", and "on_map".')
+    if(!all(c("sdp", "index", "interval", "on_map") %in% colnames(snpinfo)))
+        stop('snpinfo should contain columns "sdp", "index", "interval", and "on_map".')
 
     # if more than one chromosome:
     if(length(uchr) > 1) {

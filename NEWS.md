@@ -1,4 +1,4 @@
-## qtl2 0.29-3 (2022-09-30)
+## qtl2 0.29-4 (2022-10-24)
 
 ### Minor changes
 
@@ -7,6 +7,9 @@
 ### Bug fixes
 
 - Revised `predict_snpgeno()` to work for DOF1 and HSF1 populations.
+
+- Give a better error message in `genoprob_to_snpprob()` if `snpinfo`
+  is missing the `sdp` column (Issue #207).
 
 
 ## qtl2 0.28 (2021-10-11)

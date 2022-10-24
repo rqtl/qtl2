@@ -512,4 +512,15 @@ test_that("the genoprob_to_snpprob R function works", {
     snpaprob2 <- genoprob_to_snpprob(aprobs, snpinfo2)
     expect_equivalent(snpprob2, snpprob)
 
+
+    # expect error if snpinfo is missing columns
+    snpinfo2a <- snpinfo2[,colnames(snpinfo2) != "sdp"]
+    expect_error(genoprob_to_snpprob(aprobs, snpinfo2a))
+    snpinfo2a <- snpinfo2[,colnames(snpinfo2) != "index"]
+    expect_error(genoprob_to_snpprob(aprobs, snpinfo2a))
+    snpinfo2a <- snpinfo2[,colnames(snpinfo2) != "interval"]
+    expect_error(genoprob_to_snpprob(aprobs, snpinfo2a))
+    snpinfo2a <- snpinfo2[,colnames(snpinfo2) != "on_map"]
+    expect_error(genoprob_to_snpprob(aprobs, snpinfo2a))
+
 })
