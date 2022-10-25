@@ -381,6 +381,11 @@ function(cross2)
 
             }
         }
+    } else { # founder genotypes not needed
+        if(!is.null(founder_geno)) {
+            result <- FALSE
+            warning('founder_geno provided but not needed for cross type "', crosstype, '"')
+        }
     }
 
     # pmap

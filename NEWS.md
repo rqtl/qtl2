@@ -1,4 +1,4 @@
-## qtl2 0.29-4 (2022-10-24)
+## qtl2 0.29-5 (2022-10-25)
 
 ### Minor changes
 
@@ -16,6 +16,9 @@
 
 - In `read_cross2()`, move the warning regarding the number of alleles
   to before the alleles object gets corrected (Issue #209).
+
+- Issue a warning message if founder genotypes are included but not
+  used (Issue #211).
 
 
 ## qtl2 0.28 (2021-10-11)

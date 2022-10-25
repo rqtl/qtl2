@@ -93,6 +93,10 @@ test_that("check_cross2 gives proper warnings", {
     iron_bad <- iron; names(iron_bad$pmap) <- 1:20
     expect_warning(check_cross2(iron_bad))
 
+    # founder genotypes included but not needed
+    iron_bad <- iron; iron_bad$founder_geno <- iron_bad$geno
+    expect_warning(check_cross2(iron_bad))
+
 })
 
 
