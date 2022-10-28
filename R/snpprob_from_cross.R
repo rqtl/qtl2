@@ -25,6 +25,10 @@ snpprob_from_cross <-
     map <- cross$pmap
     if(is.null(map)) map <- cross$gmap
 
+    if(cross$crosstype %in% c("hsf1", "dof1")) { # if HSF1 or DOF1, drop last founder
+        cross$founder_geno <- cross$founder_geno[,-ncol(cross$founder_geno)]
+    }
+
     sdp <- calc_sdp(t(do.call("cbind", cross$founder_geno)))
 
     snpinfo <- data.frame(chr=rep(chr_names(cross), n_mar(cross)),
