@@ -23,12 +23,7 @@ const bool HSF1::check_geno(const int gen, const bool is_observed_value,
     const int n_alleles = 8;
     const int n_geno = 8;
 
-    if(!is_x_chr || is_female) { // autosome or female X
-        if(gen>= 1 && gen <= n_geno) return true;
-    }
-    else { // male X
-        if(gen>=n_geno+1 && gen <=n_geno+n_alleles) return true;
-    }
+    if(gen>= 1 && gen <= n_geno) return true;
 
     return false; // otherwise a problem
 }
@@ -56,13 +51,15 @@ const double HSF1::emit(const int obs_gen, const int true_gen, const double erro
 
     if(obs_gen==0) return 0.0; // missing
 
-    int f1;
-    if(!is_x_chr || is_female) // autosome or female X
-        f1 = founder_geno[true_gen-1];
-    else
-        f1 = founder_geno[true_gen-9];
+    int f1 = founder_geno[true_gen-1];
 
-    int f2 = founder_geno[8]; // 9th founder is the other strain
+    int f2;
+    if(is_x_chr && !is_female) {
+        f2 = f1; // assuming female DO x male 9th strain, so male is hemizygous DO chr
+    } else {
+        // autosome or female X chr
+        f2 = founder_geno[8]; // 9th founder is the other strain
+    }
 
     // treat founder hets as missing
     if(f1==2) f1 = 0;
@@ -160,30 +157,17 @@ const double HSF1::step(const int gen_left, const int gen_right, const double re
 const IntegerVector HSF1::possible_gen(const bool is_x_chr, const bool is_female,
                                        const IntegerVector& cross_info)
 {
-    int n_alleles = 8;
     int n_geno = 8;
 
-    if(is_x_chr && !is_female) { // male X chromosome
-        IntegerVector result(n_alleles);
-        for(int i=0; i<n_alleles; i++)
-            result[i] = n_geno+i+1;
-        return result;
-    }
-    else { // autosome or female X
-        IntegerVector result(n_geno);
-        for(int i=0; i<n_geno; i++)
-            result[i] = i+1;
-        return result;
-    }
+    IntegerVector result(n_geno);
+    for(int i=0; i<n_geno; i++)
+        result[i] = i+1;
+    return result;
 }
 
 const int HSF1::ngen(const bool is_x_chr)
 {
-    int n_alleles = 8;
-    int n_geno = 8;
-
-    if(is_x_chr) return n_geno+n_alleles;
-    return n_geno;
+    return 8;
 }
 
 const int HSF1::nalleles()
@@ -193,28 +177,14 @@ const int HSF1::nalleles()
 
 const NumericMatrix HSF1::geno2allele_matrix(const bool is_x_chr)
 {
-    const int n_alleles = 8;
     const int n_geno = 8;
 
-    if(is_x_chr) {
-        NumericMatrix result(n_geno+n_alleles, n_alleles);
-        // female X
-        for(int trueg=0; trueg<n_geno; trueg++)
-            result(trueg,trueg) = 1.0;
-        // male X
-        for(int trueg=0; trueg<n_alleles; trueg++)
-            result(trueg+n_geno, trueg) = 1.0;
+    NumericMatrix result(n_geno,n_geno);
 
-        return result;
-    }
-    else { // autosome
-        NumericMatrix result(n_geno,n_alleles);
+    for(int trueg=0; trueg<n_geno; trueg++)
+        result(trueg,trueg) = 1.0;
 
-        for(int trueg=0; trueg<n_geno; trueg++)
-            result(trueg,trueg) = 1.0;
-
-        return result;
-    }
+    return result;
 }
 
 // check that sex conforms to expectation
@@ -330,24 +300,12 @@ const std::vector<std::string> HSF1::geno_names(const std::vector<std::string> a
 {
     int n_alleles = alleles.size();
 
-    if(is_x_chr) {
-        std::vector<std::string> result(n_alleles*2);
+    std::vector<std::string> result(n_alleles);
 
-        for(int i=0; i<n_alleles; i++) {
-            result[i] = alleles[i] + "X";
-            result[i+n_alleles] = alleles[i] + "Y";
-        }
+    for(int i=0; i<n_alleles; i++)
+        result[i] = alleles[i];
 
-        return result;
-    }
-    else {
-        std::vector<std::string> result(n_alleles);
-
-        for(int i=0; i<n_alleles; i++)
-            result[i] = alleles[i];
-
-        return result;
-    }
+    return result;
 }
 
 const double HSF1::est_rec_frac(const NumericVector& gamma, const bool is_x_chr,

@@ -1,8 +1,19 @@
-## qtl2 0.29-5 (2022-10-25)
+## qtl2 0.29-6 (2022-10-28)
+
+### Major changes
+
+- For DOF1 and HSF1, revised the results of `calc_genoprob()` for the
+  X chromosome, so that it just keeps track of the chromosome from the
+  DO/HS parent. In males, assuming that the DO/HS parent is the
+  mother. May have fixed
 
 ### Minor changes
 
 - Add dependency on version of Rcpp (>= 1.0.7)
+
+- Revisions so that `genoprob_to_alleleprob()` to work with DOF1 and
+  HSF1. `plot_onegeno()` should also work now in these cases.
+  (Issue #140 and Issue #141)
 
 ### Bug fixes
 
