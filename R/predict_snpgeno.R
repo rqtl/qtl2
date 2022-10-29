@@ -87,10 +87,10 @@ function(cross, geno, cores=1)
 
        # ugh deal with DOF1/HSF1 specially
        if(cross$crosstype %in% c("dof1", "hsf1")) {
-           if(!is_x_chr[chr]) ph2[[chr]][] <- 9 # one chromosome is from 9th founder
+           if(!is_x_chr[chr]) ph2[] <- 9 # one chromosome is from 9th founder
            else {
-               if(any(is_male)) ph2[[chr]][is_male,] <- ph1[[chr]][is_male,]
-               if(any(!is_male)) ph2[[chr]][!is_male,] <- 9
+               if(any(is_male)) ph2[is_male,] <- ph1[is_male,,drop=FALSE]
+               if(any(!is_male)) ph2[!is_male,] <- 9
            }
        }
 
