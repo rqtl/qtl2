@@ -4,8 +4,8 @@
 
 - For DOF1 and HSF1, revised the results of `calc_genoprob()` for the
   X chromosome, so that it just keeps track of the chromosome from the
-  DO/HS parent. In males, assuming that the DO/HS parent is the
-  mother. May have fixed
+  DO/HS parent. In males, we are assuming that the DO/HS parent is the
+  mother.
 
 ### Minor changes
 
@@ -30,6 +30,11 @@
 
 - Issue a warning message if founder genotypes are included but not
   used (Issue #211).
+
+- The treatment of the male X chromosome in DOF1 and HSF1 was
+  incorrect. We're now assuming that the DO or HS parent was the
+  mother in the F1 cross, in which case males will be hemizygous for
+  one of the DO/HS founder alleles.
 
 
 ## qtl2 0.28 (2021-10-11)
