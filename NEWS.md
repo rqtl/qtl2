@@ -1,4 +1,4 @@
-## qtl2 0.29-7 (2022-10-29)
+## qtl2 0.30 (2022-12-02)
 
 ### Major changes
 
@@ -9,9 +9,9 @@
 
 ### Minor changes
 
-- Add dependency on version of Rcpp (>= 1.0.7)
+- Added dependency on version of Rcpp (>= 1.0.7)
 
-- Revisions so that `genoprob_to_alleleprob()` to work with DOF1 and
+- Revised `genoprob_to_alleleprob()` to work with DOF1 and
   HSF1. `plot_onegeno()` should also work now in these cases.
   (Issue #140 and Issue #141)
 
@@ -19,16 +19,16 @@
 
 - Revised `predict_snpgeno()` to work for DOF1 and HSF1 populations.
 
-- Give a better error message in `genoprob_to_snpprob()` if `snpinfo`
+- Now give a better error message in `genoprob_to_snpprob()` if `snpinfo`
   is missing the `sdp` column (Issue #207).
 
-- In `read_csv()`, give warnings if there are duplicate column names
+- In `read_csv()`, now give warnings if there are duplicate column names
   or duplicate row names in the file.
 
-- In `read_cross2()`, move the warning regarding the number of alleles
+- In `read_cross2()`, moved the warning regarding the number of alleles
   to before the alleles object gets corrected (Issue #209).
 
-- Issue a warning message if founder genotypes are included but not
+- Now issue a warning message if founder genotypes are included but not
   used (Issue #211).
 
 - The treatment of the male X chromosome in DOF1 and HSF1 was
