@@ -1,3 +1,10 @@
+## qtl2 0.31-1 (2023-02-25)
+
+### Minor changes
+
+- Fix date in citation, Broman et al. (2019) <doi:10.1534/genetics.118.301595>
+
+
 ## qtl2 0.30 (2022-12-02)
 
 ### Major changes

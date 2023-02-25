@@ -1,6 +1,6 @@
 citHeader("To cite R/qtl2 in publications use:")
 
-citEntry(entry="article",
+bibentry(bibtype="article",
          title = "R/qtl2: software for mapping quantitative trait loci with high-dimensional data and multi-parent populations.",
          author = personList(person(c("Karl", "W."), "Broman"),
                              person(c("Daniel", "M."), "Gatti"),
@@ -12,16 +12,16 @@ citEntry(entry="article",
                              person(c("Gary", "A."), "Churchill")),
          journal = "Genetics",
          doi = "10.1534/genetics.118.301595",
-         year = 2018,
+         year = 2019,
          volume=211,
          pages="495-502",
          url = "https://doi.org/10.1534/genetics.118.301595",
          eprint = "https://academic.oup.com/genetics/article-pdf/211/2/495/37817017/genetics0495.pdf",
-         key = "Broman2018",
+         key = "Broman2019",
 
          textVersion =
              paste("Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen Ś, Yandell BS, Churchill GA",
-                   "(2018) R/qtl2: software for mapping quantitative trait loci",
+                   "(2019) R/qtl2: software for mapping quantitative trait loci",
                    "with high-dimensional data and multi-parent populations. Genetics 211:495-502",
                    "doi:10.1534/genetics.118.301595")
          )

@@ -51,7 +51,7 @@ Install R/qtl2 from [CRAN](https://cran.r-project.org):
 To cite R/qtl2 in publications, use:
 
 > Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen &#346;,
-> Yandell BS, Churchill GA (2018)
+> Yandell BS, Churchill GA (2019)
 > R/qtl2: software for mapping quantitative trait loci with
 > high-dimensional data and multi-parent populations.
 > [Genetics](https://academic.oup.com/genetics) 211:495-502
