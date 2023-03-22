@@ -57,8 +57,8 @@
 - The default colors for the Collaborative Cross (CC) have been changed to
   a color-blind friendly palette. The original CC colors remain as
   `CCorigcolors`; the previous default is now `CCaltcolors`. The new
-  colors are derived from the palette in [Wong 2011 Nature
-  Methods](https://doi.org/10.1038/nmeth.1618).
+  colors are derived from the palette in Wong (2011) Nature
+  Methods <doi:10.1038/nmeth.1618>.
 
 - `plot_coefCC()` was revised to include `col=CCcolors` as an argument.
   The default is the new color-blind friendly CC colors, but one can
