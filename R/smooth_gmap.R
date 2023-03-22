@@ -15,9 +15,11 @@
 #' it with a proportion `alpha` of constant recombination on each
 #' chromosome.
 #'
-#' @details
-#' An interval of genetic length $d_g$ and physical length $d_p$ is changed to have length
-#' $(1-\alpha)*d_g + \alpha*d_p*r$ where $r = L_g / L_p$ is the chromosome-specific recombination rate.
+#' @details An interval of genetic length \eqn{d_g}{dg} and physical
+#'     length \eqn{d_p}{dp} is changed to have length
+#'     \eqn{(1-\alpha)d_g + \alpha d_p r}{(1-alpha)dg + (alpha*dp*r)}
+#'     where \eqn{r = L_g / L_p}{r = Lg/Lp} is the chromosome-specific
+#'     recombination rate.
 #'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
