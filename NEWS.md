@@ -1,4 +1,10 @@
-## qtl2 0.31-1 (2023-02-25)
+## qtl2 0.31-2 (2023-03-22)
+
+### New features
+
+- Added `smooth_gmap()` for smoothing out a genetic map, particularly
+  to eliminate intervals with 0 recombination, by using a "mixture" of
+  the map and constant recombination.
 
 ### Minor changes
 
