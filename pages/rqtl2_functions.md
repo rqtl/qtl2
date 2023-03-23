@@ -109,7 +109,6 @@ description: Annotated/categorized list of functions in R/qtl2
 - [`interp_map`](https://search.r-project.org/CRAN/refmans/qtl2/html/interp_map.html) - Use interpolate to convert from one map to another
 - [`reduce_markers`](https://search.r-project.org/CRAN/refmans/qtl2/html/reduce_markers.html) - Reduce marker map to the largest subset that are
   some distance apart
-- `smooth_gmap` - Smooth genetic map by mixing it with a bit of constant recombination
 
 ### QTL analysis
 
@@ -332,3 +331,6 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Newly added functions (in development version)
+
+- `smooth_gmap` - Smooth genetic map by mixing it with a bit of
+  constant recombination (_put in "Marker maps" category_)
