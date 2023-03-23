@@ -229,11 +229,17 @@ function(file, quiet=TRUE)
     # sex
     output$is_female <- convert_sex(control$sex, output$covar, control$sep,
                                     control$comment.char, dir, quiet=quiet)
-    if(is.null(output$is_female)) { # missing; assume all FALSE
-        output$is_female <- rep(FALSE, nrow(output$geno[[1]]))
+    if(is.null(output$is_female)) { # missing; assume all TRUE
+        output$is_female <- rep(TRUE, nrow(output$geno[[1]]))
         names(output$is_female) <- rownames(output$geno[[1]])
+
+        # give warning if sex is needed
+        if(suppressMessages(!check_is_female_vector(output$crosstype, logical(0), any(output$is_x_chr)))) {
+            warning("No sex information; assuming all female")
+        }
+    } else {
+        used_control["sex"] <- TRUE # indicate that we used it
     }
-    used_control["sex"] <- TRUE # indicate that we used it
 
     # cross_info
     output$cross_info <- convert_cross_info(control$cross_info, output$covar, control$sep,

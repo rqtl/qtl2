@@ -10,6 +10,10 @@
 
 - Fixed date in citation, Broman et al. (2019) <doi:10.1534/genetics.118.301595>
 
+- `read_cross2()` now gives a warning if sex isn't provided but is
+  needed. Also, if sex is missing we assume all individuals are
+  female; previously we assumed they were male. (Issue #214)
+
 
 ## qtl2 0.30 (2022-12-02)
 
