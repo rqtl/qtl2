@@ -44,7 +44,11 @@ f.each_line do |line|
     if line =~ /\- `([^`]+)`/
         the_func = $1
         functions.delete(the_func)
+    elsif line =~ /\- \[`([^`]+)`\]/
+        the_func = $1
+        functions.delete(the_func)
     end
+
 end
 f.close()
 
