@@ -325,7 +325,7 @@ function(file, quiet=TRUE)
     check_cross2(output) # run all the checks
 
     if(any(!used_control))
-        warning("Used control information: ",
+        warning("Unused control information: ",
                 paste0('"', names(used_control)[!used_control], '"', collapse=", "))
 
     # add is_x_chr as attributes to gmap and pmap
