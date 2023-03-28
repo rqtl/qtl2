@@ -18,4 +18,11 @@ test_that("smooth_gmap works", {
     nmar <- sapply(gmap_adj, length)
     expect_equal( gmap_adj[nmar==2], iron$gmap[nmar==2] )
 
+    # test unsmooth gmap
+    gmap_back <- unsmooth_gmap(gmap_adj, iron$pmap, 0.02)
+    expect_equal(iron$gmap, gmap_back)
+
+    # test with a different alpha value
+    expect_equal(unsmooth_gmap(smooth_gmap(iron$gmap, iron$pmap, 0.05), iron$pmap, 0.05), iron$gmap)
+
 })
