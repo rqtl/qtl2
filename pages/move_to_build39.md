@@ -61,7 +61,9 @@ arrays.
 
 - A new SQLite database with CC/DO founder variants from Sanger along
   with ensembl genes is [available on
-  figshare](https://doi.org/10.6084/m9.figshare.22630642.v1).
+  figshare](https://doi.org/10.6084/m9.figshare.22630642.v1). (Created
+  by [Matt Vincent](https://www.jax.org/people/matt-vincent) at the
+  Jackson Lab.)
 
   Download this ~10.2 GB database as `fv.2021.snps.db3`:
 
