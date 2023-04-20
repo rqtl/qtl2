@@ -1,4 +1,4 @@
-## qtl2 0.31-4 (2023-03-28)
+## qtl2 0.31-5 (2023-04-20)
 
 ### New features
 
@@ -14,6 +14,11 @@
 - `read_cross2()` now gives a warning if sex isn't provided but is
   needed. Also, if sex is missing we assume all individuals are
   female; previously we assumed they were male. (Issue #214)
+
+### Bug fixes
+
+- In `plot_genes()` there was a case where `stop` was used that should
+  have been `end`.
 
 
 ## qtl2 0.30 (2022-12-02)

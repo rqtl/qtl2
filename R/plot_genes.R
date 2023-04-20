@@ -74,7 +74,7 @@ plot_genes <-
 
     # make sure genes are ordered by their start values
     if(any(diff(start) < 0))
-        genes <- genes[order(start, stop),]
+        genes <- genes[order(start, end),]
 
     # grab data
     start <- genes[,start_field]*scale_pos # convert to Mbp
