@@ -61,7 +61,7 @@ The processed files are also at figshare:
 
 The `MM_` and `GM_` files are for the MegaMUGA and GigaMUGA arrays,
 respectively. The `MMnGM_` file (produced with the R script
-[`combine_MMnGM.R` (doi:10.6084/m9.figshare.5405281.v1)](https://doi.org/10.6084/m9.figshare.5405281.v1))
+[`combine_MMnGM.R` (doi:10.6084/m9.figshare.5405281.v2)](https://doi.org/10.6084/m9.figshare.5405281.v2))
 merges the SNPs for the two arrays, for DO projects that have some
 mice genotyped with the MegaMUGA array and others genotyped with the
 GigaMUGA array.
