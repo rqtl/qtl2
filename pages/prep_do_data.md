@@ -59,6 +59,13 @@ The processed files are also at figshare:
 - [`GM_processed_files.zip` (doi:10.6084/m9.figshare.5404759)](https://doi.org/10.6084/m9.figshare.5404759)
 - [`MMnGM_processed_files.zip` (doi:10.6084/m9.figshare.5404762)](https://doi.org/10.6084/m9.figshare.5404762)
 
+**Note**: if you're using the latest mouse genome build (GRCm39),
+you'll want the revised version of these files:
+
+- [`MM_processed_files_build39.zip`](https://doi.org/10.6084/m9.figshare.22666336.v1)
+- [`GM_processed_files_build39.zip`](https://doi.org/10.6084/m9.figshare.22666504.v1)
+- [`MMnGM_processed_files_build39.zip`](https://doi.org/10.6084/m9.figshare.22666510.v1)
+
 The `MM_` and `GM_` files are for the MegaMUGA and GigaMUGA arrays,
 respectively. The `MMnGM_` file (produced with the R script
 [`combine_MMnGM.R` (doi:10.6084/m9.figshare.5405281.v2)](https://doi.org/10.6084/m9.figshare.5405281.v2))
@@ -87,19 +94,10 @@ If you've used just the MegaMUGA array, you'll need the
 If your project includes some MegaMUGA and some GigaMUGA arrays,
 you'll need the
 [`MMnGM_processed_files.zip`](https://doi.org/10.6084/m9.figshare.5404762) file.
+(Again, for mouse genome build GRCm39, you'll want the revised version
+of these files, mentioned above and also on figshare.)
 
 Download the appropriate file and unzip it somewhere.
-
-**Note**: if you're using the latest mouse genome build (GRCm39),
-you'll want the revised version of these files:
-
-- [`MM_processed_files_build39.zip`](https://doi.org/10.6084/m9.figshare.22666336.v1)
-
-- [`GM_processed_files_build39.zip`](https://doi.org/10.6084/m9.figshare.22666504.v1)
-
-- [`MMnGM_processed_files_build39.zip`](https://doi.org/10.6084/m9.figshare.22666510.v1)
-
-
 
 
 ### Encoding the DO genotypes
