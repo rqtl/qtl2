@@ -1088,6 +1088,59 @@ like to have a local SQLite database, for rapid queries of
 SNPs and genes.
 
 
+### Database for build GRCm39
+
+The above SQLite databases were prepared with [mouse genome build 38
+(mm10)](https://www.ncbi.nlm.nih.gov/assembly/GCF_000001635.20/). If
+you are using the newer [GRCm39
+build](https://www.ncbi.nlm.nih.gov/assembly/GCF_000001635.27/),
+download the following database, which includes both SNP/indel
+variants and genes:
+
+- [`fv.2021.snps.db3` doi:10.6084/m9.figshare.22630642.v1](https://doi.org/10.6084/m9.figshare.22630642.v1)
+  (10.2 GB)
+
+To download from R, use:
+
+```{r download_grcm39_sqlite, eval=FALSE}
+download.file("https://figshare.com/ndownloader/files/40157572", "fv.2021.snps.db3")
+```
+
+For querying founder variant information, you can use this
+`create_variant_query_func()` as above, using the appropriate path to
+the file:
+
+```{r query_variants_build39, eval=FALSE}
+query_variants <- create_variant_query_func("~/Data/CCdb/fv.2021.snps.db3")
+variants_2_97.5 <- query_variants(2, 97, 98)
+```
+
+The variants database includes all SNPs and indels in the Sanger
+resequencing data, including some with low confidence. If you want to
+filter to those with full confidence, you could use the `filter`
+argument in `create_variant_query_func()`:
+
+```{r query_variants_build39_filter, eval=FALSE}
+query_variants <- create_variant_query_func("~/Data/CCdb/fv.2021.snps.db3", filter="confidence==255")
+variants_2_97.5 <- query_variants(2, 97, 98)
+```
+
+The `fv.2021.snps.db3` file also contains [ensembl](https://www.ensembl.org) gene information,
+but the field names are different from the defaults, so in your call
+to `create_gene_query_func()`, you'll need to specify the field names,
+as follows:
+
+```{r create_gene_query_build39, eval=FALSE}
+query_genes <- create_gene_query_func("~/Data/CCdb/fv.2021.snps.db3", chr_field="chromosome",
+                                      start_field="start_position", stop_field="end_position")
+```
+
+But you can then use the `query_genes()` function in the same way as before:
+
+```{r query_genes_build39, eval=FALSE}
+genes_2_97.5 <- query_genes(2, 97, 98)
+```
+
 ### SNP associations
 
 Okay, now finally we get to the SNP associations. We have a large peak
