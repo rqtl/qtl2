@@ -50,6 +50,7 @@ Install R/qtl2 from [CRAN](https://cran.r-project.org):
   [qtl2data repository](https://github.com/rqtl/qtl2data))
 - [using qtl2fst for on-disk genotype probabilities](assets/vignettes/qtl2fst.html)
 - [preparing diversity outbred mouse data for R/qtl2](pages/prep_do_data.html)
+- [resources for mouse genome build GRCm39](pages/move_to_build39.html)
 - [genotype diagnostics for diversity outbred mice](assets/vignettes/do_diagnostics.html)
 - [identifying sample mix-ups in diversity outbred mice](assets/vignettes/do_mixups.html)
 - [differences between R/qtl and R/qtl2](assets/vignettes/rqtl_diff.html)
