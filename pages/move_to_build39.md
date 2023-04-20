@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Resources to move to mouse genome build 39
+title: Resources for mouse genome build 39
 description: "Resources for moving to mouse genome build GRCm39 (aka mm11), with a particular focus on mouse genetics projects related to the Collaborative Cross and Diversity Outbred"
 ---
 
