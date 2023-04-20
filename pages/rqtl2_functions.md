@@ -334,3 +334,4 @@ description: Annotated/categorized list of functions in R/qtl2
 
 - `smooth_gmap` - Smooth genetic map by mixing it with a bit of
   constant recombination (_put in "Marker maps" category_)
+- `unsmooth_gmap` - Performs the reverse operation of `smooth_gmap()`
