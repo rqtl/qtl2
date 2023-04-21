@@ -10,6 +10,8 @@ create_variant_query_func(
   table_name = "variants",
   chr_field = "chr",
   pos_field = "pos",
+  id_field = "snp_id",
+  sdp_field = "sdp",
   filter = NULL
 )
 }
@@ -23,6 +25,10 @@ create_variant_query_func(
 \item{chr_field}{Name of chromosome field}
 
 \item{pos_field}{Name of position field}
+
+\item{id_field}{Name of SNP/variant ID field}
+
+\item{sdp_field}{Name of strain distribution pattern (SDP) field}
 
 \item{filter}{Additional SQL filter (as a character string)}
 }

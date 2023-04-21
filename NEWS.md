@@ -1,4 +1,4 @@
-## qtl2 0.31-5 (2023-04-20)
+## qtl2 0.31-6 (2023-04-21)
 
 ### New features
 
@@ -6,6 +6,13 @@
   to eliminate intervals with 0 recombination, by using a "mixture" of
   the map and constant recombination. Also added `unsmooth_gmap()`
   which does the reverse.
+
+- In `create_variant_query_func()`, added new arguments `id_field` and
+  `sdp_field`, and in `create_gene_query_func()`, added arguments
+  `name_field` and `strand_field` (Issue #215). This gives new
+  flexibility, but also adds new requirements (for example, that the
+  variant database has a field `"snp_id"`) and so could potentially
+  break working code.
 
 ### Minor changes
 

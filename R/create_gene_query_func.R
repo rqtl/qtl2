@@ -10,6 +10,8 @@
 #' @param chr_field Name of chromosome field
 #' @param start_field Name of field with start position (in basepairs)
 #' @param stop_field Name of field with stop position (in basepairs)
+#' @param name_field Name of field with gene name
+#' @param strand_field Name of field with strand (+/-)
 #' @param filter Additional SQL filter (as a character string).
 #'
 #' @return Function with three arguments, `chr`, `start`,
@@ -48,6 +50,7 @@
 create_gene_query_func <-
     function(dbfile=NULL, db=NULL, table_name="genes",
              chr_field="chr", start_field="start", stop_field="stop",
+             name_field="Name", strand_field="strand",
              filter=NULL)
 {
     if(!is.null(db)) {
@@ -79,6 +82,10 @@ create_gene_query_func <-
             # include start/stop columns in Mbp
             result$start <- result[,start_field]/1e6
             result$stop <- result[,stop_field]/1e6
+
+            # name and strand
+            result <- swap_colname(result, name_field, "Name")
+            result <- swap_colname(result, strand_field, "strand")
 
             result
         }
@@ -119,6 +126,10 @@ create_gene_query_func <-
             # include start/stop columns in Mbp
             result$start <- result[,start_field]/1e6
             result$stop <- result[,stop_field]/1e6
+
+            # name and strand
+            result <- swap_colname(result, name_field, "Name")
+            result <- swap_colname(result, strand_field, "strand")
 
             result
         }

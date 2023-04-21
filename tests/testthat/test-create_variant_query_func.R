@@ -6,7 +6,7 @@ test_that("create_variant_query_func works", {
     dbfile <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
     qf <- create_variant_query_func(dbfile)
 
-    expected <- structure(list(snp_id = c("rs213863525", "rs235573572", "rs253240367"),
+    expected <- structure(list(snp = c("rs213863525", "rs235573572", "rs253240367"),
                                chr = c("2", "2", "2"), pos = c(97.300098, 97.30014, 97.300197),
                                alleles = c("A|T", "T|C", "G|T"), sdp = c(32L, 64L, 64L),
                                ensembl_gene = rep("ENSMUSG00000050587", 3),
@@ -20,7 +20,7 @@ test_that("create_variant_query_func works", {
                                PWK_PhJ = c(1L, 2L, 2L),
                                WSB_EiJ = c(1L, 1L, 1L),
                                type = c("snp", "snp", "snp")),
-                          .Names = c("snp_id", "chr", "pos", "alleles", "sdp", "ensembl_gene", "consequence",
+                          .Names = c("snp", "chr", "pos", "alleles", "sdp", "ensembl_gene", "consequence",
                                      "A_J", "C57BL_6J", "129S1_SvImJ", "NOD_ShiLtJ", "NZO_HlLtJ", "CAST_EiJ", "PWK_PhJ", "WSB_EiJ",
                                      "type"),
                           row.names = c(NA, -3L), class = "data.frame")

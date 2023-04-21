@@ -30,7 +30,7 @@ test_that("scan1snps works", {
                                                         "rs27395529", "rs27395515", "2:97277447_ATTT/ATT"),
                                                       "OF_immobile_pct"),
                                      sample_size = c(OF_immobile_pct = 20L), class = c("scan1", "matrix")),
-                     snpinfo = structure(list(snp_id = c("rs259104594", "rs49962811", "rs250912493", "rs49310503",
+                     snpinfo = structure(list(snp = c("rs259104594", "rs49962811", "rs250912493", "rs49310503",
                                                          "rs27363853", "rs27363851", "rs33556222",
                                                          "rs387021772;rs258896118;rs220544684", "rs227317919",
                                                          "rs33673239", "rs33438111", "rs27363804", "rs29764604",

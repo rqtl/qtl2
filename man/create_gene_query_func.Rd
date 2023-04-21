@@ -11,6 +11,8 @@ create_gene_query_func(
   chr_field = "chr",
   start_field = "start",
   stop_field = "stop",
+  name_field = "Name",
+  strand_field = "strand",
   filter = NULL
 )
 }
@@ -26,6 +28,10 @@ create_gene_query_func(
 \item{start_field}{Name of field with start position (in basepairs)}
 
 \item{stop_field}{Name of field with stop position (in basepairs)}
+
+\item{name_field}{Name of field with gene name}
+
+\item{strand_field}{Name of field with strand (+/-)}
 
 \item{filter}{Additional SQL filter (as a character string).}
 }
