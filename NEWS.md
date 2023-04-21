@@ -16,7 +16,8 @@
 
 ### Minor changes
 
-- Fixed date in citation, Broman et al. (2019) <doi:10.1534/genetics.118.301595>
+- Fixed date in citation, Broman et al. (2019)
+  [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
 
 - `read_cross2()` now gives a warning if sex isn't provided but is
   needed. Also, if sex is missing we assume all individuals are
@@ -79,7 +80,7 @@
   a color-blind friendly palette. The original CC colors remain as
   `CCorigcolors`; the previous default is now `CCaltcolors`. The new
   colors are derived from the palette in Wong (2011) Nature
-  Methods <doi:10.1038/nmeth.1618>.
+  Methods [doi:10.1038/nmeth.1618](https://doi.org/10.1038/nmeth.1618).
 
 - `plot_coefCC()` was revised to include `col=CCcolors` as an argument.
   The default is the new color-blind friendly CC colors, but one can
