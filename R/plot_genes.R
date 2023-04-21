@@ -13,6 +13,7 @@
 #' @param start_field Character string with name of column containing the genes' start positions.
 #' @param stop_field Character string with name of column containing the genes' stop positions.
 #' @param strand_field Character string with name of column containing the genes' strands.
+#'   (The values of the corresponding field can be character strings `"+"` or `"-"`, or numeric +1 or -1.)
 #' @param name_field Character string with name of column containing the genes' names.
 #' @param ... Optional arguments passed to `plot()`.
 #'
@@ -81,6 +82,10 @@ plot_genes <-
     end <- genes[,stop_field]*scale_pos    # convert to Mbp
     strand <- as.character(genes[,strand_field])
     name <- as.character(genes[,name_field])
+
+    # deal with +/- 1 for strand
+    strand[!is.na(strand) & (strand=="1" | strand=="+1")] <- "+"
+    strand[!is.na(strand) & strand=="-1"] <- "-"
 
     plot_genes_internal <-
         function(xlab=NULL, xaxs="i",

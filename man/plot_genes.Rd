@@ -34,7 +34,8 @@ Mbp, \code{strand} (as \code{"-"}, \code{"+"}, or \code{NA}), and
 
 \item{stop_field}{Character string with name of column containing the genes' stop positions.}
 
-\item{strand_field}{Character string with name of column containing the genes' strands.}
+\item{strand_field}{Character string with name of column containing the genes' strands.
+(The values of the corresponding field can be character strings \code{"+"} or \code{"-"}, or numeric +1 or -1.)}
 
 \item{name_field}{Character string with name of column containing the genes' names.}
 

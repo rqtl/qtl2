@@ -15,10 +15,14 @@
   needed. Also, if sex is missing we assume all individuals are
   female; previously we assumed they were male. (Issue #214)
 
+- In `plot_genes()`, allow strand to be +/- 1 and not just `"+"` or
+  `"-"`. (Issue #216)
+
 ### Bug fixes
 
 - In `plot_genes()` there was a case where `stop` was used that should
   have been `end`.
+
 
 
 ## qtl2 0.30 (2022-12-02)
