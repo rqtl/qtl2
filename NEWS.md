@@ -1,4 +1,4 @@
-## qtl2 0.31-6 (2023-04-21)
+## qtl2 0.32 (2023-04-21)
 
 ### New features
 
@@ -30,7 +30,6 @@
 
 - In `plot_genes()` there was a case where `stop` was used that should
   have been `end`.
-
 
 
 ## qtl2 0.30 (2022-12-02)
