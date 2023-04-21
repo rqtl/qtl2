@@ -31,11 +31,12 @@ Install R/qtl2 from [CRAN](https://cran.r-project.org):
 - [user guide](https://kbroman.org/qtl2/assets/vignettes/user_guide.html)
 - [categorized list of functions in R/qtl2](https://kbroman.org/qtl2/pages/rqtl2_functions.html)
 - [input file formats](https://kbroman.org/qtl2/assets/vignettes/input_files.html)
-  (see also the
+  (also see the
   [sample data files](https://kbroman.org/qtl2/pages/sampledata.html)
   and the [qtl2data repository](https://github.com/rqtl/qtl2data))
 - [using qtl2fst for on-disk genotype probabilities](https://kbroman.org/qtl2/assets/vignettes/qtl2fst.html)
 - [preparing diversity outbred mouse data for R/qtl2](https://kbroman.org/qtl2/pages/prep_do_data.html)
+- [resources for mouse genome build GRCm39](https://kbroman.org/qtl2/pages/move_to_build39.html)
 - [genotype diagnostics for diversity outbred mice](https://kbroman.org/qtl2/assets/vignettes/do_diagnostics.html)
 - [identifying sample mix-ups in diversity outbred mice](https://kbroman.org/qtl2/assets/vignettes/do_mixups.html)
 - [differences between R/qtl and R/qtl2](https://kbroman.org/qtl2/assets/vignettes/rqtl_diff.html)
