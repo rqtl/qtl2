@@ -1,11 +1,6 @@
 ## qtl2 0.32 (2023-04-21)
 
-### New features
-
-- Added `smooth_gmap()` for smoothing out a genetic map, particularly
-  to eliminate intervals with 0 recombination, by using a "mixture" of
-  the map and constant recombination. Also added `unsmooth_gmap()`
-  which does the reverse.
+### Major changes
 
 - In `create_variant_query_func()`, added new arguments `id_field` and
   `sdp_field`, and in `create_gene_query_func()`, added arguments
@@ -14,10 +9,14 @@
   variant database has a field `"snp_id"`) and so could potentially
   break working code.
 
-### Minor changes
+### New features
 
-- Fixed date in citation, Broman et al. (2019)
-  [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
+- Added `smooth_gmap()` for smoothing out a genetic map, particularly
+  to eliminate intervals with 0 recombination, by using a "mixture" of
+  the map and constant recombination. Also added `unsmooth_gmap()`
+  which does the reverse.
+
+### Minor changes
 
 - `read_cross2()` now gives a warning if sex isn't provided but is
   needed. Also, if sex is missing we assume all individuals are
@@ -25,6 +24,9 @@
 
 - In `plot_genes()`, allow strand to be +/- 1 and not just `"+"` or
   `"-"`. (Issue #216)
+
+- Fixed date in citation, Broman et al. (2019)
+  [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
 
 ### Bug fixes
 
