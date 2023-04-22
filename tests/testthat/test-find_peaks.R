@@ -287,7 +287,7 @@ test_that("find_peaks works with snpinfo table", {
                  data.frame(chr="2",
                             pos=out$snpinfo[6,"pos"],
                             OF_immobile_pct=out$lod[6],
-                            row.names=out$snpinfo[6,"snp_id"],
+                            row.names=out$snpinfo[6,"snp"],
                             stringsAsFactors=FALSE))
 
     # find_peaks (no peaks above threshold)

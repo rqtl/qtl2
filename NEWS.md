@@ -1,4 +1,13 @@
-## qtl2 0.31-5 (2023-04-20)
+## qtl2 0.32 (2023-04-21)
+
+### Major changes
+
+- In `create_variant_query_func()`, added new arguments `id_field` and
+  `sdp_field`, and in `create_gene_query_func()`, added arguments
+  `name_field` and `strand_field` (Issue #215). This gives new
+  flexibility, but also adds new requirements (for example, that the
+  variant database has a field `"snp_id"`) and so could potentially
+  break working code.
 
 ### New features
 
@@ -9,8 +18,6 @@
 
 ### Minor changes
 
-- Fixed date in citation, Broman et al. (2019) <doi:10.1534/genetics.118.301595>
-
 - `read_cross2()` now gives a warning if sex isn't provided but is
   needed. Also, if sex is missing we assume all individuals are
   female; previously we assumed they were male. (Issue #214)
@@ -18,11 +25,13 @@
 - In `plot_genes()`, allow strand to be +/- 1 and not just `"+"` or
   `"-"`. (Issue #216)
 
+- Fixed date in citation, Broman et al. (2019)
+  [doi:10.1534/genetics.118.301595](https://doi.org/10.1534/genetics.118.301595)
+
 ### Bug fixes
 
 - In `plot_genes()` there was a case where `stop` was used that should
   have been `end`.
-
 
 
 ## qtl2 0.30 (2022-12-02)
@@ -72,7 +81,7 @@
   a color-blind friendly palette. The original CC colors remain as
   `CCorigcolors`; the previous default is now `CCaltcolors`. The new
   colors are derived from the palette in Wong (2011) Nature
-  Methods <doi:10.1038/nmeth.1618>.
+  Methods [doi:10.1038/nmeth.1618](https://doi.org/10.1038/nmeth.1618).
 
 - `plot_coefCC()` was revised to include `col=CCcolors` as an argument.
   The default is the new color-blind friendly CC colors, but one can

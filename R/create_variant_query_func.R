@@ -9,6 +9,8 @@
 #' @param table_name Name of table in the database
 #' @param chr_field Name of chromosome field
 #' @param pos_field Name of position field
+#' @param id_field Name of SNP/variant ID field
+#' @param sdp_field Name of strain distribution pattern (SDP) field
 #' @param filter Additional SQL filter (as a character string)
 #'
 #' @return Function with three arguments, `chr`, `start`,
@@ -50,7 +52,9 @@
 
 create_variant_query_func <-
     function(dbfile=NULL, db=NULL, table_name="variants",
-             chr_field="chr", pos_field="pos", filter=NULL)
+             chr_field="chr", pos_field="pos",
+             id_field="snp_id", sdp_field="sdp",
+             filter=NULL)
 {
     if(!is.null(db)) {
         if(!is.null(dbfile))
@@ -81,6 +85,10 @@ create_variant_query_func <-
 
             # include pos column in Mbp
             result$pos <- result[,pos_field]/1e6
+
+            # name and sdp fields
+            result <- swap_colname(result, id_field, "snp")
+            result <- swap_colname(result, sdp_field, "sdp")
 
             result
         }
@@ -121,6 +129,10 @@ create_variant_query_func <-
 
             # include pos column in Mbp
             result$pos <- result[,pos_field]/1e6
+
+            # name and sdp fields
+            result <- swap_colname(result, id_field, "snp")
+            result <- swap_colname(result, sdp_field, "sdp")
 
             result
         }
