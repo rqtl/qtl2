@@ -1106,12 +1106,12 @@ To download from R, use:
 download.file("https://figshare.com/ndownloader/files/40157572", "fv.2021.snps.db3")
 ```
 
-For querying founder variant information, you can use this
-`create_variant_query_func()` as above, using the appropriate path to
-the file:
+For querying founder variant information, you can again use
+`create_variant_query_func()`, though you need to specify not just the
+path to the SQLite file but also the `id_field`, as follows:
 
 ```{r query_variants_build39, eval=FALSE}
-query_variants <- create_variant_query_func("~/Data/CCdb/fv.2021.snps.db3")
+query_variants <- create_variant_query_func("~/Data/CCdb/fv.2021.snps.db3", id_field="variants_id")
 variants_2_97.5 <- query_variants(2, 97, 98)
 ```
 
@@ -1121,17 +1121,17 @@ filter to those with full confidence, you could use the `filter`
 argument in `create_variant_query_func()`:
 
 ```{r query_variants_build39_filter, eval=FALSE}
-query_variants <- create_variant_query_func("~/Data/CCdb/fv.2021.snps.db3", filter="confidence==255")
+query_variants <- create_variant_query_func("~/Data/CCdb/fv.2021.snps.db3", id_field="variants_id",
+                                            filter="confidence==255")
 variants_2_97.5 <- query_variants(2, 97, 98)
 ```
 
 The `fv.2021.snps.db3` file also contains [ensembl](https://www.ensembl.org) gene information,
-but the field names are different from the defaults, so in your call
-to `create_gene_query_func()`, you'll need to specify the field names,
-as follows:
+but the field names are different from the defaults, so use
+`create_gene_query_func()` as follows:
 
 ```{r create_gene_query_build39, eval=FALSE}
-query_genes <- create_gene_query_func("~/Data/CCdb/fv.2021.snps.db3", chr_field="chromosome",
+query_genes <- create_gene_query_func("~/Data/CCdb/fv.2021.snps.db3", chr_field="chromosome", name_field="symbol",
                                       start_field="start_position", stop_field="end_position")
 ```
 

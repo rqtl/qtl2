@@ -103,12 +103,13 @@ description: Annotated/categorized list of functions in R/qtl2
 
 - [`est_map`](https://search.r-project.org/CRAN/refmans/qtl2/html/est_map.html) - re-estimate the inter-marker distances in a genetic map
 - [`insert_pseudomarkers`](https://search.r-project.org/CRAN/refmans/qtl2/html/insert_pseudomarkers.html) - add pseudomarkers into a map of genetic markers
-- [`calc_grid`](https://search.r-project.org/CRAN/refmans/qtl2/html/calc_grid.html) - Calculate indicators of which pseudomarker positions
-  are along a fixed grid
+- [`calc_grid`](https://search.r-project.org/CRAN/refmans/qtl2/html/calc_grid.html) - Calculate indicators of which pseudomarker positions are along a fixed grid
 - [`map_to_grid`](https://search.r-project.org/CRAN/refmans/qtl2/html/map_to_grid.html) - subset a map object to the locations on some grid
 - [`interp_map`](https://search.r-project.org/CRAN/refmans/qtl2/html/interp_map.html) - Use interpolate to convert from one map to another
-- [`reduce_markers`](https://search.r-project.org/CRAN/refmans/qtl2/html/reduce_markers.html) - Reduce marker map to the largest subset that are
-  some distance apart
+- [`reduce_markers`](https://search.r-project.org/CRAN/refmans/qtl2/html/reduce_markers.html) - Reduce marker map to the largest subset that are some distance apart
+- `smooth_gmap` - Smooth genetic map by mixing it with a bit of constant recombination
+- `unsmooth_gmap` - Performs the reverse operation of `smooth_gmap()`
+
 
 ### QTL analysis
 
@@ -331,7 +332,3 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Newly added functions (in development version)
-
-- `smooth_gmap` - Smooth genetic map by mixing it with a bit of
-  constant recombination (_put in "Marker maps" category_)
-- `unsmooth_gmap` - Performs the reverse operation of `smooth_gmap()`

@@ -71,15 +71,17 @@ arrays.
   download.file("https://figshare.com/ndownloader/files/40157572", "fv.2021.snps.db3")
   ```
 
-  You can then use `create_variant_query_func()` just as before:
+  You can then use `create_variant_query_func()` as before, though you
+  need to use the `id_field` argument, as follows:
 
   ```r
-  qvf <- create_variant_query_func("fv.2021.snps.db3")
+  qvf <- create_variant_query_func("fv.2021.snps.db3", id_field="variants_id")
   ```
 
-  The genes database uses different columns than the default in
-  `create_gene_query_func()`, and so use the following:
+  The genes database uses different names for several fields, and so use
+  `create_gene_query_func()` as follows:
 
   ```r
-  qgf <- create_gene_query_func("fv.2021.snps.db3", chr="chromosome", start="start_position", stop="end_position")
+  qgf <- create_gene_query_func("fv.2021.snps.db3", chr_field="chromosome", name_field="symbol",
+                                start_field="start_position", stop_field="end_position")
   ```
