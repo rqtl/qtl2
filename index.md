@@ -7,6 +7,7 @@ description: R/qtl2, a reimplementation of R/qtl to better handle high-dimension
 
 [![R build status](https://github.com/rqtl/qtl2/workflows/R-CMD-check/badge.svg)](https://github.com/rqtl/qtl2/actions)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2)](https://cran.r-project.org/package=qtl2)
+[![zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3237772.svg)](https://doi.org/10.5281/zenodo.3237772)
 
 [R/qtl2](https://kbroman.org/qtl2) (aka qtl2) is a reimplementation of
 the QTL analysis software [R/qtl](https://rqtl.org), to better handle
