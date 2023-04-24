@@ -5,7 +5,7 @@ tagline: QTL analysis for high-dimensional data and complex crosses
 description: R/qtl2, a reimplementation of R/qtl to better handle high-dimensional data and complex cross designs
 ---
 
-[![R build status](https://github.com/rqtl/qtl2/workflows/R-CMD-check/badge.svg)](https://github.com/rqtl/qtl2/actions)
+[![R-CMD-check](https://github.com/rqtl/qtl2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rqtl/qtl2/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2)](https://cran.r-project.org/package=qtl2)
 [![zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3237772.svg)](https://doi.org/10.5281/zenodo.3237772)
 
