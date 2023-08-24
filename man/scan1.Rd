@@ -96,6 +96,10 @@ matrix of covariates \eqn{\epsilon}{e} is multivariate normal with
 mean 0 and covariance matrix \eqn{\sigma^2 [h^2 (2 K) +
 I]}{sigmasq*[hsq*2*K+I]}, taking \eqn{h^2}{hsq} to be known.
 
+Note that if \code{weights} are provided, the covariance matrix becomes
+\eqn{\sigma^2 [h^2 (2 K) + D]}{sigmasq*[hsq*2*K+D]} where
+\eqn{D} is a diagonal matrix with the reciprocal of the weights.
+
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals. The \code{genoprobs}
 object should have a component \code{"is_x_chr"} that indicates

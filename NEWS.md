@@ -13,6 +13,9 @@
   that aren't two characters, and add an explanation of this in the
   help info. (Issue #220)
 
+- More fully explain the use of weights in `est_herit()` and
+  `scan1()`. (Issue #221)
+
 
 ## qtl2 0.32 (2023-04-21)
 

@@ -49,6 +49,10 @@ We fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e} where
 matrix \eqn{\sigma^2 [h^2 (2 K) + I]}{sigmasq*[hsq*2*K+I]} where
 \eqn{K} is the kinship matrix and \eqn{I} is the identity matrix.
 
+If \code{weights} are provided, the covariance matrix becomes
+\eqn{\sigma^2 [h^2 (2 K) + D]}{sigmasq*[hsq*2*K+D]} where
+\eqn{D} is a diagonal matrix with the reciprocal of the weights.
+
 For each of the inputs, the row names are used as
 individual identifiers, to align individuals.
 
