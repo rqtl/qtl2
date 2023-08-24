@@ -34,6 +34,6 @@ gfreq <- calc_raw_geno_freq(DOex)
 }
 }
 \seealso{
-\code{\link[=calc_raw_maf]{calc_raw_maf()}}, \code{\link[=calc_raw_het]{calc_raw_het()}}, \code{\link[=recode_snps]{recode_snps()}}
+\code{\link[=calc_raw_maf]{calc_raw_maf()}}, \code{\link[=calc_raw_het]{calc_raw_het()}}, \code{\link[=recode_snps]{recode_snps()}}, \code{\link[=calc_geno_freq]{calc_geno_freq()}}
 }
 \keyword{utilities}

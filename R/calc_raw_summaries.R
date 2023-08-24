@@ -12,7 +12,7 @@
 #'
 #' @export
 #' @keywords utilities
-#' @seealso [recode_snps()], [calc_raw_maf()], [calc_raw_founder_maf()], [calc_raw_geno_freq()]
+#' @seealso [recode_snps()], [calc_raw_maf()], [calc_raw_founder_maf()], [calc_raw_geno_freq()], [calc_het()]
 #'
 #' @examples
 #' \dontrun{
@@ -137,7 +137,7 @@ calc_raw_founder_maf <-
 #'
 #' @export
 #' @keywords utilities
-#' @seealso [calc_raw_maf()], [calc_raw_het()], [recode_snps()]
+#' @seealso [calc_raw_maf()], [calc_raw_het()], [recode_snps()], [calc_geno_freq()]
 #'
 #' @examples
 #' \dontrun{

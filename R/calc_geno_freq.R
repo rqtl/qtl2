@@ -20,6 +20,8 @@
 #' components (for the autosomes and for the X chromosome), each being
 #' a matrix of genotype frequencies.
 #'
+#' @seealso [calc_raw_geno_freq()], [calc_het()]
+#'
 #' @examples
 #' iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 #' p <- calc_genoprob(iron, err=0.002)

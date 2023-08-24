@@ -42,3 +42,6 @@ ap <- genoprob_to_alleleprob(p)
 tab_a <- calc_geno_freq(ap, "marker")
 
 }
+\seealso{
+\code{\link[=calc_raw_geno_freq]{calc_raw_geno_freq()}}, \code{\link[=calc_het]{calc_het()}}
+}
