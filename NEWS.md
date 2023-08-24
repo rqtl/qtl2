@@ -7,6 +7,12 @@
 
 - Similarly, changed `read_csv_numer()` to `fread_csv_numer()`.
 
+### Minor changes
+
+- Have `calc_het()` stop with an error if the genotypes have labels
+  that aren't two characters, and add an explanation of this in the
+  help info. (Issue #220)
+
 
 ## qtl2 0.32 (2023-04-21)
 
