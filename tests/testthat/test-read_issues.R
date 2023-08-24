@@ -12,7 +12,7 @@ test_that("read_cross2 deals with missing marker info", {
 
     # drop two markers from the geno file
     geno_file <- file.path(dir, "iron_geno.csv")
-    g <- read_csv(geno_file, rownames_included=FALSE)
+    g <- fread_csv(geno_file, rownames_included=FALSE)
     dropped_index <- c(20,28)
     dropped_markers <- colnames(g)[dropped_index]
     write.table(g[,-dropped_index], file=geno_file, sep=",",
@@ -26,7 +26,7 @@ test_that("read_cross2 deals with missing marker info", {
     # drop two markers from the gmap file
     # and give another two missing positions
     gmap_file <- file.path(dir, "iron_gmap.csv")
-    gmap <- read_csv(gmap_file, rownames_included=FALSE)
+    gmap <- fread_csv(gmap_file, rownames_included=FALSE)
     dropped_index2 <- c(14, 51)
     dropped_markers2 <- gmap[dropped_index2,1]
     na_index2 <- c(5, 56)
@@ -45,7 +45,7 @@ test_that("read_cross2 deals with missing marker info", {
     # drop two markers from the pmap file
     # and give another one a missing position
     pmap_file <- file.path(dir, "iron_pmap.csv")
-    pmap <- read_csv(pmap_file, rownames_included=FALSE)
+    pmap <- fread_csv(pmap_file, rownames_included=FALSE)
     dropped_index3 <- c(4, 29)
     dropped_markers3 <- pmap[dropped_index3,1]
     na_index3 <- 33
@@ -58,7 +58,7 @@ test_that("read_cross2 deals with missing marker info", {
     expect_equal(iron_sub3, drop_markers(iron, c(dropped_markers, dropped_markers3, na_markers3)))
 
     # markers out of order in genotypes
-    g <- read_csv(geno_file)
+    g <- fread_csv(geno_file)
     g <- g[,sample(ncol(g)),drop=FALSE]
     write.table(cbind(marker=rownames(g), g), file=geno_file, sep=",",
                 row.names=FALSE, col.names=TRUE, quote=FALSE)
@@ -67,7 +67,7 @@ test_that("read_cross2 deals with missing marker info", {
     expect_equal(iron_sub3, iron_randgeno)
 
     # markers out of order in physical map
-    pmap <- read_csv(pmap_file, rownames_included=FALSE)
+    pmap <- fread_csv(pmap_file, rownames_included=FALSE)
     pmap_rand <- pmap
     pmap_rand <- pmap[sample(nrow(pmap)), , drop=FALSE]
     write.table(pmap_rand, file=pmap_file, sep=",",
@@ -77,7 +77,7 @@ test_that("read_cross2 deals with missing marker info", {
     expect_equal(iron_sub3, iron_randpmap)
 
     # markers out of order within a chromosome on genetic map
-    gmap <- read_csv(gmap_file, rownames_included=FALSE)
+    gmap <- fread_csv(gmap_file, rownames_included=FALSE)
     gmap_reordered <- gmap
     gmap_reordered[6:7,1] <- gmap[7:6,1] # swap two marker names
     write.table(gmap_reordered, file=gmap_file, sep=",",

@@ -20,14 +20,14 @@
 #'
 #' The first column is taken to be a set of row names
 #'
-#' @seealso [read_csv()]
+#' @seealso [fread_csv()]
 #'
 #' @importFrom data.table fread
 #' @export
 #'
 #' @examples
-#' \dontrun{mydata <- read_csv_numer("myfile.csv", transpose=TRUE)}
-read_csv_numer <-
+#' \dontrun{mydata <- fread_csv_numer("myfile.csv", transpose=TRUE)}
+fread_csv_numer <-
     function(filename, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE,
              rownames_included=TRUE)
 {

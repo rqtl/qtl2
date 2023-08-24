@@ -1,3 +1,13 @@
+## qtl2 0.33-1 (2023-08-24)
+
+### Major changes
+
+- Changed `read_csv()` to `fread_csv()` to avoid conflict with
+  `readr::read_csv()`. (Issue #223)
+
+- Similarly, changed `read_csv_numer()` to `fread_csv_numer()`.
+
+
 ## qtl2 0.32 (2023-04-21)
 
 ### Major changes

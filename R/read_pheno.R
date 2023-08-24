@@ -94,8 +94,8 @@ read_pheno <-
     # read file
     stop_if_no_file(file)
     if(!quiet) message(" - Reading ", basename(file))
-    pheno <- read_csv_numer(file, sep=sep, na.strings=na.strings,
-                            comment.char=comment.char, transpose=transpose)
+    pheno <- fread_csv_numer(file, sep=sep, na.strings=na.strings,
+                             comment.char=comment.char, transpose=transpose)
     pheno <- as.matrix(pheno)
 
     # read phenocovarfile
@@ -150,6 +150,6 @@ read_phenocovar <-
     # read file
     stop_if_no_file(file)
     if(!quiet) message(" - Reading ", basename(file))
-    read_csv(file, sep=sep, na.strings=na.strings,
-             comment.char=comment.char, transpose=FALSE)
+    fread_csv(file, sep=sep, na.strings=na.strings,
+              comment.char=comment.char, transpose=FALSE)
 }

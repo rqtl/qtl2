@@ -129,9 +129,9 @@ function(file, quiet=TRUE)
                 stop_if_no_file(filename)
 
                 # read file
-                sheet <- read_csv(filename, na.strings=control$na.strings, sep=control$sep,
-                                  comment.char=control$comment.char, transpose=tr,
-                                  rownames_included=TRUE)
+                sheet <- fread_csv(filename, na.strings=control$na.strings, sep=control$sep,
+                                   comment.char=control$comment.char, transpose=tr,
+                                   rownames_included=TRUE)
             }
             else { # vector of files
                 # add dir to paths
@@ -145,15 +145,15 @@ function(file, quiet=TRUE)
                     sheet <- NULL
                     for(filename in filenames)
                         sheet <- rbind(sheet,
-                                       read_csv(filename, na.strings=control$na.strings,
-                                                sep=control$sep, comment.char=control$comment.char,
-                                                transpose=tr, rownames_included=TRUE))
+                                       fread_csv(filename, na.strings=control$na.strings,
+                                                 sep=control$sep, comment.char=control$comment.char,
+                                                 transpose=tr, rownames_included=TRUE))
                 }
                 else {
                     # read all of the files and cbind(), matching on row names
-                    sheet <- read_mult_csv(filenames, na.strings=control$na.strings,
-                                           sep=control$sep, comment.char=control$comment.char,
-                                           transpose=tr)
+                    sheet <- fread_mult_csv(filenames, na.strings=control$na.strings,
+                                            sep=control$sep, comment.char=control$comment.char,
+                                            transpose=tr)
                 }
             }
             if(length(unique(colnames(sheet))) != ncol(sheet))
@@ -487,8 +487,8 @@ function(sex_control, covar, sep, comment.char, dir, quiet=TRUE)
         if(!quiet) message(" - reading sex")
         file <- file.path(dir, sex_control$file)
         stop_if_no_file(file)
-        sex <- read_csv(file, sep=sep, na.strings=NULL, comment.char=comment.char,
-                        rownames_included=TRUE)
+        sex <- fread_csv(file, sep=sep, na.strings=NULL, comment.char=comment.char,
+                         rownames_included=TRUE)
     }
     else return(NULL)
 
@@ -556,7 +556,7 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
 
         file <- file.path(dir, cross_info_control$file)
         stop_if_no_file(file)
-        cross_info <- read_csv(file, sep=sep, comment.char=comment.char, rownames_included=TRUE)
+        cross_info <- fread_csv(file, sep=sep, comment.char=comment.char, rownames_included=TRUE)
 
         if(any(is.na(cross_info)))
             stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing.")
@@ -626,14 +626,14 @@ function(filename)
 
 
 # read multiple CSV files and cbind results
-read_mult_csv <-
+fread_mult_csv <-
     function(filenames, sep=",", na.strings=c("NA", "-"), comment.char="#", transpose=FALSE)
 {
     result <- NULL
     for(file in filenames) {
-        this <- read_csv(file, sep=sep, na.strings=na.strings,
-                         comment.char=comment.char, transpose=transpose,
-                         rownames_included=TRUE)
+        this <- fread_csv(file, sep=sep, na.strings=na.strings,
+                          comment.char=comment.char, transpose=transpose,
+                          rownames_included=TRUE)
 
         if(is.null(result)) result <- this
         else result <- cbind_expand(result, this)
