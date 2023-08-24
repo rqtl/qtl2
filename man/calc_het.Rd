@@ -25,6 +25,13 @@ The result is a vector of estimated heterozygosities
 \description{
 Calculate heterozygosites, by individual or by marker
 }
+\details{
+\code{calc_het()} looks at the genotype names (the 2nd
+dimension of the dimnames of the input \code{probs}), which must be
+two-letter names, and assumes that when the two letters are
+different it's a heterozygous genotype while if they're the
+same it's a homozygous genotype
+}
 \examples{
 iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
 p <- calc_genoprob(iron, err=0.002)
@@ -35,4 +42,7 @@ het_ind <- calc_het(p)
 # heterozygosities by marker
 het_mar <- calc_het(p, "marker")
 
+}
+\seealso{
+\code{\link[=calc_raw_het]{calc_raw_het()}}, \code{\link[=calc_geno_freq]{calc_geno_freq()}}
 }

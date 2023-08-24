@@ -13,6 +13,14 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
+#' @details `calc_het()` looks at the genotype names (the 2nd
+#' dimension of the dimnames of the input `probs`), which must be
+#' two-letter names, and assumes that when the two letters are
+#' different it's a heterozygous genotype while if they're the
+#' same it's a homozygous genotype
+#'
+#' @seealso [calc_raw_het()], [calc_geno_freq()]
+#'
 #' @return
 #' The result is a vector of estimated heterozygosities
 #'
@@ -55,6 +63,11 @@ calc_het <-
     # determine which columns are het
     het_col <- vector("list", n_chr)
     geno <- dimnames(probs)[[2]]
+
+    if(any(nchar(geno) != 2)) {
+        stop("calc_het requires genotypes to have two-letter names")
+    }
+
     for(chr in seq_len(n_chr)) {
         a1 <- substr(geno[[chr]], 1, 1)
         a2 <- substr(geno[[chr]], 2, 2)
