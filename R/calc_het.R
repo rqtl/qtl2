@@ -64,7 +64,7 @@ calc_het <-
     het_col <- vector("list", n_chr)
     geno <- dimnames(probs)[[2]]
 
-    if(any(nchar(geno) != 2)) {
+    if(any(nchar(unlist(geno)) != 2)) {
         stop("calc_het requires genotypes to have two-letter names")
     }
 
