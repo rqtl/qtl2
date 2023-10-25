@@ -27,11 +27,8 @@
 #' per chromosome.
 #'
 #' @details If `use_allele_probs=TRUE` (the default), we first
-#' convert the genotype probabilities are converted to allele
-#' probabilities (using [genoprob_to_alleleprob()]). This is
-#' recommended, as then the result is twice the empirical kinship
-#' coefficient (e.g., the expected value for an intercross is 1/2;
-#' using genotype probabilities, the expected value is 3/8).
+#' convert the genotype probabilities to allele
+#' probabilities (using [genoprob_to_alleleprob()]).
 #'
 #' We then calculate
 #' \eqn{\sum_{kl}(p_{ikl} p_{jkl})}{sum_kl (p_ikl p_jkl)}
