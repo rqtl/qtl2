@@ -62,7 +62,7 @@ produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 \value{
 An object of class \code{"scan1coef"}: a matrix of estimated regression coefficients, of dimension
 positions x number of effects. The number of effects is
-\code{n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar}.
+\code{n_genotypes + n_addcovar}.
 May also contain the following attributes:
 \itemize{
 \item \code{SE} - Present if \code{se=TRUE}: a matrix of estimated

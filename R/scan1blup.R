@@ -36,7 +36,7 @@
 #'
 #' @return An object of class `"scan1coef"`: a matrix of estimated regression coefficients, of dimension
 #'     positions x number of effects. The number of effects is
-#'     `n_genotypes + n_addcovar + (n_genotypes-1)*n_intcovar`.
+#'     `n_genotypes + n_addcovar`.
 #' May also contain the following attributes:
 #' * `SE` - Present if `se=TRUE`: a matrix of estimated
 #'   standard errors, of same dimension as `coef`.
