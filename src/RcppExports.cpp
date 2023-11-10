@@ -545,6 +545,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// find_dup_markers_notexact
+IntegerVector find_dup_markers_notexact(const IntegerMatrix& Geno, const IntegerVector& order, const IntegerVector& markerloc, const bool adjacent_only);
+RcppExport SEXP _qtl2_find_dup_markers_notexact(SEXP GenoSEXP, SEXP orderSEXP, SEXP markerlocSEXP, SEXP adjacent_onlySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type Geno(GenoSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type order(orderSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type markerloc(markerlocSEXP);
+    Rcpp::traits::input_parameter< const bool >::type adjacent_only(adjacent_onlySEXP);
+    rcpp_result_gen = Rcpp::wrap(find_dup_markers_notexact(Geno, order, markerloc, adjacent_only));
+    return rcpp_result_gen;
+END_RCPP
+}
 // find_ibd_segments
 NumericMatrix find_ibd_segments(const IntegerVector& g1, const IntegerVector& g2, const NumericVector& p, const double error_prob);
 RcppExport SEXP _qtl2_find_ibd_segments(SEXP g1SEXP, SEXP g2SEXP, SEXP pSEXP, SEXP error_probSEXP) {
@@ -2455,6 +2469,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_mpp_geno_names", (DL_FUNC) &_qtl2_mpp_geno_names, 2},
     {"_qtl2_invert_founder_index", (DL_FUNC) &_qtl2_invert_founder_index, 1},
     {"_qtl2_is_phase_known", (DL_FUNC) &_qtl2_is_phase_known, 1},
+    {"_qtl2_find_dup_markers_notexact", (DL_FUNC) &_qtl2_find_dup_markers_notexact, 4},
     {"_qtl2_find_ibd_segments", (DL_FUNC) &_qtl2_find_ibd_segments, 4},
     {"_qtl2_R_find_peaks", (DL_FUNC) &_qtl2_R_find_peaks, 3},
     {"_qtl2_R_find_peaks_and_lodint", (DL_FUNC) &_qtl2_R_find_peaks_and_lodint, 4},

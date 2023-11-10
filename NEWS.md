@@ -1,4 +1,4 @@
-## qtl2 0.33-3 (2023-11-04)
+## qtl2 0.33-4 (2023-11-10)
 
 ### Major changes
 
@@ -6,6 +6,10 @@
   `readr::read_csv()`. (Issue #223)
 
 - Similarly, changed `read_csv_numer()` to `fread_csv_numer()`.
+
+- Added function `fund_dup_markers()`, for identifying subsets of
+  markers with identical genotype data. This is a port of
+  `qtl::findDupMarkers()`.
 
 ### Minor changes
 
