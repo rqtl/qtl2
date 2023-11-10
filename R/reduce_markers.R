@@ -31,6 +31,8 @@
 #' the algorithm applied to each batch with min_distance smaller by a
 #' factor `min_distance_mult`, and then merged together for one last pass.
 #'
+#' @seealso [find_dup_markers()], [drop_markers()]
+#'
 #' @references Broman KW, Weber JL (1999) Method for constructing
 #' confidently ordered linkage maps. Genet Epidemiol 16:337--343
 #'

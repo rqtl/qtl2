@@ -149,6 +149,10 @@ invert_founder_index <- function(cross_info) {
     .Call(`_qtl2_is_phase_known`, crosstype)
 }
 
+.find_dup_markers_notexact <- function(Geno, order, markerloc, adjacent_only) {
+    .Call(`_qtl2_find_dup_markers_notexact`, Geno, order, markerloc, adjacent_only)
+}
+
 .find_ibd_segments <- function(g1, g2, p, error_prob) {
     .Call(`_qtl2_find_ibd_segments`, g1, g2, p, error_prob)
 }

@@ -10,7 +10,7 @@
 #' @return The input `cross` with the specified markers removed.
 #'
 #' @export
-#' @seealso [pull_markers()], [drop_nullmarkers()]
+#' @seealso [pull_markers()], [drop_nullmarkers()], [reduce_markers()], [find_dup_markers()]
 #'
 #' @examples
 #' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
