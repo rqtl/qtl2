@@ -52,7 +52,13 @@ find_dup_markers <-
     if(!is.cross2(cross))
         stop('Input cross should be a "cross2" object.')
 
+    # genotypes as one matrix; include founder_geno
+
     g <- do.call("cbind", cross$geno)
+    if(!is.null(cross$founder_geno)) {
+        g <- rbind(g, do.call("cbind", cross$founder_geno))
+    }
+
     markers <- colnames(g)
     markerloc <- lapply(n_mar(cross), function(a) 1:a)
     if(length(markerloc) > 1) {
