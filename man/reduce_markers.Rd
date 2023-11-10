@@ -71,3 +71,6 @@ grav2_sub <- pull_markers(grav2, markers2keep)
 Broman KW, Weber JL (1999) Method for constructing
 confidently ordered linkage maps. Genet Epidemiol 16:337--343
 }
+\seealso{
+\code{\link[=find_dup_markers]{find_dup_markers()}}, \code{\link[=drop_markers]{drop_markers()}}
+}
