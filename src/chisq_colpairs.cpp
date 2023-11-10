@@ -14,7 +14,7 @@ NumericMatrix chisq_colpairs(const IntegerMatrix& input) // matrix of integers; 
 {
     const int n_row = input.rows();
     const int n_col = input.cols();
-    if(n_col < 1)
+    if(n_col < 2)
         throw std::invalid_argument("Need at least two columns.");
 
     NumericMatrix result(n_col,n_col);
