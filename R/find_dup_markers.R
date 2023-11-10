@@ -4,7 +4,8 @@
 #'
 #' Identify sets of markers with identical genotype data.
 #'
-#' @param cross
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
 #'
 #' @param chr Optional vector specifying which chromosomes to consider.
 #' This may be a logical, numeric, or character string vector.

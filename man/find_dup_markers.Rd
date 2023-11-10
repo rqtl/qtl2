@@ -7,7 +7,8 @@
 find_dup_markers(cross, chr, exact_only = TRUE, adjacent_only = FALSE)
 }
 \arguments{
-\item{cross}{}
+\item{cross}{Object of class \code{"cross2"}. For details, see the
+\href{https://kbroman.org/qtl2/assets/vignettes/developer_guide.html}{R/qtl2 developer guide}.}
 
 \item{chr}{Optional vector specifying which chromosomes to consider.
 This may be a logical, numeric, or character string vector.}
