@@ -24,4 +24,10 @@ test_that("chisq_colpairs works", {
 
     expect_equal(result, expected)
 
+    # throws error if you give a single-column matrix
+    expect_error( chisq_colpairs(z[,1,drop=FALSE]) )
+
+    # throws error if you give a vector
+    expect_error( chisq_colpairs(z[,1]) )
+
 })
