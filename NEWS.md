@@ -1,4 +1,4 @@
-## qtl2 0.33-6 (2023-11-12)
+## qtl2 0.33-6 (2023-11-28)
 
 ### Major changes
 
@@ -19,6 +19,10 @@
 
 - More fully explain the use of weights in `est_herit()` and
   `scan1()`. (Issue #221)
+
+### Bug fixes
+
+- Deal with new compiler warning on CRAN. (Issue #230)
 
 
 ## qtl2 0.32 (2023-04-21)
