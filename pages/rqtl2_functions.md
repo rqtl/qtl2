@@ -7,8 +7,8 @@ description: Annotated/categorized list of functions in R/qtl2
 ### Data import
 
 - [`read_cross2`](https://search.r-project.org/CRAN/refmans/qtl2/html/read_cross2.html) - read data for a cross from a set of files
-- [`read_csv`](https://search.r-project.org/CRAN/refmans/qtl2/html/read_csv.html) - read a csv file, using a particular set of options
-- [`read_csv_numer`](https://search.r-project.org/CRAN/refmans/qtl2/html/read_csv_numer.html) - like `read_csv` but assuming the contents are
+- [`fread_csv`](https://search.r-project.org/CRAN/refmans/qtl2/html/fread_csv.html) - read a csv file, using a particular set of options
+- [`fread_csv_numer`](https://search.r-project.org/CRAN/refmans/qtl2/html/fread_csv_numer.html) - like `read_csv` but assuming the contents are
   strictly numeric
 - [`read_pheno`](https://search.r-project.org/CRAN/refmans/qtl2/html/read_pheno.html) - read phenotype data from a CSV file, plus
   (optionally) phenotype covariate data from a separate CSV file
@@ -37,6 +37,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - [`drop_nullmarkers`](https://search.r-project.org/CRAN/refmans/qtl2/html/drop_nullmarkers.html) - drop markers with no genotypes from a
   `"cross2"` object
 - [`pull_markers`](https://search.r-project.org/CRAN/refmans/qtl2/html/pull_markers.html) - drop all except a vector of markers from `"cross2"` object
+- [`find_dup_markers`](https://search.r-project.org/CRAN/refmans/qtl2/html/find_dup_markers.html) - find sets of markers with identical genotype data
 
 
 ### Combining data
