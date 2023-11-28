@@ -12,7 +12,7 @@ void r_message(std::string text)
 void r_warning(std::string text)
 {
     const char *text_c = text.c_str();
-    Rf_warning(text_c);
+    Rf_warning("%s", text_c);
 }
 
 // Following based on code from Luke Miratrix, http://bit.ly/rcpp_assert
