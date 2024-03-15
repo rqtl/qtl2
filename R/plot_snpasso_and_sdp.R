@@ -45,7 +45,7 @@ plot_snpasso_and_sdp <-
     }
     if(is.na(drop_hilit)) drop_hilit <- Inf
     snps2show <- rownames(scan1output)[max(scan1output[,1]) - scan1output[,1] <= drop_hilit]
-    snpinfo_sub <- snpinfo[snpinfo$snp_id %in% snps2show,,drop=FALSE]
+    snpinfo_sub <- snpinfo[snpinfo$snp %in% snps2show,,drop=FALSE]
 
     par(mar=top_mar)
     plot_sdp(snpinfo_sub$pos, snpinfo_sub$sdp, strain_labels=strain_labels,

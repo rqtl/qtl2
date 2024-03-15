@@ -1,3 +1,10 @@
+## qtl2 0.35-1 (2024-03-15)
+
+### Bug fixes
+
+- Fixed a problem with `sdp_panel=TRUE` in `plot_snpasso()`. (Issue #232)
+
+
 ## qtl2 0.34 (2023-11-28)
 
 ### Major changes
