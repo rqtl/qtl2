@@ -1,8 +1,11 @@
-## qtl2 0.35-1 (2024-03-15)
+## qtl2 0.35-2 (2024-04-05)
 
 ### Bug fixes
 
 - Fixed a problem with `sdp_panel=TRUE` in `plot_snpasso()`. (Issue #232)
+
+- Stop `index_snps()` with an error if physical map has missing
+  values. (Issue #218)
 
 
 ## qtl2 0.34 (2023-11-28)
