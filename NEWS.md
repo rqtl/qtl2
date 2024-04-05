@@ -1,5 +1,10 @@
 ## qtl2 0.35-2 (2024-04-05)
 
+### Minor changes
+
+- In `scan1snps()`, subset `genoprobs` and `map` to common positions,
+  if they have different markers. (Issue #219)
+
 ### Bug fixes
 
 - Fixed a problem with `sdp_panel=TRUE` in `plot_snpasso()`. (Issue #232)
