@@ -314,14 +314,47 @@ scan1_pg_clean <-
         else no_x <- FALSE
     } else loco <- TRUE
 
-    batches <- list(chr=rep(seq_len(length(genoprobs)), ncol(pheno)),
-                    phecol=rep(seq_len(ncol(pheno)), each=length(genoprobs)))
+    # This creates a batch for every chr, pheno and set of positions.
+    # If cores == 1, use all positions on each chr (original code).
+    # if cores > 1, then
+    #    if length(npos_by_chr) > 1 (multiple chr)
+    #       1) same as cores == 1 (overrides second option for now)
+    #       2) separate batch by pos (not ideal, but coded below)
+    #       3) divide positions across chr into cores regions (not coded yet) 
+    #    if length(npos_by_chr) == 1 (one chr)
+    #       divide positions into cores regions
+    npos_by_chr <- dim(genoprobs)[3,]
+    if(cores == 1 | length(npos_by_chr) > 1) {
+      batches <- list(chr=rep(seq_len(length(genoprobs)), ncol(pheno)),
+                      pos1 = rep(1, length(genoprobs) * ncol(pheno)),
+                      pos2 = rep(npos_by_chr, ncol(pheno)),
+                      phecol=rep(seq_len(ncol(pheno)), each=length(genoprobs)))
+    } else {
+      if(length(npos_by_chr) == 1) {
+        npos <- ceiling(npos_by_chr / cores)
+        pos1 <- seq(1, npos_by_chr, by = npos)
+        pos2 <- c(pos1[-1] - 1, npos_by_chr)
+        npos <- length(pos1)
+        pos1 <- rep(pos1, ncol(pheno))
+        pos2 <- rep(pos2, ncol(pheno))
+      } else {
+        npos <- npos_by_chr
+        pos1 <- rep(as.vector(unlist(sapply(npos_by_chr, seq_len))), ncol(pheno))
+        pos2 <- pos1
+      }
+      batches <- list(chr=rep(rep(seq_len(length(genoprobs)), npos), ncol(pheno)),
+                      pos1=pos1,
+                      pos2=pos2,
+                      phecol=rep(seq_len(ncol(pheno)), each=sum(npos)))
+    }
 
     # function that does the work
     by_batch_func <-
         function(batch)
         {
             chr <- batches$chr[batch]
+            pos1 <- batches$pos1[batch]
+            pos2 <- batches$pos2[batch]
             phecol <- batches$phecol[batch]
 
             if(loco) {
@@ -342,11 +375,12 @@ scan1_pg_clean <-
             # subset the genotype probabilities: drop cols with all 0s, plus the first column
             Xcol2drop <- genoprob_Xcol2drop[[chr]]
             if(length(Xcol2drop) > 0) {
-                pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
+                pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,pos1:pos2,drop=FALSE]
                 pr <- pr[,-1,,drop=FALSE]
             }
-            else
-                pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
+            else {
+                pr <- genoprobs[[chr]][ind2keep,-1,pos1:pos2,drop=FALSE]
+            }
             # weight the probabilities
             pr <- weight_array(pr, weights)
 
@@ -384,19 +418,7 @@ scan1_pg_clean <-
     if(any(result_is_null))
         stop("cluster problem: returned ", sum(result_is_null), " NULLs.")
 
-    npos_by_chr <- dim(genoprobs)[3,]
-    totpos <- sum(npos_by_chr)
-    pos_index <- split(seq_len(totpos), rep(seq_len(length(genoprobs)), npos_by_chr))
-
-    # to contain the results
-    result <- matrix(nrow=totpos, ncol=ncol(pheno))
-    for(batch in seq_along(batches$chr)) {
-        chr <- batches$chr[batch]
-        phecol <- batches$phecol[batch]
-        result[pos_index[[chr]], phecol] <- lod_list[[batch]]
-    }
-
-    result
+    matrix(nrow=sum(npos_by_chr), ncol=ncol(pheno), unlist(lod_list))
 }
 
 
