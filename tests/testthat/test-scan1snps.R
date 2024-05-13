@@ -75,11 +75,23 @@ test_that("scan1snps works", {
     out <- scan1snps(probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2, start=97.2, end=97.3)
     expect_equal(out, expected)
 
-    # if probs and map don't conform, should get an error
+    # if probs and map don't conform, should get a warning
+    ## (one fewer marker in map)
     junk_map <- DOex$pmap
     junk_map[[1]] <- junk_map[[1]][-1]
+    expect_warning( scan1snps(probs, junk_map, DOex$pheno, query_func=queryf, chr=2,
+                              start=97.2, end=97.3) )
+    ## (one fewere marker in probs)
+    junk_probs <- probs
+    junk_probs[["2"]] <- junk_probs[["2"]][,,-1]
+    expect_warning( scan1snps(junk_probs, DOex$pmap, DOex$pheno, query_func=queryf, chr=2,
+                              start=97.2, end=97.3) )
+    ## markers out of order gives an error though
+    junk_map <- DOex$pmap
+    names(junk_map[["2"]])[1:5] <- names(junk_map[["2"]])[5:1]
     expect_error( scan1snps(probs, junk_map, DOex$pheno, query_func=queryf, chr=2,
                             start=97.2, end=97.3) )
+
 
     # using a pre-defined table of snps
     snpinfo <- queryf(2, 97.2, 97.3)
