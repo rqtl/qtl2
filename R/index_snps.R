@@ -114,6 +114,7 @@ index_snps <-
 
     ### find snps in map
     this_map <- map[[uchr]]
+    if(any(is.na(this_map))) stop("Missing values in map on chr ", uchr)
     snploc <- find_intervals(snpinfo$pos, this_map, tol)
     interval <- snploc[,1]
     on_map <- (snploc[,2]==1)

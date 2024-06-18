@@ -113,21 +113,30 @@ scan1snps <-
     genoprobs <- genoprobs[,cchr]
     map <- map[cchr]
 
-    # check inputs
-    if(length(genoprobs) != length(map)) {
-        stop("length(genoprobs) != length(map)")
+    # check genoprobs and map have same markers in same order
+    #  - subset to common markers if different
+    #  - stop with error if different order
+    subset_markers <- FALSE
+    for(ichr in names(genoprobs)) {
+        markers_genoprobs <- dimnames(genoprobs[[ichr]])[[3]]
+        markers_map <- names(map[[ichr]])
+
+        if(length(markers_genoprobs) != length(markers_map) ||
+           any(markers_genoprobs != markers_map)) {
+            subset_markers <- TRUE # later give warning
+            markers <- markers_genoprobs[markers_genoprobs %in% markers_map]
+            if(length(markers)==0) stop("No markers in common between genoprobs and map on chr ", ichr)
+            genoprobs[[ichr]] <- genoprobs[[ichr]][,,markers_genoprobs %in% markers,drop=FALSE]
+            map[[ichr]] <- map[[ichr]][markers_map %in% markers]
+
+            markers_genoprobs <- dimnames(genoprobs[[ichr]])[[3]]
+            markers_map <- names(map[[ichr]])
+            if(any(markers_genoprobs != markers_map))
+                stop("Markers in different order between genoprobs and map on chr ", ichr)
+        }
     }
-    if(any(dim(genoprobs)[3,] != vapply(map, length, 1))) {
-        stop("genoprobs and map have different numbers of markers")
-    }
-    dn <- dimnames(genoprobs)[[3]]
-    different_names <- FALSE
-    for(i in seq_along(dn)) {
-        if(any(dn[[i]] != names(map[[i]]))) different_names <- TRUE
-    }
-    if(different_names) { # different marker names...give a warning (maybe should be an error)
-        warning("genoprobs and map have different marker names")
-    }
+    if(subset_markers) warning("Subset to common markers between genoprobs and map")
+
     if(!is.null(snpinfo) && !is.null(query_func)) {
         warning("If snpinfo is provided, chr, start, end, and query_func are all ignored")
     }
