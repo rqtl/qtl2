@@ -1,3 +1,12 @@
+## qtl2 0.37-1 (2024-06-20)
+
+### Minor changes
+
+- In `scan1()` with a polygenic effect (that is, that `kinship` is
+  provided) and when doing multi-core calculations, break up positions
+  into intervals for more fine-grained use of the multiple cores.
+
+
 ## qtl2 0.36 (2024-05-13)
 
 ### Minor changes
