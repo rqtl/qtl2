@@ -247,7 +247,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - [`plot_sdp`](https://search.r-project.org/CRAN/refmans/qtl2/html/plot_sdp.html) - plot strain distribution patterns of SNPs in a region
 - [`plot_peaks`](https://search.r-project.org/CRAN/refmans/qtl2/html/plot_peaks.html) - plot a summary of QTL positions for multiple
   phenotypes, using the results of `find_peaks`
-- [`plot_lodpeaks`](https://search.r-project.org/CRAN/refmans/qtl2/html/plot_lodpeaks.html) - scatterplot of LOD scores vs QTL peak locatiosn
+- [`plot_lodpeaks`](https://search.r-project.org/CRAN/refmans/qtl2/html/plot_lodpeaks.html) - scatterplot of LOD scores vs QTL peak locations
   (possibly with intervals) for multiple traits
 - [`plot_pxg`](https://search.r-project.org/CRAN/refmans/qtl2/html/plot_pxg.html) - plot phenotype versus QTL genotypes
 
