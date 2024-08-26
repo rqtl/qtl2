@@ -68,7 +68,7 @@ probability across individuals. If that maximum is <
 \code{column_threshold}, all values in that genotype column at that
 position are set to 0.
 
-In addition, any genotype probabilties that are < \code{value_threshold}
+In addition, any genotype probabilities that are < \code{value_threshold}
 (generally < \code{column_threshold}) are set to 0.
 
 The probabilities are then re-scaled so that the probabilities for

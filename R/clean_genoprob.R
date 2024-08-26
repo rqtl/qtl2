@@ -37,7 +37,7 @@
 #' `column_threshold`, all values in that genotype column at that
 #' position are set to 0.
 #'
-#' In addition, any genotype probabilties that are < `value_threshold`
+#' In addition, any genotype probabilities that are < `value_threshold`
 #' (generally < `column_threshold`) are set to 0.
 #'
 #' The probabilities are then re-scaled so that the probabilities for
