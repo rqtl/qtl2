@@ -321,3 +321,54 @@ plot_compare_geno <-
 #' @rdname plot_compare_geno
 #' @export
 plot.compare_geno <- plot_compare_geno
+
+
+# compare_founder_geno
+#' Compare founders genotype data
+#'
+#' Count the number of matching genotypes between all pairs of
+#' founder lines.
+#'
+#' @param cross Object of class `"cross2"`. For details, see the
+#' [R/qtl2 developer guide](https://kbroman.org/qtl2/assets/vignettes/developer_guide.html).
+#' @param omit_x If TRUE, only use autosomal genotypes
+#' @param proportion If TRUE (the default), the upper triangle of the
+#'     result contains the proportions of matching genotypes. If
+#'     FALSE, the upper triangle contains counts of matching
+#'     genotypes.
+#' @param quiet IF `FALSE`, print progress messages.
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
+#'
+#' @return A square matrix; diagonal is number of observed genotypes
+#' for each founder line. The values in the lower triangle are the
+#' numbers of markers where both of a pair were genotyped. The
+#' values in the upper triangle are either proportions or counts
+#' of matching genotypes for each pair (depending on whether
+#' `proportion=TRUE` or `=FALSE`). The object is given
+#' class `"compare_geno"`.
+#'
+#' @export
+#' @keywords utilities
+#'
+#' @examples
+#' \dontrun{
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/main/DOex/DOex.zip")
+#' DOex <- read_cross2(file)
+#' cg <- compare_founder_geno(DOex)
+#' summary(cg)
+#' }
+
+compare_founder_geno <-
+    function(cross, omit_x=FALSE, proportion=TRUE, quiet=TRUE, cores=1)
+{
+    if(!("founder_geno" %in% names(cross))) {
+        stop("cross does not contain founder genotypes")
+    }
+
+    cross$geno <- cross$founder_geno
+    compare_geno(cross, omit_x=omit_x, proportion=proportion, quiet=quiet, cores=cores)
+}

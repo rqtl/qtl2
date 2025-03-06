@@ -1,10 +1,13 @@
-## qtl2 0.37-2 (2024-08-26)
+## qtl2 0.37-3 (2025-03-06)
 
 ### Minor changes
 
 - In `scan1()` with a polygenic effect (that is, that `kinship` is
   provided) and when doing multi-core calculations, break up positions
   into intervals for more fine-grained use of the multiple cores.
+
+- Added function `compare_founder_geno()` which is like
+  `compare_geno()`, but comparing the founder genotypes.
 
 
 ## qtl2 0.36 (2024-05-13)
