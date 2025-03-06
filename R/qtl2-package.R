@@ -20,7 +20,7 @@
 #'   data among the R/qtl2, DOQTL, and R/qtl formats
 #' * [qtl2fst](https://github.com/rqtl/qtl2fst), for storing genotype
 #'   probabilities on disk
-#' * [qtl2ggplot](https://github.com/byandell/qtl2ggplot),
+#' * [qtl2ggplot](https://github.com/byandell-sysgen/qtl2ggplot),
 #'   for [ggplot2](https://ggplot2.tidyverse.org/)-based data visualizations
 #'
 "_PACKAGE"

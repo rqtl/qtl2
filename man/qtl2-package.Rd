@@ -32,7 +32,7 @@ Provides a set of tools to perform quantitative trait locus (QTL) analysis in ex
 data among the R/qtl2, DOQTL, and R/qtl formats
 \item \href{https://github.com/rqtl/qtl2fst}{qtl2fst}, for storing genotype
 probabilities on disk
-\item \href{https://github.com/byandell/qtl2ggplot}{qtl2ggplot},
+\item \href{https://github.com/byandell-sysgen/qtl2ggplot}{qtl2ggplot},
 for \href{https://ggplot2.tidyverse.org/}{ggplot2}-based data visualizations
 }
 }

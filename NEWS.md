@@ -548,7 +548,7 @@
   when covariates and other data are not numeric.
 
 - Fixed `pull_genoprobpos()` so it will work with
-  [qtl2feather](https://github.com/byandell/qtl2feather)
+  [qtl2feather](https://github.com/byandell-sysgen/qtl2feather)
   (and [qtl2fst](https://github.com/rqtl/qtl2fst)).
 
 - In `plot_genes()`, if `xlim` is provided as an argument, subset the
