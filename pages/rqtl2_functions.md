@@ -155,8 +155,6 @@ description: Annotated/categorized list of functions in R/qtl2
   from genotype probabilities
 - [`chisq_colpairs`](https://search.r-project.org/CRAN/refmans/qtl2/html/chisq_colpairs.html) - Perform chi-square test for independence for all
   pairs of columns of a matrix
-- [`convert2cross2`](https://search.r-project.org/CRAN/refmans/qtl2/html/convert2cross2.html) - convert an R/qtl1 `"cross"` object to the R/qtl2
-  `"cross2"` format
 - [`compare_geno`](https://search.r-project.org/CRAN/refmans/qtl2/html/compare_geno.html) - compare genotypes for all pairs of individuals, to
   look for possible sample duplicates
 - [`compare_genoprob`](https://search.r-project.org/CRAN/refmans/qtl2/html/compare_genoprob.html) - compare two sets of genotype probabilities for
@@ -320,6 +318,8 @@ description: Annotated/categorized list of functions in R/qtl2
 - [`qtl2version`](https://search.r-project.org/CRAN/refmans/qtl2/html/qtl2version.html) - print the installed version of [R/qtl2](https://kbroman.org/qtl2)
 - [`recode_snps`](https://search.r-project.org/CRAN/refmans/qtl2/html/recode_snps.html) - Recode the SNP genotypes so that `1` is for the
   major allele in the founders
+- [`convert2cross2`](https://search.r-project.org/CRAN/refmans/qtl2/html/convert2cross2.html) - convert an R/qtl1 `"cross"` object to the R/qtl2
+  `"cross2"` format
 
 
 
