@@ -1,4 +1,4 @@
-## qtl2 0.37-3 (2025-03-06)
+## qtl2 0.37-4 (2025-03-07)
 
 ### Minor changes
 
@@ -8,6 +8,11 @@
 
 - Added function `compare_founder_geno()` which is like
   `compare_geno()`, but comparing the founder genotypes.
+
+### Bug fixes
+
+- Fixed seg fault that occurs in `read_cross2()` if cross info is
+  misspecified as a bunch of non-numeric values.
 
 
 ## qtl2 0.36 (2024-05-13)

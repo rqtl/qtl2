@@ -584,6 +584,12 @@ function(cross_info_control, covar, sep, comment.char, dir, quiet=TRUE)
 
     if(length(codes)==0) { # no codes, pass over as is
         storage.mode(cross_info) <- "integer"
+
+        # again check for missing values
+        if(any(is.na(cross_info))) {
+            stop(sum(is.na(cross_info)), " missing values in cross_info (cross_info can't be missing, and must be integers).")
+        }
+
         return(cross_info)
     }
 
