@@ -2,7 +2,7 @@
 
 ### Minor changes
 
-- In `scan1()` with a polygenic effect (that is, that `kinship` is
+- In `scan1()` with a polygenic effect (that is, when `kinship` is
   provided) and when doing multi-core calculations, break up positions
   into intervals for more fine-grained use of the multiple cores.
 
@@ -11,8 +11,8 @@
 
 ### Bug fixes
 
-- Fixed seg fault that occurs in `read_cross2()` if cross info is
-  misspecified as a bunch of non-numeric values.
+- Fixed seg fault that occurs in `read_cross2()` for multi-way RIL
+  if cross info is misspecified or has missing values.
 
 
 ## qtl2 0.36 (2024-05-13)
