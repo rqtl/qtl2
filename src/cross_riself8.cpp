@@ -138,7 +138,10 @@ const bool RISELF8::check_crossinfo(const IntegerMatrix& cross_info, const bool 
         // count values 1..ncol
         IntegerVector counts(n_col);
         for(int j=0; j<n_col; j++) counts[j] = 0; // zero counts
-        for(int j=0; j<n_col; j++) ++counts[cross_info(i,j)-1]; // count values
+        for(int j=0; j<n_col; j++) {
+            if(cross_info(i,j) >= 1 && cross_info(i,j)<=n_col) // ignore if out of range
+                ++counts[cross_info(i,j)-1]; // count values
+        }
         for(int j=0; j<n_col; j++) {
             if(counts[j] != 1) n_invalid += abs(counts[j] - 1);
         }
