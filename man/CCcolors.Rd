@@ -6,7 +6,7 @@
 \alias{CCaltcolors}
 \title{Collaborative Cross colors}
 \source{
-\url{https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
+\url{https://web.archive.org/web/20250215070655/https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information}
 }
 \description{
 A vector of 8 colors for use with the mouse

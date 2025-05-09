@@ -12,7 +12,7 @@
 #' `CCcolors` are derived from the the Okabe-Ito color blind friendly palette in
 #'  Wong (2011) Nature Methods \doi{10.1038/nmeth.1618}.
 #'
-#' @source <https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information>
+#' @source <https://web.archive.org/web/20250215070655/https://csbio.unc.edu/CCstatus/index.py?run=AvailableLines.information>
 #'
 #' @keywords datasets
 #'
