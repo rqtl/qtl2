@@ -11,7 +11,7 @@
 mdfile = "pages/rqtl2_functions.md"
 
 # create the pages/annotations file
-if !File.exists?(mdfile)
+if !File.exist?(mdfile)
     f = File.open(mdfile, 'w')
     f.print("---\n")
     f.print("layout: page\n")
