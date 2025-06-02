@@ -333,3 +333,5 @@ description: Annotated/categorized list of functions in R/qtl2
 
 
 ### Newly added functions (in development version)
+
+- [`compare_founder_geno`](https://search.r-project.org/CRAN/refmans/qtl2/html/compare_founder_geno.html) - compare genotypes for all pairs of founders in a multi-parent population, to assess similarities
