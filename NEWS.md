@@ -39,7 +39,7 @@
 
 - Similarly, changed `read_csv_numer()` to `fread_csv_numer()`.
 
-- Added function `fund_dup_markers()`, for identifying subsets of
+- Added function `find_dup_markers()`, for identifying subsets of
   markers with identical genotype data. This is a port of
   `qtl::findDupMarkers()`.
 
