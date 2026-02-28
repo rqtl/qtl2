@@ -1,3 +1,10 @@
+## qtl2 0.39-1 (2026-02-27)
+
+### Minor changes
+
+- In `src/matrix.cpp`, change `Rf_error()` to `Rcpp:stop()`. Issue #239
+
+
 ## qtl2 0.38 (2025-06-02)
 
 ### Minor changes
@@ -215,7 +222,7 @@
   case an intercept column of 1's is used (Issue #151).
 
 - Updated mouse gene database with 2020-09-07 data from
-  [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
+  [MGI](https://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
 - Implemented Issue #184, to make `calc_het()` multi-core.
 

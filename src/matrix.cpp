@@ -18,7 +18,7 @@ NumericVector find_matching_cols(const NumericMatrix& mat, const double tol=1e-1
     const int nrow = mat.rows();
     NumericVector result(ncol);
 
-    if(ncol < 1) Rf_error("Matrix has 0 columns");
+    if(ncol < 1) Rcpp::stop("Matrix has 0 columns");
 
     result[0] = -1;
     if(ncol==1) return(result);
