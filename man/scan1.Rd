@@ -85,7 +85,7 @@ linear mixed model, with possible allowance for covariates.
 We first fit the model \eqn{y = X \beta + \epsilon}{y = Xb + e}
 where \eqn{X} is a matrix of covariates (or just an intercept) and
 \eqn{\epsilon}{e} is multivariate normal with mean 0 and covariance
-matrix \eqn{\sigma^2 [h^2 (2 K) + I]}{sigmasq*[hsq*2*K+I]} where
+matrix \eqn{\sigma^2 [h^2 (2 K) + (1-h^2) I]}{sigmasq*[hsq*2*K+(1-hsq)*I]} where
 \eqn{K} is the kinship matrix and \eqn{I} is the identity matrix.
 
 We then take \eqn{h^2}{hsq} as fixed and then scan the genome, at
@@ -94,10 +94,10 @@ each genomic position fitting the model \eqn{y = P \alpha + X \beta
 probabilities for the current position and again \eqn{X} is a
 matrix of covariates \eqn{\epsilon}{e} is multivariate normal with
 mean 0 and covariance matrix \eqn{\sigma^2 [h^2 (2 K) +
-I]}{sigmasq*[hsq*2*K+I]}, taking \eqn{h^2}{hsq} to be known.
+(1-h^2) I]}{sigmasq*[hsq*2*K+(1-hsq)*I]}, taking \eqn{h^2}{hsq} to be known.
 
 Note that if \code{weights} are provided, the covariance matrix becomes
-\eqn{\sigma^2 [h^2 (2 K) + D]}{sigmasq*[hsq*2*K+D]} where
+\eqn{\sigma^2 [h^2 (2 K) + (1-h^2) D]}{sigmasq*[hsq*2*K+(1-hsq)*D]} where
 \eqn{D} is a diagonal matrix with the reciprocal of the weights.
 
 For each of the inputs, the row names are used as

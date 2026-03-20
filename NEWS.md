@@ -1,8 +1,14 @@
-## qtl2 0.39-1 (2026-02-27)
+## qtl2 0.39-2 (2026-03-20)
 
 ### Minor changes
 
 - In `src/matrix.cpp`, change `Rf_error()` to `Rcpp:stop()`. Issue #239
+
+- Fixed a mistake in the documentation for `est_herit()` and
+  `scan1()`. The model we use has covariance matrix
+  sigma^2 [h^2 (2K) + (1-h^2)I] where K is the kinship matrix, I is
+  the identity matrix, h^2 is the residual heritability, and sigma^2
+  is the residual SD.
 
 
 ## qtl2 0.38 (2025-06-02)
