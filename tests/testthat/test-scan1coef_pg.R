@@ -126,18 +126,22 @@ test_that("scan1coef_pg for grav", {
     covar <- cbind(covar, chr4=pr[["4"]][,2,"CD.329C-Col"])
     est <- scan1coef(pr[,"3"], phe, K, covar, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[["3"]], phe, K, covar)
-    expect_equivalent(est[-22,], est_lm[-22,]) # different NAs at 22
+    if(is.na(est_lm[22,3])) { # change which coefficient is NA due to collinearity
+        est_lm[22,2:3] <- est_lm[22,3:2]
+        attr(est_lm, "SE")[22,2:3] <- attr(est_lm, "SE")[22,3:2]
+    }
+    expect_equivalent(est, est_lm)
 
     est <- scan1coef(pr[,"3"], phe, K, covar, se=TRUE, zerosum=FALSE)
-    expect_equivalent(est[-22,], est_lm[-22,]) # different NAs at 22
-    expect_equivalent(attr(est, "SE")[-22,], attr(est_lm, "SE")[-22,])
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # pre-computed eigen decomp
     est <- scan1coef(pr[,"3"], phe, Ke, covar, zerosum=FALSE)
-    expect_equivalent(est[-22,], est_lm[-22,]) # different NAs at 22
+    expect_equivalent(est, est_lm)
     est <- scan1coef(pr[,"3"], phe, Ke, covar, se=TRUE, zerosum=FALSE)
-    expect_equivalent(est[-22,], est_lm[-22,]) # different NAs at 22
-    expect_equivalent(attr(est, "SE")[-22,], attr(est_lm, "SE")[-22,])
+    expect_equivalent(est, est_lm)
+    expect_equivalent(attr(est, "SE"), attr(est_lm, "SE"))
 
     # two interactive covariates
     est <- scan1coef(pr[,"3"], phe, K, covar, intcovar=covar, se=FALSE, zerosum=FALSE)
