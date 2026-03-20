@@ -10,7 +10,11 @@
   the identity matrix, h^2 is the residual heritability, and sigma^2
   is the residual SD.
 
-- Export dim.calc_genoprob and dimnames.calc_genoprob
+- Export dim.calc_genoprob and dimnames.calc_genoprob to avoid some
+  warnings.
+
+- Small tweaks to tests of scan1coef with kinship matrix, to avoid
+  test failures.
 
 
 ## qtl2 0.38 (2025-06-02)
