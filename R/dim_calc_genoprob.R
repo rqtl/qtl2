@@ -1,3 +1,4 @@
+#' @export
 # dimensions of calc_genoprob object
 dim.calc_genoprob <-
     function(x)
@@ -5,6 +6,7 @@ dim.calc_genoprob <-
   vapply(x, dim, rep(1,3))
 }
 
+#' @export
 # dimnames of calc_genoprob object
 dimnames.calc_genoprob <-
     function(x)

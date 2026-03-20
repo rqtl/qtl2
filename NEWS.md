@@ -10,6 +10,8 @@
   the identity matrix, h^2 is the residual heritability, and sigma^2
   is the residual SD.
 
+- Export dim.calc_genoprob and dimnames.calc_genoprob
+
 
 ## qtl2 0.38 (2025-06-02)
 
@@ -359,7 +361,7 @@
   character strings like `"ABC|DEFGH"`.
 
 - Updated mouse gene database with 2019-08-12 data from
-  [MGI](http://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
+  [MGI](https://www.informatics.jax.org/downloads/mgigff3/archive/monthly/).
 
 - `get_common_ids()` strips off names from output, just in case.
 
