@@ -126,7 +126,8 @@ test_that("scan1coef_pg for grav", {
     covar <- cbind(covar, chr4=pr[["4"]][,2,"CD.329C-Col"])
     est <- scan1coef(pr[,"3"], phe, K, covar, se=FALSE, zerosum=FALSE)
     est_lm <- eff_via_lm(pr[["3"]], phe, K, covar)
-    if(is.na(est_lm[22,3])) { # change which coefficient is NA due to collinearity
+    if((!is.na(est[22,3]) && is.na(est_lm[22,3])) || (is.na(est[22,3]) && !is.na(est_lm[22,3]))) {
+        # change which coefficient is NA due to collinearity
         est_lm[22,2:3] <- est_lm[22,3:2]
         attr(est_lm, "SE")[22,2:3] <- attr(est_lm, "SE")[22,3:2]
     }
