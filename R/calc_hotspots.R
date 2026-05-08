@@ -68,5 +68,6 @@ calc_hotspots <-
     result <- as.matrix(unlist(cluster_lapply(cores, names(map), bychr_func)))
 
     class(result) <- c("scan1", "matrix")
+    colnames(result) <- "num_qtl"
     result
 }
