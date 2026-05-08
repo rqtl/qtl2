@@ -41,12 +41,12 @@
 #' map <- insert_pseudomarkers(grav2$gmap, step=1)
 #' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' out <- scan1(probs, grav2$pheno)
-#' plot_scan1_heatmap(out, grav2$gmap)
+#' plot_scan1_heatmap(out, map)
 
 plot_scan1_heatmap <-
     function(x, map, chr=NULL, gap=NULL, zlim=NULL,
              color_scheme=c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
-             col=NULL, n_colors=256, rotate=FALSE, chrlines=NULL, chrlines_lwd=2, ...)
+             col=NULL, n_colors=256, rotate=FALSE, chrlines=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -65,6 +65,11 @@ plot_scan1_heatmap <-
         x <- subset_scan1(x, map, chr)
         map <- map[chri]
     }
+
+    # align scan1 output and map
+    tmp <- align_scan1_map(x, map)
+    x <- tmp$scan1
+    map <- tmp$map
 
     if(is.null(gap)) gap <- sum(chr_lengths(map))/100
     if(!is_nonneg_number(gap)) stop("gap should be a single non-negative number")
@@ -104,7 +109,7 @@ plot_scan1_heatmap <-
         function(x, map, gap, col, chrlines, rotate=FALSE, xlab=NULL, ylab=NULL,
                  xlim=NULL, ylim=NULL, zlim=NULL,
                  mgp=NULL, mgp.x=NULL, mgp.y=NULL,
-                 las=1, cex=cex, xaxt="s", yaxt="s", ...)
+                 las=1, xaxt="s", yaxt="s", chrlines_lwd=2, ...)
     {
         # get x-axis range
         if(is.null(xlim)) {
@@ -135,9 +140,9 @@ plot_scan1_heatmap <-
         ypos <- 1:ncol(x)
 
         if(rotate) {
-            graphics::image(ypos, xpos, t(x), xlim=ylim, ylim=xlim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
+            graphics::image(ypos, xpos, t(x), xaxs="i", yaxs="i", xlim=ylim, ylim=xlim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
         } else {
-            graphics::image(xpos, ypos, x, xlim=xlim, ylim=ylim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
+            graphics::image(xpos, ypos, x, xaxs="i", yaxs="i", xlim=xlim, ylim=ylim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
         }
 
         # chromosome axis labels
@@ -151,8 +156,8 @@ plot_scan1_heatmap <-
         }
 
         # lod column axis labels
-        if(!rotate && yaxt != "n") graphics::axis(side=2, at=1:ncol(x), colnames(x), mgp=mgp.x, tick=FALSE, las=las)
-        if(rotate && xaxt != "n") graphics::axis(side=1, at=1:ncol(x), colnames(x), mgp=mgp.y, tick=FALSE, las=las)
+        if(!rotate && yaxt != "n") graphics::axis(side=2, at=1:ncol(x), colnames(x), mgp=mgp.y, tick=FALSE, las=las)
+        if(rotate && xaxt != "n") graphics::axis(side=1, at=1:ncol(x), colnames(x), mgp=mgp.x, tick=FALSE, las=las)
 
         # axis titles
         if(!is.null(xlab) && xlab != "") graphics::title(xlab=xlab, mgp=mgp.x)

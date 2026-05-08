@@ -81,5 +81,5 @@ plot(out, map, lodcolumn="liver", ylim=ylim)
 plot(out, map, lodcolumn="spleen", col="violetred", add=TRUE)
 }
 \seealso{
-\code{\link[=plot_coef]{plot_coef()}}, \code{\link[=plot_coefCC]{plot_coefCC()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}
+\code{\link[=plot_coef]{plot_coef()}}, \code{\link[=plot_coefCC]{plot_coefCC()}}, \code{\link[=plot_snpasso]{plot_snpasso()}}, \code{\link[=plot_scan1_heatmap]{plot_scan1_heatmap()}}
 }

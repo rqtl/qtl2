@@ -20,7 +20,7 @@
 #'
 #' @param ... Additional graphics parameters.
 #'
-#' @seealso [plot_coef()], [plot_coefCC()], [plot_snpasso()]
+#' @seealso [plot_coef()], [plot_coefCC()], [plot_snpasso()], [plot_scan1_heatmap()]
 #'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For

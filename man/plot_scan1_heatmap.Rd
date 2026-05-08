@@ -15,7 +15,6 @@ plot_scan1_heatmap(
   n_colors = 256,
   rotate = FALSE,
   chrlines = NULL,
-  chrlines_lwd = 2,
   ...
 )
 }
@@ -56,7 +55,7 @@ grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, map, error_prob=0.002)
 out <- scan1(probs, grav2$pheno)
-plot_scan1_heatmap(out, grav2$gmap)
+plot_scan1_heatmap(out, map)
 }
 \seealso{
 \code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_lodpeaks]{plot_lodpeaks()}}, \code{\link[graphics:image]{graphics::image()}}

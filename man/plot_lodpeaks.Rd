@@ -66,5 +66,5 @@ peaks <- find_peaks(out, map, threshold=3.5, drop=1.5)
 plot_lodpeaks(peaks, map)
 }
 \seealso{
-\code{\link[=find_peaks]{find_peaks()}}, \code{\link[=plot_peaks]{plot_peaks()}}, \code{\link[=plot_cistrans]{plot_cistrans()}}
+\code{\link[=find_peaks]{find_peaks()}}, \code{\link[=plot_peaks]{plot_peaks()}}, \code{\link[=plot_cistrans]{plot_cistrans()}}, \code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_scan1_heatmap]{plot_scan1_heatmap()}}
 }
