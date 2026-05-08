@@ -15,6 +15,7 @@ plot_scan1_heatmap(
   n_colors = 256,
   swap_axes = FALSE,
   chrlines = NULL,
+  rescale_by = c("none", "col", "chr", "both"),
   ...
 )
 }
@@ -41,6 +42,9 @@ strings.}
 (default is to have chromosome position on x-axis and lod columns on y-axis)}
 
 \item{chrlines}{Color of lines at chromosome breaks (NULL for default choices; NA to skip them).}
+
+\item{rescale_by}{Rescale the LOD scores by column, chromosome, or both, by subtracting the
+maximum value. The default is not to rescale.}
 
 \item{...}{Additional graphics paramaters.}
 }

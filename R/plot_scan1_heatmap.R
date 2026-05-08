@@ -25,6 +25,9 @@
 #'
 #' @param chrlines Color of lines at chromosome breaks (NULL for default choices; NA to skip them).
 #'
+#' @param rescale_by Rescale the LOD scores by column, chromosome, or both, by subtracting the
+#' maximum value. The default is not to rescale.
+#'
 #' @param ... Additional graphics paramaters.
 #'
 #' @return None.
@@ -46,7 +49,8 @@
 plot_scan1_heatmap <-
     function(x, map, chr=NULL, gap=NULL, zlim=NULL,
              color_scheme=c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
-             col=NULL, n_colors=256, swap_axes=FALSE, chrlines=NULL, ...)
+             col=NULL, n_colors=256, swap_axes=FALSE, chrlines=NULL,
+             rescale_by=c("none", "col", "chr", "both"), ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -105,6 +109,9 @@ plot_scan1_heatmap <-
         if(is.null(chrlines)) chrlines <- "white"
     }
 
+    # rescale the lod scores if desired
+    x <- rescale_lod(x, map, rescale_by)
+
     plot_scan1_heatmap_internal <-
         function(x, map, gap, col, chrlines, swap_axes=FALSE, xlab=NULL, ylab=NULL,
                  xlim=NULL, ylim=NULL, zlim=NULL,
@@ -124,7 +131,8 @@ plot_scan1_heatmap <-
             ylim <- c(0.5, ncol(x)+0.5)
         }
         if(is.null(zlim)) {
-            zlim <- c(0, max(as.numeric(x), na.rm=TRUE))
+            zlim <- range(as.numeric(x), na.rm=TRUE)
+            if(zlim[1] > 0) zlim[1] <- 0
         }
 
         if(is.null(mgp.x)) {
@@ -184,4 +192,39 @@ plot_scan1_heatmap <-
 
     plot_scan1_heatmap_internal(x, map, gap=gap, col=col, chrlines=chrlines, swap_axes=swap_axes, zlim=zlim, ...)
 
+}
+
+
+
+# rescale a matrix of lod scores
+#
+# none: leave as is
+# col: subtract off the max in each column
+# chr: on each chr, subtract off the overall max
+# both: on each chr, subtract off the max in each column
+rescale_lod <-
+    function(x, map, rescale_by=c("none", "col", "chr", "both"))
+{
+    rescale_by <- match.arg(rescale_by)
+
+    if(rescale_by=="col") {
+        # subtract off the maximum in each column
+        x <- t(t(x) - apply(x, 2, max, na.rm=TRUE))
+    } else if(rescale_by=="chr") {
+        # on each chromosome, subtract off the overall maximum
+        for(chr in names(map)) {
+            mar <- names(map[[chr]])
+            x[mar,] <- x[mar,] - max(x[mar,], na.rm=TRUE)
+        }
+    } else if(rescale_by=="both") {
+        # on each chromosome, subtract off the max in each column
+        for(chr in names(map)) {
+            mar <- names(map[[chr]])
+            z <- x[mar,,drop=FALSE]
+            z <- t(t(z) - apply(z, 2, max, na.rm=TRUE))
+            x[mar,] <- z
+        }
+    }
+
+    x
 }
