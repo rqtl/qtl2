@@ -1,4 +1,4 @@
-## qtl2 0.41-3 (2026-05-06)
+## qtl2 0.41-4 (2026-05-08)
 
 ### New features
 
@@ -9,6 +9,11 @@
 - Added function `calc_hotspots()` for counting QTL in a sliding
   window, to identify QTL hotspots, for example in eQTL/pQTL
   experiments.
+
+### Bug fixes
+
+- If input to `find_peaks()` had no column names, no peaks would be
+  found. Added warning, plus a default set of column names.
 
 
 ## qtl2 0.40 (2026-05-04)

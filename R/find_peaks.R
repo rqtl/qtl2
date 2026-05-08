@@ -147,6 +147,10 @@ find_peaks <-
         warning("probX ignored if prob is not provided")
 
     lodnames <- colnames(scan1_output)
+    if(is.null(lodnames)) {
+        warning('scan1_output has no column names; using "lod[#]"')
+        lodnames <- colnames(scan1_output) <- paste0("lod", 1:ncol(scan1_output))
+    }
     n_lod <- length(lodnames)
 
     # make the thresholds have length n_lod
