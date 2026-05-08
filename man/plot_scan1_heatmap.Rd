@@ -13,7 +13,7 @@ plot_scan1_heatmap(
   color_scheme = c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
   col = NULL,
   n_colors = 256,
-  rotate = FALSE,
+  swap_axes = FALSE,
   chrlines = NULL,
   ...
 )
@@ -37,7 +37,7 @@ strings.}
 
 \item{n_colors}{Number of z-axis colors (ignored if \code{col} is provided).}
 
-\item{rotate}{If TRUE, put chromosome position on y-axis and lod columns on x-axis
+\item{swap_axes}{If TRUE, put chromosome position on y-axis and lod columns on x-axis
 (default is to have chromosome position on x-axis and lod columns on y-axis)}
 
 \item{chrlines}{Color of lines at chromosome breaks (NULL for default choices; NA to skip them).}

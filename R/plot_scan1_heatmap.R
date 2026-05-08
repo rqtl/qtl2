@@ -20,7 +20,7 @@
 #'
 #' @param n_colors Number of z-axis colors (ignored if `col` is provided).
 #'
-#' @param rotate If TRUE, put chromosome position on y-axis and lod columns on x-axis
+#' @param swap_axes If TRUE, put chromosome position on y-axis and lod columns on x-axis
 #' (default is to have chromosome position on x-axis and lod columns on y-axis)
 #'
 #' @param chrlines Color of lines at chromosome breaks (NULL for default choices; NA to skip them).
@@ -46,7 +46,7 @@
 plot_scan1_heatmap <-
     function(x, map, chr=NULL, gap=NULL, zlim=NULL,
              color_scheme=c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
-             col=NULL, n_colors=256, rotate=FALSE, chrlines=NULL, ...)
+             col=NULL, n_colors=256, swap_axes=FALSE, chrlines=NULL, ...)
 {
     if(is.null(map)) stop("map is NULL")
 
@@ -106,7 +106,7 @@ plot_scan1_heatmap <-
     }
 
     plot_scan1_heatmap_internal <-
-        function(x, map, gap, col, chrlines, rotate=FALSE, xlab=NULL, ylab=NULL,
+        function(x, map, gap, col, chrlines, swap_axes=FALSE, xlab=NULL, ylab=NULL,
                  xlim=NULL, ylim=NULL, zlim=NULL,
                  mgp=NULL, mgp.x=NULL, mgp.y=NULL,
                  las=1, xaxt="s", yaxt="s", chrlines_lwd=2, ...)
@@ -144,7 +144,7 @@ plot_scan1_heatmap <-
 
         ypos <- 1:ncol(x)
 
-        if(rotate) {
+        if(swap_axes) {
             graphics::image(ypos, xpos, t(x), xaxs="i", yaxs="i", xlim=ylim, ylim=xlim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
         } else {
             graphics::image(xpos, ypos, x, xaxs="i", yaxs="i", xlim=xlim, ylim=ylim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
@@ -157,17 +157,17 @@ plot_scan1_heatmap <-
                                                                        names(map)[i], mean(range(map[[i]], na.rm=TRUE))))
 
             for(i in seq_along(chr_midpt)) {
-                if(!rotate && xaxt != "n") graphics::axis(side=1, at=chr_midpt[i], chr[i], mgp=mgp.x, tick=FALSE, las=las)
-                if(rotate && yaxt != "n") graphics::axis(side=2, at=chr_midpt[i], chr[i], mgp=mgp.y, tick=FALSE, las=las)
+                if(!swap_axes && xaxt != "n") graphics::axis(side=1, at=chr_midpt[i], chr[i], mgp=mgp.x, tick=FALSE, las=las)
+                if(swap_axes && yaxt != "n") graphics::axis(side=2, at=chr_midpt[i], chr[i], mgp=mgp.y, tick=FALSE, las=las)
             }
         } else { # single chromosome; put position on axis
-            if(!rotate && xaxt != "n") graphics::axis(side=1, at=pretty(xpos, n=7), mgp=mgp.x, tick=FALSE, las=las)
-            if(rotate && yaxt != "n") graphics::axis(side=2, at=pretty(xpos, n=7), mgp=mgp.y, tick=FALSE, las=las)
+            if(!swap_axes && xaxt != "n") graphics::axis(side=1, at=pretty(xpos, n=7), mgp=mgp.x, tick=FALSE, las=las)
+            if(swap_axes && yaxt != "n") graphics::axis(side=2, at=pretty(xpos, n=7), mgp=mgp.y, tick=FALSE, las=las)
         }
 
         # lod column axis labels
-        if(!rotate && yaxt != "n") graphics::axis(side=2, at=1:ncol(x), colnames(x), mgp=mgp.y, tick=FALSE, las=las)
-        if(rotate && xaxt != "n") graphics::axis(side=1, at=1:ncol(x), colnames(x), mgp=mgp.x, tick=FALSE, las=las)
+        if(!swap_axes && yaxt != "n") graphics::axis(side=2, at=1:ncol(x), colnames(x), mgp=mgp.y, tick=FALSE, las=las)
+        if(swap_axes && xaxt != "n") graphics::axis(side=1, at=1:ncol(x), colnames(x), mgp=mgp.x, tick=FALSE, las=las)
 
         # axis titles
         if(!is.null(xlab) && xlab != "") graphics::title(xlab=xlab, mgp=mgp.x)
@@ -176,12 +176,12 @@ plot_scan1_heatmap <-
         if(!is.na(chrlines) && !is.null(chrlines) && length(map)>1) {
             minpos <- sapply(map, min)
             chrlines_pos <- sapply(seq_along(map)[-1], function(chri) xpos_scan1(map, names(map), gap=gap, names(map)[chri], minpos[chri])-gap/2)
-            if(rotate) abline(h=chrlines_pos, col=chrlines, lwd=chrlines_lwd)
+            if(swap_axes) abline(h=chrlines_pos, col=chrlines, lwd=chrlines_lwd)
             else abline(v=chrlines_pos, col=chrlines, lwd=chrlines_lwd)
         }
 
     }
 
-    plot_scan1_heatmap_internal(x, map, gap=gap, col=col, chrlines=chrlines, rotate=rotate, zlim=zlim, ...)
+    plot_scan1_heatmap_internal(x, map, gap=gap, col=col, chrlines=chrlines, swap_axes=swap_axes, zlim=zlim, ...)
 
 }

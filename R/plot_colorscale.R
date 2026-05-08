@@ -14,7 +14,7 @@
 #'
 #' @param gridlines Color of gridlines (NULL for default choices; NA to skip them).
 #'
-#' @param rotate If TRUE, make the scale horizontal
+#' @param swap_axes If TRUE, make the scale horizontal
 #'
 #' @param ... Additional graphics paramaters.
 #'
@@ -42,7 +42,7 @@
 plot_colorscale <-
     function(x=NULL, zlim=NULL,
              color_scheme=c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
-             col=NULL, n_colors=256, gridlines=NULL, rotate=FALSE, ...)
+             col=NULL, n_colors=256, gridlines=NULL, swap_axes=FALSE, ...)
 {
     if(is.null(zlim)) {
         if(!is.null(x)) {
@@ -85,7 +85,7 @@ plot_colorscale <-
     }
 
     plot_colorscale_internal <-
-        function(zlim, col, rotate=FALSE,
+        function(zlim, col, swap_axes=FALSE,
                  gridlines=NULL, gridlines_lwd=1,
                  mgp=NULL, mgp.x=NULL, mgp.y=NULL,
                  las=1, xaxt="s", yaxt="s",
@@ -95,7 +95,7 @@ plot_colorscale <-
         ypos <- seq(zlim[1], zlim[2], length=length(col))
         z <- as.matrix(ypos)
 
-        if(rotate) {
+        if(swap_axes) {
             graphics::image(ypos, xpos, z, xaxs="i", yaxs="i", zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
         } else {
             graphics::image(xpos, ypos, t(z), xaxs="i", yaxs="i", zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
@@ -111,11 +111,11 @@ plot_colorscale <-
         }
 
         # lod column axis labels
-        if(!rotate && yaxt != "n") {
+        if(!swap_axes && yaxt != "n") {
             graphics::axis(side=2, at=pretty(ypos), mgp=mgp.y, tick=FALSE, las=las)
             abline(h=pretty(ypos), col=gridlines, lwd=gridlines_lwd)
         }
-        if(rotate && xaxt != "n") {
+        if(swap_axes && xaxt != "n") {
             graphics::axis(side=1, at=pretty(ypos), mgp=mgp.x, tick=FALSE, las=las)
             abline(v=pretty(ypos), col=gridlines, lwd=gridlines_lwd)
         }
@@ -125,6 +125,6 @@ plot_colorscale <-
         if(!is.null(ylab) && ylab != "") graphics::title(ylab=ylab, mgp=mgp.y)
     }
 
-    plot_colorscale_internal(zlim=zlim, col=col, rotate=rotate, gridlines=gridlines, ...)
+    plot_colorscale_internal(zlim=zlim, col=col, swap_axes=swap_axes, gridlines=gridlines, ...)
 
 }

@@ -11,7 +11,7 @@ plot_colorscale(
   col = NULL,
   n_colors = 256,
   gridlines = NULL,
-  rotate = FALSE,
+  swap_axes = FALSE,
   ...
 )
 }
@@ -28,7 +28,7 @@ plot_colorscale(
 
 \item{gridlines}{Color of gridlines (NULL for default choices; NA to skip them).}
 
-\item{rotate}{If TRUE, make the scale horizontal}
+\item{swap_axes}{If TRUE, make the scale horizontal}
 
 \item{...}{Additional graphics paramaters.}
 }

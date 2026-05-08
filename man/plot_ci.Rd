@@ -11,7 +11,7 @@ plot_ci(
   hi = NULL,
   SEmult = 2,
   labels = NULL,
-  rotate = FALSE,
+  swap_axes = FALSE,
   ...
 )
 }
@@ -28,7 +28,7 @@ plot_ci(
 
 \item{labels}{Labels for the groups (vector of character strings)}
 
-\item{rotate}{If TRUE, have group as y-axis; default (FALSE) has
+\item{swap_axes}{If TRUE, have group as y-axis; default (FALSE) has
 group on x-axis.}
 
 \item{...}{Optional graphics arguments}

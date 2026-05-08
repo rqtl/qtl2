@@ -11,7 +11,7 @@
 #' @param SEmult SE multiplier to create intervals
 #' @param labels Labels for the groups (vector of character strings)
 #'
-#' @param rotate If TRUE, have group as y-axis; default (FALSE) has
+#' @param swap_axes If TRUE, have group as y-axis; default (FALSE) has
 #' group on x-axis.
 #'
 #' @param ... Optional graphics arguments
@@ -49,7 +49,7 @@
 #' graphics
 plot_ci <-
     function(est, se=NULL, lo=NULL, hi=NULL, SEmult=2,
-             labels=NULL, rotate=FALSE, ...)
+             labels=NULL, swap_axes=FALSE, ...)
 {
     if(is.null(se) && is.null(lo) && is.null(hi)) {
         se <- rep(0, length(est))
@@ -76,7 +76,7 @@ plot_ci <-
 
     # this is to deal with varying inputs
     hide_ciplot <-
-        function(est, lo, hi, rotate=FALSE,
+        function(est, lo, hi, swap_axes=FALSE,
                  vlines=NULL, vlines.col="white", vlines.lwd=1,
                  hlines=NULL, hlines.col="white", hlines.lwd=1,
                  xat=NULL, xlim=NULL, xaxs="r", xlab=NULL,
@@ -89,7 +89,7 @@ plot_ci <-
             n_group <- length(est)
             group <- seq_len(n_group)
 
-            if(!rotate) {
+            if(!swap_axes) {
                 xlim <- c(0.5, n_group+0.5)
                 vlines <- 1:n_group
                 vlines.col <- "gray70"
@@ -144,6 +144,6 @@ plot_ci <-
 
         }
 
-    hide_ciplot(est=est, lo=lo, hi=hi, rotate=rotate, labels=labels, ...)
+    hide_ciplot(est=est, lo=lo, hi=hi, swap_axes=swap_axes, labels=labels, ...)
     invisible()
 }
