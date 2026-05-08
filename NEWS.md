@@ -1,4 +1,4 @@
-## qtl2 0.41-4 (2026-05-08)
+## qtl2 0.41-5 (2026-05-08)
 
 ### New features
 
@@ -9,6 +9,9 @@
 - Added function `calc_hotspots()` for counting QTL in a sliding
   window, to identify QTL hotspots, for example in eQTL/pQTL
   experiments.
+
+- Added function `plot_scan1_heatmap()` for plotting scan1 results for
+  multiple traits as a heat map.
 
 ### Bug fixes
 
