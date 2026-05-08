@@ -29,7 +29,7 @@
 #' These are not included as formal parameters in order to avoid
 #' cluttering the function definition.
 #'
-#' @seealso [plot_genoprobcomp()]
+#' @seealso [plot_genoprobcomp()], [plot_onegeno()], [plot_geno()]
 #'
 #' @examples
 #' # load data and calculate genotype probabilities

@@ -119,5 +119,5 @@ plot_genoprob(apr, DOex$pmap, ind="232")
 
 }
 \seealso{
-\code{\link[=plot_genoprobcomp]{plot_genoprobcomp()}}
+\code{\link[=plot_genoprobcomp]{plot_genoprobcomp()}}, \code{\link[=plot_onegeno]{plot_onegeno()}}, \code{\link[=plot_geno]{plot_geno()}}
 }

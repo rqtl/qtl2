@@ -19,6 +19,8 @@
 #'
 #' @return None.
 #'
+#' @seealso [plot_geno()], [plot_genoprob()]
+#'
 #' @section Hidden graphics parameters:
 #' A number of graphics parameters can be passed via `...`. For
 #' example, `bgcolor` to control the background color.

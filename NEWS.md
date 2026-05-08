@@ -1,4 +1,4 @@
-## qtl2 0.41-5 (2026-05-08)
+## qtl2 0.41-6 (2026-05-08)
 
 ### New features
 
@@ -13,6 +13,9 @@
 - Added function `plot_scan1_heatmap()` for plotting scan1 results for
   multiple traits as a heat map. Also added a function
   `plot_colorscale()` for plotting a corresponding color scale.
+
+- Added function `plot_geno()` for plotting genome-wide genotypes for
+  multiple individuals.
 
 ### Bug fixes
 
