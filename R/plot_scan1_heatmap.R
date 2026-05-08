@@ -153,12 +153,17 @@ plot_scan1_heatmap <-
 
         # chromosome axis labels
         chr <- names(map)
-        chr_midpt <- sapply(seq_along(map), function(i) xpos_scan1(map, names(map), gap=gap,
-                                                                   names(map)[i], mean(range(map[[i]], na.rm=TRUE))))
+        if(length(chr) > 1) {
+            chr_midpt <- sapply(seq_along(map), function(i) xpos_scan1(map, names(map), gap=gap,
+                                                                       names(map)[i], mean(range(map[[i]], na.rm=TRUE))))
 
-        for(i in seq_along(chr_midpt)) {
-            if(!rotate && xaxt != "n") graphics::axis(side=1, at=chr_midpt[i], chr[i], mgp=mgp.x, tick=FALSE, las=las)
-            if(rotate && yaxt != "n") graphics::axis(side=2, at=chr_midpt[i], chr[i], mgp=mgp.y, tick=FALSE, las=las)
+            for(i in seq_along(chr_midpt)) {
+                if(!rotate && xaxt != "n") graphics::axis(side=1, at=chr_midpt[i], chr[i], mgp=mgp.x, tick=FALSE, las=las)
+                if(rotate && yaxt != "n") graphics::axis(side=2, at=chr_midpt[i], chr[i], mgp=mgp.y, tick=FALSE, las=las)
+            }
+        } else { # single chromosome; put position on axis
+            if(!rotate && xaxt != "n") graphics::axis(side=1, at=pretty(xpos, n=7), mgp=mgp.x, tick=FALSE, las=las)
+            if(rotate && yaxt != "n") graphics::axis(side=2, at=pretty(xpos, n=7), mgp=mgp.y, tick=FALSE, las=las)
         }
 
         # lod column axis labels
