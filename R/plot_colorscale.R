@@ -33,8 +33,10 @@
 #' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' out <- scan1(probs, grav2$pheno)
 #'
-#' layout(cbind(1,c(3,2,4)), widths=c(15, 1))
-#' plot_scan1_heatmap(out, map)
+#' layout(cbind(1,2), widths=c(4, 1))
+#' par(mar=c(4.1, 4.1, 1.1, 1.1))
+#' plot_scan1_heatmap(out, map, xlab="Chromosome", ylab="Phenotype", mgp.y=c(2.6, 0.3, 0))
+#' par(mar=c(15.1, 3.1, 15.1, 1.1))
 #' plot_colorscale(out)
 
 plot_colorscale <-
