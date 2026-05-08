@@ -29,7 +29,7 @@ test_that("calc_hotspots works", {
                                             "UNCHS030349", "JAX00309706", "UNCHS030603", "UNCHS030775", "UNC19754812",
                                             "UNCHS031128", "UNC19898072", "UNCHS031478", "UNCHS031633", "JAX00317756",
                                             "UNCHS031954", "JAX00320253", "UNC20324233", "UNC20412654", "UNC20479736",
-                                            "UNCJPD004845"), NULL),
+                                            "UNCJPD004845"), "num_qtl"),
                           class = c("scan1", "matrix"))
 
     expect_equal(result, expected)
