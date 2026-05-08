@@ -29,7 +29,7 @@
 #'
 #' @return None.
 #'
-#' @seealso [plot_scan1()], [plot_lodpeaks()], [graphics::image()]
+#' @seealso [plot_scan1()], [plot_lodpeaks()], [graphics::image()]; [plot_colorscale()]
 #'
 #' @importFrom graphics image par axis title
 #' @importFrom grDevices rainbow heat.colors terrain.colors topo.colors gray

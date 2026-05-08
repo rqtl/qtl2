@@ -11,7 +11,8 @@
   experiments.
 
 - Added function `plot_scan1_heatmap()` for plotting scan1 results for
-  multiple traits as a heat map.
+  multiple traits as a heat map. Also added a function
+  `plot_colorscale()` for plotting a corresponding color scale.
 
 ### Bug fixes
 

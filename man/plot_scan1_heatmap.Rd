@@ -58,5 +58,5 @@ out <- scan1(probs, grav2$pheno)
 plot_scan1_heatmap(out, map)
 }
 \seealso{
-\code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_lodpeaks]{plot_lodpeaks()}}, \code{\link[graphics:image]{graphics::image()}}
+\code{\link[=plot_scan1]{plot_scan1()}}, \code{\link[=plot_lodpeaks]{plot_lodpeaks()}}, \code{\link[graphics:image]{graphics::image()}}; \code{\link[=plot_colorscale]{plot_colorscale()}}
 }
