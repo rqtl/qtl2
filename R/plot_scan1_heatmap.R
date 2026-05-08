@@ -139,7 +139,6 @@ plot_scan1_heatmap <-
         xpos <- unlist(lapply(seq_along(map), function(chr) xpos_scan1(map, chr=names(map), gap=gap, names(map)[chr], map[[chr]])))
 
         if(any(diff(xpos)==0)) { # deal with identical positions
-            message("jittering positions")
             xpos <- xpos + seq(0, 1e-6, length=length(xpos))
         }
 
