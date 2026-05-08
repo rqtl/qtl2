@@ -339,3 +339,6 @@ description: Annotated/categorized list of functions in R/qtl2
 ### Newly added functions (in development version)
 - `plot_cistrans` - scatterplot of gene location vs QTL location to display eQTL/pQTL results <!-- QTL plots -->
 - `calc_hotspots` - count QTL in a sliding window, to identify QTL hotspots <!-- QTL summaries -->
+- `plot_geno` - plot genome-wide genotypes for multiple individuals <!-- Diagnostic plots -->
+- `plot_scan1_heatmap` - plot LOD curves for multiple traits as a heat map <!-- QTL plots -->
+- `plot_colorscale` - plot a color scale (for use with `plot_scan1_heatmap`) <!-- QTL plots -->
