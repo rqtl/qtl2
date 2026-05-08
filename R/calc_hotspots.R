@@ -21,7 +21,7 @@
 #'
 #' @return An object of class `"scan1"`: a matrix with a single
 #'     column, of counts, with rownames being the marker names in
-#'     `map`.
+#'     `map`. The column name is `"num_qtl"`.
 #'
 #'
 #' @seealso [find_peaks()], [plot_lodpeaks()], [plot_cistrans()]
@@ -40,6 +40,7 @@
 #'
 #' hotspots <- calc_hotspots(qtl, map, window=2)
 #' plot(hotspots, map, ylab="No. QTL")
+#' find_peaks(hotspots, map, threshold=20)
 #' }
 
 calc_hotspots <-

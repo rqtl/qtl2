@@ -26,7 +26,7 @@ produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 \value{
 An object of class \code{"scan1"}: a matrix with a single
 column, of counts, with rownames being the marker names in
-\code{map}.
+\code{map}. The column name is \code{"num_qtl"}.
 }
 \description{
 For a set of QTL locations, calculate a running count in a sliding
@@ -44,6 +44,7 @@ unlink(tempfile)
 
 hotspots <- calc_hotspots(qtl, map, window=2)
 plot(hotspots, map, ylab="No. QTL")
+find_peaks(hotspots, map, threshold=20)
 }
 }
 \seealso{
