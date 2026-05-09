@@ -342,3 +342,7 @@ description: Annotated/categorized list of functions in R/qtl2
 - `plot_geno` - plot genome-wide genotypes for multiple individuals <!-- Diagnostic plots -->
 - `plot_scan1_heatmap` - plot LOD curves for multiple traits as a heat map <!-- QTL plots -->
 - `plot_colorscale` - plot a color scale (for use with `plot_scan1_heatmap`) <!-- QTL plots -->
+- `cbind.phasedgeno` - combined phased genotypes for different chromosomes but on the same set of individuals <!-- Combining data -->
+- `rbind.phasedgeno` - combined phased genotypes for different individuals but on the same set of chromosomes <!-- Combining data -->
+- `subset.phasedgeno` - subset phased genotype objects, as output by `guess_phase()` <!-- Data subsetting -->
+- `"[".phasedgeno` - shorthand for `subset.phasedgeno` with the form `ph[ind, chr]` <!-- Data subsetting -->
