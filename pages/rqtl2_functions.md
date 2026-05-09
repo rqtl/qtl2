@@ -312,7 +312,7 @@ description: Annotated/categorized list of functions in R/qtl2
   object (output by `scan1()`) and a marker map.
 - [`clean`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#clean) - clean an object
 - [`clean.scan1`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#clean_scan1) - clean a `"scan"` object (replacing negative values
-  with `NA` and removing rows were all values are `NA`.
+  with `NA` and removing rows where all values are `NA`.
 - [`clean_scan1`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#clean_scan1) - the same as `clean.scan1`.
 - [`clean.calc_genoprob`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#clean_genoprob) - clean a `"calc_genoprob"` object (setting
   small values to 0)
