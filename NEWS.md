@@ -1,4 +1,4 @@
-## qtl2 0.41-7 (2026-05-08)
+## qtl2 0.41-8 (2026-05-09)
 
 ### New features
 
@@ -16,6 +16,10 @@
 
 - Added function `plot_geno()` for plotting genome-wide genotypes for
   multiple individuals.
+
+- Added functions for manipulating the "phased genotypes" output of
+  `guess_phase()`: `subset.phasedgeno()`, 1rbind.phasedgeno()`, and
+  `cbind.phasedgeno()`.
 
 ### Bug fixes
 

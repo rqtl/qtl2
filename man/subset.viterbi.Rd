@@ -37,4 +37,7 @@ gsub <- g[1:5,2]
 # keep just chromosome 2
 gsub2 <- g[,2]
 }
+\seealso{
+\code{\link[=viterbi]{viterbi()}}, \code{\link[=cbind.viterbi]{cbind.viterbi()}}, \code{\link[=rbind.viterbi]{rbind.viterbi()}}
+}
 \keyword{utilities}

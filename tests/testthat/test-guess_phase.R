@@ -80,6 +80,7 @@ test_that("guess_phase works with DO", {
     expected[[2]][1,,1] <- m[[2]][1,]-36
     expected[[2]][2,,1] <- c(NA,NA,7,7,NA,7,4,NA,NA,NA,4,4,4,NA,4,4,4,4,4,1)
     expected[[2]][2,,2] <- c(NA,NA,1,1,NA,3,3,NA,NA,NA,6,6,6,NA,6,6,6,6,6,6)
+    class(expected) <- c("phasedgeno", "list")
 
     expect_equal(g, expected)
 

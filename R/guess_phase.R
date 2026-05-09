@@ -18,7 +18,7 @@
 #' If input cross is phase-known (e.g., recombinant inbred lines),
 #' the output will be the input `geno`. Otherwise, the output
 #' will be a list of three-dimensional arrays of imputed
-#' genotypes, individual x position x haplotype (1/2).
+#' genotypes, individual x position x haplotype (1/2), and will have class `"phasedgeno"`.
 #'
 #' @details We randomly assign the pair of alleles at the first locus
 #'     to two haplotypes, and then work left to right, assigning
@@ -103,5 +103,6 @@ guess_phase <-
 
     result <- cluster_lapply(cores, seq_along(geno), by_chr_func)
     names(result) <- names(geno)
+    class(result) <- c("phasedgeno", "list")
     result
 }

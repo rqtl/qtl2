@@ -26,5 +26,5 @@ g <- rbind(gA, gB)
 
 }
 \seealso{
-\code{\link[=cbind.viterbi]{cbind.viterbi()}}, \code{\link[=viterbi]{viterbi()}}
+\code{\link[=cbind.viterbi]{cbind.viterbi()}}, \code{\link[=subset.viterbi]{subset.viterbi()}}, \code{\link[=viterbi]{viterbi()}}
 }

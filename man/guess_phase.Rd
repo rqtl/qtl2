@@ -24,7 +24,7 @@ produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 If input cross is phase-known (e.g., recombinant inbred lines),
 the output will be the input \code{geno}. Otherwise, the output
 will be a list of three-dimensional arrays of imputed
-genotypes, individual x position x haplotype (1/2).
+genotypes, individual x position x haplotype (1/2), and will have class \code{"phasedgeno"}.
 }
 \description{
 Turn imputed genotypes into phased genotypes along chromosomes by

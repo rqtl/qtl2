@@ -1,34 +1,37 @@
-# subset viterbi objects
+# subset phasedgeno objects
 
-#' Subsetting Viterbi results
+#' Subsetting phased genotype objects
 #'
 #' Pull out a specified set of individuals and/or chromosomes from
-#' the results of [viterbi()]
+#' the results of [guess_phase()]
 #'
-#' @param x Imputed genotypes as output from [viterbi()].
+#' @param x Imputed genotypes as output from [guess_phase()], a list of 3d arrays.
 #' @param ind A vector of individuals: numeric indices, logical
 #' values, or character string IDs
 #' @param chr A vector of chromosomes: logical values, or character
 #' string IDs. Numbers are interpreted as character string IDs.
 #' @param ... Ignored.
 #'
-#' @return An object of class `"viterbi"`, like the input, with the
-#' selected individuals and/or chromosomes; see [viterbi()].
+#' @return An object of class `"phasedgeno"`, like the input, with the
+#' selected individuals and/or chromosomes; see [guess_phase()].
 #'
-#' @seealso [viterbi()], [cbind.viterbi()], [rbind.viterbi()]
+#' @seealso [guess_phase()], [cbind.phasedgeno()], [rbind.phasedgeno()]
 #'
 #' @export
 #' @keywords utilities
 #'
 #' @examples
-#' grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
-#' \dontshow{grav2 <- grav2[1:8,c(1,2)]}
-#' g <- viterbi(grav2)
-#' # keep just individuals 1:5, chromosome 2
-#' gsub <- g[1:5,2]
-#' # keep just chromosome 2
-#' gsub2 <- g[,2]
-subset.viterbi <-
+#' \dontrun{
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/main/DOex/DOex.zip")
+#' DOex <- read_cross2(file)
+#' pr <- calc_genoprob(DOex, error_prob=0.002)
+#' m <- maxmarg(pr)
+#' ph <- guess_phase(DOex, m)
+#' ph <- ph[1:10,] # first ten individuals
+#' ph <- ph[,2]  # chromosome 2
+#' }
+subset.phasedgeno <-
     function(x, ind=NULL, chr=NULL, ...)
 {
     if(is.null(ind) && is.null(chr))
@@ -58,7 +61,7 @@ subset.viterbi <-
             stop("Must retain at least one individual.")
 
         for(i in names(x)) # loop over chromosomes
-            x[[i]] <- unclass(x)[[i]][ind,,drop=FALSE]
+            x[[i]] <- unclass(x)[[i]][ind,,,drop=FALSE]
     }
 
     for(obj in c("alleles", "is_x_chr", "crosstype"))
@@ -69,7 +72,7 @@ subset.viterbi <-
 }
 
 #' @export
-#' @rdname subset.viterbi
-`[.viterbi` <-
+#' @rdname subset.phasedgeno
+`[.phasedgeno` <-
     function(x, ind=NULL, chr=NULL)
     subset(x, ind, chr)
