@@ -24,7 +24,4 @@
 #'
 #' @export
 cbind.phasedgeno <-
-    function(...)
-{
-    cbind.viterbi(...)
-}
+    cbind.calc_genoprob
