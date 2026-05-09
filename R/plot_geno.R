@@ -156,7 +156,8 @@ plot_geno <-
         }
         col <- c(na_col, col)
         if(length(breaks) > length(col)+1)
-            stop("Need more colors: at least ", length(col)-1)
+            stop("Need more colors: at least ", n_colors-1)
+        col <- col[1:(length(breaks)-1)]
 
         # get x-axis range
         if(is.null(xlim)) {
