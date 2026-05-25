@@ -24,7 +24,9 @@ probabilities on disk), and [qtl2ggplot](https://github.com/byandell-sysgen/qtl2
 
 Install R/qtl2 from [CRAN](https://cran.r-project.org):
 
-    install.packages("qtl2")
+```r
+install.packages("qtl2")
+```
 
 ---
 
