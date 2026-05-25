@@ -28,6 +28,21 @@ Install R/qtl2 from [CRAN](https://cran.r-project.org):
 install.packages("qtl2")
 ```
 
+Alternatively, install it from [R
+universe](https://rqtl.r-universe.dev):
+
+```r
+install.packages("qtl2", repos=c("https://rqtl.r-universe.dev",
+                                 "https://cloud.r-project.org"))
+```
+
+Or use [remotes](https://remotes.r-lib.org) to install it from its GitHub source:
+
+```r
+install.packages("remotes")
+remotes::install_github("rqtl/qtl2")
+```
+
 ---
 
 ### Documentation
