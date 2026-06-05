@@ -58,11 +58,9 @@
 #' # plot with colors white -> darkslateblue, and with color scale
 #' col <- colorRampPalette(c("white", "darkslateblue"))(256)
 #' zlim <- c(0, maxlod(out))
-#' layout(cbind(1,2), width=c(8,1))
-#' par(mar=c(4.1, 5.1, 1.1, 1.1))
+#' layout(cbind(1,2), width=c(3,1))
 #' plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar),
 #'                    col=col, zlim=zlim)
-#' par(mar=c(10.1, 4.1, 10.1, 3.1))
 #' plot_colorscale(col=col, zlim=zlim)
 
 plot_scan1_heatmap <-
