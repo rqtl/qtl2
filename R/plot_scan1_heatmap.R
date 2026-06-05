@@ -7,6 +7,11 @@
 #' @param map A list of vectors of marker positions, as produced by
 #' [insert_pseudomarkers()].
 #'
+#' @param y Vector with length equal to `ncol(x)`, defining the
+#'     y-axis scale of the heat map. (If the multiple LOD scores are
+#'     for a quantitative variable like time, these are the
+#'     corresponding times.)
+#'
 #' @param chr Selected chromosomes to plot; a vector of character
 #' strings.
 #'
@@ -44,20 +49,21 @@
 #' map <- insert_pseudomarkers(grav2$gmap, step=1)
 #' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' out <- scan1(probs, grav2$pheno)
-#' plot_scan1_heatmap(out, map)
+#' y <- as.numeric(grav2$phenocovar$time)
+#  plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar))
 #'
 #' # plot with colors white -> darkslateblue, and with color scale
 #' col <- colorRampPalette(c("white", "darkslateblue"))(256)
 #' zlim <- c(0, maxlod(out))
 #' layout(cbind(1,2), width=c(8,1))
 #' par(mar=c(4.1, 5.1, 1.1, 1.1))
-#' plot_scan1_heatmap(out, map,
-#' col=col, zlim=zlim)
+#' plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar),
+#'                    col=col, zlim=zlim)
 #' par(mar=c(10.1, 4.1, 10.1, 3.1))
 #' plot_colorscale(col=col, zlim=zlim)
 
 plot_scan1_heatmap <-
-    function(x, map, chr=NULL, gap=NULL, zlim=NULL,
+    function(x, map, chr=NULL, y=NULL, gap=NULL, zlim=NULL,
              color_scheme=c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
              col=NULL, n_colors=256, swap_axes=FALSE, chrlines=NULL,
              rescale_by=c("none", "col", "chr", "both"), ...)
@@ -123,7 +129,7 @@ plot_scan1_heatmap <-
     x <- rescale_lod(x, map, rescale_by)
 
     plot_scan1_heatmap_internal <-
-        function(x, map, gap, col, chrlines, swap_axes=FALSE, xlab=NULL, ylab=NULL,
+        function(x, map, y=NULL, gap, col, chrlines, swap_axes=FALSE, xlab=NULL, ylab=NULL,
                  xlim=NULL, ylim=NULL, zlim=NULL,
                  mgp=NULL, mgp.x=NULL, mgp.y=NULL,
                  las=1, xaxt="s", yaxt="s", chrlines_lwd=2, ...)
@@ -136,9 +142,6 @@ plot_scan1_heatmap <-
                               names(map)[length(map)], max(map[[length(map)]]))
 
             xlim <- c(start, end)
-        }
-        if(is.null(ylim)) {
-            ylim <- c(0.5, ncol(x)+0.5)
         }
         if(is.null(zlim)) {
             zlim <- range(as.numeric(x), na.rm=TRUE)
@@ -160,12 +163,20 @@ plot_scan1_heatmap <-
             xpos <- xpos + seq(0, 1e-6, length=length(xpos))
         }
 
-        ypos <- 1:ncol(x)
+        if(is.null(y)) {
+            y <- 1:ncol(x)
+            ylim <- c(0.5, ncol(x)+0.5)
+            yaxis_quant <- FALSE
+        } else {
+            stopifnot(length(y) == ncol(x))
+            ylim <- range(y)
+            yaxis_quant <- TRUE
+        }
 
         if(swap_axes) {
-            graphics::image(ypos, xpos, t(x), xaxs="i", yaxs="i", xlim=ylim, ylim=xlim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
+            graphics::image(y, xpos, t(x), xaxs="i", yaxs="i", xlim=ylim, ylim=xlim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
         } else {
-            graphics::image(xpos, ypos, x, xaxs="i", yaxs="i", xlim=xlim, ylim=ylim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
+            graphics::image(xpos, y, x, xaxs="i", yaxs="i", xlim=xlim, ylim=ylim, zlim=zlim, xlab="", ylab="", xaxt="n", yaxt="n", col=col)
         }
 
         # chromosome axis labels
@@ -184,8 +195,14 @@ plot_scan1_heatmap <-
         }
 
         # lod column axis labels
-        if(!swap_axes && yaxt != "n") graphics::axis(side=2, at=1:ncol(x), colnames(x), mgp=mgp.y, tick=FALSE, las=las)
-        if(swap_axes && xaxt != "n") graphics::axis(side=1, at=1:ncol(x), colnames(x), mgp=mgp.x, tick=FALSE, las=las)
+        if(!swap_axes && yaxt != "n") {
+            if(yaxis_quant) graphics::axis(side=2, at=pretty(y), mgp=mgp.y, tick=FALSE, las=las)
+            else graphics::axis(side=2, at=1:ncol(x), colnames(x), mgp=mgp.y, tick=FALSE, las=las)
+        }
+        if(swap_axes && xaxt != "n") {
+            if(yaxis_quant) graphics::axis(side=1, at=pretty(y), mgp=mgp.x, tick=FALSE, las=las)
+            else graphics::axis(side=1, at=1:ncol(x), colnames(x), mgp=mgp.x, tick=FALSE, las=las)
+        }
 
         # axis titles
         if(!is.null(xlab) && xlab != "") graphics::title(xlab=xlab, mgp=mgp.x)
@@ -200,7 +217,7 @@ plot_scan1_heatmap <-
 
     }
 
-    plot_scan1_heatmap_internal(x, map, gap=gap, col=col, chrlines=chrlines, swap_axes=swap_axes, zlim=zlim, ...)
+    plot_scan1_heatmap_internal(x, map, y=y, gap=gap, col=col, chrlines=chrlines, swap_axes=swap_axes, zlim=zlim, ...)
 
 }
 

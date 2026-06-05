@@ -8,6 +8,7 @@ plot_scan1_heatmap(
   x,
   map,
   chr = NULL,
+  y = NULL,
   gap = NULL,
   zlim = NULL,
   color_scheme = c("viridis", "gray", "revgray", "heat", "terrain", "topo", "rainbow"),
@@ -27,6 +28,11 @@ plot_scan1_heatmap(
 
 \item{chr}{Selected chromosomes to plot; a vector of character
 strings.}
+
+\item{y}{Vector with length equal to \code{ncol(x)}, defining the
+y-axis scale of the heat map. (If the multiple LOD scores are
+for a quantitative variable like time, these are the
+corresponding times.)}
 
 \item{gap}{Gap between chromosomes. The default is 1\% of the total genome length.}
 
@@ -59,15 +65,15 @@ grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
 map <- insert_pseudomarkers(grav2$gmap, step=1)
 probs <- calc_genoprob(grav2, map, error_prob=0.002)
 out <- scan1(probs, grav2$pheno)
-plot_scan1_heatmap(out, map)
+y <- as.numeric(grav2$phenocovar$time)
 
 # plot with colors white -> darkslateblue, and with color scale
 col <- colorRampPalette(c("white", "darkslateblue"))(256)
 zlim <- c(0, maxlod(out))
 layout(cbind(1,2), width=c(8,1))
 par(mar=c(4.1, 5.1, 1.1, 1.1))
-plot_scan1_heatmap(out, map,
-col=col, zlim=zlim)
+plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar),
+                   col=col, zlim=zlim)
 par(mar=c(10.1, 4.1, 10.1, 3.1))
 plot_colorscale(col=col, zlim=zlim)
 }
