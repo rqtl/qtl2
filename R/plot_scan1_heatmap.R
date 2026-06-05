@@ -45,6 +45,16 @@
 #' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' out <- scan1(probs, grav2$pheno)
 #' plot_scan1_heatmap(out, map)
+#'
+#' # plot with colors white -> darkslateblue, and with color scale
+#' col <- colorRampPalette(c("white", "darkslateblue"))(256)
+#' zlim <- c(0, maxlod(out))
+#' layout(cbind(1,2), width=c(8,1))
+#' par(mar=c(4.1, 5.1, 1.1, 1.1))
+#' plot_scan1_heatmap(out, map,
+#' col=col, zlim=zlim)
+#' par(mar=c(10.1, 4.1, 10.1, 3.1))
+#' plot_colorscale(col=col, zlim=zlim)
 
 plot_scan1_heatmap <-
     function(x, map, chr=NULL, gap=NULL, zlim=NULL,
