@@ -23,6 +23,9 @@
 
 ### Bug fixes
 
+- In `read_cross()` and `read_pheno()`, for phenotype covariates,
+  convert columns to numeric if they look like numbers. (Issue #37)
+
 - If input to `find_peaks()` had no column names, no peaks would be
   found. Added warning, plus a default set of column names.
 

@@ -150,6 +150,25 @@ read_phenocovar <-
     # read file
     stop_if_no_file(file)
     if(!quiet) message(" - Reading ", basename(file))
-    fread_csv(file, sep=sep, na.strings=na.strings,
-              comment.char=comment.char, transpose=FALSE)
+    result <- fread_csv(file, sep=sep, na.strings=na.strings,
+                        comment.char=comment.char, transpose=FALSE)
+
+    convert_numeric_columns(result)
+}
+
+
+convert_numeric_columns <-
+    function(df)
+{
+    # for each column, look if it's numeric and if so convert
+    if(ncol(df) > 0) {
+        for(i in 1:ncol(df)) {
+            x <- df[,i]
+            x <- x[!is.na(x)]
+            if(all(grepl("^(-)*[0-9]+\\.*[0-9]*$", x))) { # looks numeric
+                df[,i] <- as.numeric(df[,i])
+            }
+        }
+    }
+    df
 }

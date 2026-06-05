@@ -68,7 +68,7 @@ out <- scan1(probs, grav2$pheno)
 plot_scan1_heatmap(out, map)
 
 # make the y-axis quantitative
-y <- as.numeric(grav2$phenocovar$time)
+y <- grav2$phenocovar$time
 
 # plot with colors white -> darkslateblue, and with color scale
 col <- colorRampPalette(c("white", "darkslateblue"))(256)

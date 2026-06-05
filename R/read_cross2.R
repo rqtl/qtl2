@@ -167,6 +167,9 @@ function(file, quiet=TRUE)
             else if(section=="pheno") {
                 sheet <- pheno2matrix(sheet)
             }
+            else if(section=="phenocovar") {
+                sheet <- convert_numeric_columns(sheet)
+            }
 
             output[[section]] <- sheet
         }
