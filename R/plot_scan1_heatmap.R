@@ -53,7 +53,7 @@
 #'
 #' # make the y-axis quantitative
 #' y <- grav2$phenocovar$time
-#  plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar))
+#' plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar))
 #'
 #' # plot with colors white -> darkslateblue, and with color scale
 #' col <- colorRampPalette(c("white", "darkslateblue"))(256)
