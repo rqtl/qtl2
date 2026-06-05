@@ -23,4 +23,9 @@
 #' * [qtl2ggplot](https://github.com/byandell-sysgen/qtl2ggplot),
 #'   for [ggplot2](https://ggplot2.tidyverse.org/)-based data visualizations
 #'
+#' @section Google groups:
+#' * For discussion/questions about R/qtl2, join the [rqtl2-disc google group](https://groups.google.com/forum/#!forum/rqtl2-disc)
+#' * Or join [rqtl-announce](https://groups.google.com/forum/#!forum/rqtl-announce) for announcements about R/qtl and R/qtl2
+#'
+#'
 "_PACKAGE"
