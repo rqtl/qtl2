@@ -1,4 +1,4 @@
-### [R/qtl2](https://kbroman.org/qtl2/)
+### [R/qtl2](https://kbroman.org/qtl2/) <a href="https://kbroman.org/qtl2"><img src="figures/qtl2_logo.png" align="right" height="138" alt="R/qtl2 logo"/></a>
 
 [![R-CMD-check](https://github.com/rqtl/qtl2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rqtl/qtl2/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/qtl2)](https://cran.r-project.org/package=qtl2)

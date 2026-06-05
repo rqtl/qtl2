@@ -21,6 +21,10 @@
   `guess_phase()`: `subset.phasedgeno()`, 1rbind.phasedgeno()`, and
   `cbind.phasedgeno()`.
 
+### Minor changes
+
+- Added a package logo.
+
 ### Bug fixes
 
 - In `read_cross2()` and `read_pheno()`, for phenotype covariates,
