@@ -49,6 +49,9 @@
 #' map <- insert_pseudomarkers(grav2$gmap, step=1)
 #' probs <- calc_genoprob(grav2, map, error_prob=0.002)
 #' out <- scan1(probs, grav2$pheno)
+#' plot_scan1_heatmap(out, map)
+#'
+#' # make the y-axis quantitative
 #' y <- as.numeric(grav2$phenocovar$time)
 #  plot_scan1_heatmap(out, map, y=y, ylab=colnames(grav2$phenocovar))
 #'
