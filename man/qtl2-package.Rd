@@ -6,6 +6,8 @@
 \alias{qtl2-package}
 \title{qtl2: Quantitative Trait Locus Mapping in Experimental Crosses}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Provides a set of tools to perform quantitative trait locus (QTL) analysis in experimental crosses. It is a reimplementation of the 'R/qtl' package to better handle high-dimensional data and complex cross designs. Broman et al. (2019) \doi{10.1534/genetics.118.301595}.
 }
 \section{Vignettes}{
@@ -34,6 +36,14 @@ data among the R/qtl2, DOQTL, and R/qtl formats
 probabilities on disk
 \item \href{https://github.com/byandell-sysgen/qtl2ggplot}{qtl2ggplot},
 for \href{https://ggplot2.tidyverse.org/}{ggplot2}-based data visualizations
+}
+}
+
+\section{Google groups}{
+
+\itemize{
+\item For discussion/questions about R/qtl2, join the \href{https://groups.google.com/forum/#!forum/rqtl2-disc}{rqtl2-disc google group}
+\item Or join \href{https://groups.google.com/forum/#!forum/rqtl-announce}{rqtl-announce} for announcements about R/qtl and R/qtl2
 }
 }
 
