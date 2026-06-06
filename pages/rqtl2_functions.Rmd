@@ -1,8 +1,14 @@
 ---
-layout: page
 title: R/qtl2 functions
-description: Annotated/categorized list of functions in R/qtl2
+output:
+    html_document:
+        toc: true
+        toc_float: true
 ---
+
+<meta name="description" content="Annotated/categorized list of functions in R/qtl2">
+<meta name="author" content="Karl Broman">
+
 
 ### Data import
 

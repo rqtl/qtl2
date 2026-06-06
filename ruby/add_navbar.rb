@@ -3,10 +3,9 @@
 # Add navigation bar to the Rmd-based vignettes, so they have the
 # menubars at the top and the CC-BY at the bottom.
 
-file = ARGV.length > 0 ? ARGV[0] : abort("Give file name as command-line argument")
-
-head_file = "ruby/vignette_head.html"
-navbar_file = "ruby/vignette_navbar.html"
+file        = ARGV.length > 0 ? ARGV[0] : abort("Give file name as command-line argument")
+head_file   = ARGV.length > 1 ? ARGV[1] : "ruby/vignette_head.html"
+navbar_file = ARGV.length > 2 ? ARGV[2] : "ruby/vignette_navbar.html"
 
 # read header and footer files into single character strings
 head = File.readlines(head_file).join

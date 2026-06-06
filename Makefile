@@ -1,4 +1,4 @@
-all: vignettes data external_vignettes extdata pages/rqtl2_functions.md
+all: vignettes data external_vignettes extdata pages/rqtl2_functions.html
 .PHONY: vignettes data external_vignettes extdata
 
 # R_OPTS: --vanilla without --no-environ
@@ -32,5 +32,9 @@ extdata: ${EXTDATA}
 ../qtl2/inst/extdata/iron.zip: assets/sampledata/iron/iron.yaml
 	cp $(<D)/$(@F) $@
 
-pages/rqtl2_functions.md: ruby/annotate_functions.rb ../qtl2/NAMESPACE
+pages/rqtl2_functions.Rmd: ruby/annotate_functions.rb ../qtl2/NAMESPACE
 	$^
+
+pages/rqtl2_functions.html: pages/rqtl2_functions.Rmd
+	cd $(<D);R $(R_OPTS) -e "rmarkdown::render('$(<F)')"
+	ruby/add_navbar.rb $@ ruby/pages_head.html ruby/pages_navbar.html

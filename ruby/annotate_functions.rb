@@ -2,13 +2,13 @@
 #
 # Annotation all R/qtl2 functions
 #
-# If pages/rqtl2_functions.md doesn't exist, create it using the S3 methods + exported functions
+# If pages/rqtl2_functions.Rmd doesn't exist, create it using the S3 methods + exported functions
 # in the R/qtl2 NAMESPACE file
 #
 # If it does exist, check that all of the exported functions are there. Anything missing should
 # be appended to the end (in the "Other" section).
 
-mdfile = "pages/rqtl2_functions.md"
+mdfile = "pages/rqtl2_functions.Rmd"
 
 # create the pages/annotations file
 if !File.exist?(mdfile)
@@ -52,7 +52,7 @@ f.each_line do |line|
 end
 f.close()
 
-print("#{functions.length()} functions to add to pages/rqtl2_functions.md\n")
+print("#{functions.length()} functions to add to pages/rqtl2_functions.Rmd\n")
 
 if functions.length() > 0
     f = File.open(mdfile, "a")
