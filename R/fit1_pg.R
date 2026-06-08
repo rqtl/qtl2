@@ -4,8 +4,10 @@ fit1_pg <-
     function(genoprobs, pheno, kinship,
              addcovar=NULL, nullcovar=NULL, intcovar=NULL,
              weights=NULL, contrasts=NULL, zerosum=TRUE, se=FALSE,
-             hsq=NULL, reml=TRUE, ...)
+             hsq=NULL, reml=TRUE, var=FALSE, ...)
 {
+    if(zerosum && se) var <- TRUE # force calculation of full variance matrix
+
     # deal with the dot args
     dotargs <- list(...)
     tol <- grab_dots(dotargs, "tol", 1e-12)
@@ -129,7 +131,7 @@ fit1_pg <-
     fit0 <- fit1_pg_addcovar(cbind(intercept, addcovar, nullcovar),
                              pheno,
                              matrix(ncol=0, nrow=length(pheno)),
-                             eigenvec, wts, se, tol)
+                             eigenvec, wts, FALSE, FALSE, tol)
 
     # multiply genoprobs by contrasts
     if(!is.null(contrasts))
@@ -137,11 +139,11 @@ fit1_pg <-
 
     if(is.null(intcovar)) { # just addcovar
         if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-        fitA <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, wts, se, tol)
+        fitA <- fit1_pg_addcovar(genoprobs, pheno, addcovar, eigenvec, wts, se, var, tol)
     }
     else {                  # intcovar
         fitA <- fit1_pg_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                 eigenvec, wts, se, tol)
+                                 eigenvec, wts, se, var, tol)
     }
 
     # lod score
@@ -159,18 +161,33 @@ fit1_pg <-
     if(zerosum && is.null(contrasts)) {
         ng <- dim(genoprobs)[2]
         whval <- seq_len(ng)
-        mu <- mean(fitA$coef[whval], na.rm=TRUE)
-        fitA$coef <- c(fitA$coef, mu)
-        fitA$coef[whval] <- fitA$coef[whval] - mu
 
-        coef_names <- c(coef_names, "intercept")
+        A <- matrix(0, length(fitA$coef)+1, length(fitA$coef))
+        diag(A) <- 1
+        for(i in whval) { A[i,whval] <- -1/ng; A[i,i] <- 1-1/ng }
+        A[nrow(A),whval] <- 1/ng
 
-        if(se) {
+        fitA$coef <- as.numeric(A %*% fitA$coef)
+        coef_names <- names(fitA$coef) <- c(coef_names, "intercept")
+
+        if(var && !is.null(fitA$var)) {
+            fitA$var <- A %*% fitA$var %*% t(A)
+            fitA$SE <- sqrt(diag(fitA$var))
+        }
+        else if(se) {
             fitA$SE <- c(fitA$SE, sqrt(mean(fitA$SE[whval]^2, na.rm=TRUE)))
         }
     }
 
-    if(se) # results include standard errors
+    if(var && !is.null(fitA$var)) { # include variance-covariance matrix, if full rank
+        dimnames(fitA$var) <- list(coef_names, coef_names)
+        return(list(lod=lod,
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    SE=stats::setNames(fitA$SE, coef_names),
+                    var=fitA$var,
+                    fitted=fitted, resid=resid))
+    }
+    else if(se) # results include standard errors
         return(list(lod=lod,
                     coef=stats::setNames(fitA$coef, coef_names),
                     SE=stats::setNames(fitA$SE, coef_names),

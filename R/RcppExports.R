@@ -21,8 +21,8 @@ calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, e
     .Call(`_qtl2_calc_coefSE_binreg`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg`, X, y, se, maxit, tol, qr_tol, eta_max)
+fit_binreg <- function(X, y, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg`, X, y, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
@@ -41,8 +41,8 @@ calc_coefSE_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 
     .Call(`_qtl2_calc_coefSE_binreg_eigenqr`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_eigenqr <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, maxit, tol, qr_tol, eta_max)
+fit_binreg_eigenqr <- function(X, y, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
@@ -57,8 +57,8 @@ calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6,
     .Call(`_qtl2_calc_coefSE_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
+fit_binreg_weighted <- function(X, y, weights, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 calc_ll_binreg_weighted_eigenchol <- function(X, y, weights, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
@@ -77,8 +77,8 @@ calc_coefSE_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol
     .Call(`_qtl2_calc_coefSE_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
+fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 .calc_kinship <- function(prob_array) {
@@ -169,28 +169,28 @@ invert_founder_index <- function(cross_info) {
     .Call(`_qtl2_R_find_peaks_and_bayesint`, lod, pos, threshold, peakdrop, prob)
 }
 
-fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit1_binary_addcovar`, genoprobs, pheno, addcovar, weights, se, maxit, tol, qr_tol, eta_max)
+fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit1_binary_addcovar`, genoprobs, pheno, addcovar, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
-fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, maxit, tol, qr_tol, eta_max)
+fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
-fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_hk_addcovar`, genoprobs, pheno, addcovar, weights, se, tol)
+fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_hk_addcovar`, genoprobs, pheno, addcovar, weights, se, var, tol)
 }
 
-fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_hk_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, tol)
+fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_hk_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, var, tol)
 }
 
-fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se = FALSE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_pg_addcovar`, genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
+fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_pg_addcovar`, genoprobs, pheno, addcovar, eigenvec, weights, se, var, tol)
 }
 
-fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_pg_intcovar`, genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol)
+fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_pg_intcovar`, genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, var, tol)
 }
 
 geno_names <- function(crosstype, alleles, is_x_chr) {
@@ -301,12 +301,12 @@ calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
     .Call(`_qtl2_calc_resid_linreg_3d`, X, P, tol)
 }
 
-fit_linreg <- function(X, y, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit_linreg`, X, y, se, tol)
+fit_linreg <- function(X, y, se = TRUE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit_linreg`, X, y, se, var, tol)
 }
 
-fit_linreg_eigenchol <- function(X, y, se) {
-    .Call(`_qtl2_fit_linreg_eigenchol`, X, y, se)
+fit_linreg_eigenchol <- function(X, y, se, var = FALSE) {
+    .Call(`_qtl2_fit_linreg_eigenchol`, X, y, se, var)
 }
 
 calc_coef_linreg_eigenchol <- function(X, y) {
@@ -325,8 +325,8 @@ calc_fitted_linreg_eigenchol <- function(X, y) {
     .Call(`_qtl2_calc_fitted_linreg_eigenchol`, X, y)
 }
 
-fit_linreg_eigenqr <- function(X, y, se, tol = 1e-12) {
-    .Call(`_qtl2_fit_linreg_eigenqr`, X, y, se, tol)
+fit_linreg_eigenqr <- function(X, y, se, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit_linreg_eigenqr`, X, y, se, var, tol)
 }
 
 calc_coef_linreg_eigenqr <- function(X, y, tol = 1e-12) {

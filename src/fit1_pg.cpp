@@ -26,6 +26,7 @@ List fit1_pg_addcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& eigenvec,
                       const NumericVector& weights,
                       const bool se=false,
+                      const bool var=false,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -62,7 +63,7 @@ List fit1_pg_addcovar(const NumericMatrix& genoprobs,
     X = weighted_matrix(X, weights);
 
     // do regression
-    List result = fit_linreg(X, pheno_rev, se, tol);
+    List result = fit_linreg(X, pheno_rev, se, var, tol);
 
     // fix the fitted values (leave the residuals as they are)
     NumericVector fitted = result["fitted"];
@@ -93,7 +94,8 @@ List fit1_pg_intcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& intcovar,
                       const NumericMatrix& eigenvec,
                       const NumericVector& weights,
-                      const bool se=true,
+                      const bool se=false,
+                      const bool var=false,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -121,7 +123,7 @@ List fit1_pg_intcovar(const NumericMatrix& genoprobs,
     X = weighted_matrix(X, weights);
 
     // do regression
-    List result = fit_linreg(X, pheno_rev, se, tol);
+    List result = fit_linreg(X, pheno_rev, se, var, tol);
 
     // fix the fitted values (leave the residuals as they are)
     NumericVector fitted = result["fitted"];

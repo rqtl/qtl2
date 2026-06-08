@@ -25,6 +25,7 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& addcovar,
                       const NumericVector& weights,
                       const bool se=false,
+                      const bool var=false,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -53,7 +54,7 @@ List fit1_hk_addcovar(const NumericMatrix& genoprobs,
     // multiply by square-root weights, if necessary
     if(n_weights > 0) X = weighted_matrix(X, weights);
 
-    return fit_linreg(X, pheno, se, tol);
+    return fit_linreg(X, pheno, se, var, tol);
 }
 
 
@@ -74,7 +75,8 @@ List fit1_hk_intcovar(const NumericMatrix& genoprobs,
                       const NumericMatrix& addcovar,
                       const NumericMatrix& intcovar,
                       const NumericVector& weights,
-                      const bool se=true,
+                      const bool se=false,
+                      const bool var=false,
                       const double tol=1e-12)
 {
     const int n_ind = pheno.size();
@@ -93,5 +95,5 @@ List fit1_hk_intcovar(const NumericMatrix& genoprobs,
     NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, 0, false);
     if(n_weights > 0) X = weighted_matrix(X, weights);
 
-    return fit_linreg(X, pheno, se, tol);
+    return fit_linreg(X, pheno, se, var, tol);
 }

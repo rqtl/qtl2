@@ -44,6 +44,7 @@ Rcpp::List fit_binreg_weighted(const Rcpp::NumericMatrix& X,
                                const Rcpp::NumericVector& y,
                                const Rcpp::NumericVector &weights,
                                const bool se, // whether to include SEs
+                               const bool var, // whether to calcualte var-cov matrix
                                const int maxit,
                                const double tol,
                                const double qr_tol,

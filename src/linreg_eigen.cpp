@@ -20,7 +20,8 @@ MatrixXd calc_XpX(const MatrixXd& X)
 
 // least squares by "LLt" Cholesky decomposition
 // [[Rcpp::export]]
-List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se)
+List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
+                          const bool se, const bool var=false)
 {
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
@@ -39,7 +40,22 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
     const int df = n-p;
     const double s = resid.norm() / std::sqrt((double)df);
     const double rss = resid.squaredNorm();
-    if(se) {
+    if(var) {
+        MatrixXd VAR = s * llt.matrixL().solve(MatrixXd::Identity(p,p));
+        VectorXd SE = VAR.colwise().norm();
+        VAR = VAR.adjoint() * VAR;
+
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = s,
+                            Named("rank") = p,
+                            Named("df") = df,
+                            Named("SE") = SE,
+                            Named("var") = VAR);
+    }
+    else if(se) {
         VectorXd SE = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
 
         return List::create(Named("coef") = betahat,
@@ -152,7 +168,7 @@ NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const Numeric
 // least squares by QR decomposition with column pivoting
 // [[Rcpp::export]]
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
-                        const bool se, const double tol=1e-12)
+                        const bool se, const bool var=false, const double tol=1e-12)
 {
     #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())
@@ -173,12 +189,21 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     const int r = PQR.rank();
 
     VectorXd betahat(p), fitted(n), SE(p);
+    MatrixXd VAR(p,p);
 
     if(r == p) { // full rank
         betahat = PQR.solve(yy);
         fitted = XX * betahat;
 
-        if(se) {
+        if(var) {
+            VAR = Pmat * PQR.matrixQR().topRows(p).
+                triangularView<Upper>().
+                solve(MatrixXd::Identity(p, p));
+            SE = VAR.rowwise().norm();
+            VAR = VAR * VAR.adjoint();
+        }
+
+        else if(se) {
             SE = Pmat * PQR.matrixQR().topRows(p).
                 triangularView<Upper>().
                 solve(MatrixXd::Identity(p, p)).
@@ -210,7 +235,17 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     const int df = n - r;
     const double sigma = std::sqrt(rss/(double)df);
 
-    if(se)
+    if(var && r==p) // don't return variance if not X is full rank
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = sigma,
+                            Named("rank") = r,
+                            Named("df") = df,
+                            Named("SE") = sigma*SE,
+                            Named("var") = sigma*sigma*VAR);
+    else if(se)
         return List::create(Named("coef") = betahat,
                             Named("fitted") = fitted,
                             Named("resid") = resid,

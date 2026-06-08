@@ -392,3 +392,64 @@ test_that("fit one for binary traits handles NA case with DO data", {
     expect_equal(outw[mar[2],1], (ll0_w-ll1b_w)/2/log(10), tol=1e-6)
 
 })
+
+
+test_that("fit1 for binary trait gives same answer as glm(), including variance matrix", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    iron <- iron[,18]
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+
+    pheno <- setNames(as.numeric(iron$pheno[,1] > quantile(iron$pheno[,1], 0.6)), rownames(iron$pheno))
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+
+    # max positions
+    out <- scan1(probs, pheno, addcovar=covar)
+    mx <- max(out, map)
+
+    # pull prob
+    pr <- pull_genoprobpos(probs, map, chr=mx$chr, pos=mx$pos)
+
+    # estimate coefficients; no covariates for X chromosome
+    out_glm <- glm(pheno ~ -1 + pr + covar, family=binomial(link=logit))
+    sum_glm <- summary(out_glm)
+    coef_glm <- out_glm$coef
+    se_glm <- sum_glm$coef[,2]
+    var_glm <- sum_glm$cov.scaled
+
+    expect_equal(sqrt(diag(var_glm)), se_glm)
+
+    out_fit1_se <- fit1(pr, pheno, addcovar=covar, model="binary", zerosum=FALSE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, addcovar=covar, model="binary", zerosum=FALSE, var=TRUE)
+
+    names(coef_glm) <- names(se_glm) <- rownames(var_glm) <- colnames(var_glm) <- names(out_fit1_se$coef)
+
+    expect_equal(out_fit1_se$coef,  coef_glm)
+    expect_equal(out_fit1_se$SE,    se_glm, tol=1e-5)
+    expect_equal(out_fit1_var$coef, coef_glm)
+    expect_equal(out_fit1_var$SE,   se_glm, tol=1e-5)
+    expect_equal(out_fit1_var$var,  var_glm, tol=1e-5)
+
+    # zerosum version
+    A <- rbind(c(2/3, -1/3, -1/3, 0),
+               c(-1/3, 2/3, -1/3, 0),
+               c(-1/3,-1/3,  2/3, 0),
+               c(  0,   0,    0,  1),
+               c(1/3,  1/3,  1/3, 0))
+    coef_glm <- setNames(as.numeric(A %*% coef_glm), c(names(coef_glm), "intercept"))
+    var_glm <- A %*% var_glm %*% t(A)
+    se_glm <- sqrt(diag(var_glm))
+    names(se_glm) <- rownames(var_glm) <- colnames(var_glm) <- names(coef_glm)
+
+    out_fit1_se <- fit1(pr, pheno, addcovar=covar, model="binary", zerosum=TRUE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, addcovar=covar, model="binary", zerosum=TRUE, var=TRUE)
+
+    expect_equal(out_fit1_se$coef,  coef_glm)
+    expect_equal(out_fit1_se$SE,    se_glm, tol=1e-5)
+    expect_equal(out_fit1_var$coef, coef_glm)
+    expect_equal(out_fit1_var$SE,   se_glm, tol=1e-5)
+    expect_equal(out_fit1_var$var,  var_glm, tol=1e-5)
+
+})

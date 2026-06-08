@@ -22,6 +22,7 @@ Rcpp::List fit1_pg_addcovar(const Rcpp::NumericMatrix& genoprobs,
                             const Rcpp::NumericMatrix& eigenvec,
                             const Rcpp::NumericVector& weights,
                             const bool se,
+                            const bool var,
                             const double tol);
 
 
@@ -44,6 +45,7 @@ Rcpp::List fit1_pg_intcovar(const Rcpp::NumericMatrix& genoprobs,
                             const Rcpp::NumericMatrix& eigenvec,
                             const Rcpp::NumericVector& weights,
                             const bool se,
+                            const bool var,
                             const double tol);
 
 #endif // FIT1_PG_H

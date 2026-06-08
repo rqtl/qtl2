@@ -19,6 +19,7 @@ fit1(
   hsq = NULL,
   reml = TRUE,
   blup = FALSE,
+  var = FALSE,
   ...
 )
 }
@@ -70,6 +71,11 @@ the mean. Ignored if \code{contrasts} is provided.}
 REML; otherwise maximum likelihood.}
 
 \item{blup}{If TRUE, fit a model with QTL effects being random, as in \code{\link[=scan1blup]{scan1blup()}}.}
+
+\item{var}{If TRUE, calculate the variance-covariance matrix of the coefficients
+(in which case \code{se} is ignored, and standard errors will also be included).
+But note that the variance-covariance matrix is only returned
+if the covariate matrix is full rank.}
 
 \item{...}{Additional control parameters; see Details;}
 }

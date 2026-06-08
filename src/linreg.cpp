@@ -72,7 +72,7 @@ NumericVector calc_resid_linreg_3d(const NumericMatrix& X, const NumericVector& 
 //
 // [[Rcpp::export]]
 List fit_linreg(const NumericMatrix& X, const NumericVector& y,
-                const bool se=true, const double tol=1e-12)
+                const bool se=true, const bool var=false, const double tol=1e-12)
 {
-    return fit_linreg_eigenqr(X, y, se, tol);
+    return fit_linreg_eigenqr(X, y, se, var, tol);
 }

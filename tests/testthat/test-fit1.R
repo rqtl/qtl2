@@ -586,15 +586,23 @@ test_that("fit1 works without genoprobs", {
     lm_out <- lm(phe ~ cov)
     lm_sum <- summary(lm_out)
 
-    coef_names <- c("intercept", "ac1", "intercept")
+    coef_names <- c("intercept", "ac1")
     expected <- list(lod=0,
                      ind_lod=setNames(rep(0, n), nam),
-                     coef=setNames(c(0, lm_out$coef[2], lm_out$coef[1]), coef_names),
-                     SE=setNames(lm_sum$coef[c(1,2,1),"Std. Error"], coef_names),
+                     coef=setNames(lm_out$coef, coef_names),
+                     SE=setNames(lm_sum$coef[,"Std. Error"], coef_names),
                      fitted=lm_out$fitted,
                      resid=lm_out$resid)
 
     expect_equal(fit1(pheno=phe, addcovar=cov), expected)
+    expect_equal(fit1(pheno=phe, addcovar=cov, zerosum=TRUE), expected)
+
+    # test var-covariance matrix
+    expected$var <- lm_sum$cov.unscaled * lm_sum$sigma^2
+    dimnames(expected$var) <- list(coef_names, coef_names)
+    expected <- expected[c(1,2,3,4,7,5,6)]
+    expect_equal(fit1(pheno=phe, addcovar=cov, var=TRUE), expected)
+    expect_equal(fit1(pheno=phe, addcovar=cov, var=TRUE, zerosum=TRUE), expected)
 
     k <- matrix(0.5,ncol=n, nrow=n)
     diag(k) <- 1
@@ -602,5 +610,65 @@ test_that("fit1 works without genoprobs", {
 
     # just test that this works
     should_work <- fit1(pheno=phe, addcovar=cov, kinship=k)
+
+})
+
+test_that("fit1 by H-K gives same answer as lm(), including variance matrix", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    iron <- iron[,18]
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+
+    pheno <- iron$pheno[,1]
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+
+    # max positions
+    out <- scan1(probs, pheno, addcovar=covar)
+    mx <- max(out, map)
+
+    # pull prob
+    pr <- pull_genoprobpos(probs, map, chr=mx$chr, pos=mx$pos)
+
+    # estimate coefficients; no covariates for X chromosome
+    out_lm <- lm(pheno ~ -1 + pr + covar)
+    sum_lm <- summary(out_lm)
+    coef_lm <- out_lm$coef
+    se_lm <- sum_lm$coef[,2]
+    var_lm <- sum_lm$cov.unscaled * sum_lm$sigma^2
+
+    expect_equal(sqrt(diag(var_lm)), se_lm)
+
+    out_fit1_se <- fit1(pr, pheno, addcovar=covar, zerosum=FALSE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, addcovar=covar, zerosum=FALSE, var=TRUE)
+
+    names(coef_lm) <- names(se_lm) <- rownames(var_lm) <- colnames(var_lm) <- names(out_fit1_se$coef)
+
+    expect_equal(out_fit1_se$coef,  coef_lm)
+    expect_equal(out_fit1_se$SE,    se_lm)
+    expect_equal(out_fit1_var$coef, coef_lm)
+    expect_equal(out_fit1_var$SE,   se_lm)
+    expect_equal(out_fit1_var$var,  var_lm)
+
+    # zerosum version
+    A <- rbind(c(2/3, -1/3, -1/3, 0),
+               c(-1/3, 2/3, -1/3, 0),
+               c(-1/3,-1/3,  2/3, 0),
+               c(  0,   0,    0,  1),
+               c(1/3,  1/3,  1/3, 0))
+    coef_lm <- setNames(as.numeric(A %*% coef_lm), c(names(coef_lm), "intercept"))
+    var_lm <- A %*% var_lm %*% t(A)
+    se_lm <- sqrt(diag(var_lm))
+    names(se_lm) <- rownames(var_lm) <- colnames(var_lm) <- names(coef_lm)
+
+    out_fit1_se <- fit1(pr, pheno, addcovar=covar, zerosum=TRUE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, addcovar=covar, zerosum=TRUE, var=TRUE)
+
+    expect_equal(out_fit1_se$coef,  coef_lm)
+    expect_equal(out_fit1_se$SE,    se_lm)
+    expect_equal(out_fit1_var$coef, coef_lm)
+    expect_equal(out_fit1_var$SE,   se_lm)
+    expect_equal(out_fit1_var$var,  var_lm)
 
 })

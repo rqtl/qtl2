@@ -116,3 +116,51 @@ test_that("weighted binreg_eigen functions work", {
                  (out$deviance - out0$deviance)/(-2*log(10)))
 
 })
+
+
+
+test_that("binreg full variance-covariance matrix is correct", {
+
+    set.seed(20260608)
+    n <- 100
+    x <- cbind(1, rnorm(n))
+    y <- x %*% c(1,1) + rnorm(n)
+    z <- as.numeric(y > 0.2)
+    w <- sample(1:6, n, replace=TRUE) # weights, for later
+
+    out_glm <- summary(glm(z ~ -1 + x, family=binomial(link=logit)))
+    coef_glm <- out_glm$coef[,1]
+    se_glm <- out_glm$coef[,2]
+    var_glm <- out_glm$cov.scaled
+
+    expect_equal(sqrt(diag(var_glm)), se_glm)
+
+    # eigen QR
+    out_var <- fit_binreg(x, z, FALSE, TRUE)
+    out_se <- fit_binreg(x, z, TRUE, FALSE)
+
+    expect_equivalent(coef_glm, out_se$coef)
+    expect_equivalent(se_glm, out_se$SE, tol=1e-5)
+    expect_equivalent(coef_glm, out_var$coef)
+    expect_equivalent(se_glm, out_var$SE, tol=1e-5)
+    expect_equivalent(var_glm, out_var$var, tol=1e-5)
+
+    # weighted
+    out_glm <- summary(glm(z ~ -1 + x, family=binomial(link=logit), weights=w))
+    coef_glm <- out_glm$coef[,1]
+    se_glm <- out_glm$coef[,2]
+    var_glm <- out_glm$cov.scaled
+
+    expect_equal(sqrt(diag(var_glm)), se_glm)
+
+    # eigen QR
+    out_var <- fit_binreg_weighted(x, z, w, TRUE, TRUE)
+    out_se <- fit_binreg_weighted(x, z, w, TRUE, FALSE)
+
+    expect_equivalent(coef_glm, out_se$coef)
+    expect_equivalent(se_glm, out_se$SE, tol=1e-5)
+    expect_equivalent(coef_glm, out_var$coef)
+    expect_equivalent(se_glm, out_var$SE, tol=1e-5)
+    expect_equivalent(var_glm, out_var$var, tol=1e-5)
+
+})
