@@ -35,6 +35,8 @@
 #' @param zerosum If TRUE, force the genotype or allele coefficients
 #'     sum to 0 by subtracting their mean and add another column with
 #'     the mean. Ignored if `contrasts` is provided.
+#'     **Note**: the standard errors aren't quite right when `zerosum=TRUE`;
+#'     use [fit1()] to get proper standard errors.
 #' @param se If TRUE, also calculate the standard errors.
 #' @param hsq (Optional) residual heritability; used only if
 #' `kinship` provided.

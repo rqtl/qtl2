@@ -60,7 +60,9 @@ If \code{model="binary"}, the phenotypes must have values in \eqn{[0, 1]}.}
 
 \item{zerosum}{If TRUE, force the genotype or allele coefficients
 sum to 0 by subtracting their mean and add another column with
-the mean. Ignored if \code{contrasts} is provided.}
+the mean. Ignored if \code{contrasts} is provided.
+\strong{Note}: the standard errors aren't quite right when \code{zerosum=TRUE};
+use \code{\link[=fit1]{fit1()}} to get proper standard errors.}
 
 \item{se}{If TRUE, also calculate the standard errors.}
 
