@@ -1,6 +1,10 @@
-## qtl2 0.41-9 (2026-06-05)
+## qtl2 0.41-10 (2026-06-08)
 
 ### New features
+
+- `fit1()` can return the full variance-covariance matrix of the
+  coefficients, with the argument `var=TRUE`. In this case, the `se`
+  argument is ignored, but the standard errors are also included.
 
 - Added function `plot_cistrans()` for plotting the results of eQTL or
   pQTL analyses, with gene location on the y-axis and QTL location on

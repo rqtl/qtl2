@@ -1143,15 +1143,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // fit_linreg_eigenchol
-List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se);
-RcppExport SEXP _qtl2_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP) {
+List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se, const bool var);
+RcppExport SEXP _qtl2_fit_linreg_eigenchol(SEXP XSEXP, SEXP ySEXP, SEXP seSEXP, SEXP varSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const NumericMatrix& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type y(ySEXP);
     Rcpp::traits::input_parameter< const bool >::type se(seSEXP);
-    rcpp_result_gen = Rcpp::wrap(fit_linreg_eigenchol(X, y, se));
+    Rcpp::traits::input_parameter< const bool >::type var(varSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_linreg_eigenchol(X, y, se, var));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2521,7 +2522,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qtl2_calc_resid_linreg", (DL_FUNC) &_qtl2_calc_resid_linreg, 3},
     {"_qtl2_calc_resid_linreg_3d", (DL_FUNC) &_qtl2_calc_resid_linreg_3d, 3},
     {"_qtl2_fit_linreg", (DL_FUNC) &_qtl2_fit_linreg, 4},
-    {"_qtl2_fit_linreg_eigenchol", (DL_FUNC) &_qtl2_fit_linreg_eigenchol, 3},
+    {"_qtl2_fit_linreg_eigenchol", (DL_FUNC) &_qtl2_fit_linreg_eigenchol, 4},
     {"_qtl2_calc_coef_linreg_eigenchol", (DL_FUNC) &_qtl2_calc_coef_linreg_eigenchol, 2},
     {"_qtl2_calc_coefSE_linreg_eigenchol", (DL_FUNC) &_qtl2_calc_coefSE_linreg_eigenchol, 2},
     {"_qtl2_calc_rss_eigenchol", (DL_FUNC) &_qtl2_calc_rss_eigenchol, 2},

@@ -20,7 +20,8 @@ MatrixXd calc_XpX(const MatrixXd& X)
 
 // least squares by "LLt" Cholesky decomposition
 // [[Rcpp::export]]
-List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const bool se)
+List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
+                          const bool se, const bool var=false)
 {
     const MatrixXd XX(as<Map<MatrixXd> >(X));
     const VectorXd yy(as<Map<VectorXd> >(y));
@@ -39,6 +40,21 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y, const 
     const int df = n-p;
     const double s = resid.norm() / std::sqrt((double)df);
     const double rss = resid.squaredNorm();
+    if(var) {
+        MatrixXd VAR = s * llt.matrixL().solve(MatrixXd::Identity(p,p));
+        VectorXd SE = VAR.colwise().norm();
+        VAR = VAR.adjoint() * VAR;
+
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = s,
+                            Named("rank") = p,
+                            Named("df") = df,
+                            Named("SE") = SE,
+                            Named("var") = VAR);
+    }
     if(se) {
         VectorXd SE = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
 
