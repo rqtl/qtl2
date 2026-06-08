@@ -356,7 +356,7 @@ fit1 <-
         for(i in whval) { A[i,whval] <- -1/ng; A[i,i] <- 1-1/ng }
         A[nrow(A),whval] <- 1/ng
 
-        fitA$coef <- A %*% fitA$coef
+        fitA$coef <- as.numeric(A %*% fitA$coef)
         coef_names <- names(fitA$coef) <- c(coef_names, "intercept")
 
         if(var && !is.null(fitA$var)) {
