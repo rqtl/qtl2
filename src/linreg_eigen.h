@@ -39,6 +39,7 @@ Rcpp::NumericVector calc_fitted_linreg_eigenchol(const Rcpp::NumericMatrix& X,
 Rcpp::List fit_linreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const Rcpp::NumericVector& y,
                               const bool se,
+                              const bool var,
                               const double tol);
 
 // least squares by QR decomposition with column pivoting

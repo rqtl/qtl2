@@ -55,7 +55,7 @@ List fit_linreg_eigenchol(const NumericMatrix& X, const NumericVector& y,
                             Named("SE") = SE,
                             Named("var") = VAR);
     }
-    if(se) {
+    else if(se) {
         VectorXd SE = s * llt.matrixL().solve(MatrixXd::Identity(p,p)).colwise().norm();
 
         return List::create(Named("coef") = betahat,
@@ -168,7 +168,7 @@ NumericVector calc_fitted_linreg_eigenchol(const NumericMatrix& X, const Numeric
 // least squares by QR decomposition with column pivoting
 // [[Rcpp::export]]
 List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
-                        const bool se, const double tol=1e-12)
+                        const bool se, const bool var=false, const double tol=1e-12)
 {
     #ifndef RQTL2_NODEBUG
     if(X.rows() != y.size())

@@ -325,8 +325,8 @@ calc_fitted_linreg_eigenchol <- function(X, y) {
     .Call(`_qtl2_calc_fitted_linreg_eigenchol`, X, y)
 }
 
-fit_linreg_eigenqr <- function(X, y, se, tol = 1e-12) {
-    .Call(`_qtl2_fit_linreg_eigenqr`, X, y, se, tol)
+fit_linreg_eigenqr <- function(X, y, se, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit_linreg_eigenqr`, X, y, se, var, tol)
 }
 
 calc_coef_linreg_eigenqr <- function(X, y, tol = 1e-12) {

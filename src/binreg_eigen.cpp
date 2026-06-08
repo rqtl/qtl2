@@ -259,7 +259,7 @@ List fit_binreg_eigenqr(const NumericMatrix& X,
     if(!converged) r_warning("binary trait regression didn't converge: increase maxit or tol");
 
     // now get coefficients, SEs, etc.
-    List fit = fit_linreg_eigenqr(XX, z, true, qr_tol);
+    List fit = fit_linreg_eigenqr(XX, z, true, false, qr_tol);
     NumericVector coef = fit[0];
 
     if(se) {
