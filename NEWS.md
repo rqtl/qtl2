@@ -26,6 +26,10 @@
   `guess_phase()`: `subset.phasedgeno()`, 1rbind.phasedgeno()`, and
   `cbind.phasedgeno()`.
 
+- Added arguments `add` and `offset` to `plot_ci()`, so that you can
+  add additional sets of confidence intervals, shifted relative to
+  each other, to a plot.
+
 ### Minor changes
 
 - Added a package logo.

@@ -12,6 +12,8 @@ plot_ci(
   SEmult = 2,
   labels = NULL,
   swap_axes = FALSE,
+  add = FALSE,
+  offset = 0,
   ...
 )
 }
@@ -30,6 +32,11 @@ plot_ci(
 
 \item{swap_axes}{If TRUE, have group as y-axis; default (FALSE) has
 group on x-axis.}
+
+\item{add}{If TRUE, add the CIs to a previous plot with the same axes}
+
+\item{offset}{Amount to offset the positions of the confidence intervals
+(particularly for the case \code{add=TRUE})}
 
 \item{...}{Optional graphics arguments}
 }
