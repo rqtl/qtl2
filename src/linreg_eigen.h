@@ -11,7 +11,7 @@ Eigen::MatrixXd calc_XpX(const Eigen::MatrixXd& A);
 // needs to be full rank
 Rcpp::List fit_linreg_eigenchol(const Rcpp::NumericMatrix& X,
                                 const Rcpp::NumericVector& y,
-                                const bool se);
+                                const bool se, const bool var);
 
 // least squares by "LLt" Cholesky decomposition
 // return just the coefficients
