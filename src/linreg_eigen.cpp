@@ -235,7 +235,7 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     const int df = n - r;
     const double sigma = std::sqrt(rss/(double)df);
 
-    if(var)
+    if(var && r==p) // don't return variance if not X is full rank
         return List::create(Named("coef") = betahat,
                             Named("fitted") = fitted,
                             Named("resid") = resid,
