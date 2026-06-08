@@ -586,15 +586,23 @@ test_that("fit1 works without genoprobs", {
     lm_out <- lm(phe ~ cov)
     lm_sum <- summary(lm_out)
 
-    coef_names <- c("intercept", "ac1", "intercept")
+    coef_names <- c("intercept", "ac1")
     expected <- list(lod=0,
                      ind_lod=setNames(rep(0, n), nam),
-                     coef=setNames(c(0, lm_out$coef[2], lm_out$coef[1]), coef_names),
-                     SE=setNames(lm_sum$coef[c(1,2,1),"Std. Error"], coef_names),
+                     coef=setNames(lm_out$coef, coef_names),
+                     SE=setNames(lm_sum$coef[,"Std. Error"], coef_names),
                      fitted=lm_out$fitted,
                      resid=lm_out$resid)
 
     expect_equal(fit1(pheno=phe, addcovar=cov), expected)
+    expect_equal(fit1(pheno=phe, addcovar=cov, zerosum=TRUE), expected)
+
+    # test var-covariance matrix
+    expected$var <- lm_sum$cov.unscaled * lm_sum$sigma^2
+    dimnames(expected$var) <- list(coef_names, coef_names)
+    expected <- expected[c(1,2,3,4,7,5,6)]
+    expect_equal(fit1(pheno=phe, addcovar=cov, var=TRUE), expected)
+    expect_equal(fit1(pheno=phe, addcovar=cov, var=TRUE, zerosum=TRUE), expected)
 
     k <- matrix(0.5,ncol=n, nrow=n)
     diag(k) <- 1

@@ -19,6 +19,7 @@ Rcpp::List fit1_hk_addcovar(const Rcpp::NumericMatrix& genoprobs,
                             const Rcpp::NumericMatrix& addcovar,
                             const Rcpp::NumericVector& weights,
                             const bool se,
+                            const bool var,
                             const double tol);
 
 // Fit a single-QTL model at a single position, with interactive covariates
@@ -38,6 +39,7 @@ Rcpp::List fit1_hk_intcovar(const Rcpp::NumericVector& genoprobs,
                             const Rcpp::NumericMatrix& intcovar,
                             const Rcpp::NumericVector& weights,
                             const bool se,
+                            const bool var,
                             const double tol);
 
 #endif // FIT1_HK_H

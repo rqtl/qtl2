@@ -177,20 +177,20 @@ fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, 
     .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, maxit, tol, qr_tol, eta_max)
 }
 
-fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_hk_addcovar`, genoprobs, pheno, addcovar, weights, se, tol)
+fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_hk_addcovar`, genoprobs, pheno, addcovar, weights, se, var, tol)
 }
 
-fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_hk_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, tol)
+fit1_hk_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_hk_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, var, tol)
 }
 
-fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se = FALSE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_pg_addcovar`, genoprobs, pheno, addcovar, eigenvec, weights, se, tol)
+fit1_pg_addcovar <- function(genoprobs, pheno, addcovar, eigenvec, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_pg_addcovar`, genoprobs, pheno, addcovar, eigenvec, weights, se, var, tol)
 }
 
-fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit1_pg_intcovar`, genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, tol)
+fit1_pg_intcovar <- function(genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se = FALSE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit1_pg_intcovar`, genoprobs, pheno, addcovar, intcovar, eigenvec, weights, se, var, tol)
 }
 
 geno_names <- function(crosstype, alleles, is_x_chr) {

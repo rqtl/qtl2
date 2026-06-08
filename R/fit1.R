@@ -37,6 +37,10 @@
 #' @param reml If `kinship` provided: if `reml=TRUE`, use
 #' REML; otherwise maximum likelihood.
 #' @param blup If TRUE, fit a model with QTL effects being random, as in [scan1blup()].
+#' @param var If TRUE, calculate the variance-covariance matrix of the coefficients
+#'     (in which case `se` is ignored, and standard errors will also be included).
+#'     But note that the variance-covariance matrix is only returned
+#'     if the covariate matrix is full rank.
 #' @param ... Additional control parameters; see Details;
 #'
 #' @return A list containing
@@ -125,7 +129,8 @@ fit1 <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, nullcovar=NULL,
              intcovar=NULL, weights=NULL,
              contrasts=NULL, model=c("normal", "binary"),
-             zerosum=TRUE, se=TRUE, hsq=NULL, reml=TRUE, blup=FALSE, ...)
+             zerosum=TRUE, se=TRUE, hsq=NULL, reml=TRUE, blup=FALSE,
+             var=FALSE, ...)
 {
     if(is.null(pheno)) stop("pheno is NULL")
 
@@ -133,7 +138,10 @@ fit1 <-
         if(!is.matrix(pheno)) pheno <- cbind(pheno)
         genoprobs <- matrix(1, ncol=1, nrow=nrow(pheno))
         dimnames(genoprobs) <- list(rownames(pheno), "intercept")
+        zerosum <- FALSE
     }
+
+    if(zerosum && se) var <- TRUE # force calculation of full variance matrix
 
     model <- match.arg(model)
 
@@ -142,6 +150,7 @@ fit1 <-
         if(model != "normal") warning('If blup==TRUE, model taken to be "normal"')
         if(!is.null(weights)) warning("If blup==TRUE, weights ignored")
         if(!is.null(hsq)) warning("If blup==TRUE, hsq ignored")
+        if(var) { warning("For now, if blup==TRUE, var ignored"); var <- FALSE }
 
         rn <- rownames(genoprobs)
         cn <- colnames(genoprobs)
@@ -158,7 +167,7 @@ fit1 <-
 
     if(!is.null(kinship)) { # use LMM; see fit1_pg.R
         return(fit1_pg(genoprobs, pheno, kinship, addcovar, nullcovar,
-                       intcovar, weights, contrasts, zerosum, se, hsq, reml, ...))
+                       intcovar, weights, contrasts, zerosum, se, hsq, reml, var, ...))
     }
 
     # deal with the dot args
@@ -274,15 +283,15 @@ fit1 <-
         fit0 <- fit1_hk_addcovar(X0, # plug addcovar where genoprobs would be
                                  pheno,
                                  matrix(nrow=length(pheno), ncol=0),     # empty slot for addcovar
-                                 weights, se=FALSE, tol)
+                                 weights, se=FALSE, var=FALSE, tol)
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            fitA <- fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, se=se, tol)
+            fitA <- fit1_hk_addcovar(genoprobs, pheno, addcovar, weights, se=se, var=var, tol)
         }
         else {                  # intcovar
             fitA <- fit1_hk_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                     weights, se=se, tol)
+                                     weights, se=se, var=var, tol)
         }
 
         # lod score
@@ -341,18 +350,36 @@ fit1 <-
     if(zerosum && is.null(contrasts)) {
         ng <- dim(genoprobs)[2]
         whval <- seq_len(ng)
+
         mu <- mean(fitA$coef[whval], na.rm=TRUE)
         fitA$coef <- c(fitA$coef, mu)
         fitA$coef[whval] <- fitA$coef[whval] - mu
 
         coef_names <- c(coef_names, "intercept")
 
-        if(se) {
+        if(var && !is.null(fitA$var)) {
+            A <- matrix(0, nrow(fitA$var)+1, nrow(fitA$var))
+            diag(A) <- 1
+            for(i in whval) { A[i,whval] <- -1/ng; A[i,i] <- 1-1/ng }
+            A[nrow(A),whval] <- 1/ng
+
+            fitA$var <- A %*% fitA$var %*% t(A)
+            fitA$SE <- sqrt(diag(fitA$var))
+        }
+        else if(se) {
             fitA$SE <- c(fitA$SE, sqrt(mean(fitA$SE[whval]^2, na.rm=TRUE)))
         }
     }
 
-    if(se) # results include standard errors
+    if(var && !is.null(fitA$var)) { # results include var-cov matrix, if full rank
+        dimnames(fitA$var) <- list(coef_names, coef_names)
+        return(list(lod=lod, ind_lod=ind_lod,
+                    coef=stats::setNames(fitA$coef, coef_names),
+                    SE=stats::setNames(fitA$SE, coef_names),
+                    var=fitA$var,
+                    fitted=fitted, resid=resid))
+    }
+    else if(se) # results include standard errors
         return(list(lod=lod, ind_lod=ind_lod,
                     coef=stats::setNames(fitA$coef, coef_names),
                     SE=stats::setNames(fitA$SE, coef_names),
