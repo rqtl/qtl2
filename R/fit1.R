@@ -351,18 +351,15 @@ fit1 <-
         ng <- dim(genoprobs)[2]
         whval <- seq_len(ng)
 
-        mu <- mean(fitA$coef[whval], na.rm=TRUE)
-        fitA$coef <- c(fitA$coef, mu)
-        fitA$coef[whval] <- fitA$coef[whval] - mu
+        A <- matrix(0, length(fitA$coef)+1, length(fitA$coef))
+        diag(A) <- 1
+        for(i in whval) { A[i,whval] <- -1/ng; A[i,i] <- 1-1/ng }
+        A[nrow(A),whval] <- 1/ng
 
-        coef_names <- c(coef_names, "intercept")
+        fitA$coef <- A %*% fitA$coef
+        coef_names <- names(fitA$coef) <- c(coef_names, "intercept")
 
         if(var && !is.null(fitA$var)) {
-            A <- matrix(0, nrow(fitA$var)+1, nrow(fitA$var))
-            diag(A) <- 1
-            for(i in whval) { A[i,whval] <- -1/ng; A[i,i] <- 1-1/ng }
-            A[nrow(A),whval] <- 1/ng
-
             fitA$var <- A %*% fitA$var %*% t(A)
             fitA$SE <- sqrt(diag(fitA$var))
         }
