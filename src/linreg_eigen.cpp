@@ -189,12 +189,21 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     const int r = PQR.rank();
 
     VectorXd betahat(p), fitted(n), SE(p);
+    MatrixXd VAR(p,p);
 
     if(r == p) { // full rank
         betahat = PQR.solve(yy);
         fitted = XX * betahat;
 
-        if(se) {
+        if(var) {
+            VAR = Pmat * PQR.matrixQR().topRows(p).
+                triangularView<Upper>().
+                solve(MatrixXd::Identity(p, p));
+            SE = VAR.rowwise().norm();
+            VAR = VAR * VAR.adjoint();
+        }
+
+        else if(se) {
             SE = Pmat * PQR.matrixQR().topRows(p).
                 triangularView<Upper>().
                 solve(MatrixXd::Identity(p, p)).
@@ -226,7 +235,17 @@ List fit_linreg_eigenqr(const NumericMatrix& X, const NumericVector& y,
     const int df = n - r;
     const double sigma = std::sqrt(rss/(double)df);
 
-    if(se)
+    if(var)
+        return List::create(Named("coef") = betahat,
+                            Named("fitted") = fitted,
+                            Named("resid") = resid,
+                            Named("rss") = rss,
+                            Named("sigma") = sigma,
+                            Named("rank") = r,
+                            Named("df") = df,
+                            Named("SE") = sigma*SE,
+                            Named("var") = sigma*sigma*VAR);
+    else if(se)
         return List::create(Named("coef") = betahat,
                             Named("fitted") = fitted,
                             Named("resid") = resid,
