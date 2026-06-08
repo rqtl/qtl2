@@ -301,8 +301,8 @@ calc_resid_linreg_3d <- function(X, P, tol = 1e-12) {
     .Call(`_qtl2_calc_resid_linreg_3d`, X, P, tol)
 }
 
-fit_linreg <- function(X, y, se = TRUE, tol = 1e-12) {
-    .Call(`_qtl2_fit_linreg`, X, y, se, tol)
+fit_linreg <- function(X, y, se = TRUE, var = FALSE, tol = 1e-12) {
+    .Call(`_qtl2_fit_linreg`, X, y, se, var, tol)
 }
 
 fit_linreg_eigenchol <- function(X, y, se, var = FALSE) {

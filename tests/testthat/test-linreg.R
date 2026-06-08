@@ -239,6 +239,7 @@ test_that("linreg full variance-covariance matrix is correct", {
 
     out_lm <- summary(lm(y ~ -1 + x))
 
+    # eigen cholesky method
     out_var <- fit_linreg_eigenchol(x, y, FALSE, TRUE)
     out_se <- fit_linreg_eigenchol(x, y, FALSE, TRUE)
 
@@ -246,11 +247,19 @@ test_that("linreg full variance-covariance matrix is correct", {
     expect_equivalent(out_var$SE, out_lm$coefficients[,2])
     expect_equivalent(out_var$var, out_lm$cov.unscaled * out_lm$sigma^2)
 
+    # eigen QR method
     out_qr_var <- fit_linreg_eigenqr(x, y, FALSE, TRUE)
     out_qr_se <- fit_linreg_eigenqr(x, y, FALSE, TRUE)
 
     expect_equivalent(out_se$SE, out_qr_se$SE)
     expect_equivalent(out_se$SE, out_qr_var$SE)
     expect_equivalent(out_var$var, out_qr_var$var)
+
+    # generic version (which just calls fit_linreg_eigenqr)
+    out_linreg_var <- fit_linreg(x, y, FALSE, TRUE)
+    out_linreg_se <- fit_linreg(x, y, FALSE, TRUE)
+
+    expect_equivalent(out_var$SE, out_linreg_var$SE)
+    expect_equivalent(out_var$var, out_linreg_var$var)
 
 })
