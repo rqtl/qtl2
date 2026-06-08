@@ -36,6 +36,7 @@ Rcpp::List calc_coefSE_binreg(const Rcpp::NumericMatrix& X,
 Rcpp::List fit_binreg(const Rcpp::NumericMatrix& X,
                       const Rcpp::NumericVector& y,
                       const bool se, // whether to include SEs
+                      const bool var,
                       const int maxit,
                       const double tol,
                       const double qr_tol,

@@ -25,6 +25,7 @@ List fit1_binary_addcovar(const NumericMatrix& genoprobs,
                           const NumericMatrix& addcovar,
                           const NumericVector& weights,
                           const bool se=false,
+                          const bool var=false,
                           const int maxit=100,
                           const double tol=1e-6,
                           const double qr_tol=1e-12,
@@ -54,9 +55,9 @@ List fit1_binary_addcovar(const NumericMatrix& genoprobs,
         std::copy(addcovar.begin(), addcovar.end(), X.begin() + x_size);
 
     if(n_weights > 0)
-        return fit_binreg_weighted(X, pheno, weights, se, maxit, tol, qr_tol, eta_max);
+        return fit_binreg_weighted(X, pheno, weights, se, var, maxit, tol, qr_tol, eta_max);
     else
-        return fit_binreg(X, pheno, se, maxit, tol, qr_tol, eta_max);
+        return fit_binreg(X, pheno, se, var, maxit, tol, qr_tol, eta_max);
 }
 
 
@@ -78,6 +79,7 @@ List fit1_binary_intcovar(const NumericMatrix& genoprobs,
                           const NumericMatrix& intcovar,
                           const NumericVector& weights,
                           const bool se=true,
+                          const bool var=false,
                           const int maxit=100,
                           const double tol=1e-6,
                           const double qr_tol=1e-12,
@@ -99,7 +101,7 @@ List fit1_binary_intcovar(const NumericMatrix& genoprobs,
     NumericMatrix X = formX_intcovar(genoprobs, addcovar, intcovar, 0, false);
 
     if(n_weights > 0)
-        return fit_binreg_weighted(X, pheno, weights, se, maxit, tol, qr_tol, eta_max);
+        return fit_binreg_weighted(X, pheno, weights, se, var, maxit, tol, qr_tol, eta_max);
     else
-        return fit_binreg(X, pheno, se, maxit, tol, qr_tol, eta_max);
+        return fit_binreg(X, pheno, se, var, maxit, tol, qr_tol, eta_max);
 }

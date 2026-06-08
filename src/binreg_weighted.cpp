@@ -52,8 +52,9 @@ List calc_coefSE_binreg_weighted(const NumericMatrix& X, const NumericVector& y,
 List fit_binreg_weighted(const NumericMatrix& X, const NumericVector& y,
                          const NumericVector &weights,
                          const bool se=true, // whether to include SEs
+                         const bool var=false, // whether to calc var matrix
                          const int maxit=100, const double tol=1e-6,
                          const double qr_tol=1e-12, const double eta_max=30.0)
 {
-    return fit_binreg_weighted_eigenqr(X, y, weights, se, maxit, tol, qr_tol, eta_max);
+    return fit_binreg_weighted_eigenqr(X, y, weights, se, var, maxit, tol, qr_tol, eta_max);
 }

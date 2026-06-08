@@ -21,8 +21,8 @@ calc_coefSE_binreg <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, e
     .Call(`_qtl2_calc_coefSE_binreg`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg`, X, y, se, maxit, tol, qr_tol, eta_max)
+fit_binreg <- function(X, y, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg`, X, y, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 calc_ll_binreg_eigenchol <- function(X, y, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
@@ -41,8 +41,8 @@ calc_coefSE_binreg_eigenqr <- function(X, y, maxit = 100L, tol = 1e-6, qr_tol = 
     .Call(`_qtl2_calc_coefSE_binreg_eigenqr`, X, y, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_eigenqr <- function(X, y, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, maxit, tol, qr_tol, eta_max)
+fit_binreg_eigenqr <- function(X, y, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_eigenqr`, X, y, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 calc_ll_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
@@ -57,8 +57,8 @@ calc_coefSE_binreg_weighted <- function(X, y, weights, maxit = 100L, tol = 1e-6,
     .Call(`_qtl2_calc_coefSE_binreg_weighted`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_weighted <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
+fit_binreg_weighted <- function(X, y, weights, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted`, X, y, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 calc_ll_binreg_weighted_eigenchol <- function(X, y, weights, maxit = 100L, tol = 1e-6, eta_max = 30.0) {
@@ -77,8 +77,8 @@ calc_coefSE_binreg_weighted_eigenqr <- function(X, y, weights, maxit = 100L, tol
     .Call(`_qtl2_calc_coefSE_binreg_weighted_eigenqr`, X, y, weights, maxit, tol, qr_tol, eta_max)
 }
 
-fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, maxit, tol, qr_tol, eta_max)
+fit_binreg_weighted_eigenqr <- function(X, y, weights, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit_binreg_weighted_eigenqr`, X, y, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 .calc_kinship <- function(prob_array) {
@@ -169,12 +169,12 @@ invert_founder_index <- function(cross_info) {
     .Call(`_qtl2_R_find_peaks_and_bayesint`, lod, pos, threshold, peakdrop, prob)
 }
 
-fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit1_binary_addcovar`, genoprobs, pheno, addcovar, weights, se, maxit, tol, qr_tol, eta_max)
+fit1_binary_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit1_binary_addcovar`, genoprobs, pheno, addcovar, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
-fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
-    .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, maxit, tol, qr_tol, eta_max)
+fit1_binary_intcovar <- function(genoprobs, pheno, addcovar, intcovar, weights, se = TRUE, var = FALSE, maxit = 100L, tol = 1e-6, qr_tol = 1e-12, eta_max = 30.0) {
+    .Call(`_qtl2_fit1_binary_intcovar`, genoprobs, pheno, addcovar, intcovar, weights, se, var, maxit, tol, qr_tol, eta_max)
 }
 
 fit1_hk_addcovar <- function(genoprobs, pheno, addcovar, weights, se = FALSE, var = FALSE, tol = 1e-12) {

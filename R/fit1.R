@@ -312,21 +312,21 @@ fit1 <-
     else { # binary phenotype
         # null fit
         if(is.null(weights)) { # no weights
-            fit0 <- fit_binreg(X0, pheno, FALSE, maxit, bintol, tol, eta_max)
+            fit0 <- fit_binreg(X0, pheno, FALSE, FALSE, maxit, bintol, tol, eta_max)
             weights <- numeric(0)
         }
         else {
-            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, maxit, bintol, tol, eta_max)
+            fit0 <- fit_binreg_weighted(X0, pheno, weights, FALSE, FALSE, maxit, bintol, tol, eta_max)
         }
 
         if(is.null(intcovar)) { # just addcovar
             if(is.null(addcovar)) addcovar <- matrix(nrow=length(ind2keep), ncol=0)
-            fitA <- fit1_binary_addcovar(genoprobs, pheno, addcovar, weights, se=se,
+            fitA <- fit1_binary_addcovar(genoprobs, pheno, addcovar, weights, se=se, var=var,
                                          maxit, bintol, tol, eta_max)
         }
         else {                  # intcovar
             fitA <- fit1_binary_intcovar(genoprobs, pheno, addcovar, intcovar,
-                                         weights, se=se, maxit, bintol, tol, eta_max)
+                                         weights, se=se, var=var, maxit, bintol, tol, eta_max)
         }
 
         lod <- fitA$log10lik - fit0$log10lik

@@ -5,6 +5,7 @@
 - `fit1()` can return the full variance-covariance matrix of the
   coefficients, with the argument `var=TRUE`. In this case, the `se`
   argument is ignored, but the standard errors are also included.
+  The SEs for the case `zerosum=TRUE` have been corrected.
 
 - Added function `plot_cistrans()` for plotting the results of eQTL or
   pQTL analyses, with gene location on the y-axis and QTL location on

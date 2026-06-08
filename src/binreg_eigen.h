@@ -54,6 +54,7 @@ Rcpp::List calc_coefSE_binreg_eigenqr(const Rcpp::NumericMatrix& X,
 Rcpp::List fit_binreg_eigenqr(const Rcpp::NumericMatrix& X,
                               const Rcpp::NumericVector& y,
                               const bool se,        // whether to include SEs
+                              const bool var,       // whether to calculate var-cov matrix
                               const int maxit,      // max iterations
                               const double tol,     // tolerance for convergence
                               const double qr_tol,  // tolerance for QR decomp

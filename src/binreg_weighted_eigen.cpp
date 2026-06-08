@@ -164,7 +164,7 @@ NumericVector calc_coef_binreg_weighted_eigenqr(const NumericMatrix& X,
                                                 const double qr_tol=1e-12,
                                                 const double eta_max=30.0)
 {
-    List fit = fit_binreg_weighted_eigenqr(X, y, weights, false, maxit, tol, qr_tol, eta_max);
+    List fit = fit_binreg_weighted_eigenqr(X, y, weights, false, false, maxit, tol, qr_tol, eta_max);
 
     NumericVector coef = fit[2];
     return(coef);
@@ -182,7 +182,7 @@ List calc_coefSE_binreg_weighted_eigenqr(const NumericMatrix& X,
                                          const double qr_tol=1e-12,
                                          const double eta_max=30.0)
 {
-    List fit = fit_binreg_weighted_eigenqr(X, y, weights, true, maxit, tol, qr_tol, eta_max);
+    List fit = fit_binreg_weighted_eigenqr(X, y, weights, true, false, maxit, tol, qr_tol, eta_max);
 
     NumericVector coef = fit[2];
     NumericVector SE = fit[3];
@@ -199,6 +199,7 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
                                  const NumericVector& y,
                                  const NumericVector &weights,
                                  const bool se=true, // whether to include SEs
+                                 const bool var=false, // whether to calc var-cov matrix
                                  const int maxit=100,
                                  const double tol=1e-6,
                                  const double qr_tol=1e-12,
@@ -262,10 +263,24 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
     if(!converged) r_warning("binary trait regression didn't converge: increase maxit or tol");
 
     // now get coefficients, SEs, etc.
-    List fit = fit_linreg_eigenqr(XX, z, true, false, qr_tol);
+    List fit = fit_linreg_eigenqr(XX, z, se, var, qr_tol);
     NumericVector coef = fit[0];
 
-    if(se) {
+    if(var && fit[5]==XX.rows()) { // only if full rank
+        // SE and var scaled by sigma; need to unscale
+        NumericVector sigma = fit[4];
+        NumericVector SE = fit[7];
+        NumericMatrix VAR = fit[8];
+        for(int i=0; i<SE.size(); i++) SE[i] /= sigma[0];
+        for(int i=0; i<VAR.size(); i++) VAR[i] /= sigma[0]*sigma[0];
+
+        return List::create(Named("log10lik") = llik,
+                            Named("fitted_probs") = pi,
+                            Named("coef") = coef,
+                            Named("SE") = SE,
+                            Named("VAR") = VAR);
+    }
+    else if(se) {
         // SE scaled by sigma; need to unscale
         NumericVector sigma = fit[4];
         NumericVector SE = fit[7];

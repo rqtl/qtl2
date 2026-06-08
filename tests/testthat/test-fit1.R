@@ -612,3 +612,63 @@ test_that("fit1 works without genoprobs", {
     should_work <- fit1(pheno=phe, addcovar=cov, kinship=k)
 
 })
+
+test_that("fit1 by H-K gives same answer as lm(), including variance matrix", {
+
+    iron <- read_cross2(system.file("extdata", "iron.zip", package="qtl2"))
+    iron <- iron[,18]
+    map <- insert_pseudomarkers(iron$gmap, step=1)
+    probs <- calc_genoprob(iron, map, error_prob=0.002)
+
+    pheno <- iron$pheno[,1]
+    covar <- match(iron$covar$sex, c("f", "m")) # make numeric
+    names(covar) <- rownames(iron$covar)
+
+    # max positions
+    out <- scan1(probs, pheno, addcovar=covar)
+    mx <- max(out, map)
+
+    # pull prob
+    pr <- pull_genoprobpos(probs, map, chr=mx$chr, pos=mx$pos)
+
+    # estimate coefficients; no covariates for X chromosome
+    out_lm <- lm(pheno ~ -1 + pr + covar)
+    sum_lm <- summary(out_lm)
+    coef_lm <- out_lm$coef
+    se_lm <- sum_lm$coef[,2]
+    var_lm <- sum_lm$cov.unscaled * sum_lm$sigma^2
+
+    expect_equal(sqrt(diag(var_lm)), se_lm)
+
+    out_fit1_se <- fit1(pr, pheno, addcovar=covar, zerosum=FALSE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, addcovar=covar, zerosum=FALSE, var=TRUE)
+
+    names(coef_lm) <- names(se_lm) <- rownames(var_lm) <- colnames(var_lm) <- names(out_fit1_se$coef)
+
+    expect_equal(out_fit1_se$coef,  coef_lm)
+    expect_equal(out_fit1_se$SE,    se_lm)
+    expect_equal(out_fit1_var$coef, coef_lm)
+    expect_equal(out_fit1_var$SE,   se_lm)
+    expect_equal(out_fit1_var$var,  var_lm)
+
+    # zerosum version
+    A <- rbind(c(2/3, -1/3, -1/3, 0),
+               c(-1/3, 2/3, -1/3, 0),
+               c(-1/3,-1/3,  2/3, 0),
+               c(  0,   0,    0,  1),
+               c(1/3,  1/3,  1/3, 0))
+    coef_lm <- setNames(as.numeric(A %*% coef_lm), c(names(coef_lm), "intercept"))
+    var_lm <- A %*% var_lm %*% t(A)
+    se_lm <- sqrt(diag(var_lm))
+    names(se_lm) <- rownames(var_lm) <- colnames(var_lm) <- names(coef_lm)
+
+    out_fit1_se <- fit1(pr, pheno, addcovar=covar, zerosum=TRUE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, addcovar=covar, zerosum=TRUE, var=TRUE)
+
+    expect_equal(out_fit1_se$coef,  coef_lm)
+    expect_equal(out_fit1_se$SE,    se_lm)
+    expect_equal(out_fit1_var$coef, coef_lm)
+    expect_equal(out_fit1_var$SE,   se_lm)
+    expect_equal(out_fit1_var$var,  var_lm)
+
+})
