@@ -672,3 +672,73 @@ test_that("fit1 by H-K gives same answer as lm(), including variance matrix", {
     expect_equal(out_fit1_var$var,  var_lm)
 
 })
+
+
+test_that("fit1 gives correction variance matrix when incl kinsip", {
+
+    grav2 <- read_cross2(system.file("extdata", "grav2.zip", package="qtl2"))
+    map <- insert_pseudomarkers(grav2$gmap, step=1)
+    probs <- calc_genoprob(grav2, map, error_prob=0.002)
+
+    pheno <- grav2$pheno[,"T342"]
+
+    k <- calc_kinship(probs, "loco")
+
+    # max positions
+    out <- scan1(probs, pheno, kinship=k)
+    mx <- max(out, map)
+
+    # pull prob
+    pr <- pull_genoprobpos(probs, map, chr=mx$chr, pos=mx$pos)
+
+    n <- n_ind(grav2)
+    hsq <- attr(out, "hsq")[mx$chr,1]
+    kd <- double_kinship(decomp_kinship(k))
+    wts <- 1/sqrt(hsq*kd[[mx$chr]]$values + (1-hsq))
+
+    rotphe <- kd[[mx$chr]]$vectors %*% pheno * wts
+    rotX <- kd[[mx$chr]]$vectors %*% pr
+    for(i in 1:ncol(rotX)) rotX[,i] <- rotX[,i] * wts
+
+    # estimate coefficients; no covariates for X chromosome
+    out_lm <- lm(rotphe ~ -1 + rotX)
+    sum_lm <- summary(out_lm)
+    coef_lm <- out_lm$coef
+    se_lm <- sum_lm$coef[,2]
+    var_lm <- sum_lm$cov.unscaled * sum_lm$sigma^2
+
+    expect_equal(sqrt(diag(var_lm)), se_lm)
+
+    out_fit1_se <- fit1(pr, pheno, kinship=k[4], zerosum=FALSE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, kinship=k[4], zerosum=FALSE, var=TRUE)
+
+    names(coef_lm) <- names(se_lm) <- rownames(var_lm) <- colnames(var_lm) <- names(out_fit1_se$coef)
+
+    expect_equal(out_fit1_se$SE, out_fit1_var$SE)
+    expect_equal(out_fit1_se$SE, sqrt(diag(out_fit1_var$var)))
+
+    expect_equal(out_fit1_se$coef,  coef_lm)
+    expect_equal(out_fit1_se$SE,    se_lm)
+    expect_equal(out_fit1_var$coef, coef_lm)
+    expect_equal(out_fit1_var$SE,   se_lm)
+    expect_equal(out_fit1_var$var,  var_lm)
+
+    # zerosum version
+    A <- rbind(c(1/2, -1/2),
+               c(-1/2, 1/2),
+               c(1/2,  1/2))
+    coef_lm <- setNames(as.numeric(A %*% coef_lm), c(names(coef_lm), "intercept"))
+    var_lm <- A %*% var_lm %*% t(A)
+    se_lm <- sqrt(diag(var_lm))
+    names(se_lm) <- rownames(var_lm) <- colnames(var_lm) <- names(coef_lm)
+
+    out_fit1_se <- fit1(pr, pheno, kinship=k[4], zerosum=TRUE, se=TRUE, var=FALSE)
+    out_fit1_var <- fit1(pr, pheno, kinship=k[4], zerosum=TRUE, var=TRUE)
+
+    expect_equal(out_fit1_se$coef,  coef_lm)
+    expect_equal(out_fit1_se$SE,    se_lm)
+    expect_equal(out_fit1_var$coef, coef_lm)
+    expect_equal(out_fit1_var$SE,   se_lm)
+    expect_equal(out_fit1_var$var,  var_lm)
+
+})
