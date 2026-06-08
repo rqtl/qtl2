@@ -266,7 +266,7 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
     List fit = fit_linreg_eigenqr(XX, z, se, var, qr_tol);
     NumericVector coef = fit[0];
 
-    if(var && fit[5]==XX.rows()) { // only if full rank
+    if(var && fit.size() > 8) { // only if full rank
         // SE and var scaled by sigma; need to unscale
         NumericVector sigma = fit[4];
         NumericVector SE = fit[7];
@@ -278,7 +278,7 @@ List fit_binreg_weighted_eigenqr(const NumericMatrix& X,
                             Named("fitted_probs") = pi,
                             Named("coef") = coef,
                             Named("SE") = SE,
-                            Named("VAR") = VAR);
+                            Named("var") = VAR);
     }
     else if(se) {
         // SE scaled by sigma; need to unscale
