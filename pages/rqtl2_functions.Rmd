@@ -44,6 +44,8 @@ output:
   `"cross2"` object
 - [`pull_markers`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#pull_markers) - drop all except a vector of markers from `"cross2"` object
 - [`find_dup_markers`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#find_dup_markers) - find sets of markers with identical genotype data
+- [`subset.phasedgeno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#subset.phasedgeno) - subset phased genotype objects, as output by `guess_phase()`
+- [`"[".phasedgeno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#subset.phasedgeno) - shorthand for `subset.phasedgeno` with the form `ph[ind, chr]`
 
 
 ### Combining data
@@ -66,6 +68,8 @@ output:
 - [`cbind.viterbi`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#cbind.viterbi) - combine inferred genotypes for multiple chromosomes
    but on the same set of individuals
 - [`rbind.viterbi`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#rbind.viterbi) - combine inferred genotypes for different individuals
+- [`cbind.phasedgeno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#cbind.phasedgeno) - combined phased genotypes for different chromosomes but on the same set of individuals
+- [`rbind.phasedgeno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#rbind.phasedgeno) - combined phased genotypes for different individuals but on the same set of chromosomes
 
 
 ### Genotype reconstruction
@@ -146,6 +150,7 @@ output:
   permutation results
 - [`summary_scan1perm`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#summary_scan1perm) - same as `summary.scan1perm`
 - [`top_snps`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#top_snps) - find the top SNPs from a SNP association scan
+- [`calc_hotspots`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#calc_hotspots) - count QTL in a sliding window, to identify QTL hotspots
 
 
 ### Data diagnostics
@@ -256,6 +261,9 @@ output:
   (possibly with intervals) for multiple traits
 - [`plot_pxg`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_pxg) - plot phenotype versus QTL genotypes
 - [`plot_ci`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_ci) - Plot a set of confidence intervals (for example, of QTL effects at a fixed QTL position)
+- [`plot_cistrans`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_cistrans) - scatterplot of gene location vs QTL location to display eQTL/pQTL results
+- [`plot_scan1_heatmap`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_scan1_heatmap) - plot LOD curves for multiple traits as a heat map
+- [`plot_colorscale`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_colorscale) - plot a color scale (for use with `plot_scan1_heatmap`)
 
 
 ### Diagnostic plots
@@ -270,6 +278,7 @@ output:
 - [`plot_compare_geno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_compare_geno) - Plot histogram of the results of
   `compare_geno()`
 - [`plot.compare_geno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_compare_geno) - Same as `plot_compare_geno()`
+- [`plot_geno`](https://cran.r-project.org/web/packages/qtl2/refman/qtl2.html#plot_geno) - plot genome-wide genotypes for multiple individuals
 
 
 ### SNP/gene databases
@@ -343,12 +352,3 @@ output:
 
 
 ### Newly added functions (in development version)
-- `plot_cistrans` - scatterplot of gene location vs QTL location to display eQTL/pQTL results <!-- QTL plots -->
-- `calc_hotspots` - count QTL in a sliding window, to identify QTL hotspots <!-- QTL summaries -->
-- `plot_geno` - plot genome-wide genotypes for multiple individuals <!-- Diagnostic plots -->
-- `plot_scan1_heatmap` - plot LOD curves for multiple traits as a heat map <!-- QTL plots -->
-- `plot_colorscale` - plot a color scale (for use with `plot_scan1_heatmap`) <!-- QTL plots -->
-- `cbind.phasedgeno` - combined phased genotypes for different chromosomes but on the same set of individuals <!-- Combining data -->
-- `rbind.phasedgeno` - combined phased genotypes for different individuals but on the same set of chromosomes <!-- Combining data -->
-- `subset.phasedgeno` - subset phased genotype objects, as output by `guess_phase()` <!-- Data subsetting -->
-- `"[".phasedgeno` - shorthand for `subset.phasedgeno` with the form `ph[ind, chr]` <!-- Data subsetting -->
