@@ -87,7 +87,8 @@ plot_ci <-
                  yat=NULL, ylim=NULL, yaxs="r", ylab=NULL,
                  las=1, pch=21, bg="slateblue", ci_col="black",
                  ci_lwd=2, ci_endseg=0.05, labels=NULL, main="",
-                 mgp.x=NULL, mgp.y=NULL, mgp=NULL, add=FALSE, ...)
+                 mgp.x=NULL, mgp.y=NULL, mgp=NULL, add=FALSE,
+                 offset=0, ...)
 
         {
             if(!add) {
