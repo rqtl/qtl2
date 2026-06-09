@@ -148,7 +148,8 @@ plot_ci <-
             }
         }
 
-    hide_ciplot(est=est, lo=lo, hi=hi, swap_axes=swap_axes, labels=labels, add=add, ...)
+    hide_ciplot(est=est, lo=lo, hi=hi, swap_axes=swap_axes, labels=labels,
+                add=add, offset=offset, ...)
 
     invisible()
 }
