@@ -23,7 +23,7 @@
   multiple individuals.
 
 - Added functions for manipulating the "phased genotypes" output of
-  `guess_phase()`: `subset.phasedgeno()`, 1rbind.phasedgeno()`, and
+  `guess_phase()`: `subset.phasedgeno()`, `rbind.phasedgeno()`, and
   `cbind.phasedgeno()`.
 
 - Added arguments `add` and `offset` to `plot_ci()`, so that you can
