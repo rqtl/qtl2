@@ -471,10 +471,10 @@ NumericVector calc_mvrss_eigenchol(const NumericMatrix& X, const NumericMatrix& 
     MatrixXd XXpY(XX.adjoint() * YY);
 
     MatrixXd betahat(ncolX,ncolY);
-    for(int i=0; i<ncolY; i++)
-        betahat.col(i) = llt.solve(XXpY.col(i));
+    //for(int i=0; i<ncolY; i++)
+    //    betahat.col(i) = llt.solve(XXpY.col(i));
     // multivariate version been implemented but it seems to be like 20x slower!
-    // betahat = llt.solve(XXpY);
+    betahat = llt.solve(XXpY);
 
     MatrixXd fitted = XX * betahat;
     MatrixXd resid = YY - fitted;
@@ -513,10 +513,10 @@ NumericVector calc_mvrss_eigenqr(const NumericMatrix& X, const NumericMatrix& Y,
     if(r == p) { // full rank
         MatrixXd betahat(p,k);
 
-        for(int i=0; i<k; i++)
-            betahat.col(i) = PQR.solve(YY.col(i));
+        //for(int i=0; i<k; i++)
+        //    betahat.col(i) = PQR.solve(YY.col(i));
         // multivariate version been implemented but it seems to be like 20x slower!
-        // betahat = PQR.solve(YY);
+        betahat = PQR.solve(YY);
 
         fitted = XX * betahat;
 
