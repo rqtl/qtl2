@@ -1,3 +1,14 @@
+## qtl2 0.43-1 (2026-06-11)
+
+### Minor changes
+
+- The eigen library has implemented least squares regression with
+  multivariate outcomes for both cholesky and Q-R decomposition.
+  Avoids a loop in `cat_mvrss_eigen...` used by `scan1_hk`.
+  It should mean an increase in speed for scans with multivariate
+  outcomes, and for `scan1perm()`.
+
+
 ## qtl2 0.42 (2026-06-08)
 
 ### New features
