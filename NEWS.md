@@ -1,4 +1,10 @@
-## qtl2 0.43-1 (2026-06-11)
+## qtl2 0.43-2 (2026-06-12)
+
+### New features
+
+- Added a general genome scan function `scan1gen` which takes as input
+  an R function that calculates the log10 likelihood.
+
 
 ### Minor changes
 
