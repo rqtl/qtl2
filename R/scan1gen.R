@@ -107,10 +107,13 @@ scan1gen <-
         if(!is.numeric(intcovar)) stop("intcovar is not numeric")
     }
 
+    # check that kinship matrices are square with same IDs
+    kinshipIDs <- check_kinship(kinship, length(genoprobs))
+
     # find individuals in common across all arguments
     # and drop individuals with missing covariates or missing *all* phenotypes
     ind2keep <- get_common_ids(genoprobs, addcovar, Xcovar, intcovar,
-                               weights, complete.cases=TRUE)
+                               weights, kinshipIDs, complete.cases=TRUE)
     ind2keep <- get_common_ids(ind2keep, pheno[rowSums(is.finite(pheno)) > 0,,drop=FALSE])
     if(length(ind2keep)<=2) {
         if(length(ind2keep)==0)
@@ -179,6 +182,7 @@ scan1gen <-
         } else pr <- genoprobs[[chr]][these2keep,-1,,drop=FALSE]
 
         # subset the rest
+        K <- subset_kinship(kinship, ind=these2keep)
         ac <- addcovar; if(!is.null(ac)) { ac <- ac[these2keep,,drop=FALSE]; ac <- drop_depcols(ac, TRUE, tol) }
         Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
         ic <- intcovar; if(!is.null(ic)) { ic <- ic[these2keep,,drop=FALSE]; ic <- drop_depcols(ic, TRUE, tol) }
@@ -190,12 +194,15 @@ scan1gen <-
         if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
         else ac0 <- ac
 
+        # if kinship is list, subset to this chr
+        if(is_kinship_list(K)) K <- K[[chr]]
+
         # FIX_ME: fitting null model multiple times :(
-        ll0 <- vfunc(NULL, ph, addcovar=ac0, weights=wts)
+        ll0 <- vfunc(NULL, ph, addcovar=ac0, weights=wts, kinship=K)
 
         ll <- matrix(ncol=ncol(ph), nrow=dim(pr)[3])
         for(pos in 1:nrow(ll)) {
-            ll[pos,] <- vfunc(pr[,,pos], ph, addcovar=ac, intcovar=ic, weights=wts)
+            ll[pos,] <- vfunc(pr[,,pos], ph, addcovar=ac, intcovar=ic, kinship=K, weights=wts)
         }
 
         # calculate LOD score
