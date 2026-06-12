@@ -352,3 +352,5 @@ output:
 
 
 ### Newly added functions (in development version)
+
+- `scan1gen` - General genome scan with user-supplied fitting function <!-- QTL analysis -->
