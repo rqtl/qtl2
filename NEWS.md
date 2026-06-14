@@ -5,14 +5,10 @@
 - Added a general genome scan function `scan1gen` which takes as input
   an R function that calculates the log10 likelihood.
 
-
 ### Minor changes
 
-- The eigen library has implemented least squares regression with
-  multivariate outcomes for both cholesky and Q-R decomposition.
-  Avoids a loop in `cat_mvrss_eigen...` used by `scan1_hk`.
-  It should mean an increase in speed for scans with multivariate
-  outcomes, and for `scan1perm()`.
+- Potential speed-up of `scan1()` and `scan1perm()`: the eigen library
+  has implemented least squares regression with multivariate outcomes.
 
 
 ## qtl2 0.42 (2026-06-08)
