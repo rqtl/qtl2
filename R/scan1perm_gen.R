@@ -3,6 +3,10 @@ scan1perm_gen_simple <-
     function(genoprobs, pheno, n_perm=1, perm_strata=NULL,
              cores=1, scan_func=scan_func, ..., max_batch=NULL)
 {
+    dotargs <- list(...)
+    if("quiet" %in% names(dotargs)) quiet <- dotargs$quiet
+    else quiet <- TRUE
+
     # set up parallel analysis
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores)>1) {
@@ -101,6 +105,10 @@ scan1perm_gen <-
              n_perm=1, perm_strata=NULL,
              cores=1, scan_func=scan_func, ..., max_batch=NULL)
 {
+    dotargs <- list(...)
+    if("quiet" %in% names(dotargs)) quiet <- dotargs$quiet
+    else quiet <- TRUE
+
     # set up parallel analysis
     cores <- setup_cluster(cores)
     if(!quiet && n_cores(cores)>1) {
