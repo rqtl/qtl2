@@ -55,7 +55,7 @@ scan1perm_gen_simple <-
         else
             pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
         pr <- list("chr"=pr)
-        class(this_pr) <- class(genoprobs)
+        class(pr) <- class(genoprobs)
 
         ph <- pheno[,phebatch,drop=FALSE]
         for(col in seq_len(ncol(ph))) # permute columns
@@ -168,7 +168,7 @@ scan1perm_gen <-
             pr <- pr[,-Xcol2drop,,drop=FALSE]
         }
         pr <- list("chr"=pr)
-        class(this_pr) <- class(genoprobs)
+        class(pr) <- class(genoprobs)
 
         # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
