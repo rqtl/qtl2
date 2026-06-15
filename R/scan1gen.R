@@ -202,7 +202,11 @@ scan1gen <-
 
         ll <- matrix(ncol=ncol(ph), nrow=dim(pr)[3])
         for(pos in 1:nrow(ll)) {
-            ll[pos,] <- vfunc(pr[,,pos], ph, addcovar=ac, intcovar=ic, kinship=K, weights=wts)
+            # make sure genoprobs are passed as a matrix with column names
+            p <- as.matrix(pr[,,pos])
+            if(is.null(colnames(p))) colnames(p) <- paste0("pr", 1:ncol(p))
+
+            ll[pos,] <- vfunc(p, ph, addcovar=ac, intcovar=ic, kinship=K, weights=wts)
         }
 
         # calculate LOD score
