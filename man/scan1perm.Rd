@@ -19,6 +19,7 @@ scan1perm(
   perm_strata = NULL,
   chr_lengths = NULL,
   cores = 1,
+  scan_func = NULL,
   ...
 )
 }
@@ -66,6 +67,8 @@ test. Should be named in the same way as the rows of
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
+
+\item{scan_func}{If provided, this function is used for the genome scans.}
 
 \item{...}{Additional control parameters; see Details.}
 }

@@ -34,6 +34,7 @@
 #' (If `0`, use [parallel::detectCores()].)
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
+#' @param scan_func If provided, this function is used for the genome scans.
 #' @param ... Additional control parameters; see Details.
 #'
 #' @return If `perm_Xsp=FALSE`, the result is matrix of
@@ -128,7 +129,7 @@ scan1perm <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL, reml=TRUE, model=c("normal", "binary"),
              n_perm=1, perm_Xsp=FALSE, perm_strata=NULL, chr_lengths=NULL,
-             cores=1, ...)
+             cores=1, scan_func=NULL, ...)
 {
     if(is.null(genoprobs)) stop("genoprobs is NULL")
     if(is.null(pheno)) stop("pheno is NULL")
@@ -167,12 +168,14 @@ scan1perm <-
                        kinship=subset_kinship(kinship, chr=!is_x_chr),
                        addcovar=addcovar, Xcovar=NULL, intcovar=intcovar, weights=weights,
                        reml=reml, model=model, n_perm=n_perm, perm_Xsp=FALSE,
-                       perm_strata=perm_strata, chr_lengths=NULL, cores=cores, ...)
+                       perm_strata=perm_strata, chr_lengths=NULL, cores=cores,
+                       scan_func=scan_func, ...)
         X <- scan1perm(genoprobs=genoprobs[,is_x_chr], pheno=pheno,
                        kinship=subset_kinship(kinship, chr=is_x_chr),
                        addcovar=addcovar, Xcovar=Xcovar, intcovar=intcovar, weights=weights,
                        reml=reml, model=model, n_perm=n_permX, perm_Xsp=FALSE,
-                       perm_strata=perm_strata, chr_lengths=NULL, cores=cores, ...)
+                       perm_strata=perm_strata, chr_lengths=NULL, cores=cores,
+                       scan_func=scan_func, ...)
         result <- list(A=A, X=X)
         attr(result, "chr_lengths") <- chr_lengths
 
@@ -240,6 +243,25 @@ scan1perm <-
 
     # drop things from Xcovar that are already in addcovar
     Xcovar <- drop_xcovar(addcovar, Xcovar, tol)
+
+    if(!is.null(scan_func)) {
+        if(model != "normal") warning("model argument ignored if scan_func provided")
+        # no covariates, no weights, no missing phenotypes
+        if(is.null(addcovar) && is.null(Xcovar) && is.null(intcovar)
+           && is.null(weights) && is.null(kinship) && sum(!is.finite(pheno[ind2keep,]))==0) {
+            return(scan1perm_gen_simple(genoprobs=genoprobs, pheno=pheno,
+                                        n_perm=n_perm, perm_strata=perm_strata,
+                                        cores=cores,
+                                        scan_func=scan_func, ind2keep=ind2keep, ...))
+        } else {
+            return(scan1perm_gen(genoprobs=genoprobs, pheno=pheno,
+                                 kinship=kinship, addcovar=addcovar, Xcovar=Xcovar,
+                                 intcovar=intcovar, weights=weights,
+                                 n_perm=n_perm, perm_strata=perm_strata,
+                                 cores=cores,
+                                 scan_func=scan_func, ind2keep=ind2keep, ...))
+        }
+    }
 
     if(!is.null(kinship)) { # fit linear mixed model
         return(scan1perm_pg(genoprobs=genoprobs, pheno=pheno, kinship=kinship,

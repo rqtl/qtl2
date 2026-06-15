@@ -1,9 +1,12 @@
-## qtl2 0.43-3 (2026-06-15)
+## qtl2 0.43-4 (2026-06-15)
 
 ### New features
 
 - Added a general genome scan function `scan1gen` which takes as input
   an R function that calculates the log10 likelihood.
+
+- Added ability to use `scan1perm` with an alternative scan function
+  such as `scan1gen` or `scan1snps`.
 
 ### Minor changes
 
