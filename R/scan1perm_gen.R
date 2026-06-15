@@ -1,7 +1,7 @@
 # scan1perm with general function but no covariates, kinship, weights
 scan1perm_gen_simple <-
     function(genoprobs, pheno, n_perm=1, perm_strata=NULL,
-             cores=1, scan_func=scan_func, ..., max_batch=NULL)
+             cores=1, scan_func, ind2keep, ..., max_batch=NULL)
 {
     dotargs <- list(...)
     if("quiet" %in% names(dotargs)) quiet <- dotargs$quiet
@@ -50,12 +50,12 @@ scan1perm_gen_simple <-
 
         # subset the genotype probabilities: drop cols with all 0s, plus the first column
         Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
-        if(length(Xcol2drop) > 0) {
+        if(length(Xcol2drop) > 0)
             pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
-            pr <- pr[,-1,,drop=FALSE]
-        }
         else
             pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
+        pr <- list("chr"=pr)
+        class(this_pr) <- class(genoprobs)
 
         ph <- pheno[,phebatch,drop=FALSE]
         for(col in seq_len(ncol(ph))) # permute columns
@@ -67,7 +67,7 @@ scan1perm_gen_simple <-
                          cores=1, ...)
 
         # return column maxima
-        apply(lod, 1, max, na.rm=TRUE)
+        apply(lod, 2, max, na.rm=TRUE)
     }
 
     # calculations in parallel
@@ -103,7 +103,7 @@ scan1perm_gen <-
     function(genoprobs, pheno, kinship=NULL, addcovar=NULL, Xcovar=NULL,
              intcovar=NULL, weights=NULL,
              n_perm=1, perm_strata=NULL,
-             cores=1, scan_func=scan_func, ..., max_batch=NULL)
+             cores=1, scan_func, ind2keep, ..., max_batch=NULL)
 {
     dotargs <- list(...)
     if("quiet" %in% names(dotargs)) quiet <- dotargs$quiet
@@ -167,7 +167,8 @@ scan1perm_gen <-
         if(length(Xcol2drop) > 0) {
             pr <- pr[,-Xcol2drop,,drop=FALSE]
         }
-        # pr <- pr[,-1,,drop=FALSE] # **don't** drop first column here
+        pr <- list("chr"=pr)
+        class(this_pr) <- class(genoprobs)
 
         # subset the rest
         ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
@@ -184,11 +185,11 @@ scan1perm_gen <-
         else ac0 <- ac
 
         # scan1 function taking clean data (with no missing values)
-        lod <- scan_func(genoprobs=pr, pheno=ph, kinship=kinship, addcovar=ac,
+        lod <- scan_func(genoprobs=pr, pheno=ph, kinship=k, addcovar=ac,
                          intcovar=ic, weights=wts, ...)
 
         # return column maxima
-        apply(lod, 1, max, na.rm=TRUE)
+        apply(lod, 2, max, na.rm=TRUE)
     }
 
     # calculations in parallel
