@@ -145,6 +145,21 @@
 #'                        scan_func=scan1gen, func=ll_glm)
 #' summary(operm_glm)
 #'
+#' \dontrun{
+#' # example of scan1perm with scan1snps
+#' file <- paste0("https://raw.githubusercontent.com/rqtl/",
+#'                "qtl2data/main/DOex/DOex.zip")
+#' DOex <- read_cross2(file)
+#' DOex <- DOex[,c("2", "3")] # subset to chr 2 and 3
+#' probs <- calc_genoprob(DOex, error_prob=0.002)
+#'
+#' snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
+#' queryf <- create_variant_query_func(snpdb_file)
+#'
+#' operm <- scan1perm(genoprobs=probs, map=DOex$pmap, pheno=DOex$pheno,
+#'                    scan_func=scan1snps, query_func=queryf, n_perm=3)
+#' }
+#'
 #' @seealso [scan1()], [chr_lengths()], [mat2strata()]
 #' @export
 scan1perm <-
