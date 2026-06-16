@@ -68,7 +68,9 @@ test. Should be named in the same way as the rows of
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 
-\item{scan_func}{If provided, this function is used for the genome scans.}
+\item{scan_func}{If provided, this function is used for the genome scans.
+It must take arguments \code{genoprobs}, \code{pheno}, \code{kinship}, \code{addcovar},
+\code{Xcovar}, \code{intcovar}, \code{weights}, and possibly further arguments.}
 
 \item{...}{Additional control parameters; see Details.}
 }

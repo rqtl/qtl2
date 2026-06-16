@@ -35,6 +35,8 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #' @param scan_func If provided, this function is used for the genome scans.
+#' It must take arguments `genoprobs`, `pheno`, `kinship`, `addcovar`,
+#' `Xcovar`, `intcovar`, `weights`, and possibly further arguments.
 #' @param ... Additional control parameters; see Details.
 #'
 #' @return If `perm_Xsp=FALSE`, the result is matrix of
