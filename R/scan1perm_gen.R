@@ -4,8 +4,8 @@ scan1perm_gen_simple <-
              cores=1, scan_func, ind2keep, ..., max_batch=NULL)
 {
     dotargs <- list(...)
-    if("quiet" %in% names(dotargs)) quiet <- dotargs$quiet
-    else quiet <- TRUE
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    quiet <- grab_dots(dotargs, "quiet", TRUE)
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
@@ -106,8 +106,8 @@ scan1perm_gen <-
              cores=1, scan_func, ind2keep, ..., max_batch=NULL)
 {
     dotargs <- list(...)
-    if("quiet" %in% names(dotargs)) quiet <- dotargs$quiet
-    else quiet <- TRUE
+    tol <- grab_dots(dotargs, "tol", 1e-12)
+    quiet <- grab_dots(dotargs, "quiet", TRUE)
 
     # set up parallel analysis
     cores <- setup_cluster(cores)
