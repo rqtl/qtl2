@@ -126,11 +126,6 @@ scan1perm_gen <-
     # batch permutations
     phe_batches <- batch_cols(pheno[ind2keep,,drop=FALSE], max_batch)
 
-    # drop cols in genotype probs that are all 0 (just looking at the X chromosome)
-    genoprob_Xcol2drop <- genoprobs_col2drop(genoprobs)
-    is_x_chr <- attr(genoprobs, "is_x_chr")
-    if(is.null(is_x_chr)) is_x_chr <- rep(FALSE, length(genoprobs))
-
     # batches for analysis, to allow parallel analysis
     run_batches <- data.frame(chr=rep(seq_len(length(genoprobs)), length(phe_batches)*n_perm),
                               phe_batch=rep(seq_along(phe_batches), each=length(genoprobs)*n_perm),
@@ -160,33 +155,19 @@ scan1perm_gen <-
         pr <- genoprobs[[chr]][ind2keep,,,drop=FALSE]
         pr <- pr[perms[,permbatch],,,drop=FALSE]
         rownames(pr) <- ind2keep
-        pr <- pr[these2keep,,,drop=FALSE]
 
-        # subset the genotype probabilities: drop cols with all 0s, plus the first column
-        Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
-        if(length(Xcol2drop) > 0) {
-            pr <- pr[,-Xcol2drop,,drop=FALSE]
-        }
-        pr <- list("chr"=pr)
+        # make the probabilities back into a genoprobs object
+        pr <- setNames(list(pr), chr)
+        attr(pr, "is_x_chr") <- attr(genoprobs, "is_x_chr")[chr]
         class(pr) <- class(genoprobs)
 
-        # subset the rest
-        ac <- addcovar; if(!is.null(ac)) ac <- ac[these2keep,,drop=FALSE]
-        Xc <- Xcovar;   if(!is.null(Xc)) Xc <- Xc[these2keep,,drop=FALSE]
-        ic <- intcovar; if(!is.null(ic)) ic <- ic[these2keep,,drop=FALSE]
-        wts <- weights; if(!is.null(wts)) wts <- wts[these2keep]
+        # subset kinship and pheno
         k <- kinship; if(is_kinship_list(k)) k <- k[[chr]]
-        if(!is.null(k)) k <- k[these2keep,these2keep]
-        ph <- pheno[these2keep, phecol, drop=FALSE]
-
-        # if X chr, paste X covariates onto additive covariates
-        # (only for the null)
-        if(is_x_chr[chr]) ac0 <- drop_depcols(cbind(ac, Xc), add_intercept=FALSE, tol)
-        else ac0 <- ac
+        ph <- pheno[, phecol, drop=FALSE]
 
         # scan1 function taking clean data (with no missing values)
-        lod <- scan_func(genoprobs=pr, pheno=ph, kinship=k, addcovar=ac,
-                         intcovar=ic, weights=wts, ...)
+        lod <- scan_func(genoprobs=pr, pheno=ph, kinship=k, addcovar=addcovar,
+                         intcovar=intcovar, Xcovar=Xcovar, weights=weights, ...)
 
         # return column maxima
         apply(lod, 2, max, na.rm=TRUE)
