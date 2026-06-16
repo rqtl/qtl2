@@ -48,13 +48,12 @@ scan1perm_gen_simple <-
         phebatch <- phe_batches[[run_batches$phe_batch[i]]]
         permbatch <- perm_batches[[run_batches$phe_batch[i]]]
 
-        # subset the genotype probabilities: drop cols with all 0s, plus the first column
-        Xcol2drop <- genoprob_Xcol2drop[[chrnam]]
-        if(length(Xcol2drop) > 0)
-            pr <- genoprobs[[chr]][ind2keep,-Xcol2drop,,drop=FALSE]
-        else
-            pr <- genoprobs[[chr]][ind2keep,-1,,drop=FALSE]
-        pr <- list("chr"=pr)
+        pr <- genoprobs[[chr]][ind2keep,,,drop=FALSE]
+        pr <- setNames(list(pr), chrnam)
+        attr(pr, "is_x_chr") <- attr(genoprobs, "is_x_chr")[chr]
+        attr(pr, "crosstype") <- attr(genoprobs, "crosstype")
+        attr(pr, "alleles") <- attr(genoprobs, "alleles")
+        attr(pr, "alleleprobs") <- attr(genoprobs, "alleleprobs")
         class(pr) <- class(genoprobs)
 
         ph <- pheno[,phebatch,drop=FALSE]
@@ -65,6 +64,7 @@ scan1perm_gen_simple <-
                          addcovar=NULL, Xcovar=NULL,
                          intcovar=NULL, kinship=NULL,
                          cores=1, ...)
+        lod <- fix_output_if_snps(lod)
 
         # return column maxima
         apply(lod, 2, max, na.rm=TRUE)
@@ -157,8 +157,11 @@ scan1perm_gen <-
         rownames(pr) <- ind2keep
 
         # make the probabilities back into a genoprobs object
-        pr <- setNames(list(pr), chr)
+        pr <- setNames(list(pr), chrnam)
         attr(pr, "is_x_chr") <- attr(genoprobs, "is_x_chr")[chr]
+        attr(pr, "crosstype") <- attr(genoprobs, "crosstype")
+        attr(pr, "alleles") <- attr(genoprobs, "alleles")
+        attr(pr, "alleleprobs") <- attr(genoprobs, "alleleprobs")
         class(pr) <- class(genoprobs)
 
         # subset kinship and pheno
@@ -168,6 +171,7 @@ scan1perm_gen <-
         # scan1 function taking clean data (with no missing values)
         lod <- scan_func(genoprobs=pr, pheno=ph, kinship=k, addcovar=addcovar,
                          intcovar=intcovar, Xcovar=Xcovar, weights=weights, ...)
+        lod <- fix_output_if_snps(lod)
 
         # return column maxima
         apply(lod, 2, max, na.rm=TRUE)
@@ -222,4 +226,15 @@ gen_strat_perm <-
     }
 
     permute_nvector(n_perm, seq_along(ind2keep))
+}
+
+# detect if scan1snps out (list with "lod" and "snpinfo")
+fix_output_if_snps <-
+    function(scan_output)
+{
+    if(is.list(scan_output) && length(scan_output)==2
+       && all(names(scan_output) == c("lod", "snpinfo")))
+        return(scan_output$lod)
+
+    scan_output
 }
