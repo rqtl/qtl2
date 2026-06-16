@@ -19,6 +19,7 @@ scan1perm(
   perm_strata = NULL,
   chr_lengths = NULL,
   cores = 1,
+  scan_func = NULL,
   ...
 )
 }
@@ -66,6 +67,10 @@ test. Should be named in the same way as the rows of
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
 Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
+
+\item{scan_func}{If provided, this function is used for the genome scans.
+It must take arguments \code{genoprobs}, \code{pheno}, \code{kinship}, \code{addcovar},
+\code{Xcovar}, \code{intcovar}, \code{weights}, and possibly further arguments.}
 
 \item{...}{Additional control parameters; see Details.}
 }
@@ -139,11 +144,48 @@ summary(operm)
 kinship <- calc_kinship(probs, "loco")
 
 # permutations of genome scan with a linear mixed model
-\donttest{
 operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=3,
                        perm_Xsp=TRUE, perm_strata=perm_strata,
                        chr_lengths=chr_lengths(map))
 summary(operm_lmm)
+
+
+# permutations of scan1gen, fitting glm with probit link
+# fitting function
+ll_glm <-
+   function(pr, pheno, addcovar=NULL, ...)
+{
+   formula <- ifelse(is.null(pr), "pheno ~ 1", "pheno ~ pr")
+   if(!is.null(addcovar)) formula <- paste(formula, "+ addcovar")
+
+    glm_out <- glm(as.formula(formula), family=binomial(link=probit))
+    -glm_out$deviance/(2*log(10)) # log10 likelihood
+}
+
+# create binary trait
+bin_pheno <- setNames(as.numeric(iron$pheno[,1] > median(iron$pheno[,1])),
+                      rownames(iron$pheno))
+
+# permutations with glm
+operm_glm <- scan1perm(probs, bin_pheno, kinship, covar, Xcovar, n_perm=3,
+                       perm_Xsp=TRUE, perm_strata=perm_strata,
+                       chr_lengths=chr_lengths(map),
+                       scan_func=scan1gen, func=ll_glm)
+summary(operm_glm)
+
+\dontrun{
+# example of scan1perm with scan1snps
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/main/DOex/DOex.zip")
+DOex <- read_cross2(file)
+DOex <- DOex[,c("2", "3")] # subset to chr 2 and 3
+probs <- calc_genoprob(DOex, error_prob=0.002)
+
+snpdb_file <- system.file("extdata", "cc_variants_small.sqlite", package="qtl2")
+queryf <- create_variant_query_func(snpdb_file)
+
+operm <- scan1perm(genoprobs=probs, map=DOex$pmap, pheno=DOex$pheno,
+                   scan_func=scan1snps, query_func=queryf, n_perm=3)
 }
 
 }
