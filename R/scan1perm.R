@@ -116,12 +116,34 @@
 #' kinship <- calc_kinship(probs, "loco")
 #'
 #' # permutations of genome scan with a linear mixed model
-#' \donttest{
 #' operm_lmm <- scan1perm(probs, pheno, kinship, covar, Xcovar, n_perm=3,
 #'                        perm_Xsp=TRUE, perm_strata=perm_strata,
 #'                        chr_lengths=chr_lengths(map))
 #' summary(operm_lmm)
+#'
+#'
+#' # permutations of scan1gen, fitting glm with probit link
+#' # fitting function
+#' ll_glm <-
+#'    function(pr, pheno, addcovar=NULL, ...)
+#' {
+#'    formula <- ifelse(is.null(pr), "pheno ~ 1", "pheno ~ pr")
+#'    if(!is.null(addcovar)) formula <- paste(formula, "+ addcovar")
+#'
+#'     glm_out <- glm(as.formula(formula), family=binomial(link=probit))
+#'     -glm_out$deviance/(2*log(10)) # log10 likelihood
 #' }
+#'
+#' # create binary trait
+#' bin_pheno <- setNames(as.numeric(iron$pheno[,1] > median(iron$pheno[,1])),
+#'                       rownames(iron$pheno))
+#'
+#' # permutations with glm
+#' operm_glm <- scan1perm(probs, bin_pheno, kinship, covar, Xcovar, n_perm=3,
+#'                        perm_Xsp=TRUE, perm_strata=perm_strata,
+#'                        chr_lengths=chr_lengths(map),
+#'                        scan_func=scan1gen, func=ll_glm)
+#' summary(operm_glm)
 #'
 #' @seealso [scan1()], [chr_lengths()], [mat2strata()]
 #' @export
