@@ -1,4 +1,4 @@
-## qtl2 0.43-4 (2026-06-16)
+## qtl2 0.43-5 (2026-06-27)
 
 ### New features
 
@@ -12,6 +12,10 @@
 
 - Potential speed-up of `scan1()` and `scan1perm()`: the eigen library
   has implemented least squares regression with multivariate outcomes.
+
+- For parallel computing, use of `cores=0` argument now results in all
+  but one core (`parallel::detectCores()-1`) rather than **all**
+  cores.
 
 
 ## qtl2 0.42 (2026-06-08)
